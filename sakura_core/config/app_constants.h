@@ -30,13 +30,13 @@
 
 // アプリ名。2007.09.21 kobake 整理
 #ifdef _UNICODE
-	#define _APP_NAME_(TYPE) TYPE("sakura")
+	#define _APP_NAME_(TYPE) TYPE("紅桜")
 #else
-	#define _APP_NAME_(TYPE) TYPE("sakura")
+	#define _APP_NAME_(TYPE) TYPE("Beni Zakura")
 #endif
 
 #ifdef _DEBUG
-	#define _APP_NAME_2_(TYPE) TYPE("(デバッグ版)")
+	#define _APP_NAME_2_(TYPE) TYPE("(Debug Build)")
 #else
 	#define _APP_NAME_2_(TYPE) TYPE("")
 #endif

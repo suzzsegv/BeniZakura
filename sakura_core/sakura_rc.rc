@@ -1243,7 +1243,7 @@ BEGIN
                     IDC_CHECK_CLOSEALLCONFIRM,"Button",BS_AUTOCHECKBOX | 
                     BS_TOP | BS_MULTILINE | WS_GROUP | WS_TABSTOP,8,193,124,
                     19
-    CONTROL         "サクラエディタの全終了で編集用\nウィンドウを閉じるとき確認(&V)",
+    CONTROL         "紅桜の終了で編集用\nウィンドウを閉じるとき確認(&V)",
                     IDC_CHECK_EXITCONFIRM,"Button",BS_AUTOCHECKBOX | BS_TOP | 
                     BS_MULTILINE | WS_GROUP | WS_TABSTOP,8,212,124,19
     GROUPBOX        "スクロール",IDC_STATIC,158,3,130,125,WS_GROUP
@@ -2422,8 +2422,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 2,0,5,0
- PRODUCTVERSION 2,0,5,0
+ FILEVERSION 2,0,5,1
+ PRODUCTVERSION 2,0,5,1
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x21L
@@ -2439,15 +2439,15 @@ BEGIN
         BLOCK "041104b0"
         BEGIN
             VALUE "Comments", "このソフトはフリーソフトです。\0"
-            VALUE "CompanyName", "Project: Sakura-Editor\0"
-            VALUE "FileDescription", "サクラエディタ\0"
+            VALUE "CompanyName", "Project: BeniZakura Editor\0"
+            VALUE "FileDescription", "紅桜\0"
             VALUE "FileVersion", "2.0\0"
-            VALUE "InternalName", "sakura\0"
+            VALUE "InternalName", "beni zakura\0"
             VALUE "LegalCopyright", "Copyright (C) Norio Nakatani & Collaborators\0"
             VALUE "LegalTrademarks", " \0"
-            VALUE "OriginalFilename", "sakura.exe\0"
-            VALUE "ProductName", "サクラエディタ\0"
-            VALUE "ProductVersion", "2.0.5.0\0"
+            VALUE "OriginalFilename", "benizakura.exe\0"
+            VALUE "ProductName", "紅桜\0"
+            VALUE "ProductVersion", "2.0.5.1\0"
         END
     END
     BLOCK "VarFileInfo"
@@ -2555,7 +2555,7 @@ END
 STRINGTABLE DISCARDABLE 
 BEGIN
     F_EXITALLEDITORS        "編集の全終了"
-    F_EXITALL               "サクラエディタの全終了"
+    F_EXITALL               "紅桜の終了"
     F_WCHAR                 "文字入力"
     F_IME_CHAR              "全角文字入力"
 END
@@ -3017,8 +3017,8 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_AUTHOR_PAGE         "http://sakura-editor.sourceforge.net/"
-    IDS_ABOUT_DESCRIPTION   "このソフトウェアは「テキストエディタ(共同開発版)」を改称したものです．\r\n商用・非商用を問わず無償で利用できますが，ソースコードの著作権は各箇所を記述した人が留保しています．\r\nこのソフトウェアは無保証です．\r\n"
+    IDS_AUTHOR_PAGE         ""
+    IDS_ABOUT_DESCRIPTION   "このソフトウェアは「サクラエディタ」をベースに改変したものです．\r\n商用・非商用を問わず無償で利用できますが，ソースコードの著作権は各箇所を記述した人が留保しています．\r\nこのソフトウェアは無保証です．\r\n"
 END
 
 /////////////////////////////////////////////////////////////////////////////

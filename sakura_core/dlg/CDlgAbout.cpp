@@ -150,11 +150,11 @@ BOOL CDlgAbout::OnInitDialog( HWND hwndDlg, WPARAM wParam, LPARAM lParam )
 	//サクラエディタ   Ver. 2.0.0.0
 	//
 	//      Share Ver: 96
-	//      Compile Info: V 1400  WR WIN600/I601/C000/N600
+	//      Compile Info: V 1400  WR WIN600
 	//      Last Modified: 1999/9/9 00:00:00
 	//      (あればSKR_PATCH_INFOの文字列がそのまま表示)
 	CNativeT cmemMsg;
-	cmemMsg.AppendString(_T("サクラエディタ   "));
+	cmemMsg.AppendString(_T("紅桜   "));
 
 	DWORD dwVersionMS, dwVersionLS;
 	GetAppVersionInfo( NULL, VS_VERSION_INFO,
@@ -169,6 +169,8 @@ BOOL CDlgAbout::OnInitDialog( HWND hwndDlg, WPARAM wParam, LPARAM lParam )
 
 	cmemMsg.AppendString( _T("\r\n") );
 
+	cmemMsg.AppendString( _T("Based on Sakura Editor:\r\n") );
+
 	auto_sprintf( szMsg,  _T("      Share Ver: %3d\r\n"),
 		N_SHAREDATA_VERSION
 	);
@@ -177,9 +179,9 @@ BOOL CDlgAbout::OnInitDialog( HWND hwndDlg, WPARAM wParam, LPARAM lParam )
 	cmemMsg.AppendString( _T("      Compile Info: ") );
 	int Compiler_ver = COMPILER_VER;
 	auto_sprintf( szMsg, _T(COMPILER_TYPE) _T(TARGET_M_SUFFIX) _T(" %d  ")
-			TSTR_TARGET_MODE _T(" WIN%03x/I%03x/C%03x/N%03x\r\n"),
+		TSTR_TARGET_MODE _T(" WIN%03x\r\n"),
 		Compiler_ver,
-		WINVER, _WIN32_IE, MY_WIN32_WINDOWS, MY_WIN32_WINNT
+		WINVER
 	);
 	cmemMsg.AppendString( szMsg );
 
