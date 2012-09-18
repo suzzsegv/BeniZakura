@@ -368,6 +368,7 @@ BOOL CViewCommander::HandleCommand(
 	case F_INSFILE:				Command_INSFILE((LPCWSTR)lparam1, (ECodeType)lparam2, (int)lparam3);break;	/* キャレット位置にファイル挿入 */ //maru 2006.12.10
 
 	/* 編集系 */
+	case F_INSERT_NEWLINE:		Command_WCHAR( WCODE::CR );break;	//改行
 	case F_UNDO:				Command_UNDO();break;				/* 元に戻す(Undo) */
 	case F_REDO:				Command_REDO();break;				/* やり直し(Redo) */
 	case F_DELETE:				Command_DELETE(); break;			//削除

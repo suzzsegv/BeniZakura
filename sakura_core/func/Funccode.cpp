@@ -132,7 +132,8 @@ const EFunctionCode pnFuncList_Edit[] = {	//Oct. 16, 2000 JEPRO 変数名変更(List3
 	F_SORT_ASC			,	//選択行の昇順ソート	2001.12.06 hor
 	F_SORT_DESC			,	//選択行の降順ソート	2001.12.06 hor
 	F_MERGE				,	//選択行のマージ		2001.12.06 hor
-	F_RECONVERT				//再変換 				2002.04.09 minfu
+	F_RECONVERT			,	//再変換 				2002.04.09 minfu
+	F_INSERT_NEWLINE		//改行
 //		F_WORDSREFERENCE		//単語リファレンス
 };
 const int nFincList_Edit_Num = _countof( pnFuncList_Edit );	//Oct. 16, 2000 JEPRO 変数名変更(List3→List_Edit)

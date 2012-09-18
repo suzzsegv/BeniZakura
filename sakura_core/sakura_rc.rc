@@ -2566,6 +2566,7 @@ BEGIN
     F_REDO                  "やり直し"
     F_DELETE                "削除"
     F_DELETE_BACK           "カーソル前を削除"
+    F_INSERT_NEWLINE        "改行"
 END
 
 STRINGTABLE DISCARDABLE 
