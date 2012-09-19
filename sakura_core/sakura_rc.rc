@@ -2777,6 +2777,7 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
+    F_SEARCH_WORD           "Œ»ÝˆÊ’u‚Ì’PŒê‚ÅŒŸõ"
     F_SEARCH_DIALOG         "ŒŸõ..."
     F_SEARCH_NEXT           "ŽŸ‚ðŒŸõ"
     F_SEARCH_PREV           "‘O‚ðŒŸõ"
