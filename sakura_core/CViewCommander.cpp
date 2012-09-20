@@ -526,7 +526,7 @@ BOOL CViewCommander::HandleCommand(
 
 	/* 検索系 */
 	case F_SEARCH_WORD:
-		Command_SELECTWORD( );
+		Command_RED2_SELECTWORD( );
 		Command_SEARCH_CLEARMARK( );
 		break;
 	case F_SEARCH_DIALOG:		Command_SEARCH_DIALOG();break;												//検索(単語検索ダイアログ)
@@ -2273,6 +2273,63 @@ bool CViewCommander::Command_SELECTWORD( void )
 	else {
 		return false;	//	単語選択に失敗
 	}
+}
+
+
+
+
+/* 現在位置の単語選択 */
+bool CViewCommander::Command_RED2_SELECTWORD( void )
+{
+	if( m_pCommanderView->GetSelectionInfo().IsTextSelected() == false ){
+		return CViewCommander::Command_SELECTWORD();	/* 範囲選択中ではない場合は Sakura と同様の動作 */
+	}
+
+	CLayoutRange sRange;
+	CLayoutPoint ptCaretFrom;
+	CLayoutRange& sSelect = m_pCommanderView->GetSelectionInfo().m_sSelect;
+
+	if( sSelect.GetFrom().y != sSelect.GetTo().y ){
+		return CViewCommander::Command_SELECTWORD();	/* 複数の行が選択されている場合は Sakura と同様の動作 */
+	}
+
+	ptCaretFrom = sSelect.GetFrom();									/* 現在の選択開始位置を保存 */
+	GetCaret().MoveCursor( sSelect.GetTo(), TRUE );						/* カーソルを選択終了位置に変更 */
+
+	m_pCommanderView->GetSelectionInfo().DisableSelectArea( TRUE );		/* 現在の選択範囲を非選択状態に戻す */
+
+	const CLayout*	pcLayout = GetDocument()->m_cLayoutMgr.SearchLineByLayoutY( GetCaret().GetCaretLayoutPos().GetY2() );
+	if( NULL == pcLayout ){
+		goto WordSelectError;
+	}
+
+	/* 指定された桁に対応する行のデータ内の位置を調べる */
+	CLogicInt	nIdx = m_pCommanderView->LineColmnToIndex( pcLayout, GetCaret().GetCaretLayoutPos().GetX2() );
+
+	/* 現在位置の単語の範囲を調べる */
+	if( GetDocument()->m_cLayoutMgr.WhereCurrentWord( GetCaret().GetCaretLayoutPos().GetY2(), nIdx, &sRange, NULL, NULL ) == false ){
+		goto WordSelectError;
+	}
+
+	/* 選択開始位置を元に戻す */
+	sRange.SetFrom( ptCaretFrom );
+
+	/* 選択範囲の変更 */
+	m_pCommanderView->GetSelectionInfo().SetSelectArea( sRange );
+
+	/* 単語の末尾にカーソルを移動 */
+	GetCaret().MoveCursor( sRange.GetTo(), TRUE );
+	GetCaret().m_nCaretPosX_Prev = GetCaret().GetCaretLayoutPos().GetX2();
+
+	/* 選択領域描画 */
+	m_pCommanderView->GetSelectionInfo().DrawSelectArea();
+
+	return true;	//	単語選択に成功。
+
+WordSelectError:
+	/* 単語選択に失敗した場合には、元の選択開始位置から単語選択をやり直す */
+	GetCaret().MoveCursor( ptCaretFrom, TRUE );
+	return CViewCommander::Command_SELECTWORD();
 }
 
 
