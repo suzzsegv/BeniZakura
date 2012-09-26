@@ -169,7 +169,7 @@ BOOL CDlgAbout::OnInitDialog( HWND hwndDlg, WPARAM wParam, LPARAM lParam )
 
 	cmemMsg.AppendString( _T("\r\n") );
 
-	cmemMsg.AppendString( _T("Based on Sakura Editor:\r\n") );
+	cmemMsg.AppendString( _T("Based on Sakura Editor   Ver. 2.0.5.0\r\n") );
 
 	auto_sprintf( szMsg,  _T("      Share Ver: %3d\r\n"),
 		N_SHAREDATA_VERSION
