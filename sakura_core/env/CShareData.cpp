@@ -340,7 +340,7 @@ bool CShareData::InitShareData()
 		/* カスタムメニュー情報 */
 		auto_sprintf( m_pShareData->m_Common.m_sCustomMenu.m_szCustMenuNameArr[0], LTEXT("右クリックメニュー") );
 		for( int i = 1; i < MAX_CUSTOM_MENU; ++i ){
-			auto_sprintf( m_pShareData->m_Common.m_sCustomMenu.m_szCustMenuNameArr[i], LTEXT("メニュー%d"), i );
+			auto_sprintf( m_pShareData->m_Common.m_sCustomMenu.m_szCustMenuNameArr[i], LTEXT("MENU%d"), i );
 			m_pShareData->m_Common.m_sCustomMenu.m_nCustMenuItemNumArr[i] = 0;
 			for( int j = 0; j < MAX_CUSTOM_MENU_ITEMS; ++j ){
 				m_pShareData->m_Common.m_sCustomMenu.m_nCustMenuItemFuncArr[i][j] = F_0;
@@ -368,7 +368,7 @@ bool CShareData::InitShareData()
 		m_pShareData->m_Common.m_sWindow.m_nWinPosX = CW_USEDEFAULT;
 		m_pShareData->m_Common.m_sWindow.m_nWinPosY = 0;
 
-		m_pShareData->m_Common.m_sGeneral.m_bUseTaskTray = TRUE;				/* タスクトレイのアイコンを使う */
+		m_pShareData->m_Common.m_sGeneral.m_bUseTaskTray = FALSE;				/* タスクトレイのアイコンを使う */
 #ifdef _DEBUG
 		m_pShareData->m_Common.m_sGeneral.m_bStayTaskTray = FALSE;				/* タスクトレイのアイコンを常駐 */
 #else
@@ -389,7 +389,7 @@ bool CShareData::InitShareData()
 		m_pShareData->m_Common.m_sWindow.m_nLineNumRightSpace = 0;			/* 行番号の右の隙間 */
 		m_pShareData->m_Common.m_sWindow.m_nVertLineOffset = -1;			// 2005.11.10 Moca 指定桁縦線
 		m_pShareData->m_Common.m_sWindow.m_bUseCompotibleBMP = TRUE;		// 2007.09.09 Moca 画面キャッシュを使う	// 2009.06.09 ryoji FALSE->TRUE
-		m_pShareData->m_Common.m_sEdit.m_bCopyAndDisablSelection = FALSE;	/* コピーしたら選択解除 */
+		m_pShareData->m_Common.m_sEdit.m_bCopyAndDisablSelection = TRUE;	/* コピーしたら選択解除 */
 		m_pShareData->m_Common.m_sEdit.m_bEnableNoSelectCopy = TRUE;		/* 選択なしでコピーを可能にする */	// 2007.11.18 ryoji
 		m_pShareData->m_Common.m_sEdit.m_bEnableLineModePaste = TRUE;		/* ラインモード貼り付けを可能にする */	// 2007.10.08 ryoji
 		m_pShareData->m_Common.m_sHelper.m_bHtmlHelpIsSingle = TRUE;		/* HtmlHelpビューアはひとつ */
