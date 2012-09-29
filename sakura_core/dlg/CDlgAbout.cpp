@@ -186,16 +186,7 @@ BOOL CDlgAbout::OnInitDialog( HWND hwndDlg, WPARAM wParam, LPARAM lParam )
 	cmemMsg.AppendString( szMsg );
 
 	/* 更新日情報 */
-	CFileTime cFileTime;
-	GetLastWriteTimestamp( szFile, &cFileTime );
-	auto_sprintf( szMsg,  _T("      Last Modified: %d/%d/%d %02d:%02d:%02d\r\n"),
-		cFileTime->wYear,
-		cFileTime->wMonth,
-		cFileTime->wDay,
-		cFileTime->wHour,
-		cFileTime->wMinute,
-		cFileTime->wSecond
-	);
+	auto_sprintf( szMsg,  _T("      Last Modified: %s %s\r\n"), _T(__DATE__), _T(__TIME__) );
 	cmemMsg.AppendString( szMsg );
 
 // パッチ(かリビジョン)の情報をコンパイル時に渡せるようにする
