@@ -169,7 +169,7 @@ void _DefaultConfig(STypeConfig* pType)
 	pType->m_bHokanLoHiCase = FALSE;			/* 入力補完機能：英大文字小文字を同一視する */
 
 	//	2003.06.23 Moca ファイル内からの入力補完機能
-	pType->m_bUseHokanByFile = FALSE;			/*! 入力補完 開いているファイル内から候補を探す */
+	pType->m_bUseHokanByFile = TRUE;			/* 入力補完機能: 編集中のファイルから候補を探す */
 
 	// 文字コード設定
 	pType->m_bPriorCesu8 = FALSE;
