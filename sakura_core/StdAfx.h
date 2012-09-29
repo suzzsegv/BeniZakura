@@ -3,6 +3,9 @@
 //				プロジェクト専用のインクルード ファイルを記述します。
 //
 
+#define WINVER			0x0501
+#define _WIN32_WINNT	0x0501
+
 #if !defined(AFX_STDAFX_H__11490042_E569_11D3_BCE2_444553540001__INCLUDED_)
 #define AFX_STDAFX_H__11490042_E569_11D3_BCE2_444553540001__INCLUDED_
 

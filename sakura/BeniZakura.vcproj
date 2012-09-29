@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="shift_jis"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
-	Name="sakura"
+	Version="9.00"
+	Name="BeniZakura"
 	ProjectGUID="{DFFC20C2-2220-4135-847D-873E6ACE13E3}"
-	RootNamespace="sakura"
+	RootNamespace="BeniZakura"
+	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform
@@ -32,6 +33,9 @@
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
 			/>
 			<Tool
 				Name="VCMIDLTool"
@@ -84,6 +88,8 @@
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -128,6 +134,9 @@
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
 			/>
 			<Tool
 				Name="VCMIDLTool"
@@ -176,6 +185,8 @@
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(TargetDir)$(TargetName).pdb"
 				SubSystem="2"
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -220,6 +231,9 @@
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
 			/>
 			<Tool
 				Name="VCMIDLTool"
@@ -269,6 +283,8 @@
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(TargetDir)$(TargetName).pdb"
 				SubSystem="2"
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -314,6 +330,9 @@
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
 			/>
 			<Tool
 				Name="VCMIDLTool"
@@ -367,6 +386,8 @@
 				LargeAddressAware="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
 				TargetMachine="1"
 			/>
 			<Tool
