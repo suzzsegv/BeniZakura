@@ -130,6 +130,7 @@ ECharKind CWordParse::WhatKindOfChar(
 		if( c == TAB             )return CK_TAB;	// タブ
 		if( c == SPACE           )return CK_SPACE;	// 半角スペース
 		if( isCSymbol(c)         )return CK_CSYM;	// 識別子に使用可能な文字 (半角英数字、半角アンダースコア)
+		if( IsBracket(c)         )return CK_BRACKET;
 		if( IsHankakuKatakana(c) )return CK_KATA;	// 半角のカタカナ
 		if( 0x00C0 <= c && c < 0x0180 && c != 0x00D7 && c != 0x00F7 )return CK_LATIN;
 													// ラテン１補助、ラテン拡張のうちアルファベット風のもの（×÷を除く）
@@ -170,6 +171,8 @@ ECharKind CWordParse::WhatKindOfChar(
 //! 二つの文字を結合したものの種類を調べる
 ECharKind CWordParse::WhatKindOfTwoChars( ECharKind kindPre, ECharKind kindCur )
 {
+	if( kindCur == CK_BRACKET )return CK_NULL;		// 括弧はデリミタとして扱うため、直前の文字が何であれ別種として返す
+
 	if( kindPre == kindCur )return kindCur;			// 同種ならその種別を返す
 
 	// 全角長音・全角濁点は前後の全角ひらがな・全角カタカナに引きずられる

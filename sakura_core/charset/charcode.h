@@ -186,6 +186,18 @@ namespace WCODE
 		return wc==TAB || wc==SPACE || IsZenkakuSpace(wc);
 	}
 
+	//!括弧かどうか
+	inline bool IsBracket(wchar_t wc)
+	{
+		if(wc==L'(')return true;
+		if(wc==L')')return true;
+		if(wc==L'{')return true;
+		if(wc==L'}')return true;
+		if(wc==L'[')return true;
+		if(wc==L']')return true;
+		return false;
+	}
+
 	//!ファイル名に使える文字であるかどうか
 	inline bool IsValidFilenameChar(const wchar_t* pData, size_t nIndex)
 	{
