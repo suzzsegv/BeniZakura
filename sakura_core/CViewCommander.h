@@ -130,6 +130,7 @@ public:
 	void Command_DELETE_BACK( void );		/* カーソル前を削除 */
 	void Command_WordDeleteToStart( void );	/* 単語の左端まで削除 */
 	void Command_WordDeleteToEnd( void );	/* 単語の右端まで削除 */
+	bool Command_WordCopy( void );			/* 単語のコピー */
 	void Command_WordCut( void );			/* 単語切り取り */
 	void Command_WordDelete( void );		/* 単語削除 */
 	void Command_LineCutToStart( void );	//行頭まで切り取り(改行単位)

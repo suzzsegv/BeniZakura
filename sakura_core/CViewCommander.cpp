@@ -376,6 +376,7 @@ BOOL CViewCommander::HandleCommand(
 	case F_WordDeleteToStart:	Command_WordDeleteToStart(); break;	//単語の左端まで削除
 	case F_WordDeleteToEnd:		Command_WordDeleteToEnd(); break;	//単語の右端まで削除
 	case F_WordDelete:			Command_WordDelete(); break;		//単語削除
+	case F_WordCopy:			Command_WordCopy(); break;			//単語コピー
 	case F_WordCut:				Command_WordCut(); break;			//単語切り取り
 	case F_LineCutToStart:		Command_LineCutToStart(); break;	//行頭まで切り取り(改行単位)
 	case F_LineCutToEnd:		Command_LineCutToEnd(); break;		//行末まで切り取り(改行単位)
@@ -1839,6 +1840,26 @@ void CViewCommander::Command_WordDeleteToStart( void )
 
 	// 削除
 	m_pCommanderView->DeleteData( TRUE );
+}
+
+
+
+
+//単語コピー
+bool CViewCommander::Command_WordCopy( void )
+{
+	bool	bSelected;
+
+	//現在位置の単語選択
+	bSelected = Command_SELECTWORD();
+
+	/* クリップボードにデータを設定 */
+	CNativeW	cmemBuf;
+	if( m_pCommanderView->GetSelectedData( &cmemBuf, FALSE, NULL, FALSE, FALSE ) ){
+		m_pCommanderView->MySetClipboardData( cmemBuf.GetStringPtr(), cmemBuf.GetStringLength(), false );
+	}
+
+	return bSelected;
 }
 
 

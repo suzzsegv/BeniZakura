@@ -114,6 +114,7 @@ const EFunctionCode pnFuncList_Edit[] = {	//Oct. 16, 2000 JEPRO 変数名変更(List3
 	F_DELETE_BACK		,	//カーソル前を削除
 	F_WordDeleteToStart	,	//単語の左端まで削除
 	F_WordDeleteToEnd	,	//単語の右端まで削除
+	F_WordCopy			,	//単語コピー
 	F_WordCut			,	//単語切り取り
 	F_WordDelete		,	//単語削除
 	F_LineCutToStart	,	//行頭まで切り取り(改行単位)

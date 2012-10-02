@@ -91,6 +91,7 @@
 #define F_MERGE 30284
 #define F_RECONVERT 30285
 #define F_INSERT_NEWLINE 30286
+#define F_WordCopy 30287
 #define F_UP 30311
 #define F_DOWN 30312
 #define F_LEFT 30313

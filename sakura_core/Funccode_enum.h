@@ -92,6 +92,7 @@ enum EFunctionCode{
 	F_MERGE = 30284,
 	F_RECONVERT = 30285,
 	F_INSERT_NEWLINE = 30286,
+	F_WordCopy = 30287,
 	F_UP = 30311,
 	F_DOWN = 30312,
 	F_LEFT = 30313,

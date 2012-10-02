@@ -2573,6 +2573,7 @@ STRINGTABLE DISCARDABLE
 BEGIN
     F_WordDeleteToStart     "単語の左端まで削除"
     F_WordDeleteToEnd       "単語の右端まで削除"
+    F_WordCopy              "単語コピー"
     F_WordCut               "単語切り取り"
     F_WordDelete            "単語削除"
 END
