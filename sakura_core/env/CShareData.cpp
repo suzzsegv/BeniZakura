@@ -1066,7 +1066,7 @@ void CShareData::InitPopupMenu(DLLSHAREDATA* pShareData)
 	rMenu.m_nCustMenuItemKeyArr [1][n] = 'Q';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[1][n] = F_EXITALL;
-	rMenu.m_nCustMenuItemKeyArr [1][n] = 'Q';
+	rMenu.m_nCustMenuItemKeyArr [1][n] = 'X';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[1][n] = F_0;	/* ------ */
 	rMenu.m_nCustMenuItemKeyArr [1][n] = '\0';
@@ -1088,7 +1088,7 @@ void CShareData::InitPopupMenu(DLLSHAREDATA* pShareData)
 	/* カスタムメニュー２ */
 	n = 0;
 	rMenu.m_nCustMenuItemFuncArr[2][n] = F_SEARCH_DIALOG;
-	rMenu.m_nCustMenuItemKeyArr [2][n] = 'F';
+	rMenu.m_nCustMenuItemKeyArr [2][n] = 'S';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[2][n] = F_REPLACE_DIALOG;
 	rMenu.m_nCustMenuItemKeyArr [2][n] = 'R';
