@@ -97,6 +97,7 @@ SAKURA_CORE_API enum EColorIndexType {
 	//カラー表示制御用
 	COLORIDX_BLOCK1,		// ブロックコメント1(文字色と背景色は行コメントと同じ)
 	COLORIDX_BLOCK2,		// ブロックコメント2(文字色と背景色は行コメントと同じ)
+	COLORIDX_COMMENT_CPP,	// C++ コメント(文字色と背景色は行コメントと同じ)
 
 	//1000- : カラー表示制御用(正規表現キーワード)
 	COLORIDX_REGEX_FIRST	= 1000,
@@ -131,7 +132,9 @@ inline int ToColorInfoArrIndex(const EColorIndexType& eColorIndex)
 {
 	if(eColorIndex>=0 && eColorIndex<COLORIDX_LAST)
 		return eColorIndex;
-	else if(eColorIndex==COLORIDX_BLOCK1 || eColorIndex==COLORIDX_BLOCK2)
+	else if( eColorIndex==COLORIDX_BLOCK1
+	      || eColorIndex==COLORIDX_BLOCK2
+	      || eColorIndex==COLORIDX_COMMENT_CPP )
 		return COLORIDX_COMMENT;
 	else if( IsRegularExpression(eColorIndex) )
 		return ToColorInfoArrIndex_RegularExpression(eColorIndex);
@@ -222,6 +225,7 @@ public:
 class CColor_LineComment;
 class CColor_BlockComment;
 class CColor_BlockComment;
+class CColor_Comment_Cpp;
 class CColor_SingleQuote;
 class CColor_DoubleQuote;
 
@@ -262,6 +266,7 @@ private:
 	CColor_LineComment*				m_pcLineComment;
 	CColor_BlockComment*			m_pcBlockComment1;
 	CColor_BlockComment*			m_pcBlockComment2;
+	CColor_Comment_Cpp*				m_pcCommentCpp;
 	CColor_SingleQuote*				m_pcSingleQuote;
 	CColor_DoubleQuote*				m_pcDoubleQuote;
 

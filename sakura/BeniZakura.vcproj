@@ -2074,6 +2074,14 @@
 						>
 					</File>
 					<File
+						RelativePath="..\sakura_core\view\colors\CColor_Comment_Cpp.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\sakura_core\view\colors\CColor_Comment_Cpp.h"
+						>
+					</File>
+					<File
 						RelativePath="..\sakura_core\view\colors\CColor_Found.cpp"
 						>
 					</File>
