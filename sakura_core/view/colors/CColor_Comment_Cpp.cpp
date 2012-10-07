@@ -42,7 +42,7 @@ bool CColor_Comment_Cpp::BeginColor(const CStringRef& rStr, int pos)
 	const CEditDoc* pEditDoc = CEditDoc::GetInstance(0);
 	const STypeConfig& rTypeSetting = pEditDoc->m_cDocType.GetDocumentAttribute();
 
-	if( rTypeSetting.m_ColorInfoArr[COLORIDX_COMMENT].m_bDisp
+	if( rTypeSetting.m_ColorInfoArr[COLORIDX_COMMENT2].m_bDisp
 	 && Match_CommentFrom( pos, rStr ) )
 	{
 		this->m_CommentEndPos = Match_CommentTo( pos + wcslen( L"#if 0" ), rStr );

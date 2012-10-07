@@ -139,7 +139,7 @@ CColorStrategyPool::CColorStrategyPool()
 	m_pcLineComment = (CColor_LineComment*)GetStrategyByColor(COLORIDX_COMMENT);	// 行コメント
 	m_pcBlockComment1 = (CColor_BlockComment*)GetStrategyByColor(COLORIDX_BLOCK1);	// ブロックコメント
 	m_pcBlockComment2 = (CColor_BlockComment*)GetStrategyByColor(COLORIDX_BLOCK2);	// ブロックコメント2
-	m_pcCommentCpp = (CColor_Comment_Cpp*)GetStrategyByColor(COLORIDX_COMMENT_CPP);	// C++ コメント
+	m_pcCommentCpp = (CColor_Comment_Cpp*)GetStrategyByColor(COLORIDX_COMMENT2);	// C++ プリプロセッサによるコメントアウトブロック
 	m_pcSingleQuote = (CColor_SingleQuote*)GetStrategyByColor(COLORIDX_SSTRING);	// シングルクォーテーション文字列
 	m_pcDoubleQuote = (CColor_DoubleQuote*)GetStrategyByColor(COLORIDX_WSTRING);	// ダブルクォーテーション文字列
 }
@@ -245,6 +245,7 @@ const SColorAttributeData g_ColorAttributeArr[] =
 	{_T("FN4"), 0},
 	{_T("FN5"), 0},
 	{_T("CMT"), 0},
+	{_T("CM2"), 0},
 	{_T("SQT"), 0},
 	{_T("WQT"), 0},
 	{_T("URL"), 0},

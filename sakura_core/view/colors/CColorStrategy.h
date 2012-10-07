@@ -63,6 +63,7 @@ SAKURA_CORE_API enum EColorIndexType {
 	COLORIDX_SEARCH4,		// 検索文字列4
 	COLORIDX_SEARCH5,		// 検索文字列5
 	COLORIDX_COMMENT,		// 行コメント						//Dec. 4, 2000 shifted by MIK
+	COLORIDX_COMMENT2,		// C++ プリプロセッサによるコメントアウトブロック
 	COLORIDX_SSTRING,		// シングルクォーテーション文字列	//Dec. 4, 2000 shifted by MIK
 	COLORIDX_WSTRING,		// ダブルクォーテーション文字列		//Dec. 4, 2000 shifted by MIK
 	COLORIDX_URL,			// URL								//Dec. 4, 2000 shifted by MIK
@@ -97,7 +98,6 @@ SAKURA_CORE_API enum EColorIndexType {
 	//カラー表示制御用
 	COLORIDX_BLOCK1,		// ブロックコメント1(文字色と背景色は行コメントと同じ)
 	COLORIDX_BLOCK2,		// ブロックコメント2(文字色と背景色は行コメントと同じ)
-	COLORIDX_COMMENT_CPP,	// C++ コメント(文字色と背景色は行コメントと同じ)
 
 	//1000- : カラー表示制御用(正規表現キーワード)
 	COLORIDX_REGEX_FIRST	= 1000,
@@ -133,8 +133,7 @@ inline int ToColorInfoArrIndex(const EColorIndexType& eColorIndex)
 	if(eColorIndex>=0 && eColorIndex<COLORIDX_LAST)
 		return eColorIndex;
 	else if( eColorIndex==COLORIDX_BLOCK1
-	      || eColorIndex==COLORIDX_BLOCK2
-	      || eColorIndex==COLORIDX_COMMENT_CPP )
+	      || eColorIndex==COLORIDX_BLOCK2 )
 		return COLORIDX_COMMENT;
 	else if( IsRegularExpression(eColorIndex) )
 		return ToColorInfoArrIndex_RegularExpression(eColorIndex);

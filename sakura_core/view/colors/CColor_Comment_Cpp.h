@@ -45,7 +45,7 @@ public:
 
 	EColorIndexType GetStrategyColor() const
 	{
-		return COLORIDX_COMMENT_CPP;
+		return COLORIDX_COMMENT2;
 	}
 
 	bool Match_CommentFrom( int pos, const CStringRef& rStr ) const;
