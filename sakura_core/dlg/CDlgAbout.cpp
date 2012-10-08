@@ -146,48 +146,36 @@ BOOL CDlgAbout::OnInitDialog( HWND hwndDlg, WPARAM wParam, LPARAM lParam )
 	//	2004.05.13 Moca バージョン番号は、プロセスごとに取得する
 	//	2010.04.15 Moca コンパイラ情報を分離/WINヘッダ,N_SHAREDATA_VERSION追加
 
-	// 以下の形式で出力
-	//サクラエディタ   Ver. 2.0.0.0
-	//
-	//      Share Ver: 96
-	//      Compile Info: V 1400  WR WIN600
-	//      Last Modified: 1999/9/9 00:00:00
-	//      (あればSKR_PATCH_INFOの文字列がそのまま表示)
 	CNativeT cmemMsg;
-	cmemMsg.AppendString(_T("紅桜   "));
+	cmemMsg.AppendString(_T("紅桜  "));
 
 	DWORD dwVersionMS, dwVersionLS;
 	GetAppVersionInfo( NULL, VS_VERSION_INFO,
 		&dwVersionMS, &dwVersionLS );
-	auto_sprintf( szMsg, _T("Ver. %d.%d.%d.%d\r\n"),
+	auto_sprintf( szMsg, _T("Ver. %d.%d.%d.%d  ( %s  %s )\r\n"),
 		HIWORD( dwVersionMS ),
 		LOWORD( dwVersionMS ),
 		HIWORD( dwVersionLS ),
-		LOWORD( dwVersionLS )
+		LOWORD( dwVersionLS ),
+		_T(__DATE__),
+		_T(__TIME__)
 	);
 	cmemMsg.AppendString( szMsg );
+	cmemMsg.AppendString( _T("\r\n") );
+	cmemMsg.AppendString( _T("    Copyright (C) 2012  by Satoshi Suzuki\r\n") );
+	cmemMsg.AppendString( _T("\r\n") );
+	cmemMsg.AppendString( _T("    Source Repository:  https://bitbucket.org/suzzsegv/benizakura/\r\n") );
 
 	cmemMsg.AppendString( _T("\r\n") );
+	cmemMsg.AppendString( _T("\r\n") );
 
-	cmemMsg.AppendString( _T("Based on Sakura Editor   Ver. 2.0.5.0\r\n") );
+	cmemMsg.AppendString( _T("Based on サクラエディタ   Ver. 2.0.5.0\r\n") );
+	cmemMsg.AppendString( _T("\r\n") );
+	cmemMsg.AppendString( _T("    Copyright (C) 1998-2012  by Norio Nakatani & Collaborators\r\n") );
+	cmemMsg.AppendString( _T("\r\n") );
+	cmemMsg.AppendString( _T("    Project Sakura-Editor:  http://sakura-editor.sourceforge.net/\r\n") );
 
-	auto_sprintf( szMsg,  _T("      Share Ver: %3d\r\n"),
-		N_SHAREDATA_VERSION
-	);
-	cmemMsg.AppendString( szMsg );
-
-	cmemMsg.AppendString( _T("      Compile Info: ") );
-	int Compiler_ver = COMPILER_VER;
-	auto_sprintf( szMsg, _T(COMPILER_TYPE) _T(TARGET_M_SUFFIX) _T(" %d  ")
-		TSTR_TARGET_MODE _T(" WIN%03x\r\n"),
-		Compiler_ver,
-		WINVER
-	);
-	cmemMsg.AppendString( szMsg );
-
-	/* 更新日情報 */
-	auto_sprintf( szMsg,  _T("      Last Modified: %s %s\r\n"), _T(__DATE__), _T(__TIME__) );
-	cmemMsg.AppendString( szMsg );
+	cmemMsg.AppendString( _T("\r\n") );
 
 // パッチ(かリビジョン)の情報をコンパイル時に渡せるようにする
 #ifdef SKR_PATCH_INFO
