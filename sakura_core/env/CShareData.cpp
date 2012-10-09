@@ -215,7 +215,7 @@ bool CShareData::InitShareData()
 //	MS ゴシック標準スタイル10ptに設定
 //		/* LOGFONTの初期化 */
 		memset_raw( &m_pShareData->m_Common.m_sView.m_lf, 0, sizeof( m_pShareData->m_Common.m_sView.m_lf ) );
-		m_pShareData->m_Common.m_sView.m_lf.lfHeight			= DpiPointsToPixels(-10);	// 2009.10.01 ryoji 高DPI対応（ポイント数から算出）
+		m_pShareData->m_Common.m_sView.m_lf.lfHeight			= DpiPointsToPixels(-12);	// 2009.10.01 ryoji 高DPI対応（ポイント数から算出）
 		m_pShareData->m_Common.m_sView.m_lf.lfWidth				= 0;
 		m_pShareData->m_Common.m_sView.m_lf.lfEscapement		= 0;
 		m_pShareData->m_Common.m_sView.m_lf.lfOrientation		= 0;
@@ -269,7 +269,7 @@ bool CShareData::InitShareData()
 		sBackup.m_bBackUpPathAdvanced = false;							/* 20051107 aroka バックアップ先フォルダを詳細設定する */
 		sBackup.m_szBackUpPathAdvanced[0] = _T('\0');					/* 20051107 aroka バックアップを作成するフォルダの詳細設定 */
 
-		m_pShareData->m_Common.m_sGeneral.m_nCaretType = 0;					/* カーソルのタイプ 0=win 1=dos */
+		m_pShareData->m_Common.m_sGeneral.m_nCaretType = 1;					/* カーソルのタイプ 0=win 1=dos */
 		m_pShareData->m_Common.m_sGeneral.m_bIsINSMode = true;				/* 挿入／上書きモード */
 		m_pShareData->m_Common.m_sGeneral.m_bIsFreeCursorMode = false;		/* フリーカーソルモードか */	//Oct. 29, 2000 JEPRO 「なし」に変更
 
@@ -310,14 +310,15 @@ bool CShareData::InitShareData()
 		//	Jan. 30, 2005 genta 関数として独立
 		InitToolButtons( m_pShareData );
 
-		m_pShareData->m_Common.m_sWindow.m_bDispTOOLBAR = TRUE;			/* 次回ウィンドウを開いたときツールバーを表示する */
+		m_pShareData->m_Common.m_sWindow.m_bDispTOOLBAR = FALSE;			/* 次回ウィンドウを開いたときツールバーを表示する */
 		m_pShareData->m_Common.m_sWindow.m_bDispSTATUSBAR = TRUE;			/* 次回ウィンドウを開いたときステータスバーを表示する */
-		m_pShareData->m_Common.m_sWindow.m_bDispFUNCKEYWND = FALSE;		/* 次回ウィンドウを開いたときファンクションキーを表示する */
+		m_pShareData->m_Common.m_sWindow.m_bDispFUNCKEYWND = TRUE;			/* 次回ウィンドウを開いたときファンクションキーを表示する */
 		m_pShareData->m_Common.m_sWindow.m_nFUNCKEYWND_Place = 1;			/* ファンクションキー表示位置／0:上 1:下 */
 		m_pShareData->m_Common.m_sWindow.m_nFUNCKEYWND_GroupNum = 4;			// 2002/11/04 Moca ファンクションキーのグループボタン数
 
-		m_pShareData->m_Common.m_sTabBar.m_bDispTabWnd = FALSE;			//タブウインドウ表示	//@@@ 2003.05.31 MIK
-		m_pShareData->m_Common.m_sTabBar.m_bDispTabWndMultiWin = FALSE;	//タブウインドウ表示	//@@@ 2003.05.31 MIK
+		m_pShareData->m_Common.m_sTabBar.m_bDispTabWnd = TRUE;			//タブウインドウ表示
+		m_pShareData->m_Common.m_sTabBar.m_bDispTabWndMultiWin = FALSE;	// TODO: タブウインドウ: ウィンドウをまとめてグループ化する
+																		// ... TRUE/FALSE が逆のようなので、直したほうがよい。
 		wcscpy(	//@@@ 2003.06.13 MIK
 			m_pShareData->m_Common.m_sTabBar.m_szTabWndCaption,
 			L"${w?【Grep】$h$:【アウトプット】$:$f$}${U?(更新)$}${R?(ビューモード)$:(上書き禁止)$}${M?【キーマクロの記録中】$}"
@@ -325,7 +326,7 @@ bool CShareData::InitShareData()
 		m_pShareData->m_Common.m_sTabBar.m_bSameTabWidth = FALSE;			//タブを等幅にする			//@@@ 2006.01.28 ryoji
 		m_pShareData->m_Common.m_sTabBar.m_bDispTabIcon = FALSE;			//タブにアイコンを表示する	//@@@ 2006.01.28 ryoji
 		m_pShareData->m_Common.m_sTabBar.m_bSortTabList = TRUE;			//タブ一覧をソートする		//@@@ 2006.05.10 ryoji
-		m_pShareData->m_Common.m_sTabBar.m_bTab_RetainEmptyWin = TRUE;	// 最後のファイルが閉じられたとき(無題)を残す	// 2007.02.11 genta
+		m_pShareData->m_Common.m_sTabBar.m_bTab_RetainEmptyWin = FALSE;	// 最後のファイルが閉じられたとき(無題)を残す	// 2007.02.11 genta
 		m_pShareData->m_Common.m_sTabBar.m_bTab_CloseOneWin = FALSE;	// タブモードでもウィンドウの閉じるボタンで現在のファイルのみ閉じる	// 2007.02.11 genta
 		m_pShareData->m_Common.m_sTabBar.m_bTab_ListFull = FALSE;			//タブ一覧をフルパス表示する	//@@@ 2007.02.28 ryoji
 		m_pShareData->m_Common.m_sTabBar.m_bChgWndByWheel = FALSE;		//マウスホイールでウィンドウ切替	//@@@ 2006.03.26 ryoji
@@ -334,8 +335,8 @@ bool CShareData::InitShareData()
 		m_pShareData->m_Common.m_sTabBar.m_tabFont = lfIconTitle;
 		m_pShareData->m_Common.m_sTabBar.m_tabFontPs = 0;
 
-		m_pShareData->m_Common.m_sWindow.m_bSplitterWndHScroll = TRUE;	// 2001/06/20 asa-o 分割ウィンドウの水平スクロールの同期をとる
-		m_pShareData->m_Common.m_sWindow.m_bSplitterWndVScroll = TRUE;	// 2001/06/20 asa-o 分割ウィンドウの垂直スクロールの同期をとる
+		m_pShareData->m_Common.m_sWindow.m_bSplitterWndHScroll = FALSE;	// 2001/06/20 asa-o 分割ウィンドウの水平スクロールの同期をとる
+		m_pShareData->m_Common.m_sWindow.m_bSplitterWndVScroll = FALSE;	// 2001/06/20 asa-o 分割ウィンドウの垂直スクロールの同期をとる
 
 		/* カスタムメニュー情報 */
 		auto_sprintf( m_pShareData->m_Common.m_sCustomMenu.m_szCustMenuNameArr[0], LTEXT("右クリックメニュー") );
@@ -433,7 +434,7 @@ bool CShareData::InitShareData()
 		m_pShareData->m_Common.m_sGeneral.m_bNoCaretMoveByActivation = FALSE;	/* マウスクリックにてアクティベートされた時はカーソル位置を移動しない 2007.10.02 nasukoji (add by genta) */
 
 		m_pShareData->m_Common.m_sHelper.m_bHokanKey_RETURN	= TRUE;			/* VK_RETURN 補完決定キーが有効/無効 */
-		m_pShareData->m_Common.m_sHelper.m_bHokanKey_TAB		= FALSE;		/* VK_TAB   補完決定キーが有効/無効 */
+		m_pShareData->m_Common.m_sHelper.m_bHokanKey_TAB	= TRUE;			/* VK_TAB   補完決定キーが有効/無効 */
 		m_pShareData->m_Common.m_sHelper.m_bHokanKey_RIGHT	= TRUE;			/* VK_RIGHT 補完決定キーが有効/無効 */
 		m_pShareData->m_Common.m_sHelper.m_bHokanKey_SPACE	= FALSE;		/* VK_SPACE 補完決定キーが有効/無効 */
 
