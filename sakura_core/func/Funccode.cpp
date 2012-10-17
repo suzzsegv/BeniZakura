@@ -298,6 +298,7 @@ const int nFincList_Convert_Num = _countof( pnFuncList_Convert );	//Oct. 16, 200
 /* 検索系 */
 const EFunctionCode pnFuncList_Search[] = {	//Oct. 16, 2000 JEPRO 変数名変更(List4→List_Search)
 	F_SEARCH_WORD		,	//現在位置の単語で検索
+	F_SEARCH_WORDEND	,	//現在位置から単語末尾までの文字列で検索
 	F_SEARCH_DIALOG		,	//検索(単語検索ダイアログ)
 	F_SEARCH_BOX		,	//検索(ボックス)
 	F_SEARCH_NEXT		,	//次を検索	//Sept. 16, 2000 JEPRO "次"を"前"の前に移動

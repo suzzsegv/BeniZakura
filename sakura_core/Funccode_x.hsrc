@@ -276,6 +276,7 @@ F_UUDECODE				= 30880,	//uudecodeして保存					なし
 
 // 検索系
 F_SEARCH_WORD		= 30900		//現在位置の単語で検索
+F_SEARCH_WORDEND	= 30912		//現在位置から単語末尾までの文字列で検索
 F_SEARCH_DIALOG		= 30901,	//検索(単語検索ダイアログ)						なし
 F_SEARCH_NEXT		= 30902,	//次を検索										HWND hwnd, const WCHAR* text
 F_SEARCH_PREV		= 30903,	//前を検索										HWND hwnd

@@ -2770,6 +2770,7 @@ END
 STRINGTABLE DISCARDABLE 
 BEGIN
     F_SEARCH_WORD           "現在位置の単語で検索"
+    F_SEARCH_WORDEND        "現在位置～単語末尾の文字で検索"
     F_SEARCH_DIALOG         "検索..."
     F_SEARCH_NEXT           "次を検索"
     F_SEARCH_PREV           "前を検索"

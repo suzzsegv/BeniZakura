@@ -790,7 +790,7 @@ bool CShareData::InitKeyAssign(DLLSHAREDATA* pShareData)
 		{ 'I',		_T("I"),			F_0,			F_0,				F_0,					F_0,				F_0,					F_0,				F_0,					F_0 },
 		{ 'J',		_T("J"),			F_0,			F_0,				F_JUMP_DIALOG,			F_0,				F_0,					F_0,				F_0,					F_0 },
 		{ 'K',		_T("K"),			F_0,			F_0,				F_BRACKETPAIR,			F_LineDeleteToEnd,	F_0,					F_0,				F_0,					F_0 },
-		{ 'L',		_T("L"),			F_0,			F_0,				F_SEARCH_WORD,			F_EXECKEYMACRO,		F_LTRIM,				F_0,				F_TOLOWER,				F_TOUPPER },
+		{ 'L',		_T("L"),			F_0,			F_0,				F_SEARCH_WORD,			F_EXECKEYMACRO,		F_SEARCH_WORDEND,		F_0,				F_TOLOWER,				F_TOUPPER },
 		{ 'M',		_T("M"),			F_0,			F_0,				F_BOOKMARK_SET,			F_RECKEYMACRO,		F_BOOKMARK_VIEW,		F_0,				F_0,					F_0 },
 		{ 'N',		_T("N"),			F_0,			F_0,				F_SEARCH_NEXT,			F_0,				F_JUMPHIST_NEXT,		F_0,				F_0,					F_0 },
 		{ 'O',		_T("O"),			F_0,			F_0,				F_OUTLINE,				F_0,				F_0,					F_0,				F_0,					F_0 },

@@ -529,6 +529,9 @@ BOOL CViewCommander::HandleCommand(
 	case F_SEARCH_WORD:
 		Command_SearchWord();
 		break;
+	case F_SEARCH_WORDEND:
+		Command_SearchWordend();
+		break;
 	case F_SEARCH_DIALOG:		Command_SEARCH_DIALOG();break;												//検索(単語検索ダイアログ)
 	case F_SEARCH_BOX:			Command_SEARCH_BOX();break;		// Jan. 13, 2003 MIK					//検索(ボックス)	// 2006.06.04 yukihane Command_SEARCH_BOX()
 	case F_SEARCH_NEXT:			Command_SEARCH_NEXT( true, bRedraw, (HWND)lparam1, (const WCHAR*)lparam2 );break;	//次を検索
@@ -2303,26 +2306,26 @@ bool CViewCommander::Command_SELECTWORD( void )
  */
 bool CViewCommander::Command_ExpandSelectedTextToNextWord( void )
 {
-	if( m_pCommanderView->GetSelectionInfo().IsTextSelected() == false ){
-		return false;
-	}
-
 	CLayoutRange sRange;
 	CLayoutPoint ptCaretFrom;
-	CLayoutRange& sSelect = m_pCommanderView->GetSelectionInfo().m_sSelect;
 
-	if( sSelect.GetFrom().y != sSelect.GetTo().y ){
-		return false;
+	if( m_pCommanderView->GetSelectionInfo().IsTextSelected() == true ){
+		CLayoutRange& sSelect = m_pCommanderView->GetSelectionInfo().m_sSelect;
+
+		if( sSelect.GetFrom().y != sSelect.GetTo().y ){
+			return true;													/* 複数行選択中の場合には何もせず */
+		}
+
+		ptCaretFrom = sSelect.GetFrom();									/* 現在の選択開始位置を保存 */
+		GetCaret().MoveCursor( sSelect.GetTo(), TRUE );						/* カーソルを選択終了位置に変更 */
+		m_pCommanderView->GetSelectionInfo().DisableSelectArea( TRUE );		/* 現在の選択範囲を非選択状態に戻す */
+	}else{
+		ptCaretFrom = GetCaret().GetCaretLayoutPos();						/* 現在のカーソル位置を保存 */
 	}
-
-	ptCaretFrom = sSelect.GetFrom();									/* 現在の選択開始位置を保存 */
-	GetCaret().MoveCursor( sSelect.GetTo(), TRUE );						/* カーソルを選択終了位置に変更 */
-
-	m_pCommanderView->GetSelectionInfo().DisableSelectArea( TRUE );		/* 現在の選択範囲を非選択状態に戻す */
 
 	const CLayout*	pcLayout = GetDocument()->m_cLayoutMgr.SearchLineByLayoutY( GetCaret().GetCaretLayoutPos().GetY2() );
 	if( NULL == pcLayout ){
-		return false;
+		return true;
 	}
 
 	/* 指定された桁に対応する行のデータ内の位置を調べる */
@@ -2330,12 +2333,12 @@ bool CViewCommander::Command_ExpandSelectedTextToNextWord( void )
 
 	/* 現在位置の単語の範囲を調べる */
 	if( GetDocument()->m_cLayoutMgr.WhereCurrentWord( GetCaret().GetCaretLayoutPos().GetY2(), nIdx, &sRange, NULL, NULL ) == false ){
-		/* 単語選択に失敗した場合には、元の選択開始位置から単語選択をやり直す */
+		/* 単語選択に失敗 */
 		GetCaret().MoveCursor( ptCaretFrom, TRUE );
-		return CViewCommander::Command_SELECTWORD();
+		return false;
 	}
 
-	/* 選択開始位置を元に戻す */
+	/* 選択開始位置を元の位置（選択開始位置 or カーソル位置) に戻す */
 	sRange.SetFrom( ptCaretFrom );
 
 	/* 選択範囲の変更 */
@@ -3094,9 +3097,24 @@ void CViewCommander::Command_CHGMOD_INS( void )
 void CViewCommander::Command_SearchWord( void )
 {
 	if( m_pCommanderView->GetSelectionInfo().IsTextSelected() ){
-		Command_ExpandSelectedTextToNextWord();
+		if( Command_ExpandSelectedTextToNextWord() == false ){
+			Command_ExpandSelectedTextToNextWord();				/* 失敗したらカーソル位置から再選択する */
+		}
 	}else{
 		Command_SELECTWORD();
+	}
+	Command_SEARCH_CLEARMARK();
+}
+
+
+
+/*!
+ * 現在位置から単語末尾までの文字列で検索
+ */
+void CViewCommander::Command_SearchWordend( void )
+{
+	if( Command_ExpandSelectedTextToNextWord() == false ){
+		Command_ExpandSelectedTextToNextWord();					/* 失敗したらカーソル位置から再選択する */
 	}
 	Command_SEARCH_CLEARMARK();
 }

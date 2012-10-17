@@ -254,6 +254,7 @@ public:
 
 	/* 検索系 */
 	void Command_SearchWord( void );					/* 現在位置の単語で検索 */
+	void Command_SearchWordend( void );					/* 現在位置から単語末尾までの文字列で検索 */
 	void Command_SEARCH_BOX( void );					/* 検索(ボックス) */	// 2006.06.04 yukihane
 	void Command_SEARCH_DIALOG( void );					/* 検索(単語検索ダイアログ) */
 	void Command_SEARCH_NEXT( bool, bool, HWND, const WCHAR* );/* 次を検索 */
