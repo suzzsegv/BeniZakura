@@ -527,8 +527,7 @@ BOOL CViewCommander::HandleCommand(
 
 	/* 検索系 */
 	case F_SEARCH_WORD:
-		Command_RED2_SELECTWORD( );
-		Command_SEARCH_CLEARMARK( );
+		Command_SearchWord();
 		break;
 	case F_SEARCH_DIALOG:		Command_SEARCH_DIALOG();break;												//検索(単語検索ダイアログ)
 	case F_SEARCH_BOX:			Command_SEARCH_BOX();break;		// Jan. 13, 2003 MIK					//検索(ボックス)	// 2006.06.04 yukihane Command_SEARCH_BOX()
@@ -2299,11 +2298,13 @@ bool CViewCommander::Command_SELECTWORD( void )
 
 
 
-/* 現在位置の単語選択 */
-bool CViewCommander::Command_RED2_SELECTWORD( void )
+/*!
+ * 選択範囲を次の単語まで広げる
+ */
+bool CViewCommander::Command_ExpandSelectedTextToNextWord( void )
 {
 	if( m_pCommanderView->GetSelectionInfo().IsTextSelected() == false ){
-		return CViewCommander::Command_SELECTWORD();	/* 範囲選択中ではない場合は Sakura と同様の動作 */
+		return false;
 	}
 
 	CLayoutRange sRange;
@@ -2311,7 +2312,7 @@ bool CViewCommander::Command_RED2_SELECTWORD( void )
 	CLayoutRange& sSelect = m_pCommanderView->GetSelectionInfo().m_sSelect;
 
 	if( sSelect.GetFrom().y != sSelect.GetTo().y ){
-		return CViewCommander::Command_SELECTWORD();	/* 複数の行が選択されている場合は Sakura と同様の動作 */
+		return false;
 	}
 
 	ptCaretFrom = sSelect.GetFrom();									/* 現在の選択開始位置を保存 */
@@ -3084,6 +3085,22 @@ void CViewCommander::Command_CHGMOD_INS( void )
 	/* キャレットの行桁位置を表示する */
 	GetCaret().ShowCaretPosInfo();
 }
+
+
+
+/*!
+ * 現在位置の単語で検索
+ */
+void CViewCommander::Command_SearchWord( void )
+{
+	if( m_pCommanderView->GetSelectionInfo().IsTextSelected() ){
+		Command_ExpandSelectedTextToNextWord();
+	}else{
+		Command_SELECTWORD();
+	}
+	Command_SEARCH_CLEARMARK();
+}
+
 
 
 /*!

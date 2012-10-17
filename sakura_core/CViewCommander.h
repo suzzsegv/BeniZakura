@@ -188,7 +188,7 @@ public:
 
 	/* 選択系 */
 	bool Command_SELECTWORD( void );		/* 現在位置の単語選択 */
-	bool Command_RED2_SELECTWORD( void );	/* RED2 互換の単語選択 */
+	bool Command_ExpandSelectedTextToNextWord( void );	/* 選択範囲を次の単語まで広げる */
 	void Command_SELECTALL( void );			/* すべて選択 */
 	void Command_SELECTLINE( int lparam );	/* 1行選択 */	// 2007.10.13 nasukoji
 	void Command_BEGIN_SELECT( void );		/* 範囲選択開始 */
@@ -253,6 +253,7 @@ public:
 	void Command_UUDECODE( void );				/* uudecodeして保存 */	//Oct. 17, 2000 jepro 説明を「選択部分をUUENCODEデコード」から変更
 
 	/* 検索系 */
+	void Command_SearchWord( void );					/* 現在位置の単語で検索 */
 	void Command_SEARCH_BOX( void );					/* 検索(ボックス) */	// 2006.06.04 yukihane
 	void Command_SEARCH_DIALOG( void );					/* 検索(単語検索ダイアログ) */
 	void Command_SEARCH_NEXT( bool, bool, HWND, const WCHAR* );/* 次を検索 */
