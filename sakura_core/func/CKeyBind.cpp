@@ -756,6 +756,7 @@ bool CShareData::InitKeyAssign(DLLSHAREDATA* pShareData)
 		{ VK_DELETE,_T("Del"),			F_DELETE,		F_WordDelete,		F_WordDelete,			F_0,				F_0,					F_0,				F_0,					F_0 },
 		{ VK_HOME,	_T("Home"),			F_NEXTWINDOW,	F_PREVWINDOW,		F_PREVWINDOW,			F_GOFILETOP_SEL,	F_0,					F_0,				F_0,					F_0 },
 		{ VK_END,	_T("End(Help)"),	F_PREVWINDOW,	F_NEXTWINDOW,		F_NEXTWINDOW,			F_GOFILEEND_SEL,	F_0,					F_0,				F_0,					F_0 },
+		{ VK_PAUSE,	_T("Pause"),		F_NEXTWINDOW,	F_PREVWINDOW,		F_PREVWINDOW,			F_0,				F_0,					F_0,				F_0,					F_0 },
 		{ VK_LEFT,	_T("Å©"),			F_LEFT,			F_GOLINETOP,		F_LEFT_SEL,				F_WORDLEFT_SEL,		F_BEGIN_BOX,			F_0,				F_0,					F_0 },
 		{ VK_UP,	_T("Å™"),			F_UP,			F_UP_SEL,			F_UP_SEL,				F_UP2_SEL,			F_BEGIN_BOX,			F_0,				F_0,					F_MAXIMIZE_V },
 		{ VK_RIGHT,	_T("Å®"),			F_RIGHT,		F_GOLINEEND,		F_RIGHT_SEL,			F_WORDRIGHT_SEL,	F_BEGIN_BOX,			F_0,				F_0,					F_MAXIMIZE_H },
