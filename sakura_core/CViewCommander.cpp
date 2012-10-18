@@ -3300,15 +3300,6 @@ end_of_func:;
 			m_pCommanderView->SendStatusMessage(_T("▲末尾から再検索しました"));
 	}else{
 		m_pCommanderView->SendStatusMessage(_T("△見つかりませんでした"));
-//	if( !bFound ){
-// To Here 2002.01.26 hor
-
-		/* 検索／置換  見つからないときメッセージを表示 */
-		AlertNotFound(
-			hwndParent,
-			_T("後方(↑) に文字列 '%ls' が１つも見つかりません。"),	//Jan. 25, 2001 jepro メッセージを若干変更
-			m_pCommanderView->m_szCurSrchKey
-		);
 	}
 	return;
 }
@@ -3527,19 +3518,6 @@ end_of_func:;
 		GetCaret().ShowEditCaret();	// 2002/04/18 YAZAKI
 		GetCaret().ShowCaretPosInfo();	// 2002/04/18 YAZAKI
 		m_pCommanderView->SendStatusMessage(_T("▽見つかりませんでした"));
-// To Here 2002.01.26 hor
-
-		/* 検索／置換  見つからないときメッセージを表示 */
-		if( NULL == pszNotFoundMessage ){
-			AlertNotFound(
-				hwndParent,
-				_T("前方(↓) に文字列 '%ls' が１つも見つかりません。"),
-				m_pCommanderView->m_szCurSrchKey
-			);
-		}
-		else{
-			AlertNotFound(hwndParent, _T("%ls"),pszNotFoundMessage);
-		}
 	}
 }
 
