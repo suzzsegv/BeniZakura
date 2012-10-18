@@ -499,7 +499,7 @@ void CCaret::ShowEditCaret()
 	// カーソルのタイプ = dos
 	else if( 1 == pCommon->m_sGeneral.GetCaretType() ){
 		if( m_pEditView->IsInsMode() /* Oct. 2, 2005 genta */ ){
-			nCaretHeight = GetHankakuHeight() / 2;			/* キャレットの高さ */
+			nCaretHeight = ((GetHankakuHeight() * 10) / 26);	/* キャレットの高さ */
 		}
 		else{
 			nCaretHeight = GetHankakuHeight();				/* キャレットの高さ */
