@@ -394,6 +394,7 @@ F_WINLIST			= 31336,	//ウィンドウ一覧							なし
 F_MAXIMIZE_V		= 31350,	//縦方向に最大化							なし
 F_MINIMIZE_ALL		= 31351,	//すべて最小化								なし
 F_MAXIMIZE_H		= 31352,	//横方向に最大化							なし
+F_MAXIMIZE			= 31353,	//ウィンドウを最大化						なし
 F_REDRAW			= 31360,	//再描画									なし
 F_WIN_OUTPUT		= 31370,	//アウトプットウィンドウ表示				なし
 F_GROUPCLOSE		= 31380,	// グループを閉じる							なし

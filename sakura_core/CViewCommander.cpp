@@ -703,6 +703,11 @@ BOOL CViewCommander::HandleCommand(
 	case F_CASCADE:			Command_CASCADE();break;		//重ねて表示
 	case F_TILE_V:			Command_TILE_V();break;			//上下に並べて表示
 	case F_TILE_H:			Command_TILE_H();break;			//左右に並べて表示
+
+	case F_MAXIMIZE:										// ウィンドウを最大化
+		Command_WindowMaximize();
+		break;
+
 	case F_MAXIMIZE_V:		Command_MAXIMIZE_V();break;		//縦方向に最大化
 	case F_MAXIMIZE_H:		Command_MAXIMIZE_H();break;		//横方向に最大化 //2001.02.10 by MIK
 	case F_MINIMIZE_ALL:	Command_MINIMIZE_ALL();break;	/* すべて最小化 */	//	Sept. 17, 2000 jepro 説明の「全て」を「すべて」に統一
@@ -6396,6 +6401,23 @@ void CViewCommander::Command_MAXIMIZE_V( void )
 		SWP_NOOWNERZORDER | SWP_NOZORDER
 	);
 	return;
+}
+
+
+
+
+/*!
+ * ウィンドウを最大化
+ */
+void CViewCommander::Command_WindowMaximize( void )
+{
+	HWND	hWnd = GetMainWindow();
+
+	if ( ::IsZoomed( hWnd ) ){
+		::ShowWindow( hWnd, SW_RESTORE );
+	}else{
+		::ShowWindow( hWnd, SW_MAXIMIZE );
+	}
 }
 
 
