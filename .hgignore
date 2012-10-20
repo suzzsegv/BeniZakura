@@ -1,0 +1,9 @@
+syntax: glob
+*.orig
+Debug*
+Release*
+*.vcproj.*
+*.exe
+*.ncb
+*.pdb
+*.suo
