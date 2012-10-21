@@ -121,6 +121,8 @@ void CShareData::InitKeyword(DLLSHAREDATA* pShareData)
 	PopulateKeyword( L"Visual Basic",	false,	VB );			/* セット13の追加 */	//Jul. 10, 2001 JEPRO
 	PopulateKeyword( L"Visual Basic2",	false,	VB2 );			/* セット14の追加 */	//Jul. 10, 2001 JEPRO
 	PopulateKeyword( L"リッチテキスト",	true,	RTF );			/* セット15の追加 */	//Jul. 10, 2001 JEPRO
+	PopulateKeyword( L"C/C++ Preprocessor",	true,	CPP2 );
+	PopulateKeyword( L"C/C++ Data Type",	true,	CPP3 );
 
 #undef PopulateKeyword
 }
