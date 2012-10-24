@@ -1139,7 +1139,7 @@ LRESULT CEditWnd::DispatchEvent(
 			nAssignedKeyNum = CKeyBind::GetKeyStrList(
 				G_AppInstance(),
 				m_pShareData->m_Common.m_sKeyBind.m_nKeyNameArrNum,
-				(KEYDATA*)m_pShareData->m_Common.m_sKeyBind.m_pKeyNameArr,
+				(KeyData*)m_pShareData->m_Common.m_sKeyBind.m_pKeyNameArr,
 				&ppcAssignedKeyList,
 				uItem
 			);

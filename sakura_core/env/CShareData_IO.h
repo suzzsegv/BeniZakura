@@ -30,7 +30,7 @@ class CDataProfile;
 class CMenuDrawer;
 struct CommonSetting_CustomMenu; // defined CommonSetting.h
 struct CommonSetting_MainMenu; // defined CommonSetting.h
-struct KEYDATA; // defined CKeyBind.h
+struct KeyData; // defined CKeyBind.h
 // struct ColorInfo; // defined doc/CDocTypeSetting.h
 
 // 2008.XX.XX kobake CShareDataÇ©ÇÁï™ó£
@@ -71,7 +71,7 @@ public:
 
 public:
 	static void IO_CustMenu( CDataProfile&, CommonSetting_CustomMenu&, bool );
-	static void IO_KeyBind( CDataProfile&, int, KEYDATA[], bool);
+	static void IO_KeyBind( CDataProfile&, int, KeyData[], bool);
 	static void IO_MainMenu( CDataProfile&, CommonSetting_MainMenu&, bool );		// 2010/5/15 Uchi
 	static void IO_ColorSet( CDataProfile* , const WCHAR* , ColorInfo* );	/* êFê›íË I/O */ // Feb. 12, 2006 D.S.Koba
 };

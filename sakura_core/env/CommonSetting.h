@@ -374,17 +374,13 @@ struct CommonSetting_Search
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 //                       キー割り当て                          //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//共有メモリ内構造体
+#define MAX_KEY_BIND 100
+
 struct CommonSetting_KeyBind{
-	/* キー割り当て */
-	int					m_nKeyNameArrNum;			/* キー割り当て表の有効データ数 */
-	KEYDATA				m_pKeyNameArr[100];			/* キー割り当て表 */
-	BOOL				m_bCreateAccelTblEachWin;	// ウィンドウ毎にアクセラレータテーブルを作成する(Wine用)	// 2009.08.15 nasukoji
+	int			m_nKeyNameArrNum;				// キー割り当て表の有効データ数
+	KeyData		m_pKeyNameArr[MAX_KEY_BIND];	// キー割り当て表
+	BOOL		m_bCreateAccelTblEachWin;		// ウィンドウ毎にアクセラレータテーブルを作成する(Wine用)
 };
-
-
-
-
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 //                     カスタムメニュー                        //

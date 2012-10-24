@@ -298,7 +298,7 @@ INT_PTR CPropKeybind::DispatchEvent(
 				/* 機能に対応するキー名の取得(複数) */
 				CNativeT**	ppcAssignedKeyList;
 				nAssignedKeyNum = CKeyBind::GetKeyStrList(	/* 機能に対応するキー名の取得(複数) */
-					G_AppInstance(), m_Common.m_sKeyBind.m_nKeyNameArrNum, (KEYDATA*)m_Common.m_sKeyBind.m_pKeyNameArr,
+					G_AppInstance(), m_Common.m_sKeyBind.m_nKeyNameArrNum, (KeyData*)m_Common.m_sKeyBind.m_pKeyNameArr,
 					&ppcAssignedKeyList, nFuncCode,
 					FALSE	// 2007.02.22 ryoji デフォルト機能は取得しない
 				);	

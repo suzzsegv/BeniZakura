@@ -815,7 +815,7 @@ bool CImpExpKeybind::Import( const wstring& sFileName, wstring& sErrMsg )
 {
 	const tstring	strPath = to_tchar( sFileName.c_str() );
 	const int KEYNAME_SIZE = _countof(m_Common.m_sKeyBind.m_pKeyNameArr);
-	KEYDATA		pKeyNameArr[KEYNAME_SIZE];				/* キー割り当て表 */
+	KeyData		pKeyNameArr[KEYNAME_SIZE];				/* キー割り当て表 */
 
 	//オープン
 	CDataProfile in;

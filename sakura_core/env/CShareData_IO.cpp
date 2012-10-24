@@ -919,13 +919,12 @@ void CShareData_IO::ShareData_IO_KeyBind( CDataProfile& cProfile )
 	@date 2005-04-07 D.S.Koba ShareData_IO_2‚©‚ç•ª—£B
 	@date 2010.08.21 Moca ShareData_IO_KeyBind‚ðIO_KeyBind‚É–¼Ì•ÏX
 */
-void CShareData_IO::IO_KeyBind( CDataProfile& cProfile, int nSize, KEYDATA ppKeyNameArr[], bool bOutCmdName)
+void CShareData_IO::IO_KeyBind( CDataProfile& cProfile, int nSize, KeyData ppKeyNameArr[], bool bOutCmdName)
 {
 	const WCHAR*	szSecName = L"KeyBind";
 	int		i;
 	WCHAR	szKeyName[64];
 	WCHAR	szKeyData[1024];
-//	int		nSize = m_pShareData->m_nKeyNameArrNum;
 	WCHAR	szWork[MAX_PLUGIN_ID+20+4];
 	bool	bOldVer = false;
 
@@ -939,9 +938,7 @@ void CShareData_IO::IO_KeyBind( CDataProfile& cProfile, int nSize, KEYDATA ppKey
 	}
 
 	for( i = 0; i < nSize; ++i ){
-		// 2005.04.07 D.S.Koba
-		//KEYDATA& keydata = m_pShareData->m_pKeyNameArr[i];
-		KEYDATA& keydata = ppKeyNameArr[i];
+		KeyData& keydata = ppKeyNameArr[i];
 		
 		if( cProfile.IsReadingMode() ){
 			if (bOldVer) {
