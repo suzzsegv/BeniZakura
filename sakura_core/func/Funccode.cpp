@@ -944,7 +944,7 @@ bool IsFuncEnable( CEditDoc* pcEditDoc, DLLSHAREDATA* pShareData, EFunctionCode 
 	switch( nId ){
 	case F_RECKEYMACRO:	/* キーマクロの記録開始／終了 */
 		if( pShareData->m_sFlags.m_bRecordingKeyMacro ){	/* キーボードマクロの記録中 */
-			if( pShareData->m_sFlags.m_hwndRecordingKeyMacro == CEditWnd::Instance()->GetHwnd() ){	/* キーボードマクロを記録中のウィンドウ */
+			if( pShareData->m_sFlags.m_hwndRecordingKeyMacro == CEditWnd::getInstance()->GetHwnd() ){	/* キーボードマクロを記録中のウィンドウ */
 				return true;
 			}else{
 				return false;
@@ -957,17 +957,17 @@ bool IsFuncEnable( CEditDoc* pcEditDoc, DLLSHAREDATA* pShareData, EFunctionCode 
 		//	キーマクロエンジン以外のマクロを読み込んでいるときは
 		//	実行はできるが保存はできない．
 		if( pShareData->m_sFlags.m_bRecordingKeyMacro ){	/* キーボードマクロの記録中 */
-			if( pShareData->m_sFlags.m_hwndRecordingKeyMacro == CEditWnd::Instance()->GetHwnd() ){	/* キーボードマクロを記録中のウィンドウ */
+			if( pShareData->m_sFlags.m_hwndRecordingKeyMacro == CEditWnd::getInstance()->GetHwnd() ){	/* キーボードマクロを記録中のウィンドウ */
 				return true;
 			}else{
 				return false;
 			}
 		}else{
-			return CEditApp::Instance()->m_pcSMacroMgr->IsSaveOk();
+			return CEditApp::getInstance()->m_pcSMacroMgr->IsSaveOk();
 		}
 	case F_EXECKEYMACRO:	/* キーマクロの実行 */
 		if( pShareData->m_sFlags.m_bRecordingKeyMacro ){	/* キーボードマクロの記録中 */
-			if( pShareData->m_sFlags.m_hwndRecordingKeyMacro == CEditWnd::Instance()->GetHwnd() ){	/* キーボードマクロを記録中のウィンドウ */
+			if( pShareData->m_sFlags.m_hwndRecordingKeyMacro == CEditWnd::getInstance()->GetHwnd() ){	/* キーボードマクロを記録中のウィンドウ */
 				return true;
 			}else{
 				return false;
@@ -982,7 +982,7 @@ bool IsFuncEnable( CEditDoc* pcEditDoc, DLLSHAREDATA* pShareData, EFunctionCode 
 		}
 	case F_LOADKEYMACRO:	/* キーマクロの読み込み */
 		if( pShareData->m_sFlags.m_bRecordingKeyMacro ){	/* キーボードマクロの記録中 */
-			if( pShareData->m_sFlags.m_hwndRecordingKeyMacro == CEditWnd::Instance()->GetHwnd() ){	/* キーボードマクロを記録中のウィンドウ */
+			if( pShareData->m_sFlags.m_hwndRecordingKeyMacro == CEditWnd::getInstance()->GetHwnd() ){	/* キーボードマクロを記録中のウィンドウ */
 				return true;
 			}else{
 				return false;
@@ -1015,7 +1015,7 @@ bool IsFuncEnable( CEditDoc* pcEditDoc, DLLSHAREDATA* pShareData, EFunctionCode 
 	case F_DIFF_NEXT:	/* 次の差分へ */	//@@@ 2002.05.25 MIK
 	case F_DIFF_PREV:	/* 前の差分へ */	//@@@ 2002.05.25 MIK
 	case F_DIFF_RESET:	/* 差分の全解除 */	//@@@ 2002.05.25 MIK
-		if( !CDiffManager::Instance()->IsDiffUse() ) return false;
+		if( !CDiffManager::getInstance()->IsDiffUse() ) return false;
 		return true;
 	case F_DIFF_DIALOG:	/* DIFF差分表示 */	//@@@ 2002.05.25 MIK
 		//if( pcEditDoc->IsModified() ) return false;
@@ -1053,7 +1053,7 @@ bool IsFuncEnable( CEditDoc* pcEditDoc, DLLSHAREDATA* pShareData, EFunctionCode 
 		}
 
 	case F_FILESAVE:	/* 上書き保存 */
-		if( !CAppMode::Instance()->IsViewMode() ){	/* ビューモード */
+		if( !CAppMode::getInstance()->IsViewMode() ){	/* ビューモード */
 			if( pcEditDoc->m_cDocEditor.IsModified() ){	/* 変更フラグ */
 				return true;
 			}else{
@@ -1139,7 +1139,7 @@ bool IsFuncEnable( CEditDoc* pcEditDoc, DLLSHAREDATA* pShareData, EFunctionCode 
 	case F_TAGJUMP_KEYWORD:	//キーワードを指定してダイレクトタグジャンプ	//@@@ 2005.03.31 MIK
 	//	2003.05.12 MIK タグファイル作成先を選べるようにしたので、常に作成可能とする
 //	case F_TAGS_MAKE:	//タグファイルの作成	//@@@ 2003.04.13 MIK
-		if( false == CEditApp::Instance()->m_pcGrepAgent->m_bGrepMode
+		if( false == CEditApp::getInstance()->m_pcGrepAgent->m_bGrepMode
 			&& pcEditDoc->m_cDocFile.GetFilePathClass().IsValidPath() ){
 			return true;
 		}else{
@@ -1180,7 +1180,7 @@ bool IsFuncChecked( CEditDoc* pcEditDoc, DLLSHAREDATA*	pShareData, EFunctionCode
 {
 	CEditWnd* pCEditWnd;
 	// Modified by KEITA for WIN64 2003.9.6
-	pCEditWnd = ( CEditWnd* )::GetWindowLongPtr( CEditWnd::Instance()->GetHwnd(), GWLP_USERDATA );
+	pCEditWnd = ( CEditWnd* )::GetWindowLongPtr( CEditWnd::getInstance()->GetHwnd(), GWLP_USERDATA );
 //@@@ 2002.01.14 YAZAKI 印刷プレビューをCPrintPreviewに独立させたことにより、プレビュー判定削除
 	ECodeType eDocCode = pcEditDoc->GetDocumentEncoding();
 	switch( nId ){
@@ -1194,7 +1194,7 @@ bool IsFuncChecked( CEditDoc* pcEditDoc, DLLSHAREDATA*	pShareData, EFunctionCode
 	case F_FILE_REOPEN_UTF7:		return CODE_UTF7 == eDocCode;
 	case F_RECKEYMACRO:	/* キーマクロの記録開始／終了 */
 		if( pShareData->m_sFlags.m_bRecordingKeyMacro ){	/* キーボードマクロの記録中 */
-			if( pShareData->m_sFlags.m_hwndRecordingKeyMacro == CEditWnd::Instance()->GetHwnd() ){	/* キーボードマクロを記録中のウィンドウ */
+			if( pShareData->m_sFlags.m_hwndRecordingKeyMacro == CEditWnd::getInstance()->GetHwnd() ){	/* キーボードマクロを記録中のウィンドウ */
 				return true;
 			}else{
 				return false;
@@ -1215,7 +1215,7 @@ bool IsFuncChecked( CEditDoc* pcEditDoc, DLLSHAREDATA*	pShareData, EFunctionCode
 											pShareData->m_Common.m_sStatusbar.m_bDispSelCountByByte == TRUE :
 											pCEditWnd->m_nSelectCountMode == SELECT_COUNT_BY_BYTE );
 	// Mar. 6, 2002 genta
-	case F_VIEWMODE:			return CAppMode::Instance()->IsViewMode(); //ビューモード
+	case F_VIEWMODE:			return CAppMode::getInstance()->IsViewMode(); //ビューモード
 	//	From Here 2003.06.23 Moca
 	case F_CHGMOD_EOL_CRLF:		return EOL_CRLF == pcEditDoc->m_cDocEditor.GetNewLineCode();
 	case F_CHGMOD_EOL_LF:		return EOL_LF == pcEditDoc->m_cDocEditor.GetNewLineCode();

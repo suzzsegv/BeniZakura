@@ -40,7 +40,8 @@ static const DWORD p_helpids[] = {	//11700
 	IDC_CHECK_PluginEnable,	HIDC_CHECK_PluginEnable,	//プラグインを有効にする
 	IDC_PLUGINLIST,			HIDC_PLUGINLIST,			//プラグインリスト
 	IDC_PLUGIN_SearchNew,	HIDC_PLUGIN_SearchNew,		//新規プラグインを追加
-	IDC_PLUGIN_Remove,		HIDC_PLUGIN_Remove,			//新規プラグインを追加
+	IDC_PLUGIN_OpenFolder,	HIDC_PLUGIN_OpenFolder,		//フォルダを開く
+	IDC_PLUGIN_Remove,		HIDC_PLUGIN_Remove,			//プラグインを削除
 	IDC_PLUGIN_OPTION,		HIDC_PLUGIN_OPTION,			//プラグイン設定	// 2010/3/22 Uchi
 //	IDC_STATIC,			-1,
 	0, 0
@@ -96,7 +97,7 @@ INT_PTR CPropPlugin::DispatchEvent( HWND hwndDlg, UINT uMsg, WPARAM wParam, LPAR
 					HWND hListView = ::GetDlgItem( hwndDlg, IDC_PLUGINLIST );
 					int sel = ListView_GetNextItem( hListView, -1, LVNI_SELECTED );
 					if( sel >= 0 ){
-						CPlugin* plugin = CPluginManager::Instance()->GetPlugin(sel);
+						CPlugin* plugin = CPluginManager::getInstance()->GetPlugin(sel);
 						if( plugin != NULL ){
 							::SetWindowText( ::GetDlgItem( hwndDlg, IDC_LABEL_PLUGIN_Description ), to_tchar(plugin->m_sDescription.c_str()) );
 							::SetWindowText( ::GetDlgItem( hwndDlg, IDC_LABEL_PLUGIN_Author ), to_tchar(plugin->m_sAuthor.c_str()) );
@@ -110,7 +111,7 @@ INT_PTR CPropPlugin::DispatchEvent( HWND hwndDlg, UINT uMsg, WPARAM wParam, LPAR
 						EPluginState state = m_Common.m_sPlugin.m_PluginTable[sel].m_state;
 						BOOL bEdit = (state != PLS_DELETED && state != PLS_NONE);
 						::EnableWindow( ::GetDlgItem( hwndDlg, IDC_PLUGIN_Remove ), bEdit );
-						::EnableWindow( ::GetDlgItem( hwndDlg, IDC_PLUGIN_OPTION ), state == PLS_LOADED && plugin );
+						::EnableWindow( ::GetDlgItem( hwndDlg, IDC_PLUGIN_OPTION ), state == PLS_LOADED && plugin && plugin->m_options.size() > 0 );
 					}
 				}
 				break;
@@ -143,7 +144,7 @@ INT_PTR CPropPlugin::DispatchEvent( HWND hwndDlg, UINT uMsg, WPARAM wParam, LPAR
 		case BN_CLICKED:
 			switch( wID ){
 			case IDC_PLUGIN_SearchNew:		// 新規プラグインを追加
-				CPluginManager::Instance()->SearchNewPlugin( m_Common, hwndDlg );
+				CPluginManager::getInstance()->SearchNewPlugin( m_Common, hwndDlg );
 				SetData_LIST( hwndDlg );	//リストの再構築
 				break;
 			case IDC_CHECK_PluginEnable:	// プラグインを有効にする
@@ -155,7 +156,7 @@ INT_PTR CPropPlugin::DispatchEvent( HWND hwndDlg, UINT uMsg, WPARAM wParam, LPAR
 					int sel = ListView_GetNextItem( hListView, -1, LVNI_SELECTED );
 					if( sel >= 0 ){
 						if( MYMESSAGEBOX( hwndDlg, MB_YESNO, GSTR_APPNAME, to_tchar((m_Common.m_sPlugin.m_PluginTable[sel].m_szName + std::wstring(L" を削除しますか")).c_str()) ) == IDYES ){
-							CPluginManager::Instance()->UninstallPlugin( m_Common, sel );
+							CPluginManager::getInstance()->UninstallPlugin( m_Common, sel );
 							SetData_LIST( hwndDlg );
 						}
 					}
@@ -167,7 +168,7 @@ INT_PTR CPropPlugin::DispatchEvent( HWND hwndDlg, UINT uMsg, WPARAM wParam, LPAR
 					int sel = ListView_GetNextItem( hListView, -1, LVNI_SELECTED );
 					if( sel >= 0 && m_Common.m_sPlugin.m_PluginTable[sel].m_state == PLS_LOADED ){
 						// 2010.08.21 プラグイン名(フォルダ名)の同一性の確認
-						CPlugin* plugin = CPluginManager::Instance()->GetPlugin(sel);
+						CPlugin* plugin = CPluginManager::getInstance()->GetPlugin(sel);
 						wstring sDirName = to_wchar(plugin->GetFolderName().c_str());
 						if( plugin && 0 == auto_stricmp(sDirName.c_str(), m_Common.m_sPlugin.m_PluginTable[sel].m_szName ) ){
 							CDlgPluginOption cDlgPluginOption;
@@ -176,6 +177,17 @@ INT_PTR CPropPlugin::DispatchEvent( HWND hwndDlg, UINT uMsg, WPARAM wParam, LPAR
 							WarningMessage( hwndDlg, _T("プラグインはこのウィンドウで読み込まれていないか、フォルダが異なるため\n設定を変更できません") );
 						}
 					}
+				}
+				break;
+			case IDC_PLUGIN_OpenFolder:			// フォルダを開く
+				{
+					std::tstring sBaseDir = CPluginManager::getInstance()->GetBaseDir() + _T(".");
+					if( ! IsDirectory(sBaseDir.c_str()) ){
+						if( ::CreateDirectory(sBaseDir.c_str(), NULL) == 0 ){
+							break;
+						}
+					}
+					::ShellExecute( NULL, _T("open"), sBaseDir.c_str(), NULL, NULL, SW_SHOW );
 				}
 				break;
 			}
@@ -256,7 +268,7 @@ void CPropPlugin::SetData_LIST( HWND hwndDlg )
 
 	for( index = 0; index < MAX_PLUGIN; ++index ){
 		std::basic_string<TCHAR> sDirName;	//CPlugin.GetDirName()の結果保持変数
-		CPlugin* plugin = CPluginManager::Instance()->GetPlugin( index );
+		CPlugin* plugin = CPluginManager::getInstance()->GetPlugin( index );
 
 		//番号
 		TCHAR buf[4];
@@ -392,7 +404,7 @@ void CPropPlugin::InitDialog( HWND hwndDlg )
 		sColumn.fmt = LVCFMT_LEFT;
 		
 		if( ListView_InsertColumn( hListView, pos, &sColumn ) < 0 ){
-			::MessageBox( hwndDlg, _T("PropComMacro::InitDlg::ColumnRegistrationFail"), _T("バグ報告お願い"), MB_OK );
+			PleaseReportToAuthor( hwndDlg, _T("PropComMacro::InitDlg::ColumnRegistrationFail") );
 			return;	//	よくわからんけど失敗した
 		}
 	}

@@ -19,6 +19,8 @@
 #include "CHokanMgr.h"
 #include "env/CShareData.h"
 #include "view/CEditView.h"
+#include "plugin/CJackManager.h"
+#include "plugin/CComplementIfObj.h"
 #include "util/input.h"
 #include "util/os.h"
 #include "sakura_rc.h"
@@ -75,25 +77,12 @@ CHokanMgr::CHokanMgr()
 {
 	m_cmemCurWord.SetString(L"");
 
-	m_pcmemKouho = NULL;
-	m_nKouhoNum = 0;;
 	m_nCurKouhoIdx = -1;
-	m_pszCurKouho = NULL;
 	m_bTimerFlag = TRUE;
 }
 
 CHokanMgr::~CHokanMgr()
 {
-	if( NULL != m_pcmemKouho ){
-		delete m_pcmemKouho;
-		m_pcmemKouho = NULL;
-	}
-	m_nKouhoNum = 0;;
-	if( NULL != m_pszCurKouho ){
-		delete [] m_pszCurKouho;
-		m_pszCurKouho = NULL;
-	}
-
 }
 
 /* モードレスダイアログの表示 */
@@ -143,6 +132,7 @@ int CHokanMgr::Search(
 	const TCHAR*	pszHokanFile,
 	int				bHokanLoHiCase,	// 入力補完機能：英大文字小文字を同一視する 2001/06/19 asa-o
 	BOOL			bHokanByFile,	// 編集中データから候補を探す 2003.06.23 Moca
+	int				nHokanType,
 	CNativeW*		pcmemHokanWord	// 2001/06/19 asa-o
 )
 {
@@ -155,44 +145,69 @@ int CHokanMgr::Search(
 	||  ・見つかった数を返す
 	||
 	*/
-	if( NULL != m_pcmemKouho ){
-		delete m_pcmemKouho;
-		m_pcmemKouho = NULL;
-	}
-	m_nKouhoNum = CDicMgr::HokanSearch(
+	m_vKouho.clear();
+	CDicMgr::HokanSearch(
 		pszCurWord,
 		bHokanLoHiCase,								// 引数からに変更	2001/06/19 asa-o
-		&m_pcmemKouho,
+		m_vKouho,
 		0, //Max候補数
 		pszHokanFile
 	);
 
 	// 2003.05.16 Moca 追加 編集中データ内から候補を探す
 	if( bHokanByFile ){
-		m_nKouhoNum = pcEditView->HokanSearchByFile(
+		pcEditView->HokanSearchByFile(
 			pszCurWord,
 			bHokanLoHiCase,
-			&m_pcmemKouho,
-			m_nKouhoNum,
+			m_vKouho,
 			1024 // 編集中データからなので数を制限しておく
 		);
 	}
-	if( 0 == m_nKouhoNum ){
+
+	{
+		int nOption = (
+			  (bHokanLoHiCase ? 0x01 : 0)
+			  | (bHokanByFile ? 0x02 : 0)
+			);
+		
+		CPlug::Array plugs;
+		CPlug::Array plugType;
+		CJackManager::getInstance()->GetUsablePlug( PP_COMPLEMENTGLOBAL, 0, &plugs );
+		if( nHokanType != 0 ){
+			CJackManager::getInstance()->GetUsablePlug( PP_COMPLEMENT, nHokanType, &plugType );
+			if( 0 < plugType.size() ){
+				plugs.push_back( plugType[0] );
+			}
+		}
+
+		for( CPlug::Array::iterator it = plugs.begin(); it != plugs.end(); ++it ){
+			//インタフェースオブジェクト準備
+			CWSHIfObj::List params;
+			std::wstring curWord = pszCurWord;
+			CComplementIfObj* objComp = new CComplementIfObj( curWord , this, nOption );
+			objComp->AddRef();
+			params.push_back( objComp );
+			//プラグイン呼び出し
+			(*it)->Invoke( pcEditView, params );
+
+			objComp->Release();
+		}
+	}
+
+	if( 0 == m_vKouho.size() ){
 		m_nCurKouhoIdx = -1;
 		return 0;
 	}
 
 //	2001/06/19 asa-o 候補が１つの場合補完ウィンドウは表示しない(逐次補完の場合は除く)
-	if( 1 == m_nKouhoNum ){
+	if( 1 == m_vKouho.size() ){
 		if(pcmemHokanWord != NULL){
 			m_nCurKouhoIdx = -1;
-			// 2004.05.14 Moca m_pcmemKouhoの末尾には改行コードがあり、それを削除してコピーするするように
-			pcmemHokanWord->SetString( m_pcmemKouho->GetStringPtr(), m_pcmemKouho->GetStringLength() - 1 );
+			pcmemHokanWord->SetString( m_vKouho[0].c_str() );
 			return 1;
 		}
 	}
 
-	int			i;
 
 	/* 共有データ構造体のアドレスを返す */
 	m_pShareData = CShareData::getInstance()->GetShareData();
@@ -222,25 +237,11 @@ int CHokanMgr::Search(
 	HWND hwndList;
 	hwndList = ::GetDlgItem( GetHwnd(), IDC_LIST_WORDS );
 	List_ResetContent( hwndList );
-	wchar_t*	pszCR = L"\n";
-	wchar_t*	pszWork;
-	wchar_t*	pszNext;
-	wchar_t*	pszTest;
-	pszWork = m_pcmemKouho->GetStringPtr();
-	for( i = 0; i < m_nKouhoNum; ++i ){
-		pszNext = wcsstr( pszWork, pszCR );
-		if( NULL == pszNext ){
-			break;
+	{
+		size_t kouhoNum = m_vKouho.size();
+		for( size_t i = 0; i < kouhoNum; ++i ){
+			::List_AddString( hwndList, m_vKouho[i].c_str() );
 		}
-		pszTest = new wchar_t[pszNext - pszWork + 1];
-		wmemcpy( pszTest, pszWork, pszNext - pszWork );
-		pszTest[pszNext - pszWork] = L'\0';
-
-		::List_AddString( hwndList, pszTest );
-
-		delete [] pszTest;
-		pszTest = NULL;
-		pszWork = pszNext + wcslen( pszCR );
 	}
 	List_SetCurSel( hwndList, 0 );
 
@@ -329,11 +330,9 @@ int CHokanMgr::Search(
 	ShowTip();	// 補完ウィンドウで選択中の単語にキーワードヘルプを表示
 
 //	2003.06.25 Moca 他のメソッドで使っていないので、とりあえず削除しておく
-	if( NULL != m_pcmemKouho ){
-		delete m_pcmemKouho;
-		m_pcmemKouho = NULL;
-	}
-	return m_nKouhoNum;
+	int kouhoNum = m_vKouho.size();
+	m_vKouho.clear();
+	return kouhoNum;
 }
 
 
@@ -644,6 +643,11 @@ void CHokanMgr::ShowTip()
 	}
 }
 //	2001/06/18 End
+
+bool CHokanMgr::AddKouhoUnique(vector_ex<std::wstring>& kouhoList, const std::wstring& strWord)
+{
+	return kouhoList.push_back_unique(strWord);
+}
 
 //@@@ 2002.01.18 add start
 const DWORD p_helpids[] = {

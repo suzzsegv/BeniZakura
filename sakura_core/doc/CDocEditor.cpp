@@ -52,9 +52,9 @@ void CDocEditor::OnAfterLoad(const SLoadInfo& sLoadInfo)
 	//	May 12, 2000 genta
 	//	編集用改行コードの設定
 	{
-		STypeConfig& types = CDocTypeManager().GetTypeSetting( sLoadInfo.nType );
-		if ( pcDoc->m_cDocFile.m_sFileInfo.eCharCode == static_cast<ECodeType>( types.m_eDefaultCodetype ) ){
-			SetNewLineCode( static_cast<EEolType>( types.m_eDefaultEoltype ) );	// 2011.01.24 ryoji デフォルトEOL
+		const STypeConfig& type = pcDoc->m_cDocType.GetDocumentAttribute();
+		if ( pcDoc->m_cDocFile.m_sFileInfo.eCharCode == type.m_encoding.m_eDefaultCodetype ){
+			SetNewLineCode( type.m_encoding.m_eDefaultEoltype );	// 2011.01.24 ryoji デフォルトEOL
 		}
 		else{
 			SetNewLineCode( EOL_CRLF );
@@ -75,7 +75,7 @@ void CDocEditor::OnAfterLoad(const SLoadInfo& sLoadInfo)
 	// カレントディレクトリの変更
 	::SetCurrentDirectory( pcDoc->m_cDocFile.GetFilePathClass().GetDirPath().c_str() );
 
-	CAppMode::Instance()->SetViewMode(sLoadInfo.bViewMode);		// ビューモード	##ここも、アリかな
+	CAppMode::getInstance()->SetViewMode(sLoadInfo.bViewMode);		// ビューモード	##ここも、アリかな
 }
 
 void CDocEditor::OnAfterSave(const SSaveInfo& sSaveInfo)
@@ -127,7 +127,7 @@ void CDocEditor::SetImeMode( int mode )
 	DWORD	conv, sent;
 	HIMC	hIme;
 
-	hIme = ImmGetContext( CEditWnd::Instance()->GetHwnd() ); //######大丈夫？
+	hIme = ImmGetContext( CEditWnd::getInstance()->GetHwnd() ); //######大丈夫？
 
 	//	最下位ビットはIME自身のOn/Off制御
 	if( ( mode & 3 ) == 2 ){
@@ -158,7 +158,7 @@ void CDocEditor::SetImeMode( int mode )
 	if( ( mode & 3 ) == 1 ){
 		ImmSetOpenStatus( hIme, TRUE );
 	}
-	ImmReleaseContext( CEditWnd::Instance()->GetHwnd(), hIme ); //######大丈夫？
+	ImmReleaseContext( CEditWnd::getInstance()->GetHwnd(), hIme ); //######大丈夫？
 }
 //	To Here Nov. 20, 2000 genta
 

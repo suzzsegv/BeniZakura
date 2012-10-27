@@ -61,7 +61,7 @@ bool CShareData_IO::ShareData_IO_2( bool bRead )
 	}
 
 	TCHAR	szIniFileName[_MAX_PATH + 1];
-	CFileNameManager::Instance()->GetIniFileName( szIniFileName, bRead );	// 2007.05.19 ryoji iniファイル名を取得する
+	CFileNameManager::getInstance()->GetIniFileName( szIniFileName, bRead );	// 2007.05.19 ryoji iniファイル名を取得する
 
 //	MYTRACE_A( "Iniファイル処理-1 所要時間(ミリ秒) = %d\n", cRunningTimer.Read() );
 
@@ -1379,6 +1379,7 @@ void CShareData_IO::ShareData_IO_Type_One( CDataProfile& cProfile, int nType, co
 	//	Oct. 5, 2002 genta _countof()で誤ってポインタのサイズを取得していたのを修正
 	cProfile.IOProfileData( pszSecName, LTEXT("szHokanFile")		, types.m_szHokanFile );		//	補完ファイル
 	//	2001/06/14 End
+	cProfile.IOProfileData( pszSecName, LTEXT("nHokanType")			, types.m_nHokanType );		//	補完種別
 
 	//	2001/06/19 asa-o
 	cProfile.IOProfileData( pszSecName, LTEXT("bHokanLoHiCase")		, types.m_bHokanLoHiCase );
@@ -1392,10 +1393,10 @@ void CShareData_IO::ShareData_IO_Type_One( CDataProfile& cProfile, int nType, co
 	cProfile.IOProfileData( pszSecName, LTEXT("szExtHtmlHelp")		, types.m_szExtHtmlHelp );
 	cProfile.IOProfileData( pszSecName, LTEXT("bTypeHtmlHelpIsSingle"), types.m_bHtmlHelpIsSingle ); // 2012.06.30 Fix m_bHokanLoHiCase -> m_bHtmlHelpIsSingle
 
-	cProfile.IOProfileData( pszSecName, LTEXT("bPriorCesu8")		, types.m_bPriorCesu8 );
-	cProfile.IOProfileData( pszSecName, LTEXT("eDefaultCodetype")	, types.m_eDefaultCodetype );
-	cProfile.IOProfileData( pszSecName, LTEXT("eDefaultEoltype")	, types.m_eDefaultEoltype );
-	cProfile.IOProfileData( pszSecName, LTEXT("bDefaultBom")		, types.m_bDefaultBom );
+	cProfile.IOProfileData( pszSecName, LTEXT("bPriorCesu8")		, types.m_encoding.m_bPriorCesu8 );
+	cProfile.IOProfileData_WrapInt( pszSecName, LTEXT("eDefaultCodetype")	, types.m_encoding.m_eDefaultCodetype );
+	cProfile.IOProfileData_WrapInt( pszSecName, LTEXT("eDefaultEoltype")	, types.m_encoding.m_eDefaultEoltype );
+	cProfile.IOProfileData( pszSecName, LTEXT("bDefaultBom")		, types.m_encoding.m_bDefaultBom );
 
 	cProfile.IOProfileData( pszSecName, LTEXT("bAutoIndent")			, types.m_bAutoIndent );
 	cProfile.IOProfileData( pszSecName, LTEXT("bAutoIndent_ZENSPACE")	, types.m_bAutoIndent_ZENSPACE );
@@ -1643,6 +1644,7 @@ void CShareData_IO::ShareData_IO_Macro( CDataProfile& cProfile )
 	cProfile.IOProfileData( pszSecName, LTEXT("nMacroOnOpened"), pShare->m_Common.m_sMacro.m_nMacroOnOpened );	/* オープン後自動実行マクロ番号 */	//@@@ 2006.09.01 ryoji
 	cProfile.IOProfileData( pszSecName, LTEXT("nMacroOnTypeChanged"), pShare->m_Common.m_sMacro.m_nMacroOnTypeChanged );	/* タイプ変更後自動実行マクロ番号 */	//@@@ 2006.09.01 ryoji
 	cProfile.IOProfileData( pszSecName, LTEXT("nMacroOnSave"), pShare->m_Common.m_sMacro.m_nMacroOnSave );	/* 保存前自動実行マクロ番号 */	//@@@ 2006.09.01 ryoji
+	cProfile.IOProfileData( pszSecName, LTEXT("nMacroCancelTimer"), pShare->m_Common.m_sMacro.m_nMacroCancelTimer );	// マクロ停止ダイアログ表示待ち時間	// 2011.08.04 syat
 }
 
 /*!

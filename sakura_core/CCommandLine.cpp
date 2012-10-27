@@ -32,8 +32,6 @@
 #include "debug/Debug.h"
 #include "env/CSakuraEnvironment.h"
 
-CCommandLine* CCommandLine::_instance = NULL;
-
 /* コマンドラインオプション用定数 */
 #define CMDLINEOPT_R			1002
 #define CMDLINEOPT_NOWIN		1003
@@ -177,12 +175,13 @@ int CCommandLine::CheckCommandLine(
 		オプションが""で囲まれた場合に対応する．
 		そうすると-で始まるファイル名を指定できなくなるので，
 		それ以降オプション解析をしないという "--" オプションを新設する．
-	
+	@date 2012.02.25 novice 複数ファイル読み込み
+
 	@note
 	これが呼び出された時点では共有メモリの初期化が完了していないため，
 	共有メモリにアクセスしてはならない．
 */
-void CCommandLine::ParseCommandLine( void )
+void CCommandLine::ParseCommandLine( LPCTSTR pszCmdLineSrc )
 {
 	MY_RUNNINGTIMER( cRunningTimer, "CCommandLine::Parse" );
 
@@ -210,31 +209,33 @@ void CCommandLine::ParseCommandLine( void )
 	bool	bParseOptDisabled = false;	// 2007.09.09 genta オプション解析を行わなず，ファイル名として扱う
 	int		nPos;
 	int		i;
-	if( m_pszCmdLineSrc[0] != '-' ){
+	if( pszCmdLineSrc[0] != _T('-') ){
 		for( i = 0; i < _countof( szPath ); ++i ){
-			if( m_pszCmdLineSrc[i] == _T(' ') || m_pszCmdLineSrc[i] == _T('\0') ){
+			if( pszCmdLineSrc[i] == _T(' ') || pszCmdLineSrc[i] == _T('\0') ){
 				/* ファイルの存在をチェック */
 				szPath[i] = _T('\0');	// 終端文字
 				if( fexist(szPath) ){
 					bFind = true;
 					break;
 				}
-				if( m_pszCmdLineSrc[i] == _T('\0') ){
+				if( pszCmdLineSrc[i] == _T('\0') ){
 					break;
 				}
 			}
-			szPath[i] = m_pszCmdLineSrc[i];
+			szPath[i] = pszCmdLineSrc[i];
 		}
 	}
 	if( bFind ){
+		CSakuraEnvironment::ResolvePath(szPath);
 		_tcscpy( m_fi.m_szPath, szPath );	/* ファイル名 */
 		nPos = i + 1;
 	}else{
+		m_fi.m_szPath[0] = _T('\0');
 		nPos = 0;
 	}
 
-	LPTSTR pszCmdLineWork = new TCHAR[lstrlen( m_pszCmdLineSrc ) + 1];
-	_tcscpy( pszCmdLineWork, m_pszCmdLineSrc );
+	LPTSTR pszCmdLineWork = new TCHAR[lstrlen( pszCmdLineSrc ) + 1];
+	_tcscpy( pszCmdLineWork, pszCmdLineSrc );
 	int nCmdLineWorkLen = lstrlen( pszCmdLineWork );
 	LPTSTR pszToken = my_strtok<TCHAR>( pszCmdLineWork, nCmdLineWorkLen, &nPos, _T(" ") );
 	while( pszToken != NULL )
@@ -242,9 +243,9 @@ void CCommandLine::ParseCommandLine( void )
 		DBPRINT( _T("OPT=[%ts]\n"), pszToken );
 
 		//	2007.09.09 genta オプション判定ルール変更．オプション解析停止と""で囲まれたオプションを考慮
-		if( !bFind && ( bParseOptDisabled ||
+		if( ( bParseOptDisabled ||
 			! (pszToken[0] == '-' || pszToken[0] == '"' && pszToken[1] == '-' ) )){
-				
+
 			if( pszToken[0] == _T('\"') ){
 				CNativeT cmWork;
 				//	Nov. 3, 2005 genta
@@ -260,38 +261,47 @@ void CCommandLine::ParseCommandLine( void )
 				if( len > 0 ){
 					cmWork.SetString( &pszToken[1], len - ( pszToken[len] == _T('"') ? 1 : 0 ));
 					cmWork.Replace( _T("\"\""), _T("\"") );
-					_tcscpy_s( m_fi.m_szPath, _countof(m_fi.m_szPath), cmWork.GetStringPtr() );	/* ファイル名 */
+					_tcscpy_s( szPath, _countof(szPath), cmWork.GetStringPtr() );	/* ファイル名 */
 				}
 				else {
-					m_fi.m_szPath[0] = _T('\0');
+					szPath[0] = _T('\0');
 				}
 			}
 			else{
-				_tcscpy_s( m_fi.m_szPath, _countof(m_fi.m_szPath), pszToken );		/* ファイル名 */
+				_tcscpy_s( szPath, _countof(szPath), pszToken );		/* ファイル名 */
 			}
 
 			// Nov. 11, 2005 susu
 			// 不正なファイル名のままだとファイル保存時ダイアログが出なくなるので
 			// 簡単なファイルチェックを行うように修正
-			if (_tcsncmp_literal(m_fi.m_szPath, _T("file:///"))==0) {
-				_tcscpy(m_fi.m_szPath, &(m_fi.m_szPath[8]));
+			if (_tcsncmp_literal(szPath, _T("file:///"))==0) {
+				_tcscpy(szPath, &(szPath[8]));
 			}
-			int len = _tcslen(m_fi.m_szPath);
+			int len = _tcslen(szPath);
 			for (int i = 0; i < len ; i ++) {
-				if ( !TCODE::IsValidFilenameChar(m_fi.m_szPath,i) ){
+				if ( !TCODE::IsValidFilenameChar(szPath,i) ){
 					TCHAR msg_str[_MAX_PATH + 1];
 					_stprintf(
 						msg_str,
 						_T("%ls\r\n")
 						_T("上記のファイル名は不正です。ファイル名に \\ / : * ? \" < > | の文字は使えません。 "),
-						m_fi.m_szPath
+						szPath
 					);
 					MessageBox( NULL, msg_str, _T("FileNameError"), MB_OK);
-					m_fi.m_szPath[0] = _T('\0');
+					szPath[0] = _T('\0');
 					break;
 				}
 			}
 
+			if (szPath[0] != _T('\0')) {
+				CSakuraEnvironment::ResolvePath(szPath);
+				if (m_fi.m_szPath[0] == _T('\0')) {
+					_tcscpy(m_fi.m_szPath, szPath );
+				}
+				else {
+					m_vFiles.push_back( szPath );
+				}
+			}
 		}
 		else{
 			int nQuoteLen = 0;
@@ -438,24 +448,7 @@ void CCommandLine::ParseCommandLine( void )
 	}
 	delete [] pszCmdLineWork;
 
-	/* ファイル名 */
-	if( _T('\0') != m_fi.m_szPath[0] ){
-		//ファイルパスの解決
-		CSakuraEnvironment::ResolvePath(m_fi.m_szPath);
-	}
-
 	return;
-}
-
-/*! 
-	シングルトン：プロセスで唯一のインスタンス
-*/
-CCommandLine* CCommandLine::Instance(LPTSTR cmd)
-{
-	if( !_instance ){
-		_instance = new CCommandLine(cmd);
-	}
-	return _instance;
 }
 
 /*! 
@@ -463,8 +456,7 @@ CCommandLine* CCommandLine::Instance(LPTSTR cmd)
 	
 	@date 2005-08-24 D.S.Koba ParseCommandLine()変更によりメンバ変数に初期値代入
 */
-CCommandLine::CCommandLine(LPTSTR cmd)
-: m_pszCmdLineSrc(cmd)
+CCommandLine::CCommandLine()
 {
 	m_bGrepMode				= false;
 	m_bGrepDlg				= false;
@@ -483,7 +475,5 @@ CCommandLine::CCommandLine(LPTSTR cmd)
 	m_gi.nGrepOutputStyle	= 1;
 	m_bViewMode			= false;
 	m_nGroup				= -1;		// 2007.06.26 ryoji
-	
-	ParseCommandLine();
 }
 

@@ -451,14 +451,23 @@ LRESULT CEditView::DispatchEvent(
 		return 0L;
 	case WM_CHAR:
 #ifdef _UNICODE
-		GetCommander().HandleCommand( F_WCHAR, TRUE, WCHAR(wParam), 0, 0, 0 );
+		// コントロールコード入力禁止
+		if( WCODE::IsControlCode((wchar_t)wParam) ){
+			ErrorBeep();
+		}else{
+			GetCommander().HandleCommand( F_WCHAR, TRUE, WCHAR(wParam), 0, 0, 0 );
+		}
 #else
 		// SJIS固有
 		{
 			static BYTE preChar = 0;
 			if( preChar == 0 && ! _IS_SJIS_1((unsigned char)wParam) ){
 				// ASCII , 半角カタカナ
-				GetCommander().HandleCommand( F_WCHAR, TRUE, tchar_to_wchar((TCHAR)wParam), 0, 0, 0 );
+				if( ACODE::IsControlCode((char)wParam) ){
+					ErrorBeep();
+				}else{
+					GetCommander().HandleCommand( F_WCHAR, TRUE, tchar_to_wchar((ACHAR)wParam), 0, 0, 0 );
+				}
 			}else{
 				if( preChar ){
 					WORD wordData = MAKEWORD((BYTE)wParam, preChar);
@@ -733,16 +742,8 @@ LRESULT CEditView::DispatchEvent(
 			DestroyWindow( m_hwndSizeBox );
 			m_hwndSizeBox = NULL;
 		}
-		if( NULL != m_pcsbwVSplitBox ){	/* 垂直分割ボックス */
-			delete m_pcsbwVSplitBox;
-			m_pcsbwVSplitBox = NULL;
-		}
-
-		if( NULL != m_pcsbwHSplitBox ){	/* 垂直分割ボックス */
-			delete m_pcsbwHSplitBox;
-			m_pcsbwHSplitBox = NULL;
-		}
-
+		SAFE_DELETE(m_pcsbwVSplitBox);	/* 垂直分割ボックス */
+		SAFE_DELETE(m_pcsbwHSplitBox);	/* 水平分割ボックス */
 
 		SetHwnd(NULL);
 		return 0L;
@@ -2315,7 +2316,7 @@ void CEditView::CaretUnderLineOFF( bool bDraw )
 			ReleaseDC( hdc );
 		}
 		m_nOldCursorLineX = -1;
-	};
+	}
 	// To Here 2007.09.09 Moca
 }
 

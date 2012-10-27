@@ -89,8 +89,13 @@ bool CPluginManager::SearchNewPlugin( CommonSetting& common, HWND hWndOwner )
 				}
 			}
 			if( !isNotInstalled ){ continue; }
-			bFindNewDir = true;
 
+			// 2011.08.20 syat plugin.defが存在しないフォルダは飛ばす
+			if( ! IsFileExists( (m_sBaseDir + wf.cFileName + _T("\\") + PII_FILENAME).c_str(), true ) ){
+				continue;
+			}
+
+			bFindNewDir = true;
 			TCHAR msg[512];
 			auto_snprintf_s( msg, _countof(msg), _T("プラグイン「%ts」をインストールしますか？"), wf.cFileName );
 			if( ::MessageBox( hWndOwner, msg, GSTR_APPNAME, MB_YESNO | MB_ICONQUESTION ) == IDYES ){
@@ -225,9 +230,6 @@ bool CPluginManager::LoadAllPlugin()
 		}
 	}
 
-	// Note: アドレス順でソート？
-	m_plugins.sort();
-
 	for( CPlugin::ListIter it = m_plugins.begin(); it != m_plugins.end(); it++ ){
 		RegisterPlugin( *it );
 	}
@@ -292,7 +294,7 @@ CPlugin* CPluginManager::LoadPlugin( const TCHAR* pszPluginDir, const TCHAR* psz
 //プラグインをCJackManagerに登録する
 bool CPluginManager::RegisterPlugin( CPlugin* plugin )
 {
-	CJackManager* pJackMgr = CJackManager::Instance();
+	CJackManager* pJackMgr = CJackManager::getInstance();
 	CPlug::Array plugs = plugin->GetPlugs();
 
 	for( CPlug::ArrayIter plug = plugs.begin() ; plug != plugs.end(); plug++ ){

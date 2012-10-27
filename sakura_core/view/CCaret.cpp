@@ -469,7 +469,12 @@ void CCaret::ShowEditCaret()
 	if( 0 == pCommon->m_sGeneral.GetCaretType() ){
 		nCaretHeight = GetHankakuHeight();					/* キャレットの高さ */
 		if( m_pEditView->IsInsMode() /* Oct. 2, 2005 genta */ ){
-			nCaretWidth = 2;
+			nCaretWidth = 2; //2px
+			// 2011.12.22 システムの設定に従う(けど2px以上)
+			DWORD dwWidth;
+			if( ::SystemParametersInfo(SPI_GETCARETWIDTH, 0, &dwWidth, 0) && 2 < dwWidth){
+				nCaretWidth = std::min((int)dwWidth, GetHankakuDx());
+			}
 		}
 		else{
 			nCaretWidth = GetHankakuDx();
@@ -481,7 +486,7 @@ void CCaret::ShowEditCaret()
 
 			if( NULL != pLine ){
 				/* 指定された桁に対応する行のデータ内の位置を調べる */
-				nIdxFrom = m_pEditView->LineColmnToIndex( pcLayout, GetCaretLayoutPos().GetX2() );
+				nIdxFrom = GetCaretLogicPos().GetX() - pcLayout->GetLogicOffset();
 				if( nIdxFrom >= nLineLen ||
 					pLine[nIdxFrom] == CR || pLine[nIdxFrom] == LF ||
 					pLine[nIdxFrom] == TAB ){
@@ -655,7 +660,7 @@ void CCaret::ShowCaretPosInfo()
 	TCHAR szCaretChar[32]=_T("");
 	if( pLine ){
 		// 指定された桁に対応する行のデータ内の位置を調べる
-		CLogicInt nIdx = m_pEditView->LineColmnToIndex( pcLayout, GetCaretLayoutPos().GetX2() );
+		CLogicInt nIdx = GetCaretLogicPos().GetX2() - pcLayout->GetLogicOffset();
 		if( nIdx < nLineLen ){
 			if( nIdx < nLineLen - (pcLayout->GetLayoutEol().GetLen()?1:0) ){
 				//auto_sprintf( szCaretChar, _T("%04x"), );
@@ -832,7 +837,7 @@ CLayoutInt CCaret::Cursor_UPDOWN( CLayoutInt nMoveLines, bool bSelect )
 		if( pCommon->m_sGeneral.m_bIsFreeCursorMode
 			|| m_pEditView->GetSelectionInfo().IsBoxSelecting()
 		) {
-			ptTo.x = ptCaret.x;
+			ptTo.x = m_nCaretPosX_Prev;
 		}
 	}
 	if( ptTo.x != GetCaretLayoutPos().GetX() ){
@@ -981,6 +986,17 @@ CLayoutInt CCaret::MoveCursorProperly(
 		ptNewXY.y = CLayoutInt(0);
 	}
 	
+	// 2011.12.26 EOF以下の行だった場合で矩形のときは、最終レイアウト行へ移動する
+	if( ptNewXY.y >= m_pEditDoc->m_cLayoutMgr.GetLineCount()
+	 && (m_pEditView->GetSelectionInfo().IsMouseSelecting() && m_pEditView->GetSelectionInfo().IsBoxSelecting()) ){
+		const CLayout* layoutEnd = m_pEditDoc->m_cLayoutMgr.GetBottomLayout();
+		bool bEofOnly = (layoutEnd && layoutEnd->GetLayoutEol() != EOL_NONE) || NULL == layoutEnd;
+	 	// 2012.01.09 ぴったり[EOF]位置にある場合は位置を維持(1つ上の行にしない)
+	 	if( bEofOnly && ptNewXY.y == m_pEditDoc->m_cLayoutMgr.GetLineCount() && ptNewXY.x == 0 ){
+	 	}else{
+			ptNewXY.y = std::max(CLayoutInt(0), m_pEditDoc->m_cLayoutMgr.GetLineCount() - 1);
+		}
+	}
 	/* カーソルがテキスト最下端行にあるか */
 	if( ptNewXY.y >= m_pEditDoc->m_cLayoutMgr.GetLineCount() ){
 		// 2004.04.03 Moca EOFより後ろの座標調整は、MoveCursor内でやってもらうので、削除
@@ -1020,12 +1036,9 @@ CLayoutInt CCaret::MoveCursorProperly(
 		}
 
 		if( i >= nLineLen ){
-			if( ptNewXY.y +1 == m_pEditDoc->m_cLayoutMgr.GetLineCount() &&
-				EOL_NONE == pcLayout->GetLayoutEol().GetLen() ){
-				nPosX = m_pEditView->LineIndexToColmn( pcLayout, nLineLen );
-			}
+			// 2011.12.26 フリーカーソル/矩形でデータ付きEOFの右側へ移動できるように
 			/* フリーカーソルモードか */
-			else if( GetDllShareData().m_Common.m_sGeneral.m_bIsFreeCursorMode
+			if( GetDllShareData().m_Common.m_sGeneral.m_bIsFreeCursorMode
 			  || ( m_pEditView->GetSelectionInfo().IsMouseSelecting() && m_pEditView->GetSelectionInfo().IsBoxSelecting() )	/* マウス範囲選択中 && 矩形範囲選択中 */
 			  || ( m_pEditView->m_bDragMode && m_pEditView->m_bDragBoxData ) /* OLE DropTarget && 矩形データ */
 			){

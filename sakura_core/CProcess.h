@@ -29,7 +29,7 @@ class SAKURA_CORE_API CProcess : public TSingleInstance<CProcess> {
 public:
 	CProcess( HINSTANCE hInstance, LPTSTR lpCmdLine );
 	bool Run();
-	virtual ~CProcess(){};
+	virtual ~CProcess(){}
 protected:
 	CProcess();
 	virtual bool InitializeProcess();
@@ -48,7 +48,6 @@ public:
 private:
 	HINSTANCE	m_hInstance;
 	HWND		m_hWnd;
-	LPTSTR		m_CommandLine;
 	BOOL (WINAPI *m_pfnMiniDumpWriteDump)(
 		HANDLE hProcess,
 		DWORD ProcessId,

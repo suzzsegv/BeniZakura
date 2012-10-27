@@ -25,17 +25,17 @@ EConvertResult CReadManager::ReadFile_To_CDocLineMgr(
 	LPCTSTR pszPath = sLoadInfo.cFilePath.c_str();
 
 	// 文字コード種別
+	STypeConfig& type = CDocTypeManager().GetTypeSetting( sLoadInfo.nType );
 	pFileInfo->eCharCode = sLoadInfo.eCharCode;
 	if( CODE_AUTODETECT==pFileInfo->eCharCode) {
-		CCodeMediator cmediator( CEditWnd::Instance()->GetDocument() );
+		CCodeMediator cmediator( type.m_encoding );
 		pFileInfo->eCharCode = cmediator.CheckKanjiCodeOfFile( pszPath );
 	}
-	STypeConfig& types = CDocTypeManager().GetTypeSetting( sLoadInfo.nType );
 	if( !IsValidCodeType(pFileInfo->eCharCode) ){
-		pFileInfo->eCharCode = static_cast<ECodeType>( types.m_eDefaultCodetype );	// 2011.01.24 ryoji デフォルト文字コード
+		pFileInfo->eCharCode = type.m_encoding.m_eDefaultCodetype;	// 2011.01.24 ryoji デフォルト文字コード
 	}
-	if ( pFileInfo->eCharCode == static_cast<ECodeType>( types.m_eDefaultCodetype ) ){
-		pFileInfo->bBomExist = ( types.m_bDefaultBom != FALSE );	// 2011.01.24 ryoji デフォルトBOM
+	if ( pFileInfo->eCharCode == type.m_encoding.m_eDefaultCodetype ){
+		pFileInfo->bBomExist = ( type.m_encoding.m_bDefaultBom != FALSE );	// 2011.01.24 ryoji デフォルトBOM
 	}
 	else{
 		pFileInfo->bBomExist = ( pFileInfo->eCharCode == CODE_UNICODE || pFileInfo->eCharCode == CODE_UNICODEBE );
@@ -52,7 +52,7 @@ EConvertResult CReadManager::ReadFile_To_CDocLineMgr(
 	EConvertResult eRet = RESULT_COMPLETE;
 
 	try{
-		CFileLoad cfl;
+		CFileLoad cfl(type.m_encoding);
 
 		// ファイルを開く
 		// ファイルを閉じるにはFileCloseメンバ又はデストラクタのどちらかで処理できます
@@ -101,7 +101,7 @@ EConvertResult CReadManager::ReadFile_To_CDocLineMgr(
 		if( !fexist( pszPath )){
 			// ファイルがない
 			ErrorMessage(
-				CEditWnd::Instance()->GetHwnd(),
+				CEditWnd::getInstance()->GetHwnd(),
 				_T("%ls\nというファイルを開けません。\nファイルが存在しません。"),	//Mar. 24, 2001 jepro 若干修正
 				pszPath
 			);
@@ -109,14 +109,14 @@ EConvertResult CReadManager::ReadFile_To_CDocLineMgr(
 		else if( -1 == _taccess( pszPath, 4 )){
 			// 読み込みアクセス権がない
 			ErrorMessage(
-				CEditWnd::Instance()->GetHwnd(),
+				CEditWnd::getInstance()->GetHwnd(),
 				_T("\'%ts\'\nというファイルを開けません。\n読み込みアクセス権がありません。"),
 				pszPath
 			 );
 		}
 		else{
 			ErrorMessage(
-				CEditWnd::Instance()->GetHwnd(),
+				CEditWnd::getInstance()->GetHwnd(),
 				_T("\'%ts\'\nというファイルを開けません。\n他のアプリケーションで使用されている可能性があります。"),
 				pszPath
 			 );
@@ -125,7 +125,7 @@ EConvertResult CReadManager::ReadFile_To_CDocLineMgr(
 	catch( CError_FileRead ){
 		eRet = RESULT_FAILURE;
 		ErrorMessage(
-			CEditWnd::Instance()->GetHwnd(),
+			CEditWnd::getInstance()->GetHwnd(),
 			_T("\'%ts\'というファイルの読み込み中にエラーが発生しました。\nファイルの読み込みを中止します。"),
 			pszPath
 		 );

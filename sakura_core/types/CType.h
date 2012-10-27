@@ -24,6 +24,7 @@
 #ifndef SAKURA_CTYPE_BF915633_AE38_4C73_8E5B_0411063A1AD89_H_
 #define SAKURA_CTYPE_BF915633_AE38_4C73_8E5B_0411063A1AD89_H_
 
+#include "CEol.h"
 #include "env/CommonSetting.h"
 #include "doc/CDocTypeSetting.h"
 #include "doc/CLineComment.h"
@@ -77,6 +78,13 @@ enum EBackgroundImagePos {
 	BGIMAGE_BOTTOM_CENTER,
 	BGIMAGE_CENTER_LEFT,
 	BGIMAGE_CENTER_RIGHT
+};
+
+struct SEncodingConfig{
+	BOOL				m_bPriorCesu8;					/* 自動判別時に CESU-8 を優先するかどうか */
+	ECodeType			m_eDefaultCodetype;				/* デフォルト文字コード */
+	EEolType			m_eDefaultEoltype;				/* デフォルト改行コード */	// 2011.01.24 ryoji
+	BOOL				m_bDefaultBom;					/* デフォルトBOM */	// 2011.01.24 ryoji
 };
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
@@ -149,20 +157,17 @@ struct STypeConfig{
 
 	//	2001/06/14 asa-o 補完のタイプ別設定
 	SFilePath			m_szHokanFile;					/*!< 入力補完 単語ファイル */
+	int					m_nHokanType;					/*!< 入力補完 種別(プラグイン) */
 	//	2003.06.23 Moca ファイル内からの入力補完機能
-	int					m_bUseHokanByFile;				/*!< 入力補完 開いているファイル内から候補を探す */
+	BOOL				m_bUseHokanByFile;				/*!< 入力補完 開いているファイル内から候補を探す */
 	//	2001/06/19 asa-o
-	int					m_bHokanLoHiCase;				/*!< 入力補完機能：英大文字小文字を同一視する */
+	BOOL				m_bHokanLoHiCase;				/*!< 入力補完機能：英大文字小文字を同一視する */
 
 	SFilePath			m_szExtHelp;					/* 外部ヘルプ１ */
 	SFilePath			m_szExtHtmlHelp;				/* 外部HTMLヘルプ */
 	BOOL				m_bHtmlHelpIsSingle;			/* HtmlHelpビューアはひとつ */
 
-	BOOL				m_bPriorCesu8;					/* 自動判別時に CESU-8 を優先するかどうか */
-	int					m_eDefaultCodetype;				/* デフォルト文字コード */
-	int					m_eDefaultEoltype;				/* デフォルト改行コード */	// 2011.01.24 ryoji
-	BOOL				m_bDefaultBom;					/* デフォルトBOM */	// 2011.01.24 ryoji
-
+	SEncodingConfig		m_encoding;			//!< エンコードオプション
 
 
 //@@@ 2001.11.17 add start MIK

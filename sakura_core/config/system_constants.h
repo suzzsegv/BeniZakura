@@ -350,6 +350,15 @@
 	
 	Version 111:
 	タブバーフォント指定 2011.12.04 Moca
+	
+	Version 112:
+	入力補完プラグイン 2011.06.24 Moca
+
+	Version 113:
+	マクロ停止ダイアログ 2011.08.04 syat
+
+	Version 114:
+	CCodeMediator/CESIのCEditDoc依存の修正 2012.10.12 Moca
 
 	-- 統合されたので元に戻す（1000～1023が使用済み） 	2008.11.16 nasukoji
 	-- Version 1000:

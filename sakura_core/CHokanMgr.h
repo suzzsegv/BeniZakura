@@ -20,6 +20,7 @@ class CHokanMgr;
 #include "dlg/CDialog.h"
 #include <windows.h>
 #include "mem/CMemory.h"
+#include "util/container.h"
 
 class CEditView;
 
@@ -48,6 +49,7 @@ public:
 		const TCHAR*	pszHokanFile,
 		BOOL			bHokanLoHiCase,			// 入力補完機能：英大文字小文字を同一視する 2001/06/19 asa-o
 		BOOL			bHokanByFile,			// 編集中データから候補を探す。 2003.06.23 Moca
+		int				nHokanType,
 		CNativeW*		pcmemHokanWord = NULL	// 補完候補が１つのときこれに格納 2001/06/19 asa-o
 	);
 //	void SetCurKouhoStr( void );
@@ -71,13 +73,13 @@ public:
 //	2001/06/18 asa-o
 	void ShowTip();	// 補完ウィンドウで選択中の単語にキーワードヘルプの表示
 
+	static bool AddKouhoUnique(vector_ex<std::wstring>&, const std::wstring&);
 
 	CNativeW		m_cmemCurWord;
-	CNativeW*		m_pcmemKouho;
+	vector_ex<std::wstring>	m_vKouho;
 	int				m_nKouhoNum;
 
 	int				m_nCurKouhoIdx;
-	char*			m_pszCurKouho;
 
 	POINT			m_poWin;
 	int				m_nWinHeight;

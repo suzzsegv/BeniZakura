@@ -335,7 +335,7 @@ EColorIndexType CEditView::GetColorIndex(
 		pInfo->nPosInLogic = pcLayoutLineFirst->GetLogicOffset();
 
 		//CColorStrategyPool初期化
-		CColorStrategyPool* pool = CColorStrategyPool::Instance();
+		CColorStrategyPool* pool = CColorStrategyPool::getInstance();
 		pool->NotifyOnStartScanLogic();
 
 
@@ -369,7 +369,7 @@ EColorIndexType CEditView::GetColorIndex(
 	CStringRef cLineStr(pcDocLine->GetPtr(),pcDocLine->GetLengthWithEOL());
 
 	//color strategy
-	CColorStrategyPool* pool = CColorStrategyPool::Instance();
+	CColorStrategyPool* pool = CColorStrategyPool::getInstance();
 	pInfo->pStrategy = pool->GetStrategyByColor(eRet);
 	if(pInfo->pStrategy)pInfo->pStrategy->InitStrategyStatus();
 
@@ -843,7 +843,7 @@ bool CEditView::DrawLogicLine(
 //	}
 
 	//CColorStrategyPool初期化
-	CColorStrategyPool* pool = CColorStrategyPool::Instance();
+	CColorStrategyPool* pool = CColorStrategyPool::getInstance();
 	pool->NotifyOnStartScanLogic();
 
 	//DispPosを保存しておく
@@ -942,7 +942,7 @@ bool CEditView::DrawLayoutLine(SColorStrategyInfo* pInfo)
 
 	//color strategy
 	if(pcLayout && pcLayout->GetLogicOffset()==0){
-		CColorStrategyPool* pool = CColorStrategyPool::Instance();
+		CColorStrategyPool* pool = CColorStrategyPool::getInstance();
 		pInfo->pStrategy = pool->GetStrategyByColor(pcLayout->GetColorTypePrev());
 		if(pInfo->pStrategy)pInfo->pStrategy->InitStrategyStatus();
 		pInfo->ChangeColor(pcLayout->GetColorTypePrev());
@@ -1011,7 +1011,7 @@ bool CEditView::DrawLayoutLine(SColorStrategyInfo* pInfo)
 			pInfo->DoChangeColor(cLineStr);
 
 			//1文字情報取得 $$高速化可能
-			CFigure& cFigure = CFigureManager::Instance()->GetFigure(&cLineStr.GetPtr()[pInfo->GetPosInLogic()]);
+			CFigure& cFigure = CFigureManager::getInstance()->GetFigure(&cLineStr.GetPtr()[pInfo->GetPosInLogic()]);
 
 			//1文字描画
 			CLogicInt nPosOld = pInfo->nPosInLogic;
@@ -1055,14 +1055,14 @@ bool CEditView::DrawLayoutLine(SColorStrategyInfo* pInfo)
 			cTextType.FillBack(pInfo->gr,rcClip);
 		}
 		CTypeSupport cSelectType(this, COLORIDX_SELECT);
-		if( GetSelectionInfo().IsTextSelected() && GetSelectionInfo().IsBoxSelecting() && cSelectType.IsDisp() ){
+		if( GetSelectionInfo().IsTextSelected() && cSelectType.IsDisp() ){
 			// 選択範囲の指定色：必要ならテキストのない部分の矩形選択を作画
 			const CEditView& view = *pInfo->pcView;
 			CLayoutRange selectArea = GetSelectionInfo().GetSelectAreaLine(pInfo->pDispPos->GetLayoutLineRef(), pcLayout);
 			// 2010.10.04 スクロール分の足し忘れ
 			int nSelectFromPx = view.GetTextMetrics().GetHankakuDx() * (Int)(selectArea.GetFrom().x - view.GetTextArea().GetViewLeftCol());
 			int nSelectToPx   = view.GetTextMetrics().GetHankakuDx() * (Int)(selectArea.GetTo().x - view.GetTextArea().GetViewLeftCol());
-			if( nSelectFromPx != nSelectToPx ){
+			if( nSelectFromPx < nSelectToPx && selectArea.GetTo().x != INT_MAX ){
 				const int nCharWidth = view.GetTextMetrics().GetHankakuDx();
 				RECT rcSelect; // Pixel
 				rcSelect.top    = pInfo->pDispPos->GetDrawPos().y;

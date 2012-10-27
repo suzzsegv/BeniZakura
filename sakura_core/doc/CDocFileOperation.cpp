@@ -23,7 +23,7 @@ bool CDocFileOperation::_ToDoLock() const
 	if( !m_pcDocRef->m_cDocFile.GetFilePathClass().IsValidPath() )return false;
 
 	// ビューモード
-	if( CAppMode::Instance()->IsViewMode() )return false;
+	if( CAppMode::getInstance()->IsViewMode() )return false;
 
 	// 排他設定
 	if( GetDllShareData().m_Common.m_sFile.m_nFileShareMode == SHAREMODE_NOT_EXCLUSIVE )return false;
@@ -53,7 +53,8 @@ void CDocFileOperation::DoFileUnlock()
 bool CDocFileOperation::OpenFileDialog(
 	HWND				hwndParent,		//!< [in]
 	const TCHAR*		pszOpenFolder,	//!< [in]     NULL以外を指定すると初期フォルダを指定できる
-	SLoadInfo*			pLoadInfo		//!< [in/out] ロード情報
+	SLoadInfo*			pLoadInfo,		//!< [in/out] ロード情報
+	std::vector<std::tstring>&	files
 )
 {
 	/* アクティブにする */
@@ -68,7 +69,7 @@ bool CDocFileOperation::OpenFileDialog(
 		CMRU().GetPathList(),															// MRUリストのファイルのリスト
 		CMRUFolder().GetPathList()														// OPENFOLDERリストのファイルのリスト
 	);
-	return m_pcDocRef->m_pcEditWnd->m_cDlgOpenFile.DoModalOpenDlg( pLoadInfo );
+	return m_pcDocRef->m_pcEditWnd->m_cDlgOpenFile.DoModalOpenDlg( pLoadInfo, &files );
 }
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
@@ -156,7 +157,7 @@ void CDocFileOperation::ReloadCurrentFile(
 	SLoadInfo sLoadInfo;
 	sLoadInfo.cFilePath=m_pcDocRef->m_cDocFile.GetFilePath();
 	sLoadInfo.eCharCode=nCharCode;
-	sLoadInfo.bViewMode=CAppMode::Instance()->IsViewMode();
+	sLoadInfo.bViewMode=CAppMode::getInstance()->IsViewMode();
 	sLoadInfo.bRequestReload=true;
 	bool bRet = this->DoLoadFlow(&sLoadInfo);
 
@@ -280,7 +281,7 @@ bool CDocFileOperation::SaveFileDialog(
 	// ダイアログを表示
 	m_pcDocRef->m_pcEditWnd->m_cDlgOpenFile.Create(
 		G_AppInstance(),
-		CEditWnd::Instance()->GetHwnd(),
+		CEditWnd::getInstance()->GetHwnd(),
 		szDefaultWildCard,
 		strDefFolder.c_str(),
 		CMRU().GetPathList(),		//	最近のファイル
@@ -320,7 +321,7 @@ bool CDocFileOperation::DoSaveFlow(SSaveInfo* pSaveInfo)
 			if(pSaveInfo->bOverwriteMode){
 				// 無変更の場合は警告音を出し、終了
 				if(!m_pcDocRef->m_cDocEditor.IsModified() && pSaveInfo->cEol==EOL_NONE){ //※改行コード指定保存がリクエストされた場合は、「変更があったもの」とみなす
-					CEditApp::Instance()->m_cSoundSet.NeedlessToSaveBeep();
+					CEditApp::getInstance()->m_cSoundSet.NeedlessToSaveBeep();
 					throw CFlowInterruption();
 				}
 			}
@@ -399,7 +400,7 @@ bool CDocFileOperation::FileSaveAs( const WCHAR* filename, EEolType eEolType )
 		sSaveInfo.cFilePath = to_tchar(filename);
 		sSaveInfo.cEol = eEolType;
 	}else{
-		if(CAppMode::Instance()->IsViewMode())sSaveInfo.cFilePath = _T(""); //※読み込み専用モードのときはファイル名を指定しない
+		if(CAppMode::getInstance()->IsViewMode())sSaveInfo.cFilePath = _T(""); //※読み込み専用モードのときはファイル名を指定しない
 
 		//ダイアログ表示
 		if(!SaveFileDialog(&sSaveInfo))return false;
@@ -469,8 +470,22 @@ void CDocFileOperation::FileCloseOpen( const SLoadInfo& _sLoadInfo )
 	//ファイル名指定が無い場合はダイアログで入力させる
 	SLoadInfo sLoadInfo = _sLoadInfo;
 	if( sLoadInfo.cFilePath.Length()==0 ){
-		if( !OpenFileDialog( CEditWnd::Instance()->GetHwnd(), NULL, &sLoadInfo ) ){
+		std::vector<std::tstring> files;
+		if( !OpenFileDialog( CEditWnd::getInstance()->GetHwnd(), NULL, &sLoadInfo, files ) ){
 			return;
+		}
+		sLoadInfo.cFilePath = files[0].c_str();
+		// 他のファイルは新規ウィンドウ
+		for( size_t i = 1; i < files.size(); i++ ){
+			SLoadInfo sFilesLoadInfo = sLoadInfo;
+			sFilesLoadInfo.cFilePath = files[i].c_str();
+			CControlTray::OpenNewEditor(
+				G_AppInstance(),
+				CEditWnd::getInstance()->GetHwnd(),
+				sFilesLoadInfo,
+				NULL,
+				true
+			);
 		}
 	}
 

@@ -530,7 +530,7 @@ EFunctionCode CKeyBind::GetFuncCodeAt( KeyData& rKeyData, int nState, BOOL bGetD
 	if( bGetDefFuncCode )
 		return GetDefFuncCode( rKeyData.m_nKeyCode, nState );
 	return F_DEFAULT;
-};
+}
 
 
 

@@ -35,19 +35,8 @@ SAKURA_CORE_API void DebugOutA( LPCSTR lpFmt, ...);
 //2007.10.02 kobake ÉÅÉbÉZÅ[ÉWÉ{ÉbÉNÉXÇÃégópÇÕÉfÉoÉbÉOéûÇ…å¿ÇÁÇ»Ç¢ÇÃÇ≈ÅAÅuDebugÅ`ÅvÇ∆Ç¢Ç§ñºëOÇîpé~
 
 //ÉeÉLÉXÉgêÆå`ã@î\ïtÇ´MessageBox
-SAKURA_CORE_API int VMessageBoxF_W( HWND hwndOwner, UINT uType, LPCWSTR lpCaption, LPCWSTR lpText, va_list& v );
-SAKURA_CORE_API int VMessageBoxF_A( HWND hwndOwner, UINT uType, LPCSTR  lpCaption, LPCSTR  lpText, va_list& v );
-SAKURA_CORE_API int MessageBoxF_W ( HWND hwndOwner, UINT uType, LPCWSTR lpCaption, LPCWSTR lpText, ... );
-SAKURA_CORE_API int MessageBoxF_A ( HWND hwndOwner, UINT uType, LPCSTR  lpCaption, LPCSTR  lpText, ... );
-
-//TCHAR
-#ifdef _UNICODE
-	#define VMessageBoxF VMessageBoxF_W
-	#define MessageBoxF  MessageBoxF_W
-#else
-	#define VMessageBoxF VMessageBoxF_A
-	#define MessageBoxF  MessageBoxF_A
-#endif
+SAKURA_CORE_API int VMessageBoxF( HWND hwndOwner, UINT uType, LPCTSTR lpCaption, LPCTSTR lpText, va_list& v );
+SAKURA_CORE_API int MessageBoxF ( HWND hwndOwner, UINT uType, LPCTSTR lpCaption, LPCTSTR lpText, ... );
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 //                 ÉfÉoÉbÉOópÉÅÉbÉZÅ[ÉWèoóÕ                    //
@@ -77,8 +66,8 @@ SAKURA_CORE_API int MessageBoxF_A ( HWND hwndOwner, UINT uType, LPCSTR  lpCaptio
 #define DBPRINT_W(...)
 #else
 // Not support C99 variable macro
-inline void DBPRINT_A( ... ){};
-inline void DBPRINT_W( ... ){};
+inline void DBPRINT_A( ... ){}
+inline void DBPRINT_W( ... ){}
 #endif
 #endif
 
@@ -124,49 +113,39 @@ void DBMSG_IMP(const ACHAR* msg); //!< ÉÅÉbÉZÅ[ÉWÉ{ÉbÉNÉXÇï\é¶ÅBÉLÉÉÉvÉVÉáÉìÇ…Ç
 
 //ÉfÉoÉbÉOópÉÅÉbÉZÅ[ÉWÉ{ÉbÉNÉX
 #define MYMESSAGEBOX MessageBoxF
-#define MYMESSAGEBOX_A MessageBoxF_A
 
 //àÍî ÇÃåxçêâπ
 #define DefaultBeep()   MessageBeep(MB_OK)
 
 //ÉGÉâÅ[ÅFê‘ä€Ç…ÅuÅ~Åv[OK]
 int ErrorMessage  (HWND hwnd, LPCTSTR format, ...);
-int ErrorMessage_A(HWND hwnd, LPCSTR  format, ...);
 //(TOPMOST)
 int TopErrorMessage  (HWND hwnd, LPCTSTR format, ...);
-int TopErrorMessage_A(HWND hwnd, LPCSTR format, ...);
 #define ErrorBeep()     MessageBeep(MB_ICONSTOP)
 
 //åxçêÅFéOäpÇ…ÅuÅIÅv[OK]
 int WarningMessage   (HWND hwnd, LPCTSTR format, ...);
-int WarningMessage_A (HWND hwnd, LPCSTR  format, ...);
 int TopWarningMessage(HWND hwnd, LPCTSTR format, ...);
 #define WarningBeep()   MessageBeep(MB_ICONEXCLAMATION)
 
 //èÓïÒÅFê¬ä€Ç…ÅuiÅv[OK]
 int InfoMessage   (HWND hwnd, LPCTSTR format, ...);
-int InfoMessage_A (HWND hwnd, LPCSTR  format, ...);
 int TopInfoMessage(HWND hwnd, LPCTSTR format, ...);
 #define InfoBeep()      MessageBeep(MB_ICONINFORMATION)
 
 //ämîFÅFêÅÇ´èoÇµÇÃÅuÅHÅv [ÇÕÇ¢][Ç¢Ç¢Ç¶] ñﬂÇËíl:IDYES,IDNO
 int ConfirmMessage   (HWND hwnd, LPCTSTR format, ...);
-int ConfirmMessage_A (HWND hwnd, LPCSTR  format, ...);
 int TopConfirmMessage(HWND hwnd, LPCTSTR format, ...);
 #define ConfirmBeep()   MessageBeep(MB_ICONQUESTION)
 
 //ÇªÇÃëºÉÅÉbÉZÅ[ÉWï\é¶ópÉ{ÉbÉNÉX[OK]
 int OkMessage  (HWND hwnd, LPCTSTR format, ...);
-int OkMessage_A(HWND hwnd, LPCSTR  format, ...);
 int TopOkMessage  (HWND hwnd, LPCTSTR format, ...);
-int TopOkMessage_A(HWND hwnd, LPCSTR format, ...);
 
 //É^ÉCÉvéwíËÉÅÉbÉZÅ[ÉWï\é¶ópÉ{ÉbÉNÉX
 int CustomMessage(HWND hwnd, UINT uType, LPCTSTR format, ...);
-int CustomMessage_A(HWND hwnd, UINT uType, LPCSTR format, ...);
 //(TOPMOST)
 int TopCustomMessage(HWND hwnd, UINT uType, LPCTSTR format, ...);
-int TopCustomMessage_A(HWND hwnd, UINT uType, LPCSTR format, ...);
 
 //çÏé“Ç…ã≥Ç¶Çƒó~ÇµÇ¢ÉGÉâÅ[
 int PleaseReportToAuthor(HWND hwnd, LPCTSTR format, ...);

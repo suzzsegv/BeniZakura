@@ -477,7 +477,7 @@ void GetInidir(
 	
 	TCHAR	szPath[_MAX_PATH];
 	// sakura.ini のパスを取得
-	CFileNameManager::Instance()->GetIniFileName( szPath );
+	CFileNameManager::getInstance()->GetIniFileName( szPath );
 	if( szFile == NULL ){
 		SplitPath_FolderAndFile( szPath, pDir, NULL );
 	}
@@ -598,8 +598,8 @@ bool IsDirectory(LPCTSTR pszPath)
 	取得できる．(ryoji)
 */
 bool GetLastWriteTimestamp(
-	const TCHAR*	pszFileName,	//[in]  ファイルのパス
-	CFileTime*		pcFileTime		//[out] 更新日時を返す場所
+	const TCHAR*	pszFileName,	//!< [in]  ファイルのパス
+	CFileTime*		pcFileTime		//!< [out] 更新日時を返す場所
 )
 {
 	HANDLE hFindFile;

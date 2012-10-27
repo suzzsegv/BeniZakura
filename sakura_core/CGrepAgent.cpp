@@ -24,9 +24,9 @@ ECallbackResult CGrepAgent::OnBeforeClose()
 	//GREP処理中は終了できない
 	if( m_bGrepRunning ){
 		// アクティブにする
-		ActivateFrameWindow( CEditWnd::Instance()->GetHwnd() );	//@@@ 2003.06.25 MIK
+		ActivateFrameWindow( CEditWnd::getInstance()->GetHwnd() );	//@@@ 2003.06.25 MIK
 		TopInfoMessage(
-			CEditWnd::Instance()->GetHwnd(),
+			CEditWnd::getInstance()->GetHwnd(),
 			_T("Grepの処理中です。\n")
 		);
 		return CALLBACK_INTERRUPT;
@@ -38,7 +38,7 @@ void CGrepAgent::OnAfterSave(const SSaveInfo& sSaveInfo)
 {
 	// 名前を付けて保存から再ロードが除去された分の不足処理を追加（ANSI版との差異）	// 2009.08.12 ryoji
 	m_bGrepMode = false;	// grepウィンドウは通常ウィンドウ化
-	wcscpy( CAppMode::Instance()->m_szGrepKey, L"" );
+	wcscpy( CAppMode::getInstance()->m_szGrepKey, L"" );
 }
 
 
@@ -51,6 +51,7 @@ void CGrepAgent::OnAfterSave(const SSaveInfo& sSaveInfo)
 
   @date 2008.12.07 nasukoji	ファイル名パターンのバッファオーバラン対策
   @date 2008.12.13 genta 検索パターンのバッファオーバラン対策
+  @date 2012.10.13 novice 検索オプションをクラスごと代入
 */
 DWORD CGrepAgent::DoGrep(
 	CEditView*				pcViewDst,
@@ -105,10 +106,7 @@ DWORD CGrepAgent::DoGrep(
 
 	pcViewDst->m_bCurSrchKeyMark = true;								/* 検索文字列のマーク */
 	wcscpy( pcViewDst->m_szCurSrchKey, pcmGrepKey->GetStringPtr() );	/* 検索文字列 */
-	pcViewDst->m_sCurSearchOption.bRegularExp = sSearchOption.bRegularExp;		/* 検索／置換  1==正規表現 */
-	pcViewDst->m_sCurSearchOption.bLoHiCase   = sSearchOption.bLoHiCase;			/* 検索／置換  1==英大文字小文字の区別 */
-	// 2010.08.21 単語単位の適用漏れ
-	pcViewDst->m_sCurSearchOption.bWordOnly   = sSearchOption.bWordOnly;
+	pcViewDst->m_sCurSearchOption = sSearchOption;						// 検索オプション
 
 	/* 正規表現 */
 
@@ -148,7 +146,7 @@ DWORD CGrepAgent::DoGrep(
 	//	2008.12.13 genta パターンが長すぎる場合は登録しない
 	//	(正規表現が途中で途切れると困るので)
 	//	2011.12.10 Moca 表示の際に...に切り捨てられるので登録するように
-	wcsncpy_s( CAppMode::Instance()->m_szGrepKey, _countof(CAppMode::Instance()->m_szGrepKey), pcmGrepKey->GetStringPtr(), _TRUNCATE );
+	wcsncpy_s( CAppMode::getInstance()->m_szGrepKey, _countof(CAppMode::getInstance()->m_szGrepKey), pcmGrepKey->GetStringPtr(), _TRUNCATE );
 	this->m_bGrepMode = true;
 
 	//	2007.07.22 genta
@@ -177,7 +175,7 @@ DWORD CGrepAgent::DoGrep(
 
 	//	Sep. 10, 2002 genta
 	//	CEditWndに新設した関数を使うように
-	CEditWnd*	pCEditWnd = CEditWnd::Instance();	//	Sep. 10, 2002 genta
+	CEditWnd*	pCEditWnd = CEditWnd::getInstance();	//	Sep. 10, 2002 genta
 	pCEditWnd->SetWindowIcon( hIconSmall, ICON_SMALL );
 	pCEditWnd->SetWindowIcon( hIconBig, ICON_BIG );
 
@@ -298,8 +296,8 @@ DWORD CGrepAgent::DoGrep(
 	// 2003.06.23 Moca 共通設定で変更できるように
 	// 2008.06.08 ryoji 全ビューの表示ON/OFFを同期させる
 //	SetDrawSwitch(false);
-	if( !CEditWnd::Instance()->UpdateTextWrap() )	// 折り返し方法関連の更新
-		CEditWnd::Instance()->RedrawAllViews( pcViewDst );	//	他のペインの表示を更新
+	if( !CEditWnd::getInstance()->UpdateTextWrap() )	// 折り返し方法関連の更新
+		CEditWnd::getInstance()->RedrawAllViews( pcViewDst );	//	他のペインの表示を更新
 	pcViewDst->SetDrawSwitch(0 != GetDllShareData().m_Common.m_sSearch.m_bGrepRealTimeView);
 
 
@@ -337,7 +335,7 @@ DWORD CGrepAgent::DoGrep(
 	cDlgCancel.CloseDialog( 0 );
 
 	/* アクティブにする */
-	ActivateFrameWindow( CEditWnd::Instance()->GetHwnd() );
+	ActivateFrameWindow( CEditWnd::getInstance()->GetHwnd() );
 
 
 	/* アンドゥバッファの処理 */
@@ -569,7 +567,7 @@ int CGrepAgent::DoGrepTree(
 			}
 
 			/* 表示設定をチェック */
-			CEditWnd::Instance()->SetDrawSwitchOfAllViews(
+			CEditWnd::getInstance()->SetDrawSwitchOfAllViews(
 				0 != ::IsDlgButtonChecked( pcDlgCancel->GetHwnd(), IDC_CHECK_REALTIMEVIEW )
 			);
 
@@ -663,8 +661,8 @@ int CGrepAgent::DoGrepTree(
 						if( 0 < cmemMessage.GetStringLength() ){
 							pcViewDst->GetCommander().Command_ADDTAIL( cmemMessage.GetStringPtr(), cmemMessage.GetStringLength() );
 							pcViewDst->GetCommander().Command_GOFILEEND( FALSE );
-							if( !CEditWnd::Instance()->UpdateTextWrap() )	// 折り返し方法関連の更新	// 2008.06.10 ryoji
-								CEditWnd::Instance()->RedrawAllViews( pcViewDst );	//	他のペインの表示を更新
+							if( !CEditWnd::getInstance()->UpdateTextWrap() )	// 折り返し方法関連の更新	// 2008.06.10 ryoji
+								CEditWnd::getInstance()->RedrawAllViews( pcViewDst );	//	他のペインの表示を更新
 							cmemMessage.Clear();
 						}
 						nWork = 0;
@@ -702,8 +700,8 @@ int CGrepAgent::DoGrepTree(
 	if( 0 < cmemMessage.GetStringLength() ){
 		pcViewDst->GetCommander().Command_ADDTAIL( cmemMessage.GetStringPtr(), cmemMessage.GetStringLength() );
 		pcViewDst->GetCommander().Command_GOFILEEND( FALSE );
-		if( !CEditWnd::Instance()->UpdateTextWrap() )	// 折り返し方法関連の更新
-			CEditWnd::Instance()->RedrawAllViews( pcViewDst );	//	他のペインの表示を更新
+		if( !CEditWnd::getInstance()->UpdateTextWrap() )	// 折り返し方法関連の更新
+			CEditWnd::getInstance()->RedrawAllViews( pcViewDst );	//	他のペインの表示を更新
 		cmemMessage.Clear();
 	}
 
@@ -730,7 +728,7 @@ int CGrepAgent::DoGrepTree(
 				goto cancel_return;
 			}
 			/* 表示設定をチェック */
-			CEditWnd::Instance()->SetDrawSwitchOfAllViews(
+			CEditWnd::getInstance()->SetDrawSwitchOfAllViews(
 				0 != ::IsDlgButtonChecked( pcDlgCancel->GetHwnd(), IDC_CHECK_REALTIMEVIEW )
 			);
 
@@ -805,8 +803,8 @@ error_return:;
 	if( 0 < cmemMessage.GetStringLength() ){
 		pcViewDst->GetCommander().Command_ADDTAIL( cmemMessage.GetStringPtr(), cmemMessage.GetStringLength() );
 		pcViewDst->GetCommander().Command_GOFILEEND( FALSE );
-		if( !CEditWnd::Instance()->UpdateTextWrap() )	// 折り返し方法関連の更新
-			CEditWnd::Instance()->RedrawAllViews( pcViewDst );	//	他のペインの表示を更新
+		if( !CEditWnd::getInstance()->UpdateTextWrap() )	// 折り返し方法関連の更新
+			CEditWnd::getInstance()->RedrawAllViews( pcViewDst );	//	他のペインの表示を更新
 		cmemMessage.Clear();
 	}
 
@@ -899,41 +897,27 @@ void CGrepAgent::SetGrepResult(
 /*!
 	Grep実行 (CFileLoadを使ったテスト版)
 
-	@param pcDlgCancel		[in] Cancelダイアログへのポインタ
-	@param hwndCancel		[in] Cancelダイアログのウィンドウハンドル
-	@param pszKey			[in] 検索パターン
-	@param pattern			[in] 
-	@param pszFile			[in] 処理対象ファイル名(表示用)
-	@param bGrepLoHiCase	[in] TRUE: 大文字小文字の区別あり / FALSE: 無し
-	@param bGrepRegularExp	[in] TRUE: 検索パターンは正規表現 / FALSE: 文字列
-	@param nGrepCharSet		[in] 文字コードセット (0:自動認識)～
-	@param bGrepOutputLine	[in] TRUE: ヒット行を出力 / FALSE: ヒット部分を出力
-	@param bWordOnly		[in] TRUE: 単語単位で一致を判断 / FALSE: 部分にも一致する
-	@param nGrepOutputStyle	[in] 出力形式 1: Normal, 2: WZ風(ファイル単位)
-	@param pRegexp			[in] 正規表現コンパイルデータ。既にコンパイルされている必要がある
-	@param pnHitCount		[i/o] ヒット数の合計．元々の値に見つかった数を加算して返す．
-	@param pszFullPath		[in] 処理対象ファイルパス
-
 	@retval -1 GREPのキャンセル
 	@retval それ以外 ヒット数(ファイル検索時はファイル数)
 
+	@date 2001/06/27 genta	正規表現ライブラリの差し替え
 	@date 2002/08/30 Moca CFileLoadを使ったテスト版
 	@date 2004/03/28 genta 不要な引数nNest, bGrepSubFolder, pszPathを削除
 */
 int CGrepAgent::DoGrepFile(
-	CEditView*				pcViewDst,
-	CDlgCancel*				pcDlgCancel,
-	HWND					hwndCancel,
-	const wchar_t*			pszKey,
-	const TCHAR*			pszFile,
-	const SSearchOption&	sSearchOption,
-	ECodeType				nGrepCharSet,
-	BOOL					bGrepOutputLine,
-	int						nGrepOutputStyle,
-	CBregexp*				pRegexp,		//	Jun. 27, 2001 genta	正規表現ライブラリの差し替え
-	int*					pnHitCount,
-	const TCHAR*			pszFullPath,
-	CNativeW&				cmemMessage
+	CEditView*				pcViewDst,			//!< 
+	CDlgCancel*				pcDlgCancel,		//!< [in] Cancelダイアログへのポインタ
+	HWND					hwndCancel,			//!< [in] Cancelダイアログのウィンドウハンドル
+	const wchar_t*			pszKey,				//!< [in] 検索パターン
+	const TCHAR*			pszFile,			//!< [in] 処理対象ファイル名(表示用)
+	const SSearchOption&	sSearchOption,		//!< [in] 検索オプション
+	ECodeType				nGrepCharSet,		//!< [in] 文字コードセット (0:自動認識)～
+	BOOL					bGrepOutputLine,	//!< [in] TRUE: ヒット行を出力 / FALSE: ヒット部分を出力
+	int						nGrepOutputStyle,	//!< [in] 出力形式 1: Normal, 2: WZ風(ファイル単位)
+	CBregexp*				pRegexp,			//!< [in] 正規表現コンパイルデータ。既にコンパイルされている必要がある
+	int*					pnHitCount,			//!< [i/o] ヒット数の合計．元々の値に見つかった数を加算して返す．
+	const TCHAR*			pszFullPath,		//!< [in] 処理対象ファイルパス
+	CNativeW&				cmemMessage			//!< 
 )
 {
 	int		nHitCount;
@@ -950,7 +934,7 @@ int CGrepAgent::DoGrepFile(
 	bOutFileName = FALSE;
 	CEol	cEol;
 	int		nEolCodeLen;
-	CFileLoad	cfl;
+	CFileLoad	cfl( pcViewDst->GetDocument()->m_cDocType.GetDocumentAttribute().m_encoding );
 	int		nOldPercent = 0;
 
 	int	nKeyKen = wcslen( pszKey );
@@ -969,7 +953,7 @@ int CGrepAgent::DoGrepFile(
 			// 2003.06.10 Moca コード判別処理をここに移動．
 			// 判別エラーでもファイル数にカウントするため
 			// ファイルの日本語コードセット判別
-			CCodeMediator cmediator( CEditWnd::Instance()->GetDocument() );
+			CCodeMediator cmediator( pcViewDst->GetDocument()->m_cDocType.GetDocumentAttribute().m_encoding );
 			nCharCode = cmediator.CheckKanjiCodeOfFile( pszFullPath );
 			if( !IsValidCodeType(nCharCode) ){
 				pszCodeName = _T("  [(DetectError)]");
@@ -995,7 +979,7 @@ int CGrepAgent::DoGrepFile(
 	// ファイルを開く
 	// FileCloseで明示的に閉じるが、閉じていないときはデストラクタで閉じる
 	// 2003.06.10 Moca 文字コード判定処理もFileOpenで行う
-	nCharCode = cfl.FileOpen( pszFullPath, nGrepCharSet, 0 );
+	nCharCode = cfl.FileOpen( pszFullPath, nGrepCharSet, GetDllShareData().m_Common.m_sFile.GetAutoMIMEdecode() );
 	if( CODE_AUTODETECT == nGrepCharSet ){
 		pszCodeName = CCodeTypeName(nCharCode).Bracket();
 	}
@@ -1034,7 +1018,7 @@ int CGrepAgent::DoGrepFile(
 				return -1;
 			}
 			//	2003.06.23 Moca 表示設定をチェック
-			CEditWnd::Instance()->SetDrawSwitchOfAllViews(
+			CEditWnd::getInstance()->SetDrawSwitchOfAllViews(
 				0 != ::IsDlgButtonChecked( pcDlgCancel->GetHwnd(), IDC_CHECK_REALTIMEVIEW )
 			);
 			// 2002/08/30 Moca 進行状態を表示する(5MB以上)

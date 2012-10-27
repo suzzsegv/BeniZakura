@@ -33,6 +33,7 @@
 #define IDD_OPERATIONRUNNING            135
 #define IDD_DIFF                        136
 #define IDD_CTRLCODE                    137
+#define IDD_MACRORUNNING                138
 #define IDB_MYTOOL                      200
 #define IDI_ICON_STD                    210
 #define IDI_ICON_DEBUG                  211
@@ -234,6 +235,7 @@
 #define IDC_STATIC_MYICON               1184
 #define IDC_EDIT_HOKANFILE              1185
 #define IDC_BUTTON_HOKANFILE_REF        1186
+#define IDC_COMBO_HOKAN_TYPE            1187
 #define IDC_LIST_COLORS                 1188
 #define IDC_CHECK_DISP                  1189
 #define IDC_CHECK_FAT                   1190
@@ -662,6 +664,8 @@
 #define IDC_CHECK_CONVERTEOLPASTE       1611
 #define IDC_CHECK_OpenNewWin            1612
 #define IDC_BUTTON_TABFONT              1613
+#define IDC_MACROCANCELTIMER            1614
+#define IDC_PLUGIN_OpenFolder           1615
 #define IDS_AUTHOR_PAGE                 4054
 #define IDS_ABOUT_DESCRIPTION           4056
 #define IDD_TYPELIST                    5000

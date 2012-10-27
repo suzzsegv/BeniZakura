@@ -93,7 +93,7 @@ CPropCommon::CPropCommon()
 	m_nPageNum = ID_PAGENUM_GENERAL;
 
 	/* ヘルプファイルのフルパスを返す */
-	m_pszHelpFile = CEditApp::Instance()->GetHelpFilePath();
+	m_pszHelpFile = CEditApp::getInstance()->GetHelpFilePath();
 
 	return;
 }
@@ -140,7 +140,7 @@ void CPropCommon::Create( HWND hwndParent, CImageListMgr* cIcons, CSMacroMgr* pM
 	保持する構造体
 */
 struct ComPropSheetInfo {
-	const TCHAR* szTabname;								//!< TABの表示名
+	const TCHAR* szTabname;									//!< TABの表示名
 	unsigned int resId;										//!< Property sheetに対応するDialog resource
 	INT_PTR (CALLBACK *DProc)(HWND, UINT, WPARAM, LPARAM);	//!< Dialog Procedure
 };
@@ -246,10 +246,8 @@ int CPropCommon::DoPropertySheet( int nPageNum/*, int nActiveItem*/ )
 			0,
 			NULL
 		);
-		::MYMESSAGEBOX(
-			NULL, 
-			MB_OK | MB_ICONINFORMATION | MB_TOPMOST,
-			_T("作者に教えて欲しいエラー"),
+		PleaseReportToAuthor(
+			NULL,
 			_T("CPropCommon::DoPropertySheet()内でエラーが出ました。\n")
 			_T("psh.nStartPage=[%d]\n")
 			_T("::PropertySheet()失敗\n")

@@ -95,7 +95,7 @@ CPropTypes::CPropTypes()
 	}
 	
 	/* ヘルプファイルのフルパスを返す */
-	m_pszHelpFile = CEditApp::Instance()->GetHelpFilePath();
+	m_pszHelpFile = CEditApp::getInstance()->GetHelpFilePath();
 
 	((CPropScreen*)(this))->CPropTypes_Screen();
 }
@@ -238,7 +238,8 @@ int CPropTypes::DoPropertySheet( int nPageNum )
 			0,
 			NULL
 		);
-		::MYMESSAGEBOX( NULL, MB_OK | MB_ICONINFORMATION | MB_TOPMOST, _T("作者に教えて欲しいエラー"),
+		PleaseReportToAuthor(
+			NULL,
 			_T("CPropTypes::DoPropertySheet()内でエラーが出ました。\n")
 			_T("psh.nStartPage=[%d]\n")
 			_T("::PropertySheet()失敗。\n")

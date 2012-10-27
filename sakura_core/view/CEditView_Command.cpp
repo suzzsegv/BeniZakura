@@ -35,7 +35,7 @@ bool CEditView::TagJumpSub(
 	TagJump	tagJump;
 
 	// 参照元ウィンドウ保存
-	tagJump.hwndReferer = CEditWnd::Instance()->GetHwnd();
+	tagJump.hwndReferer = CEditWnd::getInstance()->GetHwnd();
 
 	//	Feb. 17, 2007 genta 実行ファイルからの相対指定の場合は
 	//	予め絶対パスに変換する．(キーワードヘルプジャンプで用いる)
@@ -134,14 +134,6 @@ bool CEditView::TagJumpSub(
 
 
 /*! 指定拡張子のファイルに対応するファイルを開く補助関数
-
-	@param bCheckOnly 
-	@param bBeepWhenMiss 
-	@param file_ext 
-	@param file_extno 
-	@param open_ext 
-	@param open_extno
-	@param errmes 
 
 	@date 2003.06.28 Moca ヘッダ・ソースファイルオープン機能のコードを統合
 	@date 2008.04.09 ryoji 処理対象(file_ext)と開く対象(open_ext)の扱いが逆になっていたのを修正
@@ -245,7 +237,7 @@ open_c:;
 		GetCaret().GetCaretLayoutPos(),
 		&tagJump.point
 	);
-	tagJump.hwndReferer = CEditWnd::Instance()->GetHwnd();
+	tagJump.hwndReferer = CEditWnd::getInstance()->GetHwnd();
 	// タグジャンプ情報の保存
 	CTagJumpManager().PushTagJump(&tagJump);
 	return TRUE;

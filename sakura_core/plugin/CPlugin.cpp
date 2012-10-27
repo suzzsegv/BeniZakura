@@ -80,23 +80,33 @@ bool CPlugin::ReadPluginDefCommon( CDataProfile *cProfile )
 }
 
 //プラグイン定義ファイルのPlugセクションを読み込む
+// @date 2011.08.20 syat Plugセクションも複数定義可能とする
 bool CPlugin::ReadPluginDefPlug( CDataProfile *cProfile )
 {
 	unsigned int i;
-	std::vector<JackDef> jacks = CJackManager::Instance()->GetJackDef();
+	std::vector<JackDef> jacks = CJackManager::getInstance()->GetJackDef();
 	wstring sKey;
 	wstring sHandler;
 	wstring sLabel;
+	wchar_t szIndex[8];
 
 	for( i=0; i<jacks.size(); i++ ){
 		sKey = jacks[i].szName;
-		if( cProfile->IOProfileData( PII_PLUG, sKey.c_str(), sHandler ) ){
-			//ラベルの取得
-			sKey += L".Label";
-			cProfile->IOProfileData( PII_PLUG, sKey.c_str(), sLabel );
+		for( int nCount = 0; nCount < MAX_PLUG_CMD; nCount++ ){
+			if( nCount == 0 ){
+				szIndex[0] = L'\0';
+			}else{
+				swprintf(szIndex, L"[%d]", nCount);
+			}
+			if( cProfile->IOProfileData( PII_PLUG, (sKey + szIndex).c_str(), sHandler ) ){
+				//ラベルの取得
+				cProfile->IOProfileData( PII_PLUG, (sKey + szIndex + L".Label").c_str(), sLabel );
 
-			CPlug *newPlug = CreatePlug( *this, 0, jacks[i].szName, sHandler, sLabel );
-			m_plugs.push_back( newPlug );
+				CPlug *newPlug = CreatePlug( *this, nCount, jacks[i].szName, sHandler, sLabel );
+				m_plugs.push_back( newPlug );
+			}else{
+				break;		//定義がなければ読み込みを終了
+			}
 		}
 	}
 
@@ -207,7 +217,7 @@ int CPlugin::AddCommand( const WCHAR* handler, const WCHAR* label, const WCHAR* 
 	m_plugs.push_back( newPlug );
 
 	if( doRegister ){
-		CJackManager::Instance()->RegisterPlug( PP_COMMAND_STR, newPlug );
+		CJackManager::getInstance()->RegisterPlug( PP_COMMAND_STR, newPlug );
 	}
 	return newPlug->GetFunctionCode();
 }
