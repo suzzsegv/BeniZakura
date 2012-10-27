@@ -7,7 +7,7 @@
 #include "view/CEditView.h" // SColorStrategyInfo
 #include "view/colors/CColorStrategy.h"
 
-//!CPPキーワードで始まっていれば true
+//! CPPキーワードで始まっていれば true
 inline bool IsHeadCppKeyword(const wchar_t* pData)
 {
 	#define HEAD_EQ(DATA,LITERAL) (wcsncmp(DATA,LITERAL,_countof(LITERAL)-1)==0)
@@ -20,10 +20,110 @@ inline bool IsHeadCppKeyword(const wchar_t* pData)
 }
 
 
-/* C/C++ */
-// Oct. 31, 2000 JEPRO VC++の生成するテキストファイルも読めるようにする
-// Jan. 24, 2004 genta 関連づけ上好ましくないのでdsw,dsp,dep,makははずす
-//	2003.06.23 Moca ファイル内からの入力補完機能
+/*!
+ *	C/C++ キーワード
+ */
+const wchar_t* g_ppszKeywordsCPP[] = {
+	L"__FILE__",
+	L"__declspec",
+	L"asm",
+	L"auto",
+	L"break",
+	L"case",
+	L"catch",
+	L"const",
+	L"const_cast",
+	L"continue",
+	L"default",
+	L"delete",
+	L"do",
+	L"dynamic_cast",
+	L"else",
+	L"explicit",
+	L"export",
+	L"extern",
+	L"false",
+	L"for",
+	L"friend",
+	L"goto",
+	L"if",
+	L"inline",
+	L"mutable",
+	L"namespace",
+	L"new",
+	L"operator",
+	L"private",
+	L"protected",
+	L"public",
+	L"register",
+	L"reinterpret_cast",
+	L"return",
+	L"sizeof",
+	L"static",
+	L"static_cast",
+	L"switch",
+	L"template",
+	L"this",
+	L"throw",
+	L"true",
+	L"try",
+	L"typedef",
+	L"typeid",
+	L"typename",
+	L"using",
+	L"virtual",
+	L"volatile",
+	L"while"
+};
+int g_nKeywordsCPP = _countof(g_ppszKeywordsCPP);
+
+/*!
+ *	C/C++ プリプロセッサ キーワード
+ */
+static const wchar_t* g_defaultKeywordSetCppPreprocessor[] = {
+	L"#define",
+	L"#elif",
+	L"#else",
+	L"#endif",
+	L"#error",
+	L"#if",
+	L"#ifdef",
+	L"#ifndef",
+	L"#include",
+	L"#line",
+	L"#pragma",
+	L"#undef"
+};
+
+/*!
+ *	C/C++ データタイプ キーワード
+ */
+static const wchar_t* g_defaultKeywordSetCppDataType[] = {
+	L"bool",
+	L"_Bool",
+	L"char",
+	L"class",
+	L"_Complex",
+	L"double",
+	L"enum",
+	L"float",
+	L"int",
+	L"_Imaginary",
+	L"long",
+	L"short",
+	L"signed",
+	L"struct",
+	L"union",
+	L"unsigned",
+	L"void",
+	L"wchar_t"
+};
+
+/*!
+ *	C/C++ タイプ別設定のデフォルト値を設定する
+ *
+ *	@return なし
+ */
 void CType_Cpp::InitTypeConfigImp(STypeConfig* pType)
 {
 	//名前と拡張子
@@ -33,17 +133,34 @@ void CType_Cpp::InitTypeConfigImp(STypeConfig* pType)
 	//設定
 	pType->m_cLineComment.CopyTo( 0, L"//", -1 );							/* 行コメントデリミタ */
 	pType->m_cBlockComments[0].SetBlockCommentRule( L"/*", L"*/" );			/* ブロックコメントデリミタ */
-	pType->m_nKeyWordSetIdx[0] = 0;											/* キーワードセット */
-	pType->m_nKeyWordSetIdx[1] = 16;										/* 強調キーワード セット2 */
-	pType->m_nKeyWordSetIdx[2] = 17;										/* 強調キーワード セット3 */
 	pType->m_eDefaultOutline = OUTLINE_CPP;									/* アウトライン解析方法 */
 	pType->m_eSmartIndent = SMARTINDENT_CPP;								/* スマートインデント種別 */
 	pType->m_ColorInfoArr[COLORIDX_DIGIT].m_bDisp = true;					//半角数値を色分け表示	//Mar. 10, 2001 JEPRO
 	pType->m_ColorInfoArr[COLORIDX_COMMENT2].m_bDisp = true;				// C/C++ プリプロセッサによるコメントアウトブロック
 	pType->m_ColorInfoArr[COLORIDX_BRACKET_PAIR].m_bDisp = true;			//	Sep. 21, 2002 genta 対括弧の強調をデフォルトONに
 	pType->m_bUseHokanByFile = TRUE;										/*! 入力補完 開いているファイル内から候補を探す */
-}
 
+	pType->m_nKeyWordSetIdx[0] = AddDefaultKeywordSet(
+										L"C/C++",
+										true,
+										g_nKeywordsCPP,
+										g_ppszKeywordsCPP
+									);
+
+	pType->m_nKeyWordSetIdx[1] = AddDefaultKeywordSet(
+										L"C/C++ Preprocessor",
+										true,
+										_countof(g_defaultKeywordSetCppPreprocessor),
+										g_defaultKeywordSetCppPreprocessor
+									);
+
+	pType->m_nKeyWordSetIdx[2] = AddDefaultKeywordSet(
+										L"C/C++ Data Type",
+										true,
+										_countof(g_defaultKeywordSetCppDataType),
+										g_defaultKeywordSetCppDataType
+									);
+}
 
 //	Mar. 15, 2000 genta
 //	From Here
@@ -1328,107 +1445,3 @@ void CEditView::SmartIndent_CPP( wchar_t wcChar )
 		pszData = NULL;
 	}
 }
-
-
-
-/*!
- * C/C++ キーワード
- */
-const wchar_t* g_ppszKeywordsCPP[] = {
-	L"__FILE__",
-	L"__declspec",
-	L"asm",
-	L"auto",
-	L"break",
-	L"case",
-	L"catch",
-	L"const",
-	L"const_cast",
-	L"continue",
-	L"default",
-	L"delete",
-	L"do",
-	L"dynamic_cast",
-	L"else",
-	L"explicit",
-	L"export",
-	L"extern",
-	L"false",
-	L"for",
-	L"friend",
-	L"goto",
-	L"if",
-	L"inline",
-	L"mutable",
-	L"namespace",
-	L"new",
-	L"operator",
-	L"private",
-	L"protected",
-	L"public",
-	L"register",
-	L"reinterpret_cast",
-	L"return",
-	L"sizeof",
-	L"static",
-	L"static_cast",
-	L"switch",
-	L"template",
-	L"this",
-	L"throw",
-	L"true",
-	L"try",
-	L"typedef",
-	L"typeid",
-	L"typename",
-	L"using",
-	L"virtual",
-	L"volatile",
-	L"while"
-};
-int g_nKeywordsCPP = _countof(g_ppszKeywordsCPP);
-
-/*!
- * C/C++ プリプロセッサ キーワード
- */
-const wchar_t* g_ppszKeywordsCPP2[] = {
-	L"#define",
-	L"#elif",
-	L"#else",
-	L"#endif",
-	L"#error",
-	L"#if",
-	L"#ifdef",
-	L"#ifndef",
-	L"#include",
-	L"#line",
-	L"#pragma",
-	L"#undef"
-};
-int g_nKeywordsCPP2 = _countof(g_ppszKeywordsCPP2);
-
-/*!
- * C/C++ データタイプ キーワード
- */
-const wchar_t* g_ppszKeywordsCPP3[] = {
-	L"bool",
-	L"_Bool",
-	L"char",
-	L"class",
-	L"_Complex",
-	L"double",
-	L"enum",
-	L"float",
-	L"int",
-	L"_Imaginary",
-	L"long",
-	L"short",
-	L"signed",
-	L"struct",
-	L"union",
-	L"unsigned",
-	L"void",
-	L"wchar_t"
-};
-int g_nKeywordsCPP3 = _countof(g_ppszKeywordsCPP3);
-

@@ -38,6 +38,28 @@ void CType::InitTypeConfig(int nIdx)
 	InitTypeConfigImp(CTypeConfig(nIdx).GetTypeConfig());
 }
 
+/*!
+ *	キーワードセットのデフォルト値を追加する
+ *
+ *	@return CKeyWordSetMgr に登録したキーワードセット番号
+ */
+int CType::AddDefaultKeywordSet(
+	const wchar_t*	pSetName,			//!< [in] セット名
+	bool			bCaseSensitive,		//!< [in] 大文字小文字の区別．true:あり, false:無し
+	int				numOfKeyWords,		//!< [in] 登録するキーワード数
+	const wchar_t*	pKeyWordSet[]		//!< [in] 登録するキーワードの配列
+)
+{
+	DLLSHAREDATA* pShareData = &GetDllShareData();
+	CKeyWordSetMgr* pKeyWordSetMgr = &pShareData->m_Common.m_sSpecialKeyword.m_CKeyWordSetMgr;
+	int keyWordSetIdx;
+
+	keyWordSetIdx = pKeyWordSetMgr->AddKeyWordSet( pSetName, bCaseSensitive );
+	pKeyWordSetMgr->SetKeyWordArr( keyWordSetIdx, numOfKeyWords, pKeyWordSet );
+
+	return keyWordSetIdx;
+}
+
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 //                        デフォルト                           //

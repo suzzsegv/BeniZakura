@@ -112,11 +112,10 @@ const CKeyWordSetMgr& CKeyWordSetMgr::operator=( CKeyWordSetMgr& cKeyWordSetMgr 
 
 
 /*! @brief キーワードセットの追加
-
-	@date 2005.01.26 Moca 新規作成
-	@date 2005.01.29 genta サイズ0で作成→reallocするように
-*/
-bool CKeyWordSetMgr::AddKeyWordSet(
+ *
+ *	@return 0 ～ n: 追加位置 / -1: 追加失敗
+ */
+int CKeyWordSetMgr::AddKeyWordSet(
 	const wchar_t*	pszSetName,		//!< [in] セット名
 	bool			bKEYWORDCASE,	//!< [in] 大文字小文字の区別．true:あり, false:無し
 	int				nSize			//!< [in] 最初に領域を確保するサイズ．
@@ -124,20 +123,21 @@ bool CKeyWordSetMgr::AddKeyWordSet(
 {
 	if( nSize < 0 ) nSize = nKeyWordSetBlockSize;
 	if( MAX_SETNUM <= m_nKeyWordSetNum ){
-		return false;
+		return -1;
 	}
 	int nIdx = m_nKeyWordSetNum;	//追加位置
 	m_nStartIdx[ ++m_nKeyWordSetNum ] = m_nStartIdx[ nIdx ];// サイズ0でセット追加
 
 	if( !KeyWordReAlloc( nIdx, nSize ) ){
 		--m_nKeyWordSetNum;	//	キーワードセットの追加をキャンセルする
-		return false;
+		return -1;
 	}
 	wcscpy( m_szSetNameArr[nIdx], pszSetName );
 	m_bKEYWORDCASEArr[nIdx] = bKEYWORDCASE;
 	m_nKeyWordNumArr[nIdx] = 0;
 	m_IsSorted[nIdx] = 0;	//MIK 2000.12.01 binary search
-	return true;
+
+	return nIdx;
 }
 
 /* ｎ番目のセットを削除 */

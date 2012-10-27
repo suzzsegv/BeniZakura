@@ -78,7 +78,7 @@ public:
 	~CKeyWordSetMgr();
 	
 	///	@name キーワードセット操作
-	bool AddKeyWordSet(							//!< セットの追加
+	int AddKeyWordSet(							//!< セットの追加
 		const wchar_t*	pszSetName,				//!< [in] セット名
 		bool			bKEYWORDCASE,			//!< [in] 大文字小文字の区別．true:あり, false:無し
 		int				nSize			= -1	//!< [in] 最初に領域を確保するサイズ．

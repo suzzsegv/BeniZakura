@@ -30,6 +30,7 @@
 #include "doc/CBlockComment.h"
 #include "charset/charset.h"  // ECodeType
 #include "CRegexKeyword.h"	// RegexKeywordInfo
+#include "CKeyWordSetMgr.h"
 
 
 /* アウトライン解析の種類 */
@@ -241,6 +242,12 @@ public:
 	void InitTypeConfig(int nIdx);
 protected:
 	virtual void InitTypeConfigImp(STypeConfig* pType) = 0;
+	virtual int		AddDefaultKeywordSet(					//!< キーワードセットのデフォルト値を追加する
+						const wchar_t*	pSetName,			//!< [in] セット名
+						bool			bCaseSensitive,		//!< [in] 大文字小文字の区別．true:あり, false:無し
+						int				numOfKeyWords,		//!< [in] キーワード数
+						const wchar_t*	pKeyWords[]			//!< [in] キーワードの配列(重複・長さ制限等、考慮済みであること)
+					);
 };
 
 #define GEN_CTYPE(CLASS_NAME) \
