@@ -2300,7 +2300,7 @@ bool CViewCommander::Command_RED2_SELECTWORD( void )
 
 	const CLayout*	pcLayout = GetDocument()->m_cLayoutMgr.SearchLineByLayoutY( GetCaret().GetCaretLayoutPos().GetY2() );
 	if( NULL == pcLayout ){
-		goto WordSelectError;
+		return false;
 	}
 
 	/* 指定された桁に対応する行のデータ内の位置を調べる */
@@ -2308,7 +2308,9 @@ bool CViewCommander::Command_RED2_SELECTWORD( void )
 
 	/* 現在位置の単語の範囲を調べる */
 	if( GetDocument()->m_cLayoutMgr.WhereCurrentWord( GetCaret().GetCaretLayoutPos().GetY2(), nIdx, &sRange, NULL, NULL ) == false ){
-		goto WordSelectError;
+		/* 単語選択に失敗した場合には、元の選択開始位置から単語選択をやり直す */
+		GetCaret().MoveCursor( ptCaretFrom, TRUE );
+		return CViewCommander::Command_SELECTWORD();
 	}
 
 	/* 選択開始位置を元に戻す */
@@ -2325,11 +2327,6 @@ bool CViewCommander::Command_RED2_SELECTWORD( void )
 	m_pCommanderView->GetSelectionInfo().DrawSelectArea();
 
 	return true;	//	単語選択に成功。
-
-WordSelectError:
-	/* 単語選択に失敗した場合には、元の選択開始位置から単語選択をやり直す */
-	GetCaret().MoveCursor( ptCaretFrom, TRUE );
-	return CViewCommander::Command_SELECTWORD();
 }
 
 
