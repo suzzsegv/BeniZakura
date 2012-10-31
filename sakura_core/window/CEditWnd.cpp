@@ -36,6 +36,8 @@
 #include "debug/CRunningTimer.h"
 #include "charset/CharPointer.h"
 #include "CEditApp.h"
+#include "recent/CMRU.h"
+#include "recent/CMRUFolder.h"
 #include "util/module.h"
 #include "util/os.h"		//WM_MOUSEWHEEL,WM_THEMECHANGED
 #include "util/window.h"
@@ -2023,6 +2025,9 @@ void CEditWnd::OnCommand( WORD wNotifyCode, WORD wID , HWND hwndCtl )
 			{
 				//検索キーを登録
 				CSearchKeywordManager().AddToSearchKeyArr( szText );
+				GetActiveView().m_strCurSearchKey = szText;
+				GetActiveView().m_bCurSearchUpdate = true;
+				GetActiveView().ChangeCurRegexp();
 			}
 			break;
 		}
@@ -2381,7 +2386,7 @@ void CEditWnd::InitMenu( HMENU hMenu, UINT uPos, BOOL fSystemMenu )
 						//@@@ 2001.12.26 YAZAKI MRUリストは、CMRUに依頼する
 						const CMRU cMRU;
 						hMenuPopUp = cMRU.CreateMenu( hMenu, &m_CMenuDrawer );	//	ファイルメニュー
-						bInList = (cMRU.Length() > 0);
+						bInList = (cMRU.MenuLength() > 0);
 					}
 					break;
 				case F_FOLDER_USED_RECENTLY:	// 最近使ったフォルダ
@@ -2390,7 +2395,7 @@ void CEditWnd::InitMenu( HMENU hMenu, UINT uPos, BOOL fSystemMenu )
 						//@@@ 2001.12.26 YAZAKI OPENFOLDERリストは、CMRUFolderにすべて依頼する
 						const CMRUFolder cMRUFolder;
 						hMenuPopUp = cMRUFolder.CreateMenu( hMenu, &m_CMenuDrawer );
-						bInList = (cMRUFolder.Length() > 0);;
+						bInList = (cMRUFolder.MenuLength() > 0);;
 					}
 					break;
 				case F_CUSTMENU_LIST:			// カスタムメニューリスト
@@ -3549,7 +3554,7 @@ int	CEditWnd::CreateFileDropDownMenu( HWND hwnd )
 	/* MRUリストのファイルのリストをメニューにする */
 	const CMRU cMRU;
 	hMenu = cMRU.CreateMenu( &m_CMenuDrawer );
-	if( cMRU.Length() > 0 )
+	if( cMRU.MenuLength() > 0 )
 	{
 		m_CMenuDrawer.MyAppendMenuSep( hMenu, MF_BYPOSITION | MF_SEPARATOR, 0, NULL, FALSE );
 	}
@@ -3557,7 +3562,7 @@ int	CEditWnd::CreateFileDropDownMenu( HWND hwnd )
 	/* 最近使ったフォルダのメニューを作成 */
 	const CMRUFolder cMRUFolder;
 	hMenuPopUp = cMRUFolder.CreateMenu( &m_CMenuDrawer );
-	if ( cMRUFolder.Length() > 0 )
+	if ( cMRUFolder.MenuLength() > 0 )
 	{
 		//	アクティブ
 		m_CMenuDrawer.MyAppendMenu( hMenu, MF_BYPOSITION | MF_STRING | MF_POPUP, (UINT)hMenuPopUp, _T("最近使ったフォルダ"),  _T("") );

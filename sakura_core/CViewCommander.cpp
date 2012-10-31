@@ -44,17 +44,18 @@
 #include "dlg/CDlgTagJumpList.h"
 #include "dlg/CDlgTagsMake.h"	//@@@ 2003.05.12 MIK
 #include "doc/CDocReader.h"	//  Command_PROPERTY_FILE for _DEBUG
+#include "doc/CDocLine.h"/// 2002/2/3 aroka 追加
 #include "COpeBlk.h"/// 2002/2/3 aroka 追加
 #include "window/CEditWnd.h"/// 2002/2/3 aroka 追加
 #include "outline/CFuncInfoArr.h"
 #include "CMarkMgr.h"/// 2002/2/3 aroka 追加
-#include "doc/CDocLine.h"/// 2002/2/3 aroka 追加
 #include "CPrintPreview.h"
 #include "mem/CMemoryIterator.h"	// @@@ 2002.09.28 YAZAKI
 #include "convert/CDecode_Base64Decode.h"
 #include "convert/CDecode_UuDecode.h"
 #include "io/CBinaryStream.h"
 #include "CEditApp.h"
+#include "recent/CMRU.h"
 #include "util/window.h"
 #include "util/module.h"
 #include "util/shell.h"
@@ -3129,8 +3130,9 @@ void CViewCommander::Command_SEARCH_DIALOG( void )
 	m_pCommanderView->GetCurrentTextForSearchDlg( cmemCurText );	// 2006.08.23 ryoji ダイアログ専用関数に変更
 
 	/* 検索文字列を初期化 */
-	wcscpy( GetEditWindow()->m_cDlgFind.m_szText, cmemCurText.GetStringPtr() );
-
+	if( 0 < cmemCurText.GetStringLength() ){
+		GetEditWindow()->m_cDlgFind.m_strText = cmemCurText.GetStringPtr();
+	}
 	/* 検索ダイアログの表示 */
 	if( NULL == GetEditWindow()->m_cDlgFind.GetHwnd() ){
 		GetEditWindow()->m_cDlgFind.DoModeless( G_AppInstance(), m_pCommanderView->GetHwnd(), (LPARAM)&GetEditWindow()->GetActiveView() );
@@ -3167,7 +3169,12 @@ void CViewCommander::Command_SEARCH_PREV( bool bReDraw, HWND hwndParent )
 
 	//	bFlag1 = FALSE;
 	bSelecting = FALSE;
-	if( L'\0' == GetDllShareData().m_sSearchKeywords.m_aSearchKeys[0][0] ){
+	// 2002.01.16 hor
+	// 共通部分のくくりだし
+	if(!m_pCommanderView->ChangeCurRegexp()){
+		return;
+	}
+	if( 0 == m_pCommanderView->m_strCurSearchKey.size() ){
 		goto end_of_func;
 	}
 	if( m_pCommanderView->GetSelectionInfo().IsTextSelected() ){	/* テキストが選択されているか */
@@ -3209,14 +3216,6 @@ void CViewCommander::Command_SEARCH_PREV( bool bReDraw, HWND hwndParent )
 		/* 指定された桁に対応する行のデータ内の位置を調べる */
 		nIdx = m_pCommanderView->LineColmnToIndex( pcLayout, GetCaret().GetCaretLayoutPos().GetX2() );
 	}
-	// 2002.01.16 hor
-	// 共通部分のくくりだし
-	if(!m_pCommanderView->ChangeCurRegexp()){
-		if( bDisableSelect ){
-			m_pCommanderView->DrawBracketCursorLine(bReDraw);
-		}
-		return;
-	}
 
 	bRedo		=	TRUE;		//	hor
 	nLineNumOld	=	nLineNum;	//	hor
@@ -3226,7 +3225,7 @@ re_do:;							//	hor
 	if( GetDocument()->m_cLayoutMgr.SearchWord(
 		nLineNum,								// 検索開始レイアウト行
 		nIdx,									// 検索開始データ位置
-		m_pCommanderView->m_szCurSrchKey,							// 検索条件
+		m_pCommanderView->m_strCurSearchKey.c_str(),							// 検索条件
 		SEARCH_BACKWARD,						// 0==前方検索 1==後方検索
 		m_pCommanderView->m_sCurSearchOption,						// 検索オプション
 		&sRangeA,								// マッチレイアウト範囲
@@ -3326,9 +3325,11 @@ void CViewCommander::Command_SEARCH_NEXT(
 	CLayoutInt  nLineNumOld;
 
 	bSelecting = FALSE;
-	//	2004.05.30 Moca bChangeCurRegexpに応じて対象文字列を変える
-	if( bChangeCurRegexp  && L'\0' == GetDllShareData().m_sSearchKeywords.m_aSearchKeys[0][0] 
-	 || !bChangeCurRegexp && L'\0' == m_pCommanderView->m_szCurSrchKey[0] ){
+	// 2002.01.16 hor
+	// 共通部分のくくりだし
+	// 2004.05.30 Moca CEditViewの現在設定されている検索パターンを使えるように
+	if(bChangeCurRegexp && !m_pCommanderView->ChangeCurRegexp())return;
+	if( 0 == m_pCommanderView->m_strCurSearchKey.size() ){
 		goto end_of_func;
 	}
 
@@ -3392,16 +3393,6 @@ void CViewCommander::Command_SEARCH_NEXT(
 		}
 	}
 
-	// 2002.01.16 hor
-	// 共通部分のくくりだし
-	// 2004.05.30 Moca CEditViewの現在設定されている検索パターンを使えるように
-	if(bChangeCurRegexp && !m_pCommanderView->ChangeCurRegexp()){
-		if( bDisableSelect ){
-			m_pCommanderView->DrawBracketCursorLine(bRedraw);
-		}
-		return;
-	}
-
 	bool bRedo			= TRUE;		//	hor
 	nLineNumOld = nLineNum;	//	hor
 	int  nIdxOld		= nIdx;		//	hor
@@ -3412,7 +3403,7 @@ re_do:;
 	int nSearchResult = GetDocument()->m_cLayoutMgr.SearchWord(
 		nLineNum,						// 検索開始レイアウト行
 		nIdx,							// 検索開始データ位置
-		m_pCommanderView->m_szCurSrchKey,					// 検索条件
+		m_pCommanderView->m_strCurSearchKey.c_str(),					// 検索条件
 		SEARCH_FORWARD,					// 0==前方検索 1==後方検索
 		m_pCommanderView->m_sCurSearchOption,				// 検索オプション
 		&sRangeA,						// マッチレイアウト範囲
@@ -4812,7 +4803,7 @@ retry:;
 	const TCHAR*	helpfile = CHelpManager().GetExtWinHelp( GetDocument()->m_cDocType.GetDocumentType() );
 
 	/* 現在カーソル位置単語または選択範囲より検索等のキーを取得 */
-	m_pCommanderView->GetCurrentTextForSearch( cmemCurText );
+	m_pCommanderView->GetCurrentTextForSearch( cmemCurText, false );
 	TCHAR path[_MAX_PATH];
 	if( _IS_REL_PATH( helpfile ) ){
 		// 2003.06.23 Moca 相対パスは実行ファイルからのパス
@@ -5692,7 +5683,7 @@ bool CViewCommander::Command_TagJumpByTagsFileMsg( bool bMsg )
 bool CViewCommander::Command_TagJumpByTagsFile( void )
 {
 	CNativeW	cmemKeyW;
-	m_pCommanderView->GetCurrentTextForSearch( cmemKeyW, true );
+	m_pCommanderView->GetCurrentTextForSearch( cmemKeyW, true, true );
 	if( 0 == cmemKeyW.GetStringLength() ){
 		return false;
 	}
@@ -6486,10 +6477,15 @@ void CViewCommander::Command_REPLACE_DIALOG( void )
 	m_pCommanderView->GetCurrentTextForSearchDlg( cmemCurText );	// 2006.08.23 ryoji ダイアログ専用関数に変更
 
 	/* 検索文字列を初期化 */
-	wcscpy( GetEditWindow()->m_cDlgReplace.m_szText, cmemCurText.GetStringPtr() );
-	wcsncpy( GetEditWindow()->m_cDlgReplace.m_szText2, GetDllShareData().m_sSearchKeywords.m_aReplaceKeys[0], MAX_PATH - 1 );	// 2006.08.23 ryoji 前回の置換後文字列を引き継ぐ
-	GetEditWindow()->m_cDlgReplace.m_szText2[MAX_PATH - 1] = L'\0';
-
+	if( 0 < cmemCurText.GetStringLength() ){
+		GetEditWindow()->m_cDlgReplace.m_strText = cmemCurText.GetStringPtr();
+	}
+	if( 0 < GetDllShareData().m_sSearchKeywords.m_aReplaceKeys.size() ){
+		if( GetEditWindow()->m_cDlgReplace.m_nReplaceKeySequence < GetDllShareData().m_Common.m_sSearch.m_nReplaceKeySequence ){
+			GetEditWindow()->m_cDlgReplace.m_strText2 = GetDllShareData().m_sSearchKeywords.m_aReplaceKeys[0];	// 2006.08.23 ryoji 前回の置換後文字列を引き継ぐ
+		}
+	}
+	
 	if ( m_pCommanderView->GetSelectionInfo().IsTextSelected() && !GetSelect().IsLineOne() ) {
 		bSelected = TRUE;	//選択範囲をチェックしてダイアログ表示
 	}else{
@@ -6518,6 +6514,7 @@ void CViewCommander::Command_REPLACE_DIALOG( void )
 	
 	@date 2002/04/08 親ウィンドウを指定するように変更。
 	@date 2003.05.17 かろと 長さ０マッチの無限置換回避など
+	@date 2011.12.18 Moca オプション・検索キーをDllShareDataからm_cDlgReplace/EditViewベースに変更。文字列長制限の撤廃
 */
 void CViewCommander::Command_REPLACE( HWND hwndParent )
 {
@@ -6527,8 +6524,6 @@ void CViewCommander::Command_REPLACE( HWND hwndParent )
 	//2002.02.10 hor
 	int nPaste			=	GetEditWindow()->m_cDlgReplace.m_nPaste;
 	int nReplaceTarget	=	GetEditWindow()->m_cDlgReplace.m_nReplaceTarget;
-	int	bRegularExp		=	GetDllShareData().m_Common.m_sSearch.m_sSearchOption.bRegularExp;
-	int nFlag			=	GetDllShareData().m_Common.m_sSearch.m_sSearchOption.bLoHiCase ? 0x01 : 0x00;
 
 	// From Here 2001.12.03 hor
 	if( nPaste && !GetDocument()->m_cDocEditor.IsEnablePaste()){
@@ -6562,10 +6557,13 @@ void CViewCommander::Command_REPLACE( HWND hwndParent )
 	m_pCommanderView->GetSelectionInfo().DisableSelectArea( TRUE );
 
 	// 2004.06.01 Moca 検索中に、他のプロセスによってm_aReplaceKeysが書き換えられても大丈夫なように
-	const CNativeW	cMemRepKey( GetDllShareData().m_sSearchKeywords.m_aReplaceKeys[0] );
+	const CNativeW	cMemRepKey( GetEditWindow()->m_cDlgReplace.m_strText2.c_str() );
 
 	/* 次を検索 */
 	Command_SEARCH_NEXT( true, TRUE, hwndParent, 0 );
+
+	BOOL	bRegularExp = m_pCommanderView->m_sCurSearchOption.bRegularExp;
+	int 	nFlag       = m_pCommanderView->m_sCurSearchOption.bLoHiCase ? 0x01 : 0x00;
 
 	/* テキストが選択されているか */
 	if( m_pCommanderView->GetSelectionInfo().IsTextSelected() ){
@@ -6593,7 +6591,6 @@ void CViewCommander::Command_REPLACE( HWND hwndParent )
 		} else if ( bRegularExp ) { /* 検索／置換  1==正規表現 */
 			// 先読みに対応するために物理行末までを使うように変更 2005/03/27 かろと
 			// 2002/01/19 novice 正規表現による文字列置換
-			CMemory cmemory;
 			CBregexp cRegexp;
 
 			if( !InitRegexp( m_pCommanderView->GetHwnd(), cRegexp, true ) ){
@@ -6621,7 +6618,7 @@ void CViewCommander::Command_REPLACE( HWND hwndParent )
 			} else {
 				cMemRepKey2 = cMemRepKey;
 			}
-			cRegexp.Compile( GetDllShareData().m_sSearchKeywords.m_aSearchKeys[0], cMemRepKey2.GetStringPtr(), nFlag);
+			cRegexp.Compile( m_pCommanderView->m_strCurSearchKey.c_str(), cMemRepKey2.GetStringPtr(), nFlag);
 			if( cRegexp.Replace(pLine, nLen, nIdx) ){
 				// From Here Jun. 6, 2005 かろと
 				// 物理行末までINSTEXTする方法は、キャレット位置を調整する必要があり、
@@ -6681,19 +6678,22 @@ void CViewCommander::Command_REPLACE( HWND hwndParent )
 	@date 2007.01.16 ryoji 行置換機能を全置換のオプションに変更
 	@date 2009.09.20 genta 左下～右上で矩形選択された領域の置換が行われない
 	@date 2010.09.17 ryoji ラインモード貼り付け処理を追加
+	@date 2011.12.18 Moca オプション・検索キーをDllShareDataからm_cDlgReplace/EditViewベースに変更。文字列長制限の撤廃
 */
 void CViewCommander::Command_REPLACE_ALL()
 {
 
-
-
+	// m_sSearchOption選択のための先に適用
+	if( !m_pCommanderView->ChangeCurRegexp() ){
+		return;
+	}
 
 	//2002.02.10 hor
-	int nPaste			= GetEditWindow()->m_cDlgReplace.m_nPaste;
-	int nReplaceTarget	= GetEditWindow()->m_cDlgReplace.m_nReplaceTarget;
-	int	bRegularExp		= GetDllShareData().m_Common.m_sSearch.m_sSearchOption.bRegularExp;
-	int bSelectedArea	= GetDllShareData().m_Common.m_sSearch.m_bSelectedArea;
-	int bConsecutiveAll	= GetDllShareData().m_Common.m_sSearch.m_bConsecutiveAll;	/* 「すべて置換」は置換の繰返し */	// 2007.01.16 ryoji
+	BOOL nPaste			= GetEditWindow()->m_cDlgReplace.m_nPaste;
+	BOOL nReplaceTarget	= GetEditWindow()->m_cDlgReplace.m_nReplaceTarget;
+	BOOL bRegularExp	= m_pCommanderView->m_sCurSearchOption.bRegularExp;
+	BOOL bSelectedArea	= GetEditWindow()->m_cDlgReplace.m_bSelectedArea;
+	BOOL bConsecutiveAll = GetEditWindow()->m_cDlgReplace.m_bConsecutiveAll;	/* 「すべて置換」は置換の繰返し */	// 2007.01.16 ryoji
 
 	GetEditWindow()->m_cDlgReplace.m_bCanceled=false;
 	GetEditWindow()->m_cDlgReplace.m_nReplaceCnt=0;
@@ -6834,7 +6834,7 @@ void CViewCommander::Command_REPLACE_ALL()
 	else
 	{
 		// 2004.05.14 Moca 全置換の途中で他のウィンドウで置換されるとまずいのでコピーする
-		cmemClip.SetString( GetDllShareData().m_sSearchKeywords.m_aReplaceKeys[0] );
+		cmemClip.SetString( GetEditWindow()->m_cDlgReplace.m_strText2.c_str() );
 	}
 
 	CLogicInt nREPLACEKEY;			// 置換後文字列の長さ。
@@ -6867,7 +6867,6 @@ void CViewCommander::Command_REPLACE_ALL()
 
 	//  クラス関係をループの中で宣言してしまうと、毎ループごとにコンストラクタ、デストラクタが
 	// 呼ばれて遅くなるので、ここで宣言。
-	CMemory cmemory;
 	CBregexp cRegexp;
 	// 初期化も同様に毎ループごとにやると遅いので、最初に済ましてしまう。
 	if( bRegularExp )
@@ -6892,9 +6891,9 @@ void CViewCommander::Command_REPLACE_ALL()
 			cMemRepKey2 = cMemRepKey;
 		}
 		// 正規表現オプションの設定2006.04.01 かろと
-		int nFlag = (GetDllShareData().m_Common.m_sSearch.m_sSearchOption.bLoHiCase ? CBregexp::optCaseSensitive : CBregexp::optNothing);
+		int nFlag = (m_pCommanderView->m_sCurSearchOption.bLoHiCase ? CBregexp::optCaseSensitive : CBregexp::optNothing);
 		nFlag |= (bConsecutiveAll ? CBregexp::optNothing : CBregexp::optGlobal);	// 2007.01.16 ryoji
-		cRegexp.Compile(GetDllShareData().m_sSearchKeywords.m_aSearchKeys[0], cMemRepKey2.GetStringPtr(), nFlag);
+		cRegexp.Compile(m_pCommanderView->m_strCurSearchKey.c_str(), cMemRepKey2.GetStringPtr(), nFlag);
 	}
 
 	//$$ 単位混在
@@ -8404,33 +8403,23 @@ void CViewCommander::Command_SEARCH_CLEARMARK( void )
 
 		// 検索文字列取得
 		CNativeW	cmemCurText;
-		m_pCommanderView->GetCurrentTextForSearch( cmemCurText );
+		m_pCommanderView->GetCurrentTextForSearch( cmemCurText, false );
 
-		// 検索文字列設定
-		int i,j;
-		wcscpy( m_pCommanderView->m_szCurSrchKey, cmemCurText.GetStringPtr() );
-		for( i = 0; i < GetDllShareData().m_sSearchKeywords.m_aSearchKeys.size(); ++i ){
-			if( 0 == wcscmp( m_pCommanderView->m_szCurSrchKey, GetDllShareData().m_sSearchKeywords.m_aSearchKeys[i] ) ){
-				break;
-			}
+		m_pCommanderView->m_strCurSearchKey = cmemCurText.GetStringPtr();
+		if( m_pCommanderView->m_nCurSearchKeySequence < GetDllShareData().m_Common.m_sSearch.m_nSearchKeySequence ){
+			m_pCommanderView->m_sCurSearchOption = GetDllShareData().m_Common.m_sSearch.m_sSearchOption;
 		}
-		if( i < GetDllShareData().m_sSearchKeywords.m_aSearchKeys.size() ){
-			for( j = i; j > 0; j-- ){
-				wcscpy( GetDllShareData().m_sSearchKeywords.m_aSearchKeys[j], GetDllShareData().m_sSearchKeywords.m_aSearchKeys[j - 1] );
-			}
-		}
-		else{
-			for( j = MAX_SEARCHKEY - 1; j > 0; j-- ){
-				wcscpy( GetDllShareData().m_sSearchKeywords.m_aSearchKeys[j], GetDllShareData().m_sSearchKeywords.m_aSearchKeys[j - 1] );
-			}
-			GetDllShareData().m_sSearchKeywords.m_aSearchKeys.resize( t_min<int>(MAX_SEARCHKEY, GetDllShareData().m_sSearchKeywords.m_aSearchKeys.size()+1) );
-		}
-		wcscpy( GetDllShareData().m_sSearchKeywords.m_aSearchKeys[0], cmemCurText.GetStringPtr() );
+		m_pCommanderView->m_sCurSearchOption.bRegularExp = false;		//正規表現使わない
+		m_pCommanderView->m_sCurSearchOption.bWordOnly = false;		//単語で検索しない
 
-		// 検索オプション設定
-		GetDllShareData().m_Common.m_sSearch.m_sSearchOption.bRegularExp=false;	//正規表現使わない
-		GetDllShareData().m_Common.m_sSearch.m_sSearchOption.bWordOnly=false;		//単語で検索しない
-		// 2010.06.30 Moca ChangeCurRegexpに再描画フラグ追加。2回再描画しないように
+		// 共有データへ登録
+		if( cmemCurText.GetStringLength() < _MAX_PATH ){
+			CSearchKeywordManager().AddToSearchKeyArr( cmemCurText.GetStringPtr() );
+			GetDllShareData().m_Common.m_sSearch.m_sSearchOption = m_pCommanderView->m_sCurSearchOption;
+		}
+		m_pCommanderView->m_nCurSearchKeySequence = GetDllShareData().m_Common.m_sSearch.m_nSearchKeySequence;
+		m_pCommanderView->m_bCurSearchUpdate = true;
+
 		m_pCommanderView->ChangeCurRegexp(false); // 2002.11.11 Moca 正規表現で検索した後，色分けができていなかった
 
 		// 再描画
@@ -8807,6 +8796,17 @@ BOOL CViewCommander::Command_PUTFILE(
 	CWaitCursor cWaitCursor( m_pCommanderView->GetHwnd() );
 
 	std::auto_ptr<CCodeBase> pcSaveCode( CCodeFactory::CreateCodeBase(nSaveCharCode,0) );
+
+	bool bBom = false;
+	switch( nSaveCharCode ){
+		case CODE_UNICODE:
+		case CODE_UNICODEBE:
+		case CODE_UTF8:
+		case CODE_CESU8:
+		case CODE_UTF7:
+			bBom = GetDocument()->m_cDocFile.IsBomExist();;
+			break;
+	}
 	
 	if(nFlgOpt & 0x01)
 	{	/* 選択範囲を出力 */
@@ -8815,7 +8815,7 @@ BOOL CViewCommander::Command_PUTFILE(
 			CBinaryOutputStream out(to_tchar(filename),true);
 
 			//BOM出力
-			if ( GetDocument()->m_cDocFile.IsBomExist() ) {
+			if( bBom ){
 				CMemory cmemBom;
 				pcSaveCode->GetBom(&cmemBom);
 				if(cmemBom.GetRawLength()>0)
@@ -8876,7 +8876,7 @@ BOOL CViewCommander::Command_PUTFILE(
 				to_tchar(filename),
 				nSaveCharCode,
 				EOL_NONE,
-				GetDocument()->m_cDocFile.IsBomExist()
+				bBom
 			)
 		);
 		bResult = (eRet != RESULT_FAILURE);

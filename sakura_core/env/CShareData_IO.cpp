@@ -208,6 +208,20 @@ void CShareData_IO::ShareData_IO_Mru( CDataProfile& cProfile )
 			pShare->m_sHistory.m_bOPENFOLDERArrFavorite[i] = false;	//お気に入り	//@@@ 2003.04.08 MIK
 		}
 	}
+	
+	cProfile.IOProfileData( pszSecName, LTEXT("_ExceptMRU_Counts"), pShare->m_sHistory.m_aExceptMRU._GetSizeRef() );
+	pShare->m_sHistory.m_aExceptMRU.SetSizeLimit();
+	nSize = pShare->m_sHistory.m_aExceptMRU.size();
+	for( i = 0; i < nSize; ++i ){
+		auto_sprintf( szKeyName, LTEXT("ExceptMRU[%02d]"), i );
+		cProfile.IOProfileData( pszSecName, szKeyName, pShare->m_sHistory.m_aExceptMRU[i] );
+	}
+	//読み込み時は残りを初期化
+	if ( cProfile.IsReadingMode() ){
+		for (; i< pShare->m_sHistory.m_aExceptMRU.max_size(); ++i){
+			pShare->m_sHistory.m_aExceptMRU[i][0] = _T('\0');
+		}
+	}
 }
 
 /*!
@@ -425,6 +439,7 @@ void CShareData_IO::ShareData_IO_Common( CDataProfile& cProfile )
 	cProfile.IOProfileData_WrapInt( pszSecName, LTEXT("nGrepCharSet")	, common.m_sSearch.m_nGrepCharSet );
 	cProfile.IOProfileData( pszSecName, LTEXT("bGrepRealTime")			, common.m_sSearch.m_bGrepRealTimeView ); // 2003.06.16 Moca
 	cProfile.IOProfileData( pszSecName, LTEXT("bCaretTextForSearch")	, common.m_sSearch.m_bCaretTextForSearch );	// 2006.08.23 ryoji カーソル位置の文字列をデフォルトの検索文字列にする
+	cProfile.IOProfileData( pszSecName, LTEXT("m_bInheritKeyOtherView")	, common.m_sSearch.m_bInheritKeyOtherView );
 	
 	/* 正規表現DLL 2007.08.12 genta */
 	cProfile.IOProfileData( pszSecName, LTEXT("szRegexpLib")			, MakeStringBufferT(common.m_sSearch.m_szRegexpLib) );

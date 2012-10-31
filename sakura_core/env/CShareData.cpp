@@ -30,6 +30,8 @@
 #include "doc/CDocListener.h" // SLoadInfo
 #include "CControlTray.h"
 #include "debug/CRunningTimer.h"
+#include "recent/CMRU.h"
+#include "recent/CMRUFolder.h"
 #include "util/module.h"
 #include "util/string_ex2.h"
 #include "util/window.h"
@@ -154,6 +156,7 @@ bool CShareData::InitShareData()
 //@@@ 2001.12.26 YAZAKI OPENFOLDERリストは、CMRUFolderにすべて依頼する
 		CMRUFolder cMRUFolder;
 		cMRUFolder.ClearAll();
+		m_pShareData->m_sHistory.m_aExceptMRU.clear();
 
 		m_pShareData->m_sSearchKeywords.m_aSearchKeys.clear();
 		m_pShareData->m_sSearchKeywords.m_aReplaceKeys.clear();
@@ -299,6 +302,7 @@ bool CShareData::InitShareData()
 		m_pShareData->m_Common.m_sSearch.m_nGrepCharSet = CODE_AUTODETECT;	/* Grep: 文字コードセット */
 		m_pShareData->m_Common.m_sSearch.m_bGrepRealTimeView = FALSE;		/* 2003.06.28 Moca Grep結果のリアルタイム表示 */
 		m_pShareData->m_Common.m_sSearch.m_bCaretTextForSearch = TRUE;		/* 2006.08.23 ryoji カーソル位置の文字列をデフォルトの検索文字列にする */
+		m_pShareData->m_Common.m_sSearch.m_bInheritKeyOtherView = true;
 		m_pShareData->m_Common.m_sSearch.m_szRegexpLib[0] =_T('\0');		/* 2007.08.12 genta 正規表現DLL */
 		m_pShareData->m_Common.m_sSearch.m_bGTJW_RETURN = TRUE;				/* エンターキーでタグジャンプ */
 		m_pShareData->m_Common.m_sSearch.m_bGTJW_LDBLCLK = TRUE;			/* ダブルクリックでタグジャンプ */
