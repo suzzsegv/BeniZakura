@@ -6,6 +6,59 @@
 #include "view/colors/CColorStrategy.h"
 
 /* Java */
+const wchar_t* g_defaultKeywordSetJava[] = {
+	L"abstract",
+	L"assert",
+	L"boolean",
+	L"break",
+	L"byte",
+	L"case",
+	L"catch",
+	L"char",
+	L"class",
+	L"const",
+	L"continue",
+	L"default",
+	L"do",
+	L"double",
+	L"else",
+	L"extends",
+	L"final",
+	L"finally",
+	L"float",
+	L"for",
+	L"goto",
+	L"if",
+	L"implements",
+	L"import",
+	L"instanceof",
+	L"int",
+	L"interface",
+	L"long",
+	L"native",
+	L"new",
+	L"package",
+	L"private",
+	L"protected",
+	L"public",
+	L"return",
+	L"short",
+	L"static",
+	L"strictfp",
+	L"super",
+	L"switch",
+	L"synchronized",
+	L"this",
+	L"throw",
+	L"throws",
+	L"transient",
+	L"try",
+	L"void",
+	L"volatile",
+	L"while"
+};
+
+
 void CType_Java::InitTypeConfigImp(STypeConfig* pType)
 {
 	//名前と拡張子
@@ -15,11 +68,17 @@ void CType_Java::InitTypeConfigImp(STypeConfig* pType)
 	//設定
 	pType->m_cLineComment.CopyTo( 0, L"//", -1 );					/* 行コメントデリミタ */
 	pType->m_cBlockComments[0].SetBlockCommentRule( L"/*", L"*/" );	/* ブロックコメントデリミタ */
-	pType->m_nKeyWordSetIdx[0] = 4;									/* キーワードセット */
 	pType->m_eDefaultOutline = OUTLINE_JAVA;						/* アウトライン解析方法 */
 	pType->m_eSmartIndent = SMARTINDENT_CPP;						/* スマートインデント種別 */
 	pType->m_ColorInfoArr[COLORIDX_DIGIT].m_bDisp = true;			//半角数値を色分け表示	//Mar. 10, 2001 JEPRO
 	pType->m_ColorInfoArr[COLORIDX_BRACKET_PAIR].m_bDisp = true;	//対括弧の強調をデフォルトONに	//Sep. 21, 2002 genta
+
+	pType->m_nKeyWordSetIdx[0] = AddDefaultKeywordSet(
+										L"Java",
+										true,
+										_countof(g_defaultKeywordSetJava),
+										g_defaultKeywordSetJava
+									);
 }
 
 
@@ -33,6 +92,7 @@ enum EFuncListJavaMode {
 	FL_JAVA_MODE_DOUBLE_QUOTE = 21,
 	FL_JAVA_MODE_TOO_LONG_WORD = 999
 };
+
 
 /* Java関数リスト作成 */
 void CDocOutline::MakeFuncList_Java( CFuncInfoArr* pcFuncInfoArr )
@@ -429,56 +489,3 @@ void CDocOutline::MakeFuncList_Java( CFuncInfoArr* pcFuncInfoArr )
 }
 
 
-
-const wchar_t* g_ppszKeywordsJAVA[] = {
-	L"abstract",
-	L"assert",	// Mar. 8, 2003 genta
-	L"boolean",
-	L"break",
-	L"byte",
-	L"case",
-	L"catch",
-	L"char",
-	L"class",
-	L"const",
-	L"continue",
-	L"default",
-	L"do",
-	L"double",
-	L"else",
-	L"extends",
-	L"final",
-	L"finally",
-	L"float",
-	L"for",
-	L"goto",
-	L"if",
-	L"implements",
-	L"import",
-	L"instanceof",
-	L"int",
-	L"interface",
-	L"long",
-	L"native",
-	L"new",
-	L"package",
-	L"private",
-	L"protected",
-	L"public",
-	L"return",
-	L"short",
-	L"static",
-	L"strictfp",	// Mar. 8, 2003 genta
-	L"super",
-	L"switch",
-	L"synchronized",
-	L"this",
-	L"throw",
-	L"throws",
-	L"transient",
-	L"try",
-	L"void",
-	L"volatile",
-	L"while"
-};
-int g_nKeywordsJAVA = _countof(g_ppszKeywordsJAVA);

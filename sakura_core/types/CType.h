@@ -262,21 +262,11 @@ protected: \
 };
 
 GEN_CTYPE(CType_Asm)
-GEN_CTYPE(CType_Awk)
 GEN_CTYPE(CType_Basis)
-GEN_CTYPE(CType_Cobol)
 GEN_CTYPE(CType_Cpp)
-GEN_CTYPE(CType_Dos)
-GEN_CTYPE(CType_Html)
 GEN_CTYPE(CType_Ini)
 GEN_CTYPE(CType_Java)
-GEN_CTYPE(CType_Pascal)
-GEN_CTYPE(CType_Perl)
-GEN_CTYPE(CType_Rich)
-GEN_CTYPE(CType_Sql)
-GEN_CTYPE(CType_Tex)
 GEN_CTYPE(CType_Text)
-GEN_CTYPE(CType_Vb)
 GEN_CTYPE(CType_Other)
 
 

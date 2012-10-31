@@ -199,124 +199,23 @@ BOOL CDlgJump::OnBnClicked( int wID )
 /* ダイアログデータの設定 */
 void CDlgJump::SetData( void )
 {
-	CEditDoc*		pCEditDoc = (CEditDoc*)m_lParam;
-	CFuncInfoArr	cFuncInfoArr;
-	int				i;
-	HWND			hwndCtrl;
-	wchar_t			szText[1024];
-	int				nIndexCurSel = 0;	//	Sep. 11, 2004 genta 初期化
-	int				nIndex;
-	int				nWorkLine; //$$ 条件により、レイアウト・ロジックの単位が混在するため、ミスの原因になりやすい
-	int				nPLSQLBlockNum;
-
-//	GetHwnd() = hwndDlg;
-//From Here Oct. 7, 2000 JEPRO 前回入力した行番号を保持するように下行を変更
-//	::DlgItem_SetText( GetHwnd(), IDC_EDIT_LINENUM, "" );	/* 行番号 */
 	if( 0 == m_nLineNum ){
 		::DlgItem_SetText( GetHwnd(), IDC_EDIT_LINENUM, _T("") );	/* 行番号 */
 	}else{
 		::SetDlgItemInt( GetHwnd(), IDC_EDIT_LINENUM, m_nLineNum, FALSE );	/* 前回の行番号 */
 	}
-//To Here Oct. 7, 2000
+
 	::SetDlgItemInt( GetHwnd(), IDC_EDIT_PLSQL_E1, m_nPLSQL_E1, FALSE );
+	::EnableWindow( ::GetDlgItem( GetHwnd(), IDC_LABEL_PLSQL1 ), FALSE );
+	::EnableWindow( ::GetDlgItem( GetHwnd(), IDC_LABEL_PLSQL2 ), FALSE );
+	::EnableWindow( ::GetDlgItem( GetHwnd(), IDC_LABEL_PLSQL3 ), FALSE );
+	::EnableWindow( ::GetDlgItem( GetHwnd(), IDC_EDIT_PLSQL_E1 ), FALSE );
+	::EnableWindow( ::GetDlgItem( GetHwnd(), IDC_SPIN_PLSQL_E1 ), FALSE );
+	::EnableWindow( ::GetDlgItem( GetHwnd(), IDC_COMBO_PLSQLBLOCKS ), FALSE );
+	::EnableWindow( ::GetDlgItem( GetHwnd(), IDC_RADIO_LINENUM_LAYOUT ), TRUE );
+	::EnableWindow( ::GetDlgItem( GetHwnd(), IDC_RADIO_LINENUM_CRLF ), TRUE );
 
-	/* PL/SQL関数リスト作成 */
-	hwndCtrl = ::GetDlgItem( GetHwnd(), IDC_COMBO_PLSQLBLOCKS );
-
-/* タイプ別に設定されたアウトライン解析方法 */
-	if( OUTLINE_PLSQL == pCEditDoc->m_cDocType.GetDocumentAttribute().m_eDefaultOutline ){
-		pCEditDoc->m_cDocOutline.MakeFuncList_PLSQL( &cFuncInfoArr );
-	}
-	nWorkLine = -1;
-	nIndex = 0;
-	nPLSQLBlockNum = 0;
-	for( i = 0; i < cFuncInfoArr.GetNum(); ++i ){
-		if( 31 == cFuncInfoArr.GetAt( i )->m_nInfo ||
-			41 == cFuncInfoArr.GetAt( i )->m_nInfo ){
-		}
-		if( 31 == cFuncInfoArr.GetAt( i )->m_nInfo ){
-//@@@ 2002.01.08 YAZAKI 設定を保存するためにShareDataに移動
-			if( m_pShareData->m_bLineNumIsCRLF_ForJump ){	/* 行番号の表示 FALSE=折り返し単位／TRUE=改行単位 */
-				auto_sprintf( szText, L"%d 行  %ts  パッケージ仕様部",
-					cFuncInfoArr.GetAt( i )->m_nFuncLineCRLF,
-					cFuncInfoArr.GetAt( i )->m_cmemFuncName.GetStringPtr()
-				);
-			}else{
-				auto_sprintf( szText, L"%d 行  %ts  パッケージ仕様部",
-					cFuncInfoArr.GetAt( i )->m_nFuncLineLAYOUT,
-					cFuncInfoArr.GetAt( i )->m_cmemFuncName.GetStringPtr()
-				);
-			}
-			nIndex = Combo_AddString( hwndCtrl, szText );
-//@@@ 2002.01.08 YAZAKI 設定を保存するためにShareDataに移動
-			if( m_pShareData->m_bLineNumIsCRLF_ForJump ){	/* 行番号の表示 FALSE=折り返し単位／TRUE=改行単位 */
-				Combo_SetItemData( hwndCtrl, nIndex, (Int)cFuncInfoArr.GetAt( i )->m_nFuncLineCRLF );
-			}
-			else{
-				Combo_SetItemData( hwndCtrl, nIndex, (Int)cFuncInfoArr.GetAt( i )->m_nFuncLineLAYOUT );
-			}
-			nPLSQLBlockNum++;
-		}
-		if( 41 == cFuncInfoArr.GetAt( i )->m_nInfo ){
-//@@@ 2002.01.08 YAZAKI 設定を保存するためにShareDataに移動
-			if( m_pShareData->m_bLineNumIsCRLF_ForJump ){	/* 行番号の表示 FALSE=折り返し単位／TRUE=改行単位 */
-				auto_sprintf( szText, L"%d 行  %ts  パッケージ本体部",
-					cFuncInfoArr.GetAt( i )->m_nFuncLineCRLF,
-					cFuncInfoArr.GetAt( i )->m_cmemFuncName.GetStringPtr()
-				);
-			}else{
-				auto_sprintf( szText, L"%d 行  %ts  パッケージ本体部",
-					cFuncInfoArr.GetAt( i )->m_nFuncLineLAYOUT,
-					cFuncInfoArr.GetAt( i )->m_cmemFuncName.GetStringPtr()
-				);
-			}
-			nIndexCurSel = nIndex = Combo_AddString( hwndCtrl, szText );
-//@@@ 2002.01.08 YAZAKI 設定を保存するためにShareDataに移動
-			if( m_pShareData->m_bLineNumIsCRLF_ForJump ){	/* 行番号の表示 FALSE=折り返し単位／TRUE=改行単位 */
-				nWorkLine = (Int)cFuncInfoArr.GetAt( i )->m_nFuncLineCRLF;
-				Combo_SetItemData( hwndCtrl, nIndex, (Int)cFuncInfoArr.GetAt( i )->m_nFuncLineCRLF );
-			}else{
-				nWorkLine = (Int)cFuncInfoArr.GetAt( i )->m_nFuncLineLAYOUT;
-				Combo_SetItemData( hwndCtrl, nIndex, (Int)cFuncInfoArr.GetAt( i )->m_nFuncLineLAYOUT );
-			}
-			++nPLSQLBlockNum;
-		}
-	}
-	Combo_SetCurSel( hwndCtrl, nIndexCurSel );
-
-	/* PL/SQLのパッケージ本体が検出された場合 */
-	if( -1 != nWorkLine ){
-		m_nPLSQL_E1 = nWorkLine;
-		::SetDlgItemInt( GetHwnd(), IDC_EDIT_PLSQL_E1, m_nPLSQL_E1, FALSE );
-	}
-	/* PL/SQLのパッケージブロックが検出された場合 */
-	if( 0 < nPLSQLBlockNum ){
-		m_bPLSQL = TRUE;
-	}
-	::CheckDlgButton( GetHwnd(), IDC_CHECK_PLSQL, m_bPLSQL );	/* PL/SQLソースの有効行か */
-	if( BST_CHECKED == ::IsDlgButtonChecked( GetHwnd(), IDC_CHECK_PLSQL ) ){
-		::EnableWindow( ::GetDlgItem( GetHwnd(), IDC_LABEL_PLSQL1 ), TRUE );	//Sept. 12, 2000 JEPRO
-		::EnableWindow( ::GetDlgItem( GetHwnd(), IDC_LABEL_PLSQL2 ), TRUE );	//Sept. 12, 2000 JEPRO
-		::EnableWindow( ::GetDlgItem( GetHwnd(), IDC_LABEL_PLSQL3 ), TRUE );	//Sept. 12, 2000 JEPRO
-		::EnableWindow( ::GetDlgItem( GetHwnd(), IDC_EDIT_PLSQL_E1 ), TRUE );
-		::EnableWindow( ::GetDlgItem( GetHwnd(), IDC_SPIN_PLSQL_E1 ), TRUE );	//Oct. 6, 2000 JEPRO
-		::EnableWindow( ::GetDlgItem( GetHwnd(), IDC_COMBO_PLSQLBLOCKS ), TRUE );
-//@@@ 2002.01.08 YAZAKI 設定を保存するためにShareDataに移動
-		m_pShareData->m_bLineNumIsCRLF_ForJump = true;
-		::EnableWindow( ::GetDlgItem( GetHwnd(), IDC_RADIO_LINENUM_LAYOUT ), FALSE );
-		::EnableWindow( ::GetDlgItem( GetHwnd(), IDC_RADIO_LINENUM_CRLF ), FALSE );
-	}else{
-		::EnableWindow( ::GetDlgItem( GetHwnd(), IDC_LABEL_PLSQL1 ), FALSE );	//Sept. 12, 2000 JEPRO
-		::EnableWindow( ::GetDlgItem( GetHwnd(), IDC_LABEL_PLSQL2 ), FALSE );	//Sept. 12, 2000 JEPRO
-		::EnableWindow( ::GetDlgItem( GetHwnd(), IDC_LABEL_PLSQL3 ), FALSE );	//Sept. 12, 2000 JEPRO
-		::EnableWindow( ::GetDlgItem( GetHwnd(), IDC_EDIT_PLSQL_E1 ), FALSE );
-		::EnableWindow( ::GetDlgItem( GetHwnd(), IDC_SPIN_PLSQL_E1 ), FALSE );	//Oct. 6, 2000 JEPRO
-		::EnableWindow( ::GetDlgItem( GetHwnd(), IDC_COMBO_PLSQLBLOCKS ), FALSE );
-		::EnableWindow( ::GetDlgItem( GetHwnd(), IDC_RADIO_LINENUM_LAYOUT ), TRUE );
-		::EnableWindow( ::GetDlgItem( GetHwnd(), IDC_RADIO_LINENUM_CRLF ), TRUE );
-	}
 	/* 行番号の表示 FALSE=折り返し単位／TRUE=改行単位 */
-//@@@ 2002.01.08 YAZAKI 設定を保存するためにShareDataに移動
 	if( m_pShareData->m_bLineNumIsCRLF_ForJump ){
 		::CheckDlgButton( GetHwnd(), IDC_RADIO_LINENUM_LAYOUT, FALSE );
 		::CheckDlgButton( GetHwnd(), IDC_RADIO_LINENUM_CRLF, TRUE );
@@ -324,6 +223,7 @@ void CDlgJump::SetData( void )
 		::CheckDlgButton( GetHwnd(), IDC_RADIO_LINENUM_LAYOUT, TRUE );
 		::CheckDlgButton( GetHwnd(), IDC_RADIO_LINENUM_CRLF, FALSE );
 	}
+
 	return;
 }
 

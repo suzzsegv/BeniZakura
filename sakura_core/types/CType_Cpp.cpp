@@ -23,7 +23,7 @@ inline bool IsHeadCppKeyword(const wchar_t* pData)
 /*!
  *	C/C++ キーワード
  */
-const wchar_t* g_ppszKeywordsCPP[] = {
+const wchar_t* g_defaultKeywordSetCpp[] = {
 	L"__FILE__",
 	L"__declspec",
 	L"asm",
@@ -75,7 +75,6 @@ const wchar_t* g_ppszKeywordsCPP[] = {
 	L"volatile",
 	L"while"
 };
-int g_nKeywordsCPP = _countof(g_ppszKeywordsCPP);
 
 /*!
  *	C/C++ プリプロセッサ キーワード
@@ -143,8 +142,8 @@ void CType_Cpp::InitTypeConfigImp(STypeConfig* pType)
 	pType->m_nKeyWordSetIdx[0] = AddDefaultKeywordSet(
 										L"C/C++",
 										true,
-										g_nKeywordsCPP,
-										g_ppszKeywordsCPP
+										_countof(g_defaultKeywordSetCpp),
+										g_defaultKeywordSetCpp
 									);
 
 	pType->m_nKeyWordSetIdx[1] = AddDefaultKeywordSet(

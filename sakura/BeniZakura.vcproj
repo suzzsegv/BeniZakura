@@ -1831,35 +1831,11 @@
 					>
 				</File>
 				<File
-					RelativePath="..\sakura_core\types\CType_Awk.cpp"
-					>
-				</File>
-				<File
 					RelativePath="..\sakura_core\types\CType_Basis.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\sakura_core\types\CType_Cobol.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\sakura_core\types\CType_CorbaIdl.cpp"
-					>
-				</File>
-				<File
 					RelativePath="..\sakura_core\types\CType_Cpp.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\sakura_core\types\CType_Dos.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\sakura_core\types\CType_Erlang.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\sakura_core\types\CType_Html.cpp"
 					>
 				</File>
 				<File
@@ -1875,35 +1851,11 @@
 					>
 				</File>
 				<File
-					RelativePath="..\sakura_core\types\CType_Pascal.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\sakura_core\types\CType_Perl.cpp"
-					>
-				</File>
-				<File
 					RelativePath="..\sakura_core\types\CType_Python.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\sakura_core\types\CType_Rich.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\sakura_core\types\CType_Sql.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\sakura_core\types\CType_Tex.cpp"
-					>
-				</File>
-				<File
 					RelativePath="..\sakura_core\types\CType_Text.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\sakura_core\types\CType_Vb.cpp"
 					>
 				</File>
 				<File
