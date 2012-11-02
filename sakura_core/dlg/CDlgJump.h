@@ -31,23 +31,18 @@ public:
 	/*
 	||  Attributes & Operations
 	*/
-//@@@ 2002.01.08 YAZAKI 設定を保存するためにShareDataに移動
 	int DoModal( HINSTANCE, HWND, LPARAM/* , BOOL */);	/* モーダルダイアログの表示 */
 
 	int			m_nLineNum;		/*!< 行番号 */
-	BOOL		m_bPLSQL;		/*!< PL/SQLソースの有効行か */
-	int			m_nPLSQL_E1;
-	int			m_nPLSQL_E2;
 protected:
 	/*
 	||  実装ヘルパ関数
 	*/
-	BOOL OnNotify( WPARAM,  LPARAM );	//	Oct. 6, 2000 JEPRO added for Spin control
-	BOOL OnCbnSelChange( HWND, int );
+	BOOL OnNotify( WPARAM,  LPARAM );
 	BOOL OnBnClicked( int );
-	LPVOID GetHelpIdTable(void);	//@@@ 2002.01.18 add
-	void SetData( void );	/* ダイアログデータの設定 */
-	int GetData( void );	/* ダイアログデータの取得 */
+	LPVOID GetHelpIdTable(void);
+	void SetData( void );		/* ダイアログデータの設定 */
+	int GetData( void );		/* ダイアログデータの取得 */
 };
 
 

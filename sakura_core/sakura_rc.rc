@@ -104,7 +104,7 @@ BEGIN
                     WS_VSCROLL | NOT WS_TABSTOP
 END
 
-IDD_JUMP DIALOGEX 0, 0, 252, 121
+IDD_JUMP DIALOGEX 0, 0, 252, 45
 STYLE DS_MODALFRAME | DS_NOIDLEMSG | DS_SETFOREGROUND | DS_CENTER | 
     DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_CONTEXTHELP
@@ -119,25 +119,8 @@ BEGIN
                     "Button",BS_AUTORADIOBUTTON | WS_GROUP,94,5,97,10
     CONTROL         "改行単位の行番号(&W)",IDC_RADIO_LINENUM_CRLF,"Button",
                     BS_AUTORADIOBUTTON,94,20,87,10
-    CONTROL         "&PL/SQLコンパイルエラー行を処理する",IDC_CHECK_PLSQL,
-                    "Button",BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,10,50,
-                    137,10
-    LTEXT           "行目をブロックの&1行目とする",IDC_LABEL_PLSQL2,92,66,92,
-                    8,NOT WS_GROUP
-    EDITTEXT        IDC_EDIT_PLSQL_E1,47,64,40,12
-    CONTROL         "Spin1",IDC_SPIN_PLSQL_E1,"msctls_updown32",
-                    UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS,87,64,9,
-                    12
-    LTEXT           "テキストの",IDC_LABEL_PLSQL1,12,66,34,8,NOT WS_GROUP
-    LTEXT           "検出されたPL/SQLパッケージのブロックから選択(&S)",
-                    IDC_LABEL_PLSQL3,12,81,166,8,NOT WS_GROUP
-    COMBOBOX        IDC_COMBO_PLSQLBLOCKS,15,94,168,100,CBS_DROPDOWNLIST | 
-                    WS_VSCROLL | WS_TABSTOP
-    GROUPBOX        "PL/SQLコンパイルエラー行",IDC_STATIC,5,35,184,80,
-                    WS_GROUP
     DEFPUSHBUTTON   "ジャンプ(&J)",IDC_BUTTON_JUMP,197,5,50,14,WS_GROUP
     PUSHBUTTON      "キャンセル(&X)",IDCANCEL,197,24,50,14
-    PUSHBUTTON      "ヘルプ(&H)",IDC_BUTTON_HELP,197,101,50,14
 END
 
 IDD_FUNCLIST DIALOG DISCARDABLE  0, 0, 238, 290

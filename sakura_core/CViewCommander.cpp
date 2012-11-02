@@ -3833,12 +3833,6 @@ void CViewCommander::Command_JUMP_DIALOG( void )
 /* 指定行ヘジャンプ */
 void CViewCommander::Command_JUMP( void )
 {
-	const wchar_t*	pLine;
-	int			nMode;
-	int			bValidLine;
-	int			nCurrentLine;
-	int			nCommentBegin;
-
 	if( 0 == GetDocument()->m_cLayoutMgr.GetLineCount() ){
 		ErrorBeep();
 		return;
@@ -3848,180 +3842,34 @@ void CViewCommander::Command_JUMP( void )
 	int	nLineNum; //$$ 単位混在
 	nLineNum = GetEditWindow()->m_cDlgJump.m_nLineNum;
 
-	if( !GetEditWindow()->m_cDlgJump.m_bPLSQL ){	/* PL/SQLソースの有効行か */
-		/* 行番号の表示 FALSE=折り返し単位／TRUE=改行単位 */
-		if( GetDllShareData().m_bLineNumIsCRLF_ForJump ){
-			if( CLogicInt(0) >= nLineNum ){
-				nLineNum = CLogicInt(1);
-			}
-			/*
-			  カーソル位置変換
-			  ロジック位置(行頭からのバイト数、折り返し無し行位置)
-			  →
-			  レイアウト位置(行頭からの表示桁位置、折り返しあり行位置)
-			*/
-			CLayoutPoint ptPosXY;
-			GetDocument()->m_cLayoutMgr.LogicToLayout(
-				CLogicPoint(0, nLineNum - 1),
-				&ptPosXY
-			);
-			nLineNum = (Int)ptPosXY.y + 1;
-		}
-		else{
-			if( 0 >= nLineNum ){
-				nLineNum = 1;
-			}
-			if( nLineNum > GetDocument()->m_cLayoutMgr.GetLineCount() ){
-				nLineNum = (Int)GetDocument()->m_cLayoutMgr.GetLineCount();
-			}
-		}
-		//	Sep. 8, 2000 genta
-		m_pCommanderView->AddCurrentLineToHistory();
-		//	2006.07.09 genta 選択状態を解除しないように
-		m_pCommanderView->MoveCursorSelecting( CLayoutPoint(0, nLineNum - 1), m_pCommanderView->GetSelectionInfo().m_bSelectingLock, _CARETMARGINRATE / 3 );
-		return;
-	}
-	if( 0 >= nLineNum ){
-		nLineNum = 1;
-	}
-	nMode = 0;
-	nCurrentLine = GetEditWindow()->m_cDlgJump.m_nPLSQL_E2 - 1;
-
-	int	nLineCount; //$$ 単位混在
-	nLineCount = GetEditWindow()->m_cDlgJump.m_nPLSQL_E1 - 1;
-
 	/* 行番号の表示 FALSE=折り返し単位／TRUE=改行単位 */
-	if( !GetDocument()->m_cDocType.GetDocumentAttribute().m_bLineNumIsCRLF ){ //レイアウト単位
+	if( GetDllShareData().m_bLineNumIsCRLF_ForJump ){
+		if( CLogicInt(0) >= nLineNum ){
+			nLineNum = CLogicInt(1);
+		}
 		/*
 		  カーソル位置変換
-		  レイアウト位置(行頭からの表示桁位置、折り返しあり行位置)
+		  ロジック位置(行頭からのバイト数、折り返し無し行位置)
 		  →
-		  物理位置(行頭からのバイト数、折り返し無し行位置)
+		  レイアウト位置(行頭からの表示桁位置、折り返しあり行位置)
 		*/
-		CLogicPoint ptPosXY;
-		GetDocument()->m_cLayoutMgr.LayoutToLogic(
-			CLayoutPoint(0,nLineCount),
+		CLayoutPoint ptPosXY;
+		GetDocument()->m_cLayoutMgr.LogicToLayout(
+			CLogicPoint(0, nLineNum - 1),
 			&ptPosXY
 		);
-		nLineCount = ptPosXY.y;
+		nLineNum = (Int)ptPosXY.y + 1;
 	}
-
-	for( ; nLineCount <  GetDocument()->m_cDocLineMgr.GetLineCount(); ++nLineCount ){
-		CLogicInt	nLineLen;
-		CLogicInt	nBgn = CLogicInt(0);
-		CLogicInt	i;
-		pLine = GetDocument()->m_cDocLineMgr.GetLine(CLogicInt(nLineCount))->GetDocLineStrWithEOL(&nLineLen);
-		bValidLine = FALSE;
-		for( i = CLogicInt(0); i < nLineLen; ++i ){
-			if( L' ' != pLine[i] &&
-				WCODE::TAB != pLine[i]
-			){
-				break;
-			}
+	else{
+		if( 0 >= nLineNum ){
+			nLineNum = 1;
 		}
-		nBgn = i;
-		for( i = nBgn; i < nLineLen; ++i ){
-			/* シングルクォーテーション文字列読み込み中 */
-			if( 20 == nMode ){
-				bValidLine = TRUE;
-				if( L'\'' == pLine[i] ){
-					if( i > 0 && L'\\' == pLine[i - 1] ){
-					}else{
-						nMode = 0;
-						continue;
-					}
-				}else{
-				}
-			}else
-			/* ダブルクォーテーション文字列読み込み中 */
-			if( 21 == nMode ){
-				bValidLine = TRUE;
-				if( L'"' == pLine[i] ){
-					if( i > 0 && L'\\' == pLine[i - 1] ){
-					}else{
-						nMode = 0;
-						continue;
-					}
-				}else{
-				}
-			}else
-			/* コメント読み込み中 */
-			if( 8 == nMode ){
-				if( i < nLineLen - 1 && L'*' == pLine[i] &&  L'/' == pLine[i + 1] ){
-					if( /*nCommentBegin != nLineCount &&*/ nCommentBegin != 0){
-						bValidLine = TRUE;
-					}
-					++i;
-					nMode = 0;
-					continue;
-				}else{
-				}
-			}else
-			/* ノーマルモード */
-			if( 0 == nMode ){
-				/* 空白やタブ記号等を飛ばす */
-				if( L'\t' == pLine[i] ||
-					L' ' == pLine[i] ||
-					WCODE::CR == pLine[i] ||
-					WCODE::LF == pLine[i]
-				){
-					continue;
-				}else
-				if( i < nLineLen - 1 && L'-' == pLine[i] &&  L'-' == pLine[i + 1] ){
-					bValidLine = TRUE;
-					break;
-				}else
-				if( i < nLineLen - 1 && L'/' == pLine[i] &&  L'*' == pLine[i + 1] ){
-					++i;
-					nMode = 8;
-					nCommentBegin = nLineCount;
-					continue;
-				}else
-				if( L'\'' == pLine[i] ){
-					nMode = 20;
-					continue;
-				}else
-				if( L'"' == pLine[i] ){
-					nMode = 21;
-					continue;
-				}else{
-					bValidLine = TRUE;
-				}
-			}
-		}
-		/* コメント読み込み中 */
-		if( 8 == nMode ){
-			if( nCommentBegin != 0){
-				bValidLine = TRUE;
-			}
-			/* コメントブロック内の改行だけの行 */
-			if( WCODE::CR == pLine[nBgn] ||
-				WCODE::LF == pLine[nBgn] ){
-				bValidLine = FALSE;
-			}
-		}
-		if( bValidLine ){
-			++nCurrentLine;
-			if( nCurrentLine >= nLineNum ){
-				break;
-			}
+		if( nLineNum > GetDocument()->m_cLayoutMgr.GetLineCount() ){
+			nLineNum = (Int)GetDocument()->m_cLayoutMgr.GetLineCount();
 		}
 	}
-	/*
-	  カーソル位置変換
-	  物理位置(行頭からのバイト数、折り返し無し行位置)
-	  →
-	  レイアウト位置(行頭からの表示桁位置、折り返しあり行位置)
-	*/
-	CLayoutPoint ptPos;
-	GetDocument()->m_cLayoutMgr.LogicToLayout(
-		CLogicPoint(0, nLineCount),
-		&ptPos
-	);
-	//	Sep. 8, 2000 genta
 	m_pCommanderView->AddCurrentLineToHistory();
-	//	2006.07.09 genta 選択状態を解除しないように
-	m_pCommanderView->MoveCursorSelecting( ptPos, m_pCommanderView->GetSelectionInfo().m_bSelectingLock, _CARETMARGINRATE / 3 );
+	m_pCommanderView->MoveCursorSelecting( CLayoutPoint(0, nLineNum - 1), m_pCommanderView->GetSelectionInfo().m_bSelectingLock, _CARETMARGINRATE / 3 );
 }
 
 
