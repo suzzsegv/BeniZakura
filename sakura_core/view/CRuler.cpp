@@ -142,32 +142,28 @@ void CRuler::DrawRulerBg(CGraphics& gr)
 
 	//目盛を描画
 	CLayoutInt i = m_pEditView->GetTextArea().GetViewLeftCol();
-	while(i <= m_pEditView->GetTextArea().GetRightCol() + 1 && i <= nMaxLineKetas)
+	#define MIN(a, b) ((a) < (b) ? (a) : (b))
+	CLayoutInt maxCol = MIN( m_pEditView->GetTextArea().GetRightCol() + 1, nMaxLineKetas );
+	while(i <= maxCol)
 	{
 		//ルーラー終端の区切り(大)
 		if( i == nMaxLineKetas ){
 			::MoveToEx( gr, nX, nY, NULL );
 			::LineTo( gr, nX, 0 );
 		}
-		//10目盛おきの区切り(大)と数字
-		else if( 0 == i % 10 ){
+		//8目盛おきの区切り(大)と数字
+		if( i % 8 == 0 ){
 			wchar_t szColm[32];
 			::MoveToEx( gr, nX, nY, NULL );
 			::LineTo( gr, nX, 0 );
-			_itow( ((Int)i) / 10, szColm, 10 );
-			::TextOutW_AnyBuild( gr, nX + 2 + 0, -1 + 0, szColm, wcslen( szColm ) );
+			_itow( (Int)i , szColm, 10 );
+			::TextOutW_AnyBuild( gr, nX + 2 + 0, -1 + 0, szColm, wcslen( szColm ) );																																						
 		}
-		//5目盛おきの区切り(中)
-		else if( 0 == i % 5 ){
+		//4目盛おきの区切り(中)
+		else if( i % 4 == 0 ){
 			::MoveToEx( gr, nX, nY, NULL );
 			::LineTo( gr, nX, nY - 6 );
 		}
-		//毎目盛の区切り(小)
-		else{
-			::MoveToEx( gr, nX, nY, NULL );
-			::LineTo( gr, nX, nY - 3 );
-		}
-
 		nX += m_pEditView->GetTextMetrics().GetHankakuDx();
 		i++;
 	}
