@@ -300,7 +300,7 @@ bool CShareData::InitShareData()
 		m_pShareData->m_Common.m_sSearch.m_nGrepOutputStyle = 1;			/* Grep: 出力形式 */
 		m_pShareData->m_Common.m_sSearch.m_bGrepDefaultFolder=FALSE;		/* Grep: フォルダの初期値をカレントフォルダにする */
 		m_pShareData->m_Common.m_sSearch.m_nGrepCharSet = CODE_AUTODETECT;	/* Grep: 文字コードセット */
-		m_pShareData->m_Common.m_sSearch.m_bGrepRealTimeView = FALSE;		/* 2003.06.28 Moca Grep結果のリアルタイム表示 */
+		m_pShareData->m_Common.m_sSearch.m_bGrepRealTimeView = TRUE;		/* Grep: 結果のリアルタイム表示 */
 		m_pShareData->m_Common.m_sSearch.m_bCaretTextForSearch = TRUE;		/* 2006.08.23 ryoji カーソル位置の文字列をデフォルトの検索文字列にする */
 		m_pShareData->m_Common.m_sSearch.m_bInheritKeyOtherView = true;
 		m_pShareData->m_Common.m_sSearch.m_szRegexpLib[0] =_T('\0');		/* 2007.08.12 genta 正規表現DLL */
@@ -501,7 +501,7 @@ bool CShareData::InitShareData()
 			_T("${w?$h$:アウトプット$:${I?$f$:$N$}$}${U?(更新)$} -")
 			_T(" $A $V ${R?(ビューモード)$:（上書き禁止）$}${M?  【キーマクロの記録中】$}") );
 		_tcscpy( m_pShareData->m_Common.m_sWindow.m_szWindowCaptionInactive, 
-			_T("${w?$h$:アウトプット$:$f$}${U?(更新)$} -")
+			_T("${w?$h$:アウトプット$:${I?$f$:$N$}$}${U?(更新)$} -")
 			_T(" $A $V ${R?(ビューモード)$:（上書き禁止）$}${M?  【キーマクロの記録中】$}") );
 
 		//	From Here Sep. 14, 2001 genta
