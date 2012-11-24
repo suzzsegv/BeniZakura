@@ -885,7 +885,7 @@ bool CDlgOpenFile::DoModalOpenDlg( SLoadInfo* pLoadInfo, std::vector<std::tstrin
 	else{
 		DlgOpenFail();
 	}
-	delete [] pszPathBuf;
+	delete [] m_ofn.lpstrFile;
 	return bDlgResult;
 }
 
