@@ -2523,9 +2523,8 @@ void CViewCommander::Command_INSTEXT(
 	}
 
 end_of_func:
-	if( NULL != pcWaitCursor ){
-		delete pcWaitCursor;
-	}
+	delete pcWaitCursor;
+
 	return;
 }
 
@@ -8718,7 +8717,7 @@ BOOL CViewCommander::Command_INSFILE( LPCWSTR filename, ECodeType nCharCode, int
 	ECodeType	nSaveCharCode = nCharCode;
 	if(nSaveCharCode == CODE_AUTODETECT) {
 		EditInfo    fi;
-		const CMRU  cMRU;
+		const CMRUFile  cMRU;
 		if ( cMRU.GetEditInfo( to_tchar(filename), &fi ) ){
 				nSaveCharCode = fi.m_nCharCode;
 		} else {
@@ -8783,9 +8782,8 @@ BOOL CViewCommander::Command_INSFILE( LPCWSTR filename, ECodeType nCharCode, int
 		bResult = FALSE;
 	} // —áŠOˆ—I‚í‚è
 
-	if( NULL != pcDlgCancel ){
-		delete pcDlgCancel;
-	}
+	delete pcDlgCancel;
+
 	if (bBeforeTextSelected){	// ‘}“ü‚³‚ê‚½•”•ª‚ð‘I‘ðó‘Ô‚É
 		m_pCommanderView->GetSelectionInfo().SetSelectArea(
 			CLayoutRange(
