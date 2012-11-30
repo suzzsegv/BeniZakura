@@ -74,14 +74,12 @@ BEGIN
                     BS_AUTOCHECKBOX | BS_LEFT | WS_TABSTOP,5,32,130,10
     CONTROL         "正規表現(&E)",IDC_CHK_REGULAREXP,"Button",
                     BS_AUTOCHECKBOX | BS_LEFT | WS_TABSTOP,5,43,55,10
-    CONTROL         "見つからないときにメッセージを表示(&M)",
-                    IDC_CHECK_NOTIFYNOTFOUND,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,5,54,140,10
     CONTROL         "検索ダイアログを自動的に閉じる(&L)",
-                    IDC_CHECK_bAutoCloseDlgFind,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,5,65,130,10
-    CONTROL         "先頭（末尾）から再検索する(&Z)",IDC_CHECK_SEARCHALL,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,5,76,130,10
+                    IDC_CHECK_bAutoCloseDlgFind,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    5,54,130,10
+    CONTROL         "先頭（末尾）から再検索する(&Z)",
+                    IDC_CHECK_SEARCHALL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    5,65,130,10
     LTEXT           "",IDC_STATIC_JRE32VER,62,43,154,10
     PUSHBUTTON      "上検索(&U)",IDC_BUTTON_SEARCHPREV,221,4,58,14,WS_GROUP
     DEFPUSHBUTTON   "下検索(&D)",IDC_BUTTON_SEARCHNEXT,221,20,58,14

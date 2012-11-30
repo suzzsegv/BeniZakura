@@ -33,7 +33,6 @@ const DWORD p_helpids[] = {	//11800
 	IDC_CHK_WORD,					HIDC_FIND_CHK_WORD,					//単語単位
 	IDC_CHK_LOHICASE,				HIDC_FIND_CHK_LOHICASE,				//大文字小文字
 	IDC_CHK_REGULAREXP,				HIDC_FIND_CHK_REGULAREXP,			//正規表現
-	IDC_CHECK_NOTIFYNOTFOUND,		HIDC_FIND_CHECK_NOTIFYNOTFOUND,		//見つからないときに通知
 	IDC_CHECK_bAutoCloseDlgFind,	HIDC_FIND_CHECK_bAutoCloseDlgFind,	//自動的に閉じる
 	IDC_COMBO_TEXT,					HIDC_FIND_COMBO_TEXT,				//検索文字列
 	IDC_STATIC_JRE32VER,			HIDC_FIND_STATIC_JRE32VER,			//正規表現バージョン
@@ -54,7 +53,6 @@ CDlgFind::CDlgFind()
 HWND CDlgFind::DoModeless( HINSTANCE hInstance, HWND hwndParent, LPARAM lParam )
 {
 	m_sSearchOption = m_pShareData->m_Common.m_sSearch.m_sSearchOption;		// 検索オプション
-	m_bNOTIFYNOTFOUND = m_pShareData->m_Common.m_sSearch.m_bNOTIFYNOTFOUND;	// 検索／置換  見つからないときメッセージを表示
 	m_ptEscCaretPos_PHY = ((CEditView*)lParam)->GetCaret().GetCaretLogicPos();	// 検索開始時のカーソル位置退避
 	((CEditView*)lParam)->m_bSearch = TRUE;							// 検索開始位置の登録有無		02/07/28 ai
 	return CDialog::DoModeless( hInstance, hwndParent, IDD_FIND, lParam, SW_SHOW );
@@ -100,9 +98,6 @@ void CDlgFind::SetData( void )
 	// 2001/06/23 Norio Nakatani
 	/* 単語単位で検索 */
 	::CheckDlgButton( GetHwnd(), IDC_CHK_WORD, m_sSearchOption.bWordOnly );
-
-	/* 検索／置換  見つからないときメッセージを表示 */
-	::CheckDlgButton( GetHwnd(), IDC_CHECK_NOTIFYNOTFOUND, m_bNOTIFYNOTFOUND );
 
 	// From Here Jun. 29, 2001 genta
 	// 正規表現ライブラリの差し替えに伴う処理の見直し
@@ -174,11 +169,6 @@ int CDlgFind::GetData( void )
 	/* 一致する単語のみ検索する */
 	/* 正規表現 */
 	m_sSearchOption.bRegularExp = (0!=IsDlgButtonChecked( GetHwnd(), IDC_CHK_REGULAREXP ));
-
-	/* 検索／置換  見つからないときメッセージを表示 */
-	m_bNOTIFYNOTFOUND = ::IsDlgButtonChecked( GetHwnd(), IDC_CHECK_NOTIFYNOTFOUND );
-
-	m_pShareData->m_Common.m_sSearch.m_bNOTIFYNOTFOUND = m_bNOTIFYNOTFOUND;	// 検索／置換  見つからないときメッセージを表示
 
 	/* 検索文字列 */
 	int nBufferSize = ::GetWindowTextLength( GetItemHwnd(IDC_COMBO_TEXT) ) + 1;
