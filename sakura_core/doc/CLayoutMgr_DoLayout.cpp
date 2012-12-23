@@ -68,6 +68,7 @@ CLayout* CLayoutMgr::SLayoutWork::_CreateLayout(CLayoutMgr* mgr)
 		CLogicPoint(this->nBgn, this->nCurLine),
 		this->nPos - this->nBgn,
 		this->pcColorStrategy_Prev->GetStrategyColorSafe(),
+		this->colorCookiePrev,
 		this->nIndent,
 		this->nPosX
 	);
@@ -218,24 +219,25 @@ void CLayoutMgr::_MakeOneLine(SLayoutWork* pWork, PF_OnLine pfOnLine)
 		nEol_1 = 0;
 	}
 
-	if(pWork->pcColorStrategy)pWork->pcColorStrategy->InitStrategyStatus();
+	if(pWork->pcColorStrategy){
+		pWork->pcColorStrategy->InitStrategyStatus();
+	}
 
 	//1ロジック行を消化するまでループ
 	while( pWork->nPos < pWork->cLineStr.GetLength() - CLogicInt(nEol_1) ){
 		//	インデント幅の計算コストを下げるための方策
 		if ( pWork->pLayout && pWork->pLayout != pWork->pLayoutCalculated && pWork->nBgn ){
-			//	計算
-			//	Oct, 1, 2002 genta Indentサイズを取得するように変更
+			//	計算: Indentサイズを取得するように変更
 			pWork->nIndent = (this->*m_getIndentOffset)( pWork->pLayout );
 
 			//	計算済み
 			pWork->pLayoutCalculated = pWork->pLayout;
 		}
 
-SEARCH_START:;
-		//禁則処理中ならスキップする	@@@ 2002.04.20 MIK
-		if(_DoKinsokuSkip(pWork, pfOnLine)){ }
-		else{
+SEARCH_START:
+
+		//禁則処理中ならスキップする
+		if( _DoKinsokuSkip(pWork, pfOnLine) == false ){
 			// ワードラップ処理
 			_DoWordWrap(pWork, pfOnLine);
 
@@ -249,60 +251,58 @@ SEARCH_START:;
 			_DoGyomatsuKinsoku(pWork, pfOnLine);
 		}
 
-		//@@@ 2002.09.22 YAZAKI
-		bool bGotoSEARCH_START = CColorStrategyPool::getInstance()->CheckColorMODE( &pWork->pcColorStrategy, pWork->nPos, pWork->cLineStr );
-		if ( bGotoSEARCH_START )
+		bool bGotoSEARCH_START = CColorStrategyPool::getInstance()->CheckColorMODE( &pWork->pcColorStrategy, pWork->nPos, pWork->cLineStr, pWork->colorCookie );
+		if ( bGotoSEARCH_START ){
 			goto SEARCH_START;
-		
+		}
+
 		if( pWork->cLineStr.At(pWork->nPos) == WCODE::TAB ){
 			if(_DoTab(pWork, pfOnLine)){
 				continue;
 			}
 		}
 		else{
-			if( pWork->nPos>=pWork->cLineStr.GetLength() ){
+			if( pWork->nPos >= pWork->cLineStr.GetLength() ){
 				break;
 			}
-			// 2007.09.07 kobake   ロジック幅とレイアウト幅を区別
+			// ロジック幅とレイアウト幅を区別
 			CLayoutInt nCharKetas = CNativeW::GetKetaOfChar( pWork->cLineStr, pWork->nPos );
-//			if( 0 == nCharKetas ){				// 削除 サロゲートペア対策	2008/7/5 Uchi
-//				nCharKetas = CLayoutInt(1);
-//			}
-
-			if( pWork->nPosX + nCharKetas > m_sTypeConfig.m_nMaxLineKetas ){
+			if( pWork->nPosX + nCharKetas > m_sTypeConfig.m_nMaxLineKetas ){	// 折り返し桁数に到達？
 				if( pWork->nKinsokuType != KINSOKU_TYPE_KINSOKU_KUTO )
 				{
-					if( ! (m_sTypeConfig.m_bKinsokuRet && (pWork->nPos == pWork->cLineStr.GetLength() - nEol) && nEol) )	//改行文字をぶら下げる		//@@@ 2002.04.14 MIK
+					//改行文字をぶら下げる
+					if( ! (m_sTypeConfig.m_bKinsokuRet && (pWork->nPos == pWork->cLineStr.GetLength() - nEol) && nEol) )
 					{
 						(this->*pfOnLine)(pWork);
 						continue;
 					}
 				}
 			}
-			pWork->nPos+= 1;
+			pWork->nPos += 1;
 			pWork->nPosX += nCharKetas;
 		}
 	}
 }
 
-// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                       本処理(全体)                          //
-// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+/*!
+	全データのレイアウト生成時に、レイアウト行の行末に到達した場合の処理
 
+*/
 void CLayoutMgr::_OnLine1(SLayoutWork* pWork)
 {
 	AddLineBottom( pWork->_CreateLayout(this) );
-	m_nLineTypeBot = pWork->pcColorStrategy->GetStrategyColorSafe();
+	m_colorIndexPrevAtEof = pWork->pcColorStrategy->GetStrategyColorSafe();
+	m_colorCookiePrevAtEof = pWork->colorCookie;
 	pWork->pLayout = m_pLayoutBot;
 	pWork->pcColorStrategy_Prev = pWork->pcColorStrategy;
+	pWork->colorCookiePrev = pWork->colorCookie;
 	pWork->nBgn = pWork->nPos;
-	// 2004.03.28 Moca pWork->nPosXはインデント幅を含むように変更(TAB位置調整のため)
-	pWork->nPosX = pWork->nIndent = (this->*m_getIndentOffset)( pWork->pLayout );
+	pWork->nPosX = pWork->nIndent = (this->*m_getIndentOffset)( pWork->pLayout );	// pWork->nPosXはインデント幅を含むように変更(TAB位置調整のため)
 	pWork->pLayoutCalculated = pWork->pLayout;
 }
 
 /*!
-	現在の折り返し文字数に合わせて全データのレイアウト情報を再生成します
+	現在の折り返し桁数に合わせて全データのレイアウト情報を再生成します
 
 	@date 2004.04.03 Moca TABが使われると折り返し位置がずれるのを防ぐため，
 		nPosXがインデントを含む幅を保持するように変更．m_sTypeConfig.m_nMaxLineKetasは
@@ -312,9 +312,7 @@ void CLayoutMgr::_DoLayout()
 {
 	MY_RUNNINGTIMER( cRunningTimer, "CLayoutMgr::_DoLayout" );
 
-	/*	表示上のX位置
-		2004.03.28 Moca nPosXはインデント幅を含むように変更(TAB位置調整のため)
-	*/
+	//	表示上のX位置: nPosXはインデント幅を含むように変更(TAB位置調整のため)
 	int			nAllLineNum;
 
 	if( GetListenerCount() != 0 ){
@@ -326,7 +324,6 @@ void CLayoutMgr::_DoLayout()
 	_Empty();
 	Init();
 	
-	//	Nov. 16, 2002 genta
 	//	折り返し幅 <= TAB幅のとき無限ループするのを避けるため，
 	//	TABが折り返し幅以上の時はTAB=4としてしまう
 	//	折り返し幅の最小値=10なのでこの値は問題ない
@@ -338,15 +335,17 @@ void CLayoutMgr::_DoLayout()
 
 	SLayoutWork	_sWork;
 	SLayoutWork* pWork = &_sWork;
-	pWork->pcDocLine				= m_pcDocLineMgr->GetDocLineTop(); // 2002/2/10 aroka CDocLineMgr変更
-	pWork->pLayout					= m_pLayoutBot;
-	pWork->pcColorStrategy			= NULL;
-	pWork->pcColorStrategy_Prev		= NULL;
-	pWork->nCurLine					= CLogicInt(0);
+	pWork->pcDocLine			= m_pcDocLineMgr->GetDocLineTop();
+	pWork->pLayout				= m_pLayoutBot;
+	pWork->pcColorStrategy		= NULL;
+	pWork->pcColorStrategy_Prev	= NULL;
+	pWork->colorCookie			= 0;
+	pWork->colorCookiePrev		= 0;
+	pWork->nCurLine				= CLogicInt(0);
 
 	while( NULL != pWork->pcDocLine ){
 		pWork->cLineStr		= pWork->pcDocLine->GetStringRefWithEOL();
-		pWork->nKinsokuType	= KINSOKU_TYPE_NONE;	//@@@ 2002.04.20 MIK
+		pWork->nKinsokuType	= KINSOKU_TYPE_NONE;
 		pWork->nBgn			= CLogicInt(0);
 		pWork->nPos			= CLogicInt(0);
 		pWork->nWordBgn		= CLogicInt(0);
@@ -359,39 +358,45 @@ void CLayoutMgr::_DoLayout()
 		_MakeOneLine(pWork, &CLayoutMgr::_OnLine1);
 
 		if( pWork->nPos - pWork->nBgn > 0 ){
-// 2002/03/13 novice
 			if( pWork->pcColorStrategy->GetStrategyColorSafe() == COLORIDX_COMMENT ){	/* 行コメントである */
 				pWork->pcColorStrategy = NULL;
 			}
 			AddLineBottom( pWork->_CreateLayout(this) );
-			m_nLineTypeBot = pWork->pcColorStrategy->GetStrategyColorSafe();
+			m_colorIndexPrevAtEof = pWork->pcColorStrategy->GetStrategyColorSafe();
+			m_colorCookiePrevAtEof = pWork->colorCookie;
 			pWork->pcColorStrategy_Prev = pWork->pcColorStrategy;
+			pWork->colorCookiePrev = pWork->colorCookie;
 		}
 
 		// 次の行へ
 		pWork->nCurLine++;
 		pWork->pcDocLine = pWork->pcDocLine->GetNextLine();
-		
+
 		// 処理中のユーザー操作を可能にする
 		if( GetListenerCount()!=0 && 0 < nAllLineNum && 0 == ( pWork->nCurLine % 1024 ) ){
 			NotifyProgress(pWork->nCurLine * 100 / nAllLineNum);
-			if( !::BlockingHook( NULL ) )return;
+			if( !::BlockingHook( NULL ) ){
+				return;
+			}
 		}
 
-// 2002/03/13 novice
 		if( pWork->pcColorStrategy_Prev->GetStrategyColorSafe() == COLORIDX_COMMENT ){	/* 行コメントである */
 			pWork->pcColorStrategy_Prev = NULL;
 		}
 		pWork->pcColorStrategy = pWork->pcColorStrategy_Prev;
+		pWork->colorCookie = pWork->colorCookiePrev;
 	}
 
 	m_nPrevReferLine = CLayoutInt(0);
 	m_pLayoutPrevRefer = NULL;
 
+	/* 処理中のユーザー操作を可能にする */
 	if( GetListenerCount()!=0 ){
 		NotifyProgress(0);
-		/* 処理中のユーザー操作を可能にする */
-		if( !::BlockingHook( NULL ) )return;
+		if( !::BlockingHook( NULL ) )
+		{
+			return;
+		}
 	}
 }
 
@@ -403,47 +408,45 @@ void CLayoutMgr::_DoLayout()
 
 void CLayoutMgr::_OnLine2(SLayoutWork* pWork)
 {
-	//@@@ 2002.09.23 YAZAKI 最適化
 	if( pWork->bNeedChangeCOMMENTMODE ){
 		pWork->pLayout = pWork->pLayout->GetNextLayout();
 		pWork->pLayout->SetColorTypePrev(pWork->pcColorStrategy_Prev->GetStrategyColorSafe());
-		(*pWork->pnExtInsLineNum)++;								//	再描画してほしい行数+1
+		pWork->pLayout->SetColorCookiePrev(pWork->colorCookiePrev);
+		(*pWork->pnExtInsLineNum)++;		// 再描画してほしい行数+1
 	}
 	else {
 		pWork->pLayout = InsertLineNext( pWork->pLayout, pWork->_CreateLayout(this) );
 	}
 	pWork->pcColorStrategy_Prev = pWork->pcColorStrategy;
+	pWork->colorCookiePrev = pWork->colorCookie;
 
 	pWork->nBgn = pWork->nPos;
-	// 2004.03.28 Moca pWork->nPosXはインデント幅を含むように変更(TAB位置調整のため)
-	pWork->nPosX = pWork->nIndent = (this->*m_getIndentOffset)( pWork->pLayout );
+	pWork->nPosX = pWork->nIndent = (this->*m_getIndentOffset)( pWork->pLayout );	// pWork->nPosXはインデント幅を含むように変更(TAB位置調整のため)
 	pWork->pLayoutCalculated = pWork->pLayout;
 	if( ( pWork->ptDelLogicalFrom.GetY2() == pWork->nCurLine && pWork->ptDelLogicalFrom.GetX2() < pWork->nPos ) ||
 		( pWork->ptDelLogicalFrom.GetY2() < pWork->nCurLine )
 	){
-		(pWork->nModifyLayoutLinesNew)++;;
+		(pWork->nModifyLayoutLinesNew)++;
 	}
 }
 
 /*!
 	指定レイアウト行に対応する論理行の次の論理行から指定論理行数だけ再レイアウトする
-	
-	@date 2002.10.07 YAZAKI rename from "DoLayout3_New"
-	@date 2004.04.03 Moca TABが使われると折り返し位置がずれるのを防ぐため，
-		pWork->nPosXがインデントを含む幅を保持するように変更．m_sTypeConfig.m_nMaxLineKetasは
-		固定値となったが，既存コードの置き換えは避けて最初に値を代入するようにした．
-	@date 2009.08.28 nasukoji	テキスト最大幅の算出に対応
 
-	@note 2004.04.03 Moca
-		_DoLayoutとは違ってレイアウト情報がリスト中間に挿入されるため，
-		挿入後にm_nLineTypeBotへコメントモードを指定してはならない
-		代わりに最終行のコメントモードを終了間際に確認している．
+	TABが使われると折り返し位置がずれるのを防ぐため，pWork->nPosX がインデントを
+	含む幅を保持するように変更．m_sTypeConfig.m_nMaxLineKetas は固定値となったが，
+	既存コードの置き換えは避けて最初に値を代入するようにした．
+
+	_DoLayoutとは違ってレイアウト情報がリスト中間に挿入されるため，
+	挿入後に m_colorIndexPrevAtEof へコメントモードを指定してはならない.
+	代わりに最終行のカラーリング情報を終了間際に確認している．
 */
 CLayoutInt CLayoutMgr::DoLayout_Range(
 	CLayout*		pLayoutPrev,
 	CLogicInt		nLineNum,
 	CLogicPoint		_ptDelLogicalFrom,
 	EColorIndexType	nCurrentLineType,
+	int				colorCookiePrev,
 	const CalTextWidthArg*	pctwArg,
 	CLayoutInt*		_pnExtInsLineNum
 )
@@ -462,6 +465,8 @@ CLayoutInt CLayoutMgr::DoLayout_Range(
 	pWork->pLayout					= pLayoutPrev;
 	pWork->pcColorStrategy			= CColorStrategyPool::getInstance()->GetStrategyByColor(nCurrentLineType);
 	pWork->pcColorStrategy_Prev		= pWork->pcColorStrategy;
+	pWork->colorCookie				= colorCookiePrev;
+	pWork->colorCookiePrev			= colorCookiePrev;
 	pWork->bNeedChangeCOMMENTMODE	= false;
 	if( NULL == pWork->pLayout ){
 		pWork->nCurLine = CLogicInt(0);
@@ -490,23 +495,25 @@ CLayoutInt CLayoutMgr::DoLayout_Range(
 		_MakeOneLine(pWork, &CLayoutMgr::_OnLine2);
 
 		if( pWork->nPos - pWork->nBgn > 0 ){
-// 2002/03/13 novice
 			if( pWork->pcColorStrategy->GetStrategyColorSafe() == COLORIDX_COMMENT ){	/* 行コメントである */
 				pWork->pcColorStrategy = NULL;
 			}
-			//@@@ 2002.09.23 YAZAKI 最適化
 			_OnLine2(pWork);
 		}
 
+		// 次の行へ
 		nLineNumWork++;
 		pWork->nCurLine++;
 
 		/* 目的の行数(nLineNum)に達したか、または通り過ぎた（＝行数が増えた）か確認 */
-		//@@@ 2002.09.23 YAZAKI 最適化
 		if( nLineNumWork >= nLineNum ){
+#if 0
 			if( pWork->pLayout && pWork->pLayout->m_pNext 
 				&& ( pWork->pcColorStrategy_Prev->GetStrategyColorSafe() != pWork->pLayout->m_pNext->GetColorTypePrev() )
 			){
+#endif
+/* ToDo: この条件判定は暫定対応。無条件で後続行を再レイアウト対象にしているため、パフォーマンスが非常に悪い。*/
+			if( pWork->pLayout && pWork->pLayout->m_pNext ){
 				//	COMMENTMODEが異なる行が増えましたので、次の行→次の行と更新していきます。
 				pWork->bNeedChangeCOMMENTMODE = true;
 			}else{
@@ -514,7 +521,6 @@ CLayoutInt CLayoutMgr::DoLayout_Range(
 			}
 		}
 		pWork->pcDocLine = pWork->pcDocLine->GetNextLine();
-// 2002/03/13 novice
 		if( pWork->pcColorStrategy_Prev->GetStrategyColorSafe() == COLORIDX_COMMENT ){	/* 行コメントである */
 			pWork->pcColorStrategy_Prev = NULL;
 		}
@@ -522,21 +528,17 @@ CLayoutInt CLayoutMgr::DoLayout_Range(
 	}
 
 
-	// 2004.03.28 Moca EOFだけの論理行の直前の行の色分けが確認・更新された
+	// EOFだけの論理行の直前の行の色分けが確認・更新された
 	if( pWork->nCurLine == m_pcDocLineMgr->GetLineCount() ){
-		m_nLineTypeBot = pWork->pcColorStrategy_Prev->GetStrategyColorSafe();
-		// 2006.10.01 Moca 最終行が変更された。EOF位置情報を破棄する。
+		m_colorIndexPrevAtEof = pWork->pcColorStrategy_Prev->GetStrategyColorSafe();
+		m_colorCookiePrevAtEof = pWork->colorCookiePrev;
+		// 最終行が変更された。EOF位置情報を破棄する。
 		m_nEOFColumn = CLayoutInt(-1);
 		m_nEOFLine = CLayoutInt(-1);
 	}
 
-	// 2009.08.28 nasukoji	テキストが編集されたら最大幅を算出する
+	// テキストが編集されたら最大幅を算出する
 	CalculateTextWidth_Range(pctwArg);
-
-// 1999.12.22 レイアウト情報がなくなる訳ではないので
-//	m_nPrevReferLine = 0;
-//	m_pLayoutPrevRefer = NULL;
-//	m_pLayoutCurrent = NULL;
 
 	return pWork->nModifyLayoutLinesNew;
 }

@@ -216,9 +216,9 @@ public:
 protected:
 	//! ロジック行を1行描画
 	bool DrawLogicLine(
-		HDC				hdc,			//!< [in]     作画対象
-		DispPos*		pDispPos,		//!< [in/out] 描画する箇所、描画元ソース
-		CLayoutInt		nLineTo			//!< [in]     作画終了するレイアウト行番号
+		HDC				hdc,				//!< [in]     作画対象
+		DispPos*		pDispPos,			//!< [in/out] 描画する箇所、描画元ソース
+		CLayoutInt		nLineTo				//!< [in]     作画終了するレイアウト行番号
 	);
 
 	//! レイアウト行を1行描画
@@ -226,7 +226,14 @@ protected:
 
 	//色分け
 public:
-	EColorIndexType GetColorIndex( const CLayout*, int, bool bPrev = false, CColorStrategy** ppStrategy = NULL, CColor_Found** ppStrategyFound = NULL );				/* 指定位置のColorIndexの取得 02/12/13 ai */
+	EColorIndexType GetColorIndex(
+		const CLayout*		pcLayout,
+		int					nIndex,
+		int&				rColorCookie,
+		bool				bPrev = false,			// 指定位置の色変更直前まで
+		CColorStrategy**	ppStrategy = NULL,
+		CColor_Found**		ppStrategyFound = NULL
+	);
 	void SetCurrentColor( CGraphics& gr, EColorIndexType );							/* 現在の色を指定 */
 	void SetCurrentColor2( CGraphics& gr, EColorIndexType, EColorIndexType);
 	COLORREF GetTextColorByColorInfo2(const ColorInfo& info, const ColorInfo& info2);

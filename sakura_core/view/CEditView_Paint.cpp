@@ -270,7 +270,7 @@ void CEditView::DrawBackImage(HDC hdc, RECT& rcPaint, HDC hdcBgImg)
 //                          色設定                             //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
-/*! 指定位置のColorIndexの取得
+/*! 指定位置の ColorIndextype および colorCookie の取得
 	CEditView::DrawLogicLineを元にしたためCEditView::DrawLogicLineに
 	修正があった場合は、ここも修正が必要。
 
@@ -293,14 +293,15 @@ void CEditView::DrawBackImage(HDC hdc, RECT& rcPaint, HDC hdcBgImg)
  	1000～COLORIDX_LASTまでは正規表現で使用する。
 */
 EColorIndexType CEditView::GetColorIndex(
-	const CLayout*			pcLayout,
-	int						nIndex,
-	bool					bPrev,			// 指定位置の色変更直前まで	2010.06.19 ryoji 追加
-	CColorStrategy**		ppStrategy,		// 2010.03.31 ryoji 追加
-	CColor_Found**		ppStrategyFound	// 2010.03.31 ryoji 追加
+	const CLayout*		pcLayout,
+	int					nIndex,
+	int&				rColorCookie,
+	bool				bPrev,				// 指定位置の色変更直前まで
+	CColorStrategy**	ppStrategy,
+	CColor_Found**		ppStrategyFound
 )
 {
-	EColorIndexType eRet = COLORIDX_TEXT;
+	EColorIndexType eColor = COLORIDX_TEXT;
 
 	if(!pcLayout){
 		return COLORIDX_TEXT;
@@ -316,53 +317,27 @@ EColorIndexType CEditView::GetColorIndex(
 	pInfo->pcView = this;
 	pInfo->pDispPos=&_sPos;
 	{
-		// 2002/2/10 aroka CMemory変更
 		pInfo->pLineOfLogic = pcLayout->GetDocLineRef()->GetPtr();
 
 		// 論理行の最初のレイアウト情報を取得 -> pcLayoutLineFirst
 		const CLayout* pcLayoutLineFirst = pcLayout;
 		while( 0 != pcLayoutLineFirst->GetLogicOffset() ){
 			pcLayoutLineFirst = pcLayoutLineFirst->GetPrevLayout();
-
-			// 論理行の先頭まで戻らないと確実には正確な色は得られない
-			// （正規表現キーワードにマッチした長い強調表示がその位置のレイアウト行頭をまたいでいる場合など）
-			//if( pcLayout->GetLogicOffset() - pcLayoutLineFirst->GetLogicOffset() > 260 )
-			//	break;
 		}
 
-		// 2005.11.20 Moca 色が正しくないことがある問題に対処
-		eRet = pcLayoutLineFirst->GetColorTypePrev();	/* 現在の色を指定 */	// 02/12/18 ai
+		eColor = pcLayoutLineFirst->GetColorTypePrev();	/* 現在の色を指定 */
+		pInfo->colorCookie = pcLayoutLineFirst->GetColorCookiePrev();
 		pInfo->nPosInLogic = pcLayoutLineFirst->GetLogicOffset();
 
 		//CColorStrategyPool初期化
 		CColorStrategyPool* pool = CColorStrategyPool::getInstance();
 		pool->NotifyOnStartScanLogic();
-
-
-		// 2009.02.07 ryoji この関数では pInfo->DoChangeColor() で色を調べるだけなので以下の処理は不要
-		//
-		////############超仮。本当はVisitorを使うべき
-		//class TmpVisitor{
-		//public:
-		//	static int CalcLayoutIndex(const CLayout* pcLayout)
-		//	{
-		//		int n = -1;
-		//		while(pcLayout){
-		//			pcLayout = pcLayout->GetPrevLayout(); //prev or null
-		//			n++;
-		//		}
-		//		return n;
-		//	}
-		//};
-		//pInfo->pDispPos->SetLayoutLineRef(CLayoutInt(TmpVisitor::CalcLayoutIndex(pcLayout)));
 	}
 
-	//@@@ 2001.11.17 add start MIK
 	if( TypeDataPtr->m_bUseRegexKeyword )
 	{
 		m_cRegexKeyword->RegexKeyLineStart();
 	}
-	//@@@ 2001.11.17 add end MIK
 
 	//文字列参照
 	const CDocLine* pcDocLine = pcLayout->GetDocLineRef();
@@ -370,16 +345,17 @@ EColorIndexType CEditView::GetColorIndex(
 
 	//color strategy
 	CColorStrategyPool* pool = CColorStrategyPool::getInstance();
-	pInfo->pStrategy = pool->GetStrategyByColor(eRet);
+	pInfo->pStrategy = pool->GetStrategyByColor(eColor);
 	if(pInfo->pStrategy)pInfo->pStrategy->InitStrategyStatus();
 
 	int nPosTo = pcLayout->GetLogicOffset() + __min(nIndex, pcLayout->GetLengthWithEOL() - 1);
-	while(pInfo->nPosInLogic <= nPosTo){
-		if( bPrev && pInfo->nPosInLogic == nPosTo )
+	while( pInfo->nPosInLogic <= nPosTo ){
+		if( bPrev && pInfo->nPosInLogic == nPosTo ){
 			break;
+		}
 
 		//色切替
-		pInfo->DoChangeColor(cLineStr);
+		pInfo->DoChangeColor(cLineStr, pInfo->colorCookie);
 
 		//1文字進む
 		pInfo->nPosInLogic += CNativeW::GetSizeOfChar(
@@ -388,11 +364,17 @@ EColorIndexType CEditView::GetColorIndex(
 									pInfo->nPosInLogic
 								);
 	}
-	eRet = pInfo->GetCurrentColor2();
-	if(ppStrategy) *ppStrategy = pInfo->pStrategy;
-	if(ppStrategyFound) *ppStrategyFound = pInfo->pStrategyFound;
+	eColor = pInfo->GetCurrentColor2();
 
-	return eRet;
+	if( ppStrategy ){
+		*ppStrategy = pInfo->pStrategy;
+	}
+	if( ppStrategyFound ){
+		*ppStrategyFound = pInfo->pStrategyFound;
+	}
+
+	rColorCookie = pInfo->colorCookie;
+	return eColor;
 }
 
 
@@ -648,8 +630,6 @@ void CEditView::OnPaint( HDC _hdc, PAINTSTRUCT *pPs, BOOL bDrawFromComptibleBmp 
 		nLayoutLine = GetTextArea().GetViewTopLine() + CLayoutInt( ( nTop - GetTextArea().GetAreaTop() ) / nLineHeight ); //ビュー途中から描画
 	}
 
-	// ※ ここにあった描画範囲の 260 文字ロールバック処理は GetColorIndex() に吸収	// 2009.02.11 ryoji
-
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 	//          描画終了レイアウト絶対行 -> nLayoutLineTo            //
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
@@ -825,9 +805,9 @@ void CEditView::OnPaint( HDC _hdc, PAINTSTRUCT *pPs, BOOL bDrawFromComptibleBmp 
 	@return EOFを作画したらtrue
 */
 bool CEditView::DrawLogicLine(
-	HDC				_hdc,			//!< [in]     作画対象
-	DispPos*		_pDispPos,		//!< [in/out] 描画する箇所、描画元ソース
-	CLayoutInt		nLineTo			//!< [in]     作画終了するレイアウト行番号
+	HDC				_hdc,				//!< [in]     作画対象
+	DispPos*		_pDispPos,			//!< [in/out] 描画する箇所、描画元ソース
+	CLayoutInt		nLineTo				//!< [in]     作画終了するレイアウト行番号
 )
 {
 //	MY_RUNNINGTIMER( cRunningTimer, "CEditView::DrawLogicLine" );
@@ -867,8 +847,10 @@ bool CEditView::DrawLogicLine(
 	// 前行の最終設定色
 	{
 		const CLayout* pcLayout = pInfo->pDispPos->GetLayoutRef();
-		EColorIndexType eType = GetColorIndex(pcLayout, 0, true, &pInfo->pStrategy, &pInfo->pStrategyFound);
+		int colorCookie;
+		EColorIndexType eType = GetColorIndex(pcLayout, 0, colorCookie, true, &pInfo->pStrategy, &pInfo->pStrategyFound);
 		pInfo->ChangeColor(eType);
+		pInfo->colorCookie = colorCookie;
 	}
 
 	//開始ロジック位置を算出
@@ -940,8 +922,8 @@ bool CEditView::DrawLayoutLine(SColorStrategyInfo* pInfo)
 	const CDocLine* pcDocLine = pInfo->GetDocLine();
 	CStringRef cLineStr = pcDocLine->GetStringRefWithEOL();
 
-	//color strategy
-	if(pcLayout && pcLayout->GetLogicOffset()==0){
+	// レイアウト先頭行の場合には、 color を初期化する.
+	if(pcLayout && pcLayout->GetLogicOffset()==0){			/* */
 		CColorStrategyPool* pool = CColorStrategyPool::getInstance();
 		pInfo->pStrategy = pool->GetStrategyByColor(pcLayout->GetColorTypePrev());
 		if(pInfo->pStrategy)pInfo->pStrategy->InitStrategyStatus();
@@ -953,7 +935,7 @@ bool CEditView::DrawLayoutLine(SColorStrategyInfo* pInfo)
 		if(pcLayout){
 			while(pInfo->nPosInLogic < pcLayout->GetLogicOffset() + pcLayout->GetLengthWithEOL()){
 				//色切替
-				pInfo->DoChangeColor(cLineStr);
+				pInfo->DoChangeColor(cLineStr, pInfo->colorCookie);
 
 				//1文字進む
 				pInfo->nPosInLogic += CNativeW::GetSizeOfChar(
@@ -1008,7 +990,7 @@ bool CEditView::DrawLayoutLine(SColorStrategyInfo* pInfo)
 	if(pcLayout){
 		while(pInfo->nPosInLogic < pcLayout->GetLogicOffset() + pcLayout->GetLengthWithEOL()){
 			//色切替
-			pInfo->DoChangeColor(cLineStr);
+			pInfo->DoChangeColor(cLineStr, pInfo->colorCookie);
 
 			//1文字情報取得 $$高速化可能
 			CFigure& cFigure = CFigureManager::getInstance()->GetFigure(&cLineStr.GetPtr()[pInfo->GetPosInLogic()]);

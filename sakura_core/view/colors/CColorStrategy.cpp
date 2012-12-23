@@ -37,7 +37,7 @@ const CLayout* SColorStrategyInfo::GetLayout() const
 	return pDispPos->GetLayoutRef();
 }
 
-void SColorStrategyInfo::DoChangeColor(const CStringRef& cLineStr)
+void SColorStrategyInfo::DoChangeColor(const CStringRef& cLineStr, int& rCommentNestLevel)
 {
 	CColorStrategyPool* pool = CColorStrategyPool::getInstance();
 	pool->SetCurrentView(this->pcView);
@@ -77,7 +77,7 @@ void SColorStrategyInfo::DoChangeColor(const CStringRef& cLineStr)
 
 	//色終了
 	if(this->pStrategy){
-		if(this->pStrategy->EndColor(cLineStr,this->GetPosInLogic())){
+		if(this->pStrategy->EndColor(cLineStr, this->GetPosInLogic(), rCommentNestLevel)){
 			this->pStrategy = NULL;
 			ChangeColor2(GetCurrentColor(), GetCurrentColor2());
 		}
@@ -86,7 +86,7 @@ void SColorStrategyInfo::DoChangeColor(const CStringRef& cLineStr)
 	//色開始
 	if(!this->pStrategy){
 		for(int i=0;i<pool->GetStrategyCount();i++){
-			if(pool->GetStrategy(i)->BeginColor(cLineStr,this->GetPosInLogic())){
+			if(pool->GetStrategy(i)->BeginColor(cLineStr, this->GetPosInLogic(), rCommentNestLevel)){
 				this->pStrategy = pool->GetStrategy(i);
 				ChangeColor2(GetCurrentColor(), GetCurrentColor2());
 				break;
@@ -181,12 +181,13 @@ void CColorStrategyPool::NotifyOnStartScanLogic()
 bool CColorStrategyPool::CheckColorMODE(
 	CColorStrategy**	ppcColorStrategy,	//!< [in/out]
 	int					nPos,
-	const CStringRef&	cLineStr
+	const CStringRef&	cLineStr,
+	int&				rCommentNestLevel
 )
 {
 	//色終了
 	if(*ppcColorStrategy){
-		if((*ppcColorStrategy)->EndColor(cLineStr,nPos)){
+		if((*ppcColorStrategy)->EndColor(cLineStr, nPos, rCommentNestLevel)){
 			*ppcColorStrategy = NULL;
 			return true;
 		}
@@ -200,7 +201,10 @@ bool CColorStrategyPool::CheckColorMODE(
 		if(m_pcLineComment->BeginColor(cLineStr,nPos)){ *ppcColorStrategy = m_pcLineComment; return false; }
 		if(m_pcBlockComment1->BeginColor(cLineStr,nPos)){ *ppcColorStrategy = m_pcBlockComment1; return false; }
 		if(m_pcBlockComment2->BeginColor(cLineStr,nPos)){ *ppcColorStrategy = m_pcBlockComment2; return false; }
-		if(m_pcCommentCpp->BeginColor(cLineStr,nPos)){ *ppcColorStrategy = m_pcCommentCpp; return false; }
+		if(m_pcCommentCpp->BeginColor(cLineStr,nPos, rCommentNestLevel)){
+			*ppcColorStrategy = m_pcCommentCpp;
+			return false;
+		}
 		if(m_pcSingleQuote->BeginColor(cLineStr,nPos)){ *ppcColorStrategy = m_pcSingleQuote; return false; }
 		if(m_pcDoubleQuote->BeginColor(cLineStr,nPos)){ *ppcColorStrategy = m_pcDoubleQuote; return false; }
 	}

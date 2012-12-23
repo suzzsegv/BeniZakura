@@ -141,9 +141,9 @@ void CEditView::DrawBracketPair( bool bDraw )
 				}
 				else{
 					if( IsBracket( pLine, OutputX, CLogicInt(1) ) ){
-						// 03/10/24 ai 折り返し行のColorIndexが正しく取得できない問題に対応
-						// 2009.02.07 ryoji GetColorIndex に渡すインデックスの仕様変更（元はこっちの仕様だった模様）
-						nColorIndex = GetColorIndex( pcLayout, OutputX );
+						/* ToDo: */
+						int colorCookie;
+						nColorIndex = GetColorIndex( pcLayout, OutputX, colorCookie);
 					}
 					else{
 						SetBracketPairPos( false );

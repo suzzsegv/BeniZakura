@@ -48,10 +48,10 @@ public:
 		return COLORIDX_COMMENT2;
 	}
 
-	bool Match_CommentFrom( int pos, const CStringRef& rStr ) const;
-	int Match_CommentTo( int pos, const CStringRef& rStr ) const;
-	bool BeginColor(const CStringRef& cStr, int pos);
-	bool EndColor(const CStringRef& cStr, int pos);
+	bool Match_CommentFrom( int pos, const CStringRef& rStr, int& rCommentNestLevel );
+	int Match_CommentTo( int pos, const CStringRef& rStr, int& rCommentNestLevel );
+	bool BeginColor(const CStringRef& cStr, int pos, int& rCommentNestLevel);
+	bool EndColor(const CStringRef& cStr, int pos, int& rCommentNestLevel);
 
 	int m_CommentEndPos;
 };

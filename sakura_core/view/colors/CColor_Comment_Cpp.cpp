@@ -33,7 +33,7 @@
 #include "doc/CLayout.h"
 
 
-bool CColor_Comment_Cpp::BeginColor(const CStringRef& rStr, int pos)
+bool CColor_Comment_Cpp::BeginColor(const CStringRef& rStr, int pos, int& rCommentNestLevel)
 {
 	if( !rStr.IsValid() ){
 		return false;
@@ -43,9 +43,9 @@ bool CColor_Comment_Cpp::BeginColor(const CStringRef& rStr, int pos)
 	const STypeConfig& rTypeSetting = pEditDoc->m_cDocType.GetDocumentAttribute();
 
 	if( rTypeSetting.m_ColorInfoArr[COLORIDX_COMMENT2].m_bDisp
-	 && Match_CommentFrom( pos, rStr ) )
+	 && Match_CommentFrom( pos, rStr, rCommentNestLevel ) )
 	{
-		this->m_CommentEndPos = Match_CommentTo( pos + wcslen( L"#if 0" ), rStr );
+		this->m_CommentEndPos = Match_CommentTo( pos + wcslen( L"#if 0" ), rStr, rCommentNestLevel);
 
 		return true;
 	}
@@ -54,10 +54,10 @@ bool CColor_Comment_Cpp::BeginColor(const CStringRef& rStr, int pos)
 }
 
 
-bool CColor_Comment_Cpp::EndColor(const CStringRef& rStr, int pos)
+bool CColor_Comment_Cpp::EndColor(const CStringRef& rStr, int pos, int& rCommentNestLevel)
 {
 	if( this->m_CommentEndPos == 0 ){
-		this->m_CommentEndPos = Match_CommentTo( pos, rStr );
+		this->m_CommentEndPos = Match_CommentTo( pos, rStr, rCommentNestLevel );
 	} else if( pos == this->m_CommentEndPos ){
 		return true;
 	}
@@ -73,8 +73,9 @@ bool CColor_Comment_Cpp::EndColor(const CStringRef& rStr, int pos)
 bool CColor_Comment_Cpp::Match_CommentFrom
 	(
 		int					pos,		//!< [in] 探索開始位置
-		const CStringRef&	rStr		//!< [in] 探索対象文字列 ※探索開始位置のポインタではないことに注意
-	) const
+		const CStringRef&	rStr,		//!< [in] 探索対象文字列 ※探索開始位置のポインタではないことに注意
+		int& rCommentNestLevel			//!< [out] ネスト数
+	)
 {
 	int len;
 
@@ -82,6 +83,7 @@ bool CColor_Comment_Cpp::Match_CommentFrom
 	if( ( pos <= rStr.GetLength() - len )
 	 && ( wmemicmp( &rStr.GetPtr()[pos], L"#if 0", len ) == 0 ) )
 	{
+		rCommentNestLevel = 1;
 		return true;
 	}
 	return false;
@@ -96,40 +98,53 @@ bool CColor_Comment_Cpp::Match_CommentFrom
 int CColor_Comment_Cpp::Match_CommentTo
 	(
 		int					pos,		//!< [in] 探索開始位置
-		const CStringRef&	rStr		//!< [in] 探索対象文字列 ※探索開始位置のポインタではないことに注意
-	) const
+		const CStringRef&	rStr,		//!< [in] 探索対象文字列 ※探索開始位置のポインタではないことに注意
+		int& rCommentNestLevel			//!< [in, out] ネスト数
+	)
 {
 	int i;
 	int targetLen;
 	int len;
 
 	targetLen = rStr.GetLength();
-	for( i = pos; i <= (targetLen - (int)wcslen( L"#endif" )); i++ ){
-		len  = wcslen( L"#endif" );
+	for( i = pos; i <= (targetLen - (int)wcslen( L"#else" )); i++ ){
+		len  = wcslen( L"#if " );
+		if( wmemicmp( &rStr.GetPtr()[i], L"#if ", len ) == 0 ){
+			rCommentNestLevel++;
+		}
+
+		len  = wcslen( L"#if\t" );
+		if( wmemicmp( &rStr.GetPtr()[i], L"#if\t", len ) == 0 ){
+			rCommentNestLevel++;
+		}
+
+		len  = wcslen( L"#ifdef" );
+		if( wmemicmp( &rStr.GetPtr()[i], L"#ifdef", len ) == 0 ){
+			rCommentNestLevel++;
+		}
+
+		len  = wcslen( L"$endif" );
 		if( wmemicmp( &rStr.GetPtr()[i], L"#endif", len ) == 0 ){
-			return i + len;
+			rCommentNestLevel--;
+			if( rCommentNestLevel == 0 ){
+				return i + len;
+			}
 		}
 
 		len  = wcslen( L"#else" );
 		if( wmemicmp( &rStr.GetPtr()[i], L"#else", len ) == 0 ){
-			return i + len;
+			if( rCommentNestLevel == 1 ){
+				rCommentNestLevel = 0;
+				return i + len;
+			}
 		}
 
 		len  = wcslen( L"#elif" );
 		if( wmemicmp( &rStr.GetPtr()[i], L"#elif", len ) == 0 ){
-			return i + len;
-		}
-	}
-
-	for( ; i <= (targetLen - (int)wcslen( L"#else" )); i++ ){
-		len  = wcslen( L"#else" );
-		if( wmemicmp( &rStr.GetPtr()[i], L"#else", len ) == 0 ){
-			return i + len;
-		}
-
-		len  = wcslen( L"#elif" );
-		if( wmemicmp( &rStr.GetPtr()[i], L"#elif", len ) == 0 ){
-			return i + len;
+			if( rCommentNestLevel == 1 ){
+				rCommentNestLevel = 0;
+				return i + len;
+			}
 		}
 	}
 

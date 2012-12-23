@@ -248,11 +248,16 @@ protected:
 	/*
 	|| 更新系
 	*/
-	// 2005.11.21 Moca 引用符の色分け情報を引数から除去
 	void _DoLayout();	/* 現在の折り返し文字数に合わせて全データのレイアウト情報を再生成します */
-	// 2005.11.21 Moca 引用符の色分け情報を引数から除去
-	// 2009.08.28 nasukoji	テキスト最大幅算出用引数追加
-	CLayoutInt DoLayout_Range( CLayout* , CLogicInt, CLogicPoint, EColorIndexType, const CalTextWidthArg*, CLayoutInt* );	/* 指定レイアウト行に対応する論理行の次の論理行から指定論理行数だけ再レイアウトする */
+	CLayoutInt DoLayout_Range(
+		CLayout*				pLayoutPrev,
+		CLogicInt				nLineNum,
+		CLogicPoint				_ptDelLogicalFrom,
+		EColorIndexType			nCurrentLineType,
+		int						colorCookiePrev,
+		const CalTextWidthArg*	pctwArg,
+		CLayoutInt*				_pnExtInsLineNum
+	);	/* 指定レイアウト行に対応する論理行の次の論理行から指定論理行数だけ再レイアウトする */
 	void CalculateTextWidth_Range( const CalTextWidthArg* pctwArg );	/* テキストが編集されたら最大幅を算出する */	// 2009.08.28 nasukoji
 	CLayout* DeleteLayoutAsLogical( CLayout*, CLayoutInt, CLogicInt , CLogicInt, CLogicPoint, CLayoutInt* );	/* 論理行の指定範囲に該当するレイアウト情報を削除 */
 	void ShiftLogicalLineNum( CLayout* , CLogicInt );	/* 指定行より後の行のレイアウト情報について、論理行番号を指定行数だけシフトする */
@@ -275,6 +280,8 @@ protected:
 		CLayout*		pLayout;
 		CColorStrategy*	pcColorStrategy;
 		CColorStrategy*	pcColorStrategy_Prev;
+		int				colorCookie;
+		int				colorCookiePrev;
 		CLogicInt		nCurLine;
 
 		//ループ外 (DoLayoutのみ)
@@ -335,9 +342,15 @@ protected:
 	/*
 	|| 実装ヘルパ系
 	*/
-	//@@@ 2002.09.23 YAZAKI
-	// 2009.08.28 nasukoji	nPosX引数追加
-	CLayout* CreateLayout( CDocLine* pCDocLine, CLogicPoint ptLogicPos, CLogicInt nLength, EColorIndexType nTypePrev, CLayoutInt nIndent, CLayoutInt nPosX );
+	CLayout* CreateLayout(
+		CDocLine* pCDocLine,
+		CLogicPoint ptLogicPos,
+		CLogicInt nLength,
+		EColorIndexType colorIndexPrev,
+		int colorCookiePrev,
+		CLayoutInt nIndent,
+		CLayoutInt nPosX
+	);
 	CLayout* InsertLineNext( CLayout*, CLayout* );
 	void AddLineBottom( CLayout* );
 
@@ -348,10 +361,6 @@ public:
 	CDocLineMgr*			m_pcDocLineMgr;	/* 行バッファ管理マネージャ */
 
 protected:
-	// 2002.10.07 YAZAKI add m_nLineTypeBot
-	// 2007.09.07 kobake 変数名変更: m_nMaxLineSize→m_nMaxLineKetas
-	// 2007.10.08 kobake 変数名変更: getIndentOffset→m_getIndentOffset
-
 	//参照
 	CEditDoc*		m_pcEditDoc;
 
@@ -367,7 +376,8 @@ protected:
 	CalcIndentProc			m_getIndentOffset;			//	Oct. 1, 2002 genta インデント幅計算関数を保持
 
 	//フラグ等
-	EColorIndexType			m_nLineTypeBot;				//!< タイプ 0=通常 1=行コメント 2=ブロックコメント 3=シングルクォーテーション文字列 4=ダブルクォーテーション文字列
+	EColorIndexType			m_colorIndexPrevAtEof;		// EOF 直前の文字のカラーインデックス(パレット)番号
+	int						m_colorCookiePrevAtEof;		// EOF 直前の文字のカラーリング付加情報
 	CLayoutInt				m_nLines;					// 全レイアウト行数
 
 	mutable CLayoutInt		m_nPrevReferLine;

@@ -178,6 +178,7 @@ struct SColorStrategyInfo{
 	CColorStrategy*		pStrategy;
 	CColor_Found*		pStrategyFound;
 	CColor_Select*		pStrategySelect;
+	int colorCookie;
 
 	//! 色の切り替え
 	void ChangeColor(EColorIndexType eNewColor)
@@ -189,7 +190,7 @@ struct SColorStrategyInfo{
 		this->pcView->SetCurrentColor2(this->gr, eNewColor, eNewColor2);
 	}
 
-	void DoChangeColor(const CStringRef& cLineStr);
+	void DoChangeColor(const CStringRef& cLineStr, int& rCommentNestLevel);
 	EColorIndexType GetCurrentColor() const;
 	EColorIndexType GetCurrentColor2() const;
 
@@ -210,8 +211,19 @@ public:
 	virtual EColorIndexType GetStrategyColor() const = 0;
 	//! 色切り替え開始を検出したら、その直前までの描画を行い、さらに色設定を行う。
 	virtual void InitStrategyStatus() = 0;
+
 	virtual bool BeginColor(const CStringRef& cStr, int nPos){ return false; }
 	virtual bool EndColor(const CStringRef& cStr, int nPos){ return true; }
+
+	virtual bool BeginColor(const CStringRef& cStr, int nPos, int& rCommentNestLevel)
+	{
+		return BeginColor(cStr, nPos);
+	}
+	virtual bool EndColor(const CStringRef& cStr, int nPos, int& rCommentNestLevel)
+	{
+		return EndColor(cStr, nPos);
+	}
+
 	//イベント
 	virtual void OnStartScanLogic(){}
 
@@ -251,7 +263,12 @@ public:
 	*/
 	//@@@ 2002.09.22 YAZAKI
 	// 2005.11.21 Moca 引用符の色分け情報を引数から除去
-	bool CheckColorMODE( CColorStrategy** ppcColorStrategy, int nPos, const CStringRef& cLineStr );
+	bool CheckColorMODE(
+			CColorStrategy** ppcColorStrategy,
+			int nPos,
+			const CStringRef& cLineStr,
+			int& rCommentNestLevel
+		);
 
 	//ビューの設定・取得
 	CEditView* GetCurrentView(void) const{ return m_pcView; }
