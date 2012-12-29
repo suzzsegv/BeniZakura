@@ -657,7 +657,7 @@ void CLayoutMgr::InsertData_CLayoutMgr(
 	CLogicInt		nInsStartLogicalPos;
 	CLogicInt		nInsLineNum;
 	CLogicInt		nRowNum;
-	EColorIndexType	nCurrentLineType;		// ToDo: -> colorIndexPrev
+	EColorIndexType	colorIndexPrev;
 	int				colorCookiePrev;
 	CLayoutInt		nLineWork;
 
@@ -678,7 +678,7 @@ void CLayoutMgr::InsertData_CLayoutMgr(
 			nLineWork = CLayoutInt(0);
 			nInsStartLogicalLine = m_pcDocLineMgr->GetLineCount();
 			nInsStartLogicalPos  = CLogicInt(0);
-			nCurrentLineType = COLORIDX_DEFAULT;
+			colorIndexPrev = COLORIDX_DEFAULT;
 			colorCookiePrev = 0;
 		}
 		else{
@@ -693,7 +693,7 @@ void CLayoutMgr::InsertData_CLayoutMgr(
 				nLineWork = CLayoutInt(0);
 				nInsStartLogicalLine = m_pcDocLineMgr->GetLineCount();
 				nInsStartLogicalPos  = CLogicInt(0);
-				nCurrentLineType = m_colorIndexPrevAtEof;
+				colorIndexPrev = m_colorIndexPrevAtEof;
 				colorCookiePrev = m_colorCookiePrevAtEof;
 			}
 			else{
@@ -706,7 +706,7 @@ void CLayoutMgr::InsertData_CLayoutMgr(
 
 				nInsStartLogicalLine = pLayout->GetLogicLineNo();
 				nInsStartLogicalPos  = nInsPos + pLayout->GetLogicOffset();
-				nCurrentLineType = pLayout->GetColorTypePrev();
+				colorIndexPrev = pLayout->GetColorTypePrev();
 				colorCookiePrev = pLayout->GetColorCookiePrev();
 			}
 		}
@@ -717,7 +717,7 @@ void CLayoutMgr::InsertData_CLayoutMgr(
 
 		nInsStartLogicalLine = pLayout->GetLogicLineNo();
 		nInsStartLogicalPos  = nInsPos + pLayout->GetLogicOffset();
-		nCurrentLineType = pLayout->GetColorTypePrev();
+		colorIndexPrev = pLayout->GetColorTypePrev();
 		colorCookiePrev = pLayout->GetColorCookiePrev();
 	}
 
@@ -728,10 +728,10 @@ void CLayoutMgr::InsertData_CLayoutMgr(
 			nLineWork--;
 		}
 		if( NULL != pLayoutWork ){
-			nCurrentLineType = pLayoutWork->GetColorTypePrev();
+			colorIndexPrev = pLayoutWork->GetColorTypePrev();
 			colorCookiePrev = pLayout->GetColorCookiePrev();
 		}else{
-			nCurrentLineType = COLORIDX_DEFAULT;
+			colorIndexPrev = COLORIDX_DEFAULT;
 			colorCookiePrev = 0;
 		}
 	}
@@ -807,7 +807,7 @@ void CLayoutMgr::InsertData_CLayoutMgr(
 		pLayoutPrev,
 		nRowNum,
 		CLogicPoint(nInsStartLogicalPos, nInsStartLogicalLine),
-		nCurrentLineType,
+		colorIndexPrev,
 		colorCookiePrev,
 		&ctwArg,
 		&nAddInsLineNum

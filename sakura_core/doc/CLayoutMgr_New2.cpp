@@ -33,7 +33,7 @@ void CLayoutMgr::ReplaceData_CLayoutMgr(
 
 	/* 置換先頭位置のレイアウト情報 */
 	CLayout*		pLayout = SearchLineByLayoutY( pArg->sDelRange.GetFrom().GetY2() );
-	EColorIndexType	nCurrentLineType = COLORIDX_DEFAULT;			/* ToDo: 変数名をリネームする */
+	EColorIndexType	colorIndexPrev = COLORIDX_DEFAULT;
 	int				colorCookiePrev;
 	CLayoutInt		nLineWork = pArg->sDelRange.GetFrom().GetY2();
 
@@ -43,11 +43,11 @@ void CLayoutMgr::ReplaceData_CLayoutMgr(
 			pLayoutWork = pLayoutWork->GetPrevLayout();
 			nLineWork--;
 		}
-		nCurrentLineType = pLayoutWork->GetColorTypePrev();
+		colorIndexPrev = pLayoutWork->GetColorTypePrev();
 		colorCookiePrev = pLayoutWork->GetColorCookiePrev();
 	}else if( GetLineCount() == pArg->sDelRange.GetFrom().GetY2() ){
 		// 2012.01.05 最終行のRedo/Undoでの色分けが正しくないのを修正
-		nCurrentLineType = m_colorIndexPrevAtEof;
+		colorIndexPrev = m_colorIndexPrevAtEof;
 		colorCookiePrev = m_colorCookiePrevAtEof;
 	}
 
@@ -145,7 +145,7 @@ void CLayoutMgr::ReplaceData_CLayoutMgr(
 		pLayoutPrev,
 		nRowNum,
 		ptFrom,
-		nCurrentLineType,
+		colorIndexPrev,
 		colorCookiePrev,
 		&ctwArg,
 		&nAddInsLineNum
