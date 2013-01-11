@@ -953,8 +953,7 @@ bool CImpExpKeybind::Import( const wstring& sFileName, wstring& sErrMsg )
 					p = q + 1;
 				}
 
-				auto_strncpy(sKeyBind.m_pKeyNameArr[i].m_szKeyName, to_tchar(p), _countof(sKeyBind.m_pKeyNameArr[i].m_szKeyName)-1);
-				sKeyBind.m_pKeyNameArr[i].m_szKeyName[_countof(sKeyBind.m_pKeyNameArr[i].m_szKeyName)-1] = '\0';
+				auto_strcpy(sKeyBind.m_pKeyNameArr[i].m_szKeyName, to_tchar(p));
 			}
 		}
 	}
