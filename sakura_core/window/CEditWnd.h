@@ -28,7 +28,7 @@
 class CEditWnd;
 
 #include <shellapi.h>// HDROP
-#include "global.h"
+#include "_main/global.h"
 #include "CMainToolBar.h"
 #include "CTabWnd.h"	//@@@ 2003.05.31 MIK
 #include "func/CFuncKeyWnd.h"
@@ -39,15 +39,15 @@ class CEditWnd;
 #include "dlg/CDlgReplace.h"
 #include "dlg/CDlgJump.h"
 #include "dlg/CDlgGrep.h"
-#include "outline/CDlgFuncList.h"
 #include "dlg/CDlgOpenFile.h"
+#include "outline/CDlgFuncList.h"
 #include "CHokanMgr.h"
 #include "util/design_template.h"
 #include "doc/CDocListener.h"
 #include "CMenuDrawer.h"
 
 //by 鬼
-#include"CDropTarget.h"
+#include"_os/CDropTarget.h"
 
 const static int MENUBAR_MESSAGE_MAX_LEN = 30;
 
@@ -199,7 +199,7 @@ public:
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
 	//! 自アプリがアクティブかどうか	// 2007.03.08 ryoji
-	BOOL IsActiveApp() const { return m_bIsActiveApp; }
+	bool IsActiveApp() const { return m_bIsActiveApp; }
 
 	//!ツールチップのテキストを取得。2007.09.08 kobake 追加
 	void GetTooltipText(TCHAR* wszBuf, size_t nBufCount, int nID) const;
@@ -286,7 +286,7 @@ protected:
 	int	CreateFileDropDownMenu( HWND );	//開く(ドロップダウン)	//@@@ 2002.06.15 MIK
 
 	//タイマー
-	void Timer_ONOFF( BOOL ); /* 更新の開始／停止 20060128 aroka */
+	void Timer_ONOFF( bool ); /* 更新の開始／停止 20060128 aroka */
 
 	// メニュー
 	void CheckFreeSubMenu( HWND, HMENU, UINT );		// メニューバーの無効化を検査	2010/6/18 Uchi

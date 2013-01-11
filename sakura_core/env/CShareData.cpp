@@ -28,7 +28,7 @@
 #include "env/CShareData_IO.h"
 #include "env/CommonSetting.h"
 #include "doc/CDocListener.h" // SLoadInfo
-#include "CControlTray.h"
+#include "_main/CControlTray.h"
 #include "debug/CRunningTimer.h"
 #include "recent/CMRU.h"
 #include "recent/CMRUFolder.h"
@@ -1297,6 +1297,3 @@ void CShareData::InitPopupMenu(DLLSHAREDATA* pShareData)
 	n++;
 	rMenu.m_nCustMenuItemNumArr[CUSTMENU_INDEX_FOR_TABWND] = n;
 }
-
-
-#include "CNormalProcess.h"

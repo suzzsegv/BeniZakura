@@ -28,25 +28,25 @@
 #include <string.h>	// Apr. 03, 2003 genta
 #include <DLGS.H>
 #include <OleCtl.h>
-#include "global.h"
+#include "doc/CEditDoc.h"
+#include "doc/CDocLine.h" /// 2002/2/3 aroka
+#include "doc/CLayout.h"	// 2007.08.22 ryoji ’Ç‰Á
+#include "docplus/CModifyManager.h"
+#include "_main/global.h"
+#include "_main/CAppMode.h"
+#include "_main/CControlTray.h"
+#include "_main/CNormalProcess.h"
 #include "window/CEditWnd.h"
-#include "CAppMode.h"
-#include "CClipboard.h"
+#include "_os/CClipboard.h"
 #include "CCodeChecker.h"
-#include "CControlTray.h"
 #include "CEditApp.h"
 #include "CGrepAgent.h"
-#include "CNormalProcess.h"
 #include "CPrintPreview.h"
 #include "CVisualProgress.h"
 #include "charset/CCodeMediator.h"
 #include "charset/charcode.h"
 #include "debug/CRunningTimer.h"
 #include "debug/Debug.h"
-#include "doc/CDocLine.h" /// 2002/2/3 aroka
-#include "doc/CEditDoc.h"
-#include "doc/CLayout.h"	// 2007.08.22 ryoji ’Ç‰Á
-#include "docplus/CModifyManager.h"
 #include "env/CSakuraEnvironment.h"
 #include "env/CShareData.h"
 #include "env/DLLSHAREDATA.h"
@@ -599,8 +599,6 @@ void CEditDoc::OnChangeSetting()
 	HWND		hwndProgress = NULL;
 
 	CEditWnd*	pCEditWnd = m_pcEditWnd;	//	Sep. 10, 2002 genta
-
-	//pCEditWnd->m_CFuncKeyWnd.Timer_ONOFF( FALSE ); // 20060126 aroka
 
 	if( NULL != pCEditWnd ){
 		hwndProgress = pCEditWnd->m_cStatusBar.GetProgressHwnd();

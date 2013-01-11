@@ -25,16 +25,18 @@
 #include "StdAfx.h"
 #include <shlobj.h>
 
-#include "CControlTray.h"
 #include "window/CEditWnd.h"
+#include "_main/CControlTray.h"
+#include "_main/CCommandLine.h"	/// 2003/1/26 aroka
+#include "_main/CAppMode.h"
 #include "dlg/CDlgAbout.h"
 #include "dlg/CDlgPrintSetting.h"
 #include "env/CShareData.h"
 #include "env/CSakuraEnvironment.h"
 #include "CPrintPreview.h"	/// 2002/2/3 aroka
-#include "CCommandLine.h"	/// 2003/1/26 aroka
 #include "debug/CRunningTimer.h"
 #include "charset/CharPointer.h"
+#include "charset/CCodeFactory.h"
 #include "CEditApp.h"
 #include "recent/CMRU.h"
 #include "recent/CMRUFolder.h"
@@ -45,10 +47,8 @@
 #include "util/string_ex2.h"
 #include "plugin/CJackManager.h"
 #include "CGrepAgent.h"
-#include "CAppMode.h"
 #include "CMarkMgr.h"
 #include "doc/CLayout.h"
-#include "charset/CCodeFactory.h"
 #include "sakura_rc.h"
 
 
@@ -735,7 +735,7 @@ HWND CEditWnd::Create(
 		WarningMessage( GetHwnd(), _T("CEditWnd::Create()\nタイマーが起動できません。\nシステムリソースが不足しているのかもしれません。") );
 	}
 	// ツールバーのタイマーを分離した 20060128 aroka
-	Timer_ONOFF( TRUE );
+	Timer_ONOFF( true );
 
 	//デフォルトのIMEモード設定
 	GetDocument().m_cDocEditor.SetImeMode( CDocTypeManager().GetTypeSetting(CTypeConfig(0)).m_nImeState );
@@ -3897,7 +3897,7 @@ void CEditWnd::WindowTopMost( int top )
 // ツールバー表示はタイマーにより更新しているが、
 // アプリのフォーカスが外れたときにウィンドウからON/OFFを
 //	呼び出してもらうことにより、余計な負荷を停止したい。
-void CEditWnd::Timer_ONOFF( BOOL bStart )
+void CEditWnd::Timer_ONOFF( bool bStart )
 {
 	if( NULL != GetHwnd() ){
 		if( bStart ){
