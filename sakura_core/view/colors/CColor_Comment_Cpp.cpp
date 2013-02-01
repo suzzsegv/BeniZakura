@@ -123,6 +123,11 @@ int CColor_Comment_Cpp::Match_CommentTo
 			rCommentNestLevel++;
 		}
 
+		len  = wcslen( L"#ifndef" );
+		if( wmemicmp( &rStr.GetPtr()[i], L"#ifndef", len ) == 0 ){
+			rCommentNestLevel++;
+		}
+
 		len  = wcslen( L"$endif" );
 		if( wmemicmp( &rStr.GetPtr()[i], L"#endif", len ) == 0 ){
 			rCommentNestLevel--;
