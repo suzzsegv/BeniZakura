@@ -9,6 +9,10 @@
 #if !defined(AFX_STDAFX_H__11490042_E569_11D3_BCE2_444553540001__INCLUDED_)
 #define AFX_STDAFX_H__11490042_E569_11D3_BCE2_444553540001__INCLUDED_
 
+#if !defined(_MSC_VER)
+#define _MSC_VER 0
+#endif
+
 #if _MSC_VER > 1000
 #pragma once
 #endif // _MSC_VER > 1000
@@ -72,6 +76,11 @@
 #include <memory>
 #endif // ifndef SAKURA_PCH_MODE_MIN
 
+//デバッグ
+#include "debug/Debug1.h"
+#include "debug/Debug2.h"
+#include "debug/Debug3.h"
+
 //シンプルでよく使うもの
 #include "basis/primitive.h"
 #include "util/std_macro.h"
@@ -85,12 +94,7 @@
 //サクラエディタ固有型
 #include "basis/SakuraBasis.h"
 
-//デバッグ
-#include "debug/Debug2.h"
-#include "debug/Debug3.h"
-
 //よく使うヘッダ
-#include "debug/Debug.h"
 #include "mem/CNativeW.h"
 #include "mem/CNativeA.h"
 #include "mem/CNativeT.h"
@@ -111,7 +115,7 @@
 
 //TCHARユーティリティ
 #include "util/tchar_convert.h"
-
+#include "charset/charcode.h"
 
 //###########超仮
 #include "CGraphics.h"
