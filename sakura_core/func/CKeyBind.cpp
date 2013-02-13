@@ -541,7 +541,7 @@ const KeyData DefaultKeyBindTable[] = {
 	//keycode,	keyname,			なし,				Shitf+,				Ctrl+,						Shift+Ctrl+,		Alt+,					Shit+Alt+,			Ctrl+Alt+,				Shift+Ctrl+Alt+
 	{ 0,_T("ダブルクリック"),		F_SEARCH_WORD,		F_SELECTWORD,		F_SELECTWORD,				F_SELECTWORD,		F_SELECTWORD,			F_SELECTWORD,		F_SELECTWORD,			F_SELECTWORD	},
 	{ 0,_T("右クリック"),			F_MENU_RBUTTON,		F_MENU_RBUTTON,		F_MENU_RBUTTON,				F_MENU_RBUTTON,		F_0,					F_0,				F_0,					F_0				},
-	{ 0,_T("中クリック"),			F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
+	{ 0,_T("中クリック"),			F_AUTOSCROLL,		F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ 0,_T("左サイドクリック"),		F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ 0,_T("右サイドクリック"),		F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ 0,_T("トリプルクリック"),		F_SELECTLINE,		F_SELECTLINE,		F_SELECTLINE,				F_SELECTLINE,		F_SELECTLINE,			F_SELECTLINE,		F_SELECTLINE,			F_SELECTLINE	},
