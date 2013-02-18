@@ -358,6 +358,12 @@ void CDlgTagJumpList::UpdateData( bool bInit )
 		ListView_SetItemState( hwndList, m_nIndex, LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED );
 		ListView_EnsureVisible( hwndList, m_nIndex, FALSE );
 	}
+	ListView_SetColumnWidth( hwndList, 0, LVSCW_AUTOSIZE_USEHEADER );
+	ListView_SetColumnWidth( hwndList, 1, LVSCW_AUTOSIZE_USEHEADER );
+	ListView_SetColumnWidth( hwndList, 2, LVSCW_AUTOSIZE_USEHEADER );
+	ListView_SetColumnWidth( hwndList, 3, LVSCW_AUTOSIZE_USEHEADER );
+	ListView_SetColumnWidth( hwndList, 4, LVSCW_AUTOSIZE_USEHEADER );
+	ListView_SetColumnWidth( hwndList, 5, LVSCW_AUTOSIZE_USEHEADER );
 
 	return;
 }
