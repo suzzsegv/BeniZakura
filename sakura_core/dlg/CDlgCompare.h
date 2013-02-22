@@ -35,7 +35,7 @@ public:
 
 	const TCHAR*	m_pszPath;
 	bool			m_bIsModified;
-	TCHAR*			m_pszComparePath;
+	TCHAR*			m_pszCompareLabel;
 	HWND*			m_phwndCompareWnd;
 	BOOL			m_bCompareAndTileHorz;/* 左右に並べて表示 */
 
@@ -46,8 +46,17 @@ protected:
 	BOOL OnBnClicked( int );
 	LPVOID GetHelpIdTable(void);	//@@@ 2002.01.18 add
 
+	INT_PTR DispatchEvent( HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam );	// 標準以外のメッセージを捕捉する
+	BOOL OnInitDialog( HWND, WPARAM, LPARAM );
+	BOOL OnSize( WPARAM wParam, LPARAM lParam );
+	BOOL OnMinMaxInfo( LPARAM lParam );
+
 	void SetData( void );	/* ダイアログデータの設定 */
 	int GetData( void );	/* ダイアログデータの取得 */
+
+private:
+	POINT			m_ptDefaultSize;
+	RECT			m_rcItems[6];
 };
 
 

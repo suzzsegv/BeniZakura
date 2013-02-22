@@ -81,6 +81,7 @@ F_FILE_REOPEN_CESU8			= 30118,	//CESU-8で開き直す					bool bNoConform
 F_FILE_REOPEN				= 30119,	//現在と同じ文字コードで開き直す	bool bNoConfirm
 F_FILESAVEALL				= 30120,	//すべて上書き保存					なし
 F_FILESAVE_QUIET			= 30121,	//上書き保存(限定動作)				なし
+F_FILE_REOPEN_LATIN1		= 30122,	//Latin1で開き直す					bool bNoConform	// 2010/3/20 Uchi
 F_PRINT						= 30150,	//印刷								なし
 F_PRINT_PREVIEW				= 30151,	//印刷プレビュー					なし
 F_PRINT_PAGESETUP			= 30152,	//印刷ページ設定					なし
@@ -514,6 +515,11 @@ F_LAYOUTTOLOGICLINENUM	= 40036,	// ロジック行番号取得
 F_LOGICTOLAYOUTLINENUM	= 40037,	// レイアウト行番号取得
 F_LINECOLUMNTOINDEX	= 40038,	// ロジック桁番号取得
 F_LINEINDEXTOCOLUMN	= 40039,	// レイアウト桁番号取得
+F_GETCOOKIE			= 40040,	// Cookie取得
+F_GETCOOKIEDEFAULT	= 40041,	// Cookie取得デフォルト値
+F_SETCOOKIE			= 40042,	// Cookie設定
+F_DELETECOOKIE		= 40043,	// Cookie削除
+F_GETCOOKIENAMES	= 40044,	// Cookie名前取得
 
 
 //	= 2005,.01.10 genta ISearch用補助コード

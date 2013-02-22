@@ -120,7 +120,7 @@ BEGIN
     PUSHBUTTON      "キャンセル(&X)",IDCANCEL,197,24,50,14
 END
 
-IDD_FUNCLIST DIALOG DISCARDABLE  0, 0, 238, 290
+IDD_FUNCLIST DIALOG DISCARDABLE  0, 0, 238, 291
 STYLE DS_MODALFRAME | DS_CENTER | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | 
     WS_CLIPCHILDREN | WS_CAPTION | WS_SYSMENU
 CAPTION "x"
@@ -128,25 +128,25 @@ FONT 9, "ＭＳ Ｐゴシック"
 BEGIN
     CONTROL         "Tree1",IDC_TREE_FL,"SysTreeView32",TVS_HASBUTTONS | 
                     TVS_HASLINES | TVS_LINESATROOT | TVS_SHOWSELALWAYS | 
-                    WS_BORDER | WS_TABSTOP,0,17,238,188
+                    WS_BORDER | WS_TABSTOP,0,17,234,235
     CONTROL         "List1",IDC_LIST_FL,"SysListView32",LVS_REPORT | 
                     LVS_SINGLESEL | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,0,
-                    0,238,205
-    PUSHBUTTON      "▼",IDC_BUTTON_MENU,1,235,10,14
+                    17,234,235
+    PUSHBUTTON      "▼",IDC_BUTTON_MENU,1,255,10,14
     CONTROL         "■",IDC_BUTTON_WINSIZE,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE,12,235,10,14
-    PUSHBUTTON      "コピー(&C)",IDC_BUTTON_COPY,24,235,50,14,WS_DISABLED
-    DEFPUSHBUTTON   "ジャンプ(&J)",IDOK,76,235,50,14
-    PUSHBUTTON      "キャンセル(&X)",IDCANCEL,128,235,50,14
-    PUSHBUTTON      "ヘルプ(&H)",IDC_BUTTON_HELP,180,235,50,14
+                    BS_PUSHLIKE,12,255,10,14
+    PUSHBUTTON      "コピー(&C)",IDC_BUTTON_COPY,24,255,50,14,WS_DISABLED
+    DEFPUSHBUTTON   "ジャンプ(&J)",IDOK,76,255,50,14
+    PUSHBUTTON      "キャンセル(&X)",IDCANCEL,128,255,50,14
+    PUSHBUTTON      "ヘルプ(&H)",IDC_BUTTON_HELP,180,255,50,14
     CONTROL         "自動的に閉じる(&D)",IDC_CHECK_bAutoCloseDlgFuncList,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,5,255,75,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,5,271,75,10
     CONTROL         "フォーカスを移す(&F)",IDC_CHECK_bFunclistSetFocusOnJump,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,82,255,77,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,82,271,77,10
     CONTROL         "空行を無視する(&B)",IDC_CHECK_bMarkUpBlankLineEnable,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,160,255,76,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,160,271,76,10
     LTEXT           "順序(&S)",IDC_STATIC_nSortType,3,6,28,8
-    COMBOBOX        IDC_COMBO_nSortType,34,4,94,65,CBS_DROPDOWNLIST | 
+    COMBOBOX        IDC_COMBO_nSortType,34,3,94,65,CBS_DROPDOWNLIST | 
                     CBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
 END
 
@@ -312,7 +312,7 @@ BEGIN
 END
 
 IDD_COMPARE DIALOGEX 0, 0, 365, 165
-STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+STYLE DS_MODALFRAME | WS_POPUP | WS_THICKFRAME | WS_CLIPCHILDREN | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_CONTEXTHELP
 CAPTION "ファイル内容比較"
 FONT 9, "ＭＳ Ｐゴシック"
@@ -324,9 +324,9 @@ BEGIN
                     WS_TABSTOP
     CONTROL         "左右に表示(&T)",IDC_CHECK_TILE_H,"Button",
                     BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,293,30,66,10
-    DEFPUSHBUTTON   "&OK",IDOK,190,145,50,14
-    PUSHBUTTON      "キャンセル(&X)",IDCANCEL,250,145,50,14
-    PUSHBUTTON      "ヘルプ(&H)",IDC_BUTTON_HELP,310,145,50,14
+    DEFPUSHBUTTON   "&OK",IDOK,184,145,50,14
+    PUSHBUTTON      "キャンセル(&X)",IDCANCEL,244,145,50,14
+    PUSHBUTTON      "ヘルプ(&H)",IDC_BUTTON_HELP,304,145,50,14
     EDITTEXT        IDC_STATIC_COMPARESRC,7,7,355,20,ES_MULTILINE | 
                     ES_AUTOVSCROLL | ES_READONLY | NOT WS_BORDER | 
                     WS_VSCROLL,WS_EX_STATICEDGE
@@ -592,7 +592,8 @@ BEGIN
 END
 
 IDD_FAVORITE DIALOGEX 0, 0, 380, 274
-STYLE DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | WS_SYSMENU
+STYLE DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_THICKFRAME | WS_CLIPCHILDREN | WS_CAPTION | 
+WS_SYSMENU
 EXSTYLE WS_EX_CONTEXTHELP
 CAPTION "履歴とお気に入りの管理"
 FONT 9, "ＭＳ Ｐゴシック"
@@ -621,7 +622,7 @@ BEGIN
     CONTROL         "List1",IDC_LIST_FAVORITE_CMD,"SysListView32",LVS_REPORT | 
                     LVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,25,127,243,79
     PUSHBUTTON      "追加(&I)",IDC_BUTTON_ADD_FAVORITE,5,237,50,14
-    LTEXT           " 履歴の削除：",IDC_STATIC_BUTTONS,65,234,70,21,
+    LTEXT           " 履歴の削除：",IDC_STATIC_BUTTONS,65,237,45,14,
                     SS_CENTERIMAGE
     PUSHBUTTON      "すべて(&A)...",IDC_BUTTON_CLEAR,111,237,50,14
     PUSHBUTTON      "お気に入り以外(&F)...",IDC_BUTTON_DELETE_NOFAVORATE,163,
@@ -632,7 +633,7 @@ BEGIN
     DEFPUSHBUTTON   "閉じる(&C)",IDOK,260,255,50,14
     CONTROL         "Tab1",IDC_TAB_FAVORITE,"SysTabControl32",WS_TABSTOP,3,4,
                     374,15
-    PUSHBUTTON      "ヘルプ(&H)",IDC_BUTTON_HELP,323,255,50,14
+    PUSHBUTTON      "ヘルプ(&H)",IDC_BUTTON_HELP,320,255,50,14
     LTEXT           "Message",IDC_STATIC_FAVORITE_MSG,4,254,250,19
 END
 
@@ -691,7 +692,8 @@ BEGIN
 END
 
 IDD_DIFF DIALOGEX 0, 0, 263, 303
-STYLE DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | WS_SYSMENU
+STYLE DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_THICKFRAME | WS_CLIPCHILDREN | WS_CAPTION | 
+WS_SYSMENU
 EXSTYLE WS_EX_CONTEXTHELP
 CAPTION "DIFF差分表示"
 FONT 9, "ＭＳ Ｐゴシック"
@@ -735,9 +737,9 @@ BEGIN
     CONTROL         "DIFF差分がないときにメッセージを表示",
                     IDC_CHECK_DIFF_EXEC_STATE,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,110,267,139,10
-    DEFPUSHBUTTON   "&OK",IDOK,97,282,50,14
-    PUSHBUTTON      "キャンセル(&X)",IDCANCEL,151,282,50,14
-    PUSHBUTTON      "ヘルプ(&H)",IDC_BUTTON_HELP,206,282,50,14
+    DEFPUSHBUTTON   "&OK",IDOK,93,282,50,14
+    PUSHBUTTON      "キャンセル(&X)",IDCANCEL,147,282,50,14
+    PUSHBUTTON      "ヘルプ(&H)",IDC_BUTTON_HELP,202,282,50,14
     LTEXT           "編集中のファイル",IDC_STATIC,7,7,61,8
     EDITTEXT        IDC_STATIC_DIFF_SRC,7,18,249,23,ES_MULTILINE | 
                     ES_AUTOVSCROLL | ES_READONLY | NOT WS_BORDER | 
@@ -1427,7 +1429,7 @@ EXSTYLE WS_EX_CONTEXTHELP
 FONT 9, "ＭＳ Ｐゴシック"
 BEGIN
     GROUPBOX        "表示文字コードの指定",IDC_STATIC,3,3,285,113
-    CONTROL         "SJISで文字コード値をUnicodeで表示する(&S)",
+    CONTROL         "SJIS,Latin1等で文字コード値をUnicodeで表示する(&S)",
                     IDC_CHECK_DISP_UNICODE_IN_SJIS,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,7,16,165,10
     CONTROL         "JISで文字コード値をUnicodeで表示する(&J)",
@@ -1478,10 +1480,23 @@ BEGIN
     CONTROL         "改行コードは上書きしない(&N)",
                     IDC_CHECK_bNotOverWriteCRLF,"Button",BS_AUTOCHECKBOX | 
                     WS_GROUP | WS_TABSTOP,8,174,108,10
-    GROUPBOX        "上書きモード",IDC_STATIC,3,159,149,35,WS_GROUP
+    CONTROL         "文字幅に合わせてスペースを詰める(&F)",
+                    IDC_CHECK_bOverWriteFixMode,"Button",BS_AUTOCHECKBOX | 
+                    WS_GROUP | WS_TABSTOP,8,190,128,10
+    GROUPBOX        "上書きモード",IDC_STATIC,3,159,149,51,WS_GROUP
     CONTROL         "クリックで&URLを選択する",IDC_CHECK_bSelectClickedURL,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,161,18,94,10
     GROUPBOX        "クリッカブルURL",IDC_STATIC,156,3,131,35,WS_GROUP
+    CONTROL         "カレントフォルダ(&U)",IDC_RADIO_CURDIR,"Button",
+                    BS_AUTORADIOBUTTON,161,54,87,8
+    CONTROL         "最近使ったフォルダ(&M)",IDC_RADIO_MRUDIR,"Button",
+                    BS_AUTORADIOBUTTON,161,69,80,8
+    CONTROL         "指定フォルダ(&F)",IDC_RADIO_SELDIR,"Button",
+                    BS_AUTORADIOBUTTON,161,84,80,8
+    EDITTEXT        IDC_EDIT_FILEOPENDIR,161,100,111,12
+    PUSHBUTTON      "...",IDC_BUTTON_FILEOPENDIR,272,98,9,14
+    GROUPBOX        "ファイルダイアログの初期位置",IDC_STATIC,156,41,130,79,
+                    WS_GROUP
 END
 
 IDD_PROP_FILE DIALOGEX 0, 0, 293, 240
@@ -2512,7 +2527,9 @@ IDI_PRINTER             ICON    DISCARDABLE     "../resource/printer.ico"
 //
 
 IDC_CURSOR_COPYARROW    CURSOR  DISCARDABLE     "../resource/cursor_copy.cur"
+#ifdef IDC_CURSOR_HAND
 IDC_CURSOR_HAND         CURSOR  DISCARDABLE     "../resource/cursor_hand.cur"
+#endif
 IDC_CURSOR_MOVEARROW    CURSOR  DISCARDABLE     "../resource/cursor_move.cur"
 IDC_CURSOR_RVARROW      CURSOR  DISCARDABLE     "../resource/cursor_rvarrow.cur"
 IDC_CURSOR_ISEARCH_F    CURSOR  DISCARDABLE     "../resource/cursor_isf.cur"
@@ -2566,6 +2583,7 @@ BEGIN
     F_FILE_REOPEN_UTF7      "UTF-7で開き直す"
     F_FILE_REOPEN_UNICODEBE "UnicodeBEで開き直す"
     F_FILE_REOPEN_CESU8     "CESU-8で開き直す"
+    F_FILE_REOPEN_LATIN1    "Latin1で開き直す"
     F_FILE_REOPEN           "開き直す"
     F_FILESAVEALL           "すべて上書き保存"
 END

@@ -38,7 +38,7 @@
 #include "charset/CharPointer.h"
 #include "charset/CCodeFactory.h"
 #include "CEditApp.h"
-#include "recent/CMRU.h"
+#include "recent/CMRUFile.h"
 #include "recent/CMRUFolder.h"
 #include "util/module.h"
 #include "util/os.h"		//WM_MOUSEWHEEL,WM_THEMECHANGED
@@ -131,7 +131,7 @@ void ShowCodeBox(HWND hWnd)
 				memcpy(szChar, &pLine[nIdx], nCharChars * sizeof(wchar_t));
 				szChar[nCharChars] = L'\0';
 				for( int i = 0; i < CODE_CODEMAX; i++ ){
-					if( i == CODE_SJIS || i == CODE_JIS || i == CODE_EUC || i == CODE_UNICODE || i == CODE_UTF8 || i == CODE_CESU8 ){
+					if( i == CODE_SJIS || i == CODE_JIS || i == CODE_EUC || i == CODE_LATIN1 || i == CODE_UNICODE || i == CODE_UTF8 || i == CODE_CESU8 ){
 						//auto_sprintf( szCaretChar, _T("%04x"), );
 						//任意の文字コードからUnicodeへ変換する		2008/6/9 Uchi
 						CCodeBase* pCode = CCodeFactory::CreateCodeBase((ECodeType)i, false);
@@ -155,8 +155,8 @@ void ShowCodeBox(HWND hWnd)
 				}
 
 				// メッセージボックス表示
-				auto_sprintf(szMsg, _T("文字:\t\t%ls (%s)\n\nSJIS:\t\t%s\nJIS:\t\t%s\nEUC:\t\t%s\nUnicode:\t\t%s\nUTF-8:\t\t%s\nCESU-8:\t\t%s"),
-					szChar, szCodeCP, szCode[CODE_SJIS], szCode[CODE_JIS], szCode[CODE_EUC], szCode[CODE_UNICODE], szCode[CODE_UTF8], szCode[CODE_CESU8]);
+				auto_sprintf(szMsg, _T("文字:\t\t%ls (%s)\n\nSJIS:\t\t%s\nJIS:\t\t%s\nEUC:\t\t%s\nLatin1:\t\t%s\nUnicode:\t\t%s\nUTF-8:\t\t%s\nCESU-8:\t\t%s"),
+					szChar, szCodeCP, szCode[CODE_SJIS], szCode[CODE_JIS], szCode[CODE_EUC], szCode[CODE_LATIN1], szCode[CODE_UNICODE], szCode[CODE_UTF8], szCode[CODE_CESU8]);
 				::MessageBox( hWnd, szMsg, GSTR_APPNAME, MB_OK );
 			}
 		}
@@ -790,11 +790,11 @@ void CEditWnd::SetDocumentTypeWhenCreate(
 		}
 		GetDocument().SetDocumentEncoding( nCharCode );
 		if( nCharCode == eDefaultCharCode ){	// デフォルト文字コードと同じ文字コードが選択されたとき
-			GetDocument().m_cDocFile.m_sFileInfo.bBomExist = ( types.m_encoding.m_bDefaultBom != FALSE );
+			GetDocument().m_cDocFile.m_sFileInfo.bBomExist = types.m_encoding.m_bDefaultBom;
 			GetDocument().m_cDocEditor.m_cNewLineCode = static_cast<EEolType>( types.m_encoding.m_eDefaultEoltype );
 		}
 		else{
-			GetDocument().m_cDocFile.m_sFileInfo.bBomExist = ( nCharCode == CODE_UNICODE || nCharCode == CODE_UNICODEBE );
+			GetDocument().m_cDocFile.m_sFileInfo.bBomExist = CCodeTypeName( nCharCode ).IsBomDefOn();
 			GetDocument().m_cDocEditor.m_cNewLineCode = EOL_CRLF;
 		}
 	}
@@ -2402,7 +2402,7 @@ void CEditWnd::InitMenu( HMENU hMenu, UINT uPos, BOOL fSystemMenu )
 						//@@@ 2001.12.26 YAZAKI OPENFOLDERリストは、CMRUFolderにすべて依頼する
 						const CMRUFolder cMRUFolder;
 						hMenuPopUp = cMRUFolder.CreateMenu( hMenu, &m_CMenuDrawer );
-						bInList = (cMRUFolder.MenuLength() > 0);;
+						bInList = (cMRUFolder.MenuLength() > 0);
 					}
 					break;
 				case F_CUSTMENU_LIST:			// カスタムメニューリスト
@@ -3979,75 +3979,22 @@ LRESULT CEditWnd::PopupWinList( bool bMousePos )
 LRESULT CEditWnd::WinListMenu( HMENU hMenu, EditNode* pEditNodeArr, int nRowNum, BOOL bFull )
 {
 	int			i;
-	TCHAR		szMemu[280];
-//>	EditNode*	pEditNodeArr;
-	EditInfo*	pfi;
+	TCHAR		szMenu[_MAX_PATH * 2 + 3];
+	const EditInfo*	pfi;
 
-//>	int	nRowNum = CShareData::getInstance()->GetOpenedWindowArr( &pEditNodeArr, TRUE );
 	if( nRowNum > 0 ){
-//>		/* セパレータ */
-//>		m_CMenuDrawer.MyAppendMenu( hMenu, MF_BYPOSITION | MF_SEPARATOR, 0, NULL );
 		CFileNameManager::getInstance()->TransformFileName_MakeCache();
 		for( i = 0; i < nRowNum; ++i ){
 			/* トレイからエディタへの編集ファイル名要求通知 */
 			::SendMessage( pEditNodeArr[i].GetHwnd(), MYWM_GETFILEINFO, 0, 0 );
 ////	From Here Oct. 4, 2000 JEPRO commented out & modified	開いているファイル数がわかるように履歴とは違って1から数える
-			TCHAR c = ((1 + i%35) <= 9)?(_T('1') + i%35):(_T('A') + i%35 - 9);	// 2009.06.02 ryoji アクセスキーを 1-9,A-Z の範囲で再使用
 			pfi = (EditInfo*)&m_pShareData->m_sWorkBuffer.m_EditInfo_MYWM_GETFILEINFO;
-			if( pfi->m_bIsGrep ){
-				/* データを指定バイト数以内に切り詰める */
-				CNativeW	cmemDes;
-				int			nDesLen;
-				const wchar_t*	pszDes;
-				LimitStringLengthW( pfi->m_szGrepKey, wcslen( pfi->m_szGrepKey ), 64, cmemDes );
-				pszDes = cmemDes.GetStringPtr();
-				nDesLen = wcslen( pszDes );
-				auto_sprintf( szMemu, _T("&%tc 【Grep】\"%ls%ts\""),
-					c,
-					pszDes,
-					( (int)wcslen( pfi->m_szGrepKey ) > nDesLen ) ? _T("…"):_T("")
-				);
-			}
-			else if( pEditNodeArr[i].GetHwnd() == m_pShareData->m_sHandles.m_hwndDebug ){
-				auto_sprintf( szMemu, _T("&%tc アウトプット"), c );
-
-			}
-			else{
-////		From Here Jan. 23, 2001 JEPRO
-////		ファイル名やパス名に'&'が使われているときに履歴等でキチンと表示されない問題を修正(&を&&に置換するだけ)
-////<----- From Here Added
-				TCHAR	szFile2[_MAX_PATH * 2];
-				if( _T('\0') == pfi->m_szPath[0] ){
-					_tcscpy( szFile2, _T("(無題)") );
-				}else{
-					TCHAR buf[_MAX_PATH];
-					CFileNameManager::getInstance()->GetTransformFileNameFast( pfi->m_szPath, buf, _MAX_PATH );
-					
-					dupamp( buf, szFile2 );
-				}
-				auto_sprintf(
-					szMemu,
-					_T("&%tc %ts %ts"),
-					c,
-					szFile2,
-					pfi->m_bIsModified ? _T("*"):_T(" ")
-				);
-////-----> To Here Added
-////		To Here Jan. 23, 2001
-
-////	To Here Oct. 4, 2000
-				// SJIS以外の文字コードの種別を表示する
-				// gm_pszCodeNameArr_Bracket からコピーするように変更
-				if(IsValidCodeTypeExceptSJIS(pfi->m_nCharCode)){
-					_tcscat( szMemu, CCodeTypeName(pfi->m_nCharCode).Bracket() );
-				}
-			}
-			m_CMenuDrawer.MyAppendMenu( hMenu, MF_BYPOSITION | MF_STRING, IDM_SELWINDOW + pEditNodeArr[i].m_nIndex, szMemu, _T("") );
+			CFileNameManager::getInstance()->GetMenuFullLabel_WinList( szMenu, _countof(szMenu), pfi, pEditNodeArr[i].m_nId, i );
+			m_CMenuDrawer.MyAppendMenu( hMenu, MF_BYPOSITION | MF_STRING, IDM_SELWINDOW + pEditNodeArr[i].m_nIndex, szMenu, _T("") );
 			if( GetHwnd() == pEditNodeArr[i].GetHwnd() ){
 				::CheckMenuItem( hMenu, IDM_SELWINDOW + pEditNodeArr[i].m_nIndex, MF_BYCOMMAND | MF_CHECKED );
 			}
 		}
-//>		delete [] pEditNodeArr;
 	}
 	return 0L;
 }

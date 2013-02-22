@@ -413,8 +413,13 @@
 #define HIDC_CHECK_bEnableLineModePaste			10215 //ラインモード貼り付けを可能にする	// 2007.10.08 ryoji
 #define HIDC_CHECK_DRAGDROP						10212 //ドラッグ＆ドロップ編集する
 #define HIDC_CHECK_DROPSOURCE					10213 //ドロップ元にする
-#define HIDC_CHECK_bNotOverWriteCRLF			10214 //上書きモード
+#define HIDC_CHECK_bNotOverWriteCRLF			10214 //改行は上書きしない
+#define HIDC_CHECK_bOverWriteFixMode			10215 //文字幅に合わせてスペースを詰める
 #define HIDC_CHECK_CONVERTEOLPASTE				10217 //改行コードを変換して貼り付ける // 2009.02.28 salarm
+#define HIDC_RADIO_CURDIR						10220 //カレントフォルダ
+#define HIDC_RADIO_MRUDIR						10221 //最近使ったフォルダ
+#define HIDC_RADIO_SELDIR						10222 //指定フォルダ
+#define HIDC_EDIT_FILEOPENDIR					10223 //指定フォルダパス
 #define HIDC_CHECK_EXCVLUSIVE_NO				10310 //ファイルの排他制御（排他制御しない）
 #define HIDC_CHECK_bCheckFileTimeStamp			10311 //更新の監視
 #define HIDC_CHECK_EXCVLUSIVE_WRITE				10312 //ファイルの排他制御（上書き禁止）

@@ -27,16 +27,16 @@
 #include "env/DLLSHAREDATA.h"
 #include "env/CShareData_IO.h"
 #include "env/CommonSetting.h"
+#include "env/CSakuraEnvironment.h"
 #include "doc/CDocListener.h" // SLoadInfo
 #include "_main/CControlTray.h"
 #include "debug/CRunningTimer.h"
-#include "recent/CMRU.h"
+#include "recent/CMRUFile.h"
 #include "recent/CMRUFolder.h"
 #include "util/module.h"
 #include "util/string_ex2.h"
 #include "util/window.h"
 #include "util/os.h"
-#include "env/CSakuraEnvironment.h"
 #include "CDataProfile.h"
 #include "sakura_rc.h"
 #include "types/CType.h"
@@ -322,7 +322,7 @@ bool CShareData::InitShareData()
 																		// ... TRUE/FALSE が逆のようなので、直したほうがよい。
 		wcscpy(	//@@@ 2003.06.13 MIK
 			m_pShareData->m_Common.m_sTabBar.m_szTabWndCaption,
-			L"${w?【Grep】$h$:【アウトプット】$:$f$}${U?(更新)$}${R?(ビューモード)$:(上書き禁止)$}${M?【キーマクロの記録中】$}"
+			L"${w?【Grep】$h$:【アウトプット】$:$f$n$}${U?(更新)$}${R?(ビューモード)$:(上書き禁止)$}${M?【キーマクロの記録中】$}"
 		);
 		m_pShareData->m_Common.m_sTabBar.m_bSameTabWidth = FALSE;			//タブを等幅にする			//@@@ 2006.01.28 ryoji
 		m_pShareData->m_Common.m_sTabBar.m_bDispTabIcon = FALSE;			//タブにアイコンを表示する	//@@@ 2006.01.28 ryoji
@@ -425,7 +425,10 @@ bool CShareData::InitShareData()
 		}
 
 		m_pShareData->m_Common.m_sEdit.m_bNotOverWriteCRLF = TRUE;			/* 改行は上書きしない */
+		m_pShareData->m_Common.m_sEdit.m_bOverWriteFixMode = false;			// 文字幅に合わせてスペースを詰める
 		::SetRect( &m_pShareData->m_Common.m_sOthers.m_rcOpenDialog, 0, 0, 0, 0 );	/* 「開く」ダイアログのサイズと位置 */
+		m_pShareData->m_Common.m_sEdit.m_eOpenDialogDir = OPENDIALOGDIR_CUR;
+		auto_strcpy(m_pShareData->m_Common.m_sEdit.m_OpenDialogSelDir, _T("%Personal%\\"));
 		m_pShareData->m_Common.m_sSearch.m_bAutoCloseDlgFind = TRUE;			/* 検索ダイアログを自動的に閉じる */
 		m_pShareData->m_Common.m_sSearch.m_bSearchAll		 = FALSE;			/* 検索／置換／ブックマーク  先頭（末尾）から再検索 2002.01.26 hor */
 		m_pShareData->m_Common.m_sWindow.m_bScrollBarHorz = TRUE;				/* 水平スクロールバーを使う */
@@ -498,10 +501,10 @@ bool CShareData::InitShareData()
 		//	Apr. 05, 2003 genta ウィンドウキャプションの初期値
 		//	Aug. 16, 2003 genta $N(ファイル名省略表示)をデフォルトに変更
 		_tcscpy( m_pShareData->m_Common.m_sWindow.m_szWindowCaptionActive, 
-			_T("${w?$h$:アウトプット$:${I?$f$:$N$}$}${U?(更新)$} -")
+			_T("${w?$h$:アウトプット$:${I?$f$n$:$N$n$}$}${U?(更新)$} -")
 			_T(" $A $V ${R?(ビューモード)$:（上書き禁止）$}${M?  【キーマクロの記録中】$}") );
 		_tcscpy( m_pShareData->m_Common.m_sWindow.m_szWindowCaptionInactive, 
-			_T("${w?$h$:アウトプット$:${I?$f$:$N$}$}${U?(更新)$} -")
+			_T("${w?$h$:アウトプット$:${I?$f$n$:$N$n$}$}${U?(更新)$} -")
 			_T(" $A $V ${R?(ビューモード)$:（上書き禁止）$}${M?  【キーマクロの記録中】$}") );
 
 		//	From Here Sep. 14, 2001 genta
@@ -648,7 +651,7 @@ BOOL CShareData::ActiveAlreadyOpenedWindow( const TCHAR* pszPath, HWND* phwndOwn
 				if(nCharCode != pfi->m_nCharCode){
 					TopWarningMessage( *phwndOwner,
 						_T("%ts\n\n\n既に開いているファイルを違う文字コードで開く場合は、\n")
-						_T("ファイルメニューから「開き直す」を使用してください。\n")
+						_T("ファイルメニューから「閉じて開く」を使用してください。\n")
 						_T("\n")
 						_T("現在の文字コードセット=[%ts]\n")
 						_T("新しい文字コードセット=[%ts]"),

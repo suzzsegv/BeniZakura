@@ -852,19 +852,10 @@ void CMacro::HandleCommand(
 			if (Argument[1] != NULL){
 				nCharCode = (ECodeType)_wtoi( Argument[1] );
 			}
-			if(	IsValidCodeType(nCharCode) && nCharCode != pcEditView->m_pcEditDoc->GetDocumentEncoding() ){
+			if (IsValidCodeType(nCharCode) && nCharCode != pcEditView->m_pcEditDoc->GetDocumentEncoding()) {
 				pcEditView->m_pcEditDoc->SetDocumentEncoding(nCharCode);
 				//	From Here Jul. 26, 2003 ryoji BOMó‘Ô‚ð‰Šú‰»
-				switch( pcEditView->m_pcEditDoc->GetDocumentEncoding() ){
-				case CODE_UNICODE:
-				case CODE_UNICODEBE:
-					pcEditView->m_pcEditDoc->m_cDocFile.SetBomMode(true);
-					break;
-				case CODE_UTF8:
-				default:
-					pcEditView->m_pcEditDoc->m_cDocFile.SetBomMode(false);
-					break;
-				}
+				pcEditView->m_pcEditDoc->m_cDocFile.SetBomMode( CCodeTypeName(pcEditView->m_pcEditDoc->GetDocumentEncoding()).IsBomDefOn() );
 				//	To Here Jul. 26, 2003 ryoji BOMó‘Ô‚ð‰Šú‰»
 			}
 
@@ -1556,6 +1547,69 @@ bool CMacro::HandleFunction(CEditView *View, EFunctionCode ID, const VARIANT *Ar
 		}
 		return true;
 
+	case F_GETCOOKIE:
+		{
+			Variant varCopy2;
+			if( ArgSize >= 2 ){
+				if(VariantChangeType(&varCopy.Data, const_cast<VARIANTARG*>( &(Arguments[0]) ), 0, VT_BSTR) != S_OK) return false;
+				if(VariantChangeType(&varCopy2.Data, const_cast<VARIANTARG*>( &(Arguments[1]) ), 0, VT_BSTR) != S_OK) return false;
+				SysString ret = View->GetDocument()->m_cCookie.GetCookie(varCopy.Data.bstrVal, varCopy2.Data.bstrVal);
+				Wrap( &Result )->Receive( ret );
+				return true;
+			}
+			return false;
+		}
+	case F_GETCOOKIEDEFAULT:
+		{
+			Variant varCopy2, varCopy3;
+			if( ArgSize >= 3 ){
+				if(VariantChangeType(&varCopy.Data, const_cast<VARIANTARG*>( &(Arguments[0]) ), 0, VT_BSTR) != S_OK) return false;
+				if(VariantChangeType(&varCopy2.Data, const_cast<VARIANTARG*>( &(Arguments[1]) ), 0, VT_BSTR) != S_OK) return false;
+				if(VariantChangeType(&varCopy3.Data, const_cast<VARIANTARG*>( &(Arguments[2]) ), 0, VT_BSTR) != S_OK) return false;
+				SysString ret = View->GetDocument()->m_cCookie.GetCookieDefault(varCopy.Data.bstrVal, varCopy2.Data.bstrVal,
+					varCopy3.Data.bstrVal, SysStringLen(varCopy3.Data.bstrVal) );
+				Wrap( &Result )->Receive( ret );
+				return true;
+			}
+			return false;
+		}
+	case F_SETCOOKIE:
+		{
+			Variant varCopy2, varCopy3;
+			if( ArgSize >= 3 ){
+				if(VariantChangeType(&varCopy.Data, const_cast<VARIANTARG*>( &(Arguments[0]) ), 0, VT_BSTR) != S_OK) return false;
+				if(VariantChangeType(&varCopy2.Data, const_cast<VARIANTARG*>( &(Arguments[1]) ), 0, VT_BSTR) != S_OK) return false;
+				if(VariantChangeType(&varCopy3.Data, const_cast<VARIANTARG*>( &(Arguments[2]) ), 0, VT_BSTR) != S_OK) return false;
+				int ret = View->GetDocument()->m_cCookie.SetCookie(varCopy.Data.bstrVal, varCopy2.Data.bstrVal,
+					varCopy3.Data.bstrVal, SysStringLen(varCopy3.Data.bstrVal) );
+				Wrap( &Result )->Receive( ret );
+				return true;
+			}
+			return false;
+		}
+	case F_DELETECOOKIE:
+		{
+			Variant varCopy2;
+			if( ArgSize >= 2 ){
+				if(VariantChangeType(&varCopy.Data, const_cast<VARIANTARG*>( &(Arguments[0]) ), 0, VT_BSTR) != S_OK) return false;
+				if(VariantChangeType(&varCopy2.Data, const_cast<VARIANTARG*>( &(Arguments[1]) ), 0, VT_BSTR) != S_OK) return false;
+				int ret = View->GetDocument()->m_cCookie.DeleteCookie(varCopy.Data.bstrVal, varCopy2.Data.bstrVal);
+				Wrap( &Result )->Receive( ret );
+				return true;
+			}
+			return false;
+		}
+	case F_GETCOOKIENAMES:
+		{
+			Variant varCopy2, varCopy3;
+			if( ArgSize >= 1 ){
+				if(VariantChangeType(&varCopy.Data, const_cast<VARIANTARG*>( &(Arguments[0]) ), 0, VT_BSTR) != S_OK) return false;
+				SysString ret = View->GetDocument()->m_cCookie.GetCookieNames(varCopy.Data.bstrVal);
+				Wrap( &Result )->Receive( ret );
+				return true;
+			}
+			return false;
+		}
 	default:
 		return false;
 	}

@@ -44,7 +44,7 @@
 #define IDI_ICON_GREP                   212
 #define IDI_PRINTER                     215
 #define IDC_CURSOR_COPYARROW            220
-#define IDC_CURSOR_HAND                 221
+//#define IDC_CURSOR_HAND                 221
 #define IDC_CURSOR_MOVEARROW            222
 #define IDC_CURSOR_RVARROW              223
 #define IDC_CURSOR_ISEARCH_F            224
@@ -692,6 +692,12 @@
 #define IDC_PLUGIN_README               1624
 #define IDC_PLUGIN_INST_ZIP             1625
 #define IDC_CHECK_HOKANBYKEYWORD        1626
+#define IDC_RADIO_CURDIR                1627
+#define IDC_RADIO_MRUDIR                1628
+#define IDC_RADIO_SELDIR                1629
+#define IDC_EDIT_FILEOPENDIR            1630
+#define IDC_BUTTON_FILEOPENDIR          1631
+#define IDC_CHECK_bOverWriteFixMode     1632
 #define IDS_AUTHOR_PAGE                 4054
 #define IDS_ABOUT_DESCRIPTION           4056
 #define IDD_TYPELIST                    5000
@@ -731,7 +737,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        230
 #define _APS_NEXT_COMMAND_VALUE         4057
-#define _APS_NEXT_CONTROL_VALUE         1627
+#define _APS_NEXT_CONTROL_VALUE         1633
 #define _APS_NEXT_SYMED_VALUE           104
 #endif
 #endif

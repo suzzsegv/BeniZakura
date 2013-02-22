@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 #include <process.h> // _beginthreadex
+#include <limits.h>
 #include "CEditView.h"
 #include "_main/CAppMode.h"
 #include "CEditApp.h"
@@ -7,12 +8,12 @@
 #include "window/CEditWnd.h"
 #include "_os/CDropTarget.h" // CDataObject
 #include "_os/CClipboard.h"
+#include "_os/HandCursor.h"
 #include "COpeBlk.h"
 #include "doc/CLayout.h"
 #include "CWaitCursor.h"
 #include "util/input.h"
 #include "util/os.h"
-#include <limits.h>
 #include "sakura_rc.h"
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
@@ -888,6 +889,12 @@ void CEditView::OnMOUSEMOVE( WPARAM fwKeys, int xPos_, int yPos_ )
 	CMyPoint ptMouse(xPos_, yPos_);
 
 	CLayoutInt	nScrollRowNum;
+	if( m_cMousePousePos != ptMouse ){
+		m_cMousePousePos = ptMouse;
+		if( m_nMousePouse < 0 ){
+			m_nMousePouse = 0;
+		}
+	}
 
 //	CLayoutRange sSelectBgn_Old = GetSelectionInfo().m_sSelectBgn;  // 範囲選択(原点)
 	CLayoutRange sSelect_Old    = GetSelectionInfo().m_sSelect;
@@ -962,7 +969,7 @@ void CEditView::OnMOUSEMOVE( WPARAM fwKeys, int xPos_, int yPos_ )
 				)
 			){
 				/* 手カーソル */
-				::SetCursor( ::LoadCursor( G_AppInstance(), MAKEINTRESOURCE( IDC_CURSOR_HAND ) ) );
+				SetHandCursor();		// Hand Cursorを設定 2013/1/29 Uchi
 			}else{
 				//migemo isearch 2004.10.22
 				if( m_nISearchMode > 0 ){
@@ -973,14 +980,18 @@ void CEditView::OnMOUSEMOVE( WPARAM fwKeys, int xPos_, int yPos_ )
 					}
 				}else
 				/* アイビーム */
-				::SetCursor( ::LoadCursor( NULL, IDC_IBEAM ) );
+				if( 0 <= m_nMousePouse ){
+					::SetCursor( ::LoadCursor( NULL, IDC_IBEAM ) );
+				}
 			}
 		}
 		return;
 	}
 	// 以下、マウスでの選択中(ドラッグ中)
 
-	::SetCursor( ::LoadCursor( NULL, IDC_IBEAM ) );
+	if( 0 <= m_nMousePouse ){
+		::SetCursor( ::LoadCursor( NULL, IDC_IBEAM ) );
+	}
 
 	// 2010.07.15 Moca ドラッグ開始位置から移動していない場合はMOVEとみなさない
 	// 遊びは 2px固定とする

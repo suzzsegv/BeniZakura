@@ -27,20 +27,30 @@
 
 // ファイル内容比較 CDlgCompare.cpp	//@@@ 2002.01.07 add start MIK
 const DWORD p_helpids[] = {	//12300
-//	IDC_BUTTON1,					HIDC_CMP_BUTTON1,			//上下に表示
-//	IDOK2,							HIDOK2_CMP,					//左右に表示
+//	IDC_STATIC,						-1,
 	IDOK,							HIDOK_CMP,					//OK
 	IDCANCEL,						HIDCANCEL_CMP,				//キャンセル
 	IDC_BUTTON_HELP,				HIDC_CMP_BUTTON_HELP,		//ヘルプ
 	IDC_CHECK_TILE_H,				HIDC_CMP_CHECK_TILE_H,		//左右に表示
 	IDC_LIST_FILES,					HIDC_CMP_LIST_FILES,		//ファイル一覧
 	IDC_STATIC_COMPARESRC,			HIDC_CMP_STATIC_COMPARESRC,	//ソースファイル
-//	IDC_STATIC,						-1,
 	0, 0
 };	//@@@ 2002.01.07 add end MIK
 
+static const SAnchorList anchorList[] = {
+	{IDOK,					ANCHOR_BOTTOM},
+	{IDCANCEL,				ANCHOR_BOTTOM},
+	{IDC_BUTTON_HELP,		ANCHOR_BOTTOM},
+	{IDC_CHECK_TILE_H,		ANCHOR_LEFT},
+	{IDC_LIST_FILES,        ANCHOR_ALL},
+	{IDC_STATIC_COMPARESRC, ANCHOR_LEFT_RIGHT},
+};
+
 CDlgCompare::CDlgCompare()
 {
+	/* サイズ変更時に位置を制御するコントロール数 */
+	assert( _countof(anchorList) == _countof(m_rcItems) );
+
 	m_bCompareAndTileHorz = TRUE;	/* 左右に並べて表示 */
 	return;
 }
@@ -53,13 +63,13 @@ int CDlgCompare::DoModal(
 	LPARAM			lParam,
 	const TCHAR*	pszPath,
 	bool			bIsModified,
-	TCHAR*			pszComparePath,
+	TCHAR*			pszCompareLabel,
 	HWND*			phwndCompareWnd
 )
 {
 	m_pszPath = pszPath;
 	m_bIsModified = bIsModified;
-	m_pszComparePath = pszComparePath;
+	m_pszCompareLabel = pszCompareLabel;
 	m_phwndCompareWnd = phwndCompareWnd;
 	return CDialog::DoModal( hInstance, hwndParent, IDD_COMPARE, lParam );
 }
@@ -142,32 +152,15 @@ void CDlgCompare::SetData( void )
 			pfi = (EditInfo*)&m_pShareData->m_sWorkBuffer.m_EditInfo_MYWM_GETFILEINFO;
 
 //@@@ 2001.12.26 YAZAKI ファイル名で比較すると(無題)だったときに問題同士の比較ができない
-//			if( 0 == stricmp( pfi->m_szPath, m_pszPath ) ){
 			if (pEditNodeArr[i].GetHwnd() == CEditWnd::getInstance()->GetHwnd()){
+				// 2010.07.30 自分の名前もここから設定する
+				CFileNameManager::getInstance()->GetMenuFullLabel_WinListNoEscape( szMenu, _countof(szMenu), pfi, pEditNodeArr[i].m_nId, -1 );
+				::DlgItem_SetText( GetHwnd(), IDC_STATIC_COMPARESRC, szMenu );
 				continue;
 			}
-			if( pfi->m_bIsGrep && !pfi->m_szPath[0] ){
-				LPCWSTR		pszGrepKey = pfi->m_szGrepKey;
-				int			nLen = (int)wcslen( pszGrepKey );
-				CNativeW	cmemDes;
-				LimitStringLengthW( pszGrepKey , nLen, 64, cmemDes );
-				auto_sprintf( szMenu, _T("【Grep】%ls%ts %ts"),
-					cmemDes.GetStringPtr(),
-					( nLen > cmemDes.GetStringLength() ) ? _T("...") : _T(""),
-					pfi->m_bIsModified ? _T("*") : _T(" ")
-				);
-			}else{
-				auto_sprintf(
-					szMenu,
-					_T("%ts %ts"),
-					(pfi->m_szPath[0]) ? pfi->m_szPath : _T("(無題)"),
-					pfi->m_bIsModified ? _T("*"):_T(" ")
-				);
-			}
-			// gm_pszCodeNameArr_Bracket からコピーするように変更
-			if(IsValidCodeTypeExceptSJIS(pfi->m_nCharCode)){
-				_tcscat( szMenu, CCodeTypeName(pfi->m_nCharCode).Bracket() );
-			}
+			// 番号は ウィンドウリストと同じになるようにする
+			CFileNameManager::getInstance()->GetMenuFullLabel_WinListNoEscape( szMenu, _countof(szMenu), pfi, pEditNodeArr[i].m_nId, i );
+
 			nItem = ::List_AddString( hwndList, szMenu );
 			List_SetItemData( hwndList, nItem, pEditNodeArr[i].GetHwnd() );
 
@@ -184,12 +177,7 @@ void CDlgCompare::SetData( void )
 		List_SetHorizontalExtent( hwndList, nExtent + 8 );
 	}
 	List_SetCurSel( hwndList, 0 );
-	TCHAR	szWork[512];
-	auto_sprintf( szWork, _T("%ts %ts"),
-		(0 < _tcslen( m_pszPath )?m_pszPath:_T("(無題)") ),
-		m_bIsModified?_T("*"):_T("")
-	);
-	::DlgItem_SetText( GetHwnd(), IDC_STATIC_COMPARESRC, szWork );
+
 	/* 左右に並べて表示 */
 	//@@@ 2003.06.12 MIK
 	// TAB 1ウィンドウ表示のときは並べて比較できなくする
@@ -220,7 +208,9 @@ int CDlgCompare::GetData( void )
 	::SendMessageAny( *m_phwndCompareWnd, MYWM_GETFILEINFO, 0, 0 );
 	pfi = (EditInfo*)&m_pShareData->m_sWorkBuffer.m_EditInfo_MYWM_GETFILEINFO;
 
-	_tcscpy( m_pszComparePath, pfi->m_szPath );
+	// 2010.07.30 パス名はやめて表示名に変更
+	int nId = CAppNodeManager::getInstance()->GetEditNode( *m_phwndCompareWnd )->m_nId;
+	CFileNameManager::getInstance()->GetMenuFullLabel_WinListNoEscape( m_pszCompareLabel, _MAX_PATH/*長さ不明*/, pfi, nId, -1 );
 
 	/* 左右に並べて表示 */
 	m_bCompareAndTileHorz = ::IsDlgButtonChecked( GetHwnd(), IDC_CHECK_TILE_H );
@@ -235,4 +225,60 @@ LPVOID CDlgCompare::GetHelpIdTable(void)
 }
 //@@@ 2002.01.18 add end
 
+INT_PTR CDlgCompare::DispatchEvent( HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam )
+{
+	INT_PTR result;
+	result = CDialog::DispatchEvent( hWnd, wMsg, wParam, lParam );
 
+	if( wMsg == WM_GETMINMAXINFO ){
+		return OnMinMaxInfo( lParam );
+	}
+	return result;
+}
+
+BOOL CDlgCompare::OnInitDialog( HWND hwndDlg, WPARAM wParam, LPARAM lParam )
+{
+	_SetHwnd(hwndDlg);
+
+	CreateSizeBox();
+	CDialog::OnSize();
+	
+	RECT rc;
+	::GetWindowRect( hwndDlg, &rc );
+	m_ptDefaultSize.x = rc.right - rc.left;
+	m_ptDefaultSize.y = rc.bottom - rc.top;
+
+	for( int i = 0; i < _countof(anchorList); i++ ){
+		GetItemClientRect( anchorList[i].id, m_rcItems[i] );
+	}
+
+	return CDialog::OnInitDialog( hwndDlg, wParam, lParam );
+}
+
+BOOL CDlgCompare::OnSize( WPARAM wParam, LPARAM lParam )
+{
+	/* 基底クラスメンバ */
+	CDialog::OnSize( wParam, lParam );
+
+	RECT  rc;
+	POINT ptNew;
+	::GetWindowRect( GetHwnd(), &rc );
+	ptNew.x = rc.right - rc.left;
+	ptNew.y = rc.bottom - rc.top;
+
+	for( int i = 0 ; i < _countof(anchorList); i++ ){
+		ResizeItem( GetItemHwnd(anchorList[i].id), m_ptDefaultSize, ptNew, m_rcItems[i], anchorList[i].anchor );
+	}
+	::InvalidateRect( GetHwnd(), NULL, TRUE );
+	return TRUE;
+}
+
+BOOL CDlgCompare::OnMinMaxInfo( LPARAM lParam )
+{
+	LPMINMAXINFO lpmmi = (LPMINMAXINFO) lParam;
+	lpmmi->ptMinTrackSize.x = m_ptDefaultSize.x;
+	lpmmi->ptMinTrackSize.y = m_ptDefaultSize.y;
+	lpmmi->ptMaxTrackSize.x = m_ptDefaultSize.x*2;
+	lpmmi->ptMaxTrackSize.y = m_ptDefaultSize.y*3;
+	return 0;
+}

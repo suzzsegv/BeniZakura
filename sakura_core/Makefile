@@ -94,6 +94,7 @@ charset/CEuc.o \
 charset/charcode.o \
 charset/charset.o \
 charset/CJis.o \
+charset/CLatin1.o \
 charset/codechecker.o \
 charset/codeutil.o \
 charset/CShiftJis.o \
@@ -214,6 +215,7 @@ io/CIoBridge.o \
 io/CStream.o \
 io/CTextStream.o \
 io/CZipFile.o \
+macro/CCookieManager.o \
 macro/CEditorIfObj.o \
 macro/CIfObj.o \
 macro/CKeyMacroMgr.o \
