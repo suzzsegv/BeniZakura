@@ -23,22 +23,24 @@
 */
 
 #include "StdAfx.h"
+#include <limits.h>
 #include "view/CEditView.h"
-#include "debug/CRunningTimer.h"
+#include "view/CViewFont.h"
+#include "view/CRuler.h"
 #include "CWaitCursor.h"
 #include "window/CEditWnd.h"
+#include "window/CSplitBoxWnd.h"///
 #include "COpeBlk.h"///
 #include "_os/CDropTarget.h"///
-#include "window/CSplitBoxWnd.h"///
-#include "CMarkMgr.h"///
 #include "_os/CClipboard.h"
+#include "CMarkMgr.h"///
 #include "types/CTypeSupport.h"
 #include "convert/CConvert.h"
 #include "util/RegKey.h"
 #include "util/string_ex2.h"
 #include "util/os.h" //WM_MOUSEWHEEL,IMR_RECONVERTSTRING,WM_XBUTTON*,IMR_CONFIRMRECONVERTSTRING
 #include "util/module.h"
-#include <limits.h>
+#include "debug/CRunningTimer.h"
 
 #ifndef IMR_DOCUMENTFEED
 #define IMR_DOCUMENTFEED 0x0007
@@ -116,12 +118,12 @@ VOID CALLBACK EditViewTimerProc(
 
 //	@date 2002.2.17 YAZAKI CShareDataのインスタンスは、CProcessにひとつあるのみ。
 CEditView::CEditView(CEditWnd* pcEditWnd)
-: CViewCalc(this)
+: CViewCalc(this)				// warning C4355: 'this' : ベース メンバー初期化子リストで使用されました。
 , m_pcEditWnd(pcEditWnd)
-, m_cParser(this)
-, m_cTextDrawer(this)
-, m_cCommander(this)
-, m_cViewSelect(this)
+, m_cParser(this)				// warning C4355: 'this' : ベース メンバー初期化子リストで使用されました。
+, m_cTextDrawer(this)			// warning C4355: 'this' : ベース メンバー初期化子リストで使用されました。
+, m_cCommander(this)			// warning C4355: 'this' : ベース メンバー初期化子リストで使用されました。
+, m_cViewSelect(this)			// warning C4355: 'this' : ベース メンバー初期化子リストで使用されました。
 , m_AT_ImmSetReconvertString(NULL)
 , m_bActivateByMouse( FALSE )	// 2007.10.02 nasukoji
 , m_nWheelDelta(0)
@@ -1708,7 +1710,7 @@ bool CEditView::GetSelectedData(
 	BOOL			bLineOnly,
 	const wchar_t*	pszQuote,			/* 先頭に付ける引用符 */
 	BOOL			bWithLineNumber,	/* 行番号を付与する */
-	BOOL			bAddCRLFWhenCopy,	/* 折り返し位置で改行記号を入れる */
+	bool			bAddCRLFWhenCopy,	/* 折り返し位置で改行記号を入れる */
 	EEolType		neweol				//	コピー後の改行コード EOL_NONEはコード保存
 )
 {
@@ -2288,6 +2290,8 @@ void CEditView::CaretUnderLineON( bool bDraw, bool bDrawPaint )
 			m_nOldUnderLineYBg = m_nOldUnderLineY;
 			m_nOldUnderLineYMargin = GetTextMetrics().GetHankakuHeight();
 			m_nOldUnderLineYHeight = 1;
+		}else{
+			m_nOldUnderLineYHeight = std::max(m_nOldUnderLineYMargin + m_nOldUnderLineYHeight, GetTextMetrics().GetHankakuHeight() + 1) - m_nOldUnderLineYMargin;
 		}
 		m_nOldUnderLineYHeightReal = 1;
 //		MYTRACE_A( "★カーソル行アンダーラインの描画\n" );

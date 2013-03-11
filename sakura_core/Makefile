@@ -151,7 +151,6 @@ dlg/CDlgAbout.o \
 dlg/CDlgCancel.o \
 dlg/CDlgCompare.o \
 dlg/CDlgCtrlCode.o \
-dlg/CDlgDebug.o \
 dlg/CDlgDiff.o \
 dlg/CDlgExec.o \
 dlg/CDlgFavorite.o \
@@ -262,7 +261,7 @@ prop/CPropComStatusbar.o \
 prop/CPropComTab.o \
 prop/CPropComToolbar.o \
 prop/CPropComWin.o \
-recent/CMRU.o \
+recent/CMRUFile.o \
 recent/CMRUFolder.o \
 recent/CMruListener.o \
 recent/CRecent.o \
@@ -313,6 +312,7 @@ types/CType_Vb.o \
 util/file.o \
 util/format.o \
 util/input.o \
+util/MessageBoxF.o \
 util/module.o \
 util/ole_convert.o \
 util/os.o \

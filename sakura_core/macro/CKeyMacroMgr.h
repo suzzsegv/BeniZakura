@@ -15,10 +15,10 @@
 #ifndef _CKEYMACROMGR_H_
 #define _CKEYMACROMGR_H_
 
-#include <windows.h>
+#include <Windows.h>
 #include "CMacroManagerBase.h"
+#include "Funccode_enum.h"
 
-enum EFunctionCode;
 class CMacro;
 
 //#define MAX_STRLEN			70

@@ -25,11 +25,10 @@
 		   distribution.
 */
 #include "StdAfx.h"
-#include <WindowsX.h>
-#include "CMainToolBar.h"
+#include "window/CMainToolBar.h"
 #include "window/CEditWnd.h"
-#include "util/os.h"
 #include "CEditApp.h"
+#include "util/os.h"
 #include "util/tchar_receive.h"
 #include "util/window.h"
 
@@ -308,7 +307,7 @@ void CMainToolBar::CreateToolBar( void )
 							}
 
 							//入力長制限
-							ComboBox_LimitText( m_hwndSearchBox, (WPARAM)_MAX_PATH - 1 );
+							Combo_LimitText( m_hwndSearchBox, (WPARAM)_MAX_PATH - 1 );
 
 							//検索ボックスを更新	// 関数化 2010/6/6 Uchi
 							AcceptSharedSearchKey();
@@ -521,12 +520,12 @@ void CMainToolBar::AcceptSharedSearchKey()
 	if( m_hwndSearchBox )
 	{
 		int	i;
-		ComboBox_ResetContent( m_hwndSearchBox );
+		Combo_ResetContent( m_hwndSearchBox );
 		for( i = 0; i < GetDllShareData().m_sSearchKeywords.m_aSearchKeys.size(); i++ )
 		{
 			Combo_AddString( m_hwndSearchBox, GetDllShareData().m_sSearchKeywords.m_aSearchKeys[i] );
 		}
-		ComboBox_SetCurSel( m_hwndSearchBox, 0 );
+		Combo_SetCurSel( m_hwndSearchBox, 0 );
 	}
 }
 

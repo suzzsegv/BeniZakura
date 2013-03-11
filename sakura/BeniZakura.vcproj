@@ -1527,6 +1527,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\sakura_core\util\MessageBoxF.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\sakura_core\util\MessageBoxF.h"
+					>
+				</File>
+				<File
 					RelativePath="..\sakura_core\util\module.cpp"
 					>
 				</File>
@@ -2664,14 +2672,6 @@
 				</File>
 				<File
 					RelativePath="..\sakura_core\dlg\CDlgCtrlCode.h"
-					>
-				</File>
-				<File
-					RelativePath="..\sakura_core\dlg\CDlgDebug.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\sakura_core\dlg\CDlgDebug.h"
 					>
 				</File>
 				<File

@@ -1,6 +1,6 @@
 #include "StdAfx.h"
 #include "CAutoReloadAgent.h"
-//#include "doc/CEditDoc.h"
+// #include "doc/CEditDoc.h"	//  in under CEditWnd.h
 #include "window/CEditWnd.h"
 #include "dlg/CDlgFileUpdateQuery.h"
 #include "sakura_rc.h"
@@ -92,7 +92,7 @@ void CAutoReloadAgent::CheckFileTimeStamp()
 {
 	// ñ¢ï“èWÇ≈çƒÉçÅ[ÉhéûÇÃíxâÑ
 	if (m_eWatchUpdate == WU_AUTOLOAD) {
-		if (++m_nDelayCount <= GetDllShareData().m_Common.m_sFile.m_nAutoloadDelay)	return;
+		if (++m_nDelayCount < GetDllShareData().m_Common.m_sFile.m_nAutoloadDelay)	return;
 		m_nDelayCount = 0;
 	}
 

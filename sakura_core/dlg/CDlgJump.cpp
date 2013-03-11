@@ -19,6 +19,7 @@
 #include "dlg/CDlgJump.h"
 #include "doc/CEditDoc.h"
 #include "func/Funccode.h"
+#include "outline/CFuncInfo.h"
 #include "outline/CFuncInfoArr.h"
 #include "util/shell.h"
 #include "window/CEditWnd.h"

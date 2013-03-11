@@ -8,7 +8,7 @@
 // Generated from the TEXTINCLUDE 2 resource.
 //
 #define APSTUDIO_HIDDEN_SYMBOLS
-#include <windows.h>
+#include <Windows.h>
 #undef APSTUDIO_HIDDEN_SYMBOLS
 #include "funccode_define.h"
 
@@ -38,7 +38,7 @@ END
 2 TEXTINCLUDE DISCARDABLE 
 BEGIN
     "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
-    "#include <windows.h>\r\n"
+    "#include <Windows.h>\r\n"
     "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
     "#include ""funccode_define.h""\r\n"
     "\0"
@@ -120,7 +120,7 @@ BEGIN
     PUSHBUTTON      "キャンセル(&X)",IDCANCEL,197,24,50,14
 END
 
-IDD_FUNCLIST DIALOG DISCARDABLE  0, 0, 238, 291
+IDD_FUNCLIST DIALOG DISCARDABLE  0, 0, 236, 286
 STYLE DS_MODALFRAME | DS_CENTER | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | 
     WS_CLIPCHILDREN | WS_CAPTION | WS_SYSMENU
 CAPTION "x"
@@ -132,7 +132,7 @@ BEGIN
     CONTROL         "List1",IDC_LIST_FL,"SysListView32",LVS_REPORT | 
                     LVS_SINGLESEL | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,0,
                     17,234,235
-    PUSHBUTTON      "▼",IDC_BUTTON_MENU,1,255,10,14
+    PUSHBUTTON      "▼",IDC_BUTTON_MENU,1,255,10,14,NOT WS_TABSTOP
     CONTROL         "■",IDC_BUTTON_WINSIZE,"Button",BS_AUTOCHECKBOX | 
                     BS_PUSHLIKE,12,255,10,14
     PUSHBUTTON      "コピー(&C)",IDC_BUTTON_COPY,24,255,50,14,WS_DISABLED
@@ -465,16 +465,6 @@ BEGIN
     ICON            IDI_ICON_STD,IDC_STATIC,5,5,20,20
     LTEXT           "終了しています。 しばらくお待ちください・・・",
                     IDC_STATIC,30,10,137,8
-END
-
-IDD_DEBUG DIALOG DISCARDABLE  0, 0, 355, 190
-STYLE WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
-CAPTION "作者に教えて欲しいエラー情報"
-FONT 9, "ＭＳ Ｐゴシック"
-BEGIN
-    EDITTEXT        IDC_EDIT_DEBUG,5,5,345,160,ES_MULTILINE | ES_AUTOHSCROLL | 
-                    WS_HSCROLL
-    DEFPUSHBUTTON   "閉じる(&C)",IDOK,300,170,50,14
 END
 
 IDD_EXEC DIALOGEX 30, 0, 292, 95
@@ -1494,7 +1484,7 @@ BEGIN
     CONTROL         "指定フォルダ(&F)",IDC_RADIO_SELDIR,"Button",
                     BS_AUTORADIOBUTTON,161,84,80,8
     EDITTEXT        IDC_EDIT_FILEOPENDIR,161,100,111,12
-    PUSHBUTTON      "...",IDC_BUTTON_FILEOPENDIR,272,98,9,14
+    PUSHBUTTON      "...",IDC_BUTTON_FILEOPENDIR,273,100,9,12
     GROUPBOX        "ファイルダイアログの初期位置",IDC_STATIC,156,41,130,79,
                     WS_GROUP
 END
@@ -2244,14 +2234,6 @@ BEGIN
         RIGHTMARGIN, 164
         TOPMARGIN, 7
         BOTTOMMARGIN, 23
-    END
-
-    IDD_DEBUG, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 348
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 183
     END
 
     IDD_PROP_WIN, DIALOG

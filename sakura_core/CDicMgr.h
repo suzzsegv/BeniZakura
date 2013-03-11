@@ -11,16 +11,12 @@
 	Please contact the copyright holder to use this code for other purpose.
 */
 
-class CDicMgr;
-
 #ifndef _CDICMGR_H_
 #define _CDICMGR_H_
 
-#include <windows.h>
+#include <Windows.h>
 #include "util/container.h"
 #include "_main/global.h"
-
-class CMemory;
 
 /*-----------------------------------------------------------------------
 ƒNƒ‰ƒX‚ÌéŒ¾
@@ -39,7 +35,7 @@ public:
 	*/
 //	BOOL Open( char* );
 	static BOOL Search( const wchar_t*, const int, CNativeW**, CNativeW**, const TCHAR*, int * );	// 2006.04.10 fon (const int,CMemory**,int*)ˆø”‚ğ’Ç‰Á
-	static int HokanSearch( const wchar_t* , BOOL, vector_ex<std::wstring>&, int, const TCHAR* );
+	static int HokanSearch( const wchar_t* , bool, vector_ex<std::wstring>&, int, const TCHAR* );
 //	BOOL Close( char* );
 
 

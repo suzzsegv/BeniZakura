@@ -24,6 +24,7 @@
 
 #include "StdAfx.h"
 #include "outline/CDlgFuncList.h"
+#include "outline/CFuncInfo.h"
 #include "outline/CFuncInfoArr.h"// 2002/2/3 aroka
 #include "window/CEditWnd.h"	//	2006/2/11 aroka 追加
 #include "util/shell.h"
@@ -1523,7 +1524,7 @@ BOOL CDlgFuncList::OnInitDialog( HWND hwndDlg, WPARAM wParam, LPARAM lParam )
 		// ドッキング中はウィンドウ幅いっぱいまで伸ばす
 		if( IsDocking() ){
 			if( anchorList[i].anchor == ANCHOR_ALL ){
-				m_rcItems[i].bottom = m_ptDefaultSize.y;
+				m_rcItems[i].bottom = m_ptDefaultSize.y - 20;
 			}
 		}
 	}
