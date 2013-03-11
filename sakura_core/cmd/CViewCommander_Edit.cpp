@@ -61,7 +61,7 @@ void CViewCommander::Command_WCHAR( wchar_t wcChar )
 
 		/* テキストが選択されているか */
 		if( m_pCommanderView->GetSelectionInfo().IsTextSelected() ){
-			m_pCommanderView->DeleteData( TRUE );
+			m_pCommanderView->DeleteData( true );
 		}
 		if( GetDocument()->m_cDocType.GetDocumentAttribute().m_bAutoIndent ){	/* オートインデント */
 			const CLayout* pCLayout;
@@ -142,7 +142,7 @@ end_of_for:;
 				Command_INDENT( wcChar );
 				return;
 			}else{
-				m_pCommanderView->DeleteData( TRUE );
+				m_pCommanderView->DeleteData( true );
 			}
 		}
 		else{
@@ -167,7 +167,7 @@ end_of_for:;
 	);
 
 	/* 挿入データの最後へカーソルを移動 */
-	GetCaret().MoveCursor( ptLayoutNew, TRUE );
+	GetCaret().MoveCursor( ptLayoutNew, true );
 	GetCaret().m_nCaretPosX_Prev = GetCaret().GetCaretLayoutPos().GetX2();
 
 	/* スマートインデント */
@@ -270,7 +270,7 @@ void CViewCommander::Command_IME_CHAR( WORD wChar )
 			Command_INDENT( szWord, nWord );	//	Oct. 6 ,2002 genta 
 			return;
 		}else{
-			m_pCommanderView->DeleteData( TRUE );
+			m_pCommanderView->DeleteData( true );
 		}
 	}
 	else{
@@ -284,7 +284,7 @@ void CViewCommander::Command_IME_CHAR( WORD wChar )
 	m_pCommanderView->InsertData_CEditView( GetCaret().GetCaretLayoutPos(), szWord, nWord, &ptLayoutNew, true );
 
 	/* 挿入データの最後へカーソルを移動 */
-	GetCaret().MoveCursor( ptLayoutNew, TRUE );
+	GetCaret().MoveCursor( ptLayoutNew, true );
 	GetCaret().m_nCaretPosX_Prev = GetCaret().GetCaretLayoutPos().GetX2();
 
 	m_pCommanderView->PostprocessCommand_hokan();	//	Jan. 10, 2005 genta 関数化
@@ -622,7 +622,7 @@ void CViewCommander::Command_DELETE( void )
 				nIndex = m_pCommanderView->LineColmnToIndex2( pcLayout, GetCaret().GetCaretLayoutPos().GetX2(), &nLineLen );
 				if( nLineLen != 0 ){	// 折り返しや改行コードより右の場合には nLineLen に行全体の表示桁数が入る
 					if( EOL_NONE != pcLayout->GetLayoutEol().GetType() ){	// 行終端は改行コードか?
-						Command_INSTEXT( TRUE, L"", CLogicInt(0), FALSE );	// カーソル位置まで半角スペース挿入
+						Command_INSTEXT( true, L"", CLogicInt(0), FALSE );	// カーソル位置まで半角スペース挿入
 					}else{	// 行終端が折り返し
 						// 折り返し行末ではスペース挿入後、次の文字を削除する	// 2009.02.19 ryoji
 
@@ -630,7 +630,7 @@ void CViewCommander::Command_DELETE( void )
 						// 非フリーカーソル時（ちょうどカーソルが折り返し位置にある）には次の行の先頭文字を削除したい
 
 						if( nLineLen < GetCaret().GetCaretLayoutPos().GetX2() ){	// 折り返し行末とカーソルの間に隙間がある
-							Command_INSTEXT( TRUE, L"", CLogicInt(0), FALSE );	// カーソル位置まで半角スペース挿入
+							Command_INSTEXT( true, L"", CLogicInt(0), FALSE );	// カーソル位置まで半角スペース挿入
 							pcLayout = GetDocument()->m_cLayoutMgr.SearchLineByLayoutY( GetCaret().GetCaretLayoutPos().GetY2() );
 							nIndex = m_pCommanderView->LineColmnToIndex2( pcLayout, GetCaret().GetCaretLayoutPos().GetX2(), &nLineLen );
 						}
@@ -639,7 +639,7 @@ void CViewCommander::Command_DELETE( void )
 								CLayoutPoint ptLay;
 								CLogicPoint ptLog(pcLayout->GetLogicOffset() + nIndex, pcLayout->GetLogicLineNo());
 								GetDocument()->m_cLayoutMgr.LogicToLayout( ptLog, &ptLay );
-								GetCaret().MoveCursor( ptLay, TRUE );
+								GetCaret().MoveCursor( ptLay, true );
 								GetCaret().m_nCaretPosX_Prev = GetCaret().GetCaretLayoutPos().GetX2();
 							}
 						}
@@ -648,7 +648,7 @@ void CViewCommander::Command_DELETE( void )
 			}
 		}
 	}
-	m_pCommanderView->DeleteData( TRUE );
+	m_pCommanderView->DeleteData( true );
 	return;
 }
 
@@ -665,7 +665,7 @@ void CViewCommander::Command_DELETE_BACK( void )
 	//	May 29, 2004 genta 実際に削除された文字がないときはフラグをたてないように
 	//GetDocument()->m_cDocEditor.SetModified(true,true);	//	Jan. 22, 2002 genta
 	if( m_pCommanderView->GetSelectionInfo().IsTextSelected() ){				/* テキストが選択されているか */
-		m_pCommanderView->DeleteData( TRUE );
+		m_pCommanderView->DeleteData( true );
 	}
 	else{
 		CLayoutPoint	ptLayoutPos_Old = GetCaret().GetCaretLayoutPos();
@@ -689,7 +689,7 @@ void CViewCommander::Command_DELETE_BACK( void )
 								)
 							);
 						}
-						m_pCommanderView->DeleteData( TRUE );
+						m_pCommanderView->DeleteData( true );
 					}
 				}
 			}
@@ -751,10 +751,10 @@ void CViewCommander::DelCharForOverwrite( const wchar_t* pszInput, int nLen )
 			posBefore = GetCaret().GetCaretLayoutPos();
 		}else{
 			// 1文字削除
-			m_pCommanderView->DeleteData( FALSE );
+			m_pCommanderView->DeleteData( false );
 			posBefore = GetCaret().GetCaretLayoutPos();
 			for(int i = 1; i < nDelLen; i++){
-				m_pCommanderView->DeleteData( FALSE );
+				m_pCommanderView->DeleteData( false );
 			}
 		}
 		CNativeW tmp;
@@ -765,7 +765,7 @@ void CViewCommander::DelCharForOverwrite( const wchar_t* pszInput, int nLen )
 			tmp.AppendString(L" ");
 		}
 		if( 0 < tmp.GetStringLength() ){
-			Command_INSTEXT(FALSE, tmp.GetStringPtr(), tmp.GetStringLength(), false, false);
+			Command_INSTEXT( false, tmp.GetStringPtr(), tmp.GetStringLength(), false, false);
 			GetCaret().MoveCursor(posBefore, false);
 		}
 	}

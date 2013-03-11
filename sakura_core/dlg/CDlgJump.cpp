@@ -105,7 +105,7 @@ BOOL CDlgJump::OnBnClicked( int wID )
 			}
 			{
 				CEditDoc*		pCEditDoc = (CEditDoc*)m_lParam;
-				pCEditDoc->m_pcEditWnd->GetActiveView().GetCommander().HandleCommand(F_JUMP, TRUE, 0, 0, 0, 0);	//	ジャンプコマンド発行
+				pCEditDoc->m_pcEditWnd->GetActiveView().GetCommander().HandleCommand(F_JUMP, true, 0, 0, 0, 0);	//	ジャンプコマンド発行
 			}
 			return TRUE;
 

@@ -102,7 +102,7 @@ void CEditView::OnLBUTTONDOWN( WPARAM fwKeys, int _xPos , int _yPos )
 					// ドラッグ開始条件を満たさなかったのでクリック位置にカーソル移動する
 					if( GetSelectionInfo().IsTextSelected() ){	/* テキストが選択されているか */
 						/* 現在の選択範囲を非選択状態に戻す */
-						GetSelectionInfo().DisableSelectArea( TRUE );
+						GetSelectionInfo().DisableSelectArea( true );
 					}
 //@@@ 2002.01.08 YAZAKI フリーカーソルOFFで複数行選択し、行の後ろをクリックするとそこにキャレットが置かれてしまうバグ修正
 					/* カーソル移動。 */
@@ -137,7 +137,7 @@ void CEditView::OnLBUTTONDOWN( WPARAM fwKeys, int _xPos , int _yPos )
 							}
 
 							// 選択範囲を削除
-							DeleteData( TRUE );
+							DeleteData( true );
 
 							// アンドゥバッファの処理
 							SetUndoBuffer();
@@ -155,7 +155,7 @@ normal_action:;
 	if( GetKeyState_Alt() &&( ! tripleClickMode)){
 		if( GetSelectionInfo().IsTextSelected() ){	/* テキストが選択されているか */
 			/* 現在の選択範囲を非選択状態に戻す */
-			GetSelectionInfo().DisableSelectArea( TRUE );
+			GetSelectionInfo().DisableSelectArea( true );
 		}
 		if( ptMouse.y >= GetTextArea().GetAreaTop()  && ptMouse.y < GetTextArea().GetAreaBottom() ){
 			if( ptMouse.x >= GetTextArea().GetAreaLeft() && ptMouse.x < GetTextArea().GetAreaRight() ){
@@ -224,7 +224,7 @@ normal_action:;
 				OnLBUTTONUP( fwKeys, ptMouse.x, ptMouse.y );	// ここで左ボタンアップしたことにする
 
 				if( GetSelectionInfo().IsTextSelected() )		// テキストが選択されているか
-					GetSelectionInfo().DisableSelectArea( TRUE );	// 現在の選択範囲を非選択状態に戻す
+					GetSelectionInfo().DisableSelectArea( true );	// 現在の選択範囲を非選択状態に戻す
 			}
 
 			// 単語の途中で折り返されていると下の行が選択されてしまうことへの対処
@@ -258,7 +258,7 @@ normal_action:;
 			if( GetSelectionInfo().IsTextSelected() ){		/* テキストが選択されているか */
 				if( GetSelectionInfo().IsBoxSelecting() ){	/* 矩形範囲選択中 */
 					/* 現在の選択範囲を非選択状態に戻す */
-					GetSelectionInfo().DisableSelectArea( TRUE );
+					GetSelectionInfo().DisableSelectArea( true );
 
 					/* 現在のカーソル位置から選択を開始する */
 					GetSelectionInfo().BeginSelectArea( );
@@ -285,7 +285,7 @@ normal_action:;
 		else{
 			if( GetSelectionInfo().IsTextSelected() ){	/* テキストが選択されているか */
 				/* 現在の選択範囲を非選択状態に戻す */
-				GetSelectionInfo().DisableSelectArea( TRUE );
+				GetSelectionInfo().DisableSelectArea( true );
 			}
 			/* カーソル移動 */
 			if( ptMouse.y >= GetTextArea().GetAreaTop() && ptMouse.y < GetTextArea().GetAreaBottom() ){
@@ -427,7 +427,7 @@ normal_action:;
 				ptCaret.y = ptNewCaret.GetY2() + 1;	// 改行無しEOF行でも MoveCursor() が有効な座標に調整してくれる
 				GetCaret().GetAdjustCursorPos( &ptCaret );
 				GetSelectionInfo().ChangeSelectAreaByCurrentCursor( ptCaret );
-				GetCaret().MoveCursor( ptCaret, TRUE );
+				GetCaret().MoveCursor( ptCaret, true );
 				GetCaret().m_nCaretPosX_Prev = GetCaret().GetCaretLayoutPos().GetX2();
 			}else{
 				/* 現在のカーソル位置によって選択範囲を変更 */
@@ -464,7 +464,7 @@ normal_action:;
 				);
 				if( bIsUrl ){
 					/* 現在の選択範囲を非選択状態に戻す */
-					GetSelectionInfo().DisableSelectArea( TRUE );
+					GetSelectionInfo().DisableSelectArea( true );
 
 					/*
 					  カーソル位置変換
@@ -1373,7 +1373,7 @@ void CEditView::OnLBUTTONUP( WPARAM fwKeys, int xPos , int yPos )
 		GetCaret().m_cUnderLine.UnLock();
 		if( GetSelectionInfo().m_sSelect.IsOne() ){
 			/* 現在の選択範囲を非選択状態に戻す */
-			GetSelectionInfo().DisableSelectArea( TRUE );
+			GetSelectionInfo().DisableSelectArea( true );
 		}
 	}
 	return;
@@ -1478,7 +1478,7 @@ void CEditView::OnLBUTTONDBLCLK( WPARAM fwKeys, int _xPos , int _yPos )
 		// クアドラプルクリック機能が割り当てられていない場合は、ダブルクリック
 		// として処理するため。
 		if( GetSelectionInfo().IsTextSelected() )		// テキストが選択されているか
-			GetSelectionInfo().DisableSelectArea( TRUE );		// 現在の選択範囲を非選択状態に戻す
+			GetSelectionInfo().DisableSelectArea( true );		// 現在の選択範囲を非選択状態に戻す
 
 		if(! nFuncID){
 			m_dwTripleClickCheck = 0;	// トリプルクリックチェック OFF
@@ -1623,7 +1623,7 @@ STDMETHODIMP CEditView::DragLeave( void )
 
 	// DragEnter時のカーソル位置を復元	// 2007.12.09 ryoji
 	// ※範囲選択中のときに選択範囲とカーソルが分離すると変だから
-	GetCaret().MoveCursor( m_ptCaretPos_DragEnter, FALSE );
+	GetCaret().MoveCursor( m_ptCaretPos_DragEnter, false );
 	GetCaret().m_nCaretPosX_Prev = m_nCaretPosX_Prev_DragEnter;
 	RedrawAll();	// ルーラー、アンダーライン、カーソル位置表示更新
 
@@ -1686,7 +1686,7 @@ STDMETHODIMP CEditView::Drop( LPDATAOBJECT pDataObject, DWORD dwKeyState, POINTL
 		// DragEnter時のカーソル位置を復元
 		// Note. ドラッグ元が他ビューでもマウス移動が速いと稀にここにくる可能性がありそう
 		*pdwEffect = DROPEFFECT_NONE;
-		GetCaret().MoveCursor( m_ptCaretPos_DragEnter, FALSE );
+		GetCaret().MoveCursor( m_ptCaretPos_DragEnter, false );
 		GetCaret().m_nCaretPosX_Prev = m_nCaretPosX_Prev_DragEnter;
 		if( !IsDragSource() )	// ドラッグ元の場合はここでは再描画不要（DragDrop後処理のSetActivePaneで再描画される）
 			RedrawAll();	// ←主に以後の非アクティブ化に伴うアンダーライン消しのために一度更新して整合をとる
@@ -1756,7 +1756,7 @@ STDMETHODIMP CEditView::Drop( LPDATAOBJECT pDataObject, DWORD dwKeyState, POINTL
 	if( !bMove ){
 		/* コピーモード */
 		/* 現在の選択範囲を非選択状態に戻す */
-		GetSelectionInfo().DisableSelectArea( TRUE );
+		GetSelectionInfo().DisableSelectArea( true );
 	}else{
 		bBeginBoxSelect_Old = pcDragSourceView->GetSelectionInfo().IsBoxSelecting();
 		sSelectBgn_Old = pcDragSourceView->GetSelectionInfo().m_sSelectBgn;
@@ -1765,19 +1765,19 @@ STDMETHODIMP CEditView::Drop( LPDATAOBJECT pDataObject, DWORD dwKeyState, POINTL
 			/* 移動モード & 前に移動 */
 			/* 選択エリアを削除 */
 			if( this != pcDragSourceView ){
-				pcDragSourceView->GetSelectionInfo().DisableSelectArea( TRUE );
-				GetSelectionInfo().DisableSelectArea( TRUE );
+				pcDragSourceView->GetSelectionInfo().DisableSelectArea( true );
+				GetSelectionInfo().DisableSelectArea( true );
 				GetSelectionInfo().SetBoxSelect( bBeginBoxSelect_Old );
 				GetSelectionInfo().m_sSelectBgn = sSelectBgn_Old;
 				GetSelectionInfo().m_sSelect = sSelect_Old;
 			}
-			DeleteData( TRUE );
-			GetCaret().MoveCursor( ptCaretPos_Old, TRUE );
+			DeleteData( true );
+			GetCaret().MoveCursor( ptCaretPos_Old, true );
 		}else{
 			/* 現在の選択範囲を非選択状態に戻す */
-			pcDragSourceView->GetSelectionInfo().DisableSelectArea( TRUE );
+			pcDragSourceView->GetSelectionInfo().DisableSelectArea( true );
 			if( this != pcDragSourceView )
-				GetSelectionInfo().DisableSelectArea( TRUE );
+				GetSelectionInfo().DisableSelectArea( true );
 		}
 	}
 	if( !bBoxData ){	/* 矩形データ */
@@ -1800,7 +1800,7 @@ STDMETHODIMP CEditView::Drop( LPDATAOBJECT pDataObject, DWORD dwKeyState, POINTL
 			}
 		}
 
-		GetCommander().Command_INSTEXT( TRUE, cmemBuf.GetStringPtr(), cmemBuf.GetStringLength(), FALSE );
+		GetCommander().Command_INSTEXT( true, cmemBuf.GetStringPtr(), cmemBuf.GetStringLength(), FALSE );
 
 		// 挿入前のキャレット位置から挿入後のキャレット位置までを選択範囲にする
 		CLayoutPoint ptSelectFrom;
@@ -1846,7 +1846,7 @@ STDMETHODIMP CEditView::Drop( LPDATAOBJECT pDataObject, DWORD dwKeyState, POINTL
 			GetSelectionInfo().m_sSelect = sSelect_Old;
 
 			/* 選択エリアを削除 */
-			DeleteData( TRUE );
+			DeleteData( true );
 
 			// 削除前の選択範囲を復元する	// 2008.03.26 ryoji
 			if( !bBoxData ){
@@ -1882,7 +1882,7 @@ STDMETHODIMP CEditView::Drop( LPDATAOBJECT pDataObject, DWORD dwKeyState, POINTL
 			}
 
 			// キャレットを移動する
-			GetCaret().MoveCursor( ptCaretPos_Old, TRUE );
+			GetCaret().MoveCursor( ptCaretPos_Old, true );
 			GetCaret().m_nCaretPosX_Prev = GetCaret().GetCaretLayoutPos().GetX2();
 
 			// 削除位置から移動先へのカーソル移動をアンドゥ操作に追加する	// 2008.03.26 ryoji
@@ -2020,7 +2020,7 @@ void CEditView::OnMyDropFiles( HDROP hDrop )
 
 		// 選択範囲の選択解除
 		if( GetSelectionInfo().IsTextSelected() ){
-			GetSelectionInfo().DisableSelectArea( TRUE );
+			GetSelectionInfo().DisableSelectArea( true );
 		}
 
 		// 挿入前のキャレット位置を記憶する
@@ -2041,7 +2041,7 @@ void CEditView::OnMyDropFiles( HDROP hDrop )
 		}
 
 		// テキスト挿入
-		GetCommander().HandleCommand( F_INSTEXT_W, TRUE, (LPARAM)cmemBuf.GetStringPtr(), TRUE, 0, 0 );
+		GetCommander().HandleCommand( F_INSTEXT_W, true, (LPARAM)cmemBuf.GetStringPtr(), TRUE, 0, 0 );
 
 		// 挿入前のキャレット位置から挿入後のキャレット位置までを選択範囲にする
 		CLayoutPoint ptSelectFrom;

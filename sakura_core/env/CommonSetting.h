@@ -253,8 +253,8 @@ public:
 	bool	m_bAutoMIMEdecode;				// ファイル読み込み時にMIMEのdecodeを行うか
 	bool	m_bQueryIfCodeChange;			// 前回と文字コードが異なるときに問い合わせを行う Oct. 03, 2004 genta
 	bool	m_bAlertIfFileNotExist;			// 開こうとしたファイルが存在しないとき警告する Oct. 09, 2004 genta
-	bool	m_bAlertIfLargeFile;			// 開こうとしたファイルサイズが大きいバイイに警告する
-	int		m_nAlertFileSize;				// 警告を始めるファイルサイズ
+	bool	m_bAlertIfLargeFile;			// 開こうとしたファイルサイズが大きい場合に警告する
+	int		m_nAlertFileSize;				// 警告を始めるファイルサイズ(MB)
 };
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
@@ -350,7 +350,7 @@ struct CommonSetting_Format
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 struct CommonSetting_Search
 {
-	int				m_nSearchKeySequence;			// 検索シーケンス(未保存)
+	int				m_nSearchKeySequence;		// 検索シーケンス(未保存)
 	SSearchOption	m_sSearchOption;			// 検索／置換  条件
 
 	int				m_nReplaceKeySequence;		// 置換後シーケンス(未保存)
@@ -365,12 +365,12 @@ struct CommonSetting_Search
 	ECodeType		m_nGrepCharSet;				// Grep: 文字コードセット // 2002/09/20 Moca Add
 
 	BOOL			m_bCaretTextForSearch;		// カーソル位置の文字列をデフォルトの検索文字列にする 2006.08.23 ryoji
-	bool			m_bInheritKeyOtherView;	// 次・前検索で他のビューの検索条件を引き継ぐ
+	bool			m_bInheritKeyOtherView;		// 次・前検索で他のビューの検索条件を引き継ぐ
 	TCHAR			m_szRegexpLib[_MAX_PATH];	// 使用する正規表現DLL  2007.08.22 genta
 
 	//Grep
 	BOOL			m_bGrepExitConfirm;			// Grepモードで保存確認するか
-	int				m_bGrepRealTimeView;		// Grep結果のリアルタイム表示 2003.06.16 Moca
+	BOOL			m_bGrepRealTimeView;		// Grep結果のリアルタイム表示 2003.06.16 Moca
 
 	BOOL			m_bGTJW_RETURN;				// エンターキーでタグジャンプ
 	BOOL			m_bGTJW_LDBLCLK;			// ダブルクリックでタグジャンプ

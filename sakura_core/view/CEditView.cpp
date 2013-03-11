@@ -474,7 +474,7 @@ LRESULT CEditView::DispatchEvent(
 		if( WCODE::IsControlCode((wchar_t)wParam) ){
 			ErrorBeep();
 		}else{
-			GetCommander().HandleCommand( F_WCHAR, TRUE, WCHAR(wParam), 0, 0, 0 );
+			GetCommander().HandleCommand( F_WCHAR, true, WCHAR(wParam), 0, 0, 0 );
 		}
 #else
 		// SJIS固有
@@ -485,12 +485,12 @@ LRESULT CEditView::DispatchEvent(
 				if( ACODE::IsControlCode((char)wParam) ){
 					ErrorBeep();
 				}else{
-					GetCommander().HandleCommand( F_WCHAR, TRUE, tchar_to_wchar((ACHAR)wParam), 0, 0, 0 );
+					GetCommander().HandleCommand( F_WCHAR, true, tchar_to_wchar((ACHAR)wParam), 0, 0, 0 );
 				}
 			}else{
 				if( preChar ){
 					WORD wordData = MAKEWORD((BYTE)wParam, preChar);
-					GetCommander().HandleCommand( F_IME_CHAR, TRUE, wordData, 0, 0, 0 );
+					GetCommander().HandleCommand( F_IME_CHAR, true, wordData, 0, 0, 0 );
 					preChar = 0;
 				}else{
 					preChar = (BYTE)wParam;
@@ -548,7 +548,7 @@ LRESULT CEditView::DispatchEvent(
 				m_nMousePouse = -1;
 				::SetCursor( NULL );
 			}
-			GetCommander().HandleCommand( F_INSTEXT_W, TRUE, (LPARAM)to_wchar(lptstr), TRUE, 0, 0 );
+			GetCommander().HandleCommand( F_INSTEXT_W, true, (LPARAM)to_wchar(lptstr), TRUE, 0, 0 );
 
 			ImmReleaseContext( hwnd, hIMC );
 
@@ -567,16 +567,16 @@ LRESULT CEditView::DispatchEvent(
 
 	case WM_IME_CHAR:
 		if( ! IsInsMode() /* Oct. 2, 2005 genta */ ){ /* 上書きモードか？ */
-			GetCommander().HandleCommand( F_IME_CHAR, TRUE, wParam, 0, 0, 0 );
+			GetCommander().HandleCommand( F_IME_CHAR, true, wParam, 0, 0, 0 );
 		}
 		return 0L;
 
 	// From Here 2008.03.24 Moca ATOK等の要求にこたえる
 	case WM_PASTE:
-		return GetCommander().HandleCommand( F_PASTE, TRUE, 0, 0, 0, 0 );
+		return GetCommander().HandleCommand( F_PASTE, true, 0, 0, 0, 0 );
 
 	case WM_COPY:
-		return GetCommander().HandleCommand( F_COPY, TRUE, 0, 0, 0, 0 );
+		return GetCommander().HandleCommand( F_COPY, true, 0, 0, 0, 0 );
 	// To Here 2008.03.24 Moca
 
 	case WM_KEYUP:
@@ -857,10 +857,10 @@ LRESULT CEditView::DispatchEvent(
 		// wParam RedoUndoフラグは無視する
 		if( lParam ){
 #ifdef _UNICODE
-			GetCommander().HandleCommand( F_INSTEXT_W, TRUE, lParam, TRUE, 0, 0 );
+			GetCommander().HandleCommand( F_INSTEXT_W, true, lParam, TRUE, 0, 0 );
 #else
 			std::wstring text = to_wchar((LPCTSTR)lParam);
-			GetCommander().HandleCommand( F_INSTEXT_W, TRUE, (LPARAM)text.c_str(), TRUE, 0, 0 );
+			GetCommander().HandleCommand( F_INSTEXT_W, true, (LPARAM)text.c_str(), TRUE, 0, 0 );
 #endif
 		}
 		return 0L; // not use.
@@ -1020,7 +1020,7 @@ void CEditView::OnSetFocus( void )
 	{
 		CLayoutPoint ptPos = GetCaret().GetCaretLayoutPos();
 		if( GetCaret().GetAdjustCursorPos( &ptPos ) ){
-			GetCaret().MoveCursor( ptPos, FALSE );
+			GetCaret().MoveCursor( ptPos, false );
 			GetCaret().m_nCaretPosX_Prev = GetCaret().GetCaretLayoutPos().GetX2();
 		}
 	}
@@ -1136,7 +1136,7 @@ void CEditView::MoveCursorSelecting(
 	}else{
 		if( GetSelectionInfo().IsTextSelected() ){	/* テキストが選択されているか */
 			/* 現在の選択範囲を非選択状態に戻す */
-			GetSelectionInfo().DisableSelectArea( TRUE );
+			GetSelectionInfo().DisableSelectArea( true );
 		}
 	}
 	GetCaret().GetAdjustCursorPos(&ptWk_CaretPos);
@@ -1150,7 +1150,7 @@ void CEditView::MoveCursorSelecting(
 		*/
 		GetSelectionInfo().ChangeSelectAreaByCurrentCursor( ptWk_CaretPos );
 	}
-	GetCaret().MoveCursor( ptWk_CaretPos, TRUE, nCaretMarginRate );	// 2007.08.22 ryoji nCaretMarginRateが使われていなかった
+	GetCaret().MoveCursor( ptWk_CaretPos, true, nCaretMarginRate );	// 2007.08.22 ryoji nCaretMarginRateが使われていなかった
 	GetCaret().m_nCaretPosX_Prev = GetCaret().GetCaretLayoutPos().GetX2();
 }
 
@@ -1338,7 +1338,7 @@ void CEditView::ConvSelectedArea( EFunctionCode nFuncCode )
 		);
 
 		/* 現在の選択範囲を非選択状態に戻す */
-		GetSelectionInfo().DisableSelectArea( FALSE );	// 2009.07.18 ryoji TRUE -> FALSE 各行にアンダーラインが残る問題の修正
+		GetSelectionInfo().DisableSelectArea( false );	// 2009.07.18 ryoji true -> false 各行にアンダーラインが残る問題の修正
 
 		nIdxFrom = CLogicInt(0);
 		nIdxTo = CLogicInt(0);
@@ -1394,13 +1394,13 @@ void CEditView::ConvSelectedArea( EFunctionCode nFuncCode )
 					);
 
 					/* カーソルを移動 */
-					GetCaret().MoveCursor( ptLayoutNew, FALSE );
+					GetCaret().MoveCursor( ptLayoutNew, false );
 					GetCaret().m_nCaretPosX_Prev = GetCaret().GetCaretLayoutPos().GetX2();
 				}
 			}
 		}
 		/* 挿入データの先頭位置へカーソルを移動 */
-		GetCaret().MoveCursor( rcSelLayout.UpperLeft(), TRUE );
+		GetCaret().MoveCursor( rcSelLayout.UpperLeft(), true );
 		GetCaret().m_nCaretPosX_Prev = GetCaret().GetCaretLayoutPos().GetX2();
 
 		if( !m_bDoing_UndoRedo ){	/* アンドゥ・リドゥの実行中か */
@@ -1439,7 +1439,7 @@ void CEditView::ConvSelectedArea( EFunctionCode nFuncCode )
 			&ptFrom
 		);
 		GetSelectionInfo().SetSelectArea( CLayoutRange(ptFrom, GetCaret().GetCaretLayoutPos()) );	// 2009.07.25 ryoji
-		GetCaret().MoveCursor( GetSelectionInfo().m_sSelect.GetTo(), TRUE );
+		GetCaret().MoveCursor( GetSelectionInfo().m_sSelect.GetTo(), true );
 		GetCaret().m_nCaretPosX_Prev = GetCaret().GetCaretLayoutPos().GetX2();
 
 		if( !m_bDoing_UndoRedo ){	/* アンドゥ・リドゥの実行中か */
@@ -1579,7 +1579,7 @@ void CEditView::OnChangeSetting()
 	SetFont();
 
 	/* フォントが変わっているかもしれないので、カーソル移動 */
-	GetCaret().MoveCursor( GetCaret().GetCaretLayoutPos(), TRUE );
+	GetCaret().MoveCursor( GetCaret().GetCaretLayoutPos(), true );
 
 	/* スクロールバーの状態を更新する */
 	AdjustScrollBars();
@@ -2086,7 +2086,7 @@ void CEditView::CopySelectedAllLines(
 		sSelect.SetToX( pcLayout? pcLayout->GetIndent(): CLayoutInt(0) );
 		GetCaret().GetAdjustCursorPos( sSelect.GetToPointer() );	// EOF行を超えていたら座標修正
 
-		GetSelectionInfo().DisableSelectArea( false ); // 2011.06.03 TRUE →false
+		GetSelectionInfo().DisableSelectArea( false ); // 2011.06.03 true →false
 		GetSelectionInfo().SetSelectArea( sSelect );
 
 		GetCaret().MoveCursor( GetSelectionInfo().m_sSelect.GetTo(), false );
@@ -2456,10 +2456,10 @@ void CEditView::OnAfterLoad(const SLoadInfo& sLoadInfo)
 	m_cHistory->Flush();
 
 	/* 現在の選択範囲を非選択状態に戻す */
-	GetSelectionInfo().DisableSelectArea( FALSE );
+	GetSelectionInfo().DisableSelectArea( false );
 
 	OnChangeSetting();
-	GetCaret().MoveCursor( CLayoutPoint(0, 0), TRUE );
+	GetCaret().MoveCursor( CLayoutPoint(0, 0), true );
 	GetCaret().m_nCaretPosX_Prev = CLayoutInt(0);
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 

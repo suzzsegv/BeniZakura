@@ -55,7 +55,7 @@ void CViewCommander::Command_WordDeleteToStart( void )
 	}
 
 	// 削除
-	m_pCommanderView->DeleteData( TRUE );
+	m_pCommanderView->DeleteData( true );
 }
 
 
@@ -90,7 +90,7 @@ void CViewCommander::Command_WordDeleteToEnd( void )
 		GetOpeBlk()->AppendOpe( pcOpe );
 	}
 	/* 削除 */
-	m_pCommanderView->DeleteData( TRUE );
+	m_pCommanderView->DeleteData( true );
 }
 
 
@@ -140,13 +140,13 @@ void CViewCommander::Command_WordDelete( void )
 {
 	if( m_pCommanderView->GetSelectionInfo().IsTextSelected() ){
 		/* 削除 */
-		m_pCommanderView->DeleteData( TRUE );
+		m_pCommanderView->DeleteData( true );
 		return;
 	}
 	//現在位置の単語選択
 	Command_SELECTWORD();
 	/* 削除 */
-	m_pCommanderView->DeleteData( TRUE );
+	m_pCommanderView->DeleteData( true );
 	return;
 }
 
@@ -242,7 +242,7 @@ void CViewCommander::Command_LineDeleteToStart( void )
 {
 	CLayout*	pCLayout;
 	if( m_pCommanderView->GetSelectionInfo().IsTextSelected() ){	/* テキストが選択されているか */
-		m_pCommanderView->DeleteData( TRUE );
+		m_pCommanderView->DeleteData( true );
 		return;
 	}
 	pCLayout = GetDocument()->m_cLayoutMgr.SearchLineByLayoutY( GetCaret().GetCaretLayoutPos().GetY2() );	/* 指定された物理行のレイアウトデータ(CLayout)へのポインタを返す */
@@ -265,7 +265,7 @@ void CViewCommander::Command_LineDeleteToStart( void )
 	m_pCommanderView->GetSelectionInfo().SetSelectArea( sRange );
 
 	/* 選択領域削除 */
-	m_pCommanderView->DeleteData( TRUE );
+	m_pCommanderView->DeleteData( true );
 }
 
 
@@ -275,7 +275,7 @@ void CViewCommander::Command_LineDeleteToEnd( void )
 {
 	CLayout*	pCLayout;
 	if( m_pCommanderView->GetSelectionInfo().IsTextSelected() ){	/* テキストが選択されているか */
-		m_pCommanderView->DeleteData( TRUE );
+		m_pCommanderView->DeleteData( true );
 		return;
 	}
 	pCLayout = GetDocument()->m_cLayoutMgr.SearchLineByLayoutY( GetCaret().GetCaretLayoutPos().GetY2() );	/* 指定された物理行のレイアウトデータ(CLayout)へのポインタを返す */
@@ -315,7 +315,7 @@ void CViewCommander::Command_LineDeleteToEnd( void )
 	m_pCommanderView->GetSelectionInfo().SetSelectArea( sRange );
 
 	/* 選択領域削除 */
-	m_pCommanderView->DeleteData( TRUE );
+	m_pCommanderView->DeleteData( true );
 }
 
 
@@ -394,7 +394,7 @@ void CViewCommander::Command_DELETE_LINE( void )
 			}
 		}
 		/* 操作前の位置へカーソルを移動 */
-		GetCaret().MoveCursor( ptCaretPos_OLD, TRUE );
+		GetCaret().MoveCursor( ptCaretPos_OLD, true );
 		GetCaret().m_nCaretPosX_Prev = GetCaret().GetCaretLayoutPos().GetX2();
 		if( !m_pCommanderView->m_bDoing_UndoRedo ){	/* アンドゥ・リドゥの実行中か */
 			/* 操作の追加 */
@@ -421,7 +421,7 @@ void CViewCommander::Command_DUPLICATELINE( void )
 
 	if( m_pCommanderView->GetSelectionInfo().IsTextSelected() ){	/* テキストが選択されているか */
 		/* 現在の選択範囲を非選択状態に戻す */
-		m_pCommanderView->GetSelectionInfo().DisableSelectArea( TRUE );
+		m_pCommanderView->GetSelectionInfo().DisableSelectArea( true );
 	}
 
 	pcLayout = GetDocument()->m_cLayoutMgr.SearchLineByLayoutY( GetCaret().GetCaretLayoutPos().GetY2() );
@@ -492,7 +492,7 @@ void CViewCommander::Command_DUPLICATELINE( void )
 	);
 
 	/* カーソルを移動 */
-	GetCaret().MoveCursor( ptCaretPosOld, TRUE );
+	GetCaret().MoveCursor( ptCaretPosOld, true );
 	GetCaret().m_nCaretPosX_Prev = GetCaret().GetCaretLayoutPos().GetX2();
 
 

@@ -505,7 +505,7 @@ void CViewCommander::Command_REPLACE( HWND hwndParent )
 		if( m_pCommanderView->GetSelectionInfo().IsBoxSelecting() ){
 			GetCaret().MoveCursor( GetSelect().GetFrom(), true );
 		} else {
-//			HandleCommand( F_LEFT, TRUE, 0, 0, 0, 0 );
+//			HandleCommand( F_LEFT, true, 0, 0, 0, 0 );
 			Command_LEFT( FALSE, FALSE );
 		}
 	}
@@ -515,12 +515,12 @@ void CViewCommander::Command_REPLACE( HWND hwndParent )
 //			bBeginBoxSelect = m_pCommanderView->GetSelectionInfo().IsBoxSelecting();
 
 	/* カーソル左移動 */
-	//HandleCommand( F_LEFT, TRUE, 0, 0, 0, 0 );	//？？？
+	//HandleCommand( F_LEFT, true, 0, 0, 0, 0 );	//？？？
 	// To Here 2001.12.03 hor
 
 	/* テキスト選択解除 */
 	/* 現在の選択範囲を非選択状態に戻す */
-	m_pCommanderView->GetSelectionInfo().DisableSelectArea( TRUE );
+	m_pCommanderView->GetSelectionInfo().DisableSelectArea( true );
 
 	// 2004.06.01 Moca 検索中に、他のプロセスによってm_aReplaceKeysが書き換えられても大丈夫なように
 	const CNativeW	cMemRepKey( GetEditWindow()->m_cDlgReplace.m_strText2.c_str() );
@@ -613,12 +613,12 @@ void CViewCommander::Command_REPLACE( HWND hwndParent )
 					rLayoutMgr.LogicToLayout( CLogicPoint(nLen, pcLayout->GetLogicLineNo()), GetSelect().GetToPointer() );	// 2007.01.19 ryoji 追加
 				}
 				// 置換後文字列への書き換え(行末から検索文字列末尾までの文字を除く)
-				Command_INSTEXT( FALSE, cRegexp.GetString(), cRegexp.GetStringLen() - colDiff, TRUE );
+				Command_INSTEXT( false, cRegexp.GetString(), cRegexp.GetStringLen() - colDiff, TRUE );
 				// To Here Jun. 6, 2005 かろと
 			}
 		}else{
-			//	HandleCommand( F_INSTEXT_W, FALSE, (LPARAM)GetDllShareData().m_sSearchKeywords.m_aReplaceKeys[0], FALSE, 0, 0 );
-			Command_INSTEXT( FALSE, cMemRepKey.GetStringPtr(), cMemRepKey.GetStringLength(), TRUE );
+			//	HandleCommand( F_INSTEXT_W, false, (LPARAM)GetDllShareData().m_sSearchKeywords.m_aReplaceKeys[0], FALSE, 0, 0 );
+			Command_INSTEXT( false, cMemRepKey.GetStringPtr(), cMemRepKey.GetStringLength(), TRUE );
 		}
 
 		// 挿入後の検索開始位置を調整
@@ -1003,7 +1003,7 @@ void CViewCommander::Command_REPLACE_ALL()
 				** →m_nSelectXXXが-1の時に m_pCommanderView->ReplaceData_CEditViewを直接たたくと動作不良となるため
 				**   直接たたくのやめた。2003.05.18 by かろと
 				*/
-				Command_INSTEXT( FALSE, szREPLACEKEY, nREPLACEKEY, TRUE, bLineSelect );
+				Command_INSTEXT( false, szREPLACEKEY, nREPLACEKEY, TRUE, bLineSelect );
 			}
 			else
 			{
@@ -1087,7 +1087,7 @@ void CViewCommander::Command_REPLACE_ALL()
 				    }
 				}
 				// 置換後文字列への書き換え(行末から検索文字列末尾までの文字を除く)
-				Command_INSTEXT( FALSE, cRegexp.GetString(), cRegexp.GetStringLen() - colDiff, TRUE );
+				Command_INSTEXT( false, cRegexp.GetString(), cRegexp.GetStringLen() - colDiff, TRUE );
 				// To Here Jun. 6, 2005 かろと
 			}
 		}
@@ -1096,7 +1096,7 @@ void CViewCommander::Command_REPLACE_ALL()
 			/* 本当は元コードを使うべきなんでしょうが、無駄な処理を避けるために直接たたく。
 			** →m_nSelectXXXが-1の時に m_pCommanderView->ReplaceData_CEditViewを直接たたくと動作不良となるため直接たたくのやめた。2003.05.18 かろと
 			*/
-			Command_INSTEXT( FALSE, szREPLACEKEY, nREPLACEKEY, TRUE );
+			Command_INSTEXT( false, szREPLACEKEY, nREPLACEKEY, TRUE );
 			++nReplaceNum;
 		}
 
@@ -1181,13 +1181,13 @@ void CViewCommander::Command_REPLACE_ALL()
 	// From Here 2001.12.03 hor
 
 	/* テキスト選択解除 */
-	m_pCommanderView->GetSelectionInfo().DisableSelectArea( TRUE );
+	m_pCommanderView->GetSelectionInfo().DisableSelectArea( true );
 
 	/* カーソル・選択範囲復元 */
 	if((!bSelectedArea) ||			// ファイル全体置換
 	   (cDlgCancel.IsCanceled())) {		// キャンセルされた
 		// 最後に置換した文字列の右へ
-		GetCaret().MoveCursor( ptLast, TRUE );
+		GetCaret().MoveCursor( ptLast, true );
 	}
 	else{
 		if (bBeginBoxSelect) {
@@ -1210,7 +1210,7 @@ void CViewCommander::Command_REPLACE_ALL()
 		if(sRangeA.GetFrom().y<sRangeA.GetTo().y || sRangeA.GetFrom().x<sRangeA.GetTo().x){
 			m_pCommanderView->GetSelectionInfo().SetSelectArea( sRangeA );	// 2009.07.25 ryoji
 		}
-		GetCaret().MoveCursor( sRangeA.GetTo(), TRUE );
+		GetCaret().MoveCursor( sRangeA.GetTo(), true );
 		GetCaret().m_nCaretPosX_Prev = GetCaret().GetCaretLayoutPos().GetX2();	// 2009.07.25 ryoji
 	}
 	// To Here 2001.12.03 hor

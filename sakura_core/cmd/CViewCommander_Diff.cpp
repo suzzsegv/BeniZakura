@@ -303,13 +303,13 @@ re_do:;
 			if( !m_pCommanderView->GetSelectionInfo().IsTextSelected() ) m_pCommanderView->GetSelectionInfo().BeginSelectArea();
 		}
 		else{
-			if( m_pCommanderView->GetSelectionInfo().IsTextSelected() ) m_pCommanderView->GetSelectionInfo().DisableSelectArea( TRUE );
+			if( m_pCommanderView->GetSelectionInfo().IsTextSelected() ) m_pCommanderView->GetSelectionInfo().DisableSelectArea( true );
 		}
 
 		if( m_pCommanderView->GetSelectionInfo().m_bSelectingLock ){
 			m_pCommanderView->GetSelectionInfo().ChangeSelectAreaByCurrentCursor( ptXY_Layout );
 		}
-		GetCaret().MoveCursor( ptXY_Layout, TRUE );
+		GetCaret().MoveCursor( ptXY_Layout, true );
 	}
 
 
@@ -356,13 +356,13 @@ re_do:;
 			if( !m_pCommanderView->GetSelectionInfo().IsTextSelected() ) m_pCommanderView->GetSelectionInfo().BeginSelectArea();
 		}
 		else{
-			if( m_pCommanderView->GetSelectionInfo().IsTextSelected() ) m_pCommanderView->GetSelectionInfo().DisableSelectArea( TRUE );
+			if( m_pCommanderView->GetSelectionInfo().IsTextSelected() ) m_pCommanderView->GetSelectionInfo().DisableSelectArea( true );
 		}
 
 		if( m_pCommanderView->GetSelectionInfo().m_bSelectingLock ){
 			m_pCommanderView->GetSelectionInfo().ChangeSelectAreaByCurrentCursor( ptXY_Layout );
 		}
-		GetCaret().MoveCursor( ptXY_Layout, TRUE );
+		GetCaret().MoveCursor( ptXY_Layout, true );
 	}
 
 	if( GetDllShareData().m_Common.m_sSearch.m_bSearchAll ){

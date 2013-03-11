@@ -224,7 +224,7 @@ void CMacro::AddIntParam( const int nParam )
 	引数がintのときは、*((int*)paramArr[i])として渡しましょう。
 	
 	たとえば、F_INSTEXT_Wの1つめ、2つめの引数は文字列、3つめの引数はint、4つめの引数が無し。だったりする場合は、次のようにしましょう。
-	pcEditView->GetCommander().HandleCommand( m_nFuncID, TRUE, paramArr[0], paramArr[1], *((int*)paramArr[2]), 0);
+	pcEditView->GetCommander().HandleCommand( m_nFuncID, true, paramArr[0], paramArr[1], *((int*)paramArr[2]), 0);
 	
 	@date 2007.07.20 genta : flags追加．FA_FROMMACROはflagsに含めて渡すものとする．
 		(1コマンド発行毎に毎回演算する必要はないので)
@@ -415,7 +415,7 @@ void CMacro::HandleCommand(
 	case F_SELECT_COUNT_MODE:	//	文字カウントの方法を指定。数値は、0x0（変更せず取得のみ）、0x1（文字数）、0x2（バイト数）、0x3（文字数⇔バイト数トグル）	// 2009.07.06 syat
 	case F_OUTLINE:	//	アウトライン解析のアクションを指定。数値は、0x0（画面表示）、0x1（画面表示＆再解析）、0x2（画面表示トグル）
 		//	一つ目の引数が数値。
-		pcEditView->GetCommander().HandleCommand( Index, FALSE, (Argument[0] != NULL ? _wtoi(Argument[0]) : 0 ), 0, 0, 0 );
+		pcEditView->GetCommander().HandleCommand( Index, false, (Argument[0] != NULL ? _wtoi(Argument[0]) : 0 ), 0, 0, 0 );
 		break;
 	case F_CHGMOD_EOL:	//	入力改行コード指定。EEolTypeの数値を指定。2003.06.23 Moca
 		//	Jun. 16, 2002 genta
@@ -438,7 +438,7 @@ void CMacro::HandleCommand(
 			case 4:		nEol = EOL_CR; break;
 			default:	nEol = EOL_NONE; break;
 			}
-			pcEditView->GetCommander().HandleCommand( Index, FALSE, nEol, 0, 0, 0 );
+			pcEditView->GetCommander().HandleCommand( Index, false, nEol, 0, 0, 0 );
 		}
 		break;
 	case F_INSTEXT_W:		//	テキスト挿入
@@ -454,7 +454,7 @@ void CMacro::HandleCommand(
 			break;
 		}
 		{
-			pcEditView->GetCommander().HandleCommand( Index, FALSE, (LPARAM)Argument[0], 0, 0, 0 );	//	標準
+			pcEditView->GetCommander().HandleCommand( Index, false, (LPARAM)Argument[0], 0, 0, 0 );	//	標準
 		}
 		}
 		break;
@@ -472,7 +472,7 @@ void CMacro::HandleCommand(
 		}
 		{
 			int len = wcslen(Argument[0]);
-			pcEditView->GetCommander().HandleCommand( Index, FALSE, (LPARAM)Argument[0], len, 0, 0 );	//	標準
+			pcEditView->GetCommander().HandleCommand( Index, false, (LPARAM)Argument[0], len, 0, 0 );	//	標準
 		}
 		break;
 	/* 一つ目、二つ目とも引数は数値 */
@@ -480,7 +480,7 @@ void CMacro::HandleCommand(
 		{
 			int		nCharSet = ( Argument[0] == NULL || Argument[0][0] == '\0' ) ? CODE_NONE : _wtoi(Argument[0]);
 			BOOL	bBOM = ( Argument[1] == NULL ) ? FALSE : (_wtoi(Argument[1]) != 0);
-			pcEditView->GetCommander().HandleCommand( Index, FALSE, (LPARAM)nCharSet, (LPARAM)bBOM, 0, 0 );
+			pcEditView->GetCommander().HandleCommand( Index, false, (LPARAM)nCharSet, (LPARAM)bBOM, 0, 0 );
 		}
 		break;
 	case F_JUMP:		//	指定行へジャンプ（ただしPL/SQLコンパイルエラー行へのジャンプは未対応）
@@ -505,7 +505,7 @@ void CMacro::HandleCommand(
 			pcEditView->m_pcEditDoc->m_pcEditWnd->m_cDlgJump.m_nLineNum = _wtoi(Argument[0]);	//ジャンプ先
 			LPARAM lFlag = Argument[1] != NULL ? _wtoi(Argument[1]) : 1; // デフォルト1
 			GetDllShareData().m_bLineNumIsCRLF_ForJump = ((lFlag & 0x01)!=0);
-			pcEditView->GetCommander().HandleCommand( Index, FALSE, 0, 0, 0, 0 );	//	標準
+			pcEditView->GetCommander().HandleCommand( Index, false, 0, 0, 0, 0 );	//	標準
 		}
 		break;
 	/*	一つ目の引数は文字列、二つ目の引数は数値	*/
@@ -565,7 +565,7 @@ void CMacro::HandleCommand(
 			GetDllShareData().m_Common.m_sSearch.m_bSearchAll			= lFlag & 0x20 ? 1 : 0;
 
 			//	コマンド発行
-			pcEditView->GetCommander().HandleCommand( Index, FALSE, 0, 0, 0, 0);
+			pcEditView->GetCommander().HandleCommand( Index, false, 0, 0, 0, 0);
 		}
 		break;
 	case F_DIFF:
@@ -606,7 +606,7 @@ void CMacro::HandleCommand(
 			break;
 		}
 		{
-			pcEditView->GetCommander().HandleCommand( Index, FALSE, (LPARAM)Argument[0], (LPARAM)(Argument[1] != NULL ? _wtoi(Argument[1]) : 0 ), 0, 0);
+			pcEditView->GetCommander().HandleCommand( Index, false, (LPARAM)Argument[0], (LPARAM)(Argument[1] != NULL ? _wtoi(Argument[1]) : 0 ), 0, 0);
 		}
 		break;
 
@@ -630,7 +630,7 @@ void CMacro::HandleCommand(
 		{
 			pcEditView->GetCommander().HandleCommand(
 				Index,
-				FALSE,
+				false,
 				(LPARAM)Argument[0], 
 				(LPARAM)(Argument[1] != NULL ? _wtoi(Argument[1]) : 0 ),
 				(LPARAM)(Argument[2] != NULL ? _wtoi(Argument[2]) : 0 ),
@@ -724,7 +724,7 @@ void CMacro::HandleCommand(
 				GetDllShareData().m_Common.m_sSearch.m_bSelectedArea = cDlgReplace.m_bSelectedArea;
 			}
 			//	コマンド発行
-			pcEditView->GetCommander().HandleCommand( Index, FALSE, 0, 0, 0, 0);
+			pcEditView->GetCommander().HandleCommand( Index, false, 0, 0, 0, 0);
 		}
 		break;
 	case F_GREP:
@@ -835,7 +835,7 @@ void CMacro::HandleCommand(
 			break;
 		}
 		{
-			pcEditView->GetCommander().HandleCommand( Index, FALSE, (LPARAM)Argument[0], 0, 0, 0);
+			pcEditView->GetCommander().HandleCommand( Index, false, (LPARAM)Argument[0], 0, 0, 0);
 		}
 		break;
 	case F_FILESAVEAS:
@@ -873,14 +873,14 @@ void CMacro::HandleCommand(
 			default:	eEol = EOL_NONE;	break;
 			}
 			
-			pcEditView->GetCommander().HandleCommand( Index, FALSE, (LPARAM)Argument[0], 0, (LPARAM)eEol, 0);
+			pcEditView->GetCommander().HandleCommand( Index, false, (LPARAM)Argument[0], 0, (LPARAM)eEol, 0);
 		}
 		break;
 	/* 2つの引数が文字列 */
 	// Jul. 5, 2002 genta
 	case F_EXTHTMLHELP:
 	case F_EXECEXTMACRO:				// 2009.06.14 syat
-		pcEditView->GetCommander().HandleCommand( Index, FALSE, (LPARAM)Argument[0], (LPARAM)Argument[1], 0, 0);
+		pcEditView->GetCommander().HandleCommand( Index, false, (LPARAM)Argument[0], (LPARAM)Argument[1], 0, 0);
 		break;
 	//	From Here Dec. 4, 2002 genta
 	case F_FILE_REOPEN				://開き直す
@@ -896,7 +896,7 @@ void CMacro::HandleCommand(
 			if (Argument[0] != NULL){
 				noconfirm = ( _wtoi( Argument[0] ) != 0 );
 			}
-			pcEditView->GetCommander().HandleCommand( Index, FALSE, noconfirm, 0, 0, 0 );
+			pcEditView->GetCommander().HandleCommand( Index, false, noconfirm, 0, 0, 0 );
 		}
 		break;
 	//	To Here Dec. 4, 2002 genta
@@ -905,14 +905,14 @@ void CMacro::HandleCommand(
 			int lparam1;
 			if( Argument[0] != NULL ){
 				lparam1 = _wtoi( Argument[0] );
-				pcEditView->GetCommander().HandleCommand( Index, FALSE, lparam1, 0, 0, 0 );
+				pcEditView->GetCommander().HandleCommand( Index, false, lparam1, 0, 0, 0 );
 			}
 		}
 		break;	//	Jan. 29, 2005 genta 抜けていた
 	case F_TAGJUMP_KEYWORD:	// @@ 2005.03.31 MIK
 		{
 			//引数はNULLでもOK
-			pcEditView->GetCommander().HandleCommand( Index, FALSE, (LPARAM)Argument[0], 0, 0, 0);
+			pcEditView->GetCommander().HandleCommand( Index, false, (LPARAM)Argument[0], 0, 0, 0);
 		}
 		break;
 	case F_NEXTWINDOW:
@@ -926,7 +926,7 @@ void CMacro::HandleCommand(
 				int lparam1 = _wtoi( Argument[0] ) - 1;
 				int lparam2 = _wtoi( Argument[1] ) - 1;
 				int lparam3 = _wtoi( Argument[2] );
-				pcEditView->GetCommander().HandleCommand( Index, FALSE, lparam1, lparam2, lparam3, 0);
+				pcEditView->GetCommander().HandleCommand( Index, false, lparam1, lparam2, lparam3, 0);
 			}else{
 				::MYMESSAGEBOX( NULL, MB_OK | MB_ICONSTOP | MB_TOPMOST, EXEC_ERROR_TITLE,
 				_T("数値を指定してください．"));
@@ -946,7 +946,7 @@ void CMacro::HandleCommand(
 		break;
 	default:
 		//	引数なし。
-		pcEditView->GetCommander().HandleCommand( Index, FALSE, 0, 0, 0, 0 );	//	標準
+		pcEditView->GetCommander().HandleCommand( Index, false, 0, 0, 0, 0 );	//	標準
 		break;
 	}
 }

@@ -27,7 +27,7 @@ bool CViewCommander::Command_SELECTWORD( void )
 	CLogicInt	nIdx;
 	if( m_pCommanderView->GetSelectionInfo().IsTextSelected() ){	/* テキストが選択されているか */
 		/* 現在の選択範囲を非選択状態に戻す */
-		m_pCommanderView->GetSelectionInfo().DisableSelectArea( TRUE );
+		m_pCommanderView->GetSelectionInfo().DisableSelectArea( true );
 	}
 	const CLayout*	pcLayout = GetDocument()->m_cLayoutMgr.SearchLineByLayoutY( GetCaret().GetCaretLayoutPos().GetY2() );
 	if( NULL == pcLayout ){
@@ -55,7 +55,7 @@ bool CViewCommander::Command_SELECTWORD( void )
 		m_pCommanderView->GetSelectionInfo().DrawSelectArea();
 
 		/* 単語の先頭にカーソルを移動 */
-		GetCaret().MoveCursor( sRange.GetTo(), TRUE );
+		GetCaret().MoveCursor( sRange.GetTo(), true );
 		GetCaret().m_nCaretPosX_Prev = GetCaret().GetCaretLayoutPos().GetX2();
 
 		return true;	//	単語選択に成功。
@@ -127,7 +127,7 @@ void CViewCommander::Command_SELECTALL( void )
 {
 	if( m_pCommanderView->GetSelectionInfo().IsTextSelected() ){	/* テキストが選択されているか */
 		/* 現在の選択範囲を非選択状態に戻す */
-		m_pCommanderView->GetSelectionInfo().DisableSelectArea( TRUE );
+		m_pCommanderView->GetSelectionInfo().DisableSelectArea( true );
 	}
 
 	/* 先頭へカーソルを移動 */
@@ -186,7 +186,7 @@ void CViewCommander::Command_SELECTLINE( int lparam )
 		   ( GetCaret().GetCaretLogicPos().y >= GetDocument()->m_cDocLineMgr.GetLineCount() ))
 		{
 			// 現在の選択範囲を非選択状態に戻す
-			m_pCommanderView->GetSelectionInfo().DisableSelectArea( TRUE );
+			m_pCommanderView->GetSelectionInfo().DisableSelectArea( true );
 		}
 	}
 
@@ -235,7 +235,7 @@ void CViewCommander::Command_BEGIN_BOXSELECT( void )
 //@@@ 2002.01.03 YAZAKI 範囲選択中にShift+F6を実行すると選択範囲がクリアされない問題に対処
 	if( m_pCommanderView->GetSelectionInfo().IsTextSelected() ){	/* テキストが選択されているか */
 		/* 現在の選択範囲を非選択状態に戻す */
-		m_pCommanderView->GetSelectionInfo().DisableSelectArea( TRUE );
+		m_pCommanderView->GetSelectionInfo().DisableSelectArea( true );
 	}
 
 	/* 現在のカーソル位置から選択を開始する */

@@ -161,7 +161,7 @@ void CEditView::ISearchEnter( int mode, ESearchDirection direction)
 		//インクリメンタルサーチモードに入るだけ.		
 		//選択範囲の解除
 		if(GetSelectionInfo().IsTextSelected())	
-			GetSelectionInfo().DisableSelectArea( TRUE );
+			GetSelectionInfo().DisableSelectArea( true );
 
 		m_sCurSearchOption = GetDllShareData().m_Common.m_sSearch.m_sSearchOption;
 		switch( mode ) {
@@ -435,7 +435,7 @@ void CEditView::ISearchExec(bool bNext)
 	}else{
 		//検索結果あり
 		//キャレット移動
-		GetCaret().MoveCursor( sMatchRange.GetFrom(), TRUE, _CARETMARGINRATE / 3 );
+		GetCaret().MoveCursor( sMatchRange.GetFrom(), true, _CARETMARGINRATE / 3 );
 		
 		//	2005.06.24 Moca
 		GetSelectionInfo().SetSelectArea( sMatchRange );
@@ -482,11 +482,11 @@ void CEditView::ISearchBack(void) {
 	CLayoutRange sRange = m_sISearchHistory[m_nISearchHistoryCount];
 
 	if(m_nISearchHistoryCount == 0){
-		GetSelectionInfo().DisableSelectArea( TRUE );
+		GetSelectionInfo().DisableSelectArea( true );
 		sRange.SetToX( sRange.GetFrom().x );
 	}
 
-	GetCaret().MoveCursor( sRange.GetFrom(), TRUE, _CARETMARGINRATE / 3 );
+	GetCaret().MoveCursor( sRange.GetFrom(), true, _CARETMARGINRATE / 3 );
 	if(m_nISearchHistoryCount != 0){
 		//	2005.06.24 Moca
 		GetSelectionInfo().SetSelectArea( sRange );

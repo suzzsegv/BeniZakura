@@ -139,7 +139,7 @@ void CMruListener::OnAfterLoad(const SLoadInfo& sLoadInfo)
 
 		if( ptCaretPos.GetY2() >= pcDoc->m_cLayoutMgr.GetLineCount() ){
 			//ƒtƒ@ƒCƒ‹‚ÌÅŒã‚ÉˆÚ“®
-			cView.GetCommander().HandleCommand( F_GOFILEEND, 0, 0, 0, 0, 0 );
+			cView.GetCommander().HandleCommand( F_GOFILEEND, false, 0, 0, 0, 0 );
 		}
 		else{
 			cView.GetTextArea().SetViewTopLine( eiOld.m_nViewTopLine ); // 2001/10/20 novice
@@ -151,7 +151,7 @@ void CMruListener::OnAfterLoad(const SLoadInfo& sLoadInfo)
 				if( pTmpDocLine->GetLengthWithoutEOL() < eiOld.m_ptCursor.x ) ptCaretPos.x--;
 			}
 			// To Here Mar. 28, 2003 MIK
-			cView.GetCaret().MoveCursor( ptCaretPos, TRUE );
+			cView.GetCaret().MoveCursor( ptCaretPos, true );
 			cView.GetCaret().m_nCaretPosX_Prev = cView.GetCaret().GetCaretLayoutPos().GetX2();
 		}
 	}
