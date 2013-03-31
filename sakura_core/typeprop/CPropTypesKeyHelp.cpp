@@ -70,7 +70,7 @@ static TCHAR* GetFileName(const TCHAR *fullpath);
 
 	@date 2006.04.10 fon 新規作成
 */
-INT_PTR CPropKeyHelp::DispatchEvent(
+INT_PTR CPropTypesKeyHelp::DispatchEvent(
 	HWND		hwndDlg,	// handle to dialog box
 	UINT		uMsg,		// message
 	WPARAM		wParam,		// first message parameter
@@ -495,7 +495,7 @@ INT_PTR CPropKeyHelp::DispatchEvent(
 			return TRUE;
 
 		case PSN_SETACTIVE:
-			m_nPageNum = 4;	//@@@ 2002.01.03 YAZAKI 最後に表示していたシートを正しく覚えていないバグ修正
+			m_nPageNum = 5;	//@@@ 2002.01.03 YAZAKI 最後に表示していたシートを正しく覚えていないバグ修正
 			return TRUE;
 
 		case LVN_ITEMCHANGED:	/*リストの項目が変更された際の処理*/
@@ -535,7 +535,7 @@ void CheckDlgButtonBOOL(HWND hwnd, int id, BOOL bState ){
 
 	@date 2006.04.10 fon 新規作成
 */
-void CPropKeyHelp::SetData( HWND hwndDlg )
+void CPropTypesKeyHelp::SetData( HWND hwndDlg )
 {
 	HWND	hwndWork;
 	int		i;
@@ -595,13 +595,13 @@ void CPropKeyHelp::SetData( HWND hwndDlg )
 
 	@date 2006.04.10 fon 新規作成
 */
-int CPropKeyHelp::GetData( HWND hwndDlg )
+int CPropTypesKeyHelp::GetData( HWND hwndDlg )
 {
 	HWND	hwndList;
 	int	nIndex, i;
 	TCHAR	szAbout[DICT_ABOUT_LEN];	/* 辞書の説明(辞書ファイルの1行目から生成) */
 	TCHAR	szPath[_MAX_PATH];			/* ファイルパス */
-//	m_nPageNum = 4;	//自分のページ番号
+//	m_nPageNum = 5;	//自分のページ番号
 
 	/* 使用する・使用しない */
 	m_Types.m_bUseKeyWordHelp      = ( BST_CHECKED == IsDlgButtonChecked( hwndDlg, IDC_CHECK_KEYHELP ) );
@@ -638,7 +638,7 @@ int CPropKeyHelp::GetData( HWND hwndDlg )
 
 	@date 2006.04.10 fon 新規作成
 */
-bool CPropKeyHelp::Import(HWND hwndDlg)
+bool CPropTypesKeyHelp::Import(HWND hwndDlg)
 {
 	// インポート
 	GetData( hwndDlg );
@@ -658,7 +658,7 @@ bool CPropKeyHelp::Import(HWND hwndDlg)
 
 	@date 2006.04.10 fon 新規作成
 */
-bool CPropKeyHelp::Export(HWND hwndDlg)
+bool CPropTypesKeyHelp::Export(HWND hwndDlg)
 {
 	GetData(hwndDlg);
 	CImpExpKeyHelp	cImpExpKeyHelp( m_Types );

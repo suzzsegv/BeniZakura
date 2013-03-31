@@ -27,12 +27,13 @@
 #include "view/CEditView.h"
 #include "view/CViewFont.h"
 #include "view/CRuler.h"
-#include "CWaitCursor.h"
+#include "uiparts/CWaitCursor.h"
 #include "window/CEditWnd.h"
 #include "window/CSplitBoxWnd.h"///
 #include "COpeBlk.h"///
 #include "_os/CDropTarget.h"///
 #include "_os/CClipboard.h"
+#include "_os/COsVersionInfo.h"
 #include "CMarkMgr.h"///
 #include "types/CTypeSupport.h"
 #include "convert/CConvert.h"
@@ -222,8 +223,7 @@ BOOL CEditView::Create(
 
 	// from here  2002.04.09 minfu OSによって再変換の方式を変える
 	//	YAZAKI COsVersionInfoのカプセル化は守りましょ。
-	COsVersionInfo	cOs;
-	if( cOs.OsDoesNOTSupportReconvert() ){
+	if( !OsSupportReconvert() ){
 		// 95 or NTならば
 		m_uMSIMEReconvertMsg = ::RegisterWindowMessage( RWM_RECONVERT );
 		m_uATOKReconvertMsg = ::RegisterWindowMessage( MSGNAME_ATOK_RECONVERT ) ;
@@ -259,7 +259,6 @@ BOOL CEditView::Create(
 	//↓今までCreateでやってたこと
 
 	WNDCLASS	wc;
-//	HDC			hdc;	???
 	m_hwndParent = hwndParent;
 	m_pcEditDoc = pcEditDoc;
 	m_nMyIndex = nMyIndex;
@@ -557,7 +556,6 @@ LRESULT CEditView::DispatchEvent(
 			GlobalUnlock( hstr );
 			GlobalFree( hstr );
 			return DefWindowProc( hwnd, uMsg, wParam, lParam );
-//			return 0;
 		}
 		return DefWindowProc( hwnd, uMsg, wParam, lParam );
 
@@ -740,10 +738,7 @@ LRESULT CEditView::DispatchEvent(
 		DestroyWindow( hwnd );
 		return 0L;
 	case WM_DESTROY:
-//		CDropTarget::Revoke_DropTarget();
 		m_pcDropTarget->Revoke_DropTarget();
-//		::RevokeDragDrop( GetHwnd() );
-//		::OleUninitialize();
 
 		/* タイマー終了 */
 		::KillTimer( GetHwnd(), IDT_ROLLMOUSE );
@@ -1592,7 +1587,7 @@ void CEditView::OnChangeSetting()
 	OnSize( rc.right, rc.bottom );
 
 	/* フォントが変わった */
-	m_cTipWnd.ChangeFont( &(GetDllShareData().m_Common.m_sHelper.m_lf_kh) );
+	m_cTipWnd.ChangeFont( &(GetDllShareData().m_Common.m_sHelper.m_lf) );
 
 
 	/* 再描画 */
@@ -1725,7 +1720,6 @@ bool CEditView::GetSelectedData(
 	const wchar_t*	pszSpaces = L"                    ";
 	const CLayout*	pcLayout;
 	CEol			appendEol( neweol );
-	bool			addnl = false;
 
 	/* 範囲選択がされていない */
 	if( !GetSelectionInfo().IsTextSelected() ){
@@ -1747,7 +1741,6 @@ bool CEditView::GetSelectedData(
 			GetSelectionInfo().m_sSelect.GetFrom(),	// 範囲選択開始
 			GetSelectionInfo().m_sSelect.GetTo()		// 範囲選択終了
 		);
-//		cmemBuf.SetData( "", 0 );
 		cmemBuf->SetString(L"");
 
 		//<< 2002/04/18 Azumaiya
@@ -1783,13 +1776,6 @@ bool CEditView::GetSelectedData(
 
 		nRowNum = 0;
 		for( nLineNum = rcSel.top; nLineNum <= rcSel.bottom; ++nLineNum ){
-//			if( nRowNum > 0 ){
-//				cmemBuf.AppendSz( CRLF );
-//				if( bLineOnly ){	/* 複数行選択の場合は先頭の行のみ */
-//					break;
-//				}
-//			}
-//			pLine = m_pcEditDoc->m_cLayoutMgr.GetLineStr( nLineNum, &nLineLen );
 			pLine = m_pcEditDoc->m_cLayoutMgr.GetLineStr( nLineNum, &nLineLen, &pcLayout );
 			if( NULL != pLine ){
 				/* 指定された桁に対応する行のデータ内の位置を調べる */
@@ -1806,12 +1792,10 @@ bool CEditView::GetSelectedData(
 				}
 			}
 			++nRowNum;
-//			if( nRowNum > 0 ){
-				cmemBuf->AppendString( WCODE::CRLF );
-				if( bLineOnly ){	/* 複数行選択の場合は先頭の行のみ */
-					break;
-				}
-//			}
+			cmemBuf->AppendString( WCODE::CRLF );
+			if( bLineOnly ){	/* 複数行選択の場合は先頭の行のみ */
+				break;
+			}
 		}
 	}
 	else{
@@ -1868,7 +1852,6 @@ bool CEditView::GetSelectedData(
 		//>> 2002/04/18 Azumaiya
 
 		for( nLineNum = GetSelectionInfo().m_sSelect.GetFrom().GetY2(); nLineNum <= GetSelectionInfo().m_sSelect.GetTo().y; ++nLineNum ){
-//			pLine = m_pcEditDoc->m_cLayoutMgr.GetLineStr( nLineNum, &nLineLen );
 			pLine = m_pcEditDoc->m_cLayoutMgr.GetLineStr( nLineNum, &nLineLen, &pcLayout );
 			if( NULL == pLine ){
 				break;
@@ -1900,10 +1883,6 @@ bool CEditView::GetSelectedData(
 
 
 			if( EOL_NONE != pcLayout->GetLayoutEol() ){
-//			if( pLine[nIdxTo - 1] == L'\n' || pLine[nIdxTo - 1] == L'\r' ){
-//				cmemBuf.Append( &pLine[nIdxFrom], nIdxTo - nIdxFrom - 1 );
-//				cmemBuf.AppendSz( CRLF );
-
 				if( nIdxTo >= nLineLen ){
 					cmemBuf->AppendString( &pLine[nIdxFrom], nLineLen - 1 - nIdxFrom );
 					//	Jul. 25, 2000 genta
@@ -1921,7 +1900,6 @@ bool CEditView::GetSelectedData(
 						NULL != pszQuote || /* 先頭に付ける引用符 */
 						bWithLineNumber 	/* 行番号を付与する */
 					){
-//						cmemBuf.Append( CRLF, lstrlen( CRLF ) );
 						//	Jul. 25, 2000 genta
 						cmemBuf->AppendString(( neweol == EOL_UNKNOWN ) ?
 							m_pcEditDoc->m_cDocEditor.GetNewLineCode().GetValue2() :	//	コード保存
@@ -2362,7 +2340,6 @@ void CEditView::CaretUnderLineOFF( bool bDraw, bool bDrawPaint, bool bResetFlag 
 			}
 
 			//	選択情報を復元
-//			GetSelectionInfo().m_sSelect = sSelectBackup;
 			GetCaret().m_cUnderLine.UnLock();
 			
 			if( bDrawPaint ){
@@ -2450,8 +2427,6 @@ void CEditView::SetInsMode(bool mode)
 
 void CEditView::OnAfterLoad(const SLoadInfo& sLoadInfo)
 {
-	CEditDoc* pcDoc = GetListeningDoc();
-
 	// -- -- ※ InitAllViewでやってたこと -- -- //
 	m_cHistory->Flush();
 
@@ -2599,7 +2574,7 @@ bool CEditView::IsEmptyArea( CLayoutPoint ptFrom, CLayoutPoint ptTo, bool bSelec
 
 		result = TRUE;
 		for( CLayoutInt nLineNum = nLineFrom; nLineNum <= nLineTo; nLineNum++ ){
-			if( pcLayout = m_pcEditDoc->m_cLayoutMgr.SearchLineByLayoutY( nLineNum ) ){
+			if( (pcLayout = m_pcEditDoc->m_cLayoutMgr.SearchLineByLayoutY( nLineNum )) != NULL ){
 				// 指定位置に対応する行のデータ内の位置
 				LineColmnToIndex2( pcLayout, nColmFrom, &nLineLen );
 				if( nLineLen == 0 ){	// 折り返しや改行コードより右の場合には nLineLen に行全体の表示桁数が入る

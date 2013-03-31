@@ -22,7 +22,7 @@
 
 #include "view/CEditView.h"
 #include "view/CRuler.h"
-#include "CWaitCursor.h"
+#include "uiparts/CWaitCursor.h"
 #include "COpeBlk.h"/// 2002/2/3 aroka ’Ç‰Á
 #include "window/CEditWnd.h"/// 2002/2/3 aroka ’Ç‰Á
 #include "plugin/CJackManager.h"
@@ -670,7 +670,7 @@ void CViewCommander::Command_DELETE_BACK( void )
 	else{
 		CLayoutPoint	ptLayoutPos_Old = GetCaret().GetCaretLayoutPos();
 		CLogicPoint		ptLogicPos_Old = GetCaret().GetCaretLogicPos();
-		BOOL	bBool = Command_LEFT( FALSE, FALSE );
+		BOOL	bBool = Command_LEFT( false, false );
 		if( bBool ){
 			const CLayout* pcLayout = GetDocument()->m_cLayoutMgr.SearchLineByLayoutY( GetCaret().GetCaretLayoutPos().GetY2() );
 			if( pcLayout ){

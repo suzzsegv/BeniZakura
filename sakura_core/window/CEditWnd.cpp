@@ -29,12 +29,13 @@
 #include "_main/CControlTray.h"
 #include "_main/CCommandLine.h"	/// 2003/1/26 aroka
 #include "_main/CAppMode.h"
-#include"_os/CDropTarget.h"
+#include "_os/CDropTarget.h"
+#include "_os/COsVersionInfo.h"
 #include "dlg/CDlgAbout.h"
 #include "dlg/CDlgPrintSetting.h"
 #include "env/CShareData.h"
 #include "env/CSakuraEnvironment.h"
-#include "CPrintPreview.h"	/// 2002/2/3 aroka
+#include "print/CPrintPreview.h"	/// 2002/2/3 aroka
 #include "charset/CharPointer.h"
 #include "charset/CCodeFactory.h"
 #include "charset/CCodeBase.h"
@@ -185,7 +186,7 @@ LRESULT CALLBACK CEditWndProc(
 //	@date 2002.2.17 YAZAKI CShareDataのインスタンスは、CProcessにひとつあるのみ。
 CEditWnd::CEditWnd()
 : m_hWnd( NULL )
-, m_bDragMode( FALSE )
+, m_bDragMode( false )
 , m_uMSIMEReconvertMsg( ::RegisterWindowMessage( RWM_RECONVERT ) ) // 20020331 aroka 再変換対応 for 95/NT
 , m_uATOKReconvertMsg( ::RegisterWindowMessage( MSGNAME_ATOK_RECONVERT ) )
 , m_pPrintPreview( NULL ) //@@@ 2002.01.14 YAZAKI 印刷プレビューをCPrintPreviewに独立させたことによる変更
@@ -512,8 +513,8 @@ void CEditWnd::_AdjustInMonitor(const STabGroupInfo& sTabGroupInfo)
 
 		//タブウインドウ時は現状を維持
 		/* ウィンドウサイズ継承 */
-		bool bStopAnimation = COsVersionInfo().IsWinVista_or_later();	// Vista 以降の初回表示アニメーション効果を抑止する
-		if( !bStopAnimation ){
+		// Vista 以降の初回表示アニメーション効果を抑止する
+		if( !IsWinVista_or_later() ){
 			if( sTabGroupInfo.wpTop.showCmd == SW_SHOWMAXIMIZED )
 			{
 				::ShowWindow( GetHwnd(), SW_SHOWMAXIMIZED );
@@ -714,7 +715,7 @@ HWND CEditWnd::Create(
 	m_bIsActiveApp = ( ::GetActiveWindow() == GetHwnd() );	// 2007.03.08 ryoji
 
 	// エディタ－トレイ間でのUI特権分離の確認（Vista UIPI機能） 2007.06.07 ryoji
-	if( COsVersionInfo().IsWinVista_or_later() ){
+	if( IsWinVista_or_later() ){
 		m_bUIPI = FALSE;
 		::SendMessage( m_pShareData->m_sHandles.m_hwndTray, MYWM_UIPI_CHECK,  (WPARAM)0, (LPARAM)GetHwnd() );
 		if( !m_bUIPI ){	// 返事が返らない
@@ -1041,9 +1042,8 @@ void CEditWnd::MessageLoop( void )
 		if(ret== 0)break; //WM_QUIT
 		if(ret==-1)break; //GetMessage失敗
 
-		if(0){}
 		//ダイアログメッセージ
-		else if( MyIsDialogMessage( m_pPrintPreview->GetPrintPreviewBarHANDLE_Safe(),	&msg ) ){}	//!< 印刷プレビュー 操作バー
+		     if( MyIsDialogMessage( m_pPrintPreview->GetPrintPreviewBarHANDLE_Safe(),	&msg ) ){}	//!< 印刷プレビュー 操作バー
 		else if( MyIsDialogMessage( m_cDlgFind.GetHwnd(),								&msg ) ){}	//!<「検索」ダイアログ
 		else if( MyIsDialogMessage( m_cDlgFuncList.GetHwnd(),							&msg ) ){}	//!<「アウトライン」ダイアログ
 		else if( MyIsDialogMessage( m_cDlgReplace.GetHwnd(),							&msg ) ){}	//!<「置換」ダイアログ
@@ -1596,7 +1596,8 @@ LRESULT CEditWnd::DispatchEvent(
 	case MYWM_CHANGESETTING:
 		/* 設定変更の通知 */
 		// Font変更の通知 2008/5/17 Uchi
-		InitCharWidthCache(m_pShareData->m_Common.m_sView.m_lf);
+		InitCharWidthCache(GetLogfont());
+		InitCharWidthCacheCommon(); //// aroka
 
 		// メインメニュー	2010/5/16 Uchi
 		LayoutMainMenu();
@@ -2257,12 +2258,10 @@ void CEditWnd::InitMenu( HMENU hMenu, UINT uPos, BOOL fSystemMenu )
 				// プラグインコマンド
 				if (cMainMenu->m_nFunc >= F_PLUGCOMMAND_FIRST && cMainMenu->m_nFunc < F_PLUGCOMMAND_LAST) {
 					const CJackManager* pcJackManager = CJackManager::getInstance();
-					const CPlugin* prevPlugin = NULL;
 
 					CPlug::Array plugs = pcJackManager->GetPlugs( PP_COMMAND );
 					j = -1;
 					for (CPlug::ArrayIter it = plugs.begin(); it != plugs.end(); it++) {
-						const CPlugin* curPlugin = &(*it)->m_cPlugin;
 						if ((*it)->GetFunctionCode() == cMainMenu->m_nFunc) {
 							//コマンドを登録
 							j = cMainMenu->m_nFunc - F_PLUGCOMMAND_FIRST;
@@ -3213,8 +3212,8 @@ LRESULT CEditWnd::OnLButtonUp( WPARAM wParam, LPARAM lParam )
 		return 0;
 	}
 
-	m_bDragMode = FALSE;
-//	MYTRACE_A("m_bDragMode = FALSE (OnLButtonUp)\n");
+	m_bDragMode = false;
+//	MYTRACE_A("m_bDragMode = false (OnLButtonUp)\n");
 	ReleaseCapture();
 	::InvalidateRect( GetHwnd(), NULL, TRUE );
 	return 0;
@@ -3772,7 +3771,7 @@ void CEditWnd::PrintMenubarMessage( const TCHAR* msg )
 	::SetTextColor( hdc, ::GetSysColor( COLOR_MENUTEXT ) );
 	//	Sep. 6, 2003 genta Windows XP(Luna)の場合にはCOLOR_MENUBARを使わなくてはならない
 	COLORREF bkColor =
-		::GetSysColor( COsVersionInfo().IsWinXP_or_later() ? COLOR_MENUBAR : COLOR_MENU );
+		::GetSysColor( IsWinXP_or_later() ? COLOR_MENUBAR : COLOR_MENU );
 	::SetBkColor( hdc, bkColor );
 	/*
 	int			m_pnCaretPosInfoDx[64];	// 文字列描画用文字幅配列
@@ -4587,3 +4586,12 @@ void CEditWnd::RegisterPluginCommand( CPlug* plug )
 
 	m_CMenuDrawer.AddToolButton( iBitmap, plug->GetFunctionCode() );
 }
+
+
+LOGFONT& CEditWnd::GetLogfont()
+{
+	DLLSHAREDATA* pShareData = CShareData::getInstance()->GetShareData();
+
+	return pShareData->m_Common.m_sView.m_lf;
+}
+

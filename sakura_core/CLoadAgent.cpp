@@ -9,7 +9,7 @@
 #include "doc/CEditDoc.h"
 #include "view/CEditView.h"
 #include "window/CEditWnd.h"
-#include "CVisualProgress.h"
+#include "uiparts/CVisualProgress.h"
 #include "util/file.h"
 
 ECallbackResult CLoadAgent::OnCheckLoad(SLoadInfo* pLoadInfo)
@@ -108,7 +108,7 @@ next:
 		}
 		if( bLock ) pcDoc->m_cDocFileOperation.DoFileLock(false);
 	}
-	while(false);
+	while(false);	//	1回しか通らない. breakでここまで飛ぶ
 
 	// ファイルサイズチェック
 	if( GetDllShareData().m_Common.m_sFile.m_bAlertIfLargeFile ){

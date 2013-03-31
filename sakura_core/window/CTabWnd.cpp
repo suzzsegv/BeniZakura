@@ -44,7 +44,7 @@
 
 #include "env/CShareData.h"
 #include "env/CSakuraEnvironment.h"
-#include "CGraphics.h"
+#include "uiparts/CGraphics.h"
 #include "recent/CRecentEditNode.h"
 #include "util/os.h" //WM_THEMECHANGED
 #include "util/window.h"
@@ -69,7 +69,7 @@
 #define TAB_MARGIN_RIGHT	DpiScaleX(47)
 
 //#define TAB_FONT_HEIGHT		DpiPointsToPixels(9)
-#define TAB_FONT_HEIGHT		abs(CShareData::getInstance()->GetShareData()->m_Common.m_sTabBar.m_tabFont.lfHeight)
+#define TAB_FONT_HEIGHT		abs(CShareData::getInstance()->GetShareData()->m_Common.m_sTabBar.m_lf.lfHeight)
 #define TAB_ITEM_HEIGHT		(TAB_FONT_HEIGHT + DpiScaleY(7))
 #define TAB_WINDOW_HEIGHT	(TAB_ITEM_HEIGHT + TAB_MARGIN_TOP + 2)
 
@@ -260,7 +260,7 @@ LRESULT CTabWnd::OnTabLButtonUp( WPARAM wParam, LPARAM lParam )
 			delete[] m_nTabBorderArray;
 			m_nTabBorderArray = NULL;
 		}
-		::SendMessageAny( TabCtrl_GetToolTips( m_hwndTab ), TTM_ACTIVATE, (WPARAM)TRUE, (LPARAM)0 );	// ツールチップ有効化
+		Tooltip_Activate( TabCtrl_GetToolTips( m_hwndTab ), TRUE );	// ツールチップ有効化
 		break;
 
 	default:
@@ -304,7 +304,7 @@ LRESULT CTabWnd::OnTabMouseMove( WPARAM wParam, LPARAM lParam )
 			m_nTabBorderArray[ i ] = rc.right;
 		}
 		m_nTabBorderArray[ i ] = 0;		// 最後の要素は番兵
-		::SendMessageAny( TabCtrl_GetToolTips( m_hwndTab ), TTM_ACTIVATE, (WPARAM)FALSE, (LPARAM)0 );	// ツールチップ無効化
+		Tooltip_Activate( TabCtrl_GetToolTips( m_hwndTab ), FALSE );	// ツールチップ無効化
 		// ここに来たらドラッグ開始なので break しないでそのまま DRAG_DRAG 処理に入る
 
 	case DRAG_DRAG:
@@ -806,8 +806,8 @@ HWND CTabWnd::Open( HINSTANCE hInstance, HWND hwndParent )
 
 		/* 表示用フォント */
 		/* LOGFONTの初期化 */
-		m_logfont = m_pShareData->m_Common.m_sTabBar.m_tabFont;
-		m_hFont = ::CreateFontIndirect( &m_logfont );
+		m_lf = m_pShareData->m_Common.m_sTabBar.m_lf;
+		m_hFont = ::CreateFontIndirect( &m_lf );
 		/* フォント変更 */
 		::SendMessageAny( m_hwndTab, WM_SETFONT, (WPARAM)m_hFont, MAKELPARAM(TRUE, 0) );
 
@@ -1089,8 +1089,8 @@ LRESULT CTabWnd::OnMeasureItem( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 		TABMENU_DATA* pData = (TABMENU_DATA*)lpmis->itemData;
 
 		HDC hdc = ::GetDC( hwnd );
-		HFONT hfnt = CreateMenuFont();
-		HFONT hfntOld = (HFONT)::SelectObject( hdc, hfnt );
+		HFONT hFont = CreateMenuFont();
+		HFONT hFontOld = (HFONT)::SelectObject( hdc, hFont );
 
 		SIZE size;
 		::GetTextExtentPoint32( hdc, pData->szText, ::_tcslen(pData->szText), &size );
@@ -1105,8 +1105,8 @@ LRESULT CTabWnd::OnMeasureItem( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 		lpmis->itemHeight = ::GetSystemMetrics( SM_CYMENU );
 		lpmis->itemWidth = (cxIcon + DpiScaleX(8)) + size.cx;
 
-		::SelectObject( hdc, hfntOld );
-		::DeleteObject( hfnt );
+		::SelectObject( hdc, hFontOld );
+		::DeleteObject( hFont );
 		::ReleaseDC( hwnd, hdc );
 	}
 
@@ -1162,8 +1162,8 @@ LRESULT CTabWnd::OnDrawItem( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam 
 		// テキスト描画
 		gr.PushTextForeColor( clrText );
 		gr.SetTextBackTransparent(true);
-		HFONT hfnt = CreateMenuFont();
-		gr.PushMyFont(hfnt);
+		HFONT hFont = CreateMenuFont();
+		gr.PushMyFont(hFont);
 		RECT rcText = rcItem;
 		rcText.left += (cxIcon + DpiScaleX(8));
 
@@ -1171,7 +1171,7 @@ LRESULT CTabWnd::OnDrawItem( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam 
 
 		gr.RestoreTextColors();
 		gr.PopMyFont();
-		::DeleteObject( hfnt );
+		::DeleteObject( hFont );
 
 		// チェック状態なら外枠描画
 		if( lpdis->itemState & ODS_CHECKED )
@@ -2008,10 +2008,10 @@ void CTabWnd::TabWnd_ActivateFrameWindow( HWND hwnd, bool bForeground )
 void CTabWnd::LayoutTab( void )
 {
 	// フォントを切り替える 2011.12.01 Moca
-	if( 0 != memcmp( &m_logfont, &m_pShareData->m_Common.m_sTabBar.m_tabFont, sizeof(m_logfont) ) ){
+	if( 0 != memcmp( &m_lf, &m_pShareData->m_Common.m_sTabBar.m_lf, sizeof(m_lf) ) ){
 		HFONT hFontOld = m_hFont;
-		m_logfont = m_pShareData->m_Common.m_sTabBar.m_tabFont;
-		m_hFont = ::CreateFontIndirect( &m_logfont );
+		m_lf = m_pShareData->m_Common.m_sTabBar.m_lf;
+		m_hFont = ::CreateFontIndirect( &m_lf );
 		::SendMessageAny( m_hwndTab, WM_SETFONT, (WPARAM)m_hFont, MAKELPARAM(TRUE, 0) );
 		::DeleteObject( hFontOld );
 		// ウィンドウの高さを修正

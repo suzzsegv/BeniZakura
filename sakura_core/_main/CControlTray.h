@@ -7,7 +7,7 @@
 	@author Norio Nakatani
 	@date 1998/05/13 新規作成
 	@date 2001/06/03 N.Nakatani grep単語単位で検索を実装するときのためにコマンドラインオプションの処理追加
-	@date 2007/10/23 kobake     クラス名、ファイル名変更: CControlTray→CControlTray
+	@date 2007/10/23 kobake     クラス名、ファイル名変更: CEditApp→CControlTray
 */
 /*
 	Copyright (C) 1998-2001, Norio Nakatani
@@ -22,13 +22,13 @@
 	Please contact the copyright holder to use this code for other purpose.
 */
 
-#ifndef _CEDITAPP_H_
-#define _CEDITAPP_H_
+#ifndef _CCONTROLTRAY_H_
+#define _CCONTROLTRAY_H_
 
 #include <Windows.h>
-#include "CMenuDrawer.h"
+#include "uiparts/CMenuDrawer.h"
+#include "uiparts/CImageListMgr.h" // 2002/2/10 aroka
 #include "dlg/CDlgGrep.h" // 2002/2/10 aroka
-#include "CImageListMgr.h" // 2002/2/10 aroka
 
 struct SLoadInfo;
 struct EditInfo;
@@ -127,7 +127,7 @@ private:
 
 
 ///////////////////////////////////////////////////////////////////////
-#endif /* _CEDITAPP_H_ */
+#endif /* _CCONTROLTRAY_H_ */
 
 
 

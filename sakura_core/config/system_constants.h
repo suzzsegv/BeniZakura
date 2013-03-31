@@ -107,7 +107,7 @@
 	CommonからSTypeConfigへ、m_bAutoIndent、m_bAutoIndent_ZENSPACEを移動 2002/04/30 YAZAKI
 
 	Version 33:
-	Commonに、m_lf_khを追加 2002/05/21 ai
+	Commonに、m_lf_kh(後にCommonSetting_Helper::m_lf)を追加 2002/05/21 ai
 	m_nDiffFlgOptを追加 2002.05.27 MIK
 	STypeConfig-ColorにCOLORIDX_DIFF_APPEND,COLORIDX_DIFF_CHANGE,COLORIDX_DIFF_DELETEを追加
 
@@ -410,8 +410,8 @@
 //                      ミューテックス                         //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
-//旧サクラエディタ (1.2.104.1以前)
-#define	GSTR_MUTEX_SAKURA_OLD				_T("MutexSakuraEditor")
+//アプリケーション実行検出用(インストーラで使用)
+#define	GSTR_MUTEX_SAKURA					_T("MutexSakuraEditor")
 
 //コントロールプロセス
 #define	GSTR_MUTEX_SAKURA_CP				(_T("MutexSakuraEditorCP")				_T(CON_SKR_MACHINE_SUFFIX_) _T(_CODE_SUFFIX_) _T(_DEBUG_SUFFIX_)	_T(STR_SHAREDATA_VERSION))

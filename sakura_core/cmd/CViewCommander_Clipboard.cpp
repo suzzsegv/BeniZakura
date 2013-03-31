@@ -21,7 +21,7 @@
 #include "CViewCommander.h"
 
 #include "view/CEditView.h"
-#include "CWaitCursor.h"
+#include "uiparts/CWaitCursor.h"
 #include "COpeBlk.h"/// 2002/2/3 aroka 追加
 #include "window/CEditWnd.h"/// 2002/2/3 aroka 追加
 #include "util/os.h"
@@ -523,7 +523,7 @@ void CViewCommander::Command_INSTEXT(
 		if( bLinePaste ){	// 2007.10.04 ryoji
 			/* 挿入ポイント（折り返し単位行頭）にカーソルを移動 */
 			CLogicPoint ptCaretBefore = GetCaret().GetCaretLogicPos();	// 操作前のキャレット位置
-			Command_GOLINETOP( FALSE, 1 );								// 行頭に移動(折り返し単位)
+			Command_GOLINETOP( false, 1 );								// 行頭に移動(折り返し単位)
 			CLogicPoint ptCaretAfter = GetCaret().GetCaretLogicPos();	// 操作後のキャレット位置
 
 			// 挿入ポイントと元の位置との差分文字数
@@ -598,7 +598,7 @@ void CViewCommander::Command_ADDTAIL(
 	GetDocument()->m_cDocEditor.SetModified(true,true);	//	Jan. 22, 2002 genta
 
 	/*ファイルの最後に移動 */
-	Command_GOFILEEND( FALSE );
+	Command_GOFILEEND( false );
 
 	/* 現在位置にデータを挿入 */
 	CLayoutPoint ptLayoutNew;	// 挿入された部分の次の位置

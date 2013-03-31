@@ -18,7 +18,7 @@
 
 #include "StdAfx.h"
 #include "CPrintPreview.h"
-#include "_os/HandCursor.h"
+#include "uiparts/HandCursor.h"
 #include "doc/CLayout.h"
 #include "window/CEditWnd.h"
 #include "dlg/CDlgCancel.h" /// 2002/2/3 aroka from here
@@ -377,11 +377,10 @@ LRESULT CPrintPreview::OnSize( WPARAM wParam, LPARAM lParam )
 		::DeleteObject( m_hbmpCompatBMP );
 	}
 	// 2007.02.11 Moca プレビューを滑らかにする
-	COsVersionInfo osVer;
 	// Win9xでは 巨大なBMPは作成できないことと
 	// StretchBltでSTRETCH_HALFTONEが未サポートであるので Win2K 以上のみで有効にする。
 	if( BST_CHECKED == ::IsDlgButtonChecked( m_hwndPrintPreviewBar, IDC_CHECK_ANTIALIAS ) &&
-			osVer.IsWin2000_or_later() ){
+			IsWin2000_or_later() ){
 		m_nbmpCompatScale = COMPAT_BMP_SCALE;
 	}else{
 		// Win9x: BASE = SCALE で 1:1
@@ -1444,9 +1443,6 @@ void CPrintPreview::Print_DrawLine(
 	HFONT			hFontZen
 )
 {
-	const int MODE_SINGLEBYTE = 1;
-	const int MODE_DOUBLEBYTE = 2;
-
 	TEXTMETRIC	tm;
 
 	/* 全角文字のアセント（文字高）を取得 */
@@ -1613,11 +1609,6 @@ int CALLBACK CPrintPreview::MyEnumFontFamProc(
 */
 void CPrintPreview::CreatePrintPreviewControls( void )
 {
-	int			nCxHScroll = ::GetSystemMetrics( SM_CXHSCROLL );
-	int			nCyHScroll = ::GetSystemMetrics( SM_CYHSCROLL );
-	int			nCxVScroll = ::GetSystemMetrics( SM_CXVSCROLL );
-	int			nCyVScroll = ::GetSystemMetrics( SM_CYVSCROLL );
-
 	/* 印刷プレビュー 操作バー */
 	m_hwndPrintPreviewBar = ::CreateDialogParam(
 		CEditApp::getInstance()->GetAppInstance(),				// handle to application instance
@@ -1793,8 +1784,7 @@ INT_PTR CPrintPreview::DispatchEvent_PPB(
 		//// Modified by KEITA for WIN64 2003.9.6
 		//::SetWindowLongPtr( hwndDlg, DWLP_USER, lParam );
 		{
-			COsVersionInfo cOsVer;
-			if( cOsVer.IsWin2000_or_later() ){
+			if( IsWin2000_or_later() ){
 				::EnableWindow( ::GetDlgItem(hwndDlg, IDC_CHECK_ANTIALIAS), TRUE );
 			}
 		}

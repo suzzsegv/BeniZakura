@@ -21,7 +21,7 @@
 #include "StdAfx.h"
 #include <ShellAPI.h>
 #include "dlg/CDlgAbout.h"
-#include "_os/HandCursor.h"
+#include "uiparts/HandCursor.h"
 #include "util/file.h"
 #include "util/module.h"
 #include "sakura_rc.h" // 2002/2/10 aroka 復帰
@@ -56,10 +56,10 @@ const DWORD p_helpids[] = {	//12900
 #elif defined(__GNUG__)
 #  define COMPILER_TYPE "G"
 #  define COMPILER_VER (__GNUC__ * 10000 + __GNUC_MINOR__  * 100 + __GNUC_PATCHLEVEL__)
-#elif __INTEL_COMPILER
+#elif defined(__INTEL_COMPILER)
 #  define COMPILER_TYPE "I"
 #  define COMPILER_VER __INTEL_COMPILER
-#elif __DMC__
+#elif defined(__DMC__)
 #  define COMPILER_TYPE "D"
 #  define COMPILER_VER __DMC__
 #elif defined(_MSC_VER)
@@ -348,7 +348,7 @@ LRESULT CALLBACK CUrlWnd::UrlWndProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM
 		// ウィンドウの描画
 		PAINTSTRUCT ps;
 		HFONT hFont;
-		HFONT hOldFont;
+		HFONT hFontOld;
 		TCHAR szText[512];
 
 		hdc = BeginPaint( hWnd, &ps );
@@ -361,9 +361,9 @@ LRESULT CALLBACK CUrlWnd::UrlWndProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM
 		// テキスト描画
 		SetBkMode( hdc, TRANSPARENT );
 		SetTextColor( hdc, pUrlWnd->m_bHilighted? RGB( 0x84, 0, 0 ): RGB( 0, 0, 0xff ) );
-		hOldFont = (HFONT)SelectObject( hdc, (HGDIOBJ)hFont );
+		hFontOld = (HFONT)SelectObject( hdc, (HGDIOBJ)hFont );
 		TextOut( hdc, 2, 0, szText, _tcslen( szText ) );
-		SelectObject( hdc, (HGDIOBJ)hOldFont );
+		SelectObject( hdc, (HGDIOBJ)hFontOld );
 
 		// フォーカス枠描画
 		if( GetFocus() == hWnd )

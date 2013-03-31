@@ -11,7 +11,7 @@
 #include "_os/COsVersionInfo.h"
 #include "env/CShareData.h"
 #include "env/DLLSHAREDATA.h"
-#include "CHtmlHelp.h"
+#include "extmodule/CHtmlHelp.h"
 
 int CALLBACK MYBrowseCallbackProc(
 	HWND hwnd,
@@ -270,14 +270,13 @@ int MyPropertySheet( LPPROPSHEETHEADER lppsph )
 */
 void ShowWinHelpContents( HWND hwnd, LPCTSTR lpszHelp )
 {
-	COsVersionInfo cOsVer;
-	if ( cOsVer.HasWinHelpContentsProblem() ){
+	if ( HasWinHelpContentsProblem() ){
 		/* 目次ページを表示する */
-		MyWinHelp( hwnd, lpszHelp, HELP_CONTENTS , 0 );	// 2006.10.10 ryoji MyWinHelpに変更に変更
+		MyWinHelp( hwnd, lpszHelp, HELP_CONTENTS , 0 );	// 2006.10.10 ryoji MyWinHelpに変更
 		return;
 	}
 	/* 目次タブを表示する */
-	MyWinHelp( hwnd, lpszHelp, HELP_COMMAND, (ULONG_PTR)"CONTENTS()" );	// 2006.10.10 ryoji MyWinHelpに変更に変更
+	MyWinHelp( hwnd, lpszHelp, HELP_COMMAND, (ULONG_PTR)"CONTENTS()" );	// 2006.10.10 ryoji MyWinHelpに変更
 	return;
 }
 
@@ -518,7 +517,7 @@ BOOL MyWinHelp(HWND hwndCaller, LPCTSTR lpszHelp, UINT uCommand, DWORD_PTR dwDat
 			if( nCtrlID <= 0 )
 				return FALSE;
 			pHelpIDs = (DWORD*)dwData;
-			while( true ){
+			for (;;) {
 				if( *pHelpIDs == 0 )
 					return FALSE;	// 見つからなかった
 				if( *pHelpIDs == nCtrlID )

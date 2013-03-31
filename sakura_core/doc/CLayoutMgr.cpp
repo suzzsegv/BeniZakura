@@ -483,7 +483,6 @@ void CLayoutMgr::GetEndLayoutPos(
 	}
 	else {
 		CMemoryIterator it( btm, GetTabSpace() );
-		int nPosX = 0;
 		while( !it.end() ){
 			it.scanNext();
 			it.addDelta();
@@ -850,8 +849,6 @@ CLayout* CLayoutMgr::DeleteLayoutAsLogical(
 	// 1999.11.22
 	m_pLayoutPrevRefer = pLayoutInThisArea->GetPrevLayout();
 	m_nPrevReferLine = nLineOf_pLayoutInThisArea - CLayoutInt(1);
-//	m_pLayoutPrevRefer = NULL;
-//	m_nPrevReferLine = 0;
 
 
 	/* 範囲内先頭に該当するレイアウト情報をサーチ */
@@ -859,8 +856,6 @@ CLayout* CLayoutMgr::DeleteLayoutAsLogical(
 	while( NULL != pLayoutWork && nLineFrom <= pLayoutWork->GetLogicLineNo()){
 		pLayoutWork = pLayoutWork->GetPrevLayout();
 	}
-//			m_pLayoutPrevRefer = pLayout->GetPrevLayout();
-//			--m_nPrevReferLine;
 
 
 
@@ -928,7 +923,6 @@ void CLayoutMgr::ShiftLogicalLineNum( CLayout* pLayoutPrev, CLogicInt nShiftLine
 	MY_RUNNINGTIMER( cRunningTimer, "CLayoutMgr::ShiftLogicalLineNum" );
 
 	CLayout* pLayout;
-//	CLayout* pLayoutNext;
 	if( 0 == nShiftLines ){
 		return;
 	}

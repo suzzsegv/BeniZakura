@@ -275,24 +275,6 @@ void CEditView::DrawBackImage(HDC hdc, RECT& rcPaint, HDC hdcBgImg)
 /*! 指定位置の ColorIndextype および colorCookie の取得
 	CEditView::DrawLogicLineを元にしたためCEditView::DrawLogicLineに
 	修正があった場合は、ここも修正が必要。
-
-	@par nCOMMENTMODE
-	関数内部で状態遷移のために使われる変数nCOMMENTMODEと状態の関係。
- - COLORIDX_TEXT     : テキスト
- - COLORIDX_COMMENT  : 行コメント
- - COLORIDX_BLOCK1   : ブロックコメント1
- - COLORIDX_SSTRING  : シングルコーテーション
- - COLORIDX_WSTRING  : ダブルコーテーション
- - COLORIDX_KEYWORD1 : 強調キーワード1
- - COLORIDX_CTRLCODE : コントロールコード
- - COLORIDX_DIGIT    : 半角数値
- - COLORIDX_BLOCK2   : ブロックコメント2
- - COLORIDX_KEYWORD2 : 強調キーワード2
- - COLORIDX_URL      : URL
- - COLORIDX_SEARCH   : 検索
- - 1000: 正規表現キーワード
- 	色指定SetCurrentColorを呼ぶときにCOLORIDX_*値を加算するので、
- 	1000～COLORIDX_LASTまでは正規表現で使用する。
 */
 EColorIndexType CEditView::GetColorIndex(
 	const CLayout*		pcLayout,
@@ -776,43 +758,15 @@ void CEditView::OnPaint( HDC _hdc, PAINTSTRUCT *pPs, BOOL bDrawFromComptibleBmp 
 	return;
 }
 
-
-
-
-
-
-
-
-
-/*
-2002/03/13 novice
-@par nCOMMENTMODE
-関数内部で状態遷移のために使われる変数nCOMMENTMODEと状態の関係。
- - COLORIDX_TEXT     : テキスト
- - COLORIDX_COMMENT  : 行コメント
- - COLORIDX_BLOCK1   : ブロックコメント1
- - COLORIDX_SSTRING  : シングルコーテーション
- - COLORIDX_WSTRING  : ダブルコーテーション
- - COLORIDX_KEYWORD1 : 強調キーワード1
- - COLORIDX_CTRLCODE : コントロールコード
- - COLORIDX_DIGIT    : 半角数値
- - COLORIDX_BLOCK2   : ブロックコメント2
- - COLORIDX_KEYWORD2 : 強調キーワード2
- - COLORIDX_URL      : URL
- - COLORIDX_SEARCH   : 検索
- - 1000: 正規表現キーワード
- 	色指定SetCurrentColorを呼ぶときにCOLORIDX_*値を加算するので、
- 	1000～COLORIDX_LASTまでは正規表現で使用する。
-*/
-
-//@@@ 2001.02.17 MIK
-//@@@ 2001.12.21 YAZAKI 改行記号の描きかたを変更
-//@@@ 2007.08.31 kobake 引数 bDispBkBitmap を削除
 /*!
 	行のテキスト／選択状態の描画
 	1回で1ロジック行分を作画する。
 
 	@return EOFを作画したらtrue
+
+	@date 2001.02.17 MIK
+	@date 2001.12.21 YAZAKI 改行記号の描きかたを変更
+	@date 2007.08.31 kobake 引数 bDispBkBitmap を削除
 */
 bool CEditView::DrawLogicLine(
 	HDC				_hdc,				//!< [in]     作画対象
@@ -845,8 +799,6 @@ bool CEditView::DrawLogicLine(
 
 	//サイズ
 	STypeConfig* TypeDataPtr = &m_pcEditDoc->m_cDocType.GetDocumentAttribute();
-	int nLineHeight = GetTextMetrics().GetHankakuDy();  //行の縦幅？
-	int nCharDx  = GetTextMetrics().GetHankakuDx();  //半角
 
 	//処理する文字位置
 	pInfo->nPosInLogic = CLogicInt(0); //☆開始
@@ -877,7 +829,7 @@ bool CEditView::DrawLogicLine(
 		m_cRegexKeyword->RegexKeyLineStart();
 	}
 
-	while(1){
+	for (;;) {
 		//対象行が描画範囲外だったら終了
 		if( GetTextArea().GetBottomLine() < pInfo->pDispPos->GetLayoutLineRef() ){
 			pInfo->pDispPos->SetLayoutLineRef(nLineTo + CLayoutInt(1));
@@ -960,7 +912,6 @@ bool CEditView::DrawLayoutLine(SColorStrategyInfo* pInfo)
 
 	// コンフィグ
 	int nLineHeight = GetTextMetrics().GetHankakuDy();  //行の縦幅？
-	STypeConfig* TypeDataPtr = &m_pcEditDoc->m_cDocType.GetDocumentAttribute();
 	CTypeSupport	cCaretLineBg(this, COLORIDX_CARETLINEBG);
 	CTypeSupport&	cBackType = (cCaretLineBg.IsDisp() &&
 		GetCaret().GetCaretLayoutPos().GetY() == pInfo->pDispPos->GetLayoutLineRef() ?  cCaretLineBg : cTextType);
@@ -1061,7 +1012,6 @@ bool CEditView::DrawLayoutLine(SColorStrategyInfo* pInfo)
 			int nSelectFromPx = view.GetTextMetrics().GetHankakuDx() * (Int)(selectArea.GetFrom().x - view.GetTextArea().GetViewLeftCol());
 			int nSelectToPx   = view.GetTextMetrics().GetHankakuDx() * (Int)(selectArea.GetTo().x - view.GetTextArea().GetViewLeftCol());
 			if( nSelectFromPx < nSelectToPx && selectArea.GetTo().x != INT_MAX ){
-				const int nCharWidth = view.GetTextMetrics().GetHankakuDx();
 				RECT rcSelect; // Pixel
 				rcSelect.top    = pInfo->pDispPos->GetDrawPos().y;
 				rcSelect.bottom = pInfo->pDispPos->GetDrawPos().y + view.GetTextMetrics().GetHankakuDy();

@@ -23,6 +23,7 @@
 */
 
 #include "StdAfx.h"
+#include <limits.h>
 #include "outline/CDlgFuncList.h"
 #include "outline/CFuncInfo.h"
 #include "outline/CFuncInfoArr.h"// 2002/2/3 aroka
@@ -33,8 +34,7 @@
 #include "util/window.h"
 #include "view/colors/CColorStrategy.h"
 #include "env/CAppNodeManager.h"
-#include "CUxTheme.h"
-#include <limits.h>
+#include "extmodule/CUxTheme.h"
 #include "sakura_rc.h"
 #include "sakura.hh"
 
@@ -1311,7 +1311,7 @@ void CDlgFuncList::SetTree(bool tagjump)
 				text.AppendString( m_pcFuncInfoArr->m_szFilePath );
 				
 				TCHAR linenum[32];
-				int len = auto_sprintf( linenum, _T("(%d,%d): "),
+				auto_sprintf( linenum, _T("(%d,%d): "),
 					pcFuncInfo->m_nFuncLineCRLF,				/* åüèoçsî‘çÜ */
 					pcFuncInfo->m_nFuncColCRLF					/* åüèoåÖî‘çÜ */
 				);

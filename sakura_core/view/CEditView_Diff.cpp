@@ -28,7 +28,7 @@
 #include "doc/CEditDoc.h"
 #include "doc/CDocLine.h"
 #include "doc/CDocLineMgr.h"
-#include "CWaitCursor.h"
+#include "uiparts/CWaitCursor.h"
 #include "_os/COsVersionInfo.h"
 #include "util/module.h"
 #include "util/file.h"
@@ -147,9 +147,8 @@ void CEditView::ViewDiffInfo(
 		// 2010.08.28 Moca システムディレクトリ付加
 		TCHAR szCmdDir[_MAX_PATH];
 
-		COsVersionInfo cOsVer;
 		//コマンドライン文字列作成(MAX:1024)
-		if (cOsVer.IsWin32NT()){
+		if (IsWin32NT()){
 			::GetSystemDirectory(szCmdDir, _countof(szCmdDir));
 			auto_sprintf(
 				cmdline,
@@ -490,7 +489,7 @@ BOOL CEditView::MakeDiffTmpFile( TCHAR* filename, HWND hWnd )
 
 	CLogicInt y = CLogicInt(0);
 
-	while(1){
+	for (;;) {
 		// 行(改行単位)データの要求 
 		const wchar_t*	pLineData;
 		CLogicInt		nLineLen;

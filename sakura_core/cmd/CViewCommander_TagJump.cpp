@@ -24,12 +24,13 @@
 #include "CViewCommander.h"
 
 #include "view/CEditView.h"
-#include "CWaitCursor.h"
+#include "uiparts/CWaitCursor.h"
 #include "dlg/CDlgCancel.h"// 2002/2/8 hor
 #include "dlg/CDlgTagJumpList.h"
 #include "dlg/CDlgTagsMake.h"	//@@@ 2003.05.12 MIK
 #include "window/CEditWnd.h"/// 2002/2/3 aroka 追加
 #include "CEditApp.h"
+#include "_os/COsVersionInfo.h"
 #include "util/window.h"
 #include "util/module.h"
 #include "util/string_ex2.h"
@@ -278,10 +279,8 @@ bool CViewCommander::Command_TagsMake( void )
 	}
 	_tcscat( options, _T(" *") );	//配下のすべてのファイル
 
-	//OSバージョン取得
-	COsVersionInfo cOsVer;
 	//コマンドライン文字列作成(MAX:1024)
-	if (cOsVer.IsWin32NT())
+	if (IsWin32NT())
 	{
 		// 2010.08.28 Moca システムディレクトリ付加
 		TCHAR szCmdDir[_MAX_PATH];

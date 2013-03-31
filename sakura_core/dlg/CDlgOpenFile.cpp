@@ -27,6 +27,7 @@
 #include "env/CShareData.h"
 #include "CEditApp.h"
 #include "doc/CDocListener.h"
+#include "_os/COsVersionInfo.h"
 #include "util/shell.h"
 #include "util/file.h"
 #include "util/os.h"
@@ -61,9 +62,6 @@ int				m_nHelpTopicID;
 bool			m_bViewMode;		/* ビューモードか */
 BOOL			m_bIsSaveDialog;	/* 保存のダイアログか */
 
-COsVersionInfo CDlgOpenFile::m_cOsVer;	// 2005.11.02 ryoji
-
-
 
 
 /*
@@ -73,16 +71,11 @@ COsVersionInfo CDlgOpenFile::m_cOsVer;	// 2005.11.02 ryoji
 */
 LRESULT APIENTRY OFNHookProcMain( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 {
-//	WPARAM					wCtlFocus;	/* フォーカスを持つコントロールのID */
-//	BOOL					fHandle;	/* wParamが処理するフラグ */
 	int						idCtrl;
 	OFNOTIFY*				pofn;
-//	int						nIdx;
-//	char*					pszWork;
 	WORD					wNotifyCode;
 	WORD					wID;
 	HWND					hwndCtl;
-//	HWND					hwndFrame;
 	static DLLSHAREDATA*	pShareData;
 	switch( uMsg ){
 	case WM_MOVE:
@@ -141,7 +134,6 @@ UINT_PTR CALLBACK OFNHookProc(
 )
 {
 	POINT					po;
-//	RECT					rc0;
 	RECT					rc;
 	static OPENFILENAME*	pOf;
 	static HWND				hwndOpenDlg;
@@ -154,10 +146,7 @@ UINT_PTR CALLBACK OFNHookProc(
 	int						i;
 	OFNOTIFY*				pofn;
 	int						idCtrl;
-//	HWND					hwndCtrl;
 	LRESULT					lRes;
-	const int				nExtraSize = 100;
-	const int				nControls = 9;
 	WORD					wNotifyCode;
 	WORD					wID;
 	HWND					hwndCtl;
@@ -186,14 +175,6 @@ UINT_PTR CALLBACK OFNHookProc(
 	int nEolNameArrNum = (int)_countof(pEolNameArr);
 
 //	To Here	Feb. 9, 2001 genta
-	int	Controls[nControls] = {
-		stc3, stc2,		// The two label controls
-		edt1, cmb1,		// The edit control and the drop-down box
-		IDOK, IDCANCEL,
-		pshHelp,		// The Help command button (push button)
-		lst1,			// The Explorer window
-		chx1			// The read-only check box
-	};
 	int	nRightMargin = 24;
 	HWND	hwndFrame;
 
@@ -438,9 +419,9 @@ UINT_PTR CALLBACK OFNHookProc(
 				// OFNの再設定はNT系ではUnicode版APIのみ有効
 				if( pcDlgOpenFile->m_ofn.Flags & OFN_ALLOWMULTISELECT &&
 #ifdef _UNICODE
-						CDlgOpenFile::m_cOsVer.IsWin32NT()
+						IsWin32NT()
 #else
-						!CDlgOpenFile::m_cOsVer.IsWin32NT()
+						!IsWin32NT()
 #endif
 				){
 					DWORD nLength = CommDlg_OpenSave_GetSpec( hwndOpenDlg, NULL, 0 );
@@ -557,7 +538,6 @@ CDlgOpenFile::CDlgOpenFile()
 {
 	/* メンバの初期化 */
 	long	lPathLen;
-//	int		nCharChars;
 
 	m_nCharCode = CODE_AUTODETECT;	/* 文字コード *//* 文字コード自動判別 */
 
@@ -604,31 +584,6 @@ CDlgOpenFile::~CDlgOpenFile()
 	return;
 }
 
-
-#if 0
-/*! 初期化
-	DoModal_GetSaveFileName/DoModal_GetOpenFileName用
-	
-	@author Moca
-	@date 2003.06.23
-*/
-void CDlgOpenFile::Create(
-	HINSTANCE		hInstance,
-	HWND			hwndParent,
-	const char*		pszUserWildCard,
-	const char*		pszDefaultPath
-)
-{
-	Create(
-		hInstance,
-		hwndParent,
-		pszUserWildCard,
-		pszDefaultPath,
-		NULL,
-		NULL
-	);
-}
-#endif
 
 /* 初期化 */
 void CDlgOpenFile::Create(
@@ -1039,7 +994,7 @@ void CDlgOpenFile::InitOfn( OPENFILENAMEZ* ofn )
 {
 	memset_raw(ofn, 0, sizeof(m_ofn));
 
-	ofn->lStructSize = IsOfnV5()? sizeof(OPENFILENAMEZ): OPENFILENAME_SIZE_VERSION_400;
+	ofn->lStructSize = IsWinV5forOfn()? sizeof(OPENFILENAMEZ): OPENFILENAME_SIZE_VERSION_400;
 	ofn->lCustData = (LPARAM)this;
 	ofn->lpfnHook = OFNHookProc;
 	ofn->lpTemplateName = MAKEINTRESOURCE(IDD_FILEOPEN);	// <-_T("IDD_FILEOPEN"); 2008/7/26 Uchi

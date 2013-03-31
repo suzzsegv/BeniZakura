@@ -4,9 +4,9 @@
 #include "doc/CEditDoc.h"
 #include "doc/CDocVisitor.h"
 #include "window/CEditWnd.h"
-#include "CVisualProgress.h"
+#include "uiparts/CVisualProgress.h"
+#include "uiparts/CWaitCursor.h"
 #include "CWriteManager.h"
-#include "CWaitCursor.h"
 #include "io/CBinaryStream.h"
 #include "CEditApp.h"
 #include "_main/CAppMode.h"
@@ -94,7 +94,7 @@ void CSaveAgent::OnSave(const SSaveInfo& sSaveInfo)
 	//ƒJƒLƒR
 	CWriteManager cWriter;
 	CEditApp::getInstance()->m_pcVisualProgress->CProgressListener::Listen(&cWriter);
-	EConvertResult eSaveResult = cWriter.WriteFile_From_CDocLineMgr(
+	cWriter.WriteFile_From_CDocLineMgr(
 		pcDoc->m_cDocLineMgr,
 		sSaveInfo
 	);

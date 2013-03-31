@@ -214,21 +214,23 @@ bool CShareData::InitShareData()
 //	From Here Sept. 19, 2000 JEPRO コメントアウトになっていた初めのブロックを復活しその下をコメントアウト
 //	MS ゴシック標準スタイル10ptに設定
 //		/* LOGFONTの初期化 */
-		memset_raw( &m_pShareData->m_Common.m_sView.m_lf, 0, sizeof( m_pShareData->m_Common.m_sView.m_lf ) );
-		m_pShareData->m_Common.m_sView.m_lf.lfHeight			= DpiPointsToPixels(-12);	// 2009.10.01 ryoji 高DPI対応（ポイント数から算出）
-		m_pShareData->m_Common.m_sView.m_lf.lfWidth				= 0;
-		m_pShareData->m_Common.m_sView.m_lf.lfEscapement		= 0;
-		m_pShareData->m_Common.m_sView.m_lf.lfOrientation		= 0;
-		m_pShareData->m_Common.m_sView.m_lf.lfWeight			= 400;
-		m_pShareData->m_Common.m_sView.m_lf.lfItalic			= 0x0;
-		m_pShareData->m_Common.m_sView.m_lf.lfUnderline			= 0x0;
-		m_pShareData->m_Common.m_sView.m_lf.lfStrikeOut			= 0x0;
-		m_pShareData->m_Common.m_sView.m_lf.lfCharSet			= 0x80;
-		m_pShareData->m_Common.m_sView.m_lf.lfOutPrecision		= 0x3;
-		m_pShareData->m_Common.m_sView.m_lf.lfClipPrecision		= 0x2;
-		m_pShareData->m_Common.m_sView.m_lf.lfQuality			= 0x1;
-		m_pShareData->m_Common.m_sView.m_lf.lfPitchAndFamily	= 0x31;
-		_tcscpy( m_pShareData->m_Common.m_sView.m_lf.lfFaceName, _T("ＭＳ ゴシック") );
+		LOGFONT lf;
+		memset_raw( &lf, 0, sizeof( lf ) );
+		lf.lfHeight			= DpiPointsToPixels(-12);	// 2009.10.01 ryoji 高DPI対応（ポイント数から算出）
+		lf.lfWidth			= 0;
+		lf.lfEscapement		= 0;
+		lf.lfOrientation	= 0;
+		lf.lfWeight			= 400;
+		lf.lfItalic			= 0x0;
+		lf.lfUnderline		= 0x0;
+		lf.lfStrikeOut		= 0x0;
+		lf.lfCharSet		= 0x80;
+		lf.lfOutPrecision	= 0x3;
+		lf.lfClipPrecision	= 0x2;
+		lf.lfQuality		= 0x1;
+		lf.lfPitchAndFamily	= 0x31;
+		_tcscpy( lf.lfFaceName, _T("ＭＳ ゴシック") );
+		m_pShareData->m_Common.m_sView.m_lf = lf;
 		m_pShareData->m_Common.m_sView.m_nPointSize = 0;	// フォントサイズ（1/10ポイント単位） ※古いバージョンからの移行を考慮して無効値で初期化	// 2009.10.01 ryoji
 
 		InitCharWidthCacheCommon();								// 2008/5/17 Uchi
@@ -242,8 +244,8 @@ bool CShareData::InitShareData()
 			0										// user profile update flag
 		);
 		// ai 02/05/21 Add E
-		m_pShareData->m_Common.m_sHelper.m_lf_kh = lfIconTitle;
-		m_pShareData->m_Common.m_sHelper.m_ps_kh = 0;	// フォントサイズ（1/10ポイント単位） ※古いバージョンからの移行を考慮して無効値で初期化	// 2009.10.01 ryoji
+		m_pShareData->m_Common.m_sHelper.m_lf = lfIconTitle;
+		m_pShareData->m_Common.m_sHelper.m_nPointSize = 0;	// フォントサイズ（1/10ポイント単位） ※古いバージョンからの移行を考慮して無効値で初期化	// 2009.10.01 ryoji
 
 //	To Here Sept. 19,2000
 
@@ -333,8 +335,8 @@ bool CShareData::InitShareData()
 		m_pShareData->m_Common.m_sTabBar.m_bChgWndByWheel = FALSE;		//マウスホイールでウィンドウ切替	//@@@ 2006.03.26 ryoji
 		m_pShareData->m_Common.m_sTabBar.m_bNewWindow = FALSE;			// 外部から起動するときは新しいウインドウで開く
 
-		m_pShareData->m_Common.m_sTabBar.m_tabFont = lfIconTitle;
-		m_pShareData->m_Common.m_sTabBar.m_tabFontPs = 0;
+		m_pShareData->m_Common.m_sTabBar.m_lf = lfIconTitle;
+		m_pShareData->m_Common.m_sTabBar.m_nPointSize = 0;
 
 		m_pShareData->m_Common.m_sWindow.m_bSplitterWndHScroll = FALSE;	// 2001/06/20 asa-o 分割ウィンドウの水平スクロールの同期をとる
 		m_pShareData->m_Common.m_sWindow.m_bSplitterWndVScroll = FALSE;	// 2001/06/20 asa-o 分割ウィンドウの垂直スクロールの同期をとる
@@ -394,7 +396,7 @@ bool CShareData::InitShareData()
 		m_pShareData->m_Common.m_sEdit.m_bCopyAndDisablSelection = TRUE;	/* コピーしたら選択解除 */
 		m_pShareData->m_Common.m_sEdit.m_bEnableNoSelectCopy = TRUE;		/* 選択なしでコピーを可能にする */	// 2007.11.18 ryoji
 		m_pShareData->m_Common.m_sEdit.m_bEnableLineModePaste = true;		/* ラインモード貼り付けを可能にする */	// 2007.10.08 ryoji
-		m_pShareData->m_Common.m_sHelper.m_bHtmlHelpIsSingle = TRUE;		/* HtmlHelpビューアはひとつ */
+		m_pShareData->m_Common.m_sHelper.m_bHtmlHelpIsSingle = true;		/* HtmlHelpビューアはひとつ */
 		m_pShareData->m_Common.m_sCompare.m_bCompareAndTileHorz = TRUE;		/* 文書比較後、左右に並べて表示 */
 		m_pShareData->m_Common.m_sEdit.m_bConvertEOLPaste = false;			/* 改行コードを変換して貼り付ける */	// 2009.02.28 salarm
 

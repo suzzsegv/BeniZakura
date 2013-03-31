@@ -34,7 +34,7 @@
 
 CMainToolBar::CMainToolBar(CEditWnd* pOwner)
 : m_pOwner(pOwner)
-, m_fontSearchBox(NULL)
+, m_hFontSearchBox(NULL)
 , m_hwndReBar(NULL)
 , m_hwndToolBar(NULL)
 , m_hwndSearchBox(NULL)
@@ -285,7 +285,8 @@ void CMainToolBar::CreateToolBar( void )
 						{
 							m_pOwner->SetCurrentFocus(0);
 
-							memset_raw( &lf, 0, sizeof(lf) );
+							lf = m_pOwner->GetLogfont();
+							//memset_raw( &lf, 0, sizeof(lf) );
 							lf.lfHeight			= DpiPointsToPixels(-9); // Jan. 14, 2003 genta ダイアログにあわせてちょっと小さく	// 2009.10.01 ryoji 高DPI対応（ポイント数から算出）
 							lf.lfWidth			= 0;
 							lf.lfEscapement		= 0;
@@ -294,16 +295,16 @@ void CMainToolBar::CreateToolBar( void )
 							lf.lfItalic			= FALSE;
 							lf.lfUnderline		= FALSE;
 							lf.lfStrikeOut		= FALSE;
-							lf.lfCharSet		= GetDllShareData().m_Common.m_sView.m_lf.lfCharSet;
-							lf.lfOutPrecision	= GetDllShareData().m_Common.m_sView.m_lf.lfOutPrecision;
-							lf.lfClipPrecision	= GetDllShareData().m_Common.m_sView.m_lf.lfClipPrecision;
-							lf.lfQuality		= GetDllShareData().m_Common.m_sView.m_lf.lfQuality;
-							lf.lfPitchAndFamily	= GetDllShareData().m_Common.m_sView.m_lf.lfPitchAndFamily;
-							_tcsncpy( lf.lfFaceName, GetDllShareData().m_Common.m_sView.m_lf.lfFaceName, _countof(lf.lfFaceName));	// 画面のフォントに設定	2012/11/27 Uchi
-							m_fontSearchBox = ::CreateFontIndirect( &lf );
-							if( m_fontSearchBox )
+							//lf.lfCharSet		= GetDllShareData().m_Common.m_sView.m_lf.lfCharSet;
+							//lf.lfOutPrecision	= GetDllShareData().m_Common.m_sView.m_lf.lfOutPrecision;
+							//lf.lfClipPrecision	= GetDllShareData().m_Common.m_sView.m_lf.lfClipPrecision;
+							//lf.lfQuality		= GetDllShareData().m_Common.m_sView.m_lf.lfQuality;
+							//lf.lfPitchAndFamily	= GetDllShareData().m_Common.m_sView.m_lf.lfPitchAndFamily;
+							//_tcsncpy( lf.lfFaceName, GetDllShareData().m_Common.m_sView.m_lf.lfFaceName, _countof(lf.lfFaceName));	// 画面のフォントに設定	2012/11/27 Uchi
+							m_hFontSearchBox = ::CreateFontIndirect( &lf );
+							if( m_hFontSearchBox )
 							{
-								::SendMessage( m_hwndSearchBox, WM_SETFONT, (WPARAM)m_fontSearchBox, MAKELONG (TRUE, 0) );
+								::SendMessage( m_hwndSearchBox, WM_SETFONT, (WPARAM)m_hFontSearchBox, MAKELONG (TRUE, 0) );
 							}
 
 							//入力長制限
@@ -369,10 +370,10 @@ void CMainToolBar::DestroyToolBar( void )
 	{
 		if( m_hwndSearchBox )
 		{
-			if( m_fontSearchBox )
+			if( m_hFontSearchBox )
 			{
-				::DeleteObject( m_fontSearchBox );
-				m_fontSearchBox = NULL;
+				::DeleteObject( m_hFontSearchBox );
+				m_hFontSearchBox = NULL;
 			}
 
 			::DestroyWindow( m_hwndSearchBox );
@@ -446,7 +447,6 @@ LPARAM CMainToolBar::ToolBarOwnerDraw( LPNMCUSTOMDRAW pnmh )
 
 			int offset = ((pnmh->rc.bottom - pnmh->rc.top) - CEditApp::getInstance()->GetIcons().cy()) / 2;		// アイテム矩形からの画像のオフセット	// 2007.03.25 ryoji
 			int shift = pnmh->uItemState & ( CDIS_SELECTED | CDIS_CHECKED ) ? 1 : 0;	//	Aug. 30, 2003 genta ボタンを押されたらちょっと画像をずらす
-			int color = pnmh->uItemState & CDIS_CHECKED ? COLOR_3DHILIGHT : COLOR_3DFACE;
 
 			//	Sep. 6, 2003 genta 押下時は右だけでなく下にもずらす
 			CEditApp::getInstance()->GetIcons().Draw( nIconId, pnmh->hdc, pnmh->rc.left + offset + shift, pnmh->rc.top + offset + shift,

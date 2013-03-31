@@ -38,13 +38,14 @@
 	@date 2002/01/07
 	@date 2002/02/17 YAZAKI 共有メモリを初期化するのはCProcessに移動。
 	@date 2006/04/10 ryoji 初期化完了イベントの処理を追加、異常時の後始末はデストラクタに任せる
+	@date 2013/03/20 novice コントロールプロセスのカレントディレクトリをシステムディレクトリに変更
 */
 bool CControlProcess::InitializeProcess()
 {
 	MY_RUNNINGTIMER( cRunningTimer, "CControlProcess::InitializeProcess" );
 
-	// 旧バージョン（1.2.104.1以前）との互換性：「異なるバージョン...」が二回出ないように
-	m_hMutex = ::CreateMutex( NULL, FALSE, GSTR_MUTEX_SAKURA_OLD );
+	// アプリケーション実行検出用(インストーラで使用)
+	m_hMutex = ::CreateMutex( NULL, FALSE, GSTR_MUTEX_SAKURA );
 	if( NULL == m_hMutex ){
 		ErrorBeep();
 		TopErrorMessage( NULL, _T("CreateMutex()失敗。\n終了します。") );
@@ -75,6 +76,11 @@ bool CControlProcess::InitializeProcess()
 	if( !CProcess::InitializeProcess() ){
 		return false;
 	}
+
+	// コントロールプロセスのカレントディレクトリをシステムディレクトリに変更
+	TCHAR szDir[_MAX_PATH];
+	::GetSystemDirectory( szDir, _countof(szDir) );
+	::SetCurrentDirectory( szDir );
 
 	/* 共有データのロード */
 	// 2007.05.19 ryoji 「設定を保存して終了する」オプション処理（sakuext連携用）を追加

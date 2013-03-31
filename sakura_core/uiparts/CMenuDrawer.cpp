@@ -665,10 +665,10 @@ CMenuDrawer::CMenuDrawer()
 	const int myButtonEnd = tbd_num + INDEX_GAP;
 	// 定数の整合性確認
 	// アイコン番号
-	assert_warning( tbd[INDEX_GAP + TOOLBAR_ICON_MACRO_INTERNAL] == F_MACRO_EXTRA );
-	assert_warning( tbd[INDEX_GAP + TOOLBAR_ICON_PLUGCOMMAND_DEFAULT] == F_PLUGCOMMAND );
+	assert_warning( tbd[TOOLBAR_ICON_MACRO_INTERNAL      - INDEX_GAP] == F_MACRO_EXTRA );
+	assert_warning( tbd[TOOLBAR_ICON_PLUGCOMMAND_DEFAULT - INDEX_GAP] == F_PLUGCOMMAND );
 	// コマンド番号
-	assert_warning( tbd[TOOLBAR_BUTTON_F_TOOLBARWRAP] == F_TOOLBARWRAP );
+	assert_warning( tbd[TOOLBAR_BUTTON_F_TOOLBARWRAP     - INDEX_GAP] == F_TOOLBARWRAP );
 	m_tbMyButton.resize( tbd_num + INDEX_GAP );
 	SetTBBUTTONVal( &m_tbMyButton[0], -1, F_SEPARATOR, 0, TBSTYLE_SEP, 0, 0 );	//セパレータ	// 2007.11.02 ryoji アイコンの未定義化(-1)
 
@@ -847,12 +847,10 @@ void CMenuDrawer::MyAppendMenu(
 			item.m_nBitmapIdx = -1;
 			item.m_nFuncId = nFuncId;
 			item.m_cmemLabel.SetString( szLabel );
-//#ifdef _DEBUG
 			// メニュー項目をオーナー描画にして、アイコンを表示する
 			// 2010.03.29 アクセスキーの分を詰めるためいつもオーナードローにする。ただしVista未満限定
 			// Vista以上ではメニューもテーマが適用されるので、オーナードローにすると見た目がXP風になってしまう。
-			COsVersionInfo osVer;
-			if( m_pShareData->m_Common.m_sWindow.m_bMenuIcon || !osVer.IsWinVista_or_later() ){
+			if( m_pShareData->m_Common.m_sWindow.m_bMenuIcon || !IsWinVista_or_later() ){
 				nFlagAdd = MF_OWNERDRAW;
 			}
 			/* 機能のビットマップの情報を覚えておく */
@@ -863,8 +861,7 @@ void CMenuDrawer::MyAppendMenu(
 #ifdef DRAW_MENU_ICON_BACKGROUND_3DFACE
 		// セパレータかサブメニュー
 		if( nFlag & (MF_SEPARATOR | MF_POPUP) ){
-			COsVersionInfo osVer;
-			if( m_pShareData->m_Common.m_sWindow.m_bMenuIcon || !osVer.IsWinVista_or_later() ){
+			if( m_pShareData->m_Common.m_sWindow.m_bMenuIcon || !IsWinVista_or_later() ){
 					nFlagAdd = MF_OWNERDRAW;
 			}
 		}
@@ -1412,6 +1409,7 @@ void CMenuDrawer::DrawItem( DRAWITEMSTRUCT* lpdis )
 				::SetTextColor( hdc, ::GetSysColor(nTxSysColor) );
 				::SetBkColor( hdc, RGB(0,0,0) );
 				::BitBlt( hdc, lpdis->rcItem.left+2, lpdis->rcItem.top+2, nCxCheck, nCyCheck, hdcMem, 0, 0, SRCPAINT );
+				::SetTextColor( hdc, colTextOld );
 				::SetBkColor( hdc, colBackOld );
 				::SelectObject( hdcMem, hOld );
 				::DeleteObject( hBmpMono );
