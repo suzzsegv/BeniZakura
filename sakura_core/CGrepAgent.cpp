@@ -737,6 +737,10 @@ int CGrepAgent::DoGrepTree(
 			);
 
 			if( (w32fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)	//ÉtÉHÉãÉ_ÇÃèÍçá
+			 && 0 != _tcscmp( w32fd.cFileName, _T(".bzr"))
+			 && 0 != _tcscmp( w32fd.cFileName, _T(".git"))
+			 && 0 != _tcscmp( w32fd.cFileName, _T(".hg"))
+			 && 0 != _tcscmp( w32fd.cFileName, _T(".svn"))
 			 && 0 != _tcscmp( w32fd.cFileName, _T("."))
 			 && 0 != _tcscmp( w32fd.cFileName, _T("..")) )
 			{
