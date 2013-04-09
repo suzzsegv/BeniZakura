@@ -343,7 +343,7 @@ bool CImpExpType::Import( const wstring& sFileName, wstring& sErrMsg )
 	wchar_t	szKeyName[64];
 	wchar_t	szKeyData[1024];
 	int		nIdx;
-	int		nPlug;
+	int		nPlug = 0;
 	int		nDataLen;
 	wchar_t* pSlashPos;
 	wchar_t	szFileName[_MAX_PATH+1];
@@ -927,7 +927,7 @@ bool CImpExpKeybind::Import( const wstring& sFileName, wstring& sErrMsg )
 												&n,   &kc, &nc);
 				if( cnt !=2 && cnt !=3 )	{ bVer2= false; break;}
 				if( i != n ) break;
-				pKeyNameArr[i].m_nKeyCode = kc;
+				pKeyNameArr[i].m_nKeyCode = (short)kc;
 				wchar_t* p = szData + nc;
 
 				//å„Ç…ë±Ç≠ÉgÅ[ÉNÉì

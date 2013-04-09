@@ -35,7 +35,7 @@
 
 
 /* アウトライン解析の種類 */
-SAKURA_CORE_API enum EOutlineType{
+enum EOutlineType{
 	OUTLINE_C,
 	OUTLINE_CPP,
 	OUTLINE_PLSQL,
@@ -63,7 +63,7 @@ SAKURA_CORE_API enum EOutlineType{
 };
 
 /* スマートインデント種別 */
-SAKURA_CORE_API enum ESmartIndentType {
+enum ESmartIndentType {
 	SMARTINDENT_NONE,
 	SMARTINDENT_CPP
 };

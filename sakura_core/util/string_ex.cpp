@@ -4,7 +4,7 @@
 #include "util/std_macro.h"
 #include <limits.h>
 
-SAKURA_CORE_API int __cdecl my_internal_icmp( const char *s1, const char *s2, unsigned int n, unsigned int dcount, bool flag );
+int __cdecl my_internal_icmp( const char *s1, const char *s2, unsigned int n, unsigned int dcount, bool flag );
 
 
 
@@ -23,7 +23,7 @@ SAKURA_CORE_API int __cdecl my_internal_icmp( const char *s1, const char *s2, un
 
 	@retval 0	一致
  */
-SAKURA_CORE_API int __cdecl my_stricmp( const char *s1, const char *s2 )
+int __cdecl my_stricmp( const char *s1, const char *s2 )
 {
 	/* チェックする文字数をuint最大に設定する */
 	//return my_internal_icmp( s1, s2, (unsigned int)(~0), 0, true );
@@ -37,7 +37,7 @@ SAKURA_CORE_API int __cdecl my_stricmp( const char *s1, const char *s2 )
 
 	@retval 0	一致
  */
-SAKURA_CORE_API int __cdecl my_strnicmp( const char *s1, const char *s2, size_t n )
+int __cdecl my_strnicmp( const char *s1, const char *s2, size_t n )
 {
 	return my_internal_icmp( s1, s2, (unsigned int)n, 1, true );
 }
@@ -679,9 +679,9 @@ template WCHAR* my_strtok(WCHAR*,int,int*,const WCHAR*);
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
 #ifdef MY_ICMP_MBS
-SAKURA_CORE_API int my_mbtoupper2( int c );
-SAKURA_CORE_API int my_mbtolower2( int c );
-SAKURA_CORE_API int my_mbisalpha2( int c );
+int my_mbtoupper2( int c );
+int my_mbtolower2( int c );
+int my_mbisalpha2( int c );
 #endif  /* MY_ICMP_MBS */
 
 #ifdef MY_ICMP_MBS
@@ -694,7 +694,7 @@ SAKURA_CORE_API int my_mbisalpha2( int c );
 
 	@return 変換された文字コード
 */
-SAKURA_CORE_API int my_mbtoupper2( int c )
+int my_mbtoupper2( int c )
 {
 	if( c >= 0x81 && c <= 0x9a ) return c - (0x81 - 0x60);
 	return c;
@@ -709,7 +709,7 @@ SAKURA_CORE_API int my_mbtoupper2( int c )
 
 	@return 変換された文字コード
 */
-SAKURA_CORE_API int my_mbtolower2( int c )
+int my_mbtolower2( int c )
 {
 	if( c >= 0x60 && c <= 0x79 ) return c + (0x81 - 0x60);
 	return c;
@@ -725,7 +725,7 @@ SAKURA_CORE_API int my_mbtolower2( int c )
 	@retval 1	全角アルファベット２バイト目である
 	@retval 0	ちがう
 */
-SAKURA_CORE_API int my_mbisalpha2( int c )
+int my_mbisalpha2( int c )
 {
 	if( (c >= 0x60 && c <= 0x79) || (c >= 0x81 && c <= 0x9a) ) return 1;
 	return 0;
@@ -745,7 +745,7 @@ SAKURA_CORE_API int my_mbisalpha2( int c )
 	@retval 0	一致
 	@date 2002.11.29 Moca 0以外の時の戻り値を，「元の値の差」から「大文字としたときの差」に変更
  */
-SAKURA_CORE_API int __cdecl my_internal_icmp( const char *s1, const char *s2, unsigned int n, unsigned int dcount, bool flag )
+int __cdecl my_internal_icmp( const char *s1, const char *s2, unsigned int n, unsigned int dcount, bool flag )
 {
 	unsigned int	i;
 	unsigned char	*p1, *p2;
@@ -863,9 +863,9 @@ int skr_towupper( int c )
 	if( !bInit ){
 		int i;
 		_locale_t locale = _create_locale( LC_CTYPE, "English" );
-		for( i = 0; i < 0x80; i++ ) szMap[i] = my_towupper( i );	// 自前で変換
-		for( ; i < 0xA0; i++ ) szMap[i] = i;						// 無変換（制御コード部）
-		for( ; i < 255; i++ ) szMap[i] = _towupper_l( i, locale );	// "English"localeで変換
+		for( i = 0; i < 0x80; i++ ) szMap[i] = (wchar_t)my_towupper( i );	// 自前で変換
+		for( ; i < 0xA0; i++ ) szMap[i] = (wchar_t)i;						// 無変換（制御コード部）
+		for( ; i < 255; i++ ) szMap[i] = _towupper_l( (wchar_t)i, locale );	// "English"localeで変換
 		szMap[255] = 0x0178;	// Windows-1252 だと 0x9f(制御文字域) にマップしてしまうので
 		_free_locale( locale );
 		bInit = true;
@@ -873,7 +873,7 @@ int skr_towupper( int c )
 
 	if( c < 256 ) return szMap[c];
 #endif
-	return towupper( c );
+	return towupper( (wchar_t)c );
 }
 
 int skr_towlower( int c )
@@ -884,14 +884,14 @@ int skr_towlower( int c )
 	if( !bInit ){
 		int i;
 		_locale_t locale = _create_locale( LC_CTYPE, "English" );
-		for( i = 0; i < 0x80; i++ ) szMap[i] = my_towlower( i );	// 自前で変換
-		for( ; i < 0xA0; i++ ) szMap[i] = i;						// 無変換（制御コード部）
-		for( ; i < 256; i++ ) szMap[i] = _towlower_l( i, locale );	// "English"localeで変換
+		for( i = 0; i < 0x80; i++ ) szMap[i] = (wchar_t)my_towlower( i );	// 自前で変換
+		for( ; i < 0xA0; i++ ) szMap[i] = (wchar_t)i;						// 無変換（制御コード部）
+		for( ; i < 256; i++ ) szMap[i] = _towlower_l( (wchar_t)i, locale );	// "English"localeで変換
 		_free_locale( locale );
 		bInit = true;
 	}
 
 	if( c < 256 ) return szMap[c];
 #endif
-	return towlower( c );
+	return towlower( (wchar_t)c );
 }
