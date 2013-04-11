@@ -107,7 +107,20 @@ int CColor_Comment_Cpp::Match_CommentTo
 	int len;
 
 	targetLen = rStr.GetLength();
-	for( i = pos; i <= (targetLen - (int)wcslen( L"#else" )); i++ ){
+	for( i = pos; i <= (targetLen - (int)wcslen( L"//" )); i++ ){
+		if( wmemicmp( &rStr.GetPtr()[i], L"/*", 2 ) == 0 ){
+			i += 2;
+			for( ; i <= (targetLen - (int)wcslen( L"*/" )); i++ ){
+				if( wmemicmp( &rStr.GetPtr()[i], L"*/", 2 ) == 0 ){
+					break;
+				}
+			}
+		}
+
+		if( wmemicmp( &rStr.GetPtr()[i], L"//", 2 ) == 0 ){
+			return targetLen;
+		}
+
 		len  = wcslen( L"#if " );
 		if( wmemicmp( &rStr.GetPtr()[i], L"#if ", len ) == 0 ){
 			rCommentNestLevel++;
