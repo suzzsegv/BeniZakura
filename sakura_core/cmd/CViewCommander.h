@@ -186,7 +186,7 @@ public:
 	void Command_AUTOSCROLL();		// オートスクロール
 
 	/* 選択系 */
-	bool Command_SELECTWORD( void );		/* 現在位置の単語選択 */
+	bool Command_SELECTWORD( CLayoutPoint* pptCaretPos = NULL );		/* 現在位置の単語選択 */
 	bool Command_ExpandSelectedTextToNextWord( void );	/* 選択範囲を次の単語まで広げる */
 	void Command_SELECTALL( void );			/* すべて選択 */
 	void Command_SELECTLINE( int lparam );	/* 1行選択 */	// 2007.10.13 nasukoji

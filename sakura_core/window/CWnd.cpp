@@ -84,11 +84,13 @@ next:
 
 CWnd::CWnd(const TCHAR* pszInheritanceAppend)
 {
-	_tcscpy( m_szClassInheritances, _T("CWnd") );
-	_tcscat( m_szClassInheritances, pszInheritanceAppend );
 	m_hInstance = NULL;	/* アプリケーションインスタンスのハンドル */
 	m_hwndParent = NULL;	/* オーナーウィンドウのハンドル */
 	m_hWnd = NULL;			/* このウィンドウのハンドル */
+#ifdef _DEBUG
+	_tcscpy( m_szClassInheritances, _T("CWnd") );
+	_tcscat( m_szClassInheritances, pszInheritanceAppend );
+#endif
 }
 
 CWnd::~CWnd()
@@ -237,9 +239,6 @@ LRESULT CWnd::DispatchEvent( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp )
 	CALLH( WM_CAPTURECHANGED	, OnCaptureChanged	);	// 2006.11.30 ryoji
 
 	CALLH( WM_NCDESTROY			, OnNcDestroy		);
-
-	/* MDI用 */
-	CALLH( WM_MDIACTIVATE		, OnMDIActivate		);
 
 	default:
 		if( WM_APP <= msg && msg <= 0xBFFF ){
