@@ -1021,7 +1021,7 @@ void CEditWnd::EndLayoutBars( BOOL bAdjust/* = TRUE*/ )
 	}
 }
 
-static BOOL MyIsDialogMessage(HWND hwnd, MSG* msg)
+static inline BOOL MyIsDialogMessage(HWND hwnd, MSG* msg)
 {
 	if(hwnd==NULL)return FALSE;
 	return ::IsDialogMessage(hwnd, msg);
@@ -1490,7 +1490,7 @@ LRESULT CEditWnd::DispatchEvent(
 		return 0L;
 	case WM_QUERYENDSESSION:	//OSÇÃèIóπ
 		if( OnClose() ){
-			DestroyWindow( hwnd );
+			::DestroyWindow( hwnd );
 			return TRUE;
 		}
 		else{
@@ -1498,7 +1498,7 @@ LRESULT CEditWnd::DispatchEvent(
 		}
 	case WM_CLOSE:
 		if( OnClose() ){
-			DestroyWindow( hwnd );
+			::DestroyWindow( hwnd );
 		}
 		return 0L;
 	case WM_DESTROY:
@@ -1581,7 +1581,7 @@ LRESULT CEditWnd::DispatchEvent(
 					}
 				}
 			}
-			DestroyWindow( hwnd );
+			::DestroyWindow( hwnd );
 		}
 		return nRet;
 
