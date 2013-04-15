@@ -24,7 +24,7 @@
 #include "uiparts/HandCursor.h"
 #include "util/file.h"
 #include "util/module.h"
-#include "svnrev.h"
+#include "hgrev.h"
 #include "sakura_rc.h" // 2002/2/10 aroka •œ‹A
 #include "sakura.hh"
 
@@ -155,11 +155,8 @@ BOOL CDlgAbout::OnInitDialog( HWND hwndDlg, WPARAM wParam, LPARAM lParam )
 	DWORD dwVersionMS, dwVersionLS;
 	GetAppVersionInfo( NULL, VS_VERSION_INFO,
 		&dwVersionMS, &dwVersionLS );
-	auto_sprintf( szMsg, _T("Ver. %d.%d.%d.%d  ( %s  %s )\r\n"),
-		HIWORD( dwVersionMS ),
-		LOWORD( dwVersionMS ),
-		HIWORD( dwVersionLS ),
-		LOWORD( dwVersionLS ),
+	auto_sprintf( szMsg, _T("%s  ( %s  %s )\r\n"),
+		_T(HG_REV),
 		_T(__DATE__),
 		_T(__TIME__)
 	);
