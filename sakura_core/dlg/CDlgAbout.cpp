@@ -24,6 +24,7 @@
 #include "uiparts/HandCursor.h"
 #include "util/file.h"
 #include "util/module.h"
+#include "svnrev.h"
 #include "sakura_rc.h" // 2002/2/10 aroka •œ‹A
 #include "sakura.hh"
 
