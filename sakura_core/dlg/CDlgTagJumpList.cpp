@@ -437,6 +437,30 @@ BOOL CDlgTagJumpList::OnInitDialog( HWND hwndDlg, WPARAM wParam, LPARAM lParam )
 	BOOL		bRet;
 
 	_SetHwnd( hwndDlg );
+	::SetWindowLongPtr( GetHwnd(), DWLP_USER, lParam );
+
+	CreateSizeBox();
+	CDialog::OnSize();
+	
+	::GetWindowRect( hwndDlg, &rc );
+	m_ptDefaultSize.x = rc.right - rc.left;
+	m_ptDefaultSize.y = rc.bottom - rc.top;
+
+	for( int i = 0; i < _countof(anchorList); i++ ){
+		GetItemClientRect( anchorList[i].id, m_rcItems[i] );
+	}
+
+	RECT rcDialog = GetDllShareData().m_Common.m_sOthers.m_rcTagJumpDialog;
+	if( rcDialog.left != 0 ||
+		rcDialog.bottom != 0 ){
+		m_xPos = rcDialog.left;
+		m_yPos = rcDialog.top;
+		m_nWidth = rcDialog.right - rcDialog.left;
+		m_nHeight = rcDialog.bottom - rcDialog.top;
+	}
+
+	// ウィンドウのリサイズ
+	SetDialogPosSize();
 
 	//リストビューの表示位置を取得する。
 	hwndList = ::GetDlgItem( hwndDlg, IDC_LIST_TAGJUMP );
@@ -507,17 +531,6 @@ BOOL CDlgTagJumpList::OnInitDialog( HWND hwndDlg, WPARAM wParam, LPARAM lParam )
 		//キーワード指定
 		::SetFocus( hwndKey );
 		bRet = FALSE;	//for set focus
-	}
-
-	CreateSizeBox();
-	CDialog::OnSize();
-	
-	::GetWindowRect( hwndDlg, &rc );
-	m_ptDefaultSize.x = rc.right - rc.left;
-	m_ptDefaultSize.y = rc.bottom - rc.top;
-
-	for( int i = 0; i < _countof(anchorList); i++ ){
-		GetItemClientRect( anchorList[i].id, m_rcItems[i] );
 	}
 
 	/* 基底クラスメンバ */
@@ -594,6 +607,8 @@ BOOL CDlgTagJumpList::OnSize( WPARAM wParam, LPARAM lParam )
 	/* 基底クラスメンバ */
 	CDialog::OnSize( wParam, lParam );
 
+	::GetWindowRect( GetHwnd(), &GetDllShareData().m_Common.m_sOthers.m_rcTagJumpDialog );
+
 	RECT  rc;
 	POINT ptNew;
 	::GetWindowRect( GetHwnd(), &rc );
@@ -605,6 +620,15 @@ BOOL CDlgTagJumpList::OnSize( WPARAM wParam, LPARAM lParam )
 	}
 	::InvalidateRect( GetHwnd(), NULL, TRUE );
 	return TRUE;
+}
+
+
+
+BOOL CDlgTagJumpList::OnMove( WPARAM wParam, LPARAM lParam )
+{
+	::GetWindowRect( GetHwnd(), &GetDllShareData().m_Common.m_sOthers.m_rcTagJumpDialog );
+
+	return CDialog::OnMove( wParam, lParam );
 }
 
 
