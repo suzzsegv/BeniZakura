@@ -563,6 +563,28 @@ bool IsFileExists(const TCHAR* path, bool bFileOnly)
 	return false;
 }
 
+/**	ディレクトリの存在チェック
+
+	指定されたパスのディレクトリが存在するかどうかを確認する。
+	
+	@param path [in] 調べるパス名
+	
+	@retval true  ディレクトリは存在する
+	@retval false ディレクトリは存在しない
+*/
+bool IsDirectoryExists(const TCHAR* path)
+{
+	WIN32_FIND_DATA fd;
+	HANDLE hFind = ::FindFirstFile( path, &fd );
+	if( hFind != INVALID_HANDLE_VALUE ){
+		::FindClose( hFind );
+		if( fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY ){
+			return true;
+		}
+	}
+	return false;
+}
+
 /**	ディレクトリチェック
 
 	指定されたパスがディレクトリかどうかを確認する。

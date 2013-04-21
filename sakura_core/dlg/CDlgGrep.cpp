@@ -19,6 +19,7 @@
 #include <ShellAPI.h>
 #include "dlg/CDlgGrep.h"
 #include "func/Funccode.h"		// Stonee, 2001/03/12
+#include "util/file.h"
 #include "util/module.h"
 #include "util/shell.h"
 #include "util/os.h"
@@ -236,19 +237,7 @@ BOOL CDlgGrep::OnBnClicked( int wID )
 		SetDataFromThisText( 0 != ::IsDlgButtonChecked( GetHwnd(), IDC_CHK_FROMTHISTEXT ) );
 		return TRUE;
 	case IDC_BUTTON_CURRENTFOLDER:	/* 現在編集中のファイルのフォルダ */
-		/* ファイルを開いているか */
-		if( 0 < _tcslen( m_szCurrentFilePath ) ){
-			TCHAR	szWorkFolder[MAX_PATH];
-			TCHAR	szWorkFile[MAX_PATH];
-			SplitPath_FolderAndFile( m_szCurrentFilePath, szWorkFolder, szWorkFile );
-			::DlgItem_SetText( GetHwnd(), IDC_COMBO_FOLDER, szWorkFolder );
-		}
-		else{
-			/* 現在のプロセスのカレントディレクトリを取得します */
-			TCHAR	szWorkFolder[MAX_PATH];
-			::GetCurrentDirectory( _countof( szWorkFolder ) - 1, szWorkFolder );
-			::DlgItem_SetText( GetHwnd(), IDC_COMBO_FOLDER, szWorkFolder );
-		}
+		SetCurrentFolderToFolderComboBox();
 		return TRUE;
 
 
@@ -343,14 +332,10 @@ void CDlgGrep::SetData( void )
 
 	/* 検索フォルダ */
 	::DlgItem_SetText( GetHwnd(), IDC_COMBO_FOLDER, m_szFolder );
-
-	if((0 == _tcslen( m_pShareData->m_sSearchKeywords.m_aGrepFolders[0] ) || m_pShareData->m_Common.m_sSearch.m_bGrepDefaultFolder ) &&
-		0 < _tcslen( m_szCurrentFilePath )
-	){
-		TCHAR	szWorkFolder[MAX_PATH];
-		TCHAR	szWorkFile[MAX_PATH];
-		SplitPath_FolderAndFile( m_szCurrentFilePath, szWorkFolder, szWorkFile );
-		::DlgItem_SetText( GetHwnd(), IDC_COMBO_FOLDER, szWorkFolder );
+	if( m_pShareData->m_Common.m_sSearch.m_bGrepDefaultFolder ){
+		if( SetVcsRepositoryRootFolderToFolderComboBox() == false ){
+			SetCurrentFolderToFolderComboBox();
+		}
 	}
 
 	/* サブフォルダからも検索する */
@@ -437,7 +422,6 @@ void CDlgGrep::SetData( void )
 
 	// フォルダの初期値をカレントフォルダにする
 	::CheckDlgButton( GetHwnd(), IDC_CHK_DEFAULTFOLDER, m_pShareData->m_Common.m_sSearch.m_bGrepDefaultFolder );
-	if( m_pShareData->m_Common.m_sSearch.m_bGrepDefaultFolder ) OnBnClicked( IDC_BUTTON_CURRENTFOLDER );
 
 	return;
 }
@@ -595,5 +579,67 @@ LPVOID CDlgGrep::GetHelpIdTable(void)
 	return (LPVOID)p_helpids;
 }
 //@@@ 2002.01.18 add end
+
+
+/*!
+ *	SetCurrentFolderToFolderComboBox - カレントフォルダを検索フォルダ指定用コンボボックスに設定する
+ *
+ *	編集対象のファイルを開いていない場合には、代わりにカレントディレクトリを設定する。
+ */
+void CDlgGrep::SetCurrentFolderToFolderComboBox( void )
+{
+	TCHAR	szWorkFolder[MAX_PATH];
+	TCHAR	szWorkFile[MAX_PATH];
+
+	/* ファイルを開いているか */
+	if( _tcslen( m_szCurrentFilePath ) > 0 ){
+		SplitPath_FolderAndFile( m_szCurrentFilePath, szWorkFolder, szWorkFile );
+	}else{
+		/* 現在のプロセスのカレントディレクトリを取得します */
+		::GetCurrentDirectory( _countof( szWorkFolder ) - 1, szWorkFolder );
+	}
+	::DlgItem_SetText( GetHwnd(), IDC_COMBO_FOLDER, szWorkFolder );
+}
+
+
+/*!
+ * SetVcsRepositoryRootDirectoryToFolderComboBox - VCSルートディレクトリを検索し、検索フォルダ指定用コンボボックスに設定する
+ *
+ *	@return true: VCSルートディレクトリを設定 / false: VCSルートディレクトリを検出できず設定失敗
+ */
+bool CDlgGrep::SetVcsRepositoryRootFolderToFolderComboBox( void )
+{
+	TCHAR	pathName[MAX_PATH];
+	TCHAR	fileOrDirectoryName[MAX_PATH];
+	int		pathLen;
+
+	/* 編集対象のファイルを開いていない場合には何もせず */
+	if( _tcslen( m_szCurrentFilePath ) <= 0 ){
+		return false;
+	}
+
+	SplitPath_FolderAndFile( m_szCurrentFilePath, pathName, fileOrDirectoryName );
+	pathLen = _tcslen( pathName );
+	while( pathLen > (int)_tcslen( _T("C:\\") ) ){
+		int i;
+		TCHAR* vcsDirectoryNames[] = { _T(".bzr"), _T(".git"), _T(".hg"), _T(".svn") };
+
+		for( i = 0; i < _countof(vcsDirectoryNames); i++ ){
+			bool vcsRepositoryDetected;
+			TCHAR vcsDirectoryPathName[MAX_PATH + 4];
+
+			Concat_FolderAndFile( pathName, vcsDirectoryNames[i], vcsDirectoryPathName );
+			vcsRepositoryDetected = IsDirectoryExists( vcsDirectoryPathName );
+			if( vcsRepositoryDetected == true ){
+				::DlgItem_SetText( GetHwnd(), IDC_COMBO_FOLDER, pathName );
+				return true;
+			}
+		}
+		SplitPath_FolderAndFile( pathName, pathName, fileOrDirectoryName );
+		pathLen = _tcslen( pathName );
+	}
+
+	return false;
+}
 
 
