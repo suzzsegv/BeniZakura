@@ -859,13 +859,12 @@ bool CImpExpKeyHelp::Export( const wstring& sFileName, wstring& sErrMsg )
 // インポート
 bool CImpExpKeybind::Import( const wstring& sFileName, wstring& sErrMsg )
 {
-	const tstring	strPath = to_tchar( sFileName.c_str() );
-	const int KEYNAME_SIZE = _countof(m_Common.m_sKeyBind.m_pKeyNameArr);
-	KeyData		pKeyNameArr[KEYNAME_SIZE];				/* キー割り当て表 */
+	CDataProfile in;
+	WCHAR szHeader[256];
 	CommonSetting_KeyBind sKeyBind = m_Common.m_sKeyBind;
+	int	nKeyNameArrNum;
 
 	//オープン
-	CDataProfile in;
 	in.SetReadingMode();
 	if (!in.ReadProfile( to_tchar( sFileName.c_str() ))) {
 		sErrMsg = MSG_NOT_OPEN + sFileName;
@@ -873,102 +872,25 @@ bool CImpExpKeybind::Import( const wstring& sFileName, wstring& sErrMsg )
 	}
 
 	//バージョン確認
-	bool	bVer3;			// 新バージョンのファイル
-	bool	bVer2;
-	WCHAR szHeader[256];
-	bVer3 = true;
-	bVer2 = false;
 	in.IOProfileData(szSecInfo, L"KEYBIND_VERSION", MakeStringBufferW(szHeader));
-	if(wcscmp(szHeader,WSTR_KEYBIND_HEAD)!=0)	bVer3=false;
-
-	int	nKeyNameArrNum;			// キー割り当て表の有効データ数
-	if ( bVer3 ) {
-		//Count取得 -> nKeyNameArrNum
-		in.IOProfileData(szSecInfo, L"KEYBIND_COUNT", nKeyNameArrNum);
-		if (nKeyNameArrNum < 0 || nKeyNameArrNum > KEYNAME_SIZE)	bVer3=false; //範囲チェック
-
-		CShareData_IO::IO_KeyBind(in, sKeyBind, true);	// 2008/5/25 Uchi
+	if(wcscmp(szHeader,WSTR_KEYBIND_HEAD)!=0){
+		goto importError;
 	}
 
-	if (!bVer3) {
-		// 新バージョンでない
-		CTextInputStream in(strPath.c_str());
-		if (!in) {
-			sErrMsg = MSG_NOT_OPEN + sFileName;
-			return false;
-		}
-		// ヘッダチェック
-		wstring	szLine = in.ReadLineW();
-		bVer2 = true;
-		if ( wcscmp(szLine.c_str(), WSTR_KEYBIND_HEAD2) != 0)	bVer2 = false;
-		// カウントチェック
-		int	i, cnt;
-		if ( bVer2 ) {
-			int	an;
-			szLine = in.ReadLineW();
-			cnt = swscanf(szLine.c_str(), L"Count=%d", &an);
-			if ( cnt != 1 || an < 0 || an > KEYNAME_SIZE ) {
-				bVer2 = false;
-			}
-			else {
-				nKeyNameArrNum = an;
-			}
-		}
-		if ( bVer2 ) {
-			//各要素取得
-			for(i = 0; i < KEYNAME_SIZE; i++) {
-				int n, kc, nc;
-				//値 -> szData
-				wchar_t szData[1024];
-				auto_strcpy(szData, in.ReadLineW().c_str());
-
-				//解析開始
-				cnt = swscanf(szData, L"KeyBind[%03d]=%04x,%n",
-												&n,   &kc, &nc);
-				if( cnt !=2 && cnt !=3 )	{ bVer2= false; break;}
-				if( i != n ) break;
-				pKeyNameArr[i].m_nKeyCode = (short)kc;
-				wchar_t* p = szData + nc;
-
-				//後に続くトークン
-				for(int j=0;j<8;j++)
-				{
-					wchar_t* q=auto_strchr(p,L',');
-					if(!q)	{ bVer2= false; break;}
-					*q=L'\0';
-
-					//機能名を数値に置き換える。(数値の機能名もあるかも)
-					//@@@ 2002.2.2 YAZAKI マクロをCSMacroMgrに統一
-					EFunctionCode n = CSMacroMgr::GetFuncInfoByName(G_AppInstance(), p, NULL);
-					if( n == F_INVALID )
-					{
-						if( WCODE::Is09(*p) )
-						{
-							n = (EFunctionCode)auto_atol(p);
-						}
-						else
-						{
-							n = F_DEFAULT;
-						}
-					}
-					pKeyNameArr[i].m_nFuncCodeArr[j] = n;
-					p = q + 1;
-				}
-
-				auto_strcpy(pKeyNameArr[i].m_szKeyName, to_tchar(p));
-			}
-		}
-	}
-	if (!bVer3  && !bVer2) {
-		sErrMsg = wstring(L"キー設定ファイルの形式が違います。\n\n") + sFileName;
-		return false;
+	//キー定義数確認
+	in.IOProfileData(szSecInfo, L"KEYBIND_COUNT", nKeyNameArrNum);
+	if (nKeyNameArrNum != m_Common.m_sKeyBind.m_nKeyNameArrNum ){
+		goto importError;
 	}
 
-	// データのコピー
-	m_Common.m_sKeyBind.m_nKeyNameArrNum = nKeyNameArrNum;
-	memcpy_raw( m_Common.m_sKeyBind.m_pKeyNameArr, pKeyNameArr, sizeof_raw( pKeyNameArr ) );
+	CShareData_IO::IO_KeyBind(in, sKeyBind, true);
+	m_Common.m_sKeyBind = sKeyBind;
 
 	return true;
+
+importError:
+	sErrMsg = wstring(L"キー設定ファイルの形式が違います。\n\n") + sFileName;
+	return false;
 }
 
 // エクスポート
