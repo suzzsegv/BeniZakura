@@ -301,10 +301,10 @@ bool CShareData::InitShareData()
 		m_pShareData->m_Common.m_sSearch.m_bGrepSubFolder = TRUE;			/* Grep: サブフォルダも検索 */
 		m_pShareData->m_Common.m_sSearch.m_bGrepOutputLine = TRUE;			/* Grep: 行を出力するか該当部分だけ出力するか */
 		m_pShareData->m_Common.m_sSearch.m_nGrepOutputStyle = 1;			/* Grep: 出力形式 */
-		m_pShareData->m_Common.m_sSearch.m_bGrepDefaultFolder=FALSE;		/* Grep: フォルダの初期値をカレントフォルダにする */
+		m_pShareData->m_Common.m_sSearch.m_bGrepDefaultFolder = true;		/* Grep: フォルダの初期値をカレントフォルダにする */
 		m_pShareData->m_Common.m_sSearch.m_nGrepCharSet = CODE_AUTODETECT;	/* Grep: 文字コードセット */
 		m_pShareData->m_Common.m_sSearch.m_bGrepRealTimeView = TRUE;		/* Grep: 結果のリアルタイム表示 */
-		m_pShareData->m_Common.m_sSearch.m_bCaretTextForSearch = TRUE;		/* 2006.08.23 ryoji カーソル位置の文字列をデフォルトの検索文字列にする */
+		m_pShareData->m_Common.m_sSearch.m_bCaretTextForSearch = false;		/* カーソル位置の文字列をデフォルトの検索文字列にする */
 		m_pShareData->m_Common.m_sSearch.m_bInheritKeyOtherView = true;
 		m_pShareData->m_Common.m_sSearch.m_szRegexpLib[0] =_T('\0');		/* 2007.08.12 genta 正規表現DLL */
 		m_pShareData->m_Common.m_sSearch.m_bGTJW_RETURN = TRUE;				/* エンターキーでタグジャンプ */
