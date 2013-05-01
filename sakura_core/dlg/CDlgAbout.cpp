@@ -135,31 +135,29 @@ BOOL CDlgAbout::OnInitDialog( HWND hwndDlg, WPARAM wParam, LPARAM lParam )
 	_SetHwnd( hwndDlg );
 
 	TCHAR			szMsg[2048];
-	TCHAR			szFile[_MAX_PATH];
-
-	/* この実行ファイルの情報 */
-	::GetModuleFileName( NULL, szFile, _countof( szFile ) );
-	
-	//	Oct. 22, 2005 genta タイムスタンプ取得の共通関数利用
 
 	/* バージョン情報 */
-	//	Nov. 6, 2000 genta	Unofficial Releaseのバージョンとして設定
-	//	Jun. 8, 2001 genta	GPL化に伴い、OfficialなReleaseとしての道を歩み始める
-	//	Feb. 7, 2002 genta コンパイラ情報追加
-	//	2004.05.13 Moca バージョン番号は、プロセスごとに取得する
-	//	2010.04.15 Moca コンパイラ情報を分離/WINヘッダ,N_SHAREDATA_VERSION追加
 
 	CNativeT cmemMsg;
 	cmemMsg.AppendString(_T("紅桜  "));
 
 	DWORD dwVersionMS, dwVersionLS;
-	GetAppVersionInfo( NULL, VS_VERSION_INFO,
-		&dwVersionMS, &dwVersionLS );
-	auto_sprintf( szMsg, _T("%s  ( %s  %s )\r\n"),
-		_T(HG_REV),
-		_T(__DATE__),
-		_T(__TIME__)
-	);
+	GetAppVersionInfo( NULL, VS_VERSION_INFO, &dwVersionMS, &dwVersionLS );
+
+	if( HG_REV_DISTANCE == 0 ){
+		auto_sprintf( szMsg, _T("%s  ( %s  %s )\r\n"),
+			_T(HG_REV),
+			_T(__DATE__),
+			_T(__TIME__)
+		);
+	}else{
+		auto_sprintf( szMsg, _T("%s + %d  ( %s  %s )\r\n"),
+			_T(HG_REV),
+			HG_REV_DISTANCE,
+			_T(__DATE__),
+			_T(__TIME__)
+		);
+	}
 	cmemMsg.AppendString( szMsg );
 	cmemMsg.AppendString( _T("\r\n") );
 	cmemMsg.AppendString( _T("    Copyright (C) 2012, 2013  by Satoshi Suzuki\r\n") );
@@ -169,7 +167,7 @@ BOOL CDlgAbout::OnInitDialog( HWND hwndDlg, WPARAM wParam, LPARAM lParam )
 	cmemMsg.AppendString( _T("\r\n") );
 	cmemMsg.AppendString( _T("\r\n") );
 
-	cmemMsg.AppendString( _T("Based on サクラエディタ   Ver. 2.0.7.1+\r\n") );
+	cmemMsg.AppendString( _T("Based on サクラエディタ   Ver. 2.0.7.1\r\n") );
 	cmemMsg.AppendString( _T("\r\n") );
 	cmemMsg.AppendString( _T("    Copyright (C) 1998-2013  by Norio Nakatani & Collaborators\r\n") );
 	cmemMsg.AppendString( _T("\r\n") );
