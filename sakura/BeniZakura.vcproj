@@ -18,7 +18,7 @@
 		<Configuration
 			Name="Release_Ansi|Win32"
 			OutputDirectory="$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)\obj"
 			ConfigurationType="1"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
@@ -119,7 +119,7 @@
 		<Configuration
 			Name="Debug_Ansi|Win32"
 			OutputDirectory="$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)\obj"
 			ConfigurationType="1"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
@@ -216,7 +216,7 @@
 		<Configuration
 			Name="Debug_Unicode|Win32"
 			OutputDirectory="$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)\obj"
 			ConfigurationType="1"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
@@ -314,7 +314,7 @@
 		<Configuration
 			Name="Release_Unicode|Win32"
 			OutputDirectory="$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)\obj"
 			ConfigurationType="1"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
@@ -532,6 +532,10 @@
 			</File>
 			<File
 				RelativePath="..\sakura_core\StdAfx.h"
+				>
+			</File>
+			<File
+				RelativePath="..\sakura_core\svnrev.h"
 				>
 			</File>
 		</Filter>
