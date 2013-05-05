@@ -28,6 +28,9 @@ bool fexist(LPCTSTR pszPath); //!< ファイルまたはディレクトリが存在すればtrue
 
 bool IsFilePath( const wchar_t*, int*, int*, bool = true );
 bool IsFileExists(const TCHAR* path, bool bFileOnly = false);
+bool IsBinaryFile(
+	const TCHAR* path	//!< [in] 調べるパス名
+);
 bool IsDirectoryExists(const TCHAR* path);
 bool IsDirectory(LPCTSTR pszPath);	// 2009.08.20 ryoji
 

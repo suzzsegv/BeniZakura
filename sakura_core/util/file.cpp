@@ -563,6 +563,38 @@ bool IsFileExists(const TCHAR* path, bool bFileOnly)
 	return false;
 }
 
+/*!
+ *	指定ファイルがバイナリファイルかどうかを確認する
+ *
+ *	@return true: 指定ファイルはバイナリファイル / false: 指定ファイルはバイナリファイルではない
+ */
+bool IsBinaryFile(
+	const TCHAR* path	//!< [in] 調べるパス名
+)
+{
+	FILE* fp;
+
+	fp = _tfopen( path, _T("rb") );
+	if( fp == NULL ){
+		return false;
+	}
+
+	BYTE buffer[1024];
+	int readSize;
+	int i;
+
+	// ファイル内に 0x00 が含まれていたらバイナリファイルとみなす
+	readSize = fread( buffer, 1, sizeof(buffer), fp);
+	fclose( fp );
+
+	for( i=0; i < readSize; i++){
+		if( buffer[i] == 0 ){
+			return true;
+		}
+	}
+	return false;
+}
+
 /**	ディレクトリの存在チェック
 
 	指定されたパスのディレクトリが存在するかどうかを確認する。

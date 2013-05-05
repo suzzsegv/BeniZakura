@@ -630,22 +630,28 @@ int CGrepAgent::DoGrepTree(
 					if( ! currentFile ) goto error_return;	//メモリ確保失敗
 					_tcscpy( currentFile, pszPath );
 					_tcscat( currentFile, w32fd.cFileName );
-					/* ファイル内の検索 */
-					int nRet = DoGrepFile(
-						pcViewDst,
-						pcDlgCancel,
-						hwndCancel,
-						pszKey,
-						w32fd.cFileName,
-						sSearchOption,
-						nGrepCharSet,
-						bGrepOutputLine,
-						nGrepOutputStyle,
-						pRegexp,
-						pnHitCount,
-						currentFile,
-						cmemMessage
-					);
+
+					int nRet = 0;
+					if( IsBinaryFile( currentFile ) == true ){
+						// バイナリファイルの場合には、ファイル内検索をスキップ
+					}else{
+						/* ファイル内の検索 */
+						nRet = DoGrepFile(
+							pcViewDst,
+							pcDlgCancel,
+							hwndCancel,
+							pszKey,
+							w32fd.cFileName,
+							sSearchOption,
+							nGrepCharSet,
+							bGrepOutputLine,
+							nGrepOutputStyle,
+							pRegexp,
+							pnHitCount,
+							currentFile,
+							cmemMessage
+						);
+					}
 					delete [] currentFile;
 					currentFile = NULL;
 
