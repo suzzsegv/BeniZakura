@@ -30,8 +30,6 @@
 #include "StdAfx.h"
 #include "view/CEditView.h" // SColorStrategyInfo
 #include "CColor_Comment_Cpp.h"
-#include "doc/CLayout.h"
-
 
 bool CColor_Comment_Cpp::BeginColor(const CStringRef& rStr, int pos, int& rCommentNestLevel)
 {

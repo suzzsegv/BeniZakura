@@ -24,10 +24,10 @@
 #include "charset/charcode.h"
 #include "COpe.h" ///	2002/2/3 aroka from here
 #include "COpeBlk.h" ///
-#include "doc/CLayout.h"///
-#include "doc/CDocLine.h"///
 #include "doc/CEditDoc.h"	//	2002/5/13 YAZAKI ヘッダ整理
 #include "doc/CDocReader.h"
+#include "doc/layout/CLayout.h"
+#include "doc/logic/CDocLine.h"
 #include "window/CEditWnd.h"
 #include "dlg/CDlgCtrlCode.h"	//コントロールコードの入力(ダイアログ)
 #include "dlg/CDlgFavorite.h"	//履歴の管理	//@@@ 2003.04.08 MIK
@@ -554,7 +554,7 @@ void CEditView::DeleteData(
 
 		/* 指定された桁に対応する行のデータ内の位置を調べる */
 		nCurIdx = LineColmnToIndex( pcLayout, GetCaret().GetCaretLayoutPos().GetX2() );
-//		MYTRACE_A("nLineLen=%d nCurIdx=%d \n", nLineLen, nCurIdx);
+//		MYTRACE( _T("nLineLen=%d nCurIdx=%d \n"), nLineLen, nCurIdx);
 		if( nCurIdx == nLineLen && bLastLine ){	/* 全テキストの最後 */
 			goto end_of_func;
 //			return;

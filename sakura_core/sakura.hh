@@ -190,6 +190,7 @@
 #define HLP000073	73 //タイプ別設定
 #define HLP000074	74 //タイプ別設定 『スクリーン』プロパティ
 #define HLP000075	75 //タイプ別設定 『カラー』プロパティ
+#define HLP000319	319 //タイプ別設定 『ウィンドウ』プロパティ	// 2013.04.13
 #define HLP000197	197 //タイプ別設定 『支援』プロパティ
 #define HLP000203	203 //タイプ別設定 『正規表現キーワード』プロパティ	//@@@ 2001.11.17 add MIK
 #define HLP000315	315 //タイプ別設定 『キーワードヘルプ』プロパティ	// 2006.10.06 ryoji
@@ -651,6 +652,7 @@
 #define HIDC_EDIT_TYPEEXTHTMLHELP				11544 //外部HTMLヘルプファイル名	// 2006.08.06 ryoji
 #define HIDC_BUTTON_TYPEOPENEXTHTMLHELP			11545 //外部HTMLヘルプファイル参照	// 2006.08.06 ryoji
 #define HIDC_CHECK_TYPEHTMLHELPISSINGLE			11546 //ビューアを複数起動しない	// 2006.08.06 ryoji
+#define HIDC_CHECK_CHKENTERATEND				11547 //終了時、改行の一致を検査する	// 2013/4/14 Uchi
 #define HIDC_COMBO_DEFAULT_CODETYPE				14300 //デフォルト文字コード
 #define HIDC_CHECK_PRIOR_CESU8					14301 //自動判別時にCESU-8を優先する
 #define HIDC_COMBO_DEFAULT_EOLTYPE				14302 //デフォルト改行コード	// 2011.01.24 ryoji

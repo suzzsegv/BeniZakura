@@ -62,7 +62,7 @@ INT_PTR CALLBACK MyDialogProc(
 */
 CDialog::CDialog()
 {
-//	MYTRACE_A( "CDialog::CDialog()\n" );
+//	MYTRACE( _T("CDialog::CDialog()\n") );
 	/* 共有データ構造体のアドレスを返す */
 	m_pShareData = CShareData::getInstance()->GetShareData();
 
@@ -85,7 +85,7 @@ CDialog::CDialog()
 }
 CDialog::~CDialog()
 {
-//	MYTRACE_A( "CDialog::~CDialog()\n" );
+//	MYTRACE( _T("CDialog::~CDialog()\n") );
 	CloseDialog( 0 );
 	return;
 }
@@ -192,9 +192,7 @@ void CDialog::SetDialogPosSize()
 	/* ダイアログのサイズ、位置の再現 */
 	if( -1 != m_xPos && -1 != m_yPos ){
 		::SetWindowPos( m_hWnd, NULL, m_xPos, m_yPos, 0, 0, SWP_NOSIZE | SWP_NOOWNERZORDER | SWP_NOZORDER );
-#ifdef _DEBUG
-		MYTRACE_A( "CDialog::OnInitDialog() m_xPos=%d m_yPos=%d\n", m_xPos, m_yPos );
-#endif
+		DEBUG_TRACE( _T("CDialog::OnInitDialog() m_xPos=%d m_yPos=%d\n"), m_xPos, m_yPos );
 	}
 	if( -1 != m_nWidth && -1 != m_nHeight ){
 		::SetWindowPos( m_hWnd, NULL, 0, 0, m_nWidth, m_nHeight, SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER );
@@ -356,9 +354,7 @@ BOOL CDialog::OnMove( WPARAM wParam, LPARAM lParam )
 	m_yPos = rc.top;
 	m_nWidth = rc.right - rc.left;
 	m_nHeight = rc.bottom - rc.top;
-#ifdef _DEBUG
-		MYTRACE_A( "CDialog::OnMove() m_xPos=%d m_yPos=%d\n", m_xPos, m_yPos );
-#endif
+	DEBUG_TRACE( _T("CDialog::OnMove() m_xPos=%d m_yPos=%d\n"), m_xPos, m_yPos );
 	return TRUE;
 
 }
@@ -394,9 +390,7 @@ void CDialog::CreateSizeBox( void )
 /* ダイアログのメッセージ処理 */
 INT_PTR CDialog::DispatchEvent( HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam )
 {
-//#ifdef _DEBUG
-//	MYTRACE_A( "CDialog::DispatchEvent() uMsg == %xh\n", uMsg );
-//#endif
+//	DEBUG_TRACE( _T("CDialog::DispatchEvent() uMsg == %xh\n"), uMsg );
 	switch( uMsg ){
 	case WM_INITDIALOG:	return OnInitDialog( hwndDlg, wParam, lParam );
 	case WM_DESTROY:	return OnDestroy();
@@ -626,7 +620,7 @@ void	CDialog::SetMainFont( HWND hTarget )
 	LOGFONT	lf;
 
 	// 設定するフォントの高さを取得
-	hFont = (HFONT)SendMessage(hTarget, WM_GETFONT, 0, 0);
+	hFont = (HFONT)::SendMessage(hTarget, WM_GETFONT, 0, 0);
 	GetObject(hFont, sizeof(lf), &lf);
 	LONG nfHeight = lf.lfHeight;
 
@@ -641,16 +635,18 @@ void	CDialog::SetMainFont( HWND hTarget )
 	lf.lfUnderline		= FALSE;
 	lf.lfStrikeOut		= FALSE;
 	//lf.lfCharSet		= lf.lfCharSet;
-	//lf.lfOutPrecision	= lf.lfOutPrecision;
+	lf.lfOutPrecision	= OUT_TT_ONLY_PRECIS;		// Raster Font を使わないように
 	//lf.lfClipPrecision	= lf.lfClipPrecision;
 	//lf.lfQuality		= lf.lfQuality;
 	//lf.lfPitchAndFamily	= lf.lfPitchAndFamily;
 	//_tcsncpy( lf.lfFaceName, lf.lfFaceName, _countof(lf.lfFaceName));	// 画面のフォントに設定	2012/11/27 Uchi
 
 	// フォントを作成
-	hFont = CreateFontIndirect(&lf);
-	// フォントの設定
-	::SendMessage(hTarget, WM_SETFONT, (WPARAM)hFont, MAKELPARAM(FALSE, 0));
+	hFont = ::CreateFontIndirect(&lf);
+	if (hFont) {
+		// フォントの設定
+		::SendMessage(hTarget, WM_SETFONT, (WPARAM)hFont, MAKELPARAM(FALSE, 0));
+	}
 }
 
 void CDialog::ResizeItem( HWND hTarget, const POINT& ptDlgDefault, const POINT& ptDlgNew, const RECT& rcItemDefault, EAnchorStyle anchor, bool bUpdate)

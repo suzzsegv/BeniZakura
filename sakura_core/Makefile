@@ -4,6 +4,7 @@ PREFIX=
 CC= $(PREFIX)gcc
 CXX= $(PREFIX)g++
 RC= windres
+SUBWCREV= SubWCRev.exe
 
 DEFINES= \
  -DWIN32 \
@@ -13,7 +14,6 @@ DEFINES= \
  -DNOMINMAX \
  -D_UNICODE \
  -DUNICODE \
- -DSAKURA_NO_DLL \
  -DNDEBUG
 CFLAGS= -O2 \
  -finput-charset=cp932 -fexec-charset=cp932 \
@@ -157,8 +157,6 @@ doc/CBlockComment.o \
 doc/CDocEditor.o \
 doc/CDocFile.o \
 doc/CDocFileOperation.o \
-doc/CDocLine.o \
-doc/CDocLineMgr.o \
 doc/CDocListener.o \
 doc/CDocLocker.o \
 doc/CDocOutline.o \
@@ -167,12 +165,14 @@ doc/CDocType.o \
 doc/CDocTypeSetting.o \
 doc/CDocVisitor.o \
 doc/CEditDoc.o \
-doc/CLayout.o \
-doc/CLayoutMgr.o \
-doc/CLayoutMgr_DoLayout.o \
-doc/CLayoutMgr_New.o \
-doc/CLayoutMgr_New2.o \
 doc/CLineComment.o \
+doc/layout/CLayout.o \
+doc/layout/CLayoutMgr.o \
+doc/layout/CLayoutMgr_DoLayout.o \
+doc/layout/CLayoutMgr_New.o \
+doc/layout/CLayoutMgr_New2.o \
+doc/logic/CDocLine.o \
+doc/logic/CDocLineMgr.o \
 docplus/CBookmarkManager.o \
 docplus/CDiffManager.o \
 docplus/CModifyManager.o \
@@ -381,8 +381,12 @@ RCTOOL=$(TOOLDIR)/mrc2grc.exe
 
 all: $(RCTOOL) $(exe)
 
-$(exe): stdafx $(OBJS)
+$(exe): stdafx svnrev $(OBJS)
 	$(CXX) -o $@ $(OBJS) $(LIBS)
+
+svnrev:
+	cp svnrev_unknown.h svnrev.h
+	-$(SUBWCREV) ".\\" ".\svnrev_template.h" ".\svnrev.h"
 
 stdafx:
 	$(CXX) $(CXXFLAGS) -c StdAfx.h

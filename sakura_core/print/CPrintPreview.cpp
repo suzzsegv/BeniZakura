@@ -19,7 +19,7 @@
 #include "StdAfx.h"
 #include "CPrintPreview.h"
 #include "uiparts/HandCursor.h"
-#include "doc/CLayout.h"
+#include "doc/layout/CLayout.h"
 #include "window/CEditWnd.h"
 #include "dlg/CDlgCancel.h" /// 2002/2/3 aroka from here
 #include "dlg/CDlgInput1.h" /// 2007.02.11 Moca
@@ -1022,7 +1022,7 @@ void CPrintPreview::OnPrint( void )
 		&hdc,
 		szErrMsg						/* エラーメッセージ格納場所 */
 	) ){
-//		MYTRACE_A( "%ts\n", szErrMsg );
+//		MYTRACE( _T("%ts\n"), szErrMsg );
 	}
 
 	/* 印刷用半角フォントと、印刷用全角フォントを作成 */
@@ -1773,7 +1773,6 @@ INT_PTR CPrintPreview::DispatchEvent_PPB(
 	WORD				wNotifyCode;
 	WORD				wID;
 	HWND				hwndCtl;
-	CMemory				cMemBuf;
 
 
 
