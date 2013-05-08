@@ -12,9 +12,9 @@
 	Please contact the copyright holder to use this code for other purpose.
 */
 #include "StdAfx.h"
-#include "doc/CLayout.h"
-#include "charset/charcode.h"
+#include "CLayout.h"
 #include "CLayoutMgr.h"
+#include "charset/charcode.h"
 #include "extmodule/CBregexp.h" // CLayoutMgrの定義で必要
 
 
@@ -26,14 +26,12 @@ CLayout::~CLayout()
 
 void CLayout::DUMP( void )
 {
-#ifdef _DEBUG
-	MYTRACE_A( "\n\n■CLayout::DUMP()======================\n" );
-	MYTRACE_A( "m_ptLogicPos.y=%d\t\t対応する論理行番号\n", m_ptLogicPos.y );
-	MYTRACE_A( "m_ptLogicPos.x=%d\t\t対応する論理行の先頭からのオフセット\n", m_ptLogicPos.x );
-	MYTRACE_A( "m_nLength=%d\t\t対応する論理行のハイト数\n", (int)m_nLength );
-	MYTRACE_A( "m_colorIndexPrev=%d\t\tColorIndexType\n", m_colorIndexPrev );
-	MYTRACE_A( "======================\n" );
-#endif
+	DEBUG_TRACE( _T("\n\n■CLayout::DUMP()======================\n") );
+	DEBUG_TRACE( _T("m_ptLogicPos.y=%d\t\t対応する論理行番号\n"), m_ptLogicPos.y );
+	DEBUG_TRACE( _T("m_ptLogicPos.x=%d\t\t対応する論理行の先頭からのオフセット\n"), m_ptLogicPos.x );
+	DEBUG_TRACE( _T("m_nLength=%d\t\t対応する論理行のハイト数\n"), (int)m_nLength );
+	DEBUG_TRACE( _T("m_colorIndexPrev=%d\t\tColorIndexType\n"), m_colorIndexPrev );
+	DEBUG_TRACE( _T("======================\n") );
 	return;
 }
 

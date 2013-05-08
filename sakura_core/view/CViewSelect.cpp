@@ -1,16 +1,16 @@
 #include "StdAfx.h"
+#include <limits.h>
 #include "CViewSelect.h"
-#include "view/CEditView.h"
+#include "CEditView.h"
 #include "doc/CEditDoc.h"
+#include "doc/layout/CLayout.h"
 #include "mem/CMemoryIterator.h"
-#include "doc/CLayout.h"
 #include "window/CEditWnd.h"
 #include "charset/CCodeBase.h"
 #include "charset/CCodeFactory.h"
 #include "env/CShareData.h"
 #include "env/DLLSHAREDATA.h"
 #include "types/CTypeSupport.h"
-#include <limits.h>
 
 CViewSelect::CViewSelect(CEditView* pcEditView)
 : m_pcEditView(pcEditView)
@@ -288,7 +288,7 @@ void CViewSelect::DrawSelectArea2( HDC hdc ) const
 	}
 	// To Here 2007.09.09 Moca
 
-//	MYTRACE_A( "DrawSelectArea()  m_bBeginBoxSelect=%hs\n", m_bBeginBoxSelect?"TRUE":"FALSE" );
+//	MYTRACE( _T("DrawSelectArea()  m_bBeginBoxSelect=%hs\n", m_bBeginBoxSelect?"TRUE":"FALSE") );
 	if( IsBoxSelecting() ){		// 矩形範囲選択中
 		// 2001.12.21 hor 矩形エリアにEOFがある場合、RGN_XORで結合すると
 		// EOF以降のエリアも反転してしまうので、この場合はRedrawを使う

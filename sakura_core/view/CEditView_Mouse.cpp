@@ -9,7 +9,7 @@
 #include "_os/CDropTarget.h" // CDataObject
 #include "_os/CClipboard.h"
 #include "COpeBlk.h"
-#include "doc/CLayout.h"
+#include "doc/layout/CLayout.h"
 #include "uiparts/CWaitCursor.h"
 #include "uiparts/HandCursor.h"
 #include "util/input.h"
@@ -1202,7 +1202,7 @@ LRESULT CEditView::OnMOUSEWHEEL( WPARAM wParam, LPARAM lParam )
 	zDelta = (short) HIWORD(wParam);	// wheel rotation
 	xPos = (short) LOWORD(lParam);		// horizontal position of pointer
 	yPos = (short) HIWORD(lParam);		// vertical position of pointer
-//	MYTRACE_A( "CEditView::DispatchEvent() WM_MOUSEWHEEL fwKeys=%xh zDelta=%d xPos=%d yPos=%d \n", fwKeys, zDelta, xPos, yPos );
+//	MYTRACE( _T("CEditView::DispatchEvent() WM_MOUSEWHEEL fwKeys=%xh zDelta=%d xPos=%d yPos=%d \n"), fwKeys, zDelta, xPos, yPos );
 
 	if( 0 < zDelta ){
 		nScrollCode = SB_LINEUP;
@@ -1357,8 +1357,7 @@ BOOL CEditView::IsSpecialScrollMode( int nSelect )
 /* マウス左ボタン開放のメッセージ処理 */
 void CEditView::OnLBUTTONUP( WPARAM fwKeys, int xPos , int yPos )
 {
-//	MYTRACE_A( "OnLBUTTONUP()\n" );
-	CMemory		cmemBuf, cmemClip;
+//	MYTRACE( _T("OnLBUTTONUP()\n") );
 
 	/* 範囲選択終了 & マウスキャプチャーおわり */
 	if( GetSelectionInfo().IsMouseSelecting() ){	/* 範囲選択中 */
@@ -1547,9 +1546,7 @@ void CEditView::OnLBUTTONDBLCLK( WPARAM fwKeys, int _xPos , int _yPos )
 
 STDMETHODIMP CEditView::DragEnter( LPDATAOBJECT pDataObject, DWORD dwKeyState, POINTL pt, LPDWORD pdwEffect )
 {
-#ifdef _DEBUG
-	MYTRACE_A( "CEditView::DragEnter()\n" );
-#endif
+	DEBUG_TRACE( _T("CEditView::DragEnter()\n") );
 	//「OLEによるドラッグ & ドロップを使う」オプションが無効の場合にはドロップを受け付けない
 	if(!GetDllShareData().m_Common.m_sEdit.m_bUseOLE_DragDrop)return E_UNEXPECTED;
 
@@ -1588,9 +1585,7 @@ STDMETHODIMP CEditView::DragEnter( LPDATAOBJECT pDataObject, DWORD dwKeyState, P
 
 STDMETHODIMP CEditView::DragOver( DWORD dwKeyState, POINTL pt, LPDWORD pdwEffect )
 {
-#ifdef _DEBUG
-	MYTRACE_A( "CEditView::DragOver()\n" );
-#endif
+	DEBUG_TRACE( _T("CEditView::DragOver()\n") );
 
 	/* マウス移動のメッセージ処理 */
 	::ScreenToClient( GetHwnd(), (LPPOINT)&pt );
@@ -1616,9 +1611,7 @@ STDMETHODIMP CEditView::DragOver( DWORD dwKeyState, POINTL pt, LPDWORD pdwEffect
 
 STDMETHODIMP CEditView::DragLeave( void )
 {
-#ifdef _DEBUG
-	MYTRACE_A( "CEditView::DragLeave()\n" );
-#endif
+	DEBUG_TRACE( _T("CEditView::DragLeave()\n") );
 	/* 選択テキストのドラッグ中か */
 	_SetDragMode( FALSE );
 
@@ -1637,9 +1630,7 @@ STDMETHODIMP CEditView::DragLeave( void )
 
 STDMETHODIMP CEditView::Drop( LPDATAOBJECT pDataObject, DWORD dwKeyState, POINTL pt, LPDWORD pdwEffect )
 {
-#ifdef _DEBUG
-	MYTRACE_A( "CEditView::Drop()\n" );
-#endif
+	DEBUG_TRACE( _T("CEditView::Drop()\n") );
 	BOOL		bBoxData;
 	BOOL		bMove;
 	BOOL		bMoveToPrev = FALSE;
