@@ -153,8 +153,19 @@ public:
 	//イベント
 	virtual void OnStartScanLogic(){}
 
+	//! 設定更新
+	virtual void Update(void)
+	{
+		m_pCEditDoc = CEditDoc::GetInstance(0);
+		m_pTypeData = &m_pCEditDoc->m_cDocType.GetDocumentAttribute();
+	}
+
 	//#######ラップ
 	EColorIndexType GetStrategyColorSafe() const{ if(this)return GetStrategyColor(); else return COLORIDX_TEXT; }
+
+protected:
+	const CEditDoc* m_pCEditDoc;
+	const STypeConfig* m_pTypeData;
 };
 
 #include "util/design_template.h"
@@ -195,6 +206,9 @@ public:
 			const CStringRef& cLineStr,
 			int& rCommentNestLevel
 		);
+
+	//設定変更
+	void OnChangeSetting(void);
 
 	//ビューの設定・取得
 	CEditView* GetCurrentView(void) const{ return m_pcView; }
