@@ -13,12 +13,13 @@
 */
 #include "StdAfx.h"
 #include "CViewCommander.h"
+#include "CViewCommander_inline.h"
 
-#include "view/CEditView.h"
 #include "_main/CControlTray.h"
 #include "CEditApp.h"
 #include "CGrepAgent.h"
-#include "window/CEditWnd.h"
+#include "plugin/CPlugin.h"
+#include "plugin/CJackManager.h"
 
 /*! GREPダイアログの表示
 
@@ -89,6 +90,14 @@ void CViewCommander::Command_GREP( void )
 			GetEditWindow()->m_cDlgGrep.m_bGrepOutputLine,
 			GetEditWindow()->m_cDlgGrep.m_nGrepOutputStyle
 		);
+
+		//プラグイン：DocumentOpenイベント実行
+		CPlug::Array plugs;
+		CWSHIfObj::List params;
+		CJackManager::getInstance()->GetUsablePlug( PP_DOCUMENT_OPEN, 0, &plugs );
+		for( CPlug::ArrayIter it = plugs.begin(); it != plugs.end(); it++ ){
+			(*it)->Invoke(&GetEditWindow()->GetActiveView(), params);
+		}
 	}
 	else{
 		// 編集ウィンドウの上限チェック

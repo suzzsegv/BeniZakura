@@ -19,14 +19,13 @@
 
 #include "StdAfx.h"
 #include "CViewCommander.h"
+#include "CViewCommander_inline.h"
 
-#include "view/CEditView.h"
 #include "_main/CControlTray.h"
 #include "uiparts/CWaitCursor.h"
 #include "dlg/CDlgProperty.h"
 #include "dlg/CDlgCancel.h"// 2002/2/8 hor
 #include "doc/CDocReader.h"	//  Command_PROPERTY_FILE for _DEBUG
-#include "window/CEditWnd.h"/// 2002/2/3 aroka 追加
 #include "print/CPrintPreview.h"
 #include "io/CBinaryStream.h"
 #include "io/CFileLoad.h"
@@ -35,6 +34,8 @@
 #include "recent/CMRUFile.h"
 #include "util/window.h"
 #include "charset/CCodeFactory.h"
+#include "plugin/CPlugin.h"
+#include "plugin/CJackManager.h"
 #include "debug/CRunningTimer.h"
 #include "sakura_rc.h"
 
@@ -207,6 +208,14 @@ void CViewCommander::Command_FILECLOSE( void )
 void CViewCommander::Command_FILECLOSE_OPEN( LPCWSTR filename, ECodeType nCharCode, bool bViewMode )
 {
 	GetDocument()->m_cDocFileOperation.FileCloseOpen( SLoadInfo(to_tchar(filename), nCharCode, bViewMode) );
+
+	//プラグイン：DocumentOpenイベント実行
+	CPlug::Array plugs;
+	CWSHIfObj::List params;
+	CJackManager::getInstance()->GetUsablePlug( PP_DOCUMENT_OPEN, 0, &plugs );
+	for( CPlug::ArrayIter it = plugs.begin(); it != plugs.end(); it++ ){
+		(*it)->Invoke(&GetEditWindow()->GetActiveView(), params);
+	}
 }
 
 

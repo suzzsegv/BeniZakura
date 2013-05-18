@@ -448,16 +448,16 @@ BEGIN
                     BS_AUTOCHECKBOX | WS_TABSTOP,177,63,59,10
     CONTROL         "句読点ぶら下げ",IDC_CHECK_PS_KINSOKUKUTO,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,177,75,67,10
-    LTEXT           "ヘッダー(&U)",IDC_STATIC,124,168,38,8
-    LTEXT           "フッター(&D)",IDC_STATIC,124,194,35,8
     LTEXT           "行あたりの文字数：",IDC_STATIC,140,95,62,8
     LTEXT           "縦方向の行数：",IDC_STATIC,140,111,50,8
     RTEXT           "",IDC_STATIC_ENABLECOLMNS,205,95,20,8
     RTEXT           "",IDC_STATIC_ENABLELINES,205,111,20,8
     GROUPBOX        "",IDC_STATIC,135,85,97,39
+    LTEXT           "ヘッダー(&U)",IDC_STATIC,124,168,38,8
     EDITTEXT        IDC_EDIT_HEAD1,124,177,37,14,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT_HEAD2,164,177,37,14,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT_HEAD3,204,177,37,14,ES_AUTOHSCROLL
+    LTEXT           "フッター(&D)",IDC_STATIC,124,194,35,8
     EDITTEXT        IDC_EDIT_FOOT1,124,203,37,14,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT_FOOT2,164,203,37,14,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT_FOOT3,204,203,37,14,ES_AUTOHSCROLL
@@ -1419,8 +1419,9 @@ BEGIN
     CONTROL         "等幅(&E)",IDC_CHECK_SameTabWidth,"Button",
                     BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,86,115,39,10
     PUSHBUTTON      "フォント(&F)...",IDC_BUTTON_TABFONT,232,113,51,14
+    RTEXT           "Font", IDC_STATIC_TABFONT,102,127,180,17,SS_RIGHT
     CONTROL         "タブ一覧をソートする(&S)",IDC_CHECK_SortTabList,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,15,129,90,10
+                    BS_AUTOCHECKBOX | WS_TABSTOP,15,129,85,10
     LTEXT           "タイトル(&T)",IDC_STATIC,15,148,40,10
     EDITTEXT        IDC_TABWND_CAPTION,56,145,226,14,ES_AUTOHSCROLL
     GROUPBOX        "タブの外観",IDC_STATIC,7,102,280,64,WS_GROUP
@@ -1877,6 +1878,7 @@ BEGIN
                     IDC_CHECK_HTMLHELPISSINGLE,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,8,105,108,10
     GROUPBOX        "キーワードヘルプ",IDC_STATIC,3,123,285,33,WS_GROUP
+    RTEXT           "Font",IDC_STATIC_KEYWORDHELPFONT,8,136,219,17,SS_RIGHT
     PUSHBUTTON      "フォント(&F)...",IDC_BUTTON_KEYWORDHELPFONT,232,136,51,
                     14
     LTEXT           "DLL(&M)",IDC_STATIC,7,172,26,8
@@ -2573,7 +2575,7 @@ END
 STRINGTABLE DISCARDABLE 
 BEGIN
     F_FILENEW               "新規作成"
-    F_FILENEW_NEWWINDOW		"新規ウインドウを開く"
+    F_FILENEW_NEWWINDOW     "新規ウインドウを開く"
     F_FILEOPEN              "開く..."
     F_FILESAVE              "上書き保存"
     F_FILESAVEAS_DIALOG     "名前を付けて保存..."
@@ -2854,6 +2856,7 @@ BEGIN
     F_REPLACE_DIALOG        "置換..."
     F_SEARCH_CLEARMARK      "検索マークの切替え"
     F_REPLACE               "置換"
+    F_REPLACE_ALL           "すべて置換"
     F_SEARCH_BOX            "検索 (ボックス)"
     F_JUMP_SRCHSTARTPOS     "検索開始位置へ戻る"
     F_GREP_DIALOG           "Grep..."
@@ -2888,6 +2891,7 @@ BEGIN
     F_BRACKETPAIR           "対括弧の検索"
     F_BOOKMARK_SET          "ブックマーク設定・解除"
     F_BOOKMARK_NEXT         "次のブックマークへ"
+    F_BOOKMARK_PATTERN      "該当行マーク"
     F_BOOKMARK_PREV         "前のブックマークへ"
     F_BOOKMARK_RESET        "ブックマークの全解除"
     F_BOOKMARK_VIEW         "ブックマークの一覧..."
