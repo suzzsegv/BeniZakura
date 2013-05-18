@@ -363,42 +363,6 @@
 			<File
 				RelativePath="..\sakura_core\Funccode_x.hsrc"
 				>
-				<FileConfiguration
-					Name="Release_Unicode|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						CommandLine=""
-						Outputs=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug_Unicode|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						CommandLine=""
-						Outputs=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release_Ansi|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						CommandLine=""
-						Outputs=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug_Ansi|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						CommandLine=""
-						Outputs=""
-					/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\sakura_core\sakura.hh"
@@ -470,6 +434,62 @@
 			Filter="ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
 			>
 			<File
+				RelativePath="..\resource\auto_scroll_center.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\resource\auto_scroll_center.cur"
+				>
+			</File>
+			<File
+				RelativePath="..\resource\auto_scroll_down.cur"
+				>
+			</File>
+			<File
+				RelativePath="..\resource\auto_scroll_down_left.cur"
+				>
+			</File>
+			<File
+				RelativePath="..\resource\auto_scroll_down_right.cur"
+				>
+			</File>
+			<File
+				RelativePath="..\resource\auto_scroll_horizontal.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\resource\auto_scroll_horizontal.cur"
+				>
+			</File>
+			<File
+				RelativePath="..\resource\auto_scroll_left.cur"
+				>
+			</File>
+			<File
+				RelativePath="..\resource\auto_scroll_right.cur"
+				>
+			</File>
+			<File
+				RelativePath="..\resource\auto_scroll_up.cur"
+				>
+			</File>
+			<File
+				RelativePath="..\resource\auto_scroll_up_left.cur"
+				>
+			</File>
+			<File
+				RelativePath="..\resource\auto_scroll_up_right.cur"
+				>
+			</File>
+			<File
+				RelativePath="..\resource\auto_scroll_vertical.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\resource\auto_scroll_vertical.cur"
+				>
+			</File>
+			<File
 				RelativePath="..\resource\cursor_copy.cur"
 				>
 			</File>
@@ -495,14 +515,6 @@
 			</File>
 			<File
 				RelativePath="..\resource\cursor_tab_join.cur"
-				>
-			</File>
-			<File
-				RelativePath="..\resource\cursor_tab_left.cur"
-				>
-			</File>
-			<File
-				RelativePath="..\resource\cursor_tab_right.cur"
 				>
 			</File>
 			<File
