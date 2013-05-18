@@ -86,7 +86,7 @@ enum EFuncListCol {
 };
 
 /*! ソート比較用プロシージャ */
-int CALLBACK _CompareFunc_( LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort )
+int CALLBACK CompareFunc_Asc( LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort )
 {
 	CFuncInfo*		pcFuncInfo1;
 	CFuncInfo*		pcFuncInfo2;
@@ -148,6 +148,11 @@ int CALLBACK _CompareFunc_( LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort )
 	return -1;
 }
 
+int CALLBACK CompareFunc_Desc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort)
+{
+	return -1 * CompareFunc_Asc(lParam1, lParam2, lParamSort);
+}
+
 LPDLGTEMPLATE CDlgFuncList::m_pDlgTemplate = NULL;
 DWORD CDlgFuncList::m_dwDlgTmpSize = 0;
 
@@ -161,6 +166,7 @@ CDlgFuncList::CDlgFuncList()
 	m_nListType = OUTLINE_DEFAULT;
 	//	Apr. 23, 2005 genta 行番号を左端へ
 	m_nSortCol = 0;				/* ソートする列番号 2004.04.06 zenryaku 標準は行番号(1列目) */
+	m_nSortColOld = -1;
 	m_bLineNumIsCRLF = false;	/* 行番号の表示 FALSE=折り返し単位／TRUE=改行単位 */
 	m_bWaitTreeProcess = false;	// 2002.02.16 hor Treeのダブルクリックでフォーカス移動できるように 2/4
 	m_nSortType = 0;
@@ -296,6 +302,8 @@ HWND CDlgFuncList::DoModeless(
 	m_bLineNumIsCRLF = bLineNumIsCRLF;	/* 行番号の表示 FALSE=折り返し単位／TRUE=改行単位 */
 	m_nDocType = pcEditView->GetDocument()->m_cDocType.GetDocumentType().GetIndex();
 	m_nSortCol = pcEditView->GetDocument()->m_cDocType.GetDocumentAttribute().m_nOutlineSortCol;
+	m_nSortColOld = m_nSortCol;
+	m_bSortDesc = pcEditView->GetDocument()->m_cDocType.GetDocumentAttribute().m_bOutlineSortDesc;
 	m_nSortType = pcEditView->GetDocument()->m_cDocType.GetDocumentAttribute().m_nOutlineSortType;
 
 	// 2007.04.18 genta : 「フォーカスを移す」と「自動的に閉じる」がチェックされている場合に
@@ -639,6 +647,8 @@ void CDlgFuncList::SetData()
 		// 以前とはドキュメントタイプが変わったので初期化する
 		m_nDocType = nDocType;
 		m_nSortCol = pcEditView->GetDocument()->m_cDocType.GetDocumentAttribute().m_nOutlineSortCol;
+		m_nSortColOld = m_nSortCol;
+		m_bSortDesc = pcEditView->GetDocument()->m_cDocType.GetDocumentAttribute().m_bOutlineSortDesc;
 		m_nSortType = pcEditView->GetDocument()->m_cDocType.GetDocumentAttribute().m_nOutlineSortType;
 	}
 	if( m_nViewType == 1 ){
@@ -659,7 +669,7 @@ void CDlgFuncList::SetData()
 		::EnableWindow( ::GetDlgItem( GetHwnd(), IDC_COMBO_nSortType ), FALSE );
 		::ShowWindow( GetDlgItem( GetHwnd(), IDC_COMBO_nSortType ), SW_HIDE );
 		::ShowWindow( GetDlgItem( GetHwnd(), IDC_STATIC_nSortType ), SW_HIDE );
-		//ListView_SortItems( hwndList, _CompareFunc_, (LPARAM)this );  // 2005.04.05 zenryaku ソート状態を保持
+		//ListView_SortItems( hwndList, CompareFunc_Asc, (LPARAM)this );  // 2005.04.05 zenryaku ソート状態を保持
 		SortListView( hwndList, m_nSortCol );	// 2005.04.23 genta 関数化(ヘッダ書き換えのため)
 	}
 }
@@ -754,14 +764,16 @@ void CDlgFuncList::SetTreeJava( HWND hwndDlg, BOOL bAddClass )
 		pcFuncInfo = m_pcFuncInfoArr->GetAt( i );
 		const TCHAR*		pWork;
 		pWork = pcFuncInfo->m_cmemFuncName.GetStringPtr();
+		int m = 0;
+		nClassNest = 0;
 		/* クラス名::メソッドの場合 */
-		if( NULL != ( pPos = _tcsstr( pWork, _T("::") ) ) ){
+		if( NULL != ( pPos = _tcsstr( pWork, _T("::") ) )
+			&& auto_strncmp( _T("operator "), pWork, 9) != 0 ){
 			/* インナークラスのネストレベルを調べる */
-			int	k, m;
+			int	k;
 			int	nWorkLen;
 			int	nCharChars;
-			nClassNest = 0;
-			m = 0;
+			int	nNestTemplate = 0;
 			nWorkLen = _tcslen( pWork );
 			for( k = 0; k < nWorkLen; ++k ){
 				//2009.9.21 syat ネストが深すぎる際のBOF対策
@@ -771,7 +783,7 @@ void CDlgFuncList::SetTreeJava( HWND hwndDlg, BOOL bAddClass )
 				}
 				// 2005-09-02 D.S.Koba GetSizeOfChar
 				nCharChars = CNativeT::GetSizeOfChar( pWork, nWorkLen, k );
-				if( 1 == nCharChars && _T(':') == pWork[k] ){
+				if( 1 == nCharChars && 0 == nNestTemplate && _T(':') == pWork[k] ){
 					//	Jan. 04, 2001 genta
 					//	C++の統合のため、\に加えて::をクラス区切りとみなすように
 					if( k < nWorkLen - 1 && _T(':') == pWork[k+1] ){
@@ -780,6 +792,10 @@ void CDlgFuncList::SetTreeJava( HWND hwndDlg, BOOL bAddClass )
 						++nClassNest;
 						m = k + 2;
 						++k;
+						// Klass::operator std::string
+						if( auto_strncmp( _T("operator "), pWork + m, 9) == 0 ){
+							break;
+						}
 					}
 					else 
 						break;
@@ -790,11 +806,22 @@ void CDlgFuncList::SetTreeJava( HWND hwndDlg, BOOL bAddClass )
 					++nClassNest;
 					m = k + 1;
 				}
+				else if( 1 == nCharChars && _T('<') == pWork[k] ){
+					// namesp::function<std::string> のようなものを処理する
+					nNestTemplate++;
+				}
+				else if( 1 == nCharChars && _T('>') == pWork[k] ){
+					if( 0 < nNestTemplate ){
+						nNestTemplate--;
+					}
+				}
 				if( 2 == nCharChars ){
 					++k;
 				}
 			}
-
+		}
+		if( 0 < nClassNest ){
+			int	k;
 			//	Jan. 04, 2001 genta
 			//	関数先頭のセット(ツリー構築で使う)
 			pWork = pWork + m; // 2 == lstrlen( "::" );
@@ -1676,6 +1703,11 @@ BOOL CDlgFuncList::OnNotify( WPARAM wParam, LPARAM lParam )
 //			MYTRACE( _T("LVN_COLUMNCLICK\n") );
 			m_nSortCol =  pnlv->iSubItem;
 			pcEditView->GetDocument()->m_cDocType.GetDocumentAttribute().m_nOutlineSortCol = m_nSortCol;
+			if( m_nSortCol == m_nSortColOld ){
+				m_bSortDesc = !m_bSortDesc;
+			}
+			m_nSortColOld = m_nSortCol;
+			pcEditView->GetDocument()->m_cDocType.GetDocumentAttribute().m_bOutlineSortDesc = m_bSortDesc;
 			//	Apr. 23, 2005 genta 関数として独立させた
 			SortListView( hwndList, m_nSortCol );
 			return TRUE;
@@ -1802,7 +1834,7 @@ void CDlgFuncList::SortListView(HWND hwndList, int sortcol)
 		ListView_SetColumn( hwndList, col_no, &col );
 	// To Here 2001.12.07 hor
 
-		ListView_SortItems( hwndList, _CompareFunc_, (LPARAM)this );
+		ListView_SortItems( hwndList, (m_bSortDesc ? CompareFunc_Desc : CompareFunc_Asc), (LPARAM)this );
 	}
 	//	2005.04.23 zenryaku 選択された項目が見えるようにする
 

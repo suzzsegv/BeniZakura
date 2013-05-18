@@ -409,12 +409,15 @@
 	Version 129:
 	「終了時、改行の一致を検査する」を追加 2013.04.14 Uchi
 
+	Version 130:
+	アウトラインの降順ソート
+
 	-- 統合されたので元に戻す（1000～1023が使用済み） 	2008.11.16 nasukoji
 	-- Version 1000:
 	-- バージョン1000以降を本家統合までの間、使わせてください。かなり頻繁に構成が変更されると思われるので。by kobake 2008.03.02
 
 */
-#define N_SHAREDATA_VERSION		855785008
+#define N_SHAREDATA_VERSION		855785009
 #define STR_SHAREDATA_VERSION	NUM_TO_STR(N_SHAREDATA_VERSION)
 #define	GSTR_SHAREDATA	(_T("BeniZakuraShareData") _T(CON_SKR_MACHINE_SUFFIX_) _T(_CODE_SUFFIX_) _T(_DEBUG_SUFFIX_) _T(STR_SHAREDATA_VERSION))
 
@@ -468,13 +471,8 @@
 #define FN_TOOL_BMP  _T("my_icons.bmp")
 
 //	標準アプリケーションアイコンリソース名
-#ifdef _DEBUG
-	#define ICON_DEFAULT_APP IDI_ICON_DEBUG
-	#define ICON_DEFAULT_GREP IDI_ICON_GREP
-#else
-	#define ICON_DEFAULT_APP IDI_ICON_STD
-	#define ICON_DEFAULT_GREP IDI_ICON_GREP
-#endif
+#define ICON_DEFAULT_APP IDI_ICON_STD
+#define ICON_DEFAULT_GREP IDI_ICON_GREP
 
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
