@@ -338,6 +338,7 @@ view/CViewFont.o \
 view/CViewParser.o \
 view/CViewSelect.o \
 view/DispPos.o \
+view/colors/.CColorStrategy.cpp-ep.o \
 view/colors/CColorStrategy.o \
 view/colors/CColor_Comment.o \
 view/colors/CColor_Comment_Cpp.o \
@@ -410,7 +411,7 @@ $(HEADERMAKE): $(HEADERMAKETOOLDIR)/HeaderMake.cpp
 
 .rc.o:
 	$(RCTOOL) $< sakura_grc.rc
-	$(RC) --language=0411 sakura_grc.rc -o $@
+	$(RC) --language=0411 $(DEFINES) sakura_grc.rc -o $@
 
 clean:
 	$(RM) $(exe) $(OBJS) $(RCTOOL) $(HEADERMAKE) sakura_grc.rc

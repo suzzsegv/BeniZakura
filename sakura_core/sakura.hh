@@ -41,6 +41,7 @@
 #define HLP000156	156 //SJISで開き直す
 #define HLP000157	157 //JISで開き直す
 #define HLP000158	158 //EUCで開き直す
+#define HLP000341	341 //Latin1で開き直す
 #define HLP000159	159 //Unicodeで開き直す
 #define HLP000256	256 //UnicodeBEで開き直す
 #define HLP000160	160 //UTF-8で開き直す
@@ -183,7 +184,7 @@
 #define HLP000068	68 //「ツール(T)」メニューの一覧
 #define HLP000069	69 //ツールバーを表示(隠す)
 #define HLP000070	70 //ファンクションキーを表示(隠す)
-#define	HLP000282	282	//タブの表示／非表示	//@@@ 2003.06.10 MIK
+#define HLP000282	282	//タブの表示／非表示	//@@@ 2003.06.10 MIK
 #define HLP000134	134 //ステータスバーを表示(隠す)
 #define HLP000072	72 //タイプ別設定一覧
 #define HLP000338	338 //タイプ別設定インポート	// 2010/5/1 Uchi
@@ -603,7 +604,7 @@
 #define HIDC_BUTTON_IMPORT_COLOR				11404 //インポート
 #define HIDC_BUTTON_EXPORT_COLOR				11405 //エクスポート
 #define HIDC_CHECK_DISP							11410 //色分け表示
-#define HIDC_CHECK_FAT							11411 //太字
+#define HIDC_CHECK_BOLD							11411 //太字
 #define HIDC_CHECK_UNDERLINE					11412 //下線
 #define HIDC_CHECK_LCPOS						11413 //桁指定１
 #define HIDC_CHECK_LCPOS2						11414 //桁指定２
@@ -817,7 +818,7 @@
 #define HIDC_PS_COMBO_FONT_ZEN	12507	//全角フォント
 #define HIDC_PS_COMBO_SETTINGNAME	12508	//ページ設定
 #define HIDC_PS_COMBO_PAPER		12509	//用紙サイズ
-#define HIDC_PS_COMBO_PAPERORIENT	12510	//用紙向き
+#define HIDC_PS_STATIC_PAPERORIENT	12510	//用紙向き
 #define HIDC_PS_EDIT_FONTWIDTH	12511	//フォント幅
 #define HIDC_PS_EDIT_LINESPACE	12512	//行送り
 #define HIDC_PS_EDIT_DANSUU		12513	//段数

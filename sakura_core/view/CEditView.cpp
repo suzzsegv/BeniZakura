@@ -2168,10 +2168,10 @@ inline bool CEditView::IsDrawCursorVLinePos( int posX ){
 /* カーソル行アンダーラインのON */
 void CEditView::CaretUnderLineON( bool bDraw, bool bDrawPaint )
 {
-	BOOL bUnderLine = m_pcEditDoc->m_cDocType.GetDocumentAttribute().m_ColorInfoArr[COLORIDX_UNDERLINE].m_bDisp;
-	BOOL bCursorVLine = m_pcEditDoc->m_cDocType.GetDocumentAttribute().m_ColorInfoArr[COLORIDX_CURSORVLINE].m_bDisp;
-	BOOL bCursorLineBg = m_pcEditDoc->m_cDocType.GetDocumentAttribute().m_ColorInfoArr[COLORIDX_CARETLINEBG].m_bDisp;
-	if( FALSE == bUnderLine && FALSE == bCursorVLine && FALSE == bCursorLineBg ){
+	bool bUnderLine = m_pcEditDoc->m_cDocType.GetDocumentAttribute().m_ColorInfoArr[COLORIDX_UNDERLINE].m_bDisp;
+	bool bCursorVLine = m_pcEditDoc->m_cDocType.GetDocumentAttribute().m_ColorInfoArr[COLORIDX_CURSORVLINE].m_bDisp;
+	bool bCursorLineBg = m_pcEditDoc->m_cDocType.GetDocumentAttribute().m_ColorInfoArr[COLORIDX_CARETLINEBG].m_bDisp;
+	if( !bUnderLine && !bCursorVLine && !bCursorLineBg ){
 		return;
 	}
 
@@ -2238,7 +2238,7 @@ void CEditView::CaretUnderLineON( bool bDraw, bool bDrawPaint )
 			::LineTo(   gr, m_nOldCursorLineX, GetTextArea().GetAreaBottom() );
 			int nBoldX = m_nOldCursorLineX - 1;
 			// 「太字」のときは2dotの線にする。その際カーソルに掛からないように左側を太くする
-			if( m_pcEditDoc->m_cDocType.GetDocumentAttribute().m_ColorInfoArr[COLORIDX_CURSORVLINE].m_bFatFont &&
+			if( m_pcEditDoc->m_cDocType.GetDocumentAttribute().m_ColorInfoArr[COLORIDX_CURSORVLINE].m_bBoldFont &&
 				IsDrawCursorVLinePos(nBoldX) ){
 				::MoveToEx( gr, nBoldX, GetTextArea().GetAreaTop(), NULL );
 				::LineTo(   gr, nBoldX, GetTextArea().GetAreaBottom() );
@@ -2298,8 +2298,8 @@ void CEditView::CaretUnderLineON( bool bDraw, bool bDrawPaint )
 void CEditView::CaretUnderLineOFF( bool bDraw, bool bDrawPaint, bool bResetFlag )
 {
 	if( !m_pcEditDoc->m_cDocType.GetDocumentAttribute().m_ColorInfoArr[COLORIDX_UNDERLINE].m_bDisp &&
-			FALSE == m_pcEditDoc->m_cDocType.GetDocumentAttribute().m_ColorInfoArr[COLORIDX_CURSORVLINE].m_bDisp &&
-			FALSE == m_pcEditDoc->m_cDocType.GetDocumentAttribute().m_ColorInfoArr[COLORIDX_CARETLINEBG].m_bDisp ){
+			!m_pcEditDoc->m_cDocType.GetDocumentAttribute().m_ColorInfoArr[COLORIDX_CURSORVLINE].m_bDisp &&
+			!m_pcEditDoc->m_cDocType.GetDocumentAttribute().m_ColorInfoArr[COLORIDX_CARETLINEBG].m_bDisp ){
 		return;
 	}
 	if( -1 != m_nOldUnderLineY ){

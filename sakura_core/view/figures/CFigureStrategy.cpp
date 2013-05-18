@@ -113,7 +113,7 @@ bool CFigureSpace::DrawImp_StyleSelect(SColorStrategyInfo* pInfo)
 	pInfo->gr.PushTextBackColor(crBack);
 	// Figureが下線指定ならこちらで下線を指定。元の色のほうが下線指定なら、DrawImp_DrawUnderlineで下線だけ指定
 	pInfo->gr.PushMyFont(
-		pInfo->pcView->GetFontset().ChooseFontHandle(cSpaceType.IsFatFont() || cCurrentType.IsFatFont(), cSpaceType.HasUnderLine())
+		pInfo->pcView->GetFontset().ChooseFontHandle(cSpaceType.IsBoldFont() || cCurrentType.IsBoldFont(), cSpaceType.HasUnderLine())
 	);
 	bool bTrans = pcView->IsBkBitmap() && cTextType.GetBackColor() == crBack;
 	return bTrans;
@@ -174,11 +174,14 @@ CFigureManager::CFigureManager()
 	m_vFigures.push_back(new CFigure_HanBinary());
 	m_vFigures.push_back(new CFigure_ZenBinary());
 	m_vFigures.push_back(new CFigure_Text());
+
+	OnChangeSetting();
 }
 
 CFigureManager::~CFigureManager()
 {
-	for(int i=0;i<(int)m_vFigures.size();i++){
+	int size = (int)m_vFigures.size();
+	for(int i = 0; i < size; i++){
 		SAFE_DELETE(m_vFigures[i]);
 	}
 	m_vFigures.clear();
@@ -187,7 +190,8 @@ CFigureManager::~CFigureManager()
 //$$ 高速化可能
 CFigure& CFigureManager::GetFigure(const wchar_t* pText)
 {
-	for(int i=0;i<(int)m_vFigures.size();i++){
+	int size = (int)m_vFigures.size();
+	for(int i = 0; i < size; i++){
 		CFigure* pcFigure = m_vFigures[i];
 		if(pcFigure->Match(pText)){
 			return *pcFigure;
@@ -196,5 +200,15 @@ CFigure& CFigureManager::GetFigure(const wchar_t* pText)
 	assert(0);
 	static CFigure_Text cDummy;
 	return cDummy;
+}
+
+/*! 設定更新
+*/
+void CFigureManager::OnChangeSetting(void)
+{
+	int size = (int)m_vFigures.size();
+	for(int i = 0; i < size; i++){
+		m_vFigures[i]->Update();
+	}
 }
 

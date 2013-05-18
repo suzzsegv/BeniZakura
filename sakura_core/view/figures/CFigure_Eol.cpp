@@ -40,10 +40,9 @@ bool CFigure_Eol::Match(const wchar_t* pText) const
 bool CFigure_Eol::DrawImp(SColorStrategyInfo* pInfo)
 {
 	CEditView* pcView = pInfo->pcView;
-	const CEditDoc* pcDoc =  pcView->m_pcEditDoc;
 
 	// ‰üsŽæ“¾
-	const CLayout*	pcLayout2 = pcDoc->m_cLayoutMgr.SearchLineByLayoutY(pInfo->pDispPos->GetLayoutLineRef());
+	const CLayout*	pcLayout2 = m_pCEditDoc->m_cLayoutMgr.SearchLineByLayoutY(pInfo->pDispPos->GetLayoutLineRef());
 	CEol cEol = pcLayout2->GetLayoutEol();
 	if(cEol.GetLen()){
 		m_cEol = cEol;
@@ -87,7 +86,7 @@ bool CFigure_Eol::DrawImp(SColorStrategyInfo* pInfo)
 			pInfo->gr.PushTextBackColor(crBack);
 			bool bTrans = pcView->IsBkBitmap() && cTextType.GetBackColor() == crBack;
 			pInfo->gr.PushMyFont(
-				pInfo->pcView->GetFontset().ChooseFontHandle(cSpaceType.IsFatFont() || currentStyle.IsFatFont(), cSpaceType.HasUnderLine())
+				pInfo->pcView->GetFontset().ChooseFontHandle(cSpaceType.IsBoldFont() || currentStyle.IsBoldFont(), cSpaceType.HasUnderLine())
 			);
 			
 			DispPos sPos(*pInfo->pDispPos);	// Œ»ÝˆÊ’u‚ðŠo‚¦‚Ä‚¨‚­

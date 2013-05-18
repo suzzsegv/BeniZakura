@@ -187,7 +187,7 @@ LRESULT CALLBACK CEditWndProc(
 //	@date 2002.2.17 YAZAKI CShareDataのインスタンスは、CProcessにひとつあるのみ。
 CEditWnd::CEditWnd()
 : m_hWnd( NULL )
-, m_bDragMode( FALSE )
+, m_bDragMode( false )
 , m_uMSIMEReconvertMsg( ::RegisterWindowMessage( RWM_RECONVERT ) ) // 20020331 aroka 再変換対応 for 95/NT
 , m_uATOKReconvertMsg( ::RegisterWindowMessage( MSGNAME_ATOK_RECONVERT ) )
 , m_pPrintPreview( NULL ) //@@@ 2002.01.14 YAZAKI 印刷プレビューをCPrintPreviewに独立させたことによる変更
@@ -3209,7 +3209,7 @@ LRESULT CEditWnd::OnLButtonUp( WPARAM wParam, LPARAM lParam )
 		return 0;
 	}
 
-	m_bDragMode = FALSE;
+	m_bDragMode = false;
 //	MYTRACE( _T("m_bDragMode = FALSE (OnLButtonUp)\n"));
 	ReleaseCapture();
 	::InvalidateRect( GetHwnd(), NULL, TRUE );
@@ -3415,34 +3415,23 @@ BOOL CEditWnd::OnPrintPageSetting( void )
 	/* 印刷設定（CANCEL押したときに破棄するための領域） */
 	CDlgPrintSetting	cDlgPrintSetting;
 	BOOL				bRes;
-	PRINTSETTING		PrintSettingArr[MAX_PRINTSETTINGARR];
-	int					i;
 	int					nCurrentPrintSetting;
-	for( i = 0; i < MAX_PRINTSETTINGARR; ++i ){
-		PrintSettingArr[i] = m_pShareData->m_PrintSettingArr[i];
-	}
 
-//	cDlgPrintSetting.Create( G_AppInstance(), GetHwnd() );
 	nCurrentPrintSetting = GetDocument().m_cDocType.GetDocumentAttribute().m_nCurrentPrintSetting;
 	bRes = cDlgPrintSetting.DoModal(
 		G_AppInstance(),
 //@@@ 2002.01.14 YAZAKI 印刷プレビューをCPrintPreviewに独立させたことによる変更
 		GetHwnd(),
 		&nCurrentPrintSetting, /* 現在選択している印刷設定 */
-		PrintSettingArr
+		m_pShareData->m_PrintSettingArr // 現在の設定はダイアログ側で保持する 2013.5.1 aroka
 	);
 
 	if( TRUE == bRes ){
 		/* 現在選択されているページ設定の番号が変更されたか */
-		if( nCurrentPrintSetting !=
-			GetDocument().m_cDocType.GetDocumentType()->m_nCurrentPrintSetting
-		){
-//			/* 変更フラグ(タイプ別設定) */
+		if( GetDocument().m_cDocType.GetDocumentAttribute().m_nCurrentPrintSetting != nCurrentPrintSetting )
+		{
+			/* 変更フラグ(タイプ別設定) */
 			GetDocument().m_cDocType.GetDocumentAttribute().m_nCurrentPrintSetting = nCurrentPrintSetting;
-		}
-
-		for( i = 0; i < MAX_PRINTSETTINGARR; ++i ){
-			m_pShareData->m_PrintSettingArr[i] = PrintSettingArr[i];
 		}
 
 //@@@ 2002.01.14 YAZAKI 印刷プレビューをCPrintPreviewに独立させたことによる変更
@@ -3692,7 +3681,7 @@ bool CEditWnd::GetRelatedIcon(const TCHAR* szFile, HICON* hIconBig, HICON* hIcon
 void CEditWnd::InitMenubarMessageFont(void)
 {
 	TEXTMETRIC	tm;
-	LOGFONT	lf;
+	LOGFONT		lf;
 	HDC			hdc;
 	HFONT		hFontOld;
 
