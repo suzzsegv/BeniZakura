@@ -16,13 +16,12 @@
 	</ToolFiles>
 	<Configurations>
 		<Configuration
-			Name="Release_Ansi|Win32"
+			Name="Release_Unicode|Win32"
 			OutputDirectory="$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)\obj"
 			ConfigurationType="1"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="false"
-			CharacterSet="2"
+			CharacterSet="1"
+			WholeProgramOptimization="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -39,12 +38,6 @@
 			/>
 			<Tool
 				Name="VCMIDLTool"
-				PreprocessorDefinitions="NDEBUG"
-				MkTypLibCompatible="true"
-				SuppressStartupBanner="true"
-				TargetEnvironment="1"
-				TypeLibraryName=".\$(IntDir)/sakura.tlb"
-				HeaderFileName=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
@@ -54,16 +47,9 @@
 				PreprocessorDefinitions="WIN32;_WINDOWS;NOMINMAX;NDEBUG"
 				StringPooling="true"
 				RuntimeLibrary="0"
-				EnableFunctionLevelLinking="true"
-				RuntimeTypeInfo="true"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="stdafx.h"
-				PrecompiledHeaderFile="$(IntDir)\$(ProjectName).pch"
-				AssemblerListingLocation="$(IntDir)/"
-				ObjectFile="$(IntDir)/"
-				ProgramDataBaseFileName="$(IntDir)/"
+				PrecompiledHeaderThrough="StdAfx.h"
 				WarningLevel="3"
-				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
 			/>
 			<Tool
@@ -81,10 +67,172 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="comctl32.lib Imm32.lib mpr.lib imagehlp.lib"
 				LinkIncremental="1"
-				SuppressStartupBanner="true"
-				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(TargetDir)$(TargetName).pdb"
 				GenerateMapFile="true"
+				SubSystem="2"
+				LargeAddressAware="2"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
+				TargetMachine="1"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+				EmbedManifest="false"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+				CommandLine="call postBuild.bat &quot;$(TargetPath).manifest&quot;"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Debug_Unicode|Win32"
+			OutputDirectory="$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)\obj"
+			ConfigurationType="1"
+			CharacterSet="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+				CommandLine="call preBuild.bat"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="..\sakura_core"
+				PreprocessorDefinitions="WIN32;_WINDOWS;NOMINMAX;_DEBUG"
+				MinimalRebuild="true"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="1"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough="StdAfx.h"
+				WarningLevel="3"
+				DebugInformationFormat="4"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_DEBUG"
+				Culture="1041"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="comctl32.lib Imm32.lib mpr.lib imagehlp.lib"
+				LinkIncremental="2"
+				GenerateDebugInformation="true"
+				SubSystem="2"
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
+				TargetMachine="1"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+				EmbedManifest="false"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+				CommandLine="call postBuild.bat &quot;$(TargetPath).manifest&quot;"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Release_Ansi|Win32"
+			OutputDirectory="$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)\obj"
+			ConfigurationType="1"
+			CharacterSet="2"
+			WholeProgramOptimization="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+				CommandLine="call preBuild.bat"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="1"
+				InlineFunctionExpansion="1"
+				AdditionalIncludeDirectories="..\sakura_core"
+				PreprocessorDefinitions="WIN32;_WINDOWS;NOMINMAX;_DEBUG"
+				StringPooling="true"
+				RuntimeLibrary="0"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough="StdAfx.h"
+				WarningLevel="3"
+				DebugInformationFormat="3"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="NDEBUG"
+				Culture="1041"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="comctl32.lib Imm32.lib mpr.lib imagehlp.lib"
+				LinkIncremental="1"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
@@ -121,8 +269,6 @@
 			OutputDirectory="$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)\obj"
 			ConfigurationType="1"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
 			>
 			<Tool
@@ -140,240 +286,26 @@
 			/>
 			<Tool
 				Name="VCMIDLTool"
-				PreprocessorDefinitions="_DEBUG"
-				MkTypLibCompatible="true"
-				SuppressStartupBanner="true"
-				TargetEnvironment="1"
-				TypeLibraryName=".\$(IntDir)/sakura.tlb"
-				HeaderFileName=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\sakura_core"
-				PreprocessorDefinitions="WIN32;_WINDOWS;NOMINMAX;_DEBUG"
-				MinimalRebuild="true"
-				BasicRuntimeChecks="3"
-				RuntimeLibrary="1"
-				RuntimeTypeInfo="true"
-				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="stdafx.h"
-				PrecompiledHeaderFile="$(IntDir)\$(ProjectName).pch"
-				AssemblerListingLocation="$(IntDir)/"
-				ObjectFile="$(IntDir)/"
-				ProgramDataBaseFileName="$(IntDir)/"
-				WarningLevel="3"
-				SuppressStartupBanner="true"
-				DebugInformationFormat="4"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_DEBUG"
-				Culture="1041"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="comctl32.lib Imm32.lib mpr.lib imagehlp.lib"
-				LinkIncremental="2"
-				SuppressStartupBanner="true"
-				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(TargetDir)$(TargetName).pdb"
-				SubSystem="2"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
-				TargetMachine="1"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
-				EmbedManifest="false"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-				CommandLine="call postBuild.bat &quot;$(TargetPath).manifest&quot;"
-			/>
-		</Configuration>
-		<Configuration
-			Name="Debug_Unicode|Win32"
-			OutputDirectory="$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)\obj"
-			ConfigurationType="1"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="false"
-			CharacterSet="1"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-				CommandLine="call preBuild.bat"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-				PreprocessorDefinitions="_DEBUG"
-				MkTypLibCompatible="true"
-				SuppressStartupBanner="true"
-				TargetEnvironment="1"
-				TypeLibraryName=".\$(IntDir)/sakura.tlb"
-				HeaderFileName=""
-			/>
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="0"
-				AdditionalIncludeDirectories="..\sakura_core"
-				PreprocessorDefinitions="WIN32;_WINDOWS;NOMINMAX;_DEBUG"
-				MinimalRebuild="true"
-				BasicRuntimeChecks="3"
-				SmallerTypeCheck="false"
-				RuntimeLibrary="1"
-				RuntimeTypeInfo="true"
-				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="stdafx.h"
-				PrecompiledHeaderFile="$(IntDir)\$(ProjectName).pch"
-				AssemblerListingLocation="$(IntDir)/"
-				ObjectFile="$(IntDir)/"
-				ProgramDataBaseFileName="$(IntDir)/"
-				WarningLevel="3"
-				SuppressStartupBanner="true"
-				DebugInformationFormat="4"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_DEBUG"
-				Culture="1041"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="comctl32.lib Imm32.lib mpr.lib imagehlp.lib"
-				LinkIncremental="2"
-				SuppressStartupBanner="true"
-				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(TargetDir)$(TargetName).pdb"
-				SubSystem="2"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
-				TargetMachine="1"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
-				EmbedManifest="false"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-				CommandLine="call postBuild.bat &quot;$(TargetPath).manifest&quot;"
-			/>
-		</Configuration>
-		<Configuration
-			Name="Release_Unicode|Win32"
-			OutputDirectory="$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)\obj"
-			ConfigurationType="1"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="false"
-			CharacterSet="1"
-			WholeProgramOptimization="1"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-				CommandLine="call preBuild.bat"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-				PreprocessorDefinitions="NDEBUG"
-				MkTypLibCompatible="true"
-				SuppressStartupBanner="true"
-				TargetEnvironment="1"
-				TypeLibraryName=".\$(IntDir)/sakura.tlb"
-				HeaderFileName=""
-			/>
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="2"
-				InlineFunctionExpansion="1"
-				EnableIntrinsicFunctions="false"
-				FavorSizeOrSpeed="1"
-				OmitFramePointers="true"
 				AdditionalIncludeDirectories="..\sakura_core"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NOMINMAX;NDEBUG"
-				StringPooling="true"
-				ExceptionHandling="1"
-				RuntimeLibrary="0"
-				EnableFunctionLevelLinking="false"
-				EnableEnhancedInstructionSet="2"
-				RuntimeTypeInfo="true"
+				MinimalRebuild="true"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="1"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="stdafx.h"
-				PrecompiledHeaderFile="$(IntDir)\$(ProjectName).pch"
-				AssemblerListingLocation="$(IntDir)/"
-				ObjectFile="$(IntDir)/"
-				ProgramDataBaseFileName="$(IntDir)/"
+				PrecompiledHeaderThrough="StdAfx.h"
 				WarningLevel="3"
-				SuppressStartupBanner="true"
-				DebugInformationFormat="3"
+				DebugInformationFormat="4"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="NDEBUG"
+				PreprocessorDefinitions="_DEBUG"
 				Culture="1041"
 			/>
 			<Tool
@@ -382,15 +314,9 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="comctl32.lib Imm32.lib mpr.lib imagehlp.lib"
-				LinkIncremental="1"
-				SuppressStartupBanner="true"
+				LinkIncremental="2"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(TargetDir)$(TargetName).pdb"
-				GenerateMapFile="true"
 				SubSystem="2"
-				LargeAddressAware="2"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
 				TargetMachine="1"
@@ -438,16 +364,7 @@
 				RelativePath="..\sakura_core\Funccode_x.hsrc"
 				>
 				<FileConfiguration
-					Name="Release_Ansi|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						CommandLine=""
-						Outputs=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug_Ansi|Win32"
+					Name="Release_Unicode|Win32"
 					>
 					<Tool
 						Name="VCCustomBuildTool"
@@ -465,7 +382,16 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release_Unicode|Win32"
+					Name="Release_Ansi|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine=""
+						Outputs=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug_Ansi|Win32"
 					>
 					<Tool
 						Name="VCCustomBuildTool"
@@ -490,17 +416,7 @@
 				RelativePath="..\sakura_core\StdAfx.cpp"
 				>
 				<FileConfiguration
-					Name="Release_Ansi|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						UsePrecompiledHeader="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug_Ansi|Win32"
+					Name="Release_Unicode|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -520,7 +436,17 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release_Unicode|Win32"
+					Name="Release_Ansi|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						UsePrecompiledHeader="1"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug_Ansi|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
