@@ -11,6 +11,10 @@
 #include <Windows.h>
 #undef APSTUDIO_HIDDEN_SYMBOLS
 #include "funccode_define.h"
+#include "svnrev.h"
+
+#define _NUM_TO_STR(n) #n
+#define NUM_TO_STR(n) _NUM_TO_STR(n)
 
 /////////////////////////////////////////////////////////////////////////////
 #undef APSTUDIO_READONLY_SYMBOLS
@@ -23,6 +27,10 @@
 LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
 #pragma code_page(932)
 #endif //_WIN32
+
+#define	S_COPYRIGHT	"Copyright (C) 1998-2013  by Norio Nakatani & Collaborators"
+#define PR_VER	0,0,0,8
+#define FL_VER	PR_VER
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -2455,8 +2463,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,0,0,8
- PRODUCTVERSION 0,0,0,8
+ FILEVERSION    FL_VER
+ PRODUCTVERSION PR_VER
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x01L
@@ -2472,15 +2480,24 @@ BEGIN
         BLOCK "041104b0"
         BEGIN
             VALUE "Comments", "このソフトはフリーソフトです。\0"
-            VALUE "CompanyName", "BeniZakura Text Editor\0"
-            VALUE "FileDescription", "紅桜\0"
-            VALUE "FileVersion", "0.0.0.8\0"
-            VALUE "InternalName", "beni zakura\0"
-            VALUE "LegalCopyright", "Copyright (C) 1998-2013  by Norio Nakatani & Collaborators,\0"
+            VALUE "CompanyName", "BeniZakura\0"
+            VALUE "FileDescription", "紅桜 Text Editor\0"
+            VALUE "FileVersion", NUM_TO_STR(FL_VER)
+            VALUE "InternalName", "BeniZakura\0"
+            VALUE "LegalCopyright", S_COPYRIGHT
             VALUE "LegalTrademarks", " \0"
             VALUE "OriginalFilename", "BeniZakura.exe\0"
             VALUE "ProductName", "紅桜\0"
-            VALUE "ProductVersion", "0.0.0.8\0"
+            VALUE "ProductVersion", NUM_TO_STR(PR_VER)
+#if (SVN_REV != 0)
+                " (r" NUM_TO_STR(SVN_REV) ")"
+#endif
+#ifdef _DEBUG
+                " Debug version"
+#endif
+#ifndef _UNICODE
+                " ANSI"
+#endif
         END
     END
     BLOCK "VarFileInfo"
