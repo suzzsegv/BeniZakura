@@ -24,8 +24,15 @@ inline bool IsHeadCppKeyword(const wchar_t* pData)
  *	C/C++ キーワード
  */
 const wchar_t* g_defaultKeywordSetCpp[] = {
-	L"__FILE__",
+	L"__arm",
+	L"__GNUC__",
+	L"__BIG_ENDIAN__",
+	L"__LITTLE_ENDIAN__",
+	L"__x86_64__",
+	L"__attribute__",
+	L"__cplusplus",
 	L"__declspec",
+	L"aligned",
 	L"asm",
 	L"auto",
 	L"break",
@@ -42,7 +49,6 @@ const wchar_t* g_defaultKeywordSetCpp[] = {
 	L"explicit",
 	L"export",
 	L"extern",
-	L"false",
 	L"for",
 	L"friend",
 	L"goto",
@@ -56,8 +62,10 @@ const wchar_t* g_defaultKeywordSetCpp[] = {
 	L"protected",
 	L"public",
 	L"register",
+	L"restrict",
 	L"reinterpret_cast",
 	L"return",
+	L"section",
 	L"sizeof",
 	L"static",
 	L"static_cast",
@@ -65,7 +73,6 @@ const wchar_t* g_defaultKeywordSetCpp[] = {
 	L"template",
 	L"this",
 	L"throw",
-	L"true",
 	L"try",
 	L"typedef",
 	L"typeid",
@@ -119,6 +126,38 @@ static const wchar_t* g_defaultKeywordSetCppDataType[] = {
 };
 
 /*!
+ *	C/C++ 定数
+ */
+static const wchar_t* g_defaultKeywordSetCppConstant[] = {
+	L"__FILE__",
+	L"__LINE__",
+	L"__func__",
+	L"__DATE__",
+	L"__TIME__",
+	L"__TIMESTAMP__",
+	L"true",
+	L"false",
+	L"TRUE",
+	L"FALSE",
+	L"OK",
+	L"ERROR",
+	L"NULL"
+};
+
+/*!
+ *	VxWorks キーワード
+ */
+static const wchar_t* g_defaultKeywordSetVxWorks[] = {
+	L"STATUS",
+	L"FUNCPTR",
+	L"VOIDFUNCPTR",
+	L"NO_WAIT",
+	L"WAIT_FOREVER",
+	L"IMPORT",
+	L"LOCAL"
+};
+
+/*!
  *	C/C++ タイプ別設定のデフォルト値を設定する
  *
  *	@return なし
@@ -157,6 +196,20 @@ void CType_Cpp::InitTypeConfigImp(STypeConfig* pType)
 										true,
 										_countof(g_defaultKeywordSetCppDataType),
 										g_defaultKeywordSetCppDataType
+									);
+
+	pType->m_nKeyWordSetIdx[3] = AddDefaultKeywordSet(
+										L"C/C++ Constant",
+										true,
+										_countof(g_defaultKeywordSetCppConstant),
+										g_defaultKeywordSetCppConstant
+									);
+
+	pType->m_nKeyWordSetIdx[4] = AddDefaultKeywordSet(
+										L"VxWorks",
+										true,
+										_countof(g_defaultKeywordSetVxWorks),
+										g_defaultKeywordSetVxWorks
 									);
 }
 
