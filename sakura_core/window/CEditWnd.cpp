@@ -3396,14 +3396,22 @@ BOOL CEditWnd::OnPrintPageSetting( void )
 	CDlgPrintSetting	cDlgPrintSetting;
 	BOOL				bRes;
 	int					nCurrentPrintSetting;
+	int					nLineNumberColmns;
 
 	nCurrentPrintSetting = GetDocument().m_cDocType.GetDocumentAttribute().m_nCurrentPrintSetting;
+	if( m_pPrintPreview ){
+		nLineNumberColmns = GetActiveView().GetTextArea().DetectWidthOfLineNumberArea_calculate(); // 印刷プレビュー時は文書の桁数 2013.5.10 aroka
+	}else{
+		nLineNumberColmns = 3; // ファイルメニューからの設定時は最小値 2013.5.10 aroka
+	}
+
 	bRes = cDlgPrintSetting.DoModal(
 		G_AppInstance(),
 //@@@ 2002.01.14 YAZAKI 印刷プレビューをCPrintPreviewに独立させたことによる変更
 		GetHwnd(),
 		&nCurrentPrintSetting, /* 現在選択している印刷設定 */
-		m_pShareData->m_PrintSettingArr // 現在の設定はダイアログ側で保持する 2013.5.1 aroka
+		m_pShareData->m_PrintSettingArr, // 現在の設定はダイアログ側で保持する 2013.5.1 aroka
+		m_pPrintPreview ? GetActiveView().GetTextArea().DetectWidthOfLineNumberArea_calculate():3 // 行番号表示用に桁数を渡す 2013.5.10 aroka
 	);
 
 	if( TRUE == bRes ){
@@ -4458,7 +4466,7 @@ CLogicPointEx* CEditWnd::SavePhysPosOfAllView()
 void CEditWnd::RestorePhysPosOfAllView( CLogicPointEx* pptPosArray )
 {
 	const int NUM_OF_VIEW = GetAllViewCount();
-	const int NUM_OF_POS = 5;
+	const int NUM_OF_POS = 6;
 
 	for( int i = 0; i < NUM_OF_VIEW; ++i ){
 		CLayoutPoint tmp;
