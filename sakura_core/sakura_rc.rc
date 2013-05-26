@@ -11,7 +11,6 @@
 #include <Windows.h>
 #undef APSTUDIO_HIDDEN_SYMBOLS
 #include "funccode_define.h"
-#include "svnrev.h"
 
 /////////////////////////////////////////////////////////////////////////////
 #undef APSTUDIO_READONLY_SYMBOLS
