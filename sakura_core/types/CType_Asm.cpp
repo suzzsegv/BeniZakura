@@ -6,19 +6,153 @@
 #include "outline/CFuncInfoArr.h"
 #include "view/Colors/EColorIndexType.h"
 
-/* アセンブラ */
-//	2004.05.01 MIK/genta
-//Mar. 10, 2001 JEPRO	半角数値を色分け表示
+/*!
+ *	GNU Assembler キーワード
+ */
+static const wchar_t* g_defaultKeywordSetGas[] = {
+	L".abort",
+	L".align",
+	L".ascii",
+	L".asciz",
+	L".balign",
+	L".byte",
+	L".comm",
+	L".data",
+	L".def",
+	L".desc",
+	L".dim",
+	L".double",
+	L".eject",
+	L".else",
+	L".elseif",
+	L".end",
+	L".endef",
+	L".endfunc",
+	L".endif",
+	L".equ",
+	L".equiv",
+	L".err",
+	L".exitm",
+	L".extern",
+	L".fail",
+	L".file",
+	L".fill",
+	L".float",
+	L".func",
+	L".global",
+	L".globl",
+	L".hidden",
+	L".hword",
+	L".ident",
+	L".if",
+	L".incbin",
+	L".include",
+	L".int",
+	L".internal",
+	L".irp",
+	L".irpc",
+	L".lcomm",
+	L".lflags",
+	L".line",
+	L".ln",
+	L".linkonce",
+	L".list",
+	L".long",
+	L".macro",
+	L".mri",
+	L".nolist",
+	L".octa",
+	L".org",
+	L".p2align",
+	L".popsection",
+	L".previous",
+	L".print",
+	L".protected",
+	L".psize",
+	L".purgem",
+	L".pushsection",
+	L".quad",
+	L".rept",
+	L".sbttl",
+	L".scl",
+	L".section",
+	L".set",
+	L".short",
+	L".single",
+	L".size",
+	L".skip",
+	L".sleb128",
+	L".space",
+	L".stabd",
+	L".stabn",
+	L".stabs",
+	L".string",
+	L".struct",
+	L".subsection",
+	L".symver",
+	L".tag",
+	L".text",
+	L".title",
+	L".type",
+	L".uleb128",
+	L".val",
+	L".version",
+	L".vtable_entry",
+	L".vtable_inherit",
+	L".weak",
+	L".word"
+};
+
+/*!
+ *	GNU Assembler プリプロセッサ キーワード
+ */
+static const wchar_t* g_defaultKeywordSetGasPreprocessor[] = {
+	L"#define",
+	L"#elif",
+	L"#else",
+	L"#endif",
+	L"#error",
+	L"#if",
+	L"#ifdef",
+	L"#ifndef",
+	L"#include",
+	L"#line",
+	L"#pragma",
+	L"#undef"
+};
+
+/*!
+ *	アセンブラ タイプ別設定のデフォルト値を設定する
+ *
+ *	@return なし
+ */
 void CType_Asm::InitTypeConfigImp(STypeConfig* pType)
 {
 	//名前と拡張子
 	_tcscpy( pType->m_szTypeName, _T("アセンブラ") );
-	_tcscpy( pType->m_szTypeExts, _T("asm") );
+	_tcscpy( pType->m_szTypeExts, _T("asm,s") );
 
 	//設定
-	pType->m_cLineComment.CopyTo( 0, L";", -1 );			/* 行コメントデリミタ */
-	pType->m_eDefaultOutline = OUTLINE_ASM;					/* アウトライン解析方法 */
-	pType->m_ColorInfoArr[COLORIDX_DIGIT].m_bDisp = true;
+	pType->m_cLineComment.CopyTo( 0, L";", -1 );							/* 行コメントデリミタ */
+	pType->m_cBlockComments[0].SetBlockCommentRule( L"/*", L"*/" );			/* ブロックコメントデリミタ */
+	pType->m_eDefaultOutline = OUTLINE_ASM;									/* アウトライン解析方法 */
+	pType->m_eSmartIndent = SMARTINDENT_NONE;								/* スマートインデント種別 */
+	pType->m_ColorInfoArr[COLORIDX_DIGIT].m_bDisp = true;					/* 半角数値を色分け表示 */
+	pType->m_ColorInfoArr[COLORIDX_COMMENT2].m_bDisp = true;				/* C/C++ プリプロセッサによるコメントアウトブロック */
+
+	pType->m_nKeyWordSetIdx[0] = AddDefaultKeywordSet(
+										L"Assembler",
+										true,
+										_countof(g_defaultKeywordSetGas),
+										g_defaultKeywordSetGas
+									);
+
+	pType->m_nKeyWordSetIdx[1] = AddDefaultKeywordSet(
+										L"GNU Assembler Preprocessor",
+										true,
+										_countof(g_defaultKeywordSetGasPreprocessor),
+										g_defaultKeywordSetGasPreprocessor
+									);
 }
 
 
