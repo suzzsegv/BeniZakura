@@ -79,6 +79,13 @@ class CColorStrategy;
 class CColor_Found;
 class CColor_Select;
 
+//! 色設定
+struct CColor3Setting {
+	EColorIndexType eColorIndex;    //!< 選択を含む現在の色
+	EColorIndexType eColorIndex2;   //!< 選択以外の現在の色
+	EColorIndexType eColorIndexBg;  //!< 背景色
+};
+
 struct SColorStrategyInfo{
 	SColorStrategyInfo() : sDispPosBegin(0,0), pStrategy(NULL), pStrategyFound(NULL), pStrategySelect(NULL), m_colorIdxBackLine(COLORIDX_TEXT) {}
 
@@ -103,16 +110,7 @@ struct SColorStrategyInfo{
 	int colorCookie;
 
 	//! 色の切り替え
-	void ChangeColor(EColorIndexType eNewColor)
-	{
-		this->pcView->SetCurrentColor( this->gr, eNewColor );
-	}
-	void ChangeColor2(EColorIndexType eNewColor, EColorIndexType eNewColor2)
-	{
-		this->pcView->SetCurrentColor3(this->gr, eNewColor, eNewColor2, m_colorIdxBackLine);
-	}
-
-	void DoChangeColor(const CStringRef& cLineStr, int& rCommentNestLevel);
+	bool DoChangeColor(const CStringRef& cLineStr, CColor3Setting *pcColor, int& rCommentNestLevel);
 	EColorIndexType GetCurrentColor() const;
 	EColorIndexType GetCurrentColor2() const;
 	EColorIndexType GetCurrentColorBg() const{ return m_colorIdxBackLine; }

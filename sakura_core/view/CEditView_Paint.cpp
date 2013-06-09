@@ -333,13 +333,14 @@ EColorIndexType CEditView::GetColorIndex(
 	if(pInfo->pStrategy)pInfo->pStrategy->InitStrategyStatus();
 
 	int nPosTo = pcLayout->GetLogicOffset() + t_min(nIndex, (int)pcLayout->GetLengthWithEOL() - 1);
+	CColor3Setting cColor;
 	while( pInfo->nPosInLogic <= nPosTo ){
 		if( bPrev && pInfo->nPosInLogic == nPosTo ){
 			break;
 		}
 
 		//色切替
-		pInfo->DoChangeColor(cLineStr, pInfo->colorCookie);
+		pInfo->DoChangeColor(cLineStr, &cColor, pInfo->colorCookie);
 
 		//1文字進む
 		pInfo->nPosInLogic += CNativeW::GetSizeOfChar(
@@ -834,7 +835,7 @@ bool CEditView::DrawLogicLine(
 		const CLayout* pcLayout = pInfo->pDispPos->GetLayoutRef();
 		int colorCookie;
 		EColorIndexType eType = GetColorIndex(pcLayout, 0, colorCookie, true, &pInfo->pStrategy, &pInfo->pStrategyFound);
-		pInfo->ChangeColor(eType);
+		SetCurrentColor(pInfo->gr, eType);
 		pInfo->colorCookie = colorCookie;
 	}
 
@@ -912,15 +913,17 @@ bool CEditView::DrawLayoutLine(SColorStrategyInfo* pInfo)
 		CColorStrategyPool* pool = CColorStrategyPool::getInstance();
 		pInfo->pStrategy = pool->GetStrategyByColor(pcLayout->GetColorTypePrev());
 		if(pInfo->pStrategy)pInfo->pStrategy->InitStrategyStatus();
-		pInfo->ChangeColor(pcLayout->GetColorTypePrev());
+		SetCurrentColor(pInfo->gr, pcLayout->GetColorTypePrev());
 	}
 
 	// 描画範囲外の場合は色切替だけで抜ける
 	if(pInfo->pDispPos->GetDrawPos().y < GetTextArea().GetAreaTop()){
 		if(pcLayout){
+			bool bChange = false;
+			CColor3Setting cColor;
 			while(pInfo->nPosInLogic < pcLayout->GetLogicOffset() + pcLayout->GetLengthWithEOL()){
 				//色切替
-				pInfo->DoChangeColor(cLineStr, pInfo->colorCookie);
+				bChange |= pInfo->DoChangeColor(cLineStr, &cColor, pInfo->colorCookie);
 
 				//1文字進む
 				pInfo->nPosInLogic += CNativeW::GetSizeOfChar(
@@ -928,6 +931,9 @@ bool CEditView::DrawLayoutLine(SColorStrategyInfo* pInfo)
 											cLineStr.GetLength(),
 											pInfo->nPosInLogic
 										);
+			}
+			if( bChange ){
+				SetCurrentColor3(pInfo->gr, cColor.eColorIndex, cColor.eColorIndex2, cColor.eColorIndexBg);
 			}
 		}
 		return false;
@@ -980,7 +986,10 @@ bool CEditView::DrawLayoutLine(SColorStrategyInfo* pInfo)
 	if(pcLayout){
 		while(pInfo->nPosInLogic < pcLayout->GetLogicOffset() + pcLayout->GetLengthWithEOL()){
 			//色切替
-			pInfo->DoChangeColor(cLineStr, pInfo->colorCookie);
+			CColor3Setting cColor;
+			if( pInfo->DoChangeColor(cLineStr, &cColor, pInfo->colorCookie) ){
+				SetCurrentColor3(pInfo->gr, cColor.eColorIndex, cColor.eColorIndex2, cColor.eColorIndexBg);
+			}
 
 			//1文字情報取得 $$高速化可能
 			CFigure& cFigure = CFigureManager::getInstance()->GetFigure(&cLineStr.GetPtr()[pInfo->GetPosInLogic()]);
