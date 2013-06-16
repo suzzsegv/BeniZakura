@@ -284,7 +284,7 @@ BOOL CDlgGrep::OnBnClicked( int wID )
 			TCHAR	szFolder[MAX_PATH];
 			/* 検索フォルダ */
 			::DlgItem_GetText( GetHwnd(), IDC_COMBO_FOLDER, szFolder, _MAX_PATH - 1 );
-			if( 0 == _tcslen( szFolder ) ){
+			if( szFolder[0] == _T('\0') ){
 				::GetCurrentDirectory( _countof( szFolder ), szFolder );
 			}
 			if( SelectDir( GetHwnd(), _T("検索するフォルダを選んでください"), szFolder, szFolder ) ){
@@ -414,7 +414,7 @@ void CDlgGrep::SetData( void )
 	}
 	// To Here Jun. 29, 2001 genta
 
-	if( 0 < _tcslen( m_szCurrentFilePath ) ){
+	if( m_szCurrentFilePath != _T('\0') ){
 		::EnableWindow( ::GetDlgItem( GetHwnd(), IDC_CHK_FROMTHISTEXT ), TRUE );
 	}else{
 		::EnableWindow( ::GetDlgItem( GetHwnd(), IDC_CHK_FROMTHISTEXT ), FALSE );
@@ -521,13 +521,13 @@ int CDlgGrep::GetData( void )
 //		return FALSE;
 //	}
 	/* この編集中のテキストから検索する */
-	if( 0 == _tcslen( m_szFile ) ){
+	if( m_szFile[0] == _T('\0') ){
 		//	Jun. 16, 2003 Moca
 		//	検索パターンが指定されていない場合のメッセージ表示をやめ、
 		//	「*.*」が指定されたものと見なす．
 		_tcscpy( m_szFile, _T("*.*") );
 	}
-	if( 0 == _tcslen( m_szFolder ) ){
+	if( m_szFolder[0] == _T('\0') ){
 		WarningMessage(	GetHwnd(), _T("検索対象フォルダを指定してください。") );
 		return FALSE;
 	}
