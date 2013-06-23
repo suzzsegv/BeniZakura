@@ -536,6 +536,47 @@ void GetInidirOrExedir(
 }
 
 
+/*!
+ * GetVcsRepositoryRootDir - VCSルートディレクトリのパスを返す
+ *
+ *	@return true: VCSルートディレクトリを返却 / false: VCSルートディレクトリを検出できず
+ */
+bool GetVcsRepositoryRootDir(
+	WCHAR*	pVcsRepoRootDir,	//!< [out] VCSルートディレクトリのパス
+	const WCHAR* pSearchPath	//!< [in] 検索対象パス
+)
+{
+	WCHAR	pathName[MAX_PATH];
+	WCHAR	fileOrDirectoryName[MAX_PATH];
+	int		pathLen;
+
+	if( pSearchPath[0] == L'\0' ){
+		return false;
+	}
+
+	SplitPath_FolderAndFile( pSearchPath, pathName, fileOrDirectoryName );
+	pathLen = wcslen( pathName );
+	while( pathLen > (int)wcslen( L"C:\\" ) ){
+		int i;
+		TCHAR* vcsDirectoryNames[] = { L".bzr", L".git", L".hg", L".svn" };
+
+		for( i = 0; i < _countof(vcsDirectoryNames); i++ ){
+			bool vcsRepositoryDetected;
+			TCHAR vcsDirectoryPathName[MAX_PATH + 4];
+
+			Concat_FolderAndFile( pathName, vcsDirectoryNames[i], vcsDirectoryPathName );
+			vcsRepositoryDetected = IsDirectoryExists( vcsDirectoryPathName );
+			if( vcsRepositoryDetected == true ){
+				wcscpy( pVcsRepoRootDir, pathName );
+				return true;
+			}
+		}
+		SplitPath_FolderAndFile( pathName, pathName, fileOrDirectoryName );
+		pathLen = wcslen( pathName );
+	}
+
+	return false;
+}
 
 
 /**	ファイルの存在チェック

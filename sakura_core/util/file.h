@@ -25,6 +25,10 @@
 #define SAKURA_FILE_2813BD8E_F6B9_400F_AA27_A6DDC372D6B89_H_
 
 bool fexist(LPCTSTR pszPath); //!< ファイルまたはディレクトリが存在すればtrue
+bool GetVcsRepositoryRootDir(
+	WCHAR*	pVcsRepoRootDir,	//!< [out] VCSルートディレクトリのパス
+	const WCHAR* pSearchPath	//!< [in] 検索対象パス
+);
 
 bool IsFilePath( const wchar_t*, int*, int*, bool = true );
 bool IsFileExists(const TCHAR* path, bool bFileOnly = false);

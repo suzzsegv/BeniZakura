@@ -609,34 +609,16 @@ void CDlgGrep::SetCurrentFolderToFolderComboBox( void )
  */
 bool CDlgGrep::SetVcsRepositoryRootFolderToFolderComboBox( void )
 {
-	TCHAR	pathName[MAX_PATH];
-	TCHAR	fileOrDirectoryName[MAX_PATH];
-	int		pathLen;
+	TCHAR currentPathName[MAX_PATH];
+	TCHAR fileOrDirectoryName[MAX_PATH];
+	bool vcsRepositoryDetected;
+	TCHAR vcsDirectoryPathName[MAX_PATH];
 
-	/* 編集対象のファイルを開いていない場合には何もせず */
-	if( _tcslen( m_szCurrentFilePath ) <= 0 ){
-		return false;
-	}
-
-	SplitPath_FolderAndFile( m_szCurrentFilePath, pathName, fileOrDirectoryName );
-	pathLen = _tcslen( pathName );
-	while( pathLen > (int)_tcslen( _T("C:\\") ) ){
-		int i;
-		TCHAR* vcsDirectoryNames[] = { _T(".bzr"), _T(".git"), _T(".hg"), _T(".svn") };
-
-		for( i = 0; i < _countof(vcsDirectoryNames); i++ ){
-			bool vcsRepositoryDetected;
-			TCHAR vcsDirectoryPathName[MAX_PATH + 4];
-
-			Concat_FolderAndFile( pathName, vcsDirectoryNames[i], vcsDirectoryPathName );
-			vcsRepositoryDetected = IsDirectoryExists( vcsDirectoryPathName );
-			if( vcsRepositoryDetected == true ){
-				::DlgItem_SetText( GetHwnd(), IDC_COMBO_FOLDER, pathName );
-				return true;
-			}
-		}
-		SplitPath_FolderAndFile( pathName, pathName, fileOrDirectoryName );
-		pathLen = _tcslen( pathName );
+	SplitPath_FolderAndFile( m_szCurrentFilePath, currentPathName, fileOrDirectoryName );
+	vcsRepositoryDetected = GetVcsRepositoryRootDir( vcsDirectoryPathName, currentPathName );
+	if( vcsRepositoryDetected == true ){
+		::DlgItem_SetText( GetHwnd(), IDC_COMBO_FOLDER, vcsDirectoryPathName );
+		return true;
 	}
 
 	return false;
