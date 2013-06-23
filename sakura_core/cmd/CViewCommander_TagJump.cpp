@@ -204,8 +204,16 @@ bool CViewCommander::Command_TagsMake( void )
 	TCHAR	szTargetPath[1024 /*_MAX_PATH+1*/ ];
 	if( GetDocument()->m_cDocFile.GetFilePathClass().IsValidPath() )
 	{
+		TCHAR vcsDirectoryPathName[MAX_PATH];
+		bool vcsRepositoryDetected;
+
 		_tcscpy( szTargetPath, GetDocument()->m_cDocFile.GetFilePath() );
 		szTargetPath[ _tcslen( szTargetPath ) - _tcslen( GetDocument()->m_cDocFile.GetFileName() ) ] = _T('\0');
+
+		vcsRepositoryDetected = GetVcsRepositoryRootDir( vcsDirectoryPathName, szTargetPath );
+		if( vcsRepositoryDetected == true ){
+			wcscpy( szTargetPath, vcsDirectoryPathName );
+		}
 	}
 	else
 	{
