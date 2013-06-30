@@ -134,6 +134,7 @@ void CDlgTagsMake::SetData( void )
 	//オプション
 	m_nTagsOpt = m_pShareData->m_nTagsOpt;
 	if( m_nTagsOpt & 0x0001 ) ::CheckDlgButton( GetHwnd(), IDC_CHECK_TAG_MAKE_RECURSE, TRUE );
+	if( m_nTagsOpt & 0x0002 ) ::CheckDlgButton( GetHwnd(), IDC_CHECK_TAG_MAKE_EXTRA_KINDS, TRUE );
 
 	//コマンドライン
 	Combo_LimitText( ::GetDlgItem( GetHwnd(), IDC_EDIT_TAG_MAKE_CMDLINE ), _countof( m_pShareData->m_szTagsCmdLine ) );
@@ -158,6 +159,7 @@ int CDlgTagsMake::GetData( void )
 	//CTAGSオプション
 	m_nTagsOpt = 0;
 	if( ::IsDlgButtonChecked( GetHwnd(), IDC_CHECK_TAG_MAKE_RECURSE ) == BST_CHECKED ) m_nTagsOpt |= 0x0001;
+	if( ::IsDlgButtonChecked( GetHwnd(), IDC_CHECK_TAG_MAKE_EXTRA_KINDS ) == BST_CHECKED ) m_nTagsOpt |= 0x0002;
 	m_pShareData->m_nTagsOpt = m_nTagsOpt;
 
 	//コマンドライン

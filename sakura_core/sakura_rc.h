@@ -737,6 +737,8 @@
 #define IDD_PLUGIN_OPTION               5221
 #define IDC_STATIC                      -1
 
+#define IDC_CHECK_TAG_MAKE_EXTRA_KINDS  9000
+
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
