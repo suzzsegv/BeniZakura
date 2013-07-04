@@ -173,8 +173,6 @@ CControlTray::CControlTray()
 	/* 共有データ構造体のアドレスを返す */
 	m_pShareData = CShareData::getInstance()->GetShareData();
 
-	// アクセラレータテーブル破棄
-	DeleteAccelTbl();
 	// アクセラレータテーブル作成
 	CreateAccelTbl();
 
@@ -566,9 +564,9 @@ LRESULT CControlTray::DispatchEvent(
 //@@			m_cShareData.SaveShareData();
 
 				/* アクセラレータテーブルの再作成 */
-				// ウィンドウ毎のアクセラレータテーブル破棄
+				// アクセラレータテーブル破棄
 				DeleteAccelTbl();
-				// ウィンドウ毎のアクセラレータテーブル作成
+				// アクセラレータテーブル作成
 				CreateAccelTbl();
 				break;
 			default:
@@ -686,7 +684,8 @@ LRESULT CControlTray::DispatchEvent(
 						}
 						
 						// 新たな編集ウィンドウを起動
-						for( size_t f = 0; f < files.size(); f++ ){
+						size_t nSize = files.size();
+						for( size_t f = 0; f < nSize; f++ ){
 							sLoadInfo.cFilePath = files[f].c_str();
 							CControlTray::OpenNewEditor( m_hInstance, GetTrayHwnd(), sLoadInfo,
 								NULL, true, NULL, m_pShareData->m_Common.m_sTabBar.m_bNewWindow? true : false );
@@ -781,7 +780,8 @@ LRESULT CControlTray::DispatchEvent(
 						}
 
 						// 新たな編集ウィンドウを起動
-						for( size_t f = 0; f < files.size(); f++ ){
+						size_t nSize = files.size();
+						for( size_t f = 0; f < nSize; f++ ){
 							sLoadInfo.cFilePath = files[f].c_str();
 							CControlTray::OpenNewEditor( m_hInstance, GetTrayHwnd(), sLoadInfo,
 								NULL, true, NULL, m_pShareData->m_Common.m_sTabBar.m_bNewWindow? true : false );
@@ -1536,7 +1536,7 @@ void CControlTray::CreateAccelTbl( void )
 */
 void CControlTray::DeleteAccelTbl( void )
 {
-	if( m_pShareData->m_sHandles.m_hAccel != NULL ){
+	if( m_pShareData->m_sHandles.m_hAccel ){
 		::DestroyAcceleratorTable( m_pShareData->m_sHandles.m_hAccel );
 		m_pShareData->m_sHandles.m_hAccel = NULL;
 	}
@@ -1588,11 +1588,8 @@ void CControlTray::OnDestroy()
 		TrayMessage( GetTrayHwnd(), NIM_DELETE, 0, NULL, NULL );
 	}
 
-	/* アクセラレータテーブルの削除 */
-	if( m_pShareData->m_sHandles.m_hAccel != NULL ){
-		::DestroyAcceleratorTable( m_pShareData->m_sHandles.m_hAccel );
-		m_pShareData->m_sHandles.m_hAccel = NULL;
-	}
+	// アクセラレータテーブルの削除
+	DeleteAccelTbl();
 
 	m_hWnd = NULL;
 }

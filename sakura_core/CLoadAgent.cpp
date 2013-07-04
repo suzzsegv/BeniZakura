@@ -1,3 +1,26 @@
+/*
+	Copyright (C) 2008, kobake
+
+	This software is provided 'as-is', without any express or implied
+	warranty. In no event will the authors be held liable for any damages
+	arising from the use of this software.
+
+	Permission is granted to anyone to use this software for any purpose,
+	including commercial applications, and to alter it and redistribute it
+	freely, subject to the following restrictions:
+
+		1. The origin of this software must not be misrepresented;
+		   you must not claim that you wrote the original software.
+		   If you use this software in a product, an acknowledgment
+		   in the product documentation would be appreciated but is
+		   not required.
+
+		2. Altered source versions must be plainly marked as such,
+		   and must not be misrepresented as being the original software.
+
+		3. This notice may not be removed or altered from any source
+		   distribution.
+*/
 #include "StdAfx.h"
 #include "CLoadAgent.h"
 #include "CReadManager.h"
@@ -32,10 +55,11 @@ ECallbackResult CLoadAgent::OnCheckLoad(SLoadInfo* pLoadInfo)
 		if( !bDlgResult ){
 			return CALLBACK_INTERRUPT; //キャンセルされた場合は中断
 		}
-		if( 0 < files.size() ){
+		size_t nSize = files.size();
+		if( 0 < nSize ){
 			sLoadInfo.cFilePath = files[0].c_str();
 			// 他のファイルは新規ウィンドウ
-			for( size_t i = 1; i < files.size(); i++ ){
+			for( size_t i = 1; i < nSize; i++ ){
 				SLoadInfo sFilesLoadInfo = sLoadInfo;
 				sFilesLoadInfo.cFilePath = files[i].c_str();
 				CControlTray::OpenNewEditor(
@@ -183,14 +207,10 @@ ELoadResult CLoadAgent::OnLoad(const SLoadInfo& sLoadInfo)
 	}
 	else{
 		// 存在しないときもドキュメントに文字コードを反映する
-		pcDoc->m_cDocFile.m_sFileInfo.eCharCode = sLoadInfo.eCharCode;
 		STypeConfig& types = CDocTypeManager().GetTypeSetting( sLoadInfo.nType );
-		if ( sLoadInfo.eCharCode == types.m_encoding.m_eDefaultCodetype ){
-			pcDoc->m_cDocFile.m_sFileInfo.bBomExist = types.m_encoding.m_bDefaultBom;	// 2011.01.24 ryoji デフォルトBOM
-		}
-		else{
-			pcDoc->m_cDocFile.m_sFileInfo.bBomExist = CCodeTypeName( sLoadInfo.eCharCode ).IsBomDefOn();
-		}
+		pcDoc->m_cDocFile.SetCodeSet( sLoadInfo.eCharCode, 
+			( sLoadInfo.eCharCode == types.m_encoding.m_eDefaultCodetype ) ?
+				types.m_encoding.m_bDefaultBom : CCodeTypeName( sLoadInfo.eCharCode ).IsBomDefOn() );
 	}
 
 	/* レイアウト情報の変更 */
@@ -236,7 +256,7 @@ void CLoadAgent::OnFinalLoad(ELoadResult eLoadResult)
 
 	if(eLoadResult==LOADED_FAILURE){
 		pcDoc->SetFilePathAndIcon( _T("") );
-		pcDoc->m_cDocFile.m_sFileInfo.bBomExist = CCodeTypeName( pcDoc->m_cDocFile.m_sFileInfo.eCharCode ).IsBomDefOn();
+		pcDoc->m_cDocFile.SetBomDefoult();
 	}
 	if(eLoadResult==LOADED_LOSESOME){
 		CAppMode::getInstance()->SetViewMode(true);

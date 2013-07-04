@@ -276,13 +276,13 @@
 #define IDC_SPIN_MARGINBY               1210
 #define IDC_SPIN_MARGINLX               1211
 #define IDC_SPIN_MARGINRX               1212
-#define IDC_SPIN_FONTWIDTH              1213
+#define IDC_SPIN_FONTHEIGHT             1213
 #define IDC_SPIN_DANSUU                 1214
 #define IDC_EDIT_FOOT1                  1215
 #define IDC_COMBO_FONT_HAN              1216
 #define IDC_COMBO_FONT_ZEN              1217
 #define IDC_SPIN_DANSPACE               1218
-#define IDC_EDIT_FONTWIDTH              1219
+#define IDC_EDIT_FONTHEIGHT             1219
 #define IDC_EDIT_DANSUU                 1220
 #define IDC_CHECK_WORDWRAP              1221
 #define IDC_CHECK_LINENUMBER            1222
@@ -703,6 +703,14 @@
 #define IDC_CHECK_CHKENTERATEND         1635
 #define IDC_STATIC_TABFONT              1636
 #define IDC_STATIC_KEYWORDHELPFONT      1637
+#define IDC_STATIC_FONTSIZE             1638
+#define IDC_CHECK_COLORPRINT            1639
+#define IDC_CHECK_USE_FONT_HEAD         1640
+#define IDC_BUTTON_FONT_HEAD            1641
+#define IDC_STATIC_FONT_HEAD            1642
+#define IDC_CHECK_USE_FONT_FOOT         1643
+#define IDC_BUTTON_FONT_FOOT            1644
+#define IDC_STATIC_FONT_FOOT            1645
 #define IDS_AUTHOR_PAGE                 4054
 #define IDS_ABOUT_DESCRIPTION           4056
 #define IDD_TYPELIST                    5000
@@ -745,7 +753,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        230
 #define _APS_NEXT_COMMAND_VALUE         4057
-#define _APS_NEXT_CONTROL_VALUE         1638
+#define _APS_NEXT_CONTROL_VALUE         1646
 #define _APS_NEXT_SYMED_VALUE           104
 #endif
 #endif

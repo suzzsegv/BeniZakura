@@ -390,7 +390,7 @@ void CPropTypesScreen::SetData( HWND hwndDlg )
 		Combo_SetCurSel( hwndCombo, nSelPos );
 
 		::SetDlgItemInt( hwndDlg, IDC_EDIT_MAXLINELEN, (Int)m_Types.m_nMaxLineKetas, FALSE );	// 折り返し文字数
-		::SetDlgItemInt( hwndDlg, IDC_EDIT_CHARSPACE, m_Types.m_nColmSpace, FALSE );			// 文字の間隔
+		::SetDlgItemInt( hwndDlg, IDC_EDIT_CHARSPACE, m_Types.m_nColumnSpace, FALSE );			// 文字の間隔
 		::SetDlgItemInt( hwndDlg, IDC_EDIT_LINESPACE, m_Types.m_nLineSpace, FALSE );			// 行の間隔
 		::SetDlgItemInt( hwndDlg, IDC_EDIT_TABSPACE, (Int)m_Types.m_nTabSpace, FALSE );			// TAB幅	//	Sep. 22, 2002 genta
 		::DlgItem_SetText( hwndDlg, IDC_EDIT_TABVIEWSTRING, m_Types.m_szTabViewString );		// TAB表示(8文字)
@@ -411,7 +411,8 @@ void CPropTypesScreen::SetData( HWND hwndDlg )
 		HWND	hwndCombo = ::GetDlgItem( hwndDlg, IDC_COMBO_SMARTINDENT );
 		Combo_ResetContent( hwndCombo );
 		int		nSelPos = 0;
-		for( int i = 0; i < (int)m_SIndentArr.size(); ++i ){
+		int nSize = (int)m_SIndentArr.size();
+		for( int i = 0; i < nSize; ++i ){
 			Combo_InsertString( hwndCombo, i, m_SIndentArr[i].pszName );
 			if( m_SIndentArr[i].nMethod == m_Types.m_eSmartIndent ){	/* スマートインデント種別 */
 				nSelPos = i;
@@ -445,7 +446,8 @@ void CPropTypesScreen::SetData( HWND hwndDlg )
 		HWND	hwndCombo = ::GetDlgItem( hwndDlg, IDC_COMBO_OUTLINES );
 		Combo_ResetContent( hwndCombo );
 		int		nSelPos = 0;
-		for( int i = 0; i < (int)m_OlmArr.size(); ++i ){
+		int nSize = (int)m_OlmArr.size();
+		for( int i = 0; i < nSize; ++i ){
 			Combo_InsertString( hwndCombo, i, m_OlmArr[i].pszName );
 			if( m_OlmArr[i].nMethod == m_Types.m_eDefaultOutline ){	/* アウトライン解析方法 */
 				nSelPos = i;
@@ -531,12 +533,12 @@ int CPropTypesScreen::GetData( HWND hwndDlg )
 		}
 
 		/* 文字の間隔 */
-		m_Types.m_nColmSpace = ::GetDlgItemInt( hwndDlg, IDC_EDIT_CHARSPACE, NULL, FALSE );
-		if( m_Types.m_nColmSpace < 0 ){
-			m_Types.m_nColmSpace = 0;
+		m_Types.m_nColumnSpace = ::GetDlgItemInt( hwndDlg, IDC_EDIT_CHARSPACE, NULL, FALSE );
+		if( m_Types.m_nColumnSpace < 0 ){
+			m_Types.m_nColumnSpace = 0;
 		}
-		if( m_Types.m_nColmSpace > COLUMNSPACE_MAX ){ // Feb. 18, 2003 genta 最大値の定数化
-			m_Types.m_nColmSpace = COLUMNSPACE_MAX;
+		if( m_Types.m_nColumnSpace > COLUMNSPACE_MAX ){ // Feb. 18, 2003 genta 最大値の定数化
+			m_Types.m_nColumnSpace = COLUMNSPACE_MAX;
 		}
 
 		/* 行の間隔 */

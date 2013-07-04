@@ -11,8 +11,25 @@
 	Copyright (C) 2002, MIK
 	Copyright (C) 2003, かろと
 
-	This source code is designed for sakura editor.
-	Please contact the copyright holder to use this code for other purpose.
+	This software is provided 'as-is', without any express or implied
+	warranty. In no event will the authors be held liable for any damages
+	arising from the use of this software.
+
+	Permission is granted to anyone to use this software for any purpose,
+	including commercial applications, and to alter it and redistribute it
+	freely, subject to the following restrictions:
+
+		1. The origin of this software must not be misrepresented;
+		   you must not claim that you wrote the original software.
+		   If you use this software in a product, an acknowledgment
+		   in the product documentation would be appreciated but is
+		   not required.
+
+		2. Altered source versions must be plainly marked as such,
+		   and must not be misrepresented as being the original software.
+
+		3. This notice may not be removed or altered from any source
+		   distribution.
 */
 
 #include "StdAfx.h"
@@ -572,10 +589,11 @@ const PAPER_INFO* CPrint::FindPaperInfo( int id )
 */
 void CPrint::SettingInitialize( PRINTSETTING& pPrintSetting, const TCHAR* settingName )
 {
-	_tcscpy( pPrintSetting.m_szPrintSettingName, settingName );	/* 印刷設定の名前 */
-	_tcscpy( pPrintSetting.m_szPrintFontFaceHan, _T("ＭＳ 明朝") );				/* 印刷フォント */
-	_tcscpy( pPrintSetting.m_szPrintFontFaceZen, _T("ＭＳ 明朝") );				/* 印刷フォント */
-	pPrintSetting.m_nPrintFontWidth = 12;  								/* 印刷フォント幅(1/10mm単位) */
+	_tcscpy( pPrintSetting.m_szPrintSettingName, settingName );			/* 印刷設定の名前 */
+	_tcscpy( pPrintSetting.m_szPrintFontFaceHan, _T("ＭＳ 明朝") );		/* 印刷フォント */
+	_tcscpy( pPrintSetting.m_szPrintFontFaceZen, _T("ＭＳ 明朝") );		/* 印刷フォント */
+	pPrintSetting.m_bColorPrint = false;		// カラー印刷			// 2013/4/26 Uchi
+	pPrintSetting.m_nPrintFontWidth = 12;		// 印刷フォント幅(1/10mm単位)
 	pPrintSetting.m_nPrintFontHeight = pPrintSetting.m_nPrintFontWidth * 2;	/* 印刷フォント高さ(1/10mm単位単位) */
 	pPrintSetting.m_nPrintDansuu = 1;			/* 段組の段数 */
 	pPrintSetting.m_nPrintDanSpace = 70; 		/* 段と段の隙間(1/10mm) */
@@ -642,8 +660,59 @@ int CPrint::CalculatePrintableLines( PRINTSETTING *pPS, int nPaperAllHeight )
 	int nPrintSpaceHeight = ( pPS->m_nPrintFontHeight * pPS->m_nPrintLineSpacing / 100 );
 
 	int nEnableLines =
-		( nPrintablePaperHeight + nPrintSpaceHeight ) /
-		( pPS->m_nPrintFontHeight + nPrintSpaceHeight ) - 4;	/* 印字可能行数/ページ */
+		( nPrintablePaperHeight - CalcHeaderHeight( pPS )*2 - CalcFooterHeight( pPS )*2 + nPrintSpaceHeight ) /
+		( pPS->m_nPrintFontHeight + nPrintSpaceHeight );	// 印字可能行数/ページ
 	if( nEnableLines < 0 ){ return 0; }
 	return nEnableLines;
+}
+
+
+/*!
+	ヘッダ高さの計算(行送り分こみ)
+	@date 2013.05.16 Uchi 新規作成
+*/
+int CPrint::CalcHeaderHeight( PRINTSETTING* pPS )
+{
+	if (pPS->m_szHeaderForm[0][0] == _T('\0')
+	 && pPS->m_szHeaderForm[1][0] == _T('\0')
+	 && pPS->m_szHeaderForm[2][0] == _T('\0')) {
+		// 使ってなければ 0
+		return 0;
+	}
+
+	int		nHeight;
+	if (pPS->m_lfHeader.lfFaceName[0] == _T('\0')) {
+		// フォント指定無し
+		nHeight = pPS->m_nPrintFontHeight;
+	}
+	else {
+		// フォントのサイズ計算(pt->1/10mm)
+		nHeight = pPS->m_nHeaderPointSize * 254 / 720;
+	}
+	return nHeight * (pPS->m_nPrintLineSpacing + 100) / 100;	// 行送り計算
+}
+
+/*!
+	フッタ高さの計算(行送り分こみ)
+	@date 2013.05.16 Uchi 新規作成
+*/
+int CPrint::CalcFooterHeight( PRINTSETTING* pPS )
+{
+	if (pPS->m_szFooterForm[0][0] == _T('\0')
+	 && pPS->m_szFooterForm[1][0] == _T('\0')
+	 && pPS->m_szFooterForm[2][0] == _T('\0')) {
+		// 使ってなければ 0
+		 return 0;
+	}
+
+	int		nHeight;
+	if (pPS->m_lfFooter.lfFaceName[0] == _T('\0')) {
+		// フォント指定無し
+		nHeight = pPS->m_nPrintFontHeight;
+	}
+	else {
+		// フォントのサイズ計算(pt->1/10mm)
+		nHeight = pPS->m_nFooterPointSize * 254 / 720;
+	}
+	return nHeight * (pPS->m_nPrintLineSpacing + 100) / 100;	// 行送り計算
 }

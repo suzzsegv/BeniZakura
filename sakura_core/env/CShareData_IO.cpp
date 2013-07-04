@@ -1140,26 +1140,42 @@ void CShareData_IO::ShareData_IO_Print( CDataProfile& cProfile )
 			);
 			cProfile.IOProfileData( pszSecName, szKeyName, MakeStringBufferW(szKeyData) );
 		}
-		
+
 		auto_sprintf( szKeyName, LTEXT("PS[%02d].szSName")	, i );
 		cProfile.IOProfileData( pszSecName, szKeyName, MakeStringBufferT(printsetting.m_szPrintSettingName) );
 		auto_sprintf( szKeyName, LTEXT("PS[%02d].szFF")	, i );
 		cProfile.IOProfileData( pszSecName, szKeyName, MakeStringBufferT(printsetting.m_szPrintFontFaceHan) );
 		auto_sprintf( szKeyName, LTEXT("PS[%02d].szFFZ")	, i );
 		cProfile.IOProfileData( pszSecName, szKeyName, MakeStringBufferT(printsetting.m_szPrintFontFaceZen) );
+		// ヘッダ/フッタ
 		for( j = 0; j < 3; ++j ){
 			auto_sprintf( szKeyName, LTEXT("PS[%02d].szHF[%d]") , i, j );
 			cProfile.IOProfileData( pszSecName, szKeyName, MakeStringBufferW(printsetting.m_szHeaderForm[j]) );
 			auto_sprintf( szKeyName, LTEXT("PS[%02d].szFTF[%d]"), i, j );
 			cProfile.IOProfileData( pszSecName, szKeyName, MakeStringBufferW(printsetting.m_szFooterForm[j]) );
 		}
+		{ // ヘッダ/フッタ フォント設定
+			WCHAR	szKeyName2[64];
+			WCHAR	szKeyName3[64];
+			auto_sprintf( szKeyName,  LTEXT("PS[%02d].lfHeader"),			i );
+			auto_sprintf( szKeyName2, LTEXT("PS[%02d].nHeaderPointSize"),	i );
+			auto_sprintf( szKeyName3, LTEXT("PS[%02d].lfHeaderFaceName"),	i );
+			ShareData_IO_Sub_LogFont( cProfile, pszSecName, szKeyName,szKeyName2, szKeyName3,
+				printsetting.m_lfHeader, printsetting.m_nHeaderPointSize );
+			auto_sprintf( szKeyName,  LTEXT("PS[%02d].lfFooter"),			i );
+			auto_sprintf( szKeyName2, LTEXT("PS[%02d].nFooterPointSize"),	i );
+			auto_sprintf( szKeyName3, LTEXT("PS[%02d].lfFooterFaceName"),	i );
+			ShareData_IO_Sub_LogFont( cProfile, pszSecName, szKeyName,szKeyName2, szKeyName3,
+				printsetting.m_lfFooter, printsetting.m_nFooterPointSize );
+		}
+
 		auto_sprintf( szKeyName, LTEXT("PS[%02d].szDriver"), i );
 		cProfile.IOProfileData( pszSecName, szKeyName, MakeStringBufferT(printsetting.m_mdmDevMode.m_szPrinterDriverName) );
 		auto_sprintf( szKeyName, LTEXT("PS[%02d].szDevice"), i );
 		cProfile.IOProfileData( pszSecName, szKeyName, MakeStringBufferT(printsetting.m_mdmDevMode.m_szPrinterDeviceName) );
 		auto_sprintf( szKeyName, LTEXT("PS[%02d].szOutput"), i );
 		cProfile.IOProfileData( pszSecName, szKeyName, MakeStringBufferT(printsetting.m_mdmDevMode.m_szPrinterOutputName) );
-		
+
 		// 2002.02.16 hor とりあえず旧設定を変換しとく
 		if(0==wcscmp(printsetting.m_szHeaderForm[0],_EDITL("&f")) &&
 		   0==wcscmp(printsetting.m_szFooterForm[0],_EDITL("&C- &P -"))
@@ -1168,12 +1184,15 @@ void CShareData_IO::ShareData_IO_Print( CDataProfile& cProfile )
 			auto_strcpy( printsetting.m_szFooterForm[0], _EDITL("") );
 			auto_strcpy( printsetting.m_szFooterForm[1], _EDITL("- $p -") );
 		}
-		
+
 		//禁則	//@@@ 2002.04.09 MIK
 		auto_sprintf( szKeyName, LTEXT("PS[%02d].bKinsokuHead"), i ); cProfile.IOProfileData( pszSecName, szKeyName, printsetting.m_bPrintKinsokuHead );
 		auto_sprintf( szKeyName, LTEXT("PS[%02d].bKinsokuTail"), i ); cProfile.IOProfileData( pszSecName, szKeyName, printsetting.m_bPrintKinsokuTail );
 		auto_sprintf( szKeyName, LTEXT("PS[%02d].bKinsokuRet"),  i ); cProfile.IOProfileData( pszSecName, szKeyName, printsetting.m_bPrintKinsokuRet );	//@@@ 2002.04.13 MIK
 		auto_sprintf( szKeyName, LTEXT("PS[%02d].bKinsokuKuto"), i ); cProfile.IOProfileData( pszSecName, szKeyName, printsetting.m_bPrintKinsokuKuto );	//@@@ 2002.04.17 MIK
+
+		//カラー印刷
+		auto_sprintf( szKeyName, LTEXT("PS[%02d].bColorPrint"), i ); cProfile.IOProfileData( pszSecName, szKeyName, printsetting.m_bColorPrint );	// 2013/4/26 Uchi
 	}
 }
 
@@ -1220,7 +1239,7 @@ void CShareData_IO::ShareData_IO_Type_One( CDataProfile& cProfile, int nType, co
 			scan_ints( szKeyData, pszForm, buf );
 			types.m_nIdx					= buf[ 0];
 			types.m_nMaxLineKetas			= buf[ 1];
-			types.m_nColmSpace				= buf[ 2];
+			types.m_nColumnSpace			= buf[ 2];
 			types.m_nTabSpace				= buf[ 3];
 			types.m_nKeyWordSetIdx[0]		= buf[ 4];
 			types.m_nKeyWordSetIdx[1]		= buf[ 5];
@@ -1239,7 +1258,7 @@ void CShareData_IO::ShareData_IO_Type_One( CDataProfile& cProfile, int nType, co
 		auto_sprintf( szKeyData, pszForm,
 			types.m_nIdx,
 			types.m_nMaxLineKetas,
-			types.m_nColmSpace,
+			types.m_nColumnSpace,
 			types.m_nTabSpace,
 			types.m_nKeyWordSetIdx[0],
 			types.m_nKeyWordSetIdx[1],
@@ -1938,9 +1957,10 @@ void CShareData_IO::ShareData_IO_Other( CDataProfile& cProfile )
 	//From Here 2005.04.03 MIK キーワード指定タグジャンプ
 	cProfile.IOProfileData( pszSecName, LTEXT("_TagJumpKeyword_Counts"), pShare->m_sTagJump.m_aTagJumpKeywords._GetSizeRef() );
 	pShare->m_sHistory.m_aCommands.SetSizeLimit();
-	for( i = 0; i < pShare->m_sTagJump.m_aTagJumpKeywords.size(); ++i ){
+	int nSize = pShare->m_sTagJump.m_aTagJumpKeywords.size();
+	for( i = 0; i < nSize; ++i ){
 		auto_sprintf( szKeyName, LTEXT("TagJumpKeyword[%02d]"), i );
-		if( i >= pShare->m_sTagJump.m_aTagJumpKeywords.size() ){
+		if( i >= nSize ){
 			wcscpy( pShare->m_sTagJump.m_aTagJumpKeywords[i], LTEXT("") );
 		}
 		cProfile.IOProfileData( pszSecName, szKeyName, pShare->m_sTagJump.m_aTagJumpKeywords[i] );
