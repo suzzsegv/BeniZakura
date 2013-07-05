@@ -231,7 +231,7 @@ CLayoutInt CLayoutMgr::getIndentOffset_Tx2x( CLayout* pLayoutPrev )
 	}
 	// 2010.07.06 Moca TAB=8などの場合に折り返すと無限ループする不具合の修正. 6固定を m_nTabSpace + 2に変更
 	if ( m_sTypeConfig.m_nMaxLineKetas - nIpos < m_sTypeConfig.m_nTabSpace + 2 ){
-		nIpos = pLayoutPrev->GetIndent();	//	あきらめる
+		nIpos = t_max(CLayoutInt(0), m_sTypeConfig.m_nMaxLineKetas - (m_sTypeConfig.m_nTabSpace + 2)); // 2013.05.12 Chg:0だったのを最大幅に変更
 	}
 	return nIpos;	//	インデント
 }
@@ -291,9 +291,12 @@ CLayoutInt CLayoutMgr::getIndentOffset_LeftSpace( CLayout* pLayoutPrev )
 		}
 		it.addDelta();
 	}
+	if( it.end() ){
+		nIpos = it.getColumn();	//	終了
+	}
 	// 2010.07.06 Moca TAB=8などの場合に折り返すと無限ループする不具合の修正. 6固定を m_nTabSpace + 2に変更
 	if ( m_sTypeConfig.m_nMaxLineKetas - nIpos < m_sTypeConfig.m_nTabSpace + 2 ){
-		nIpos = pLayoutPrev->GetIndent();	//	あきらめる
+		nIpos = t_max(CLayoutInt(0), m_sTypeConfig.m_nMaxLineKetas - (m_sTypeConfig.m_nTabSpace + 2)); // 2013.05.12 Chg:0だったのを最大幅に変更
 	}
 	return nIpos;	//	インデント
 }
@@ -323,7 +326,7 @@ BOOL CLayoutMgr::CalculateTextWidth( BOOL bCalLineLen, CLayoutInt nStart, CLayou
 	CLayoutInt nMaxLen = CLayoutInt(0);
 	CLayoutInt nMaxLineNum = CLayoutInt(0);
 
-	CLayoutInt nLines = CLayoutInt( GetLineCount() );		// テキストのレイアウト行数
+	CLayoutInt nLines = GetLineCount();		// テキストのレイアウト行数
 
 	// 開始・終了位置がどちらも指定されていない
 	if( nStart < 0 && nEnd < 0 )
@@ -342,6 +345,13 @@ BOOL CLayoutMgr::CalculateTextWidth( BOOL bCalLineLen, CLayoutInt nStart, CLayou
 	CLayout* pLayout;
 
 	// 算出開始レイアウト行を探す
+	// 2013.05.13 SearchLineByLayoutYを使う
+	if( nStart == 0 ){
+		pLayout = m_pLayoutTop;
+	}else{
+		pLayout = SearchLineByLayoutY(nStart);
+	}
+#if 0
 	if( nStart * 2 < nLines ){
 		// 前方からサーチ
 		CLayoutInt nCount = CLayoutInt(0);
@@ -365,6 +375,7 @@ BOOL CLayoutMgr::CalculateTextWidth( BOOL bCalLineLen, CLayoutInt nStart, CLayou
 			nCount--;
 		}
 	}
+#endif
 
 	// レイアウト行の最大幅を取り出す
 	for( CLayoutInt i = nStart; i < nEnd; i++ ){

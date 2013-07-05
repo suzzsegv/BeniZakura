@@ -264,13 +264,17 @@ LRESULT CPrintPreview::OnPaint(
 		DrawHeaderFooter( hdc, cRect, true );
 	}
 
+
+	CColorStrategy* pStrategyStart = DrawPageTextFirst( m_nCurPageNum );
+
 	// 印刷/印刷プレビュー ページテキストの描画
 	DrawPageText(
 		hdc,
 		m_nPreview_ViewMarginLeft + m_pPrintSetting->m_nPrintMarginLX,
 		m_nPreview_ViewMarginTop  + m_pPrintSetting->m_nPrintMarginTY + nHeaderHeight*2,
 		m_nCurPageNum,
-		NULL
+		NULL,
+		pStrategyStart
 	);
 
 	// フッタ
@@ -698,12 +702,12 @@ void CPrintPreview::OnChangePrintSetting( void )
 	}
 
 	/* 印刷プレビュー表示情報 */
-	m_nPreview_LineNumberColmns = 0;	/* 行番号エリアの幅(文字数) */
+	m_nPreview_LineNumberColumns = 0;	/* 行番号エリアの幅(文字数) */
 
 	/* 行番号を表示するか */
 	if( m_pPrintSetting->m_bPrintLineNumber ){
 		/* 行番号表示に必要な桁数を計算 */
-		m_nPreview_LineNumberColmns = m_pParentWnd->GetActiveView().GetTextArea().DetectWidthOfLineNumberArea_calculate();
+		m_nPreview_LineNumberColumns = m_pParentWnd->GetActiveView().GetTextArea().DetectWidthOfLineNumberArea_calculate();
 	}
 	/* 現在のページ設定の、用紙サイズと用紙方向を反映させる */
 	m_pPrintSetting->m_mdmDevMode.dmPaperSize = m_pPrintSetting->m_nPrintPaperSize;
@@ -765,12 +769,12 @@ void CPrintPreview::OnChangePrintSetting( void )
 	m_nPreview_ViewMarginTop = 8 * 10;		/* 印刷プレビュー：ビュー左端と用紙の間隔(1/10mm単位) */
 
 	/* 行あたりの文字数(行番号込み) */
-	m_bPreview_EnableColms = CLayoutInt( CPrint::CalculatePrintableColumns( m_pPrintSetting, m_nPreview_PaperAllWidth, m_nPreview_LineNumberColmns ) );	/* 印字可能桁数/ページ */
+	m_bPreview_EnableColumns = CLayoutInt( CPrint::CalculatePrintableColumns( m_pPrintSetting, m_nPreview_PaperAllWidth, m_nPreview_LineNumberColumns ) );	/* 印字可能桁数/ページ */
 	/* 縦方向の行数 */
 	m_bPreview_EnableLines = CPrint::CalculatePrintableLines( m_pPrintSetting, m_nPreview_PaperAllHeight );			/* 印字可能行数/ページ */
 
 	// 印字可能領域がない場合は印刷プレビューを終了する 2013.5.10 aroka
-	if( m_bPreview_EnableColms == 0 || m_bPreview_EnableLines == 0 ){
+	if( m_bPreview_EnableColumns == 0 || m_bPreview_EnableLines == 0 ){
 		CEditWnd* pcEditWnd = m_pParentWnd;
 		pcEditWnd->PrintPreviewModeONOFF();
 		pcEditWnd->SendStatusMessage( _T("印刷ページ設定エラー:印字可能領域がありません") );
@@ -783,7 +787,7 @@ void CPrintPreview::OnChangePrintSetting( void )
 	/* 印刷用のレイアウト情報の変更 */
 //	STypeConfig& ref = m_pParentWnd->GetDocument().m_cDocType.GetDocumentAttribute();
 	STypeConfig ref = m_pParentWnd->GetDocument().m_cDocType.GetDocumentAttribute();
-	ref.m_nMaxLineKetas = 		m_bPreview_EnableColms;
+	ref.m_nMaxLineKetas = 		m_bPreview_EnableColumns;
 	ref.m_bWordWrap =			m_pPrintSetting->m_bPrintWordWrap;	/* 英文ワードラップをする */
 	//	Sep. 23, 2002 genta LayoutMgrの値を使う
 	ref.m_nTabSpace =			m_pParentWnd->GetDocument().m_cLayoutMgr.GetTabSpace();
@@ -1058,6 +1062,7 @@ void CPrintPreview::OnPrint( void )
 
 	/* ヘッダ・フッタの$pを展開するために、m_nCurPageNumを保持 */
 	WORD	nCurPageNumOld = m_nCurPageNum;
+	CColorStrategy* pStrategy = DrawPageTextFirst( m_nCurPageNum );
 	for( i = 0; i < nNum; ++i ){
 		m_nCurPageNum = nFrom + (WORD)i;
 
@@ -1090,13 +1095,23 @@ void CPrintPreview::OnPrint( void )
 			DrawHeaderFooter( hdc, cRect, true );
 		}
 
+		const CLayoutInt	nPageTopLineNum = CLayoutInt( ((nFrom + i) * m_pPrintSetting->m_nPrintDansuu) * m_bPreview_EnableLines );
+		const CLayout*		pcPageTopLayout = m_pLayoutMgr_Print->SearchLineByLayoutY( nPageTopLineNum );
+		if (m_pPrintSetting->m_bColorPrint
+			&& !(i == 0)
+			&& pcPageTopLayout->GetLogicOffset() == 0) {
+			pStrategy = m_pool->GetStrategyByColor(pcPageTopLayout->GetColorTypePrev());
+			m_pool->NotifyOnStartScanLogic();
+			if (pStrategy)	pStrategy->InitStrategyStatus();
+		}
 		// 印刷/印刷プレビュー ページテキストの描画
-		DrawPageText(
+		pStrategy = DrawPageText(
 			hdc,
 			m_pPrintSetting->m_nPrintMarginLX - m_nPreview_PaperOffsetLeft ,
 			m_pPrintSetting->m_nPrintMarginTY - m_nPreview_PaperOffsetTop + nHeaderHeight*2,
 			nFrom + i,
-			&cDlgPrinting
+			&cDlgPrinting,
+			pStrategy
 		);
 
 		// フッタ印刷
@@ -1281,39 +1296,21 @@ void CPrintPreview::DrawHeaderFooter( HDC hdc, const CMyRect& rect, bool bHeader
 	}
 }
 
-/* 印刷/印刷プレビュー ページテキストの描画
-	DrawPageTextでは、行番号を（半角フォントで）印刷。
-	本文はPrint_DrawLineにお任せ
-	@date 2006.08.14 Moca 共通式のくくりだしと、コードの整理 
+/* 印刷/印刷プレビュー ページテキストの色分け処理
+	最初のページ用
+	@date 2013.05.19 Moca 新規追加 
 */
-void CPrintPreview::DrawPageText(
-	HDC				hdc,
-	int				nOffX,
-	int				nOffY,
-	int				nPageNum,
-	CDlgCancel*		pCDlgCancel
-)
+CColorStrategy* CPrintPreview::DrawPageTextFirst(int nPageNum)
 {
-	int				nDirectY = -1;
-
-	const int		nLineHeight = m_pPrintSetting->m_nPrintFontHeight + ( m_pPrintSetting->m_nPrintFontHeight * m_pPrintSetting->m_nPrintLineSpacing / 100 );
-	// 段と段の間隔の幅
-	const int		nDanWidth = (Int)m_bPreview_EnableColms * m_pPrintSetting->m_nPrintFontWidth + m_pPrintSetting->m_nPrintDanSpace;
-	// 行番号の幅
-	const int		nLineNumWidth = m_nPreview_LineNumberColmns * m_pPrintSetting->m_nPrintFontWidth;
-
-	/* 半角フォントの情報を取得＆半角フォントに設定 */
-
 	// ページトップの色指定を取得
-	CColorStrategy*		pStrategy = NULL;
+	CColorStrategy*	pStrategy = NULL;
 	if (m_pPrintSetting->m_bColorPrint) {
 		m_pool = CColorStrategyPool::getInstance();
 		m_pool->SetCurrentView(&(m_pParentWnd->GetActiveView()));
 
 		const CLayoutInt	nPageTopLineNum = CLayoutInt( (nPageNum * m_pPrintSetting->m_nPrintDansuu) * m_bPreview_EnableLines );
 		const CLayout*		pcPageTopLayout = m_pLayoutMgr_Print->SearchLineByLayoutY( nPageTopLineNum );
-		CLogicInt	nPageTopOff = pcPageTopLayout->GetLogicOffset();
-		CLogicInt	iLogic;
+		const CLogicInt		nPageTopOff = pcPageTopLayout->GetLogicOffset();
 
 		// ページトップの物理行の先頭を検索
 		while (pcPageTopLayout->GetLogicOffset()) {
@@ -1326,11 +1323,43 @@ void CPrintPreview::DrawPageText(
 		if (pStrategy)	pStrategy->InitStrategyStatus();
 		if (nPageTopOff) {
 			CStringRef&	csr = pcPageTopLayout->GetDocLineRef()->GetStringRefWithEOL();
-			for (iLogic = 0; iLogic < nPageTopOff; ++iLogic) {
+			CLogicInt	iLogic;
+			for ( iLogic = 0; iLogic < nPageTopOff; ++iLogic) {
 				pStrategy = GetColorStrategy( csr, iLogic, pStrategy );
 			}
 		}
 	}
+	return pStrategy;
+}
+
+
+/* 印刷/印刷プレビュー ページテキストの描画
+	DrawPageTextでは、行番号を（半角フォントで）印刷。
+	本文はPrint_DrawLineにお任せ
+	@date 2006.08.14 Moca 共通式のくくりだしと、コードの整理 
+	@date 2013.05.19 Moca 色分け処理のpStrategyをページをまたいで利用する
+*/
+CColorStrategy* CPrintPreview::DrawPageText(
+	HDC				hdc,
+	int				nOffX,
+	int				nOffY,
+	int				nPageNum,
+	CDlgCancel*		pCDlgCancel,
+	CColorStrategy* pStrategyStart
+)
+{
+	int				nDirectY = -1;
+
+	const int		nLineHeight = m_pPrintSetting->m_nPrintFontHeight + ( m_pPrintSetting->m_nPrintFontHeight * m_pPrintSetting->m_nPrintLineSpacing / 100 );
+	// 段と段の間隔の幅
+	const int		nDanWidth = (Int)m_bPreview_EnableColumns * m_pPrintSetting->m_nPrintFontWidth + m_pPrintSetting->m_nPrintDanSpace;
+	// 行番号の幅
+	const int		nLineNumWidth = m_nPreview_LineNumberColumns * m_pPrintSetting->m_nPrintFontWidth;
+
+	/* 半角フォントの情報を取得＆半角フォントに設定 */
+
+	// ページトップの色指定を取得
+	CColorStrategy*	pStrategy = pStrategyStart;
 
 	int				nDan;	//	段数カウンタ
 	int				i;		//	行数カウンタ
@@ -1342,7 +1371,7 @@ void CPrintPreview::DrawPageText(
 			if( NULL != pCDlgCancel ){
 				/* 処理中のユーザー操作を可能にする */
 				if( !::BlockingHook( pCDlgCancel->GetHwnd() ) ){
-					return;
+					return NULL;
 				}
 			}
 
@@ -1448,10 +1477,8 @@ void CPrintPreview::DrawPageText(
 			);
 		}
 	}
-	return;
+	return pStrategy;
 }
-
-
 
 
 

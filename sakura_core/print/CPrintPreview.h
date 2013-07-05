@@ -38,6 +38,7 @@
 
 class CColorStrategy;
 class CColorStrategyPool;
+class CDlgCancel;
 class CEditWnd;
 class CLayout;
 class CLayoutMgr;
@@ -110,7 +111,8 @@ protected:
 	||	フォントは、半角フォントと全角フォントしかないことも期待してよい。
 	*/
 	void DrawHeaderFooter( HDC hdc, const CMyRect& rect , bool bHeader );
-	void DrawPageText( HDC, int, int, int, class CDlgCancel* );
+	CColorStrategy* DrawPageTextFirst( int nPageNum );
+	CColorStrategy* DrawPageText( HDC, int, int, int nPageNum, CDlgCancel*, CColorStrategy* pStrategyStart );
 
 	// 印刷／プレビュー 行描画
 	CColorStrategy* Print_DrawLine(
@@ -221,9 +223,9 @@ protected:
 	short			m_nPreview_PaperHeight;		/* 用紙印刷有効高さ(1/10mm単位) */
 	short			m_nPreview_PaperOffsetLeft;	/* 用紙余白左端(1/10mm単位) */
 	short			m_nPreview_PaperOffsetTop;	/* 用紙余白上端(1/10mm単位) */
-	CLayoutInt		m_bPreview_EnableColms;		/* 印字可能桁数/ページ */
+	CLayoutInt		m_bPreview_EnableColumns;	/* 印字可能桁数/ページ */
 	int				m_bPreview_EnableLines;		/* 印字可能行数/ページ */
-	int				m_nPreview_LineNumberColmns;	/* 行番号エリアの幅（文字数） */
+	int				m_nPreview_LineNumberColumns;	/* 行番号エリアの幅（文字数） */
 	WORD			m_nAllPageNum;				/* 全ページ数 */
 	WORD			m_nCurPageNum;				/* 現在のページ */
 

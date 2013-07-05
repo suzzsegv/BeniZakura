@@ -1115,26 +1115,24 @@ void CLayoutMgr::LogicToLayout(
 	CLayoutInt		nCaretPosX = CLayoutInt(0);
 	CLayoutInt		nCaretPosY;
 	const CLayout*	pLayout;
-	if(nLineHint==0){
-		nCaretPosY = CLayoutInt(ptLogic.y);
+	// 2013.05.15 ヒント、ありなしの処理を統合
+	{
+		nLineHint = t_min(GetLineCount() - 1, nLineHint);
+		nCaretPosY = t_max(CLayoutInt(ptLogic.y), nLineHint);
 
-		// [ヒント無しの場合]
-		// ロジック行 <= レイアウト行 が成り立つから、
-		// サーチ開始地点をできるだけ目的地へ近づける
-		pLayout = SearchLineByLayoutY( nCaretPosY );
+		// 2013.05.12 m_pLayoutPrevReferを見る
+		if( nCaretPosY <= m_nPrevReferLine && m_pLayoutPrevRefer
+			&& m_pLayoutPrevRefer->GetLogicLineNo() <= ptLogic.y ){
+			// ヒントより現在位置のほうが後ろか同じぐらいで近い
+			nCaretPosY = CLayoutInt(ptLogic.y - m_pLayoutPrevRefer->GetLogicLineNo()) + m_nPrevReferLine;
+			pLayout = SearchLineByLayoutY(nCaretPosY);
+		}else{
+			pLayout = SearchLineByLayoutY(nCaretPosY);
+		}
 		if( !pLayout ){
-			if( 0 < m_nLines ){
-				pptLayout->SetY( m_nLines );
-			}
+			pptLayout->SetY( m_nLines );
 			return;
 		}
-	}
-	else{
-		nCaretPosY = nLineHint;
-
-		// [ヒント有りの場合]
-		pLayout = SearchLineByLayoutY(nCaretPosY);
-		if(!pLayout) pLayout = SearchLineByLayoutY( nCaretPosY = CLayoutInt(0) );
 		
 		//ロジックYがでかすぎる場合は、一致するまでデクリメント (
 		while(pLayout->GetLogicLineNo() > ptLogic.GetY2()){
@@ -1142,20 +1140,29 @@ void CLayoutMgr::LogicToLayout(
 			nCaretPosY--;
 		}
 
-		//ロジックYが同じ場合は、ロジックY内の最小レイアウトYを開始地点とする
+		//ロジックYが同じでOffsetが行き過ぎている場合は戻る
 		if(pLayout->GetLogicLineNo() == ptLogic.GetY2()){
-			while(pLayout->m_pPrev && pLayout->GetPrevLayout()->GetLogicLineNo() == ptLogic.GetY2()){
+			while( pLayout->GetPrevLayout() && pLayout->GetPrevLayout()->GetLogicLineNo() == ptLogic.GetY2()
+				&& ptLogic.x < pLayout->GetLogicOffset() ){
 				pLayout = pLayout->GetPrevLayout();
 				nCaretPosY--;
 			}
 		}
-
 	}
 
 
 	//	Layoutを１つずつ先に進めながらptLogic.yが物理行に一致するLayoutを探す
 	do{
 		if( ptLogic.GetY2() == pLayout->GetLogicLineNo() ){
+			// 2013.05.10 Moca 高速化
+			const CLayout* pLayoutNext = pLayout->GetNextLayout();
+			if( pLayoutNext && ptLogic.GetY2() ==pLayoutNext->GetLogicLineNo()
+					&& pLayoutNext->GetLogicOffset() <= ptLogic.x ){
+				nCaretPosY++;
+				pLayout = pLayout->GetNextLayout();
+				continue;
+			}
+
 			//	2004.06.16 Moca インデント表示の際に位置がずれる(TAB位置ずれによる)
 			//	TAB幅を正確に計算するには当初からインデント分を加えておく必要がある．
 			nCaretPosX = pLayout->GetIndent();

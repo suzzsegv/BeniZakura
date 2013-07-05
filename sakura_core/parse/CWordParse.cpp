@@ -228,7 +228,7 @@ bool CWordParse::SearchNextWordPosition(
 	const wchar_t*	pLine,
 	CLogicInt		nLineLen,
 	CLogicInt		nIdx,		//	桁数
-	CLogicInt*		pnColmNew,	//	見つかった位置
+	CLogicInt*		pnColumnNew,	//	見つかった位置
 	BOOL			bStopsBothEnds	//	単語の両端で止まる
 )
 {
@@ -247,7 +247,7 @@ bool CWordParse::SearchNextWordPosition(
 		// 空白とタブは無視する
 		if( nCharKindNext == CK_TAB || nCharKindNext == CK_SPACE ){
 			if ( bStopsBothEnds && nCharKind != nCharKindNext ){
-				*pnColmNew = nIdxNext;
+				*pnColumnNew = nIdxNext;
 				return true;
 			}
 			nCharKind = nCharKindNext;
@@ -255,7 +255,7 @@ bool CWordParse::SearchNextWordPosition(
 		else {
 			ECharKind nCharKindMerge = WhatKindOfTwoChars( nCharKind, nCharKindNext );
 			if( nCharKindMerge == CK_NULL ){
-				*pnColmNew = nIdxNext;
+				*pnColumnNew = nIdxNext;
 				return true;
 			}
 			nCharKind = nCharKindMerge;
@@ -275,7 +275,7 @@ bool CWordParse::SearchNextWordPosition4KW(
 	const wchar_t*	pLine,
 	CLogicInt		nLineLen,
 	CLogicInt		nIdx,		//	桁数
-	CLogicInt*		pnColmNew,	//	見つかった位置
+	CLogicInt*		pnColumnNew,	//	見つかった位置
 	BOOL			bStopsBothEnds	//	単語の両端で止まる
 )
 {
@@ -294,7 +294,7 @@ bool CWordParse::SearchNextWordPosition4KW(
 		// 空白とタブは無視する
 		if( nCharKindNext == CK_TAB || nCharKindNext == CK_SPACE ){
 			if ( bStopsBothEnds && nCharKind != nCharKindNext ){
-				*pnColmNew = nIdxNext;
+				*pnColumnNew = nIdxNext;
 				return true;
 			}
 			nCharKind = nCharKindNext;
@@ -302,7 +302,7 @@ bool CWordParse::SearchNextWordPosition4KW(
 		else {
 			ECharKind nCharKindMerge = WhatKindOfTwoChars4KW( nCharKind, nCharKindNext );
 			if( nCharKindMerge == CK_NULL ){
-				*pnColmNew = nIdxNext;
+				*pnColumnNew = nIdxNext;
 				return true;
 			}
 			nCharKind = nCharKindMerge;
