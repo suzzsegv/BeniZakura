@@ -228,8 +228,7 @@ void CDocOutline::MakeFuncList_Java( CFuncInfoArr* pcFuncInfoArr )
 					(L'0' <= pLine[i] &&	pLine[i] <= L'9' )||
 					L'\t' == pLine[i] ||
 					L' ' == pLine[i] ||
-					WCODE::CR == pLine[i] ||
-					WCODE::LF == pLine[i] ||
+					WCODE::IsLineDelimiter(pLine[i]) ||
 					L'{' == pLine[i] ||
 					L'}' == pLine[i] ||
 					L'(' == pLine[i] ||
@@ -251,8 +250,7 @@ void CDocOutline::MakeFuncList_Java( CFuncInfoArr* pcFuncInfoArr )
 				/* 空白やタブ記号等を飛ばす */
 				if( L'\t' == pLine[i] ||
 					L' ' == pLine[i] ||
-					WCODE::CR == pLine[i] ||
-					WCODE::LF == pLine[i]
+					WCODE::IsLineDelimiter(pLine[i])
 				){
 					nMode = FL_JAVA_MODE_NORMAL;
 					continue;
@@ -263,8 +261,7 @@ void CDocOutline::MakeFuncList_Java( CFuncInfoArr* pcFuncInfoArr )
 				/* 空白やタブ記号等を飛ばす */
 				if( L'\t' == pLine[i] ||
 					L' ' == pLine[i] ||
-					WCODE::CR == pLine[i] ||
-					WCODE::LF == pLine[i]
+					WCODE::IsLineDelimiter(pLine[i])
 				){
 					continue;
 				}else
@@ -378,7 +375,7 @@ void CDocOutline::MakeFuncList_Java( CFuncInfoArr* pcFuncInfoArr )
 				loop_is_func:;
 					for( ; k < nLineLen2; ++k ){
 						if( !bCommentLoop ){
-							if( pLine2[k] != L' ' && pLine2[k] != WCODE::TAB && pLine2[k] != WCODE::CR && pLine2[k] != WCODE::LF ){
+							if( pLine2[k] != L' ' && pLine2[k] != WCODE::TAB && !WCODE::IsLineDelimiter(pLine2[k]) ){
 								if( k + 1 < nLineLen2 && pLine2[k] == L'/' && pLine2[k + 1] == L'*' ){
 									bCommentLoop = TRUE;
 									++k;

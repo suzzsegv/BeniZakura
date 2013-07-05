@@ -64,15 +64,6 @@ CDlgGrep::CDlgGrep()
 	m_nGrepOutputStyle = 1;				// Grep: 出力形式
 	m_szFile[0] = 0;
 	m_szFolder[0] = 0;
-	if( m_pShareData->m_sSearchKeywords.m_aSearchKeys.size() ){
-		m_strText = m_pShareData->m_sSearchKeywords.m_aSearchKeys[0];	/* 検索文字列 */
-	}
-	if( m_pShareData->m_sSearchKeywords.m_aGrepFiles.size() ){
-	_tcscpy( m_szFile, m_pShareData->m_sSearchKeywords.m_aGrepFiles[0] );		/* 検索ファイル */
-	}
-	if( m_pShareData->m_sSearchKeywords.m_aGrepFolders.size() ){
-		_tcscpy( m_szFolder, m_pShareData->m_sSearchKeywords.m_aGrepFolders[0] );	/* 検索フォルダ */
-	}
 	return;
 }
 
@@ -137,6 +128,15 @@ int CDlgGrep::DoModal( HINSTANCE hInstance, HWND hwndParent, const TCHAR* pszCur
 	m_nGrepCharSet = m_pShareData->m_Common.m_sSearch.m_nGrepCharSet;			// 文字コードセット
 	m_bGrepOutputLine = m_pShareData->m_Common.m_sSearch.m_bGrepOutputLine;	// 行を出力するか該当部分だけ出力するか
 	m_nGrepOutputStyle = m_pShareData->m_Common.m_sSearch.m_nGrepOutputStyle;	// Grep: 出力形式
+
+	// 2013.05.21 コンストラクタからDoModalに移動
+	// m_strText は呼び出し元で設定済み
+	if( m_szFile[0] == _T('\0') && m_pShareData->m_sSearchKeywords.m_aGrepFiles.size() ){
+		_tcscpy( m_szFile, m_pShareData->m_sSearchKeywords.m_aGrepFiles[0] );		/* 検索ファイル */
+	}
+	if( m_szFolder[0] == _T('\0') && m_pShareData->m_sSearchKeywords.m_aGrepFolders.size() ){
+		_tcscpy( m_szFolder, m_pShareData->m_sSearchKeywords.m_aGrepFolders[0] );	/* 検索フォルダ */
+	}
 
 	if( pszCurrentFilePath ){	// 2010.01.10 ryoji
 		_tcscpy(m_szCurrentFilePath, pszCurrentFilePath);

@@ -1,3 +1,27 @@
+/*
+	Copyright (C) 2008, kobake
+
+	This software is provided 'as-is', without any express or implied
+	warranty. In no event will the authors be held liable for any damages
+	arising from the use of this software.
+
+	Permission is granted to anyone to use this software for any purpose,
+	including commercial applications, and to alter it and redistribute it
+	freely, subject to the following restrictions:
+
+		1. The origin of this software must not be misrepresented;
+		   you must not claim that you wrote the original software.
+		   If you use this software in a product, an acknowledgment
+		   in the product documentation would be appreciated but is
+		   not required.
+
+		2. Altered source versions must be plainly marked as such,
+		   and must not be misrepresented as being the original software.
+
+		3. This notice may not be removed or altered from any source
+		   distribution.
+*/
+
 #include "StdAfx.h"
 #include <process.h> // _beginthreadex
 #include <limits.h>
@@ -10,6 +34,7 @@
 #include "_os/CClipboard.h"
 #include "COpeBlk.h"
 #include "doc/layout/CLayout.h"
+#include "cmd/CViewCommander_inline.h"
 #include "uiparts/CWaitCursor.h"
 #include "uiparts/HandCursor.h"
 #include "util/input.h"
@@ -132,9 +157,10 @@ void CEditView::OnLBUTTONDOWN( WPARAM fwKeys, int _xPos , int _yPos )
 							// 移動範囲を削除する
 							// ドロップ先が移動を処理したが自ドキュメントにここまで変更が無い
 							// →ドロップ先は外部のウィンドウである
-							if( NULL == m_pcOpeBlk ){
-								m_pcOpeBlk = new COpeBlk;
+							if( NULL == m_cCommander.GetOpeBlk() ){
+								m_cCommander.SetOpeBlk(new COpeBlk);
 							}
+							m_cCommander.GetOpeBlk()->AddRef();
 
 							// 選択範囲を削除
 							DeleteData( true );
@@ -1040,14 +1066,14 @@ void CEditView::OnMOUSEMOVE( WPARAM fwKeys, int xPos_, int yPos_ )
 			CMyPoint nNewPos(0, ptMouse.y);
 
 			// 1行の高さ
-			int nLineHeight = GetTextMetrics().GetHankakuHeight() + m_pcEditDoc->m_cDocType.GetDocumentAttribute().m_nLineSpace;
+			int nLineHeight = GetTextMetrics().GetHankakuHeight() + m_pTypeData->m_nLineSpace;
 
 			// 選択開始行以下へのドラッグ時は1行下にカーソルを移動する
 			if( GetTextArea().GetViewTopLine() + (ptMouse.y - GetTextArea().GetAreaTop()) / nLineHeight >= GetSelectionInfo().m_sSelectBgn.GetTo().y)
 				nNewPos.y += nLineHeight;
 
 			// カーソルを移動
-			nNewPos.x = GetTextArea().GetAreaLeft() - Int(GetTextArea().GetViewLeftCol()) * ( GetTextMetrics().GetHankakuWidth() + m_pcEditDoc->m_cDocType.GetDocumentAttribute().m_nColumnSpace );
+			nNewPos.x = GetTextArea().GetAreaLeft() - Int(GetTextArea().GetViewLeftCol()) * ( GetTextMetrics().GetHankakuWidth() + m_pTypeData->m_nColumnSpace );
 			GetCaret().MoveCursorToClientPoint( nNewPos, false, &ptNewCursor );
 
 			// 2.5クリックによる行単位のドラッグ
@@ -1703,9 +1729,10 @@ STDMETHODIMP CEditView::Drop( LPDATAOBJECT pDataObject, DWORD dwKeyState, POINTL
 	}
 
 	// アンドゥバッファの準備
-	if( NULL == m_pcOpeBlk ){
-		m_pcOpeBlk = new COpeBlk;
+	if( NULL == m_cCommander.GetOpeBlk() ){
+		m_cCommander.SetOpeBlk(new COpeBlk);
 	}
+	m_cCommander.GetOpeBlk()->AddRef();
 
 	/* 移動の場合、位置関係を算出 */
 	if( bMove ){
@@ -1883,7 +1910,7 @@ STDMETHODIMP CEditView::Drop( LPDATAOBJECT pDataObject, DWORD dwKeyState, POINTL
 				GetSelectionInfo().m_sSelect.GetFrom(),
 				&ptBefore
 			);
-			m_pcOpeBlk->AppendOpe(
+			m_cCommander.GetOpeBlk()->AppendOpe(
 				new CMoveCaretOpe(
 					sDelLogic.GetFrom(),
 					GetCaret().GetCaretLogicPos()

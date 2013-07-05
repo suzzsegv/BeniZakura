@@ -1,3 +1,27 @@
+/*
+	Copyright (C) 2008, kobake
+
+	This software is provided 'as-is', without any express or implied
+	warranty. In no event will the authors be held liable for any damages
+	arising from the use of this software.
+
+	Permission is granted to anyone to use this software for any purpose,
+	including commercial applications, and to alter it and redistribute it
+	freely, subject to the following restrictions:
+
+		1. The origin of this software must not be misrepresented;
+		   you must not claim that you wrote the original software.
+		   If you use this software in a product, an acknowledgment
+		   in the product documentation would be appreciated but is
+		   not required.
+
+		2. Altered source versions must be plainly marked as such,
+		   and must not be misrepresented as being the original software.
+
+		3. This notice may not be removed or altered from any source
+		   distribution.
+*/
+
 #include "StdAfx.h"
 #include "CEditView_Paint.h"
 #include "window/CEditWnd.h"
@@ -21,7 +45,7 @@ void CEditView::SetBracketPairPos( bool flag )
 		return;
 	}
 
-	if( !m_pcEditDoc->m_cDocType.GetDocumentAttribute().m_ColorInfoArr[COLORIDX_BRACKET_PAIR].m_bDisp ){
+	if( !m_pTypeData->m_ColorInfoArr[COLORIDX_BRACKET_PAIR].m_bDisp ){
 		return;
 	}
 
@@ -80,7 +104,7 @@ void CEditView::DrawBracketPair( bool bDraw )
 		return;
 	}
 
-	if( !m_pcEditDoc->m_cDocType.GetDocumentAttribute().m_ColorInfoArr[COLORIDX_BRACKET_PAIR].m_bDisp ){
+	if( !m_pTypeData->m_ColorInfoArr[COLORIDX_BRACKET_PAIR].m_bDisp ){
 		return;
 	}
 
@@ -169,12 +193,18 @@ void CEditView::DrawBracketPair( bool bDraw )
 					//色設定
 					CTypeSupport cTextType(this,COLORIDX_TEXT);
 					cTextType.SetGraphicsState_WhileThisObj(gr);
+					// 2013.05.24 背景色がテキストの背景色と同じならカーソル行の背景色を適用
+					CTypeSupport cColorIndexType(this,nColorIndex);
+					CTypeSupport* pcColorBack = &cColorIndexType;
+					if( cColorIndexType.GetBackColor() == cTextType.GetBackColor() && nColorIndexBg == COLORIDX_CARETLINEBG ){
+						pcColorBack = &cCuretLineBg;
+					}
 
 					SetCurrentColor3( gr, nColorIndex, nColorIndex, nColorIndexBg );
 					bool bTrans = false;
 					// DEBUG_TRACE( _T("DrawBracket %d %d ") , ptColLine.y, ptColLine.x );
 					if( IsBkBitmap() &&
-							cTextType.GetBackColor() == CTypeSupport(this,nColorIndex).GetBackColor() ){
+							cTextType.GetBackColor() == pcColorBack->GetBackColor() ){
 						bTrans = true;
 						RECT rcChar;
 						rcChar.left  = nLeft;

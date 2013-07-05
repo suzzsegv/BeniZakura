@@ -1,3 +1,27 @@
+/*
+	Copyright (C) 2008, kobake
+
+	This software is provided 'as-is', without any express or implied
+	warranty. In no event will the authors be held liable for any damages
+	arising from the use of this software.
+
+	Permission is granted to anyone to use this software for any purpose,
+	including commercial applications, and to alter it and redistribute it
+	freely, subject to the following restrictions:
+
+		1. The origin of this software must not be misrepresented;
+		   you must not claim that you wrote the original software.
+		   If you use this software in a product, an acknowledgment
+		   in the product documentation would be appreciated but is
+		   not required.
+
+		2. Altered source versions must be plainly marked as such,
+		   and must not be misrepresented as being the original software.
+
+		3. This notice may not be removed or altered from any source
+		   distribution.
+*/
+
 #include "StdAfx.h"
 #include "view/CEditView.h"
 #include "doc/CEditDoc.h"
@@ -302,20 +326,20 @@ CEditView::TOGGLE_WRAP_ACTION CEditView::GetWrapMode( CLayoutInt* _newKetas )
 			newKetas = CLayoutInt(MAXLINEKETAS);
 			return TGWRAP_FULL;
 		}
-		else if( GetDocument()->m_cDocType.GetDocumentAttribute().m_nMaxLineKetas == MAXLINEKETAS ){ // 5)
+		else if( m_pTypeData->m_nMaxLineKetas == MAXLINEKETAS ){ // 5)
 			// 6)
 			return TGWRAP_NONE;
 		}
 		else { // 7)
-			newKetas = CLayoutInt(GetDocument()->m_cDocType.GetDocumentAttribute().m_nMaxLineKetas);
+			newKetas = CLayoutInt(m_pTypeData->m_nMaxLineKetas);
 			return TGWRAP_PROP;
 		}
 	}
 	else { // 8)
 		if( GetDocument()->m_cLayoutMgr.GetMaxLineKetas() == MAXLINEKETAS && // 9)
-			GetDocument()->m_cDocType.GetDocumentAttribute().m_nMaxLineKetas != MAXLINEKETAS ){
+			m_pTypeData->m_nMaxLineKetas != MAXLINEKETAS ){
 			// a)
-			newKetas = CLayoutInt(GetDocument()->m_cDocType.GetDocumentAttribute().m_nMaxLineKetas);
+			newKetas = CLayoutInt(m_pTypeData->m_nMaxLineKetas);
 			return TGWRAP_PROP;
 			
 		}
@@ -344,7 +368,6 @@ BOOL CEditView::ChangeCurRegexp( bool bRedrawIfChanged )
 {
 	bool	bChangeState = false;
 
-	m_bCurSrchKeyMark = true;									// 検索文字列のマーク
 	if( GetDllShareData().m_Common.m_sSearch.m_bInheritKeyOtherView
 			&& m_nCurSearchKeySequence < GetDllShareData().m_Common.m_sSearch.m_nSearchKeySequence
 		|| 0 == m_strCurSearchKey.size() ){
@@ -357,23 +380,31 @@ BOOL CEditView::ChangeCurRegexp( bool bRedrawIfChanged )
 		bChangeState = true;
 	}
 	m_bCurSearchUpdate = false;
-	/* 正規表現 */
-	if( m_sCurSearchOption.bRegularExp
-	 && bChangeState
-	){
-		//	Jun. 27, 2001 genta	正規表現ライブラリの差し替え
-		if( !InitRegexp( this->GetHwnd(), m_CurRegexp, true ) ){
-			return FALSE;
+	if( bChangeState ){
+		/* 正規表現 */
+		if( m_sCurSearchOption.bRegularExp ){
+			//	Jun. 27, 2001 genta	正規表現ライブラリの差し替え
+			if( !InitRegexp( this->GetHwnd(), m_CurRegexp, true ) ){
+				m_bCurSrchKeyMark = false;
+				return FALSE;
+			}
+			int nFlag = 0x00;
+			nFlag |= m_sCurSearchOption.bLoHiCase ? 0x01 : 0x00;
+			/* 検索パターンのコンパイル */
+			m_CurRegexp.Compile( m_strCurSearchKey.c_str(), nFlag );
 		}
-		int nFlag = 0x00;
-		nFlag |= m_sCurSearchOption.bLoHiCase ? 0x01 : 0x00;
-		/* 検索パターンのコンパイル */
-		m_CurRegexp.Compile( m_strCurSearchKey.c_str(), nFlag );
+		m_bCurSrchKeyMark = true;
+		if( bRedrawIfChanged ){
+			Redraw();
+		}
+		return TRUE;
 	}
-
-	if( bChangeState && bRedrawIfChanged ){
-		/* フォーカス移動時の再描画 */
-		RedrawAll();
+	if( ! m_bCurSrchKeyMark ){
+		m_bCurSrchKeyMark = true;
+		// 検索文字列のマークだけ設定
+		if( bRedrawIfChanged ){
+			Redraw(); // 自View再描画
+		}
 	}
 
 	return TRUE;

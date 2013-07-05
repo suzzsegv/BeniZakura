@@ -334,7 +334,7 @@ public:
 
 
 
-	void ExecCmd(const TCHAR*, int ) ;							// 子プロセスの標準出力をリダイレクトする
+	void ExecCmd(const TCHAR*, int, const TCHAR*) ;							// 子プロセスの標準出力をリダイレクトする
 	void AddToCmdArr( const TCHAR* );
 	BOOL ChangeCurRegexp(bool bRedrawIfChanged= true);									// 2002.01.16 hor 正規表現の検索パターンを必要に応じて更新する(ライブラリが使用できないときはFALSEを返す)
 	void SendStatusMessage( const TCHAR* msg );					// 2002.01.26 hor 検索／置換／ブックマーク検索時の状態をステータスバーに表示する
@@ -574,6 +574,7 @@ public:
 	//参照
 	CEditWnd*		m_pcEditWnd;	//!< ウィンドウ
 	CEditDoc*		m_pcEditDoc;	//!< ドキュメント
+	const STypeConfig*	m_pTypeData;
 
 	//主要構成部品
 	CTextArea*		m_pcTextArea;
@@ -685,7 +686,6 @@ public:
 	BOOL			m_bHokan;			//	補完中か？＝補完ウィンドウが表示されているか？かな？
 
 	//編集
-	COpeBlk*		m_pcOpeBlk;			/* 操作ブロック */
 	bool			m_bDoing_UndoRedo;	/* アンドゥ・リドゥの実行中か */
 
 	// 辞書Tip関連

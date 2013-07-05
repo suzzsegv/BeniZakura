@@ -259,6 +259,7 @@ recent/CMRUFolder.o \
 recent/CMruListener.o \
 recent/CRecent.o \
 recent/CRecentCmd.o \
+recent/CRecentCurDir.o \
 recent/CRecentEditNode.o \
 recent/CRecentExceptMru.o \
 recent/CRecentFile.o \
@@ -338,7 +339,6 @@ view/CViewFont.o \
 view/CViewParser.o \
 view/CViewSelect.o \
 view/DispPos.o \
-view/colors/.CColorStrategy.cpp-ep.o \
 view/colors/CColorStrategy.o \
 view/colors/CColor_Comment.o \
 view/colors/CColor_Comment_Cpp.o \

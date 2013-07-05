@@ -94,15 +94,16 @@ DWORD CGrepAgent::DoGrep(
 
 
 	/* アンドゥバッファの処理 */
-	if( NULL != pcViewDst->m_pcOpeBlk ){	/* 操作ブロック */
+	if( NULL != pcViewDst->GetDocument()->m_cDocEditor.m_pcOpeBlk ){	/* 操作ブロック */
 //@@@2002.2.2 YAZAKI NULLじゃないと進まないので、とりあえずコメント。＆NULLのときは、new COpeBlkする。
 //		while( NULL != m_pcOpeBlk ){}
 //		delete m_pcOpeBlk;
 //		m_pcOpeBlk = NULL;
 	}
 	else {
-		pcViewDst->m_pcOpeBlk = new COpeBlk;
+		pcViewDst->GetDocument()->m_cDocEditor.m_pcOpeBlk = new COpeBlk;
 	}
+	pcViewDst->GetDocument()->m_cDocEditor.m_pcOpeBlk->AddRef();
 
 	pcViewDst->m_bCurSrchKeyMark = true;								/* 検索文字列のマーク */
 	pcViewDst->m_strCurSearchKey = pcmGrepKey->GetStringPtr();				/* 検索文字列 */
@@ -124,6 +125,7 @@ DWORD CGrepAgent::DoGrep(
 		if( !InitRegexp( pcViewDst->GetHwnd(), pcViewDst->m_CurRegexp, true ) ){
 			this->m_bGrepRunning = false;
 			pcViewDst->m_bDoing_UndoRedo = false;
+			pcViewDst->SetUndoBuffer();
 			return 0;
 		}
 
@@ -156,6 +158,7 @@ DWORD CGrepAgent::DoGrep(
 		if( !InitRegexp( pcViewDst->GetHwnd(), cRegexp, true ) ){
 			this->m_bGrepRunning = false;
 			pcViewDst->m_bDoing_UndoRedo = false;
+			pcViewDst->SetUndoBuffer();
 			return 0;
 		}
 		/* 検索パターンのコンパイル */
@@ -164,6 +167,7 @@ DWORD CGrepAgent::DoGrep(
 		if( !cRegexp.Compile( pcmGrepKey->GetStringPtr(), nFlag ) ){
 			this->m_bGrepRunning = false;
 			pcViewDst->m_bDoing_UndoRedo = false;
+			pcViewDst->SetUndoBuffer();
 			return 0;
 		}
 	}
@@ -894,7 +898,7 @@ void CGrepAgent::SetGrepResult(
 		}
 		// 該当部分に改行を含む場合はその改行コードをそのまま利用する(次の行に空行を作らない)
 		// 2003.06.10 Moca k==0のときにバッファアンダーランしないように
-		if( 0 < k && (pMatchData[ k - 1 ] == L'\r' || pMatchData[ k - 1 ] == L'\n') ){
+		if( 0 < k && WCODE::IsLineDelimiter(pMatchData[ k - 1 ]) ){
 			bEOL = false;
 		}
 	}

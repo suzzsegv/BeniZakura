@@ -4,6 +4,7 @@
 #include "doc/CEditDoc.h"
 #include "outline/CFuncInfoArr.h"
 #include "COpeBlk.h"
+#include "cmd/CViewCommander_inline.h"
 #include "view/CEditView.h"
 #include "view/colors/EColorIndexType.h"
 
@@ -268,9 +269,8 @@ static bool C_IsOperator( wchar_t* szStr, int nLen	)
 */
 static bool C_IsLineEsc(const wchar_t *s, int len)
 {
-	if ( len > 0 && s[len-1] == L'\n' ) len--;
+	if ( len > 0 && WCODE::IsLineDelimiter(s[len-1]) ) len--;
 	if ( len > 0 && s[len-1] == L'\r' ) len--;
-	if ( len > 0 && s[len-1] == L'\n' ) len--;
 
 	if ( len > 0 && s[len-1] == L'\\' ) {
 		if ( len == 1 ) {
@@ -1646,7 +1646,7 @@ void CEditView::SmartIndent_CPP( wchar_t wcChar )
 				pszData,	/* 挿入するデータ */
 				nDataLen,	/* 挿入するデータの長さ */
 				true,
-				m_bDoing_UndoRedo?NULL:m_pcOpeBlk
+				m_bDoing_UndoRedo?NULL:m_cCommander.GetOpeBlk()
 			);
 		}
 
@@ -1662,7 +1662,7 @@ void CEditView::SmartIndent_CPP( wchar_t wcChar )
 
 		if( bChange && !m_bDoing_UndoRedo ){	/* アンドゥ・リドゥの実行中か */
 			/* 操作の追加 */
-			m_pcOpeBlk->AppendOpe(
+			m_cCommander.GetOpeBlk()->AppendOpe(
 				new CMoveCaretOpe(
 					GetCaret().GetCaretLogicPos(),	// 操作前のキャレット位置
 					GetCaret().GetCaretLogicPos()	// 操作後のキャレット位置

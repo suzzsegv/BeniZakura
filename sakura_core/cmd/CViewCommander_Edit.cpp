@@ -191,7 +191,9 @@ end_of_for:;
 				m_pCommanderView->SetUndoBuffer();
 
 				//キー入力とは別の操作ブロックにする（ただしプラグイン内の操作はまとめる）
-				SetOpeBlk(new COpeBlk);
+				if( GetOpeBlk() == NULL ){
+					SetOpeBlk(new COpeBlk);
+				}
 				GetOpeBlk()->AddRef();	// ※ReleaseはHandleCommandの最後で行う
 
 				//プラグイン呼び出し
@@ -203,7 +205,7 @@ end_of_for:;
 	}
 
 	/* 2005.10.11 ryoji 改行時に末尾の空白を削除 */
-	if( WCODE::CR == wcChar && GetDocument()->m_cDocType.GetDocumentAttribute().m_bRTrimPrevLine ){	/* 改行時に末尾の空白を削除 */
+	if( WCODE::IsLineDelimiter(wcChar) && GetDocument()->m_cDocType.GetDocumentAttribute().m_bRTrimPrevLine ){	/* 改行時に末尾の空白を削除 */
 		/* 前の行にある末尾の空白を削除する */
 		m_pCommanderView->RTrimPrevLine();
 	}
@@ -355,7 +357,7 @@ void CViewCommander::Command_UNDO( void )
 						L"",						// 挿入するデータ
 						CLogicInt(0),				// 挿入するデータの長さ
 						false,						// 再描画するか否か
-						m_pCommanderView->m_bDoing_UndoRedo?NULL:m_pCommanderView->m_pcOpeBlk
+						m_pCommanderView->m_bDoing_UndoRedo?NULL:GetOpeBlk()
 					);
 
 					/* 選択範囲の変更 */
@@ -378,7 +380,7 @@ void CViewCommander::Command_UNDO( void )
 							pcDeleteOpe->m_pcmemData.GetStringPtr(),	/* 挿入するデータ */
 							pcDeleteOpe->m_nDataLen,					/* 挿入するデータの長さ */
 							false,										/*再描画するか否か*/
-							m_pCommanderView->m_bDoing_UndoRedo?NULL:m_pCommanderView->m_pcOpeBlk
+							m_pCommanderView->m_bDoing_UndoRedo?NULL:GetOpeBlk()
 						);
 					}
 					pcDeleteOpe->m_pcmemData.Clear();
@@ -515,7 +517,7 @@ void CViewCommander::Command_REDO( void )
 							pcInsertOpe->m_pcmemData.GetStringPtr(),	/* 挿入するデータ */
 							pcInsertOpe->m_pcmemData.GetStringLength(),	/* 挿入するデータの長さ */
 							false,										/*再描画するか否か*/
-							m_pCommanderView->m_bDoing_UndoRedo?NULL:m_pCommanderView->m_pcOpeBlk
+							m_pCommanderView->m_bDoing_UndoRedo?NULL:GetOpeBlk()
 						);
 
 					}
@@ -538,7 +540,7 @@ void CViewCommander::Command_REDO( void )
 						L"",						/* 挿入するデータ */
 						CLogicInt(0),				/* 挿入するデータの長さ */
 						false,
-						m_pCommanderView->m_bDoing_UndoRedo?NULL:m_pCommanderView->m_pcOpeBlk
+						m_pCommanderView->m_bDoing_UndoRedo?NULL:GetOpeBlk()
 					);
 				}
 				break;

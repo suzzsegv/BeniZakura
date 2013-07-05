@@ -31,6 +31,8 @@ struct DLLSHAREDATA;
 class COpeBlk;
 class CCaret;
 class CEditWnd;
+class CColorStrategy;
+class CColorStrategyPool;
 #include "CEol.h"
 
 class CViewCommander{
@@ -46,7 +48,6 @@ public:
 	CEditWnd* GetEditWindow();
 	HWND GetMainWindow();
 	COpeBlk* GetOpeBlk();
-	void ClearOpeBlk();
 	void SetOpeBlk(COpeBlk* p);
 	CLayoutRange& GetSelect();
 	CCaret& GetCaret();
@@ -215,6 +216,9 @@ public:
 	void Command_COPYLINES( void );					/* 選択範囲内全行コピー */
 	void Command_COPYLINESASPASSAGE( void );		/* 選択範囲内全行引用符付きコピー */
 	void Command_COPYLINESWITHLINENUMBER( void );	/* 選択範囲内全行行番号付きコピー */
+	void Command_COPY_COLOR_HTML(bool bLineNumber = false);	//選択範囲内全行行番号付きコピー
+	void Command_COPY_COLOR_HTML_LINENUMBER( void );		//選択範囲内色付きHTMLコピー
+	CColorStrategy* CViewCommander::GetColorStrategyHTML(const CStringRef&, int, const CColorStrategyPool*, CColorStrategy**, CColorStrategy**);
 	void Command_CREATEKEYBINDLIST( void );			// キー割り当て一覧をコピー //Sept. 15, 2000 JEPRO	Command_の作り方がわからないので殺してある
 
 
@@ -331,7 +335,7 @@ public:
 //	void Command_EXECCOMMAND( const WCHAR* cmd );	/* 外部コマンド実行 */
 	void Command_EXECCOMMAND_DIALOG( void );	/* 外部コマンド実行ダイアログ表示 */	//	引数使ってないみたいなので
 	//	マクロからの呼び出しではオプションを保存させないため、Command_EXECCOMMAND_DIALOG内で処理しておく．
-	void Command_EXECCOMMAND( LPCWSTR cmd, const int nFlgOpt );	/* 外部コマンド実行 */
+	void Command_EXECCOMMAND( LPCWSTR cmd, const int nFlgOpt, LPCWSTR );	/* 外部コマンド実行 */
 //	To Here Sept. 20, 2000
 //	To Here 2006.12.03 maru 引数の拡張
 
