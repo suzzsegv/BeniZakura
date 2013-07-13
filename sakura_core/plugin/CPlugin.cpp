@@ -101,6 +101,9 @@ bool CPlugin::ReadPluginDefPlug( CDataProfile *cProfile )
 			if( cProfile->IOProfileData( PII_PLUG, (sKey + szIndex).c_str(), sHandler ) ){
 				//ラベルの取得
 				cProfile->IOProfileData( PII_PLUG, (sKey + szIndex + L".Label").c_str(), sLabel );
+				if (sLabel == L"") {
+					sLabel = sHandler;		// Labelが無ければハンドラ名で代用
+				}
 
 				CPlug *newPlug = CreatePlug( *this, nCount, jacks[i].szName, sHandler, sLabel );
 				m_plugs.push_back( newPlug );
@@ -128,6 +131,9 @@ bool CPlugin::ReadPluginDefCommand( CDataProfile *cProfile )
 			//ラベルの取得
 			swprintf( bufKey, L"C[%d].Label", nCount );
 			cProfile->IOProfileData( PII_COMMAND, bufKey, sLabel );
+			if (sLabel == L"") {
+				sLabel = sHandler;		// Labelが無ければハンドラ名で代用
+			}
 			//アイコンの取得
 			swprintf( bufKey, L"C[%d].Icon", nCount );
 			cProfile->IOProfileData( PII_COMMAND, bufKey, sIcon );
@@ -154,8 +160,8 @@ bool CPlugin::ReadPluginDefOption( CDataProfile *cProfile )
 	WCHAR bufKey[64];
 
 	sSection = L"";
-	for( int nCount = 1; nCount < MAX_PLUG_CMD; nCount++ ){	//添え字は１から始める
-		sKey = sLabel = sType = L"";
+	for( int nCount = 1; nCount < MAX_PLUG_OPTION; nCount++ ){	//添え字は１から始める
+		sKey = sLabel = sType = sDefaultVal= L"";
 		//Keyの取得
 		swprintf( bufKey, L"O[%d].Key", nCount );
 		if( cProfile->IOProfileData( PII_OPTION, bufKey, sKey ) ){
