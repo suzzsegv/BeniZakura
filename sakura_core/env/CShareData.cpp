@@ -542,7 +542,7 @@ bool CShareData::InitShareData()
 
 		m_pShareData->m_nDiffFlgOpt = 0;	/* DIFF差分表示 */	//@@@ 2002.05.27 MIK
 
-		m_pShareData->m_nTagsOpt = 0;	/* CTAGS */	//@@@ 2003.05.12 MIK
+		m_pShareData->m_nTagsOpt = TAGS_OPTION_DEFAULT_TAG_MAKE_RECURSE;	/* TAGSオプション(チェック) */
 		_tcscpy( m_pShareData->m_szTagsCmdLine, _T("") );	/* CTAGS */	//@@@ 2003.05.12 MIK
 		//From Here 2005.04.03 MIK キーワード指定タグジャンプのHistory保管
 		m_pShareData->m_sTagJump.m_aTagJumpKeywords.clear();

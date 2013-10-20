@@ -144,6 +144,8 @@ struct DLLSHAREDATA{
 	//タグファイルの作成ダイアログのオプション
 	TCHAR						m_szTagsCmdLine[_MAX_PATH];	/* TAGSコマンドラインオプション */	//@@@ 2003.05.12 MIK
 	int							m_nTagsOpt;					/* TAGSオプション(チェック) */	//@@@ 2003.05.12 MIK
+		#define TAGS_OPTION_DEFAULT_TAG_MAKE_RECURSE		0x0001
+		#define TAGS_OPTION_DEFAULT_TAG_MAKE_EXTRA_KINDS	0x0002
 
 
 	// -- -- テンポラリ -- -- //
