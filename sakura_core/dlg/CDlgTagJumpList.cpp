@@ -94,14 +94,14 @@ static const SAnchorList anchorList[] = {
 	ctags.exe Ç™èoóÕÇ∑ÇÈÅAägí£éqÇ∆ëŒâûÇ∑ÇÈéÌóﬁ
 */
 static const TCHAR *p_extentions[] = {
-	/*asm*/			_T("asm,s"),								_T("d=define,l=label,m=macro,t=type"),
+	/*asm*/			_T("asm,s"),								_T("d=define,l=label,m=macro,t=type,F=file"),
 	/*asp*/			_T("asp,asa"),								_T("f=function,s=sub"),
 	/*awk*/			_T("awk,gawk,mawk"),						_T("f=function"),
 	/*beta*/		_T("bet"),									_T("f=fragment,p=pattern,s=slot,v=virtual"),
-	/*c*/			_T("c,h"),									_T("c=class,d=macro,e=enumerator,f=function,g=enum,m=member,n=namespace,p=prototype,s=struct,t=typedef,u=union,v=variable,x=externvar"),
-	/*c++*/			_T("c++,cc,cp,cpp,cxx,h++,hh,hp,hpp,hxx"),	_T("c=class,d=macro,e=enumerator,f=function,g=enum,m=member,n=namespace,p=prototype,s=struct,t=typedef,u=union,v=variable,x=externvar"),
-	/*java*/		_T("java"),									_T("c=class,d=macro,e=enumerator,f=function,g=enum,m=member,n=namespace,p=prototype,s=struct,t=typedef,u=union,v=variable,x=externvar"),
-	/*vera*/		_T("vr,vri,vrh"),							_T("c=class,d=macro,e=enumerator,f=function,g=enum,m=member,n=namespace,p=prototype,s=struct,t=typedef,u=union,v=variable,x=externvar"),
+	/*c*/			_T("c,h"),									_T("c=class,d=macro,e=enumerator,f=function,g=enum,m=member,n=namespace,p=prototype,s=struct,t=typedef,u=union,v=variable,x=externvar,F=file"),
+	/*c++*/			_T("c++,cc,cp,cpp,cxx,h++,hh,hp,hpp,hxx"),	_T("c=class,d=macro,e=enumerator,f=function,g=enum,m=member,n=namespace,p=prototype,s=struct,t=typedef,u=union,v=variable,x=externvar,F=file"),
+	/*java*/		_T("java"),									_T("c=class,d=macro,e=enumerator,f=function,g=enum,m=member,n=namespace,p=prototype,s=struct,t=typedef,u=union,v=variable,x=externvar,F=file"),
+	/*vera*/		_T("vr,vri,vrh"),							_T("c=class,d=macro,e=enumerator,f=function,g=enum,m=member,n=namespace,p=prototype,s=struct,t=typedef,u=union,v=variable,x=externvar,F=file"),
 	/*cobol*/		_T("cbl,cob"),								_T("d=data,f=file,g=group,p=paragraph,P=program,s=section"),
 	/*eiffel*/		_T("e"),									_T("c=class,f=feature,l=local"),
 	/*fortran*/		_T("f,for,ftn,f77,f90,f95"),				_T("b=block data,c=common,e=entry,f=function,i=interface,k=component,l=label,L=local,m=module,n=namelist,p=program,s=subroutine,t=type,v=variable"),
