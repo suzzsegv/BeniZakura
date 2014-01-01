@@ -160,7 +160,7 @@ BOOL CDlgAbout::OnInitDialog( HWND hwndDlg, WPARAM wParam, LPARAM lParam )
 	}
 	cmemMsg.AppendString( szMsg );
 	cmemMsg.AppendString( _T("\r\n") );
-	cmemMsg.AppendString( _T("    Copyright (C) 2012, 2013  by Satoshi Suzuki\r\n") );
+	cmemMsg.AppendString( _T("    Copyright (C) 2012, 2013, 2014  by Satoshi Suzuki\r\n") );
 	cmemMsg.AppendString( _T("\r\n") );
 	cmemMsg.AppendString( _T("    Source Repository:  https://bitbucket.org/suzzsegv/benizakura/\r\n") );
 
