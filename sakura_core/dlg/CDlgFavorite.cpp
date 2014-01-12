@@ -232,6 +232,8 @@ CDlgFavorite::CDlgFavorite()
 		m_aListViewInfo[i].nSortColumn = -1;
 		m_aListViewInfo[i].bSortAscending = false;
 	}
+	m_ptDefaultSize.x = -1;
+	m_ptDefaultSize.y = -1;
 }
 
 CDlgFavorite::~CDlgFavorite()
@@ -1217,6 +1219,9 @@ BOOL CDlgFavorite::OnMove( WPARAM wParam, LPARAM lParam )
 BOOL CDlgFavorite::OnMinMaxInfo( LPARAM lParam )
 {
 	LPMINMAXINFO lpmmi = (LPMINMAXINFO) lParam;
+	if( m_ptDefaultSize.x < 0 ){
+		return 0;
+	}
 	lpmmi->ptMinTrackSize.x = m_ptDefaultSize.x;
 	lpmmi->ptMinTrackSize.y = m_ptDefaultSize.y;
 	lpmmi->ptMaxTrackSize.x = m_ptDefaultSize.x*2;
