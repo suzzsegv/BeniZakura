@@ -339,6 +339,9 @@ public:
 //	To Here Sept. 20, 2000
 //	To Here 2006.12.03 maru 引数の拡張
 
+	void CViewCommander::Command_ExecThgAnnotate( void );
+
+
 	/* カスタムメニュー */
 	void Command_MENU_RBUTTON( void );	/* 右クリックメニュー */
 	int Command_CUSTMENU( int );		/* カスタムメニュー表示 */

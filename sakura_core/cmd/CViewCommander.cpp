@@ -509,6 +509,11 @@ BOOL CViewCommander::HandleCommand(
 		Command_EXECCOMMAND((LPCWSTR)lparam1, (int)lparam2, (LPCWSTR)lparam3);	//	2006.12.03 maru 引数の拡張のため
 		break;
 
+	case F_EXEC_THG_ANNOTATE:
+		Command_ExecThgAnnotate();
+		break;
+
+
 	/* カスタムメニュー */
 	case F_MENU_RBUTTON:	/* 右クリックメニュー */
 		/* 再帰処理対策 */

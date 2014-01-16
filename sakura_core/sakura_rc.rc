@@ -3012,6 +3012,7 @@ STRINGTABLE DISCARDABLE
 BEGIN
     F_EXECMD_DIALOG         "外部コマンド実行..."
     F_EXECMD                "外部コマンド実行"
+    F_EXEC_THG_ANNOTATE     "TortoiseHg annotate 起動"
 END
 
 STRINGTABLE DISCARDABLE 

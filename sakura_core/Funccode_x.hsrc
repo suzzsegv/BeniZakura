@@ -380,6 +380,7 @@ F_EXECKEYMACRO			= 31253,	// キーマクロの実行					なし
 F_EXECEXTMACRO			= 31254,	// 名前を指定してマクロ実行			const WCHAR* command
 F_EXECMD_DIALOG			= 31270,	// 外部コマンド実行					const WCHAR* command
 F_EXECMD				= 31271,	// 外部コマンド実行					const WCHAR* command
+F_EXEC_THG_ANNOTATE		= 31272,	// TortoiseHg annotate を起動する	なし
 
 // ウィンドウ系
 F_SPLIT_V			= 31310,	//上下に分割								なし

@@ -355,3 +355,40 @@ void CViewCommander::Command_EXECCOMMAND( LPCWSTR cmd_string, const int nFlgOpt,
 	//	To Here Aug. 21, 2001 genta
 	return;
 }
+
+/*!
+	TortoiseHg annotate ‚ð‹N“®‚·‚é.
+*/
+void CViewCommander::Command_ExecThgAnnotate( void )
+{
+	BOOL succeeded;
+	STARTUPINFO si;
+	PROCESS_INFORMATION pi;
+	const int CommandLineMax = 1024;
+	wchar_t CommandLine[CommandLineMax+1];
+
+	CSakuraEnvironment::ExpandParameter( L"thg.exe annotate $F --line $y", CommandLine, CommandLineMax );
+	ZeroMemory( &si, sizeof(si) );
+
+	succeeded = CreateProcessW
+		(
+			NULL,
+			CommandLine,
+			NULL,
+			NULL,
+			FALSE,
+			0,
+			NULL,
+			NULL,
+			&si,
+			&pi
+		);
+
+	if( succeeded == FALSE ){
+		return;
+	}
+
+    CloseHandle(pi.hThread);
+    CloseHandle(pi.hProcess);
+}
+
