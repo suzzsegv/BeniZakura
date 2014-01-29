@@ -498,7 +498,8 @@ void CCaret::ShowEditCaret()
 		}
 	}else if( 1 == pCommon->m_sGeneral.GetCaretType() ){
 		if( m_pEditView->IsInsMode() ){
-			nCaretHeight = GetHankakuHeight() / 2;
+			#define DOS_CARET_HEIGHT_PERCENTAGE 35
+			nCaretHeight = ((GetHankakuHeight() * DOS_CARET_HEIGHT_PERCENTAGE) / 100);
 		}
 		else{
 			nCaretHeight = GetHankakuHeight();
@@ -558,7 +559,7 @@ void CCaret::ShowEditCaret()
 	// カーソルのタイプ = dos
 	else if( 1 == pCommon->m_sGeneral.GetCaretType() ){
 		if( m_pEditView->IsInsMode() /* Oct. 2, 2005 genta */ ){
-			nCaretHeight = ((GetHankakuHeight() * 10) / 26);	/* キャレットの高さ */
+			nCaretHeight = ((GetHankakuHeight() * DOS_CARET_HEIGHT_PERCENTAGE) / 100);	/* キャレットの高さ */
 		}
 		else{
 			nCaretHeight = GetHankakuHeight();				/* キャレットの高さ */
