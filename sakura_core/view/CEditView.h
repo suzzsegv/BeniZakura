@@ -245,7 +245,7 @@ public:
 	EColorIndexType GetColorIndex(
 		const CLayout*		pcLayout,
 		int					nIndex,
-		int&				rColorCookie,
+		ColorStrategyState& rColorStrategyState,
 		bool				bPrev = false,			// 指定位置の色変更直前まで
 		CColorStrategy**	ppStrategy = NULL,
 		CColor_Found**		ppStrategyFound = NULL

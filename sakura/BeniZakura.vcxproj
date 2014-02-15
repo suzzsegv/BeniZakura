@@ -371,6 +371,7 @@
     <ClInclude Include="..\sakura_core\view\CCaret.h" />
     <ClInclude Include="..\sakura_core\view\CEditView.h" />
     <ClInclude Include="..\sakura_core\view\CEditView_Paint.h" />
+    <ClInclude Include="..\sakura_core\view\colors\CColor_Comment_Cpp_If1.h" />
     <ClInclude Include="..\sakura_core\view\CRuler.h" />
     <ClInclude Include="..\sakura_core\view\CTextArea.h" />
     <ClInclude Include="..\sakura_core\view\CTextDrawer.h" />
@@ -724,6 +725,7 @@
     <ClCompile Include="..\sakura_core\view\CEditView_Paint_Bracket.cpp" />
     <ClCompile Include="..\sakura_core\view\CEditView_Scroll.cpp" />
     <ClCompile Include="..\sakura_core\view\CEditView_Search.cpp" />
+    <ClCompile Include="..\sakura_core\view\colors\CColor_Comment_Cpp_If1.cpp" />
     <ClCompile Include="..\sakura_core\view\CRuler.cpp" />
     <ClCompile Include="..\sakura_core\view\CTextArea.cpp" />
     <ClCompile Include="..\sakura_core\view\CTextDrawer.cpp" />

@@ -91,7 +91,8 @@ void CLayoutMgr::Init()
 	m_pLayoutPrevRefer = NULL;
 	m_nLines = CLayoutInt(0);
 	m_colorIndexPrevAtEof = COLORIDX_DEFAULT;
-	m_colorCookiePrevAtEof = 0;
+	colorStrategyStatePrevAtEof.cppPreprocessorrIf0NestLevel = 0;
+	colorStrategyStatePrevAtEof.cppPreprocessorrIf1NestLevel = 0;
 	m_nEOFLine = CLayoutInt(-1);
 	m_nEOFColumn = CLayoutInt(-1);
 }
@@ -357,7 +358,7 @@ CLayout* CLayoutMgr::CreateLayout(
 	CLogicPoint		ptLogicPos,
 	CLogicInt		nLength,
 	EColorIndexType	colorIndexPrev,
-	int				colorCookiePrev,
+	ColorStrategyState colorStrategyStatePrev,
 	CLayoutInt		nIndent,
 	CLayoutInt		nPosX
 )
@@ -367,7 +368,7 @@ CLayout* CLayoutMgr::CreateLayout(
 		ptLogicPos,
 		nLength,
 		colorIndexPrev,
-		colorCookiePrev,
+		colorStrategyStatePrev,
 		nIndent
 	);
 
@@ -531,7 +532,7 @@ void CLayoutMgr::DeleteData_CLayoutMgr(
 	CLogicInt		nDelStartLogicalLine;
 	CLogicInt		nDelStartLogicalPos;
 	EColorIndexType	colorIndexPrev;
-	int				colorCookiePrev;
+	ColorStrategyState colorStrategyStatePrev;
 	CLayoutInt		nLineWork;
 
 	/* 現在行のデータを取得 */
@@ -550,7 +551,7 @@ void CLayoutMgr::DeleteData_CLayoutMgr(
 		--nLineWork;
 	}
 	colorIndexPrev = pLayoutWork->GetColorTypePrev();
-	colorCookiePrev = pLayoutWork->GetColorCookiePrev();
+	colorStrategyStatePrev = pLayoutWork->GetColorStrategyStatePrev();
 
 	/* テキストのデータを削除 */
 	CDocEditAgent(m_pcDocLineMgr).DeleteData_CDocLineMgr(
@@ -618,7 +619,7 @@ void CLayoutMgr::DeleteData_CLayoutMgr(
 		nRowNum,
 		CLogicPoint(nDelStartLogicalPos, nDelStartLogicalLine),
 		colorIndexPrev,
-		colorCookiePrev,
+		colorStrategyStatePrev,
 		&ctwArg,
 		&nAddInsLineNum
 	);
@@ -655,7 +656,7 @@ void CLayoutMgr::InsertData_CLayoutMgr(
 	CLogicInt		nInsLineNum;
 	CLogicInt		nRowNum;
 	EColorIndexType	colorIndexPrev;
-	int				colorCookiePrev;
+	ColorStrategyState colorStrategyStatePrev;
 	CLayoutInt		nLineWork;
 
 
@@ -676,7 +677,8 @@ void CLayoutMgr::InsertData_CLayoutMgr(
 			nInsStartLogicalLine = m_pcDocLineMgr->GetLineCount();
 			nInsStartLogicalPos  = CLogicInt(0);
 			colorIndexPrev = COLORIDX_DEFAULT;
-			colorCookiePrev = 0;
+			colorStrategyStatePrev.cppPreprocessorrIf0NestLevel = 0;
+			colorStrategyStatePrev.cppPreprocessorrIf1NestLevel = 0;
 		}
 		else{
 			using namespace WCODE;
@@ -690,7 +692,7 @@ void CLayoutMgr::InsertData_CLayoutMgr(
 				nInsStartLogicalLine = m_pcDocLineMgr->GetLineCount();
 				nInsStartLogicalPos  = CLogicInt(0);
 				colorIndexPrev = m_colorIndexPrevAtEof;
-				colorCookiePrev = m_colorCookiePrevAtEof;
+				colorStrategyStatePrev = colorStrategyStatePrevAtEof;
 			}
 			else{
 				/* 空でないテキストの最後の行を変更する場合 */
@@ -703,7 +705,7 @@ void CLayoutMgr::InsertData_CLayoutMgr(
 				nInsStartLogicalLine = pLayout->GetLogicLineNo();
 				nInsStartLogicalPos  = nInsPos + pLayout->GetLogicOffset();
 				colorIndexPrev = pLayout->GetColorTypePrev();
-				colorCookiePrev = pLayout->GetColorCookiePrev();
+				colorStrategyStatePrev = pLayout->GetColorStrategyStatePrev();
 			}
 		}
 	}else{
@@ -714,7 +716,7 @@ void CLayoutMgr::InsertData_CLayoutMgr(
 		nInsStartLogicalLine = pLayout->GetLogicLineNo();
 		nInsStartLogicalPos  = nInsPos + pLayout->GetLogicOffset();
 		colorIndexPrev = pLayout->GetColorTypePrev();
-		colorCookiePrev = pLayout->GetColorCookiePrev();
+		colorStrategyStatePrev = pLayout->GetColorStrategyStatePrev();
 	}
 
 	if( NULL != pLayout ){
@@ -725,10 +727,11 @@ void CLayoutMgr::InsertData_CLayoutMgr(
 		}
 		if( NULL != pLayoutWork ){
 			colorIndexPrev = pLayoutWork->GetColorTypePrev();
-			colorCookiePrev = pLayout->GetColorCookiePrev();
+			colorStrategyStatePrev = pLayout->GetColorStrategyStatePrev();
 		}else{
 			colorIndexPrev = COLORIDX_DEFAULT;
-			colorCookiePrev = 0;
+			colorStrategyStatePrev.cppPreprocessorrIf0NestLevel = 0;
+			colorStrategyStatePrev.cppPreprocessorrIf1NestLevel = 0;
 		}
 	}
 
@@ -804,7 +807,7 @@ void CLayoutMgr::InsertData_CLayoutMgr(
 		nRowNum,
 		CLogicPoint(nInsStartLogicalPos, nInsStartLogicalLine),
 		colorIndexPrev,
-		colorCookiePrev,
+		colorStrategyStatePrev,
 		&ctwArg,
 		&nAddInsLineNum
 	);

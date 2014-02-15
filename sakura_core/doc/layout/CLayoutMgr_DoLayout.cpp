@@ -63,7 +63,7 @@ CLayout* CLayoutMgr::SLayoutWork::_CreateLayout(CLayoutMgr* mgr)
 		CLogicPoint(this->nBgn, this->nCurLine),
 		this->nPos - this->nBgn,
 		this->pcColorStrategy_Prev->GetStrategyColorSafe(),
-		this->colorCookiePrev,
+		this->colorStrategyStatePrev,
 		this->nIndent,
 		this->nPosX
 	);
@@ -239,7 +239,7 @@ SEARCH_START:
 			_DoGyomatsuKinsoku(pWork, pfOnLine);
 		}
 
-		bool bGotoSEARCH_START = CColorStrategyPool::getInstance()->CheckColorMODE( &pWork->pcColorStrategy, pWork->nPos, pWork->cLineStr, pWork->colorCookie );
+		bool bGotoSEARCH_START = CColorStrategyPool::getInstance()->CheckColorMODE( &pWork->pcColorStrategy, pWork->nPos, pWork->cLineStr, pWork->colorStrategyState );
 		if ( bGotoSEARCH_START ){
 			goto SEARCH_START;
 		}
@@ -280,10 +280,10 @@ void CLayoutMgr::_OnLine1(SLayoutWork* pWork)
 {
 	AddLineBottom( pWork->_CreateLayout(this) );
 	m_colorIndexPrevAtEof = pWork->pcColorStrategy->GetStrategyColorSafe();
-	m_colorCookiePrevAtEof = pWork->colorCookie;
+	colorStrategyStatePrevAtEof = pWork->colorStrategyState;
 	pWork->pLayout = m_pLayoutBot;
 	pWork->pcColorStrategy_Prev = pWork->pcColorStrategy;
-	pWork->colorCookiePrev = pWork->colorCookie;
+	pWork->colorStrategyStatePrev = pWork->colorStrategyState;
 	pWork->nBgn = pWork->nPos;
 	pWork->nPosX = pWork->nIndent = (this->*m_getIndentOffset)( pWork->pLayout );
 }
@@ -326,9 +326,11 @@ void CLayoutMgr::_DoLayout()
 	pWork->pLayout				= m_pLayoutBot;
 	pWork->pcColorStrategy		= NULL;
 	pWork->pcColorStrategy_Prev	= NULL;
-	pWork->colorCookie			= 0;
-	pWork->colorCookiePrev		= 0;
-	pWork->nCurLine				= CLogicInt(0);
+	pWork->colorStrategyState.cppPreprocessorrIf0NestLevel = 0;
+	pWork->colorStrategyState.cppPreprocessorrIf1NestLevel = 0;
+	pWork->colorStrategyStatePrev.cppPreprocessorrIf0NestLevel = 0;
+	pWork->colorStrategyStatePrev.cppPreprocessorrIf1NestLevel = 0;
+	pWork->nCurLine = CLogicInt(0);
 
 	while( NULL != pWork->pcDocLine ){
 		pWork->cLineStr		= pWork->pcDocLine->GetStringRefWithEOL();
@@ -349,9 +351,9 @@ void CLayoutMgr::_DoLayout()
 			}
 			AddLineBottom( pWork->_CreateLayout(this) );
 			m_colorIndexPrevAtEof = pWork->pcColorStrategy->GetStrategyColorSafe();
-			m_colorCookiePrevAtEof = pWork->colorCookie;
+			colorStrategyStatePrevAtEof = pWork->colorStrategyState;
 			pWork->pcColorStrategy_Prev = pWork->pcColorStrategy;
-			pWork->colorCookiePrev = pWork->colorCookie;
+			pWork->colorStrategyStatePrev = pWork->colorStrategyState;
 		}
 
 		// 次の行へ
@@ -370,7 +372,7 @@ void CLayoutMgr::_DoLayout()
 			pWork->pcColorStrategy_Prev = NULL;
 		}
 		pWork->pcColorStrategy = pWork->pcColorStrategy_Prev;
-		pWork->colorCookie = pWork->colorCookiePrev;
+		pWork->colorStrategyState = pWork->colorStrategyStatePrev;
 	}
 
 	m_nPrevReferLine = CLayoutInt(0);
@@ -397,14 +399,14 @@ void CLayoutMgr::_OnLine2(SLayoutWork* pWork)
 	if( pWork->bNeedChangeCOMMENTMODE ){
 		pWork->pLayout = pWork->pLayout->GetNextLayout();
 		pWork->pLayout->SetColorTypePrev(pWork->pcColorStrategy_Prev->GetStrategyColorSafe());
-		pWork->pLayout->SetColorCookiePrev(pWork->colorCookiePrev);
+		pWork->pLayout->SetColorStrategyStatePrev(pWork->colorStrategyStatePrev);
 		(*pWork->pnExtInsLineNum)++;		// 再描画してほしい行数+1
 	}
 	else {
 		pWork->pLayout = InsertLineNext( pWork->pLayout, pWork->_CreateLayout(this) );
 	}
 	pWork->pcColorStrategy_Prev = pWork->pcColorStrategy;
-	pWork->colorCookiePrev = pWork->colorCookie;
+	pWork->colorStrategyStatePrev = pWork->colorStrategyState;
 
 	pWork->nBgn = pWork->nPos;
 	pWork->nPosX = pWork->nIndent = (this->*m_getIndentOffset)( pWork->pLayout );	// pWork->nPosXはインデント幅を含むように変更(TAB位置調整のため)
@@ -431,7 +433,7 @@ CLayoutInt CLayoutMgr::DoLayout_Range(
 	CLogicInt		nLineNum,
 	CLogicPoint		_ptDelLogicalFrom,
 	EColorIndexType	nCurrentLineType,
-	int				colorCookiePrev,
+	ColorStrategyState colorStrategyStatePrev,
 	const CalTextWidthArg*	pctwArg,
 	CLayoutInt*		_pnExtInsLineNum
 )
@@ -450,8 +452,8 @@ CLayoutInt CLayoutMgr::DoLayout_Range(
 	pWork->pLayout					= pLayoutPrev;
 	pWork->pcColorStrategy			= CColorStrategyPool::getInstance()->GetStrategyByColor(nCurrentLineType);
 	pWork->pcColorStrategy_Prev		= pWork->pcColorStrategy;
-	pWork->colorCookie				= colorCookiePrev;
-	pWork->colorCookiePrev			= colorCookiePrev;
+	pWork->colorStrategyState		= colorStrategyStatePrev;
+	pWork->colorStrategyStatePrev	= colorStrategyStatePrev;
 	pWork->bNeedChangeCOMMENTMODE	= false;
 	if( NULL == pWork->pLayout ){
 		pWork->nCurLine = CLogicInt(0);
@@ -515,7 +517,7 @@ CLayoutInt CLayoutMgr::DoLayout_Range(
 	// EOFだけの論理行の直前の行の色分けが確認・更新された
 	if( pWork->nCurLine == m_pcDocLineMgr->GetLineCount() ){
 		m_colorIndexPrevAtEof = pWork->pcColorStrategy_Prev->GetStrategyColorSafe();
-		m_colorCookiePrevAtEof = pWork->colorCookiePrev;
+		colorStrategyStatePrevAtEof = pWork->colorStrategyStatePrev;
 		// 最終行が変更された。EOF位置情報を破棄する。
 		m_nEOFColumn = CLayoutInt(-1);
 		m_nEOFLine = CLayoutInt(-1);

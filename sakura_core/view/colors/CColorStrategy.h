@@ -54,6 +54,8 @@ inline int ToColorInfoArrIndex(const EColorIndexType eColorIndex)
 {
 	if( eColorIndex>=0 && eColorIndex<COLORIDX_LAST )
 		return eColorIndex;
+	else if( eColorIndex == COLORIDX_COMMENT_CPP_IF1 )
+		return COLORIDX_COMMENT2;
 	else if( eColorIndex & COLORIDX_BLOCK_BIT )
 		return COLORIDX_COMMENT;
 	else if( eColorIndex & COLORIDX_REGEX_BIT )
@@ -107,10 +109,10 @@ struct SColorStrategyInfo{
 	CColor_Found*		pStrategyFound;
 	CColor_Select*		pStrategySelect;
 	EColorIndexType		m_colorIdxBackLine;
-	int colorCookie;
+	ColorStrategyState	colorStrategyState;
 
 	//! 色の切り替え
-	bool DoChangeColor(const CStringRef& cLineStr, CColor3Setting *pcColor, int& rCommentNestLevel);
+	bool DoChangeColor(const CStringRef& cLineStr, CColor3Setting *pcColor, ColorStrategyState& rColorStrategyState);
 	EColorIndexType GetCurrentColor() const;
 	EColorIndexType GetCurrentColor2() const;
 	EColorIndexType GetCurrentColorBg() const{ return m_colorIdxBackLine; }
@@ -136,13 +138,14 @@ public:
 	virtual bool BeginColor(const CStringRef& cStr, int nPos){ return false; }
 	virtual bool EndColor(const CStringRef& cStr, int nPos){ return true; }
 
-	virtual bool BeginColor(const CStringRef& cStr, int nPos, int& rCommentNestLevel)
+	virtual bool BeginColor( const CStringRef& cStr, int nPos, ColorStrategyState& rColorStrategyState )
 	{
-		return BeginColor(cStr, nPos);
+		return BeginColor( cStr, nPos );
 	}
-	virtual bool EndColor(const CStringRef& cStr, int nPos, int& rCommentNestLevel)
+
+	virtual bool EndColor( const CStringRef& cStr, int nPos, ColorStrategyState& rColorStrategyState )
 	{
-		return EndColor(cStr, nPos);
+		return EndColor( cStr, nPos );
 	}
 
 	//イベント
@@ -169,6 +172,7 @@ class CColor_LineComment;
 class CColor_BlockComment;
 class CColor_BlockComment;
 class CColor_Comment_Cpp;
+class CColor_Comment_Cpp_If1;
 class CColor_SingleQuote;
 class CColor_DoubleQuote;
 
@@ -199,7 +203,7 @@ public:
 			CColorStrategy** ppcColorStrategy,
 			int nPos,
 			const CStringRef& cLineStr,
-			int& rCommentNestLevel
+			ColorStrategyState& rColorStrategyState
 		);
 
 	//設定変更
@@ -218,6 +222,7 @@ private:
 	CColor_BlockComment*			m_pcBlockComment1;
 	CColor_BlockComment*			m_pcBlockComment2;
 	CColor_Comment_Cpp*				m_pcCommentCpp;
+	CColor_Comment_Cpp_If1*			pCommentCppIf1;
 	CColor_SingleQuote*				m_pcSingleQuote;
 	CColor_DoubleQuote*				m_pcDoubleQuote;
 

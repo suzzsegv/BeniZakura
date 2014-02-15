@@ -31,7 +31,7 @@
 #include "view/CEditView.h" // SColorStrategyInfo
 #include "CColor_Comment_Cpp.h"
 
-bool CColor_Comment_Cpp::BeginColor(const CStringRef& rStr, int pos, int& rCommentNestLevel)
+bool CColor_Comment_Cpp::BeginColor(const CStringRef& rStr, int pos, ColorStrategyState& rColorStrategyState)
 {
 	if( !rStr.IsValid() ){
 		return false;
@@ -41,9 +41,9 @@ bool CColor_Comment_Cpp::BeginColor(const CStringRef& rStr, int pos, int& rComme
 	const STypeConfig& rTypeSetting = pEditDoc->m_cDocType.GetDocumentAttribute();
 
 	if( rTypeSetting.m_ColorInfoArr[COLORIDX_COMMENT2].m_bDisp
-	 && Match_CommentFrom( pos, rStr, rCommentNestLevel ) )
-	{
-		this->m_CommentEndPos = Match_CommentTo( pos + wcslen( L"#if 0" ), rStr, rCommentNestLevel);
+		&& Match_CommentFrom( pos, rStr, rColorStrategyState ))
+{
+		this->m_CommentEndPos = Match_CommentTo( pos + wcslen( L"#if 0" ), rStr, rColorStrategyState );
 
 		return true;
 	}
@@ -52,10 +52,10 @@ bool CColor_Comment_Cpp::BeginColor(const CStringRef& rStr, int pos, int& rComme
 }
 
 
-bool CColor_Comment_Cpp::EndColor(const CStringRef& rStr, int pos, int& rCommentNestLevel)
+bool CColor_Comment_Cpp::EndColor(const CStringRef& rStr, int pos, ColorStrategyState& rColorStrategyState)
 {
 	if( this->m_CommentEndPos == 0 ){
-		this->m_CommentEndPos = Match_CommentTo( pos, rStr, rCommentNestLevel );
+		this->m_CommentEndPos = Match_CommentTo( pos, rStr, rColorStrategyState );
 	} else if( pos == this->m_CommentEndPos ){
 		return true;
 	}
@@ -63,16 +63,16 @@ bool CColor_Comment_Cpp::EndColor(const CStringRef& rStr, int pos, int& rComment
 }
 
 /*!
-	n番目のブロックコメントの、posからの文字列が開始文字列(From)に当てはまるか確認する。
+	"#if 0" プリプロセッサ コメント開始判定用の文字列比較処理
 
-	@retval true  一致した
-	@retval false 一致しなかった
+	@retval true: "#if 0" を検出した
+	@retval false: 検出しなかった
 */
 bool CColor_Comment_Cpp::Match_CommentFrom
 	(
 		int					pos,		//!< [in] 探索開始位置
 		const CStringRef&	rStr,		//!< [in] 探索対象文字列 ※探索開始位置のポインタではないことに注意
-		int& rCommentNestLevel			//!< [out] ネスト数
+		ColorStrategyState& rColorStrategyState //!< [in, out] 状態( #if 0 ネストレベル)
 	)
 {
 	int len;
@@ -81,7 +81,7 @@ bool CColor_Comment_Cpp::Match_CommentFrom
 	if( ( pos <= rStr.GetLength() - len )
 	 && ( wmemicmp( &rStr.GetPtr()[pos], L"#if 0", len ) == 0 ) )
 	{
-		rCommentNestLevel = 1;
+		rColorStrategyState.cppPreprocessorrIf0NestLevel = 1;
 		return true;
 	}
 	return false;
@@ -89,15 +89,15 @@ bool CColor_Comment_Cpp::Match_CommentFrom
 
 
 /*!
-	n番目のブロックコメントの、後者(To)に当てはまる文字列をpos以降から探す
+	"#if 0" プリプロセッサ コメント終了判定用の文字列比較処理
 
-	@return 当てはまった位置を返すが、当てはまらなかったときは、nLineLenをそのまま返す。
+	@return コメントアウト終了位置を返す。終了文字が検出されなかった場合には、nLineLen をそのまま返す。
 */
 int CColor_Comment_Cpp::Match_CommentTo
 	(
 		int					pos,		//!< [in] 探索開始位置
 		const CStringRef&	rStr,		//!< [in] 探索対象文字列 ※探索開始位置のポインタではないことに注意
-		int& rCommentNestLevel			//!< [in, out] ネスト数
+		ColorStrategyState& rColorStrategyState //!< [in, out] 状態( #if 0 ネストレベル)
 	)
 {
 	int i;
@@ -121,44 +121,44 @@ int CColor_Comment_Cpp::Match_CommentTo
 
 		len  = wcslen( L"#if " );
 		if( wmemicmp( &rStr.GetPtr()[i], L"#if ", len ) == 0 ){
-			rCommentNestLevel++;
+			rColorStrategyState.cppPreprocessorrIf0NestLevel++;
 		}
 
 		len  = wcslen( L"#if\t" );
 		if( wmemicmp( &rStr.GetPtr()[i], L"#if\t", len ) == 0 ){
-			rCommentNestLevel++;
+			rColorStrategyState.cppPreprocessorrIf0NestLevel++;
 		}
 
 		len  = wcslen( L"#ifdef" );
 		if( wmemicmp( &rStr.GetPtr()[i], L"#ifdef", len ) == 0 ){
-			rCommentNestLevel++;
+			rColorStrategyState.cppPreprocessorrIf0NestLevel++;
 		}
 
 		len  = wcslen( L"#ifndef" );
 		if( wmemicmp( &rStr.GetPtr()[i], L"#ifndef", len ) == 0 ){
-			rCommentNestLevel++;
+			rColorStrategyState.cppPreprocessorrIf0NestLevel++;
 		}
 
 		len  = wcslen( L"$endif" );
 		if( wmemicmp( &rStr.GetPtr()[i], L"#endif", len ) == 0 ){
-			rCommentNestLevel--;
-			if( rCommentNestLevel == 0 ){
+			rColorStrategyState.cppPreprocessorrIf0NestLevel--;
+			if (rColorStrategyState.cppPreprocessorrIf0NestLevel == 0){
 				return i + len;
 			}
 		}
 
 		len  = wcslen( L"#else" );
 		if( wmemicmp( &rStr.GetPtr()[i], L"#else", len ) == 0 ){
-			if( rCommentNestLevel == 1 ){
-				rCommentNestLevel = 0;
+			if (rColorStrategyState.cppPreprocessorrIf0NestLevel == 1){
+				rColorStrategyState.cppPreprocessorrIf0NestLevel = 0;
 				return i + len;
 			}
 		}
 
 		len  = wcslen( L"#elif" );
 		if( wmemicmp( &rStr.GetPtr()[i], L"#elif", len ) == 0 ){
-			if( rCommentNestLevel == 1 ){
-				rCommentNestLevel = 0;
+			if (rColorStrategyState.cppPreprocessorrIf0NestLevel == 1){
+				rColorStrategyState.cppPreprocessorrIf0NestLevel = 0;
 				return i + len;
 			}
 		}

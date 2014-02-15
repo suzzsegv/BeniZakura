@@ -342,6 +342,7 @@ view/DispPos.o \
 view/colors/CColorStrategy.o \
 view/colors/CColor_Comment.o \
 view/colors/CColor_Comment_Cpp.o \
+view/colors/CColor_Comment_Cpp_If1.o \
 view/colors/CColor_Found.o \
 view/colors/CColor_KeywordSet.o \
 view/colors/CColor_Numeric.o \

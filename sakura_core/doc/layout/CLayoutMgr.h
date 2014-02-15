@@ -29,6 +29,7 @@
 #include "basis/SakuraBasis.h"
 #include "types/CType.h"
 #include "view/colors/EColorIndexType.h"
+#include "view/colors/ColorStrategyState.h"
 #include "util/container.h"
 
 class CBregexp;// 2002/2/10 aroka
@@ -251,7 +252,7 @@ protected:
 		CLogicInt				nLineNum,
 		CLogicPoint				_ptDelLogicalFrom,
 		EColorIndexType			nCurrentLineType,
-		int						colorCookiePrev,
+		ColorStrategyState		colorStrategyStatePrev,
 		const CalTextWidthArg*	pctwArg,
 		CLayoutInt*				_pnExtInsLineNum
 	);	/* 指定レイアウト行に対応する論理行の次の論理行から指定論理行数だけ再レイアウトする */
@@ -277,8 +278,8 @@ protected:
 		CLayout*		pLayout;
 		CColorStrategy*	pcColorStrategy;
 		CColorStrategy*	pcColorStrategy_Prev;
-		int				colorCookie;
-		int				colorCookiePrev;
+		ColorStrategyState colorStrategyState;
+		ColorStrategyState colorStrategyStatePrev;
 		CLogicInt		nCurLine;
 
 		//ループ外 (DoLayoutのみ)
@@ -344,7 +345,7 @@ protected:
 		CLogicPoint ptLogicPos,
 		CLogicInt nLength,
 		EColorIndexType colorIndexPrev,
-		int colorCookiePrev,
+		ColorStrategyState colorStrategyStatePrev,
 		CLayoutInt nIndent,
 		CLayoutInt nPosX
 	);
@@ -374,7 +375,7 @@ protected:
 
 	//フラグ等
 	EColorIndexType			m_colorIndexPrevAtEof;		// EOF 直前の文字のカラーインデックス(パレット)番号
-	int						m_colorCookiePrevAtEof;		// EOF 直前の文字のカラーリング付加情報
+	ColorStrategyState		colorStrategyStatePrevAtEof; // EOF 直前の文字のカラーリング状態
 	CLayoutInt				m_nLines;					// 全レイアウト行数
 
 	mutable CLayoutInt		m_nPrevReferLine;

@@ -297,14 +297,14 @@ void CEditView::DrawBackImage(HDC hdc, RECT& rcPaint, HDC hdcBgImg)
 //                          色設定                             //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
-/*! 指定位置の ColorIndextype および colorCookie の取得
+/*! 指定位置の ColorIndex および colorStrategyState の取得
 	CEditView::DrawLogicLineを元にしたためCEditView::DrawLogicLineに
 	修正があった場合は、ここも修正が必要。
 */
 EColorIndexType CEditView::GetColorIndex(
 	const CLayout*		pcLayout,
 	int					nIndex,
-	int&				rColorCookie,
+	ColorStrategyState& rColorStrategyState,
 	bool				bPrev,				// 指定位置の色変更直前まで
 	CColorStrategy**	ppStrategy,
 	CColor_Found**		ppStrategyFound
@@ -332,7 +332,7 @@ EColorIndexType CEditView::GetColorIndex(
 		}
 
 		eColor = pcLayoutLineFirst->GetColorTypePrev();	/* 現在の色を指定 */
-		pInfo->colorCookie = pcLayoutLineFirst->GetColorCookiePrev();
+		pInfo->colorStrategyState = pcLayoutLineFirst->GetColorStrategyStatePrev();
 		pInfo->nPosInLogic = pcLayoutLineFirst->GetLogicOffset();
 
 		//CColorStrategyPool初期化
@@ -358,7 +358,7 @@ EColorIndexType CEditView::GetColorIndex(
 		}
 
 		//色切替
-		pInfo->DoChangeColor(cLineStr, &cColor, pInfo->colorCookie);
+		pInfo->DoChangeColor(cLineStr, &cColor, pInfo->colorStrategyState);
 
 		//1文字進む
 		pInfo->nPosInLogic += CNativeW::GetSizeOfChar(
@@ -376,7 +376,7 @@ EColorIndexType CEditView::GetColorIndex(
 		*ppStrategyFound = pInfo->pStrategyFound;
 	}
 
-	rColorCookie = pInfo->colorCookie;
+	rColorStrategyState = pInfo->colorStrategyState;
 	return eColor;
 }
 
@@ -844,10 +844,10 @@ bool CEditView::DrawLogicLine(
 	// 前行の最終設定色
 	{
 		const CLayout* pcLayout = pInfo->pDispPos->GetLayoutRef();
-		int colorCookie;
-		EColorIndexType eType = GetColorIndex(pcLayout, 0, colorCookie, true, &pInfo->pStrategy, &pInfo->pStrategyFound);
+		ColorStrategyState colorStrategyState;
+		EColorIndexType eType = GetColorIndex(pcLayout, 0, colorStrategyState, true, &pInfo->pStrategy, &pInfo->pStrategyFound);
 		SetCurrentColor(pInfo->gr, eType);
-		pInfo->colorCookie = colorCookie;
+		pInfo->colorStrategyState = colorStrategyState;
 	}
 
 	//開始ロジック位置を算出
@@ -929,7 +929,7 @@ bool CEditView::DrawLayoutLine(SColorStrategyInfo* pInfo)
 			CColor3Setting cColor;
 			while(pInfo->nPosInLogic < pcLayout->GetLogicOffset() + pcLayout->GetLengthWithEOL()){
 				//色切替
-				bChange |= pInfo->DoChangeColor(cLineStr, &cColor, pInfo->colorCookie);
+				bChange |= pInfo->DoChangeColor(cLineStr, &cColor, pInfo->colorStrategyState);
 
 				//1文字進む
 				pInfo->nPosInLogic += CNativeW::GetSizeOfChar(
@@ -993,7 +993,7 @@ bool CEditView::DrawLayoutLine(SColorStrategyInfo* pInfo)
 		while(pInfo->nPosInLogic < pcLayout->GetLogicOffset() + pcLayout->GetLengthWithEOL()){
 			//色切替
 			CColor3Setting cColor;
-			if( pInfo->DoChangeColor(cLineStr, &cColor, pInfo->colorCookie) ){
+			if( pInfo->DoChangeColor(cLineStr, &cColor, pInfo->colorStrategyState) ){
 				SetCurrentColor3(pInfo->gr, cColor.eColorIndex, cColor.eColorIndex2, cColor.eColorIndexBg);
 			}
 

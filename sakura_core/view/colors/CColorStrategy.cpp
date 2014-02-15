@@ -3,6 +3,7 @@
 #include "view/colors/CColorStrategy.h"
 #include "CColor_Comment.h"
 #include "CColor_Comment_Cpp.h"
+#include "CColor_Comment_Cpp_If1.h"
 #include "CColor_Quote.h"
 #include "CColor_RegexKeyword.h"
 #include "CColor_Found.h"
@@ -44,7 +45,7 @@ const CLayout* SColorStrategyInfo::GetLayout() const
 
 	@date 2013.05.11 novice 実際の変更は呼び出し側で行う
 */
-bool SColorStrategyInfo::DoChangeColor(const CStringRef& cLineStr, CColor3Setting *pcColor, int& rCommentNestLevel)
+bool SColorStrategyInfo::DoChangeColor(const CStringRef& cLineStr, CColor3Setting *pcColor, ColorStrategyState& rColorStrategyState)
 {
 	CColorStrategyPool* pool = CColorStrategyPool::getInstance();
 	pool->SetCurrentView(this->pcView);
@@ -85,7 +86,7 @@ bool SColorStrategyInfo::DoChangeColor(const CStringRef& cLineStr, CColor3Settin
 
 	//色終了
 	if(this->pStrategy){
-		if(this->pStrategy->EndColor(cLineStr, this->GetPosInLogic(), rCommentNestLevel)){
+		if( this->pStrategy->EndColor( cLineStr, this->GetPosInLogic( ), rColorStrategyState ) ){
 			this->pStrategy = NULL;
 			bChange = true;
 		}
@@ -95,7 +96,7 @@ bool SColorStrategyInfo::DoChangeColor(const CStringRef& cLineStr, CColor3Settin
 	if(!this->pStrategy){
 		int size = pool->GetStrategyCount();
 		for(int i = 0; i < size; i++ ){
-			if(pool->GetStrategy(i)->BeginColor(cLineStr, this->GetPosInLogic(), rCommentNestLevel)){
+			if( pool->GetStrategy( i )->BeginColor( cLineStr, this->GetPosInLogic( ), rColorStrategyState ) ){
 				this->pStrategy = pool->GetStrategy(i);
 				bChange = true;
 				break;
@@ -163,6 +164,7 @@ CColorStrategyPool::CColorStrategyPool()
 	m_vStrategies.push_back(new CColor_BlockComment(COLORIDX_BLOCK1));	// ブロックコメント
 	m_vStrategies.push_back(new CColor_BlockComment(COLORIDX_BLOCK2));	// ブロックコメント2
 	m_vStrategies.push_back(new CColor_Comment_Cpp());		// C++コメント
+	m_vStrategies.push_back(new CColor_Comment_Cpp_If1());	// C++ "#if 1" コメントアウトブロック
 	m_vStrategies.push_back(new CColor_SingleQuote);		// シングルクォーテーション文字列
 	m_vStrategies.push_back(new CColor_DoubleQuote);		// ダブルクォーテーション文字列
 	m_vStrategies.push_back(new CColor_Url);				// URL
@@ -177,6 +179,8 @@ CColorStrategyPool::CColorStrategyPool()
 	m_pcBlockComment1 = (CColor_BlockComment*)GetStrategyByColor(COLORIDX_BLOCK1);	// ブロックコメント
 	m_pcBlockComment2 = (CColor_BlockComment*)GetStrategyByColor(COLORIDX_BLOCK2);	// ブロックコメント2
 	m_pcCommentCpp = (CColor_Comment_Cpp*)GetStrategyByColor(COLORIDX_COMMENT2);	// C++ プリプロセッサによるコメントアウトブロック
+	pCommentCppIf1 = (CColor_Comment_Cpp_If1*)GetStrategyByColor(COLORIDX_COMMENT_CPP_IF1);
+																					// C++ "#if 1" コメントアウトブロック
 	m_pcSingleQuote = (CColor_SingleQuote*)GetStrategyByColor(COLORIDX_SSTRING);	// シングルクォーテーション文字列
 	m_pcDoubleQuote = (CColor_DoubleQuote*)GetStrategyByColor(COLORIDX_WSTRING);	// ダブルクォーテーション文字列
 }
@@ -222,12 +226,12 @@ bool CColorStrategyPool::CheckColorMODE(
 	CColorStrategy**	ppcColorStrategy,	//!< [in/out]
 	int					nPos,
 	const CStringRef&	cLineStr,
-	int&				rCommentNestLevel
+	ColorStrategyState& rColorStrategyState
 )
 {
 	//色終了
 	if(*ppcColorStrategy){
-		if((*ppcColorStrategy)->EndColor(cLineStr, nPos, rCommentNestLevel)){
+		if( ( *ppcColorStrategy )->EndColor( cLineStr, nPos, rColorStrategyState ) ){
 			*ppcColorStrategy = NULL;
 			return true;
 		}
@@ -241,8 +245,12 @@ bool CColorStrategyPool::CheckColorMODE(
 		if(m_pcLineComment->BeginColor(cLineStr,nPos)){ *ppcColorStrategy = m_pcLineComment; return false; }
 		if(m_pcBlockComment1->BeginColor(cLineStr,nPos)){ *ppcColorStrategy = m_pcBlockComment1; return false; }
 		if(m_pcBlockComment2->BeginColor(cLineStr,nPos)){ *ppcColorStrategy = m_pcBlockComment2; return false; }
-		if(m_pcCommentCpp->BeginColor(cLineStr,nPos, rCommentNestLevel)){
+		if( m_pcCommentCpp->BeginColor( cLineStr, nPos, rColorStrategyState ) ){
 			*ppcColorStrategy = m_pcCommentCpp;
+			return false;
+		}
+		if( pCommentCppIf1->BeginColor( cLineStr, nPos, rColorStrategyState ) ){
+			*ppcColorStrategy = pCommentCppIf1;
 			return false;
 		}
 		if(m_pcSingleQuote->BeginColor(cLineStr,nPos)){ *ppcColorStrategy = m_pcSingleQuote; return false; }

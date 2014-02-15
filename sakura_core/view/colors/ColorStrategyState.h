@@ -1,10 +1,10 @@
-/*!	@file	CColor_Comment_Cpp.h
-	@brief	C++ コメント判定クラス
+/*!	@file	ColorStrategyState.h
+	@brief	ColorStrategy 状態保持用 構造体
 
 	@author	Suzuki Satoshi
 */
 /*
-	Copyright (C) 2012, Suzuki Satoshi
+	Copyright (C) 2014, Suzuki Satoshi
 
 	This software is provided 'as-is', without any express or implied
 	warranty. In no event will the authors be held liable for any damages
@@ -27,34 +27,17 @@
 		   distribution.
 */
 
-#ifndef _CColor_Comment_Cpp_h_
-#define _CColor_Comment_Cpp_h_
+#ifndef _ColorStrategyState_h_
+#define _ColorStrategyState_h_
 
-#include "CColorStrategy.h"
+extern "C" {
 
-class CColor_Comment_Cpp : public CColorStrategy
-{
-public:
-	CColor_Comment_Cpp() : m_CommentEndPos(0) { }
-	~CColor_Comment_Cpp() { }
-
-	void InitStrategyStatus()
-	{
-		m_CommentEndPos = 0;
-	}
-
-	EColorIndexType GetStrategyColor() const
-	{
-		return COLORIDX_COMMENT2;
-	}
-
-	bool Match_CommentFrom( int pos, const CStringRef& rStr, ColorStrategyState& rColorStrategyState );
-	int Match_CommentTo( int pos, const CStringRef& rStr, ColorStrategyState& rColorStrategyState );
-	bool BeginColor(const CStringRef& cStr, int pos, ColorStrategyState& rColorStrategyState);
-	bool EndColor(const CStringRef& cStr, int pos, ColorStrategyState& rColorStrategyState);
-
-	int m_CommentEndPos;
+struct ColorStrategyState {
+	int cppPreprocessorrIf0NestLevel;
+	int cppPreprocessorrIf1NestLevel;
 };
 
-#endif /* _CColor_Comment_Cpp_h_ */
+}
+
+#endif /* _ColorStrategyState_h_ */
 

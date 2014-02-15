@@ -163,9 +163,8 @@ void CEditView::DrawBracketPair( bool bDraw )
 				}
 				else{
 					if( IsBracket( pLine, OutputX, CLogicInt(1) ) ){
-						/* ToDo: */
-						int colorCookie;
-						nColorIndex = GetColorIndex( pcLayout, OutputX, colorCookie);
+						ColorStrategyState colorStrategyState;
+						nColorIndex = GetColorIndex( pcLayout, OutputX, colorStrategyState );
 					}
 					else{
 						SetBracketPairPos( false );

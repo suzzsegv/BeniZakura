@@ -25,7 +25,7 @@ class CLayoutMgr;
 #include "doc/logic/CDocLine.h"// 2002/4/21 YAZAKI
 #include "mem/CMemory.h"// 2002/4/21 YAZAKI
 #include "view/colors/EColorIndexType.h"
-
+#include "view/colors/ColorStrategyState.h"
 
 /*-----------------------------------------------------------------------
 クラスの宣言
@@ -44,7 +44,7 @@ public:
 		CLogicPoint		ptLogicPos,		//!< 実データ参照位置
 		CLogicInt		nLength,		//!< 実データ内データ長
 		EColorIndexType	colorIndexPrev,
-		int				colorCookiePrev,
+		ColorStrategyState colorStrategyStatePrev,
 		CLayoutInt		nTypeIndent
 	)
 	{
@@ -54,7 +54,7 @@ public:
 		m_ptLogicPos		= ptLogicPos;		// 実データ参照位置
 		m_nLength			= nLength;			// 実データ内データ長
 		m_colorIndexPrev	= colorIndexPrev;	// 前行最終文字のカラーインデックス(パレット)番号
-		m_colorCookiePrev	= colorCookiePrev;	// 前行最終文字のカラーリング付加情報
+		colorStrategyState	= colorStrategyStatePrev;	// 前行最終文字のカラーリング状態
 		m_nIndent			= nTypeIndent;		// このレイアウト行のインデント数
 	}
 	~CLayout();
@@ -72,7 +72,7 @@ public:
 	CLogicInt GetLogicOffset() const{ return m_ptLogicPos.GetX2(); }
 	CLogicPoint GetLogicPos() const{ return m_ptLogicPos; }
 	EColorIndexType GetColorTypePrev() const{ return m_colorIndexPrev; }
-	int GetColorCookiePrev() const{ return m_colorCookiePrev; }
+	ColorStrategyState GetColorStrategyStatePrev() const{ return colorStrategyState; }
 	CLayoutInt GetLayoutWidth() const{ return m_nLayoutWidth; }		// 2009.08.28 nasukoji	このレイアウト行の改行を含むレイアウト長を返す
 
 	//変更インターフェース
@@ -81,9 +81,9 @@ public:
 	{
 		m_colorIndexPrev = colorIndexPrev;
 	}
-	void SetColorCookiePrev(int colorCookiePrev)
+	void SetColorStrategyStatePrev(ColorStrategyState colorStrategyStatePrev)
 	{
-		m_colorCookiePrev = colorCookiePrev;
+		colorStrategyState = colorStrategyStatePrev;
 	}
 	void SetLayoutWidth(CLayoutInt nWidth){ m_nLayoutWidth = nWidth; }
 
@@ -121,7 +121,7 @@ private:
 	
 	//その他属性
 	EColorIndexType		m_colorIndexPrev;	//!< 前行最終文字のカラーインデックス(パレット)番号
-	int					m_colorCookiePrev;	//!< 前行最終文字のカラーリング付加情報
+	ColorStrategyState	colorStrategyState;	//!< 前行最終文字のカラーリング状態
 	CLayoutInt			m_nIndent;			//!< このレイアウト行のインデント数 @@@ 2002.09.23 YAZAKI
 	CEol				m_cEol;
 	CLayoutInt			m_nLayoutWidth;		//!< このレイアウト行の改行を含むレイアウト長（「折り返さない」選択時のみ）	// 2009.08.28 nasukoji
