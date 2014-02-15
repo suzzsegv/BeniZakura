@@ -1,10 +1,10 @@
-/*!	@file	CColor_Comment_Cpp_If1_If1.h
-	@brief	C++ #if 1 ～ #else ～ #endif コメント判定クラス
+/*!	@file	CColor_Comment_Cpp.cpp
+	@brief	C++ #if 0 ～ #else ～ #endif コメント判定クラス
 
 	@author	Suzuki Satoshi
 */
 /*
-	Copyright (C) 2014, Suzuki Satoshi
+	Copyright (C) 2012, 2013, 2014, Suzuki Satoshi
 
 	This software is provided 'as-is', without any express or implied
 	warranty. In no event will the authors be held liable for any damages
@@ -29,15 +29,15 @@
 
 #include "StdAfx.h"
 #include "view/CEditView.h"
-#include "CColor_Comment_Cpp_If1.h"
+#include "CColor_Comment_Cpp_If0.h"
 
 /*!
-	C++ プリプロセッサ "#if 1" 後の "#else" 開始判定
+	C++ プリプロセッサ "#if 0" 開始判定
 
-	@retval true: "#if 1" 後の "#else" を検出した
+	@retval true: "#if 0" を検出した
 	@retval false: 検出しなかった
  */
-bool CColor_Comment_Cpp_If1::BeginColor( const CStringRef& rStr, int pos, ColorStrategyState& rColorStrategyState )
+bool CColor_Comment_Cpp_If0::BeginColor( const CStringRef& rStr, int pos, ColorStrategyState& rColorStrategyState )
 {
 	if( !rStr.IsValid( ) ){
 		return false;
@@ -52,19 +52,19 @@ bool CColor_Comment_Cpp_If1::BeginColor( const CStringRef& rStr, int pos, ColorS
 
 	if( Match_CommentFrom( pos, rStr, rColorStrategyState ) ){
 		this->commentEndPos = Match_CommentTo( pos + wcslen( L"#if 0" ), rStr, rColorStrategyState );
+
 		return true;
 	}
 
 	return false;
 }
-
 /*!
 	C++ プリプロセッサによるコメントアウトの終了判定
 
 	@retval true: コメントアウト終了を検出した
 	@retval false: 検出しなかった
  */
-bool CColor_Comment_Cpp_If1::EndColor( const CStringRef& rStr, int pos, ColorStrategyState& rColorStrategyState )
+bool CColor_Comment_Cpp_If0::EndColor( const CStringRef& rStr, int pos, ColorStrategyState& rColorStrategyState )
 {
 	if( this->commentEndPos == 0 ){
 		this->commentEndPos = Match_CommentTo( pos, rStr, rColorStrategyState );
@@ -76,38 +76,26 @@ bool CColor_Comment_Cpp_If1::EndColor( const CStringRef& rStr, int pos, ColorStr
 }
 
 /*!
-	"#if 1" プリプロセッサ コメント開始判定用の文字列比較処理
+	"#if 0" プリプロセッサ コメント開始判定用の文字列比較処理
 
-	@retval true: "#if 1" 後の "#else" を検出した
+	@retval true: "#if 0" を検出した
 	@retval false: 検出しなかった
 */
-bool CColor_Comment_Cpp_If1::Match_CommentFrom
+bool CColor_Comment_Cpp_If0::Match_CommentFrom
 	(
 		int pos,								//!< [in] 探索開始位置
 		const CStringRef& rStr,					//!< [in] 探索対象文字列 ※探索開始位置のポインタではないことに注意
-		ColorStrategyState& rColorStrategyState //!< [in, out] 状態( #if 1 ネストレベル)
+		ColorStrategyState& rColorStrategyState //!< [in, out] 状態( #if 0 ネストレベル)
 	)
 {
 	int len;
 
-	len = wcslen( L"#if 1" );
-	if( rColorStrategyState.cppPreprocessorrIf1NestLevel == 0 ){
-		if( ( pos <= rStr.GetLength( ) - len )
-			&& ( wmemicmp( &rStr.GetPtr( )[pos], L"#if 1", len ) == 0 ) ){
-			rColorStrategyState.cppPreprocessorrIf1NestLevel = 1;
-			return false;
-		}
-	}else{
-		len = wcslen( L"#else" );
-		if( wmemicmp( &rStr.GetPtr( )[pos], L"#else", len ) == 0 ){
-			rColorStrategyState.cppPreprocessorrIf1NestLevel = 1;
-			return true;
-		}
-
-		len = wcslen( L"#endif" );
-		if( wmemicmp( &rStr.GetPtr( )[pos], L"#endif", len ) == 0 ){
-			rColorStrategyState.cppPreprocessorrIf1NestLevel--;
-		}
+	len = wcslen( L"#if 0" );
+	if( ( pos <= rStr.GetLength() - len )
+	 && ( wmemicmp( &rStr.GetPtr()[pos], L"#if 0", len ) == 0 ) )
+	{
+		rColorStrategyState.cppPreprocessorrIf0NestLevel = 1;
+		return true;
 	}
 
 	return false;
@@ -115,15 +103,15 @@ bool CColor_Comment_Cpp_If1::Match_CommentFrom
 
 
 /*!
-	"#if 1" プリプロセッサ コメント終了判定用の文字列比較処理
+	"#if 0" プリプロセッサ コメント終了判定用の文字列比較処理
 
 	@return コメントアウト終了位置を返す。終了文字が検出されなかった場合には、nLineLen をそのまま返す。
 */
-int CColor_Comment_Cpp_If1::Match_CommentTo
+int CColor_Comment_Cpp_If0::Match_CommentTo
 	(
 		int pos,								//!< [in] 探索開始位置
 		const CStringRef& rStr,					//!< [in] 探索対象文字列 ※探索開始位置のポインタではないことに注意
-		ColorStrategyState& rColorStrategyState	//!< [in, out] 状態( #if 1 ネストレベル)
+		ColorStrategyState& rColorStrategyState	//!< [in, out] 状態( #if 0 ネストレベル)
 	)
 {
 	int i;
@@ -147,44 +135,44 @@ int CColor_Comment_Cpp_If1::Match_CommentTo
 
 		len = wcslen( L"#if " );
 		if( wmemicmp( &rStr.GetPtr( )[i], L"#if ", len ) == 0 ){
-			rColorStrategyState.cppPreprocessorrIf1NestLevel++;
+			rColorStrategyState.cppPreprocessorrIf0NestLevel++;
 		}
 
 		len = wcslen( L"#if\t" );
 		if( wmemicmp( &rStr.GetPtr( )[i], L"#if\t", len ) == 0 ){
-			rColorStrategyState.cppPreprocessorrIf1NestLevel++;
+			rColorStrategyState.cppPreprocessorrIf0NestLevel++;
 		}
 
 		len = wcslen( L"#ifdef" );
 		if( wmemicmp( &rStr.GetPtr( )[i], L"#ifdef", len ) == 0 ){
-			rColorStrategyState.cppPreprocessorrIf1NestLevel++;
+			rColorStrategyState.cppPreprocessorrIf0NestLevel++;
 		}
 
 		len = wcslen( L"#ifndef" );
 		if( wmemicmp( &rStr.GetPtr( )[i], L"#ifndef", len ) == 0 ){
-			rColorStrategyState.cppPreprocessorrIf1NestLevel++;
+			rColorStrategyState.cppPreprocessorrIf0NestLevel++;
 		}
 
 		len = wcslen( L"$endif" );
 		if( wmemicmp( &rStr.GetPtr( )[i], L"#endif", len ) == 0 ){
-			rColorStrategyState.cppPreprocessorrIf1NestLevel--;
-			if( rColorStrategyState.cppPreprocessorrIf1NestLevel == 0 ){
+			rColorStrategyState.cppPreprocessorrIf0NestLevel--;
+			if (rColorStrategyState.cppPreprocessorrIf0NestLevel == 0){
 				return i + len;
 			}
 		}
 
 		len = wcslen( L"#else" );
 		if( wmemicmp( &rStr.GetPtr( )[i], L"#else", len ) == 0 ){
-			if( rColorStrategyState.cppPreprocessorrIf1NestLevel == 1 ){
-				rColorStrategyState.cppPreprocessorrIf1NestLevel = 0;
+			if (rColorStrategyState.cppPreprocessorrIf0NestLevel == 1){
+				rColorStrategyState.cppPreprocessorrIf0NestLevel = 0;
 				return i + len;
 			}
 		}
 
 		len = wcslen( L"#elif" );
 		if( wmemicmp( &rStr.GetPtr( )[i], L"#elif", len ) == 0 ){
-			if( rColorStrategyState.cppPreprocessorrIf1NestLevel == 1 ){
-				rColorStrategyState.cppPreprocessorrIf1NestLevel = 0;
+			if (rColorStrategyState.cppPreprocessorrIf0NestLevel == 1){
+				rColorStrategyState.cppPreprocessorrIf0NestLevel = 0;
 				return i + len;
 			}
 		}

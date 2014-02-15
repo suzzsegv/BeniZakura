@@ -2,7 +2,7 @@
 #include "view/CEditView.h" // SColorStrategyInfo
 #include "view/colors/CColorStrategy.h"
 #include "CColor_Comment.h"
-#include "CColor_Comment_Cpp.h"
+#include "CColor_Comment_Cpp_If0.h"
 #include "CColor_Comment_Cpp_If1.h"
 #include "CColor_Quote.h"
 #include "CColor_RegexKeyword.h"
@@ -163,7 +163,7 @@ CColorStrategyPool::CColorStrategyPool()
 	m_vStrategies.push_back(new CColor_LineComment);		// 行コメント
 	m_vStrategies.push_back(new CColor_BlockComment(COLORIDX_BLOCK1));	// ブロックコメント
 	m_vStrategies.push_back(new CColor_BlockComment(COLORIDX_BLOCK2));	// ブロックコメント2
-	m_vStrategies.push_back(new CColor_Comment_Cpp());		// C++コメント
+	m_vStrategies.push_back(new CColor_Comment_Cpp_If0());		// C++コメント
 	m_vStrategies.push_back(new CColor_Comment_Cpp_If1());	// C++ "#if 1" コメントアウトブロック
 	m_vStrategies.push_back(new CColor_SingleQuote);		// シングルクォーテーション文字列
 	m_vStrategies.push_back(new CColor_DoubleQuote);		// ダブルクォーテーション文字列
@@ -178,7 +178,7 @@ CColorStrategyPool::CColorStrategyPool()
 	m_pcLineComment = (CColor_LineComment*)GetStrategyByColor(COLORIDX_COMMENT);	// 行コメント
 	m_pcBlockComment1 = (CColor_BlockComment*)GetStrategyByColor(COLORIDX_BLOCK1);	// ブロックコメント
 	m_pcBlockComment2 = (CColor_BlockComment*)GetStrategyByColor(COLORIDX_BLOCK2);	// ブロックコメント2
-	m_pcCommentCpp = (CColor_Comment_Cpp*)GetStrategyByColor(COLORIDX_COMMENT2);	// C++ プリプロセッサによるコメントアウトブロック
+	m_pcCommentCpp = (CColor_Comment_Cpp_If0*)GetStrategyByColor(COLORIDX_COMMENT2);	// C++ プリプロセッサによるコメントアウトブロック
 	pCommentCppIf1 = (CColor_Comment_Cpp_If1*)GetStrategyByColor(COLORIDX_COMMENT_CPP_IF1);
 																					// C++ "#if 1" コメントアウトブロック
 	m_pcSingleQuote = (CColor_SingleQuote*)GetStrategyByColor(COLORIDX_SSTRING);	// シングルクォーテーション文字列

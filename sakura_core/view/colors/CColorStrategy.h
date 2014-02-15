@@ -171,7 +171,7 @@ protected:
 class CColor_LineComment;
 class CColor_BlockComment;
 class CColor_BlockComment;
-class CColor_Comment_Cpp;
+class CColor_Comment_Cpp_If0;
 class CColor_Comment_Cpp_If1;
 class CColor_SingleQuote;
 class CColor_DoubleQuote;
@@ -221,7 +221,7 @@ private:
 	CColor_LineComment*				m_pcLineComment;
 	CColor_BlockComment*			m_pcBlockComment1;
 	CColor_BlockComment*			m_pcBlockComment2;
-	CColor_Comment_Cpp*				m_pcCommentCpp;
+	CColor_Comment_Cpp_If0*				m_pcCommentCpp;
 	CColor_Comment_Cpp_If1*			pCommentCppIf1;
 	CColor_SingleQuote*				m_pcSingleQuote;
 	CColor_DoubleQuote*				m_pcDoubleQuote;

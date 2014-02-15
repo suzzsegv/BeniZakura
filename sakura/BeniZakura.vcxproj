@@ -382,7 +382,7 @@
     <ClInclude Include="..\sakura_core\view\CViewSelect.h" />
     <ClInclude Include="..\sakura_core\view\DispPos.h" />
     <ClInclude Include="..\sakura_core\view\colors\CColor_Comment.h" />
-    <ClInclude Include="..\sakura_core\view\colors\CColor_Comment_Cpp.h" />
+    <ClInclude Include="..\sakura_core\view\colors\CColor_Comment_Cpp_if0.h" />
     <ClInclude Include="..\sakura_core\view\colors\CColor_Found.h" />
     <ClInclude Include="..\sakura_core\view\colors\CColor_KeywordSet.h" />
     <ClInclude Include="..\sakura_core\view\colors\CColor_Numeric.h" />
@@ -736,7 +736,7 @@
     <ClCompile Include="..\sakura_core\view\CViewSelect.cpp" />
     <ClCompile Include="..\sakura_core\view\DispPos.cpp" />
     <ClCompile Include="..\sakura_core\view\colors\CColor_Comment.cpp" />
-    <ClCompile Include="..\sakura_core\view\colors\CColor_Comment_Cpp.cpp" />
+    <ClCompile Include="..\sakura_core\view\colors\CColor_Comment_Cpp_If0.cpp" />
     <ClCompile Include="..\sakura_core\view\colors\CColor_Found.cpp" />
     <ClCompile Include="..\sakura_core\view\colors\CColor_KeywordSet.cpp" />
     <ClCompile Include="..\sakura_core\view\colors\CColor_Numeric.cpp" />
