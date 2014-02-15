@@ -167,9 +167,9 @@ BOOL CDlgAbout::OnInitDialog( HWND hwndDlg, WPARAM wParam, LPARAM lParam )
 	cmemMsg.AppendString( _T("\r\n") );
 	cmemMsg.AppendString( _T("\r\n") );
 
-	cmemMsg.AppendString( _T("Based on サクラエディタ   Ver. 2.0.8.1\r\n") );
+	cmemMsg.AppendString( _T("Based on サクラエディタ   Ver. 2.0.8.1+\r\n") );
 	cmemMsg.AppendString( _T("\r\n") );
-	cmemMsg.AppendString( _T("    Copyright (C) 1998-2013  by Norio Nakatani & Collaborators\r\n") );
+	cmemMsg.AppendString( _T("    Copyright (C) 1998-2014  by Norio Nakatani & Collaborators\r\n") );
 	cmemMsg.AppendString( _T("\r\n") );
 	cmemMsg.AppendString( _T("    Project Sakura-Editor:  http://sakura-editor.sourceforge.net/\r\n") );
 
