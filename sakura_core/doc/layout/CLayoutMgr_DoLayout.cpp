@@ -493,18 +493,23 @@ CLayoutInt CLayoutMgr::DoLayout_Range(
 
 		/* 目的の行数(nLineNum)に達したか、または通り過ぎた（＝行数が増えた）か確認 */
 		if( nLineNumWork >= nLineNum ){
-#if 0
-			if( pWork->pLayout && pWork->pLayout->m_pNext 
-				&& ( pWork->pcColorStrategy_Prev->GetStrategyColorSafe() != pWork->pLayout->m_pNext->GetColorTypePrev() )
-			){
-#endif
-/* ToDo: この条件判定は暫定対応。無条件で後続行を再レイアウト対象にしているため、パフォーマンスが非常に悪い。*/
-			if( pWork->pLayout && pWork->pLayout->m_pNext ){
-				//	COMMENTMODEが異なる行が増えましたので、次の行→次の行と更新していきます。
-				pWork->bNeedChangeCOMMENTMODE = true;
-			}else{
+			if( pWork->pLayout == NULL ){
 				break;	//	while( NULL != pWork->pcDocLine ) 終了
 			}
+			if( pWork->pLayout->m_pNext == NULL ){
+				break;	//	while( NULL != pWork->pcDocLine ) 終了
+			}
+			if( pWork->pcColorStrategy_Prev->GetStrategyColorSafe() == pWork->pLayout->m_pNext->GetColorTypePrev() ){
+				if( (pWork->colorStrategyStatePrev.cppPreprocessorrIf0NestLevel == 0)
+				 && (pWork->colorStrategyStatePrev.cppPreprocessorrIf1NestLevel == 0)
+				 && (pWork->pLayout->m_pNext->colorStrategyState.cppPreprocessorrIf0NestLevel == 0)
+				 && (pWork->pLayout->m_pNext->colorStrategyState.cppPreprocessorrIf1NestLevel == 0) )
+				{
+					break;	//	while( NULL != pWork->pcDocLine ) 終了
+				}
+			}
+			//	COMMENTMODEが異なる行が増えましたので、次の行→次の行と更新していきます。
+			pWork->bNeedChangeCOMMENTMODE = true;
 		}
 		pWork->pcDocLine = pWork->pcDocLine->GetNextLine();
 		if( pWork->pcColorStrategy_Prev->GetStrategyColorSafe() == COLORIDX_COMMENT ){	/* 行コメントである */
