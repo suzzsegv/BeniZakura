@@ -41,8 +41,11 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="1"
-				InlineFunctionExpansion="1"
+				Optimization="2"
+				InlineFunctionExpansion="2"
+				EnableIntrinsicFunctions="true"
+				FavorSizeOrSpeed="1"
+				OmitFramePointers="true"
 				AdditionalIncludeDirectories="..\sakura_core"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NOMINMAX;NDEBUG"
 				StringPooling="true"
@@ -67,14 +70,16 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="comctl32.lib Imm32.lib mpr.lib imagehlp.lib"
 				LinkIncremental="1"
+				GenerateManifest="true"
 				GenerateMapFile="true"
 				SubSystem="2"
 				LargeAddressAware="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
+				RandomizedBaseAddress="2"
+				DataExecutionPrevention="2"
 				TargetMachine="1"
+				AllowIsolation="true"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -97,7 +102,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="call postBuild.bat &quot;$(TargetPath).manifest&quot;"
+				CommandLine=""
 			/>
 		</Configuration>
 		<Configuration
@@ -128,170 +133,6 @@
 				Optimization="0"
 				AdditionalIncludeDirectories="..\sakura_core"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NOMINMAX;_DEBUG"
-				MinimalRebuild="true"
-				BasicRuntimeChecks="3"
-				RuntimeLibrary="1"
-				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="StdAfx.h"
-				WarningLevel="3"
-				DebugInformationFormat="4"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_DEBUG"
-				Culture="1041"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="comctl32.lib Imm32.lib mpr.lib imagehlp.lib"
-				LinkIncremental="2"
-				GenerateDebugInformation="true"
-				SubSystem="2"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
-				TargetMachine="1"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
-				EmbedManifest="false"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-				CommandLine="call postBuild.bat &quot;$(TargetPath).manifest&quot;"
-			/>
-		</Configuration>
-		<Configuration
-			Name="Release_Ansi|Win32"
-			OutputDirectory="$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)\obj"
-			ConfigurationType="1"
-			CharacterSet="2"
-			WholeProgramOptimization="1"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-				CommandLine="call preBuild.bat"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-			/>
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="1"
-				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="..\sakura_core"
-				PreprocessorDefinitions="WIN32;_WINDOWS;NOMINMAX;_DEBUG"
-				StringPooling="true"
-				RuntimeLibrary="0"
-				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="StdAfx.h"
-				WarningLevel="3"
-				DebugInformationFormat="3"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="NDEBUG"
-				Culture="1041"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="comctl32.lib Imm32.lib mpr.lib imagehlp.lib"
-				LinkIncremental="1"
-				SubSystem="2"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
-				TargetMachine="1"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
-				EmbedManifest="false"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-				CommandLine="call postBuild.bat &quot;$(TargetPath).manifest&quot;"
-			/>
-		</Configuration>
-		<Configuration
-			Name="Debug_Ansi|Win32"
-			OutputDirectory="$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)\obj"
-			ConfigurationType="1"
-			CharacterSet="2"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-				CommandLine="call preBuild.bat"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-			/>
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="0"
-				AdditionalIncludeDirectories="..\sakura_core"
-				PreprocessorDefinitions="WIN32;_WINDOWS;NOMINMAX;NDEBUG"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
@@ -391,26 +232,6 @@
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Debug_Unicode|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						UsePrecompiledHeader="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release_Ansi|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						UsePrecompiledHeader="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug_Ansi|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1860,11 +1681,19 @@
 						>
 					</File>
 					<File
-						RelativePath="..\sakura_core\view\colors\CColor_Comment_Cpp.cpp"
+						RelativePath="..\sakura_core\view\colors\CColor_Comment_Cpp_If0.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\sakura_core\view\colors\CColor_Comment_Cpp.h"
+						RelativePath="..\sakura_core\view\colors\CColor_Comment_Cpp_if0.h"
+						>
+					</File>
+					<File
+						RelativePath="..\sakura_core\view\colors\CColor_Comment_Cpp_If1.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\sakura_core\view\colors\CColor_Comment_Cpp_If1.h"
 						>
 					</File>
 					<File
