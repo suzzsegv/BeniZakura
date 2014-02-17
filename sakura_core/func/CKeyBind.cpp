@@ -590,7 +590,7 @@ const KeyData DefaultKeyBindTable[] = {
 	
 	/* アルファベット */
 	//keycode,	keyname,			なし,				Shitf+,				Ctrl+,						Shift+Ctrl+,		Alt+,					Shit+Alt+,			Ctrl+Alt+,				Shift+Ctrl+Alt+
-	{ 'A',		_T("A"),			F_0,				F_0,				F_SELECTALL,				F_0,				F_0,					F_0,				F_0,					F_0				},
+	{ 'A',		_T("A"),			F_0,				F_0,				F_SELECTALL,				F_EXEC_THG_ANNOTATE,F_0,					F_0,				F_0,					F_0				},
 	{ 'B',		_T("B"),			F_0,				F_0,				F_DUPLICATELINE,			F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ 'C',		_T("C"),			F_0,				F_0,				F_COPY,						F_GOFILEEND,		F_0,					F_0,				F_0,					F_0				},
 	{ 'D',		_T("D"),			F_0,				F_0,				F_WordDelete,				F_0,				F_0,					F_0,				F_0,					F_0				},
