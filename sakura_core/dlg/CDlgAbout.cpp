@@ -135,44 +135,56 @@ BOOL CDlgAbout::OnInitDialog( HWND hwndDlg, WPARAM wParam, LPARAM lParam )
 	_SetHwnd( hwndDlg );
 
 	TCHAR			szMsg[2048];
+	wchar_t	vcVersion[64];
 
 	/* バージョン情報 */
 
 	CNativeT cmemMsg;
-	cmemMsg.AppendString(_T("紅桜  "));
+	cmemMsg.AppendString(_T("\r\n紅桜   "));
 
 	DWORD dwVersionMS, dwVersionLS;
 	GetAppVersionInfo( NULL, VS_VERSION_INFO, &dwVersionMS, &dwVersionLS );
 
 	if( HG_REV_DISTANCE == 0 ){
-		auto_sprintf( szMsg, _T("%s  ( %s  %s )\r\n"),
-			_T(HG_REV),
-			_T(__DATE__),
-			_T(__TIME__)
+		auto_sprintf( szMsg, _T("%s\r\n"),
+			_T(HG_REV)
 		);
 	}else{
-		auto_sprintf( szMsg, _T("%s + %d  ( %s  %s )\r\n"),
+		auto_sprintf( szMsg, _T("%s +%d\r\n"),
 			_T(HG_REV),
-			HG_REV_DISTANCE,
-			_T(__DATE__),
-			_T(__TIME__)
+			HG_REV_DISTANCE
 		);
 	}
 	cmemMsg.AppendString( szMsg );
 	cmemMsg.AppendString( _T("\r\n") );
-	cmemMsg.AppendString( _T("    Copyright (C) 2012, 2013, 2014  by Satoshi Suzuki\r\n") );
-	cmemMsg.AppendString( _T("\r\n") );
-	cmemMsg.AppendString( _T("    Source Repository:  https://bitbucket.org/suzzsegv/benizakura/\r\n") );
 
+	switch(_MSC_VER){
+	case 1500:
+		wcscpy( vcVersion, L"Visual Studio 2008" );
+		break;
+	case 1600:
+		wcscpy( vcVersion, L"Visual Studio 2010" );
+		break;
+	case 1700:
+		wcscpy( vcVersion, L"Visual Studio 2012" );
+		break;
+	case 1800:
+		wcscpy( vcVersion, L"Visual Studio 2013" );
+		break;
+	default:
+		wcscpy( vcVersion, L"Unknown" );
+		break;
+	}
+	auto_sprintf( szMsg, L"      %s  %s   Built with %s\r\n", _T(__DATE__), _T(__TIME__), vcVersion );
+	cmemMsg.AppendString( szMsg );
+	cmemMsg.AppendString( _T("\r\n") );
+	cmemMsg.AppendString( _T("      Copyright (C) 2012, 2013, 2014  by Satoshi Suzuki\r\n") );
 	cmemMsg.AppendString( _T("\r\n") );
 	cmemMsg.AppendString( _T("\r\n") );
 
-	cmemMsg.AppendString( _T("Based on サクラエディタ   Ver. 2.0.8.1+\r\n") );
+	cmemMsg.AppendString( _T("Based on サクラエディタ   Ver.2.0.8.1+\r\n") );
 	cmemMsg.AppendString( _T("\r\n") );
-	cmemMsg.AppendString( _T("    Copyright (C) 1998-2014  by Norio Nakatani & Collaborators\r\n") );
-	cmemMsg.AppendString( _T("\r\n") );
-	cmemMsg.AppendString( _T("    Project Sakura-Editor:  http://sakura-editor.sourceforge.net/\r\n") );
-
+	cmemMsg.AppendString( _T("      Copyright (C) 1998-2014  by Norio Nakatani & Collaborators\r\n") );
 	cmemMsg.AppendString( _T("\r\n") );
 
 // パッチ(かリビジョン)の情報をコンパイル時に渡せるようにする
@@ -198,7 +210,7 @@ BOOL CDlgAbout::OnInitDialog( HWND hwndDlg, WPARAM wParam, LPARAM lParam )
 	//	アイコンをカスタマイズアイコンに合わせる
 	HICON hIcon = GetAppIcon( m_hInstance, ICON_DEFAULT_APP, FN_APP_ICON, false );
 	HWND hIconWnd = GetDlgItem( GetHwnd(), IDC_STATIC_MYICON );
-	
+
 	if( hIconWnd != NULL && hIcon != NULL ){
 		StCtl_SetIcon( hIconWnd, hIcon );
 	}
