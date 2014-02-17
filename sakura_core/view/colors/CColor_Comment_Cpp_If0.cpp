@@ -94,7 +94,7 @@ bool CColor_Comment_Cpp_If0::Match_CommentFrom
 	if( ( pos <= rStr.GetLength() - len )
 	 && ( wmemicmp( &rStr.GetPtr()[pos], L"#if 0", len ) == 0 ) )
 	{
-		rColorStrategyState.cppPreprocessorrIf0NestLevel = 1;
+		rColorStrategyState.cppPreprocessorIf0NestLevel = 1;
 		return true;
 	}
 
@@ -135,44 +135,44 @@ int CColor_Comment_Cpp_If0::Match_CommentTo
 
 		len = wcslen( L"#if " );
 		if( wmemicmp( &rStr.GetPtr( )[i], L"#if ", len ) == 0 ){
-			rColorStrategyState.cppPreprocessorrIf0NestLevel++;
+			rColorStrategyState.cppPreprocessorIf0NestLevel++;
 		}
 
 		len = wcslen( L"#if\t" );
 		if( wmemicmp( &rStr.GetPtr( )[i], L"#if\t", len ) == 0 ){
-			rColorStrategyState.cppPreprocessorrIf0NestLevel++;
+			rColorStrategyState.cppPreprocessorIf0NestLevel++;
 		}
 
 		len = wcslen( L"#ifdef" );
 		if( wmemicmp( &rStr.GetPtr( )[i], L"#ifdef", len ) == 0 ){
-			rColorStrategyState.cppPreprocessorrIf0NestLevel++;
+			rColorStrategyState.cppPreprocessorIf0NestLevel++;
 		}
 
 		len = wcslen( L"#ifndef" );
 		if( wmemicmp( &rStr.GetPtr( )[i], L"#ifndef", len ) == 0 ){
-			rColorStrategyState.cppPreprocessorrIf0NestLevel++;
+			rColorStrategyState.cppPreprocessorIf0NestLevel++;
 		}
 
 		len = wcslen( L"$endif" );
 		if( wmemicmp( &rStr.GetPtr( )[i], L"#endif", len ) == 0 ){
-			rColorStrategyState.cppPreprocessorrIf0NestLevel--;
-			if (rColorStrategyState.cppPreprocessorrIf0NestLevel == 0){
+			rColorStrategyState.cppPreprocessorIf0NestLevel--;
+			if (rColorStrategyState.cppPreprocessorIf0NestLevel == 0){
 				return i + len;
 			}
 		}
 
 		len = wcslen( L"#else" );
 		if( wmemicmp( &rStr.GetPtr( )[i], L"#else", len ) == 0 ){
-			if (rColorStrategyState.cppPreprocessorrIf0NestLevel == 1){
-				rColorStrategyState.cppPreprocessorrIf0NestLevel = 0;
+			if (rColorStrategyState.cppPreprocessorIf0NestLevel == 1){
+				rColorStrategyState.cppPreprocessorIf0NestLevel = 0;
 				return i + len;
 			}
 		}
 
 		len = wcslen( L"#elif" );
 		if( wmemicmp( &rStr.GetPtr( )[i], L"#elif", len ) == 0 ){
-			if (rColorStrategyState.cppPreprocessorrIf0NestLevel == 1){
-				rColorStrategyState.cppPreprocessorrIf0NestLevel = 0;
+			if (rColorStrategyState.cppPreprocessorIf0NestLevel == 1){
+				rColorStrategyState.cppPreprocessorIf0NestLevel = 0;
 				return i + len;
 			}
 		}

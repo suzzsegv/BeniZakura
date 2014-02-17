@@ -33,8 +33,8 @@
 extern "C" {
 
 struct ColorStrategyState {
-	int cppPreprocessorrIf0NestLevel;
-	int cppPreprocessorrIf1NestLevel;
+	int cppPreprocessorIf0NestLevel;
+	int cppPreprocessorIf1NestLevel;
 };
 
 }

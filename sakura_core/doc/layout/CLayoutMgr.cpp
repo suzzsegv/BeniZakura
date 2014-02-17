@@ -91,8 +91,8 @@ void CLayoutMgr::Init()
 	m_pLayoutPrevRefer = NULL;
 	m_nLines = CLayoutInt(0);
 	m_colorIndexPrevAtEof = COLORIDX_DEFAULT;
-	colorStrategyStatePrevAtEof.cppPreprocessorrIf0NestLevel = 0;
-	colorStrategyStatePrevAtEof.cppPreprocessorrIf1NestLevel = 0;
+	colorStrategyStatePrevAtEof.cppPreprocessorIf0NestLevel = 0;
+	colorStrategyStatePrevAtEof.cppPreprocessorIf1NestLevel = 0;
 	m_nEOFLine = CLayoutInt(-1);
 	m_nEOFColumn = CLayoutInt(-1);
 }
@@ -677,8 +677,8 @@ void CLayoutMgr::InsertData_CLayoutMgr(
 			nInsStartLogicalLine = m_pcDocLineMgr->GetLineCount();
 			nInsStartLogicalPos  = CLogicInt(0);
 			colorIndexPrev = COLORIDX_DEFAULT;
-			colorStrategyStatePrev.cppPreprocessorrIf0NestLevel = 0;
-			colorStrategyStatePrev.cppPreprocessorrIf1NestLevel = 0;
+			colorStrategyStatePrev.cppPreprocessorIf0NestLevel = 0;
+			colorStrategyStatePrev.cppPreprocessorIf1NestLevel = 0;
 		}
 		else{
 			using namespace WCODE;
@@ -730,8 +730,8 @@ void CLayoutMgr::InsertData_CLayoutMgr(
 			colorStrategyStatePrev = pLayout->GetColorStrategyStatePrev();
 		}else{
 			colorIndexPrev = COLORIDX_DEFAULT;
-			colorStrategyStatePrev.cppPreprocessorrIf0NestLevel = 0;
-			colorStrategyStatePrev.cppPreprocessorrIf1NestLevel = 0;
+			colorStrategyStatePrev.cppPreprocessorIf0NestLevel = 0;
+			colorStrategyStatePrev.cppPreprocessorIf1NestLevel = 0;
 		}
 	}
 

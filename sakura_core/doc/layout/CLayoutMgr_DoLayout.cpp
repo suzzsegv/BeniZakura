@@ -326,10 +326,10 @@ void CLayoutMgr::_DoLayout()
 	pWork->pLayout				= m_pLayoutBot;
 	pWork->pcColorStrategy		= NULL;
 	pWork->pcColorStrategy_Prev	= NULL;
-	pWork->colorStrategyState.cppPreprocessorrIf0NestLevel = 0;
-	pWork->colorStrategyState.cppPreprocessorrIf1NestLevel = 0;
-	pWork->colorStrategyStatePrev.cppPreprocessorrIf0NestLevel = 0;
-	pWork->colorStrategyStatePrev.cppPreprocessorrIf1NestLevel = 0;
+	pWork->colorStrategyState.cppPreprocessorIf0NestLevel = 0;
+	pWork->colorStrategyState.cppPreprocessorIf1NestLevel = 0;
+	pWork->colorStrategyStatePrev.cppPreprocessorIf0NestLevel = 0;
+	pWork->colorStrategyStatePrev.cppPreprocessorIf1NestLevel = 0;
 	pWork->nCurLine = CLogicInt(0);
 
 	while( NULL != pWork->pcDocLine ){
@@ -500,10 +500,10 @@ CLayoutInt CLayoutMgr::DoLayout_Range(
 				break;	//	while( NULL != pWork->pcDocLine ) I—¹
 			}
 			if( pWork->pcColorStrategy_Prev->GetStrategyColorSafe() == pWork->pLayout->m_pNext->GetColorTypePrev() ){
-				if( (pWork->colorStrategyStatePrev.cppPreprocessorrIf0NestLevel == 0)
-				 && (pWork->colorStrategyStatePrev.cppPreprocessorrIf1NestLevel == 0)
-				 && (pWork->pLayout->m_pNext->colorStrategyState.cppPreprocessorrIf0NestLevel == 0)
-				 && (pWork->pLayout->m_pNext->colorStrategyState.cppPreprocessorrIf1NestLevel == 0) )
+				if( (pWork->colorStrategyStatePrev.cppPreprocessorIf0NestLevel == 0)
+				 && (pWork->colorStrategyStatePrev.cppPreprocessorIf1NestLevel == 0)
+				 && (pWork->pLayout->m_pNext->colorStrategyState.cppPreprocessorIf0NestLevel == 0)
+				 && (pWork->pLayout->m_pNext->colorStrategyState.cppPreprocessorIf1NestLevel == 0) )
 				{
 					break;	//	while( NULL != pWork->pcDocLine ) I—¹
 				}
