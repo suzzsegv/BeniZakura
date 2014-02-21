@@ -1151,7 +1151,6 @@ bool IsFuncEnable( CEditDoc* pcEditDoc, DLLSHAREDATA* pShareData, EFunctionCode 
 		// テキストが選択されていればtrue
 		return pcEditDoc->m_pcEditWnd->GetActiveView().GetSelectionInfo().IsTextSelected();
 
-	case F_SELECTWORD:	/* 現在位置の単語選択 */
 	case F_CUT_LINE:	//行切り取り(折り返し単位)
 	case F_DELETE_LINE:	//行削除(折り返し単位)
 		// テキストが選択されていなければtrue
