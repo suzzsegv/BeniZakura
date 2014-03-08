@@ -929,7 +929,8 @@ void CDocOutline::MakeFuncList_C( CFuncInfoArr* pcFuncInfoArr ,bool bVisibleMemb
 					else if(
 							(nMode2 & M2_AFTER_ITEM) != 0  &&
 							nNestLevel_global < nNamespaceNestMax &&
-							(nNamespaceLen[nNestLevel_global] +  (nItemNameLen = wcslen(szItemName)) + 6 + 1) < nNamespaceLenMax)
+							(nNamespaceLen[nNestLevel_global] +  (nItemNameLen = wcslen(szItemName)) + 6 + 1) < nNamespaceLenMax &&
+							(nItemLine > 0) )
 					// ３番目の(&&の後の)条件
 					// バッファが足りない場合は項目の追加を行わない。
 					// +6は追加する文字列の最大長(追加する文字列は"::定義位置"が最長)
