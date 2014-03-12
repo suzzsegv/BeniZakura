@@ -702,8 +702,7 @@ void CDocOutline::MakeFuncList_C( CFuncInfoArr* pcFuncInfoArr ,bool bVisibleMemb
 								}
 								else if( nMode2 == M2_TEMPLATE_SAVE)
 								{
-									wcsncat( szTemplateName, szWord, nItemNameLenMax - wcslen(szTemplateName) );
-									szTemplateName[ nItemNameLenMax - 1 ] = L'\0';
+									wcsncat( szTemplateName, szWord, nItemNameLenMax - wcslen(szTemplateName) - 1 );
 									nMode2 = M2_NAMESPACE_END;
 								}
 							}
@@ -732,8 +731,7 @@ void CDocOutline::MakeFuncList_C( CFuncInfoArr* pcFuncInfoArr ,bool bVisibleMemb
 									wcscat( szTemplateName, L" " );
 								}
 							}
-							wcsncat( szTemplateName, szWord, nItemNameLenMax - nLen );
-							szTemplateName[ nItemNameLenMax - 1 ] = L'\0';
+							wcsncat( szTemplateName, szWord, nItemNameLenMax - nLen - 1 );
 						}
 					}
 					else if( nNestLevel_func == 0 && (nMode2 == M2_NORMAL || nMode2 == M2_FUNC_NAME_END) )	// 2010.07.08 ryoji 関数型マクロ呼出しを関数と誤認することがある問題対策として nMode2 == M2_FUNC_NAME_END 条件を追加し、補正がかかるようにした。
@@ -1275,8 +1273,7 @@ void CDocOutline::MakeFuncList_C( CFuncInfoArr* pcFuncInfoArr ,bool bVisibleMemb
 							}
 							else if( nMode2 == M2_TEMPLATE_SAVE)
 							{
-								wcsncat( szTemplateName, szWord, nItemNameLenMax - wcslen(szTemplateName) );
-								szTemplateName[ nItemNameLenMax - 1 ] = L'\0';
+								wcsncat( szTemplateName, szWord, nItemNameLenMax - wcslen(szTemplateName) - 1 );
 								nMode2 = M2_NAMESPACE_END;
 							}
 							else if( nMode2 == M2_FUNC_NAME_END || nMode2 == M2_KR_FUNC )
