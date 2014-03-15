@@ -729,6 +729,7 @@ void CDocOutline::MakeFuncList_C( CFuncInfoArr* pcFuncInfoArr ,bool bVisibleMemb
 								// template func<const x>() のような場合にconstの後ろにスペースを挿入
 								if( nLen + 1 < nItemNameLenMax ){
 									wcscat( szTemplateName, L" " );
+									nLen++;
 								}
 							}
 							wcsncat( szTemplateName, szWord, nItemNameLenMax - nLen - 1 );
