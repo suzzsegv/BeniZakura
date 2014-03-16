@@ -339,6 +339,7 @@ public:
 //	To Here Sept. 20, 2000
 //	To Here 2006.12.03 maru ˆø”‚ÌŠg’£
 
+	void CViewCommander::Command_ExecExplorer( void );
 	void CViewCommander::Command_ExecThgAnnotate( void );
 
 

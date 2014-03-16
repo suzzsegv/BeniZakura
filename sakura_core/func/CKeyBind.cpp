@@ -595,7 +595,7 @@ const KeyData DefaultKeyBindTable[] = {
 	{ 'C',		_T("C"),			F_0,				F_0,				F_COPY,						F_GOFILEEND,		F_0,					F_0,				F_0,					F_0				},
 	{ 'D',		_T("D"),			F_0,				F_0,				F_WordDelete,				F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ 'E',		_T("E"),			F_0,				F_0,				F_WINLIST,					F_0,				F_0,					F_0,				F_0,					F_0				},
-	{ 'F',		_T("F"),			F_0,				F_0,				F_SEARCH_DIALOG,			F_0,				F_0,					F_0,				F_0,					F_0				},
+	{ 'F',		_T("F"),			F_0,				F_0,				F_SEARCH_DIALOG,			F_EXEC_EXPLORER,	F_0,					F_0,				F_0,					F_0				},
 	{ 'G',		_T("G"),			F_0,				F_0,				F_GREP_DIALOG,				F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ 'H',		_T("H"),			F_0,				F_0,				F_OPEN_HfromtoC,			F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ 'I',		_T("I"),			F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},

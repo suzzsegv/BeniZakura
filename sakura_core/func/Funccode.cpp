@@ -493,6 +493,7 @@ const int nFincList_Support_Num = _countof( pnFuncList_Support );	//Oct. 16, 200
 
 /* ‚»‚Ì‘¼ */	//Oct. 16, 2000 JEPRO •Ï”–¼•ÏX(List12¨List_Others)
 const EFunctionCode pnFuncList_Others[] = {
+	F_EXEC_EXPLORER,
 	F_EXEC_THG_ANNOTATE
 };
 const int nFincList_Others_Num = _countof( pnFuncList_Others );	//Oct. 16, 2000 JEPRO •Ï”–¼•ÏX(List12¨List_Others)

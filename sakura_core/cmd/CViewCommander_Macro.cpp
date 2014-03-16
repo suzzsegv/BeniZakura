@@ -356,6 +356,44 @@ void CViewCommander::Command_EXECCOMMAND( LPCWSTR cmd_string, const int nFlgOpt,
 	return;
 }
 
+
+/*!
+	Explorer ‚ð‹N“®‚·‚é.
+ */
+void CViewCommander::Command_ExecExplorer( void )
+{
+	BOOL succeeded;
+	STARTUPINFO si;
+	PROCESS_INFORMATION pi;
+	const int CommandLineMax = 1024;
+	wchar_t CommandLine[CommandLineMax + 1];
+
+	CSakuraEnvironment::ExpandParameter( L"explorer.exe /select,$F", CommandLine, CommandLineMax );
+	ZeroMemory( &si, sizeof(si) );
+
+	succeeded = CreateProcessW
+		(
+			NULL,
+			CommandLine,
+			NULL,
+			NULL,
+			FALSE,
+			0,
+			NULL,
+			NULL,
+			&si,
+			&pi
+		);
+
+	if( succeeded == FALSE ){
+		return;
+	}
+
+	CloseHandle( pi.hThread );
+	CloseHandle( pi.hProcess );
+}
+
+
 /*!
 	TortoiseHg annotate ‚ð‹N“®‚·‚é.
 */
