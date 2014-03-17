@@ -212,21 +212,16 @@ int CTextArea::DetectWidthOfLineNumberArea_calculate() const
 	else{
 		nAllLines = (Int)pView->m_pcEditDoc->m_cLayoutMgr.GetLineCount();
 	}
-	
-	if( 0 < nAllLines ){
-		int nWork = 100;
-		int i;
-		for( i = 3; i < 12; ++i ){
-			if( nWork > nAllLines ){	// Oct. 18, 2003 genta ®‚ğ®—
-				break;
-			}
-			nWork *= 10;
-		}
-		return i;
-	}else{
-		//	2003.09.11 wmlhq s”Ô†‚ª1Œ…‚Ì‚Æ‚«‚Æ•‚ğ‡‚í‚¹‚é
-		return 3;
+
+	if( nAllLines < 10000 ){
+		return 5;
 	}
+
+	if(nAllLines < 100000){
+		return 6;
+	}
+
+	return 7;
 }
 
 void CTextArea::TextArea_OnSize(
