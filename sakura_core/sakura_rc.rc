@@ -115,7 +115,7 @@ CAPTION "指定行へジャンプ"
 FONT 9, "ＭＳ Ｐゴシック"
 BEGIN
     LTEXT           "行番号(&N)",IDC_STATIC,5,6,34,8
-    EDITTEXT        IDC_EDIT_LINENUM,43,4,40,12
+    EDITTEXT        IDC_EDIT_LINENUM,43,4,44,12,ES_NUMBER
     CONTROL         "Spin1",IDC_SPIN_LINENUM,"msctls_updown32",
                     UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS,82,4,9,12
     CONTROL         "折り返し単位の行番号(&R)",IDC_RADIO_LINENUM_LAYOUT,

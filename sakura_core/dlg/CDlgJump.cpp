@@ -82,6 +82,9 @@ BOOL CDlgJump::OnNotify( WPARAM wParam, LPARAM lParam )
 			if( nData < 1 ){
 				nData = 1;
 			}
+			if( nData > 10000000 ){
+				nData = 10000000;
+			}
 			::SetDlgItemInt( GetHwnd(), IDC_EDIT_LINENUM, nData, FALSE );
 			break;
 
@@ -102,6 +105,7 @@ BOOL CDlgJump::OnBnClicked( int wID )
 				CloseDialog( 1 );
 			}else{
 				OkMessage( GetHwnd(), _T("ê≥ÇµÇ≠çsî‘çÜÇì¸óÕÇµÇƒÇ≠ÇæÇ≥Ç¢ÅB") );
+				return TRUE;
 			}
 			{
 				CEditDoc*		pCEditDoc = (CEditDoc*)m_lParam;
@@ -162,7 +166,7 @@ int CDlgJump::GetData( void )
 
 	/* çsî‘çÜ */
 	m_nLineNum = ::GetDlgItemInt( GetHwnd(), IDC_EDIT_LINENUM, &pTranslated, FALSE );
-	if( m_nLineNum == 0 && !pTranslated ){
+	if( m_nLineNum == 0 || !pTranslated ){
 		return FALSE;
 	}
 	return TRUE;
