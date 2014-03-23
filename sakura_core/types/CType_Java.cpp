@@ -6,44 +6,36 @@
 #include "outline/CFuncInfoArr.h"
 #include "view/Colors/EColorIndexType.h"
 
-/* Java */
-const wchar_t* g_defaultKeywordSetJava[] = {
+/*!
+ *	Java キーワード
+ */
+static const wchar_t* g_defaultKeywordSetJava[] = {
 	L"abstract",
 	L"assert",
-	L"boolean",
 	L"break",
-	L"byte",
 	L"case",
 	L"catch",
-	L"char",
 	L"class",
 	L"const",
 	L"continue",
 	L"default",
 	L"do",
-	L"double",
 	L"else",
 	L"extends",
 	L"final",
 	L"finally",
-	L"float",
 	L"for",
 	L"goto",
 	L"if",
 	L"implements",
-	L"import",
 	L"instanceof",
-	L"int",
 	L"interface",
-	L"long",
 	L"native",
 	L"new",
-	L"package",
 	L"private",
 	L"protected",
 	L"public",
 	L"return",
-	L"short",
 	L"static",
 	L"strictfp",
 	L"super",
@@ -57,6 +49,38 @@ const wchar_t* g_defaultKeywordSetJava[] = {
 	L"void",
 	L"volatile",
 	L"while"
+};
+
+
+/*!
+*	Java import キーワード
+ */
+static const wchar_t* g_defaultKeywordSetJavaImport[] = {
+	L"import",
+	L"package"
+};
+
+
+/*!
+ *	Java データタイプ キーワード
+ */
+static const wchar_t* g_defaultKeywordSetJavaDataType[] = {
+	L"boolean",
+	L"byte",
+	L"char",
+	L"double",
+	L"float",
+	L"int",
+	L"long",
+	L"short",
+	L"Boolean",
+	L"Byte",
+	L"Character",
+	L"Double",
+	L"Float",
+	L"Integer",
+	L"Long",
+	L"Short"
 };
 
 
@@ -79,6 +103,20 @@ void CType_Java::InitTypeConfigImp(STypeConfig* pType)
 										true,
 										_countof(g_defaultKeywordSetJava),
 										g_defaultKeywordSetJava
+									);
+
+	pType->m_nKeyWordSetIdx[1] = AddDefaultKeywordSet(
+										L"Java Import",
+										true,
+										_countof(g_defaultKeywordSetJavaImport),
+										g_defaultKeywordSetJavaImport
+									);
+
+	pType->m_nKeyWordSetIdx[2] = AddDefaultKeywordSet(
+										L"Java Data Type",
+										true,
+										_countof(g_defaultKeywordSetJavaDataType),
+										g_defaultKeywordSetJavaDataType
 									);
 }
 
