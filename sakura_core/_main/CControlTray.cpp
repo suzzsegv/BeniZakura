@@ -1122,8 +1122,8 @@ bool CControlTray::OpenNewEditor(
 
 	bool bRet = true;
 	if( sync ){
-		//	起動したプロセスが完全に立ち上がるまでちょっと待つ．
-		int nResult = WaitForInputIdle( p.hProcess, 10000 );	//	最大10秒間待つ
+		//	起動したプロセスが完全に立ち上がるまで一定時間待つ．
+		int nResult = WaitForInputIdle( p.hProcess, 60 * 1000 );	//	最大60秒間待つ
 		if( nResult != 0 ){
 			ErrorMessage(
 				hWndParent,

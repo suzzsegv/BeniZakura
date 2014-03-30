@@ -258,7 +258,7 @@ bool CProcessFactory::StartControlProcess()
 	// 唯一生き残ったコントロールプロセスが多重起動防止用ミューテックスを作成しているはず。
 	//
 	int nResult;
-	nResult = ::WaitForInputIdle( p.hProcess, 10000 );	//	最大10秒間待つ
+	nResult = ::WaitForInputIdle( p.hProcess, 60 * 1000 );	//	最大60秒間待つ
 	if( 0 != nResult ){
 		ErrorMessage( NULL, _T("\'%ls\'\nコントロールプロセスの起動に失敗しました。"), szEXE );
 		::CloseHandle( p.hThread );
