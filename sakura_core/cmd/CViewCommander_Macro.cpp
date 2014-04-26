@@ -366,9 +366,15 @@ void CViewCommander::Command_ExecExplorer( void )
 	STARTUPINFO si;
 	PROCESS_INFORMATION pi;
 	const int CommandLineMax = 1024;
-	wchar_t CommandLine[CommandLineMax + 1];
+	wchar_t CommandLine[CommandLineMax];
+	wchar_t CurrentFileName[_MAX_PATH];
 
-	CSakuraEnvironment::ExpandParameter( L"explorer.exe /select,$F", CommandLine, CommandLineMax );
+	GetWindowsDirectory(CommandLine, CommandLineMax);
+	wcscat_s(CommandLine, CommandLineMax, L"\\explorer.exe /select,");
+
+	CSakuraEnvironment::ExpandParameter( L"$F", CurrentFileName, (_MAX_PATH - 1) );
+	wcscat_s(CommandLine, CommandLineMax, CurrentFileName);
+
 	ZeroMemory( &si, sizeof(si) );
 
 	succeeded = CreateProcessW
