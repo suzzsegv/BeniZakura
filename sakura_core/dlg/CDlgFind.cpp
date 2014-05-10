@@ -324,7 +324,7 @@ BOOL CDlgFind::OnBnClicked( int wID )
 				}
 			}
 		}
-		else{
+		else if (nRet == 0){
 			OkMessage( GetHwnd(), _T("検索条件を指定してください。") );
 		}
 		return TRUE;
@@ -355,7 +355,7 @@ BOOL CDlgFind::OnBnClicked( int wID )
 				}
 			}
 		}
-		else{
+		else if (nRet == 0){
 			OkMessage( GetHwnd(), _T("検索条件を指定してください。") );
 		}
 		return TRUE;

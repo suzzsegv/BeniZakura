@@ -379,6 +379,7 @@ BOOL CDlgReplace::OnInitDialog( HWND hwndDlg, WPARAM wParam, LPARAM lParam )
 
 BOOL CDlgReplace::OnBnClicked( int wID )
 {
+	int			nRet;
 	CEditView*	pcEditView = (CEditView*)m_lParam;
 
 	switch( wID ){
@@ -478,7 +479,8 @@ BOOL CDlgReplace::OnBnClicked( int wID )
 
 
 	case IDC_BUTTON_SEARCHPREV:	/* 上検索 */
-		if( 0 < GetData() ){
+		nRet = GetData();
+		if( 0 < nRet ){
 
 			// 検索開始位置を登録 02/07/28 ai start
 			if( TRUE == pcEditView->m_bSearch ){
@@ -495,12 +497,13 @@ BOOL CDlgReplace::OnBnClicked( int wID )
 			pcEditView->GetCommander().HandleCommand( F_SEARCH_PREV, true, (LPARAM)GetHwnd(), 0, 0, 0 );
 			/* 再描画（0文字幅マッチでキャレットを表示するため） */
 			pcEditView->Redraw();	// 前回0文字幅マッチの消去にも必要
-		}else{
+		}else if(nRet == 0){
 			OkMessage( GetHwnd(), _T("文字列を指定してください。") );
 		}
 		return TRUE;
 	case IDC_BUTTON_SEARCHNEXT:	/* 下検索 */
-		if( 0 < GetData() ){
+		nRet = GetData();
+		if( 0 < nRet ){
 
 			// 検索開始位置を登録 02/07/28 ai start
 			if( TRUE == pcEditView->m_bSearch ){
@@ -517,20 +520,22 @@ BOOL CDlgReplace::OnBnClicked( int wID )
 			pcEditView->GetCommander().HandleCommand( F_SEARCH_NEXT, true, (LPARAM)GetHwnd(), 0, 0, 0 );
 			/* 再描画（0文字幅マッチでキャレットを表示するため） */
 			pcEditView->Redraw();	// 前回0文字幅マッチの消去にも必要
-		}else{
+		}else if(nRet == 0){
 			OkMessage( GetHwnd(), _T("文字列を指定してください。") );
 		}
 		return TRUE;
 
 	case IDC_BUTTON_SETMARK:	//2002.01.16 hor 該当行マーク
-		if( 0 < GetData() ){
+		nRet = GetData();
+		if( 0 < nRet ){
 			pcEditView->GetCommander().HandleCommand( F_BOOKMARK_PATTERN, false, 0, 0, 0, 0 );
 			::SendMessage(GetHwnd(),WM_NEXTDLGCTL,(WPARAM)::GetDlgItem(GetHwnd(),IDC_COMBO_TEXT ),TRUE);
 		}
 		return TRUE;
 
 	case IDC_BUTTON_REPALCE:	/* 置換 */
-		if( 0 < GetData() ){
+		nRet = GetData();
+		if( 0 < nRet ){
 
 			// 置換開始位置を登録 02/07/28 ai start
 			if( TRUE == pcEditView->m_bSearch ){
@@ -548,12 +553,13 @@ BOOL CDlgReplace::OnBnClicked( int wID )
 			pcEditView->GetCommander().HandleCommand( F_REPLACE, true, (LPARAM)GetHwnd(), 0, 0, 0 );
 			/* 再描画 */
 			pcEditView->GetCommander().HandleCommand( F_REDRAW, true, 0, 0, 0, 0 );
-		}else{
+		}else if(nRet == 0){
 			OkMessage( GetHwnd(), _T("文字列を指定してください。") );
 		}
 		return TRUE;
 	case IDC_BUTTON_REPALCEALL:	/* すべて置換 */
-		if( 0 < GetData() ){
+		nRet = GetData();
+		if( 0 < nRet ){
 			// 置換開始位置を登録 02/07/28 ai start
 			if( TRUE == pcEditView->m_bSearch ){
 				pcEditView->m_ptSrchStartPos_PHY = m_ptEscCaretPos_PHY;
@@ -581,7 +587,7 @@ BOOL CDlgReplace::OnBnClicked( int wID )
 				}
 			}
 			return TRUE;
-		}else{
+		}else if(nRet == 0){
 			OkMessage( GetHwnd(), _T("置換条件を指定してください。") );
 		}
 		return TRUE;
