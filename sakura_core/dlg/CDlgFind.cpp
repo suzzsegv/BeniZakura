@@ -98,6 +98,28 @@ void CDlgFind::ChangeView( LPARAM pcEditView )
 
 
 
+BOOL CDlgFind::OnInitDialog( HWND hwnd, WPARAM wParam, LPARAM lParam )
+{
+	BOOL bRet = CDialog::OnInitDialog(hwnd, wParam, lParam);
+
+	// フォント設定
+	HFONT hFontOld = (HFONT)::SendMessageAny( GetItemHwnd( IDC_COMBO_TEXT ), WM_GETFONT, 0, 0 );
+	HFONT hFont = SetMainFont( GetItemHwnd( IDC_COMBO_TEXT ) );
+	m_cFontText.SetFont( hFontOld, hFont, GetItemHwnd( IDC_COMBO_TEXT ) );
+
+	return bRet;
+}
+
+
+
+BOOL CDlgFind::OnDestroy()
+{
+	m_cFontText.ReleaseOnDestroy();
+	return CDialog::OnDestroy();
+}
+
+
+
 /* ダイアログデータの設定 */
 void CDlgFind::SetData( void )
 {
@@ -115,8 +137,6 @@ void CDlgFind::SetData( void )
 	/* コンボボックスのユーザー インターフェイスを拡張インターフェースにする */
 	Combo_SetExtendedUI( ::GetDlgItem( GetHwnd(), IDC_COMBO_TEXT ), TRUE );
 	// フォント設定	2012/11/27 Uchi
-	SetMainFont( ::GetDlgItem( GetHwnd(), IDC_COMBO_TEXT ) );
-
 
 	/*****************************
 	*         データ設定         *

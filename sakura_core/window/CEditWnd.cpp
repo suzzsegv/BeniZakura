@@ -922,7 +922,11 @@ void CEditWnd::LayoutMainMenu()
 			break;
 		}
 	}
+	HMENU hMenuOld = ::GetMenu( hWnd );
 	SetMenu( hWnd, hMenu );
+	if( hMenuOld ){
+		DestroyMenu( hMenuOld );
+	}
 
 	DrawMenuBar( hWnd );
 }

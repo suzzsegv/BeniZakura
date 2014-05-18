@@ -19,6 +19,7 @@ class CDlgGrep;
 #define _CDLGGREP_H_
 
 #include "dlg/CDialog.h"
+#include "util/window.h"
 
 //! GREPダイアログボックス
 class CDlgGrep : public CDialog
@@ -56,10 +57,13 @@ public:
 	SFilePath	m_szFolder;					/*!< 検索フォルダ */
 	SFilePath	m_szCurrentFilePath;
 protected:
+	CFontAutoDeleter		m_cFontText;
+
 	/*
 	||  実装ヘルパ関数
 	*/
 	BOOL OnInitDialog( HWND, WPARAM, LPARAM );
+	BOOL OnDestroy();
 	BOOL OnBnClicked( int );
 	LPVOID GetHelpIdTable(void);	//@@@ 2002.01.18 add
 	void SetCurrentFolderToFolderComboBox( void );
