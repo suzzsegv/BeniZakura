@@ -413,6 +413,16 @@ void CMacro::Save( HINSTANCE hInstance, CTextOutputStream& out ) const
 	out.WriteF( LTEXT("CMacro::GetFuncInfoByID()に、バグがあるのでエラーが出ましたぁぁぁぁぁぁあああ\r\n") );
 }
 
+static inline int wtoi_def( const WCHAR* arg, int def_val )
+{
+	return (arg == NULL ? def_val: _wtoi(arg));
+}
+
+static inline const WCHAR* wtow_def( const WCHAR* arg, const WCHAR* def_val )
+{
+	return (arg == NULL ? def_val: arg);
+}
+
 /**	マクロ引数変換
 
 	MacroコマンドをpcEditView->GetCommander().HandleCommandに引き渡す．
@@ -573,8 +583,8 @@ void CMacro::HandleCommand(
 		/* NO BREAK */
 	case F_SEARCH_NEXT:
 	case F_SEARCH_PREV:
-		//	Argument[0]を検索。オプションはArgument[1]に。
-		//	Argument[1]:
+		//	Argument[0] を検索。(省略時、元の検索文字列・オプションを使う)
+		//	Argument[1]:オプション (省略時、0のみなす)
 		//		0x01	単語単位で探す
 		//		0x02	英大文字と小文字を区別する
 		//		0x04	正規表現
@@ -589,7 +599,8 @@ void CMacro::HandleCommand(
 			sSearchOption.bLoHiCase			= (0 != (lFlag & 0x02));
 			sSearchOption.bRegularExp		= (0 != (lFlag & 0x04));
 			bool bAddHistory = (0 == (lFlag & 0x800));
-			int nLen = wcslen( Argument[0] );
+			const WCHAR* pszSearchKey = wtow_def(Argument[0], L"");
+			int nLen = wcslen( pszSearchKey );
 			if( 0 < nLen ){
 				/* 正規表現 */
 				if( lFlag & 0x04
