@@ -289,6 +289,7 @@ types/CType_Basis.o \
 types/CType_Cpp.o \
 types/CType_Ini.o \
 types/CType_Java.o \
+types/CType_Markdown.o \
 types/CType_Others.o \
 types/CType_Python.o \
 types/CType_Text.o \

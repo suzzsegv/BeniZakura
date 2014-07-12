@@ -960,6 +960,7 @@ void CShareData::InitTypeConfigs(DLLSHAREDATA* pShareData)
 		new CType_Java(),	//Java
 		new CType_Asm(),	//アセンブラ
 		new CType_Ini(),	//設定ファイル
+		new CType_Markdown(),	//Markdown
 	};
 	assert( 1 <= MAX_TYPES );
 	for(int i=0;i<_countof(table) && i < MAX_TYPES;i++){
