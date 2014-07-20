@@ -4215,7 +4215,7 @@ void  CEditWnd::SetActivePane( int nIndex )
 	m_nActivePaneIndex = nIndex;
 
 	// フォーカスを移動する	// 2007.10.16 ryoji
-	GetView(nOldIndex).CaretUnderLineOFF(TRUE);	//	2002/05/11 YAZAKI
+	GetView(nOldIndex).GetCaret().m_cUnderLine.CaretUnderLineOFF( true );	//	2002/05/11 YAZAKI
 	if( ::GetActiveWindow() == GetHwnd()
 		&& ::GetFocus() != GetView(m_nActivePaneIndex).GetHwnd() )
 	{

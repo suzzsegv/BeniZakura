@@ -2188,7 +2188,7 @@ inline bool CEditView::IsDrawCursorVLinePos( int posX ){
 }
 
 /* カーソル行アンダーラインのON */
-void CEditView::CaretUnderLineON( bool bDraw, bool bDrawPaint )
+void CEditView::CaretUnderLineON( bool bDraw, bool bDrawPaint, bool DisalbeUnderLine )
 {
 	bool bUnderLine = m_pTypeData->m_ColorInfoArr[COLORIDX_UNDERLINE].m_bDisp;
 	bool bCursorVLine = m_pTypeData->m_ColorInfoArr[COLORIDX_CURSORVLINE].m_bDisp;
@@ -2247,6 +2247,7 @@ void CEditView::CaretUnderLineON( bool bDraw, bool bDrawPaint )
 	 && IsDrawCursorVLinePos(nCursorVLineX)
 	 && m_bDoing_UndoRedo == FALSE
 	 && !GetSelectionInfo().IsTextSelecting()
+	 && !DisalbeUnderLine
 	){
 		m_nOldCursorLineX = nCursorVLineX;
 		// カーソル位置縦線の描画
@@ -2283,6 +2284,7 @@ void CEditView::CaretUnderLineON( bool bDraw, bool bDrawPaint )
 	 && nUnderLineY >= GetTextArea().GetAreaTop()
 	 && m_bDoing_UndoRedo == FALSE	/* アンドゥ・リドゥの実行中か */
 	 && !GetSelectionInfo().IsTextSelecting()
+	 && !DisalbeUnderLine
 	){
 		if( false == bCursorLineBgDraw || -1 == m_nOldUnderLineY ){
 			m_nOldUnderLineY = GetCaret().GetCaretLayoutPos().GetY2();
@@ -2313,7 +2315,7 @@ void CEditView::CaretUnderLineON( bool bDraw, bool bDrawPaint )
 }
 
 /* カーソル行アンダーラインのOFF */
-void CEditView::CaretUnderLineOFF( bool bDraw, bool bDrawPaint, bool bResetFlag )
+void CEditView::CaretUnderLineOFF( bool bDraw, bool bDrawPaint, bool bResetFlag, bool DisalbeUnderLine )
 {
 	if( !m_pTypeData->m_ColorInfoArr[COLORIDX_UNDERLINE].m_bDisp &&
 			!m_pTypeData->m_ColorInfoArr[COLORIDX_CURSORVLINE].m_bDisp &&
@@ -2381,6 +2383,7 @@ void CEditView::CaretUnderLineOFF( bool bDraw, bool bDrawPaint, bool bResetFlag 
 		 && IsDrawCursorVLinePos( m_nOldCursorLineX )
 		 && m_bDoing_UndoRedo == FALSE
 		 && !GetCaret().m_cUnderLine.GetVertLineDoNotOFF()	// カーソル位置縦線を消去するか
+		 && !DisalbeUnderLine
 		){
 			PAINTSTRUCT ps;
 			ps.rcPaint.left = m_nOldCursorLineX - (m_nOldCursorVLineWidth - 1);
