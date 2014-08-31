@@ -212,6 +212,26 @@ void CType_Cpp::InitTypeConfigImp(STypeConfig* pType)
 										_countof(g_defaultKeywordSetVxWorks),
 										g_defaultKeywordSetVxWorks
 									);
+
+	//正規表現キーワード
+	wchar_t* pKeyword = pType->m_RegexKeywordList;
+
+	pType->m_bUseRegexKeyword = true;
+
+	int keywordPos = 0;
+	pType->m_RegexKeywordArr[0].m_nColorIndex = COLORIDX_KEYWORD1;
+	wcscpyn( &pKeyword[keywordPos],
+		L"/(if|for|while|switch|return|sizeof)[ \\t]*(?=\\()/k",
+		_countof(pType->m_RegexKeywordList) - 1 );
+	keywordPos += auto_strlen(&pKeyword[keywordPos]) + 1;
+
+	pType->m_RegexKeywordArr[1].m_nColorIndex = COLORIDX_REGEX1;
+	wcscpyn( &pKeyword[keywordPos],
+		L"/[a-zA-Z_]+[0-9a-zA-Z_]*[ \\t]*(?=\\()/k",
+		_countof(pType->m_RegexKeywordList) - keywordPos - 1 );
+	keywordPos += auto_strlen(&pKeyword[keywordPos]) + 1;
+
+	pKeyword[keywordPos] = L'\0';
 }
 
 //	Mar. 15, 2000 genta
