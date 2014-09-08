@@ -24,6 +24,7 @@
 #include <Windows.h>
 #include "dlg/CDialog.h"
 #include "doc/CEditDoc.h"
+#include "util/window.h"
 
 class CFuncInfo;
 class CFuncInfoArr; // 2002/2/10 aroka
@@ -139,6 +140,9 @@ protected:
 	BOOL Track( POINT ptDrag );
 
 private:
+	CFontAutoDeleter	m_listViewFont;
+	CFontAutoDeleter	m_treeViewFont;
+
 	//	May 18, 2001 genta
 	/*!
 		@brief アウトライン解析種別

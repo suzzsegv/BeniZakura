@@ -34,6 +34,7 @@
 #define	SAKURA_CDLGTAGJUMPLIST_H_
 
 #include "dlg/CDialog.h"
+#include "util/window.h"
 
 //タグファイル名	//	@@ 2005.03.31 MIK 定数化
 #define TAG_FILENAME_T        _T("tags")
@@ -118,6 +119,8 @@ private:
 	static TCHAR* DirUp( TCHAR* dir );
 
 private:
+
+	CFontAutoDeleter	m_listViewFont;
 
 	struct STagFindState{
 		int   m_nDepth;

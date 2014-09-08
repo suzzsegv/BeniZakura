@@ -466,6 +466,12 @@ BOOL CDlgTagJumpList::OnInitDialog( HWND hwndDlg, WPARAM wParam, LPARAM lParam )
 
 	//リストビューの表示位置を取得する。
 	hwndList = ::GetDlgItem( hwndDlg, IDC_LIST_TAGJUMP );
+
+	// フォント設定
+	HFONT hFontOld = (HFONT)::SendMessageAny( hwndList, WM_GETFONT, 0, 0 );
+	HFONT hFont = SetMainFontAndFontSize( hwndList );
+	m_listViewFont.SetFont( hFontOld, hFont, hwndList );
+
 	//ListView_DeleteAllItems( hwndList );
 	rc.left = rc.top = rc.right = rc.bottom = 0;
 	::GetWindowRect( hwndList, &rc );

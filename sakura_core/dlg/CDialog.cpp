@@ -648,6 +648,33 @@ HFONT CDialog::SetMainFont( HWND hTarget )
 	return hFont;
 }
 
+// コントロールに画面のフォントとサイズを設定
+HFONT CDialog::SetMainFontAndFontSize( HWND hTarget )
+{
+	if (hTarget == NULL)	return NULL;
+
+	HFONT	hFont;
+	LOGFONT	lf;
+
+	// LOGFONTの作成
+	lf = m_pShareData->m_Common.m_sView.m_lf;
+	lf.lfEscapement		= 0;
+	lf.lfOrientation	= 0;
+	lf.lfWeight			= FW_NORMAL;
+	lf.lfItalic			= FALSE;
+	lf.lfUnderline		= FALSE;
+	lf.lfStrikeOut		= FALSE;
+	lf.lfOutPrecision	= OUT_TT_ONLY_PRECIS;		// Raster Font を使わないように
+
+	// フォントを作成
+	hFont = ::CreateFontIndirect(&lf);
+	if (hFont) {
+		// フォントの設定
+		::SendMessage(hTarget, WM_SETFONT, (WPARAM)hFont, MAKELPARAM(FALSE, 0));
+	}
+	return hFont;
+}
+
 void CDialog::ResizeItem( HWND hTarget, const POINT& ptDlgDefault, const POINT& ptDlgNew, const RECT& rcItemDefault, EAnchorStyle anchor, bool bUpdate)
 {
 	POINT pt;

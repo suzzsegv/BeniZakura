@@ -1487,6 +1487,12 @@ BOOL CDlgFuncList::OnInitDialog( HWND hwndDlg, WPARAM wParam, LPARAM lParam )
 	RECT		rc;
 	LV_COLUMN	col;
 	hwndList = ::GetDlgItem( hwndDlg, IDC_LIST_FL );
+	// ListView フォント設定
+	{
+		HFONT hFontOld = (HFONT)::SendMessageAny( hwndList, WM_GETFONT, 0, 0 );
+		HFONT hFont = SetMainFontAndFontSize( hwndList );
+		m_listViewFont.SetFont( hFontOld, hFont, hwndList );
+	}
 	::SetWindowLongPtr(hwndList, GWL_STYLE, ::GetWindowLongPtr(hwndList, GWL_STYLE) | LVS_SHOWSELALWAYS );
 	// 2005.10.21 zenryaku 1行選択
 	ListView_SetExtendedListViewStyle(hwndList,
@@ -1634,6 +1640,14 @@ BOOL CDlgFuncList::OnInitDialog( HWND hwndDlg, WPARAM wParam, LPARAM lParam )
 			}
 			ShowWindow( hwndPrev, SW_HIDE );
 		}
+	}
+
+	// TreeView フォント設定
+	{
+		HWND hwndTree = ::GetDlgItem( hwndDlg, IDC_TREE_FL );
+		HFONT hFontOld = (HFONT)::SendMessageAny( hwndTree, WM_GETFONT, 0, 0 );
+		HFONT hFont = SetMainFontAndFontSize( hwndTree );
+		m_treeViewFont.SetFont( hFontOld, hFont, hwndTree );
 	}
 
 	SyncColor();
