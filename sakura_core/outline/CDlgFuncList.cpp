@@ -1487,12 +1487,6 @@ BOOL CDlgFuncList::OnInitDialog( HWND hwndDlg, WPARAM wParam, LPARAM lParam )
 	RECT		rc;
 	LV_COLUMN	col;
 	hwndList = ::GetDlgItem( hwndDlg, IDC_LIST_FL );
-	// ListView フォント設定
-	{
-		HFONT hFontOld = (HFONT)::SendMessageAny( hwndList, WM_GETFONT, 0, 0 );
-		HFONT hFont = SetMainFontAndFontSize( hwndList );
-		m_listViewFont.SetFont( hFontOld, hFont, hwndList );
-	}
 	::SetWindowLongPtr(hwndList, GWL_STYLE, ::GetWindowLongPtr(hwndList, GWL_STYLE) | LVS_SHOWSELALWAYS );
 	// 2005.10.21 zenryaku 1行選択
 	ListView_SetExtendedListViewStyle(hwndList,
@@ -1642,14 +1636,7 @@ BOOL CDlgFuncList::OnInitDialog( HWND hwndDlg, WPARAM wParam, LPARAM lParam )
 		}
 	}
 
-	// TreeView フォント設定
-	{
-		HWND hwndTree = ::GetDlgItem( hwndDlg, IDC_TREE_FL );
-		HFONT hFontOld = (HFONT)::SendMessageAny( hwndTree, WM_GETFONT, 0, 0 );
-		HFONT hFont = SetMainFontAndFontSize( hwndTree );
-		m_treeViewFont.SetFont( hFontOld, hFont, hwndTree );
-	}
-
+	SyncFont();
 	SyncColor();
 
 	::GetWindowRect( hwndDlg, &rc );
@@ -2201,6 +2188,7 @@ void CDlgFuncList::Key2Command(WORD KeyCode)
 */
 void CDlgFuncList::Redraw( int nOutLineType, int nListType, CFuncInfoArr* pcFuncInfoArr, CLayoutInt nCurLine, CLayoutInt nCurCol )
 {
+	SyncFont();
 	SyncColor();
 
 	m_nOutlineType = nOutLineType;
@@ -2215,6 +2203,28 @@ void CDlgFuncList::Redraw( int nOutLineType, int nListType, CFuncInfoArr* pcFunc
 void CDlgFuncList::SetWindowText( const TCHAR* szTitle )
 {
 	::SetWindowText( GetHwnd(), szTitle );
+}
+
+/*!
+	フォント適用処理
+ */
+void CDlgFuncList::SyncFont( void )
+{
+	// ListView フォント設定
+	{
+		HWND hwndList = ::GetDlgItem( GetHwnd(), IDC_LIST_FL );
+		HFONT hFontOld = (HFONT)::SendMessageAny( hwndList, WM_GETFONT, 0, 0 );
+		HFONT hFont = SetMainFontAndFontSize( hwndList );
+		m_listViewFont.SetFont( hFontOld, hFont, hwndList );
+	}
+
+	// TreeView フォント設定
+	{
+		HWND hwndTree = ::GetDlgItem( GetHwnd(), IDC_TREE_FL );
+		HFONT hFontOld = (HFONT)::SendMessageAny( hwndTree, WM_GETFONT, 0, 0 );
+		HFONT hFont = SetMainFontAndFontSize( hwndTree );
+		m_treeViewFont.SetFont( hFontOld, hFont, hwndTree );
+	}
 }
 
 /** 配色適用処理

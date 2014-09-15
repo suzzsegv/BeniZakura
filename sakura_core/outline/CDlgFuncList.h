@@ -68,6 +68,7 @@ public:
 	void Refresh( void );
 	bool ChangeLayout( int nId );
 	void OnOutlineNotify( WPARAM wParam, LPARAM lParam );
+	void SyncFont( void );
 	void SyncColor( void );
 	void SetWindowText( const TCHAR* szTitle );		//ダイアログタイトルの設定
 	bool m_bInChangeLayout;

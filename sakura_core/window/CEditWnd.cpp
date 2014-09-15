@@ -1738,24 +1738,6 @@ LRESULT CEditWnd::DispatchEvent(
 
 			GetDocument().m_cDocType.SetDocumentIcon();	// Sep. 10, 2002 genta 文書アイコンの再設定
 			GetDocument().OnChangeSetting();	// ビューに設定変更を反映させる
-
-			{	// アウトライン解析画面処理
-				bool bAnalyzed = FALSE;
-#if 0
-				if( /* 必要なら変更条件をここに記述する（将来用） */ )
-				{
-					// アウトライン解析画面の位置を現在の設定に合わせる
-					bAnalyzed = m_cDlgFuncList.ChangeLayout( OUTLINE_LAYOUT_BACKGROUND );	// 外部からの変更通知と同等の扱い
-				}
-#endif
-				if( m_cDlgFuncList.GetHwnd() && !bAnalyzed ){	// アウトラインを開いていれば再解析
-					// SHOW_NORMAL: 解析方法が変化していれば再解析される。そうでなければ描画更新（変更されたカラーの適用）のみ。
-					EFunctionCode nFuncCode = (m_cDlgFuncList.m_nListType == OUTLINE_BOOKMARK)? F_BOOKMARK_VIEW: F_OUTLINE;
-					GetActiveView().GetCommander().HandleCommand( nFuncCode, true, SHOW_NORMAL, 0, 0, 0 );
-				}
-				if( MyGetAncestor( ::GetForegroundWindow(), GA_ROOTOWNER2 ) == GetHwnd() )
-					::SetFocus( GetActiveView().GetHwnd() );	// フォーカスを戻す
-			}
 			break;
 		case PM_CHANGESETTING_FONT:
 			// Font変更の通知 2008/5/17 Uchi
@@ -1768,6 +1750,14 @@ LRESULT CEditWnd::DispatchEvent(
 			break;
 		default:
 			break;
+		}
+		{	// アウトライン解析画面処理
+			if( m_cDlgFuncList.GetHwnd() ){	// アウトラインを開いていれば再解析
+				EFunctionCode nFuncCode = (m_cDlgFuncList.m_nListType == OUTLINE_BOOKMARK)? F_BOOKMARK_VIEW: F_OUTLINE;
+				GetActiveView().GetCommander().HandleCommand( nFuncCode, true, SHOW_RELOAD, 0, 0, 0 );
+			}
+			if( MyGetAncestor( ::GetForegroundWindow(), GA_ROOTOWNER2 ) == GetHwnd() )
+				::SetFocus( GetActiveView().GetHwnd() );	// フォーカスを戻す
 		}
 		return 0L;
 	case MYWM_SETACTIVEPANE:
