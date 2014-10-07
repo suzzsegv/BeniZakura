@@ -1244,12 +1244,12 @@ static const TCHAR* MakeDispLabel( SMainMenuWork* pFunc )
 	if (pFunc->m_sKey[0]) {
 		auto_sprintf_s( szLabel, MAX_MAIN_MENU_NAME_LEN + 10, L"%ls%ls(%ls)",
 			pFunc->m_bDupErr ? L">" : L"",
-			pFunc->m_sName.c_str() , pFunc->m_sKey );
+			pFunc->m_sName.substr(0, MAX_MAIN_MENU_NAME_LEN).c_str(), pFunc->m_sKey);
 	}
 	else {
 		auto_sprintf_s( szLabel, MAX_MAIN_MENU_NAME_LEN + 10, L"%ls%ls",
 			pFunc->m_bDupErr ? L">" : L"",
-			pFunc->m_sName.c_str() );
+			pFunc->m_sName.substr(0, MAX_MAIN_MENU_NAME_LEN).c_str() );
 	}
 
 	return to_tchar( szLabel );
