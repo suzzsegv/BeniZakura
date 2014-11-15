@@ -10,6 +10,77 @@ RED2 の多くの機能は、サクラエディタの機能で実現可能です
 ## 変更点
 
 ---
+### 2014/11/01 - Ver.2014.11.1.20
+* 「SVN Rev.3664: Fix: GetDocumentationの修正」の変更を適用  
+	http://sourceforge.net/p/sakura-editor/patchunicode/782/  
+
+* 「SVN Rev.3672: Keep: 構造体のコピーでmemcpy_rawを使わない」の変更を適用  
+	http://sourceforge.net/p/sakura-editor/patchunicode/797/  
+
+* 「SVN Rev.3697: Fix: gccでお気に入りダイアログでフリーズする」の変更を適用  
+	http://sourceforge.net/p/sakura-editor/patchunicode/791/  
+
+* 「SVN Rev.3698: Fix: mingwでのコンパイル警告・バグの修正」の変更を適用  
+	http://sourceforge.net/p/sakura-editor/patchunicode/792/  
+	mingw環境での警告-Wallでの問題などを修正します。  
+	・ふぁんくらぶ part16 >>476 windressで "\'" がunrecognized escape sequence  
+	・未使用変数の削除  
+	・アウトライン解析ルールファイルの改行を取り除く処理の修正  
+	・プラグインフォルダ検索時の条件式修正  
+	・タイプ別フォント選択時の等幅チェックの修正  
+
+* 「SVN Rev.3700: Fix: 折り返し位置への挿入での再描画不足(r3069-)」の変更を適用  
+	http://sourceforge.net/p/sakura-editor/patchunicode/802/  
+
+* 「SVN Rev.3714: Fix: 行頭禁則と行末禁則の初期値」の変更を適用  
+	http://sourceforge.net/p/sakura-editor/patchunicode/807/  
+	- 行頭禁則  
+	重複している文字を変更しました(U+FFE0 -> U+00A2)。  
+	- 行末禁則  
+	重複している文字を変更しました(U+FFE1 -> U+00A3）。  
+	円記号を追加しました(U+00A5)。  
+
+* 「SVN Rev.3717: Fix: アクティブ化時にキャプション更新されないことがある(r2929-)」の変更を適用  
+	http://sourceforge.net/p/sakura-editor/patchunicode/815/  
+	[r2929]の変更を元に戻します。  
+
+* 「SVN Rev.3724」の変更を適用  
+	Fix: 強調キーワード長の設定・コピーがおかしいのを修正  
+	Fix: 強調キーワードの文字列コピーのバッファオーバーランの可能性の修正  
+
+* 「SVN Rev.3727: Fix: 対括弧強調の状態で選択すると対括弧が強調されたままになる」の変更を適用  
+	http://sourceforge.net/p/sakura-editor/patchunicode/814/  
+
+* 「SVN Rev.3728: Fix: マクロで引数無しのSearchNext()/SearchPrev()でエラー」の変更を適用  
+	http://sourceforge.net/p/sakura-editor/patchunicode/818/  
+
+	紅桜では未適用であった「SVN Rev.3160: New: ダイアログ表示/結果適用のマクロを追加」に依存していたため、
+	必要な変更を追加して適用。  
+
+* 「SVN Rev.3730: Fix: 文字幅に合わせてスペースを詰めるのヘルプID修正」の変更を適用  
+	http://sourceforge.net/p/sakura-editor/patchunicode/820/  
+	IDが「ラインモード貼り付けを可能にする」と重複していたため変更します。  
+
+* 「SVN Rev.3731: Fix: ウィンドウの位置と大きさの位置に-(マイナス記号)を直接入力できない」の変更を適用  
+	http://sourceforge.net/p/sakura-editor/patchunicode/822/  
+	マイナスを直接入力できず、UpDownコントロールで一度マイナスにする必要があったのを修正します  
+
+* 「SVN Rev.3732: Fix: トレイメニューのホットキーをなしにするとなんでも反応する」の変更を適用  
+	http://sourceforge.net/p/sakura-editor/patchunicode/823/  
+	>サクラエディタが「非アクティブ」のとき、F1キーを押すとサクラエディタのメニューが出てきます。  
+	F1キーに関しては再現しませんでしたが、私の環境だと「なし」にすると、
+	マウスパッドの拡大縮小をするとトレイメニューが反応します。  
+	「なし」のときは登録しないようにし、これを反応しないようにします。  
+
+* 「SVN Rev.3733: Fix: マクロパスのブロック範囲外でのアクセスの修正」の変更を適用  
+	http://sourceforge.net/p/sakura-editor/patchunicode/824/  
+
+* 「SVN Rev.3735: Fix: タグジャンプの!_TAG_S_SEARCH_NEXTが正常に処理されない」の変更を適用  
+	http://sourceforge.net/p/sakura-editor/patchunicode/827/  
+	tagsファイルに次のタグファイルの場所を指定する "!_TAG_S_SEARCH_NEXT" の処理がおかしくて
+	次のタグが検索されないことがあるバグを修正します。  
+
+---
 ### 2014/10/01 - Ver.2014.10.1.19
 * 「ダイレクトタグジャンプリスト」、「アウトライン解析」の表示に編集用フォントを使用するように変更  
 	高 DPI 環境において、文字が小さくて読みにくいため、編集画面で使用しているフォントとフォントサイズを、
