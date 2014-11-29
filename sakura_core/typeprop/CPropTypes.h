@@ -70,6 +70,7 @@ protected:
 
 	//ダイアログデータ
 	int			m_nPageNum;
+	DLLSHAREDATA*	m_pShareData;
 	STypeConfig		m_Types;
 
 	// スクリーン用データ	2010/5/10 CPropTypes_P1_Screen.cppから移動

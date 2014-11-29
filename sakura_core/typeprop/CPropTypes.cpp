@@ -83,19 +83,16 @@ GEN_PROPTYPES_CALLBACK(PropTypesKeyHelp,	CPropTypesKeyHelp)
 
 CPropTypes::CPropTypes()
 {
+	/* 共有データ構造体のアドレスを返す */
+	m_pShareData = &GetDllShareData();
+
 	// Mar. 31, 2003 genta メモリ削減のためポインタに変更
-	m_pCKeyWordSetMgr = &(GetDllShareData().m_Common.m_sSpecialKeyword.m_CKeyWordSetMgr);
+	m_pCKeyWordSetMgr = &m_pShareData->m_Common.m_sSpecialKeyword.m_CKeyWordSetMgr;
 
 	m_hInstance = NULL;		/* アプリケーションインスタンスのハンドル */
 	m_hwndParent = NULL;	/* オーナーウィンドウのハンドル */
 	m_hwndThis  = NULL;		/* このダイアログのハンドル */
 	m_nPageNum = 0;
-
-	// 2005.11.30 Moca カスタム色を設定・保持
-	int i;
-	for( i = 0; i < _countof(m_dwCustColors); i++ ){
-		m_dwCustColors[i] = RGB( 255, 255, 255 );
-	}
 
 	((CPropTypesScreen*)(this))->CPropTypes_Screen();
 }
@@ -118,6 +115,9 @@ int CPropTypes::DoPropertySheet( int nPageNum )
 	int					nRet;
 	PROPSHEETPAGE		psp[16];
 	int					nIdx;
+
+	// カスタム色を共有メモリから取得
+	memcpy_raw( m_dwCustColors, m_pShareData->m_dwCustColors, sizeof(m_dwCustColors) );
 
 	// 2005.11.30 Moca カスタム色の先頭にテキスト色を設定しておく
 	m_dwCustColors[0] = m_Types.m_ColorInfoArr[COLORIDX_TEXT].m_colTEXT;
@@ -263,6 +263,9 @@ int CPropTypes::DoPropertySheet( int nPageNum )
 		);
 		::LocalFree( pszMsgBuf );
 	}
+
+	// カスタム色を共有メモリに設定
+	memcpy_raw( m_pShareData->m_dwCustColors, m_dwCustColors, sizeof(m_dwCustColors) );
 
 	return nRet;
 }
