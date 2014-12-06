@@ -33,7 +33,7 @@ bool CWordParse::WhereCurrentWord_2(
 	}
 
 	// 現在位置の文字の種類によっては選択不能
-	if( WCODE::IsLineDelimiter(pLine[nIdx]) ){
+	if( pLine[nIdx] == CR || pLine[nIdx] == LF ){
 		return false;
 	}
 

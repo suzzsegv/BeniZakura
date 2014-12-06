@@ -469,7 +469,7 @@ void CEditView::DeleteData(
 					nIdxTo	 = LineColumnToIndex( pcLayout, rcSel.right );
 
 					for( CLogicInt i = nIdxFrom; i <= nIdxTo; ++i ){
-						if( WCODE::IsLineDelimiter(pLine[i]) ){
+						if( pLine[i] == CR || pLine[i] == LF ){
 							nIdxTo = i;
 							break;
 						}

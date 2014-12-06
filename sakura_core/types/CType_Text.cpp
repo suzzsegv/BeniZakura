@@ -163,7 +163,7 @@ void CDocOutline::MakeTopicList_txt( CFuncInfoArr* pcFuncInfoArr )
 		wmemcpy( pszText, &pLine[i], nLineLen );
 		pszText[nLineLen] = L'\0';
 		for( i = 0; i < nLineLen; ++i ){
-			if( WCODE::IsLineDelimiter(pszText[i]) ){
+			if( pszText[i] == CR || pszText[i] == LF ){
 				pszText[i] = L'\0';
 				break;
 			}
@@ -284,7 +284,7 @@ void CDocOutline::MakeTopicList_wztxt(CFuncInfoArr* pcFuncInfoArr)
 			
 			while( pDest < pDestEnd )
 			{
-				if( WCODE::IsLineDelimiter(*pPos) || *pPos == L'\0')
+				if( *pPos ==L'\r' || *pPos ==L'\n' || *pPos == L'\0')
 				{
 					break;
 				}

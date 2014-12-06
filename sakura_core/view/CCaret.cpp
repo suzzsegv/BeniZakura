@@ -545,7 +545,7 @@ void CCaret::ShowEditCaret()
 				/* 指定された桁に対応する行のデータ内の位置を調べる */
 				nIdxFrom = GetCaretLogicPos().GetX() - pcLayout->GetLogicOffset();
 				if( nIdxFrom >= nLineLen ||
-					WCODE::IsLineDelimiter(pLine[nIdxFrom]) ||
+					pLine[nIdxFrom] == CR || pLine[nIdxFrom] == LF ||
 					pLine[nIdxFrom] == TAB ){
 					nCaretWidth = GetHankakuDx();
 				}
@@ -579,7 +579,7 @@ void CCaret::ShowEditCaret()
 			/* 指定された桁に対応する行のデータ内の位置を調べる */
 			nIdxFrom = m_pEditView->LineColumnToIndex( pcLayout, GetCaretLayoutPos().GetX2() );
 			if( nIdxFrom >= nLineLen ||
-				WCODE::IsLineDelimiter(pLine[nIdxFrom]) ||
+				pLine[nIdxFrom] == CR || pLine[nIdxFrom] == LF ||
 				pLine[nIdxFrom] == TAB ){
 				nCaretWidth = GetHankakuDx();
 			}else{

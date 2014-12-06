@@ -61,7 +61,8 @@ int CDocOutline::ReadRuleFile( const TCHAR* pszFilename, SOneRule* pcOneRule, in
 //				nRes = wcsicmp( pszKey, pszToken );
 				int nLen = (int)wcslen(pszWork);
 				for( i = 0; i < nLen; ++i ){
-					if( WCODE::IsLineDelimiter(pszWork[i]) ){
+					if( pszWork[i] == L'\r' ||
+						pszWork[i] == L'\n' ){
 						pszWork[i] = L'\0';
 						break;
 					}
@@ -149,7 +150,7 @@ void CDocOutline::MakeFuncList_RuleFile( CFuncInfoArr* pcFuncInfoArr )
 		pszText[nLineLen] = L'\0';
 		int nTextLen = wcslen( pszText );
 		for( i = 0; i < nTextLen; ++i ){
-			if( WCODE::IsLineDelimiter(pszText[i]) ){
+			if( pszText[i] == WCODE::CR || pszText[i] == WCODE::LF ){
 				pszText[i] = L'\0';
 				break;
 			}
@@ -253,7 +254,8 @@ void CDocOutline::MakeFuncList_BookMark( CFuncInfoArr* pcFuncInfoArr )
 		while( k < nLineLen ){
 			nCharChars = CNativeW::GetSizeOfChar( pLine, nLineLen, k );
 			if( 1 == nCharChars ){
-				if( !(WCODE::IsLineDelimiter(pLine[k]) ||
+				if( !(pLine[k] == WCODE::CR ||
+						pLine[k] == WCODE::LF ||
 						pLine[k] == WCODE::SPACE ||
 						pLine[k] == WCODE::TAB ||
 						WCODE::IsZenkakuSpace(pLine[k]) ||

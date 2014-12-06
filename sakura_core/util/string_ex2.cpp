@@ -156,7 +156,7 @@ const wchar_t* GetNextLineW(
 	}
 	for( i = *pnBgn; i < nDataLen; ++i ){
 		// 改行コードがあった
-		if( WCODE::IsLineDelimiter(pData[i]) ){
+		if( pData[i] == L'\n' || pData[i] == L'\r' ){
 			// 行終端子の種類を調べる
 			pcEol->SetTypeByString(&pData[i], nDataLen - i);
 			break;

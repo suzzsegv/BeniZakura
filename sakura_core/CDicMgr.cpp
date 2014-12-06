@@ -97,7 +97,8 @@ BOOL CDicMgr::Search(
 				if( 0 == nRes ){
 					int nLen = (int)wcslen(pszWork);
 					for( i = 0; i < nLen; ++i ){
-						if( WCODE::IsLineDelimiter(pszWork[i]) ){
+						if( pszWork[i] == L'\r' ||
+							pszWork[i] == L'\n' ){
 							pszWork[i] = L'\0';
 							break;
 						}

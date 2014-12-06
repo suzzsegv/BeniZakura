@@ -292,7 +292,8 @@ inline bool C_IsSpace( wchar_t c )
 	return (
 		L'\t' == c ||
 		L' ' == c ||
-		WCODE::IsLineDelimiter(c)
+		WCODE::CR == c ||
+		WCODE::LF == c
 	);
 }
 

@@ -76,7 +76,8 @@ BOOL CEditView::KeyWordHelpSearchDict( LID_SKH nID, POINT* po, RECT* rc )
 		int nWorkLength	= cmemCurText.GetStringLength();
 		for( i = 0; i < nWorkLength; ++i ){
 			if( pszWork[i] == L'\0' ||
-				WCODE::IsLineDelimiter(pszWork[i]) ){
+				pszWork[i] == WCODE::CR ||
+				pszWork[i] == WCODE::LF ){
 				break;
 			}
 		}
@@ -274,7 +275,7 @@ void CEditView::GetCurrentTextForSearch( CNativeW& cmemCurText, bool bStripMaxPa
 	int nTopic2Len = (int)wcslen( pTopic2 );
 	/* ŒŸõ•¶Žš—ñ‚Í‰üs‚Ü‚Å */
 	for( i = 0; i < nTopic2Len; ++i ){
-		if( WCODE::IsLineDelimiter(pTopic2[i]) ){
+		if( pTopic2[i] == WCODE::CR || pTopic2[i] == WCODE::LF ){
 			break;
 		}
 	}

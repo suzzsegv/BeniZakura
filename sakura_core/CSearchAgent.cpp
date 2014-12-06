@@ -316,7 +316,7 @@ bool CSearchAgent::PrevOrNextWord(
 		}
 	}
 	/* 現在位置の文字の種類によっては選択不能 */
-	if( !bLEFT && WCODE::IsLineDelimiter(pLine[nIdx]) ){
+	if( !bLEFT && ( pLine[nIdx] == CR || pLine[nIdx] == LF ) ){
 		return false;
 	}
 	/* 前の単語か？後ろの単語か？ */
@@ -960,7 +960,7 @@ prev_line:;
 	}
 	nBgn = 0;
 	for( nPos = 0; nPos < pArg->nInsDataLen; ){
-		if( WCODE::IsLineDelimiter(pArg->pInsData[nPos]) ){
+		if( pArg->pInsData[nPos] == '\n' || pArg->pInsData[nPos] == '\r' ){
 			/* 行終端子の種類を調べる */
 			cEOLType.SetTypeByString( &(pArg->pInsData[nPos]), pArg->nInsDataLen - nPos );
 			/* 行終端子も含めてテキストをバッファに格納 */

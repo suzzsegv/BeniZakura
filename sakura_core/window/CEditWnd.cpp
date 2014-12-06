@@ -1416,11 +1416,6 @@ LRESULT CEditWnd::DispatchEvent(
 			else if( pnmh->code == NM_RCLICK ){
 				LPNMMOUSE mp = (LPNMMOUSE) lParam;
 				if( mp->dwItemSpec == 2 ){	//	入力改行モード
-					enum eEolExts {
-						F_CHGMOD_EOL_NEL = F_CHGMOD_EOL_CR + 1,
-						F_CHGMOD_EOL_PS,
-						F_CHGMOD_EOL_LS,
-					};
 					m_CMenuDrawer.ResetContents();
 					HMENU hMenuPopUp = ::CreatePopupMenu();
 					m_CMenuDrawer.MyAppendMenu( hMenuPopUp, MF_BYPOSITION | MF_STRING, F_CHGMOD_EOL_CRLF, 
@@ -1429,13 +1424,7 @@ LRESULT CEditWnd::DispatchEvent(
 						_T("入力改行コード指定(&LF)"), _T("") ); // 入力改行コード指定(LF)
 					m_CMenuDrawer.MyAppendMenu( hMenuPopUp, MF_BYPOSITION | MF_STRING, F_CHGMOD_EOL_CR,
 						_T("入力改行コード指定(C&R)"), _T("") ); // 入力改行コード指定(CR)
-					m_CMenuDrawer.MyAppendMenu( hMenuPopUp, MF_BYPOSITION | MF_STRING, F_CHGMOD_EOL_NEL,
-						_T("入力改行コード指定(&NEL)"), _T(""), TRUE, -2 ); // 入力改行コード指定(NEL)
-					m_CMenuDrawer.MyAppendMenu( hMenuPopUp, MF_BYPOSITION | MF_STRING, F_CHGMOD_EOL_LS,
-						_T("入力改行コード指定(&LS)"), _T(""), TRUE, -2 ); // 入力改行コード指定(LS)
-					m_CMenuDrawer.MyAppendMenu( hMenuPopUp, MF_BYPOSITION | MF_STRING, F_CHGMOD_EOL_PS,
-						_T("入力改行コード指定(&PS)"), _T(""), TRUE, -2 ); // 入力改行コード指定(PS)
-					
+						
 					//	mp->ptはステータスバー内部の座標なので，スクリーン座標への変換が必要
 					POINT	po = mp->pt;
 					::ClientToScreen( m_cStatusBar.GetStatusHwnd(), &po );
@@ -1453,20 +1442,7 @@ LRESULT CEditWnd::DispatchEvent(
 						NULL
 					);
 					::DestroyMenu( hMenuPopUp );
-					int nEOLCode = 0;
-					switch(nId){
-					case F_CHGMOD_EOL_CRLF: nEOLCode = EOL_CRLF; break;
-					case F_CHGMOD_EOL_CR: nEOLCode = EOL_CR; break;
-					case F_CHGMOD_EOL_LF: nEOLCode = EOL_LF; break;
-					case F_CHGMOD_EOL_NEL: nEOLCode = EOL_NEL; break;
-					case F_CHGMOD_EOL_PS: nEOLCode = EOL_PS; break;
-					case F_CHGMOD_EOL_LS: nEOLCode = EOL_LS; break;
-					default:
-						nEOLCode = -1;
-					}
-					if( nEOLCode != -1 ){
-						GetActiveView().GetCommander().HandleCommand( F_CHGMOD_EOL, true, nEOLCode, 0, 0, 0 );
-					}
+					GetDocument().HandleCommand( nId );
 				}
 			}
 			return 0L;
