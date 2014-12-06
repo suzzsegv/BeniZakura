@@ -10,6 +10,25 @@ RED2 の多くの機能は、サクラエディタの機能で実現可能です
 ## 変更点
 
 ---
+### 2014/12/01 - Ver.2014.12.1.21
+* 「SVN Rev.3737: Fix: 1023文字を超える長さの補完をするとバッファオーバーランする(f394c03f6f60)」に相当する修正  
+	未反映のチャンジセットである「SVN Rev.3161(8860d8feab21)」に依存していたため、旧ソース用に変更して適用。  
+
+	http://sourceforge.net/p/sakura-editor/patchunicode/831/  
+	長すぎる候補は、補完ファイル・補完プラグインから設定できます。ファイル内容から補完する場合は長さ制限が適用されています。  
+
+* 「SVN Rev.3738: Fix: タイプ別設定のインポートで約122文字以上のファイル名を持つ色設定があるとバッファオーバーラン」の変更を適用  
+	http://sourceforge.net/p/sakura-editor/patchunicode/832/  
+
+* 「SVN Rev.3739: Fix: タイプ別設定の名前拡張子タイプ数が多いとファイルダイアログで異常終了する」の変更を適用  
+	http://sourceforge.net/p/sakura-editor/patchunicode/834/  
+
+* 「タイプ別設定」ダイアログを閉じると「色の設定」の「作成した色」が失われてしまう不具合を修正  
+	「SVN Rev.3742(c078de6a149d): Fix: 作成した色の保持」に相当する変更。  
+	未反映のチャンジセットである「SVN Rev.3450(1b5867d4a772): Keep: CPropCommonクラスとCPropTypesクラスの動的生成」に
+	依存していたため、必要な変更を追加して適用。
+
+---
 ### 2014/11/01 - Ver.2014.11.1.20
 * 「SVN Rev.3664: Fix: GetDocumentationの修正」の変更を適用  
 	http://sourceforge.net/p/sakura-editor/patchunicode/782/  
