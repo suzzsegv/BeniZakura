@@ -737,6 +737,9 @@ void CPropTypesColor::SetData( HWND hwndDlg )
 	EditCtl_LimitText( ::GetDlgItem( hwndDlg, IDC_EDIT_VERTLINE ), MAX_VERTLINES * 15 );
 	::DlgItem_SetText( hwndDlg, IDC_EDIT_VERTLINE, szVertLine );
 	// to here 2005.11.30 Moca éwíËà íuècê¸ÇÃê›íË
+
+	EnableTypesPropInput( hwndDlg );
+
 	return;
 }
 
