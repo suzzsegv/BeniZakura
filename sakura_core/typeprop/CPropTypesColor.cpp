@@ -295,6 +295,12 @@ INT_PTR CPropTypesColor::DispatchEvent(
 
 		hwndListColor = ::GetDlgItem( hwndDlg, IDC_LIST_COLORS );
 
+		HWND	hwndWork;
+		hwndWork = ::GetDlgItem(hwndDlg, IDC_COMBO_THEME);
+		Combo_AddString(hwndWork, L"紅桜");
+		Combo_AddString(hwndWork, L"サクラエディタ");
+		Combo_AddString(hwndWork, L"VS2012 Dark");
+
 		/* ダイアログデータの設定 color */
 		SetData( hwndDlg );
 
@@ -352,6 +358,29 @@ INT_PTR CPropTypesColor::DispatchEvent(
 
 				::InvalidateRect( ::GetDlgItem( hwndDlg, IDC_BUTTON_TEXTCOLOR ), NULL, TRUE );
 				::InvalidateRect( ::GetDlgItem( hwndDlg, IDC_BUTTON_BACKCOLOR ), NULL, TRUE );
+				return TRUE;
+			}
+		}
+		if( hwndCtl == ::GetDlgItem(hwndDlg, IDC_COMBO_THEME) ){
+			switch( wNotifyCode ){
+			case CBN_SELCHANGE:
+				ColorTheme themeNum;
+				nIndex = Combo_GetCurSel(hwndCtl);
+				switch(nIndex){
+				case 0:
+					themeNum = COLOR_THEME_BENIZAKURA;
+					break;
+				case 1:
+					themeNum = COLOR_THEME_SAKURA;
+					break;
+				case 2:
+					themeNum = COLOR_THEME_VS2012DARK;
+					break;
+				default:
+					return TRUE;
+				}
+				GetDefaultColorInfo( m_Types.m_ColorInfoArr, themeNum );
+				SetData( hwndDlg );
 				return TRUE;
 			}
 		}

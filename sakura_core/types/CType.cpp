@@ -124,10 +124,8 @@ void _DefaultConfig(STypeConfig* pType)
 
 	pType->m_nIndentLayout = 0;	/* Ü‚è•Ô‚µ‚Í2s–ÚˆÈ~‚ðŽš‰º‚°•\Ž¦ */
 
+	GetDefaultColorInfo( pType->m_ColorInfoArr, COLOR_THEME_BENIZAKURA );
 
-	for( int i = 0; i < COLORIDX_LAST; ++i ){
-		GetDefaultColorInfo(&pType->m_ColorInfoArr[i],i);
-	}
 	pType->m_szBackImgPath[0] = '\0';
 	pType->m_backImgPos = BGIMAGE_TOP_LEFT;
 	pType->m_backImgRepeatX = true;

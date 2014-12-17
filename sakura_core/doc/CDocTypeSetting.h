@@ -27,6 +27,13 @@
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 //                          色設定                             //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+enum ColorTheme {
+	COLOR_THEME_BENIZAKURA = 0,
+	COLOR_THEME_SAKURA,
+	COLOR_THEME_VS2012DARK,
+
+	COLOR_THEME_MAX
+};
 
 //! 色設定
 struct ColorInfoBase{
@@ -45,7 +52,7 @@ struct ColorInfo : public ColorInfoBase{
 
 
 //デフォルト色設定
-void GetDefaultColorInfo(ColorInfo* pColorInfo, int nIndex);
+void GetDefaultColorInfo(ColorInfo* pColorInfo, ColorTheme nIndex);
 int GetDefaultColorInfoCount();
 
 
