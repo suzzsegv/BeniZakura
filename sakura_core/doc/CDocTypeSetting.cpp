@@ -205,6 +205,24 @@ void GetDefaultColorInfo(ColorInfo* pColorInfo, ColorTheme themeNum)
 	}
 }
 
+/*!
+	SetColorTheme - 画面表示色を指定のテーマ配色に設定する
+
+	@param [out] ColorInfo* pColorInfo
+	@param [in]  ColorTheme themeNum
+	@retval なし
+ */
+void SetColorTheme(ColorInfo* pColorInfo, ColorTheme themeNum)
+{
+	for( int i = 0; i < COLORIDX_LAST; i++ ){
+		pColorInfo->m_bBoldFont = ColorInfo_DEFAULT[themeNum][i].m_sColorInfoBase.m_bBoldFont;
+		pColorInfo->m_bUnderLine = ColorInfo_DEFAULT[themeNum][i].m_sColorInfoBase.m_bUnderLine;
+		pColorInfo->m_colTEXT = ColorInfo_DEFAULT[themeNum][i].m_sColorInfoBase.m_colTEXT;
+		pColorInfo->m_colBACK = ColorInfo_DEFAULT[themeNum][i].m_sColorInfoBase.m_colBACK;
+		pColorInfo++;
+	}
+}
+
 int GetDefaultColorInfoCount()
 {
 	return COLORIDX_LAST;

@@ -379,7 +379,7 @@ INT_PTR CPropTypesColor::DispatchEvent(
 				default:
 					return TRUE;
 				}
-				GetDefaultColorInfo( m_Types.m_ColorInfoArr, themeNum );
+				SetColorTheme( m_Types.m_ColorInfoArr, themeNum );
 				SetData( hwndDlg );
 				return TRUE;
 			}
