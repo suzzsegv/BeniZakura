@@ -194,7 +194,14 @@ static ColorInfoIni ColorInfo_DEFAULT[COLOR_THEME_MAX][COLORIDX_LAST] = {
 	}
 };
 
-void GetDefaultColorInfo(ColorInfo* pColorInfo, ColorTheme themeNum)
+/*!
+	SetDefaultColorInfo - 画面表示色に関する情報を指定テーマの初期値に設定する
+
+	@param [out] ColorInfo* pColorInfo
+	@param [in]  ColorTheme themeNum
+	@retval なし
+ */
+void SetDefaultColorInfo(ColorInfo* pColorInfo, ColorTheme themeNum)
 {
 	for( int i = 0; i < COLORIDX_LAST; i++ ){
 		ColorInfoBase* p = pColorInfo;
@@ -223,7 +230,3 @@ void SetColorTheme(ColorInfo* pColorInfo, ColorTheme themeNum)
 	}
 }
 
-int GetDefaultColorInfoCount()
-{
-	return COLORIDX_LAST;
-}
