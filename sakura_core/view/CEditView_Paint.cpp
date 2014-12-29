@@ -484,8 +484,7 @@ COLORREF CEditView::GetTextColorByColorInfo2(const ColorInfo& info, const ColorI
 	if( info.m_colBACK == m_crBack ){
 		return  info2.m_colTEXT ^ 0x00FFFFFF;
 	}
-	int alpha = 255*30/100; // 30%
-	return MakeColor2(info.m_colTEXT, info2.m_colTEXT, alpha);
+	return  info2.m_colTEXT;
 }
 
 COLORREF CEditView::GetBackColorByColorInfo2(const ColorInfo& info, const ColorInfo& info2)
@@ -497,7 +496,7 @@ COLORREF CEditView::GetBackColorByColorInfo2(const ColorInfo& info, const ColorI
 	if( info.m_colBACK == m_crBack ){
 		return  info2.m_colBACK ^ 0x00FFFFFF;
 	}
-	int alpha = 255*30/100; // 30%
+	int alpha = 255 * 50 / 100; // 50%
 	return MakeColor2(info.m_colBACK, info2.m_colBACK, alpha);
 }
 
