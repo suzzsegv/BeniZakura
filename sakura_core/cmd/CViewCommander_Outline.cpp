@@ -73,19 +73,8 @@ BOOL CViewCommander::Command_FUNCLIST(
 		}
 	}
 
-	if( NULL != GetEditWindow()->m_cDlgFuncList.GetHwnd() && nAction != SHOW_RELOAD ){
-		switch(nAction ){
-		case SHOW_NORMAL: // アクティブにする
-			//	開いているものと種別が同じならActiveにするだけ．異なれば再解析
-			GetEditWindow()->m_cDlgFuncList.SyncColor();
-			if( GetEditWindow()->m_cDlgFuncList.CheckListType( nOutlineType )){
-				if( bForeground ){
-					::SetFocus( GetEditWindow()->m_cDlgFuncList.GetHwnd() );
-				}
-				bIsProcessing = false;
-				return TRUE;
-			}
-			break;
+	if( NULL != GetEditWindow()->m_cDlgFuncList.GetHwnd() ){
+		switch( nAction ){
 		case SHOW_TOGGLE: // 閉じる
 			//	開いているものと種別が同じなら閉じる．異なれば再解析
 			if( GetEditWindow()->m_cDlgFuncList.CheckListType( nOutlineType )){
@@ -97,6 +86,8 @@ BOOL CViewCommander::Command_FUNCLIST(
 				return TRUE;
 			}
 			break;
+		case SHOW_NORMAL:
+		case SHOW_RELOAD:
 		default:
 			break;
 		}
