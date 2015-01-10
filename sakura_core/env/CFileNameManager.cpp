@@ -455,7 +455,7 @@ bool CFileNameManager::GetMenuFullLabel(
 		pszName = szFileName;
 	}
 	const TCHAR* pszCharset = _T("");
-	if( IsValidCodeTypeExceptSJIS(nCharCode)){
+	if( IsValidCodeType(nCharCode)){
 		pszCharset = CCodeTypeName(nCharCode).Bracket();
 	}
 	
