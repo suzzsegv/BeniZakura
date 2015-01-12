@@ -153,7 +153,7 @@ int CColor_Comment_Cpp_If0::Match_CommentTo
 			rColorStrategyState.cppPreprocessorIf0NestLevel++;
 		}
 
-		len = wcslen( L"$endif" );
+		len = wcslen( L"#endif" );
 		if( wcsncmp( &rStr.GetPtr( )[i], L"#endif", len ) == 0 ){
 			rColorStrategyState.cppPreprocessorIf0NestLevel--;
 			if (rColorStrategyState.cppPreprocessorIf0NestLevel == 0){
