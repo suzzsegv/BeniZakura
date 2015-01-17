@@ -6,7 +6,7 @@
 #include "doc/layout/CLayout.h"
 #include "types/CTypeSupport.h"
 
-static int IsNumber( const CStringRef& cStr, int offset );/* 数値ならその長さを返す */	//@@@ 2001.02.17 by MIK
+static int IsNumber( const CStringRef& cStr, int offset );
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 //                         半角数値                            //
@@ -23,7 +23,7 @@ bool CColor_Numeric::BeginColor(const CStringRef& cStr, int nPos)
 	{
 		/* キーワード文字列の終端をセットする */
 		this->m_nCOMMENTEND = nPos + nnn;
-		return true;	/* 半角数値である */ // 2002/03/13 novice
+		return true;	/* 半角数値である */
 	}
 	return false;
 }
@@ -42,8 +42,6 @@ bool CColor_Numeric::EndColor(const CStringRef& cStr, int nPos)
 //                         実装補助                            //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
-//@@@ 2001.11.07 Start by MIK
-//#ifdef COMPILE_COLOR_DIGIT
 /*
  * 数値なら長さを返す。
  * 10進数の整数または小数。16進数(正数)。
@@ -53,12 +51,11 @@ bool CColor_Numeric::EndColor(const CStringRef& cStr, int nPos)
  * 0123     0123
  * 0xfedc   0xfedc
  * -123     -123
- * &H9a     &H9a     (ただしソース中の#ifを有効にしたとき)
  * -0x89a   0x89a
  * 0.5      0.5
- * 0.56.1   0.56 , 1 (ただしソース中の#ifを有効にしたら"0.56.1"になる)
- * .5       5        (ただしソース中の#ifを有効にしたら".5"になる)
- * -.5      5        (ただしソース中の#ifを有効にしたら"-.5"になる)
+ * 0.56.1   0.56 , 1
+ * .5       5
+ * -.5      5
  * 123.     123
  * 0x567.8  0x567 , 8
  */
@@ -68,7 +65,7 @@ bool CColor_Numeric::EndColor(const CStringRef& cStr, int nPos)
  *   10進数, 16進数, 浮動小数点数, 負符号
  *   IPアドレスのドット連結(本当は数値じゃないんだよね)
  */
-static int IsNumber(const CStringRef& cStr,/*const wchar_t *buf,*/ int offset/*, int length*/)
+static int IsNumber(const CStringRef& cStr, int offset)
 {
 	register const wchar_t* p;
 	register const wchar_t* q;
@@ -151,7 +148,6 @@ static int IsNumber(const CStringRef& cStr,/*const wchar_t *buf,*/ int offset/*,
 			return i;
 		}
 		/* "0" だけが数値 */
-		/*if( *p == L'.' ) return i - 1;*/  /* 最後が "." なら含めない */
 		return i;
 	}
 
@@ -204,16 +200,13 @@ static int IsNumber(const CStringRef& cStr,/*const wchar_t *buf,*/ int offset/*,
 			p++; i++;
 		}
 		/* "-", "-." だけなら数値でない */
-		//@@@ 2001.11.09 start MIK
-		//if( i <= 2 ) return 0;
-		//if( *(p - 1)  == L'.' ) return i - 1;  /* 最後が "." なら含めない */
 		if( i == 1 ) return 0;
 		if( *(p - 1) == L'.' )
 		{
 			i--;
 			if( i == 1 ) return 0;
 			return i;
-		}  //@@@ 2001.11.09 end MIK
+		}
 		return i;
 	}
 
@@ -246,37 +239,6 @@ static int IsNumber(const CStringRef& cStr,/*const wchar_t *buf,*/ int offset/*,
 		return i;
 	}
 
-#if 0
-	else if( *p == L'&' )  /* VBの16進数 */
-	{
-		p++; i++;
-		if( ( p < q ) && ( *p == L'H' ) )
-		{
-			p++; i++;
-			while( p < q )
-			{
-				if( ( *p >= L'0' && *p <= L'9' )
-				 || ( *p >= L'A' && *p <= L'F' )
-				 || ( *p >= L'a' && *p <= L'f' ) )
-				{
-					p++; i++;
-				}
-				else
-				{
-					break;
-				}
-			}
-			/* "&H" だけなら数値でない */
-			if( i == 2 ) i = 0;
-			return i;
-		}
-
-		/* "&" だけなら数値でない */
-		return 0;
-	}
-#endif
-
 	/* 数値ではない */
 	return 0;
 }
-//@@@ 2001.11.07 End by MIK
