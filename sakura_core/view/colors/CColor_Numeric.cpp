@@ -64,7 +64,7 @@ bool CColor_Numeric::EndColor(const CStringRef& cStr, int nPos)
  */
 /*
  * 半角数値
- *   1, 1.2, 1.2.3, .1, 0xabc, -.1, -1, 1e2, 1.2e+3, 1.2e-3, -1e0
+ *   1, 1.2, 1.2.3, .1, 0xabc, -.1, -1
  *   10進数, 16進数, 浮動小数点数, 負符号
  *   IPアドレスのドット連結(本当は数値じゃないんだよね)
  */
@@ -74,7 +74,6 @@ static int IsNumber(const CStringRef& cStr,/*const wchar_t *buf,*/ int offset/*,
 	register const wchar_t* q;
 	register int i = 0;
 	register int d = 0;
-	register int f = 0;
 
 	p = cStr.GetPtr() + offset;
 	q = cStr.GetPtr() + cStr.GetLength();
@@ -111,50 +110,10 @@ static int IsNumber(const CStringRef& cStr,/*const wchar_t *buf,*/ int offset/*,
 				{
 					if( *p == L'.' )
 					{
-						if( f == 1 ) break;  /* 指数部に入っている */
 						d++;
 						if( d > 1 )
 						{
 							if( *(p - 1) == L'.' ) break;  /* "." が連続なら中断 */
-						}
-					}
-					else if( *p == L'E' || *p == L'e' )
-					{
-						if( f == 1 ) break;  /* 指数部に入っている */
-						if( p + 2 < q )
-						{
-							if( ( *(p + 1) == L'+' || *(p + 1) == L'-' )
-							 && ( *(p + 2) >= L'0' && *(p + 2) <= L'9' ) )
-							{
-								p++; i++;
-								p++; i++;
-								f = 1;
-							}
-							else if( *(p + 1) >= L'0' && *(p + 1) <= L'9' )
-							{
-								p++; i++;
-								f = 1;
-							}
-							else
-							{
-								break;
-							}
-						}
-						else if( p + 1 < q )
-						{
-							if( *(p + 1) >= L'0' && *(p + 1) <= L'9' )
-							{
-								p++; i++;
-								f = 1;
-							}
-							else
-							{
-								break;
-							}
-						}
-						else
-						{
-							break;
 						}
 					}
 					else
@@ -175,50 +134,10 @@ static int IsNumber(const CStringRef& cStr,/*const wchar_t *buf,*/ int offset/*,
 				{
 					if( *p == L'.' )
 					{
-						if( f == 1 ) break;  /* 指数部に入っている */
 						d++;
 						if( d > 1 )
 						{
 							if( *(p - 1) == L'.' ) break;  /* "." が連続なら中断 */
-						}
-					}
-					else if( *p == L'E' || *p == L'e' )
-					{
-						if( f == 1 ) break;  /* 指数部に入っている */
-						if( p + 2 < q )
-						{
-							if( ( *(p + 1) == L'+' || *(p + 1) == L'-' )
-							 && ( *(p + 2) >= L'0' && *(p + 2) <= L'9' ) )
-							{
-								p++; i++;
-								p++; i++;
-								f = 1;
-							}
-							else if( *(p + 1) >= L'0' && *(p + 1) <= L'9' )
-							{
-								p++; i++;
-								f = 1;
-							}
-							else
-							{
-								break;
-							}
-						}
-						else if( p + 1 < q )
-						{
-							if( *(p + 1) >= L'0' && *(p + 1) <= L'9' )
-							{
-								p++; i++;
-								f = 1;
-							}
-							else
-							{
-								break;
-							}
-						}
-						else
-						{
-							break;
 						}
 					}
 					else
@@ -230,38 +149,6 @@ static int IsNumber(const CStringRef& cStr,/*const wchar_t *buf,*/ int offset/*,
 			}
 			if( *(p - 1)  == L'.' ) return i - 1;  /* 最後が "." なら含めない */
 			return i;
-		}
-		else if( *p == L'E' || *p == L'e' )
-		{
-			p++; i++;
-			while( p < q )
-			{
-				if( *p < L'0' || *p > L'9' )
-				{
-					if( ( *p == L'+' || *p == L'-' ) && ( *(p - 1) == L'E' || *(p - 1) == L'e' ) )
-					{
-						if( p + 1 < q )
-						{
-							if( *(p + 1) < L'0' || *(p + 1) > L'9' )
-							{
-								/* "0E+", "0E-" */
-								break;
-							}
-						}
-						else
-						{
-							/* "0E-", "0E+" */
-							break;
-						}
-					}
-					else
-					{
-						break;
-					}
-				}
-				p++; i++;
-			}
-			if( i == 2 ) return 1;  /* "0E", 0e" なら "0" が数値 */
 		}
 		/* "0" だけが数値 */
 		/*if( *p == L'.' ) return i - 1;*/  /* 最後が "." なら含めない */
@@ -277,50 +164,10 @@ static int IsNumber(const CStringRef& cStr,/*const wchar_t *buf,*/ int offset/*,
 			{
 				if( *p == L'.' )
 				{
-					if( f == 1 ) break;  /* 指数部に入っている */
 					d++;
 					if( d > 1 )
 					{
 						if( *(p - 1) == L'.' ) break;  /* "." が連続なら中断 */
-					}
-				}
-				else if( *p == L'E' || *p == L'e' )
-				{
-					if( f == 1 ) break;  /* 指数部に入っている */
-					if( p + 2 < q )
-					{
-						if( ( *(p + 1) == L'+' || *(p + 1) == L'-' )
-						 && ( *(p + 2) >= L'0' && *(p + 2) <= L'9' ) )
-						{
-							p++; i++;
-							p++; i++;
-							f = 1;
-						}
-						else if( *(p + 1) >= L'0' && *(p + 1) <= L'9' )
-						{
-							p++; i++;
-							f = 1;
-						}
-						else
-						{
-							break;
-						}
-					}
-					else if( p + 1 < q )
-					{
-						if( *(p + 1) >= L'0' && *(p + 1) <= L'9' )
-						{
-							p++; i++;
-							f = 1;
-						}
-						else
-						{
-							break;
-						}
-					}
-					else
-					{
-						break;
 					}
 				}
 				else
@@ -343,50 +190,10 @@ static int IsNumber(const CStringRef& cStr,/*const wchar_t *buf,*/ int offset/*,
 			{
 				if( *p == L'.' )
 				{
-					if( f == 1 ) break;  /* 指数部に入っている */
 					d++;
 					if( d > 1 )
 					{
 						if( *(p - 1) == L'.' ) break;  /* "." が連続なら中断 */
-					}
-				}
-				else if( *p == L'E' || *p == L'e' )
-				{
-					if( f == 1 ) break;  /* 指数部に入っている */
-					if( p + 2 < q )
-					{
-						if( ( *(p + 1) == L'+' || *(p + 1) == L'-' )
-						 && ( *(p + 2) >= L'0' && *(p + 2) <= L'9' ) )
-						{
-							p++; i++;
-							p++; i++;
-							f = 1;
-						}
-						else if( *(p + 1) >= L'0' && *(p + 1) <= L'9' )
-						{
-							p++; i++;
-							f = 1;
-						}
-						else
-						{
-							break;
-						}
-					}
-					else if( p + 1 < q )
-					{
-						if( *(p + 1) >= L'0' && *(p + 1) <= L'9' )
-						{
-							p++; i++;
-							f = 1;
-						}
-						else
-						{
-							break;
-						}
-					}
-					else
-					{
-						break;
 					}
 				}
 				else
@@ -420,50 +227,10 @@ static int IsNumber(const CStringRef& cStr,/*const wchar_t *buf,*/ int offset/*,
 			{
 				if( *p == L'.' )
 				{
-					if( f == 1 ) break;  /* 指数部に入っている */
 					d++;
 					if( d > 1 )
 					{
 						if( *(p - 1) == L'.' ) break;  /* "." が連続なら中断 */
-					}
-				}
-				else if( *p == L'E' || *p == L'e' )
-				{
-					if( f == 1 ) break;  /* 指数部に入っている */
-					if( p + 2 < q )
-					{
-						if( ( *(p + 1) == L'+' || *(p + 1) == L'-' )
-						 && ( *(p + 2) >= L'0' && *(p + 2) <= L'9' ) )
-						{
-							p++; i++;
-							p++; i++;
-							f = 1;
-						}
-						else if( *(p + 1) >= L'0' && *(p + 1) <= L'9' )
-						{
-							p++; i++;
-							f = 1;
-						}
-						else
-						{
-							break;
-						}
-					}
-					else if( p + 1 < q )
-					{
-						if( *(p + 1) >= L'0' && *(p + 1) <= L'9' )
-						{
-							p++; i++;
-							f = 1;
-						}
-						else
-						{
-							break;
-						}
-					}
-					else
-					{
-						break;
 					}
 				}
 				else
