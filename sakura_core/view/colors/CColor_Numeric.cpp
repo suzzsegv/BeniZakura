@@ -64,8 +64,8 @@ bool CColor_Numeric::EndColor(const CStringRef& cStr, int nPos)
  */
 /*
  * 半角数値
- *   1, 1.2, 1.2.3, .1, 0xabc, 1L, 1F, 1.2f, 0x1L, 0x2F, -.1, -1, 1e2, 1.2e+3, 1.2e-3, -1e0
- *   10進数, 16進数, LF接尾語, 浮動小数点数, 負符号
+ *   1, 1.2, 1.2.3, .1, 0xabc, -.1, -1, 1e2, 1.2e+3, 1.2e-3, -1e0
+ *   10進数, 16進数, 浮動小数点数, 負符号
  *   IPアドレスのドット連結(本当は数値じゃないんだよね)
  */
 static int IsNumber(const CStringRef& cStr,/*const wchar_t *buf,*/ int offset/*, int length*/)
@@ -100,15 +100,6 @@ static int IsNumber(const CStringRef& cStr,/*const wchar_t *buf,*/ int offset/*,
 			}
 			/* "0x" なら "0" だけが数値 */
 			if( i == 2 ) return 1;
-			
-			/* 接尾語 */
-			if( p < q )
-			{
-				if( *p == L'L' || *p == L'l' || *p == L'F' || *p == L'f' )
-				{
-					p++; i++;
-				}
-			}
 			return i;
 		}
 		else if( *p >= L'0' && *p <= L'9' )
@@ -174,15 +165,6 @@ static int IsNumber(const CStringRef& cStr,/*const wchar_t *buf,*/ int offset/*,
 				p++; i++;
 			}
 			if( *(p - 1)  == L'.' ) return i - 1;  /* 最後が "." なら含めない */
-			/* 接尾語 */
-			if( p < q )
-			{
-				if( (( d == 0 ) && ( *p == L'L' || *p == L'l' ))
-				 || *p == L'F' || *p == L'f' )
-				{
-					p++; i++;
-				}
-			}
 			return i;
 		}
 		else if( *p == L'.' )
@@ -247,14 +229,6 @@ static int IsNumber(const CStringRef& cStr,/*const wchar_t *buf,*/ int offset/*,
 				p++; i++;
 			}
 			if( *(p - 1)  == L'.' ) return i - 1;  /* 最後が "." なら含めない */
-			/* 接尾語 */
-			if( p < q )
-			{
-				if( *p == L'F' || *p == L'f' )
-				{
-					p++; i++;
-				}
-			}
 			return i;
 		}
 		else if( *p == L'E' || *p == L'e' )
@@ -288,31 +262,10 @@ static int IsNumber(const CStringRef& cStr,/*const wchar_t *buf,*/ int offset/*,
 				p++; i++;
 			}
 			if( i == 2 ) return 1;  /* "0E", 0e" なら "0" が数値 */
-			/* 接尾語 */
-			if( p < q )
-			{
-				if( (( d == 0 ) && ( *p == L'L' || *p == L'l' ))
-				 || *p == L'F' || *p == L'f' )
-				{
-					p++; i++;
-				}
-			}
-			return i;
 		}
-		else
-		{
-			/* "0" だけが数値 */
-			/*if( *p == L'.' ) return i - 1;*/  /* 最後が "." なら含めない */
-			if( p < q )
-			{
-				if( (( d == 0 ) && ( *p == L'L' || *p == L'l' ))
-				 || *p == L'F' || *p == L'f' )
-				{
-					p++; i++;
-				}
-			}
-			return i;
-		}
+		/* "0" だけが数値 */
+		/*if( *p == L'.' ) return i - 1;*/  /* 最後が "." なら含めない */
+		return i;
 	}
 
 	else if( *p >= L'1' && *p <= L'9' )  /* 10進数 */
@@ -378,15 +331,6 @@ static int IsNumber(const CStringRef& cStr,/*const wchar_t *buf,*/ int offset/*,
 			p++; i++;
 		}
 		if( *(p - 1) == L'.' ) return i - 1;  /* 最後が "." なら含めない */
-		/* 接尾語 */
-		if( p < q )
-		{
-			if( (( d == 0 ) && ( *p == L'L' || *p == L'l' ))
-			 || *p == L'F' || *p == L'f' )
-			{
-				p++; i++;
-			}
-		}
 		return i;
 	}
 
@@ -463,15 +407,6 @@ static int IsNumber(const CStringRef& cStr,/*const wchar_t *buf,*/ int offset/*,
 			if( i == 1 ) return 0;
 			return i;
 		}  //@@@ 2001.11.09 end MIK
-		/* 接尾語 */
-		if( p < q )
-		{
-			if( (( d == 0 ) && ( *p == L'L' || *p == L'l' ))
-			 || *p == L'F' || *p == L'f' )
-			{
-				p++; i++;
-			}
-		}
 		return i;
 	}
 
@@ -541,14 +476,6 @@ static int IsNumber(const CStringRef& cStr,/*const wchar_t *buf,*/ int offset/*,
 		/* "." だけなら数値でない */
 		if( i == 1 ) return 0;
 		if( *(p - 1)  == L'.' ) return i - 1;  /* 最後が "." なら含めない */
-		/* 接尾語 */
-		if( p < q )
-		{
-			if( *p == L'F' || *p == L'f' )
-			{
-				p++; i++;
-			}
-		}
 		return i;
 	}
 
