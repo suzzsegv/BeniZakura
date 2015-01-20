@@ -415,7 +415,7 @@ finish:
 
 	cDlgCancel.CloseDialog( TRUE );
 
-	InfoMessage(m_pCommanderView->GetHwnd(), _T("タグファイルの作成が終了しました。"));
+	m_pCommanderView->SendStatusMessage(_T("タグファイルの作成が終了しました。"));
 
 	return true;
 }
