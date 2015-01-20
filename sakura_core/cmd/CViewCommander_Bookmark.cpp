@@ -173,7 +173,6 @@ re_do:;								// hor
 		if(nYOld >= ptXY.y)m_pCommanderView->SendStatusMessage(_T("▼先頭から再検索しました"));
 	}else{
 		m_pCommanderView->SendStatusMessage(_T("▽見つかりませんでした"));
-		AlertNotFound( m_pCommanderView->GetHwnd(), _T("前方(↓) にブックマークが見つかりません。"));
 	}
 	return;
 }
@@ -217,7 +216,6 @@ re_do:;								// hor
 		if(nYOld <= ptXY.y)m_pCommanderView->SendStatusMessage(_T("▲末尾から再検索しました"));
 	}else{
 		m_pCommanderView->SendStatusMessage(_T("△見つかりませんでした"));
-		AlertNotFound( m_pCommanderView->GetHwnd(), _T("後方(↑) にブックマークが見つかりません。") );
 	}
 	return;
 }
