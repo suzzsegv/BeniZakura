@@ -41,6 +41,9 @@
 CEditApp::CEditApp(HINSTANCE hInst, int nGroupId)
 : m_hInst(hInst)
 {
+	//編集モード
+	CAppMode::getInstance();
+
 	//ヘルパ作成
 	m_cIcons.Create( m_hInst );	//	CreateImage List
 
@@ -55,9 +58,6 @@ CEditApp::CEditApp(HINSTANCE hInst, int nGroupId)
 
 	//GREPモード管理
 	m_pcGrepAgent = new CGrepAgent();
-
-	//編集モード
-	CAppMode::getInstance();	//ウィンドウよりも前にイベントを受け取るためにここでインスタンス作成
 
 	//マクロ
 	m_pcSMacroMgr = new CSMacroMgr();

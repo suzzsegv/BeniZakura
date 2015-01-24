@@ -53,7 +53,7 @@ bool CDocFileOperation::_ToDoLock() const
 	if( CAppMode::getInstance()->IsViewMode() )return false;
 
 	// ”r‘¼Ý’è
-	if( GetDllShareData().m_Common.m_sFile.m_nFileShareMode == SHAREMODE_NOT_EXCLUSIVE )return false;
+	if( CAppMode::getInstance()->GetFileShareMode() == SHAREMODE_NOT_EXCLUSIVE ) return false;
 
 	return true;
 }
@@ -61,7 +61,7 @@ bool CDocFileOperation::_ToDoLock() const
 void CDocFileOperation::DoFileLock(bool bMsg)
 {
 	if(this->_ToDoLock()){
-		m_pcDocRef->m_cDocFile.FileLock(GetDllShareData().m_Common.m_sFile.m_nFileShareMode, bMsg);
+		m_pcDocRef->m_cDocFile.FileLock(CAppMode::getInstance()->GetFileShareMode(), bMsg);
 	}
 }
 

@@ -27,6 +27,7 @@
 #include "window/CEditWnd.h"
 #include "dlg/CDlgFileUpdateQuery.h"
 #include "sakura_rc.h"
+#include "_main/CAppMode.h"
 
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
@@ -85,7 +86,7 @@ bool CAutoReloadAgent::_ToDoChecking() const
 	if(IsPausing())return false;
 	if(!setting.m_bCheckFileTimeStamp)return false;	//更新の監視設定
 	if(m_eWatchUpdate==WU_NONE)return false;
-	if(setting.m_nFileShareMode!=SHAREMODE_NOT_EXCLUSIVE)return false; // ファイルの排他制御モード
+	if(CAppMode::getInstance()->GetFileShareMode() != SHAREMODE_NOT_EXCLUSIVE) return false; // ファイルの排他制御モード
 	HWND hwndActive = ::GetActiveWindow();
 	if(hwndActive==NULL)return false;	/* アクティブ？ */
 	if(hwndActive!=CEditWnd::getInstance()->GetHwnd())return false;

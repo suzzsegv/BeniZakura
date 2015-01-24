@@ -625,9 +625,9 @@ int CSakuraEnvironment::_ExParam_Evaluate( const wchar_t* pCond )
  			return 1;
  		}
 	case L'X': // ƒtƒ@ƒCƒ‹‚Ì”r‘¼§Œä
-		if( GetDllShareData().m_Common.m_sFile.m_nFileShareMode == SHAREMODE_NOT_EXCLUSIVE ){
+		if( CAppMode::getInstance()->GetFileShareMode() == SHAREMODE_NOT_EXCLUSIVE ){
 			return 0; // ”r‘¼§Œä: ‚µ‚È‚¢
-		}else if( GetDllShareData().m_Common.m_sFile.m_nFileShareMode == SHAREMODE_DENY_WRITE ){
+		}else if( CAppMode::getInstance()->GetFileShareMode() == SHAREMODE_DENY_WRITE ){
  			return 1; // ”r‘¼§Œä: ã‘‚«‹Ö~
 		}else{
  			return 2; // ”r‘¼§Œä: “Ç‚İ‘‚«‹Ö~

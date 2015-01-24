@@ -137,10 +137,10 @@ void CDlgProperty::SetData( void )
 
 	if( INVALID_HANDLE_VALUE != ( nFind = ::FindFirstFile( pCEditDoc->m_cDocFile.GetFilePath(), &wfd ) ) ){
 		if( pCEditDoc->m_cDocFile.IsFileLocking() ){
-			if( m_pShareData->m_Common.m_sFile.m_nFileShareMode == SHAREMODE_DENY_WRITE ){
+			if( CAppMode::getInstance()->GetFileShareMode() == SHAREMODE_DENY_WRITE ){
 				auto_sprintf( szWork, _T("あなたはこのファイルを、他プロセスからの上書き禁止モードでロックしています。\r\n") );
 			}
-			else if( m_pShareData->m_Common.m_sFile.m_nFileShareMode == SHAREMODE_DENY_READWRITE ){
+			else if( CAppMode::getInstance()->GetFileShareMode() == SHAREMODE_DENY_READWRITE ){
 				auto_sprintf( szWork, _T("あなたはこのファイルを、他プロセスからの読み書き禁止モードでロックしています。\r\n") );
 			}
 			else{

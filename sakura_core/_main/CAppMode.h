@@ -26,6 +26,7 @@
 
 #include "util/design_template.h"
 #include "doc/CDocListener.h"
+#include "io/CFile.h"
 
 class CAppMode : public TSingleton<CAppMode>, public CDocListenerEx{ //###仮
 public:
@@ -33,6 +34,7 @@ public:
 	: m_bViewMode( false )	// ビューモード
 	, m_bDebugMode( false )		// デバッグモニタモード
 	{
+		fileShareMode = GetDllShareData().m_Common.m_sFile.m_nFileShareMode;
 		wcscpy( m_szGrepKey, L"" );
 	}
 
@@ -43,6 +45,16 @@ public:
 	void	SetDebugModeON();	//!< デバッグモニタモード設定
 	void	SetDebugModeOFF();	//!< デバッグモニタモード解除
 
+	void SetFileShareMode(EShareMode mode)
+	{
+		fileShareMode = mode;
+	};
+
+	EShareMode GetFileShareMode()
+	{
+		return fileShareMode;
+	}
+
 	//イベント
 	void OnAfterSave(const SSaveInfo& sSaveInfo);
 
@@ -52,6 +64,7 @@ protected:
 private:
 	bool			m_bViewMode;			//!< ビューモード
 	bool			m_bDebugMode;				//!< デバッグモニタモード
+	EShareMode		fileShareMode;				//!< ファイルの排他制御モード
 public:
 	wchar_t			m_szGrepKey[1024];			//!< Grepモードの場合、その検索キー
 };
