@@ -457,7 +457,7 @@ bool CShareData::InitShareData()
 		m_pShareData->m_Common.m_sHelper.m_bHokanKey_SPACE	= FALSE;		/* VK_SPACE 補完決定キーが有効/無効 */
 
 		m_pShareData->m_Common.m_sOutline.m_nOutlineDockSet = 0;					/* アウトライン解析のドッキング位置継承方法 */
-		m_pShareData->m_Common.m_sOutline.m_bOutlineDockSync = TRUE;				/* アウトライン解析のドッキング位置を同期する */
+		m_pShareData->m_Common.m_sOutline.m_bOutlineDockSync = FALSE;				/* アウトライン解析のドッキング位置を同期する */
 		m_pShareData->m_Common.m_sOutline.m_bOutlineDockDisp = FALSE;				/* アウトライン解析表示の有無 */
 		m_pShareData->m_Common.m_sOutline.m_eOutlineDockSide = DOCKSIDE_FLOAT;		/* アウトライン解析ドッキング配置 */
 		m_pShareData->m_Common.m_sOutline.m_cxOutlineDockLeft		=	0;	// アウトラインの左ドッキング幅
