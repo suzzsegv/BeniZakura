@@ -266,6 +266,61 @@ void CViewCommander::Command_FILE_REOPEN(
 
 
 
+/*!
+	ファイルの排他ロック
+ 
+	現在編集中のファイルを排他ロック（読み書き禁止）状態に変更する。
+*/
+void CViewCommander::Command_FileExclusiveLock( )
+{
+	bool succeeded;
+
+	succeeded = GetDocument( )->m_cDocFileOperation.LockExclusive( );
+	if( succeeded == false ){
+		return;
+	}
+
+	m_pCommanderView->SendStatusMessage( _T( "ファイルを排他ロック（読み書き禁止）状態に変更しました。" ) );
+	GetEditWindow( )->UpdateCaption( );
+}
+
+/*!
+	ファイルの共有ロック
+
+ 	現在編集中のファイルを共有ロック（上書き禁止）状態に変更する。
+*/
+void CViewCommander::Command_FileShareLock( )
+{
+	bool succeeded;
+
+	succeeded = GetDocument( )->m_cDocFileOperation.LockShared( );
+	if( succeeded == false ){
+		return;
+	}
+
+	m_pCommanderView->SendStatusMessage( _T( "ファイルを共有ロック（上書き禁止）状態に変更しました。" ) );
+	GetEditWindow( )->UpdateCaption( );
+}
+
+/*!
+	ファイルのロックを解除する
+
+ 	現在編集中のファイルのロックを解除する。
+*/
+void CViewCommander::Command_FileUnlock( )
+{
+	bool succeeded;
+
+	succeeded = GetDocument( )->m_cDocFileOperation.Unlock( );
+	if( succeeded == false ){
+		return;
+	}
+
+	m_pCommanderView->SendStatusMessage( _T( "ファイルのロックを解除しました。" ) );
+	GetEditWindow( )->UpdateCaption( );
+}
+
+
 /* 印刷 */
 void CViewCommander::Command_PRINT( void )
 {

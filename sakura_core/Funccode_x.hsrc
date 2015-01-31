@@ -82,6 +82,10 @@ F_FILE_REOPEN				= 30119,	//現在と同じ文字コードで開き直す	bool bNoConfirm
 F_FILESAVEALL				= 30120,	//すべて上書き保存					なし
 F_FILESAVE_QUIET			= 30121,	//上書き保存(限定動作)				なし
 F_FILE_REOPEN_LATIN1		= 30122,	//Latin1で開き直す					bool bNoConform	// 2010/3/20 Uchi
+F_FILE_EXCLUSIVE_LOCK		= 30123,	//排他ロック(読み書き禁止)
+F_FILE_SHARE_LOCK			= 30124,	//共有ロック(書き込み禁止)
+F_FILE_UNLOCK				= 30125,	//ロック解除(排他制御なし)
+
 F_PRINT						= 30150,	//印刷								なし
 F_PRINT_PREVIEW				= 30151,	//印刷プレビュー					なし
 F_PRINT_PAGESETUP			= 30152,	//印刷ページ設定					なし

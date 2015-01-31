@@ -37,7 +37,14 @@ public:
 	bool _ToDoLock() const;
 	void DoFileLock(bool bMsg = true);
 	void DoFileUnlock();
-	
+
+private:
+	bool ChangeShareMode(EShareMode eShareMode);
+public:
+	bool LockExclusive();
+	bool LockShared();
+	bool Unlock();
+
 	//ÉçÅ[ÉhUI
 	bool OpenFileDialog(
 		HWND				hwndParent,

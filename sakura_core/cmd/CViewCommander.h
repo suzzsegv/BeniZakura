@@ -104,6 +104,10 @@ public:
 
 	void Command_FILE_REOPEN( ECodeType nCharCode, bool bNoConfirm );		/* 再オープン */	//Dec. 4, 2002 genta 引数追加
 
+	void Command_FileExclusiveLock();
+	void Command_FileShareLock();
+	void Command_FileUnlock();
+
 	void Command_PRINT( void );					/* 印刷*/
 	void Command_PRINT_PREVIEW( void );			/* 印刷プレビュー*/
 	void Command_PRINT_PAGESETUP( void );		/* 印刷ページ設定 */	//Sept. 14, 2000 jepro 「印刷のページレイアウトの設定」から変更

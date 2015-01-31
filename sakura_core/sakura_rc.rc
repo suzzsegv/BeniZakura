@@ -2035,6 +2035,13 @@ END
 
 STRINGTABLE
 BEGIN
+    F_FILE_EXCLUSIVE_LOCK   "排他ロック"
+    F_FILE_SHARE_LOCK       "共有ロック"
+    F_FILE_UNLOCK           "ロック解除"
+END
+
+STRINGTABLE
+BEGIN
     F_PRINT                 "印刷..."
     F_PRINT_PREVIEW         "印刷プレビュー"
     F_PRINT_PAGESETUP       "印刷ページ設定..."

@@ -70,6 +70,64 @@ void CDocFileOperation::DoFileUnlock()
 	m_pcDocRef->m_cDocFile.FileUnlock();
 }
 
+/*!
+	編集中ファイルの排他制御モードを変更する。
+
+	@retval true: 成功 / false: 失敗
+*/
+bool CDocFileOperation::ChangeShareMode( EShareMode eShareMode )
+{
+	bool succeeded;
+
+	// ファイルを開いていない
+	if( m_pcDocRef->m_cDocFile.GetFilePathClass().IsValidPath() == false ){
+		return false;
+	}
+
+	if( CAppMode::getInstance()->IsViewMode() ){
+		return false;
+	}
+
+	succeeded = m_pcDocRef->m_cDocFile.FileLock( eShareMode, true );
+	if( succeeded == false ){
+		return false;
+	}
+
+	CAppMode::getInstance()->SetFileShareMode( eShareMode );
+
+	return true;
+}
+
+/*!
+	現在編集中のファイルを排他ロック（読み書き禁止）状態に変更する。
+
+	@retval true: 成功 / false: 失敗
+*/
+bool CDocFileOperation::LockExclusive()
+{
+	return ChangeShareMode( SHAREMODE_DENY_READWRITE );
+}
+
+/*!
+ 	現在編集中のファイルを共有ロック（上書き禁止）状態に変更する。
+
+	@retval true: 成功 / false: 失敗
+*/
+bool CDocFileOperation::LockShared()
+{
+	return ChangeShareMode( SHAREMODE_DENY_WRITE );
+}
+
+/*!
+ 	現在編集中のファイルのロックを解除する。
+
+	@retval true: 成功 / false: 失敗
+*/
+bool CDocFileOperation::Unlock()
+{
+	return ChangeShareMode( SHAREMODE_NOT_EXCLUSIVE );
+}
+
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 //                         ロードUI                            //

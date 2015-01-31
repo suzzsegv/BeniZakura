@@ -218,6 +218,17 @@ BOOL CViewCommander::HandleCommand(
 	case F_FILE_REOPEN_UTF8:		Command_FILE_REOPEN( CODE_UTF8, lparam1!=0 );break;		//UTF-8で開き直す
 	case F_FILE_REOPEN_CESU8:		Command_FILE_REOPEN( CODE_CESU8, lparam1!=0 );break;	//CESU-8で開きなおす
 	case F_FILE_REOPEN_UTF7:		Command_FILE_REOPEN( CODE_UTF7, lparam1!=0 );break;		//UTF-7で開き直す
+
+	case F_FILE_EXCLUSIVE_LOCK:
+		Command_FileExclusiveLock();
+		break;
+	case F_FILE_SHARE_LOCK:
+		Command_FileShareLock();
+		break;
+	case F_FILE_UNLOCK:
+		Command_FileUnlock();
+		break;
+
 	case F_PRINT:				Command_PRINT();break;					/* 印刷 */
 	case F_PRINT_PREVIEW:		Command_PRINT_PREVIEW();break;			/* 印刷プレビュー */
 	case F_PRINT_PAGESETUP:		Command_PRINT_PAGESETUP();break;		/* 印刷ページ設定 */	//Sept. 14, 2000 jepro 「印刷のページレイアウトの設定」から変更

@@ -107,6 +107,9 @@ const EFunctionCode pnFuncList_File[] = {	//Oct. 16, 2000 JEPRO 変数名変更(List5
 	F_FILE_REOPEN_UTF8		,//UTF-8で開き直す
 	F_FILE_REOPEN_CESU8		,//CESU-8で開き直す
 	F_FILE_REOPEN_UTF7		,//UTF-7で開き直す
+	F_FILE_EXCLUSIVE_LOCK,
+	F_FILE_SHARE_LOCK,
+	F_FILE_UNLOCK,
 	F_PRINT				,	//印刷
 	F_PRINT_PREVIEW		,	//印刷プレビュー
 	F_PRINT_PAGESETUP	,	//印刷ページ設定	//Sept. 14, 2000 jepro 「印刷のページレイアウトの設定」から変更
