@@ -698,16 +698,42 @@ CLogicInt CViewCommander::ConvertEol(const wchar_t* pszText, CLogicInt nTextLen,
 /*!
  * 現在位置の単語で検索
  */
-void CViewCommander::Command_SearchWord( void )
+void CViewCommander::Command_SearchWord(void)
 {
-	if( m_pCommanderView->GetSelectionInfo().IsTextSelected() ){
-		if( Command_ExpandSelectedTextToNextWord() == false ){
-			Command_ExpandSelectedTextToNextWord();				/* 失敗したらカーソル位置から再選択する */
+	bool bWordOnly;
+
+	bWordOnly = false;
+	if(m_pCommanderView->GetSelectionInfo().IsTextSelected()){
+		if(Command_ExpandSelectedTextToNextWord() == false){
+			Command_ExpandSelectedTextToNextWord(); /* 失敗したらカーソル位置から再選択する */
+			bWordOnly = true;
 		}
 	}else{
 		Command_SELECTWORD();
+		bWordOnly = true;
 	}
-	Command_SEARCH_CLEARMARK();
+
+	// 検索文字列取得
+	CNativeW cmemCurText;
+	m_pCommanderView->GetCurrentTextForSearch(cmemCurText, false);
+
+	m_pCommanderView->m_strCurSearchKey = cmemCurText.GetStringPtr();
+	m_pCommanderView->m_sCurSearchOption.bRegularExp = false;
+	m_pCommanderView->m_sCurSearchOption.bLoHiCase = true;
+	m_pCommanderView->m_sCurSearchOption.bWordOnly = bWordOnly;
+
+	// 共有データへ登録
+	if(cmemCurText.GetStringLength() < _MAX_PATH){
+		CSearchKeywordManager().AddToSearchKeyArr(cmemCurText.GetStringPtr());
+		GetDllShareData().m_Common.m_sSearch.m_sSearchOption = m_pCommanderView->m_sCurSearchOption;
+	}
+	m_pCommanderView->m_nCurSearchKeySequence = GetDllShareData().m_Common.m_sSearch.m_nSearchKeySequence;
+	m_pCommanderView->m_bCurSearchUpdate = true;
+
+	m_pCommanderView->ChangeCurRegexp(false);
+
+	// 再描画
+	m_pCommanderView->RedrawAll();
 }
 
 
