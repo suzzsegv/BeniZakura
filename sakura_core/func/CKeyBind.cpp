@@ -541,7 +541,7 @@ const KeyData DefaultKeyBindTable[] = {
 	{ VK_F8,	_T("F8" ),			F_COPY,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ VK_F9,	_T("F9" ),			F_PASTE,			F_PASTEBOX,			F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ VK_F10,	_T("F10"),			F_TAGJUMP,			F_TAGJUMPBACK,		F_TAGJUMP_KEYWORD,			F_0,				F_TAGS_MAKE,			F_0,				F_0,					F_0				},
-	{ VK_F11,	_T("F11"),			F_OUTLINE,			F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
+	{ VK_F11,	_T("F11"),			F_OUTLINE,			F_OUTLINE_TOGGLE,	F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ VK_F12,	_T("F12"),			F_BOOKMARK_VIEW,	F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ VK_F13,	_T("F13"),			F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ VK_F14,	_T("F14"),			F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
@@ -559,7 +559,7 @@ const KeyData DefaultKeyBindTable[] = {
 	/* ì¡éÍÉLÅ[ */
 	//keycode,	keyname,			Ç»Çµ,				Shitf+,				Ctrl+,						Shift+Ctrl+,		Alt+,					Shit+Alt+,			Ctrl+Alt+,				Shift+Ctrl+Alt+
 	{ VK_TAB,	_T("Tab"),			F_INDENT_TAB,		F_UNINDENT_TAB,		F_NEXTWINDOW,				F_PREVWINDOW,		F_0,					F_0,				F_0,					F_0				},
-	{ VK_RETURN,_T("Enter"),		F_0,				F_0,				F_COMPARE,					F_0,				F_PROPERTY_FILE,		F_0,				F_0,					F_0				},
+	{ VK_RETURN,_T("Enter"),		F_0,				F_0,				F_COMPARE,					F_0,				F_MAXIMIZE,				F_0,				F_0,					F_0				},
 	{ VK_ESCAPE,_T("Esc"),			F_CANCEL_MODE,		F_REDO,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ VK_BACK,	_T("BkSp"),			F_DELETE_BACK,		F_0,				F_WordDeleteToStart,		F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ VK_INSERT,_T("Ins"),			F_CHGMOD_INS,		F_PASTE,			F_PASTE,					F_0,				F_0,					F_0,				F_0,					F_0				},
@@ -577,7 +577,7 @@ const KeyData DefaultKeyBindTable[] = {
 
 	/* êîéö */
 	//keycode,	keyname,			Ç»Çµ,				Shitf+,				Ctrl+,						Shift+Ctrl+,		Alt+,					Shit+Alt+,			Ctrl+Alt+,				Shift+Ctrl+Alt+
-	{ '0',		_T("0"),			F_0,				F_0,				F_0,						F_0,				F_CUSTMENU_10,			F_CUSTMENU_20,		F_0,					F_0				},
+	{ '0',		_T("0"),			F_0,				F_0,				F_FONT_ZOOM_RESET,			F_0,				F_CUSTMENU_10,			F_CUSTMENU_20,		F_0,					F_0				},
 	{ '1',		_T("1"),			F_0,				F_0,				F_SHOWTOOLBAR,				F_CUSTMENU_21,		F_CUSTMENU_1,			F_CUSTMENU_11,		F_0,					F_0				},
 	{ '2',		_T("2"),			F_0,				F_0,				F_SHOWFUNCKEY,				F_CUSTMENU_22,		F_CUSTMENU_2,			F_CUSTMENU_12,		F_0,					F_0				},
 	{ '3',		_T("3"),			F_0,				F_0,				F_SHOWSTATUSBAR,			F_CUSTMENU_23,		F_CUSTMENU_3,			F_CUSTMENU_13,		F_0,					F_0				},
@@ -619,12 +619,12 @@ const KeyData DefaultKeyBindTable[] = {
 
 	/* ãLçÜ */
 	//keycode,	keyname,			Ç»Çµ,				Shitf+,				Ctrl+,						Shift+Ctrl+,		Alt+,					Shit+Alt+,			Ctrl+Alt+,				Shift+Ctrl+Alt+
-	{ 0x00bd,	_T("-"),			F_0,				F_0,				F_COPYFNAME,				F_SPLIT_V,			F_0,					F_0,				F_0,					F_0				},
+	{ 0x00bd,	_T("-"),			F_0,				F_0,				F_FONT_ZOOM_OUT,			F_SPLIT_V,			F_0,					F_0,				F_0,					F_0				},
 	{ 0x00de,	_T("^(âpåÍ')"),		F_0,				F_0,				F_COPYTAG,					F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ 0x00dc,	_T("\\"),			F_0,				F_0,				F_COPYPATH,					F_SPLIT_H,			F_0,					F_0,				F_0,					F_0				},
 	{ 0x00c0,	_T("@(âpåÍ`)"),		F_0,				F_0,				F_COPYLINES,				F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ 0x00db,	_T("["),			F_0,				F_0,				F_BRACKETPAIR,				F_0,				F_0,					F_0,				F_0,					F_0				},
-	{ 0x00bb,	_T(";"),			F_0,				F_0,				F_0,						F_SPLIT_VH,			F_INS_DATE,				F_0,				F_0,					F_0				},
+	{ 0x00bb,	_T(";"),			F_0,				F_0,				F_FONT_ZOOM_IN,				F_FONT_ZOOM_IN,		F_INS_DATE,				F_0,				F_0,					F_0				},
 	{ 0x00ba,	_T(":"),			F_0,				F_0,				F_COPYLINESWITHLINENUMBER,	F_0,				F_INS_TIME,				F_0,				F_0,					F_0				},
 	{ 0x00dd,	_T("]"),			F_0,				F_0,				F_BRACKETPAIR,				F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ 0x00bc,	_T(","),			F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
