@@ -382,6 +382,8 @@ const EFunctionCode pnFuncList_Set[] = {	//Oct. 16, 2000 JEPRO •Ï”–¼•ÏX(List9
 	F_OPTION_TYPE		,	/* ƒ^ƒCƒv•ÊÝ’è */
 	F_OPTION			,	/* ‹¤’ÊÝ’è */
 	F_FONT				,	/* ƒtƒHƒ“ƒgÝ’è */
+	F_FONT_ZOOM_IN		,	/* ƒtƒHƒ“ƒg‚ÌŠg‘å */
+	F_FONT_ZOOM_OUT		,	/* ƒtƒHƒ“ƒg‚Ìk¬ */
 	F_WRAPWINDOWWIDTH	,	/* Œ»Ý‚ÌƒEƒBƒ“ƒhƒE•‚ÅÜ‚è•Ô‚µ */	//Oct. 7, 2000 JEPRO WRAPWINDIWWIDTH ‚ð WRAPWINDOWWIDTH ‚É•ÏX
 	F_PRINT_PAGESETUP	,	//ˆóüƒy[ƒWÝ’è				//Sept. 14, 2000 JEPRO uˆóü‚Ìƒy[ƒWƒŒƒCƒAƒEƒg‚ÌÝ’èv‚ðuˆóüƒy[ƒWÝ’èv‚É•ÏX	//Oct. 17, 2000 ƒRƒ}ƒ“ƒh–{‰Æ‚Íuƒtƒ@ƒCƒ‹‘€ìŒnv
 	F_FAVORITE			,	//—š—ð‚ÌŠÇ—	//@@@ 2003.04.08 MIK
