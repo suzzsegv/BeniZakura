@@ -450,24 +450,24 @@ void CViewCommander::Command_SET_QUOTESTRING( const wchar_t* quotestr )
 
 
 /*!
-	TAB記号の表示/非表示
+	カラーリングの有効/無効をトグルで切り替える
 
-	タイプ別設定のTAB表示/非表示の設定を変更後、全エディタにメッセージを
+	タイプ別設定のカラーリング設定を変更後、全エディタにメッセージを
 	ブロードキャスト配信して反映する。全エディタに反映したい設定ではないが、
 	あまり使う機能でもないので、一番楽な実装で実現しておく。
 */
-void CViewCommander::Command_ShowTabChar(void)
+void CViewCommander::ToggleColoring(EColorIndexType colorIndex)
 {
 	bool bDisp;
 
 	CTypeConfig cDocumentType = GetDocument()->m_cDocType.GetDocumentType();
 	STypeConfig& types = CDocTypeManager().GetTypeSetting(cDocumentType);
 
-	bDisp = types.m_ColorInfoArr[COLORIDX_TAB].m_bDisp;
+	bDisp = types.m_ColorInfoArr[colorIndex].m_bDisp;
 	if( bDisp == true ){
-		types.m_ColorInfoArr[COLORIDX_TAB].m_bDisp = false;
+		types.m_ColorInfoArr[colorIndex].m_bDisp = false;
 	}else{
-		types.m_ColorInfoArr[COLORIDX_TAB].m_bDisp = true;
+		types.m_ColorInfoArr[colorIndex].m_bDisp = true;
 	}
 
 	HWND hWnd;
@@ -479,5 +479,15 @@ void CViewCommander::Command_ShowTabChar(void)
 		(LPARAM)PM_CHANGESETTING_ALL,
 		hWnd
 	);
+}
+
+
+
+/*!
+	TAB記号の表示/非表示
+*/
+void CViewCommander::Command_ShowTabChar(void)
+{
+	ToggleColoring(COLORIDX_TAB);
 }
 
