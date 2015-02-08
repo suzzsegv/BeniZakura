@@ -161,7 +161,7 @@ struct SSearchOption{
 	bool	bLoHiCase;		//!< true==‰p‘å•¶Žš¬•¶Žš‚Ì‹æ•Ê
 	bool	bWordOnly;		//!< true==’PŒê‚Ì‚ÝŒŸõ
 
-	SSearchOption() : bRegularExp(false), bLoHiCase(true), bWordOnly(false) { }
+	SSearchOption() : bRegularExp(false), bLoHiCase(false), bWordOnly(false) { }
 	SSearchOption(
 		bool _bRegularExp,
 		bool _bLoHiCase,
@@ -175,7 +175,7 @@ struct SSearchOption{
 	void Reset()
 	{
 		bRegularExp = false;
-		bLoHiCase   = true;
+		bLoHiCase   = false;
 		bWordOnly   = false;
 	}
 
