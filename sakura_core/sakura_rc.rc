@@ -2431,6 +2431,11 @@ END
 
 STRINGTABLE
 BEGIN
+    F_SHOW_TAB_CHAR             "TAB記号の表示(トグル)"
+END
+
+STRINGTABLE
+BEGIN
     F_WRAPWINDOWWIDTH       "折り返し桁数"
     F_TMPWRAPNOWRAP         "折り返さない"
     F_TMPWRAPSETTING        "指定桁で折り返す"

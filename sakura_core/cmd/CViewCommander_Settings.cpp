@@ -446,3 +446,38 @@ void CViewCommander::Command_SET_QUOTESTRING( const wchar_t* quotestr )
 	
 	GetDllShareData().m_Common.m_sFormat.m_szInyouKigou[ _countof( GetDllShareData().m_Common.m_sFormat.m_szInyouKigou ) - 1 ] = L'\0';
 }
+
+
+
+/*!
+	TAB記号の表示/非表示
+
+	タイプ別設定のTAB表示/非表示の設定を変更後、全エディタにメッセージを
+	ブロードキャスト配信して反映する。全エディタに反映したい設定ではないが、
+	あまり使う機能でもないので、一番楽な実装で実現しておく。
+*/
+void CViewCommander::Command_ShowTabChar(void)
+{
+	bool bDisp;
+
+	CTypeConfig cDocumentType = GetDocument()->m_cDocType.GetDocumentType();
+	STypeConfig& types = CDocTypeManager().GetTypeSetting(cDocumentType);
+
+	bDisp = types.m_ColorInfoArr[COLORIDX_TAB].m_bDisp;
+	if( bDisp == true ){
+		types.m_ColorInfoArr[COLORIDX_TAB].m_bDisp = false;
+	}else{
+		types.m_ColorInfoArr[COLORIDX_TAB].m_bDisp = true;
+	}
+
+	HWND hWnd;
+	hWnd = GetMainWindow();
+
+	CAppNodeGroupHandle(0).SendMessageToAllEditors(
+		MYWM_CHANGESETTING,
+		(WPARAM)0,
+		(LPARAM)PM_CHANGESETTING_ALL,
+		hWnd
+	);
+}
+

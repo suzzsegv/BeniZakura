@@ -347,6 +347,9 @@ F_SETFONTSIZE		= 31121,	// フォントサイズ設定					int fontSize, int shift
 F_FONT_ZOOM_IN		= 31122,	// フォントの拡大
 F_FONT_ZOOM_OUT		= 31123,	// フォントの縮小
 F_FONT_ZOOM_RESET	= 31124,	// フォントサイズのリセット
+
+F_SHOW_TAB_CHAR		= 31130,	// TAB記号の表示(トグル)
+
 F_WRAPWINDOWWIDTH	= 31140,	// 現在のウィンドウ幅で折り返し			なし
 F_TMPWRAPNOWRAP		= 31141,	// 折り返さない（一時設定）				なし
 F_TMPWRAPSETTING	= 31142,	// 指定桁で折り返す（一時設定）			なし

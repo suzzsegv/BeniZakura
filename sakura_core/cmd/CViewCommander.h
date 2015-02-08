@@ -324,6 +324,7 @@ public:
 	void Command_SET_QUOTESTRING( const wchar_t* );	//	Jan. 29, 2005 genta 引用符の設定
 	void Command_TEXTWRAPMETHOD( int );				/* テキストの折り返し方法を変更する */		// 2008.05.30 nasukoji
 	void Command_SELECT_COUNT_MODE( int nMode );	/* 文字カウント方法 */	//2009.07.06 syat
+	void Command_ShowTabChar(void);
 
 	/* マクロ系 */
 	void Command_RECKEYMACRO( void );	/* キーマクロの記録開始／終了 */
