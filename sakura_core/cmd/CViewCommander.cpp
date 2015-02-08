@@ -499,6 +499,9 @@ BOOL CViewCommander::HandleCommand(
 	case F_SHOW_TAB_CHAR:
 		Command_ShowTabChar();
 		break;
+	case F_SHOW_EOL_CHAR:
+		Command_ShowEolChar();
+		break;
 
 	case F_WRAPWINDOWWIDTH:	Command_WRAPWINDOWWIDTH();break;/* 現在のウィンドウ幅で折り返し */	//Oct. 7, 2000 JEPRO WRAPWINDIWWIDTH を WRAPWINDOWWIDTH に変更
 	case F_FAVORITE:		Command_Favorite();break;		//履歴の管理	//@@@ 2003.04.08 MIK

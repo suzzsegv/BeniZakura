@@ -2432,6 +2432,7 @@ END
 STRINGTABLE
 BEGIN
     F_SHOW_TAB_CHAR             "TAB記号の表示(トグル)"
+    F_SHOW_EOL_CHAR         "改行記号の表示(トグル)"
 END
 
 STRINGTABLE

@@ -330,6 +330,7 @@ private:
 	void ToggleColoring(EColorIndexType colorIndex);
 public:
 	void Command_ShowTabChar(void);
+	void Command_ShowEolChar(void);
 
 	/* マクロ系 */
 	void Command_RECKEYMACRO( void );	/* キーマクロの記録開始／終了 */

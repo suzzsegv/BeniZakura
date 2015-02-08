@@ -491,3 +491,12 @@ void CViewCommander::Command_ShowTabChar(void)
 	ToggleColoring(COLORIDX_TAB);
 }
 
+
+
+/*!
+	改行記号の表示/非表示
+*/
+void CViewCommander::Command_ShowEolChar(void)
+{
+	ToggleColoring(COLORIDX_EOL);
+}
