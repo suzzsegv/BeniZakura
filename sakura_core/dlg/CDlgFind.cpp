@@ -73,7 +73,7 @@ BOOL CDlgFind::OnCbnDropDown( HWND hwndCtl, int wID )
 /* モードレスダイアログの表示 */
 HWND CDlgFind::DoModeless( HINSTANCE hInstance, HWND hwndParent, LPARAM lParam )
 {
-	m_sSearchOption = m_pShareData->m_Common.m_sSearch.m_sSearchOption;		// 検索オプション
+	m_sSearchOption = m_pShareData->m_sSearchOptionForFindDialog;
 	m_ptEscCaretPos_PHY = ((CEditView*)lParam)->GetCaret().GetCaretLogicPos();	// 検索開始時のカーソル位置退避
 	((CEditView*)lParam)->m_bSearch = TRUE;							// 検索開始位置の登録有無		02/07/28 ai
 	return CDialog::DoModeless( hInstance, hwndParent, IDD_FIND, lParam, SW_SHOW );
@@ -237,6 +237,7 @@ int CDlgFind::GetData( void )
 		if( m_strText.size() < _MAX_PATH ){
 			CSearchKeywordManager().AddToSearchKeyArr( m_strText.c_str() );
 			m_pShareData->m_Common.m_sSearch.m_sSearchOption = m_sSearchOption;		// 検索オプション
+			m_pShareData->m_sSearchOptionForFindDialog = m_sSearchOption;
 		}
 		CEditView*	pcEditView = (CEditView*)m_lParam;
 		if( pcEditView->m_strCurSearchKey == m_strText && pcEditView->m_sCurSearchOption == m_sSearchOption ){

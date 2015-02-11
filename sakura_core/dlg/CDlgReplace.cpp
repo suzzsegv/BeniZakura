@@ -101,7 +101,7 @@ BOOL CDlgReplace::OnCbnDropDown( HWND hwndCtl, int wID )
 /* モードレスダイアログの表示 */
 HWND CDlgReplace::DoModeless( HINSTANCE hInstance, HWND hwndParent, LPARAM lParam, BOOL bSelected )
 {
-	m_sSearchOption = m_pShareData->m_Common.m_sSearch.m_sSearchOption;		// 検索オプション
+	m_sSearchOption = m_pShareData->m_sSearchOptionForReplaceDialog;		// 検索オプション
 	m_bConsecutiveAll = m_pShareData->m_Common.m_sSearch.m_bConsecutiveAll;	// 「すべて置換」は置換の繰返し	// 2007.01.16 ryoji
 	m_bSelectedArea = m_pShareData->m_Common.m_sSearch.m_bSelectedArea;		// 選択範囲内置換
 	m_bNOTIFYNOTFOUND = m_pShareData->m_Common.m_sSearch.m_bNOTIFYNOTFOUND;	// 検索／置換  見つからないときメッセージを表示
@@ -279,6 +279,7 @@ int CDlgReplace::GetData( void )
 		if( m_strText.size() < _MAX_PATH ){
 			CSearchKeywordManager().AddToSearchKeyArr( m_strText.c_str() );
 			m_pShareData->m_Common.m_sSearch.m_sSearchOption = m_sSearchOption;		// 検索オプション
+			m_pShareData->m_sSearchOptionForReplaceDialog = m_sSearchOption;
 		}
 		// 2011.12.18 viewに直接設定
 		CEditView*	pcEditView = (CEditView*)m_lParam;
