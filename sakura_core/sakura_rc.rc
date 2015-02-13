@@ -2433,6 +2433,9 @@ STRINGTABLE
 BEGIN
     F_SHOW_TAB_CHAR             "TAB記号の表示(トグル)"
     F_SHOW_EOL_CHAR         "改行記号の表示(トグル)"
+    F_TAB_WIDTH_2           "TAB 2"
+    F_TAB_WIDTH_4           "TAB 4"
+    F_TAB_WIDTH_8           "TAB 8"
 END
 
 STRINGTABLE

@@ -503,6 +503,16 @@ BOOL CViewCommander::HandleCommand(
 		Command_ShowEolChar();
 		break;
 
+	case F_TAB_WIDTH_2:
+		Command_TabWidth2();
+		break;
+	case F_TAB_WIDTH_4:
+		Command_TabWidth4();
+		break;
+	case F_TAB_WIDTH_8:
+		Command_TabWidth8();
+		break;
+
 	case F_WRAPWINDOWWIDTH:	Command_WRAPWINDOWWIDTH();break;/* 現在のウィンドウ幅で折り返し */	//Oct. 7, 2000 JEPRO WRAPWINDIWWIDTH を WRAPWINDOWWIDTH に変更
 	case F_FAVORITE:		Command_Favorite();break;		//履歴の管理	//@@@ 2003.04.08 MIK
 	//	Jan. 29, 2005 genta 引用符の設定

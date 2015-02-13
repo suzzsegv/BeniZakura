@@ -351,6 +351,10 @@ F_FONT_ZOOM_RESET	= 31124,	// フォントサイズのリセット
 F_SHOW_TAB_CHAR		= 31130,	// TAB記号の表示(トグル)
 F_SHOW_EOL_CHAR		= 31131,	// 改行記号の表示(トグル)
 
+F_TAB_WIDTH_2		= 31132,	// TAB 幅 2
+F_TAB_WIDTH_4		= 31133,	// TAB 幅 4
+F_TAB_WIDTH_8		= 31134,	// TAB 幅 8
+
 F_WRAPWINDOWWIDTH	= 31140,	// 現在のウィンドウ幅で折り返し			なし
 F_TMPWRAPNOWRAP		= 31141,	// 折り返さない（一時設定）				なし
 F_TMPWRAPSETTING	= 31142,	// 指定桁で折り返す（一時設定）			なし

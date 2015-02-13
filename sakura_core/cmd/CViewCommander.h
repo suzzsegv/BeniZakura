@@ -332,6 +332,13 @@ public:
 	void Command_ShowTabChar(void);
 	void Command_ShowEolChar(void);
 
+private:
+	void CViewCommander::SetTabWidth(int tabWidth);
+public:
+	void CViewCommander::Command_TabWidth2(void);
+	void CViewCommander::Command_TabWidth4(void);
+	void CViewCommander::Command_TabWidth8(void);
+
 	/* マクロ系 */
 	void Command_RECKEYMACRO( void );	/* キーマクロの記録開始／終了 */
 	void Command_SAVEKEYMACRO( void );	/* キーマクロの保存 */

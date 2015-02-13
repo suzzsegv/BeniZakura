@@ -500,3 +500,59 @@ void CViewCommander::Command_ShowEolChar(void)
 {
 	ToggleColoring(COLORIDX_EOL);
 }
+
+
+
+/*!
+	TAB 記号の幅を設定する.
+
+	タイプ別設定の TAB 幅の設定を変更後、全エディタにメッセージを
+	ブロードキャスト配信して反映する.
+*/
+void CViewCommander::SetTabWidth(int tabWidth)
+{
+	CTypeConfig cDocumentType = GetDocument()->m_cDocType.GetDocumentType();
+	STypeConfig& types = CDocTypeManager().GetTypeSetting(cDocumentType);
+
+	types.m_nTabSpace = tabWidth;
+
+	HWND hWnd;
+	hWnd = GetMainWindow();
+
+	CAppNodeGroupHandle(0).SendMessageToAllEditors(
+		MYWM_CHANGESETTING,
+		(WPARAM)0,
+		(LPARAM)PM_CHANGESETTING_ALL,
+		hWnd
+	);
+}
+
+
+
+/*!
+	TAB記号の幅を 2 に設定する.
+*/
+void CViewCommander::Command_TabWidth2(void)
+{
+	SetTabWidth(2);
+}
+
+
+
+/*!
+	TAB記号の幅を 4 に設定する.
+*/
+void CViewCommander::Command_TabWidth4(void)
+{
+	SetTabWidth(4);
+}
+
+
+
+/*!
+	TAB記号の幅を 8 に設定する.
+*/
+void CViewCommander::Command_TabWidth8(void)
+{
+	SetTabWidth(8);
+}
