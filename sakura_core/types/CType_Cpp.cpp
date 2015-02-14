@@ -115,6 +115,14 @@ static const wchar_t* g_defaultKeywordSetCppDataType[] = {
 	L"enum",
 	L"float",
 	L"int",
+	L"int8_t",
+	L"int16_t",
+	L"int32_t",
+	L"int64_t",
+	L"uint8_t",
+	L"uint16_t",
+	L"uint32_t",
+	L"uint64_t",
 	L"_Imaginary",
 	L"long",
 	L"short",
@@ -123,7 +131,15 @@ static const wchar_t* g_defaultKeywordSetCppDataType[] = {
 	L"union",
 	L"unsigned",
 	L"void",
-	L"wchar_t"
+	L"wchar_t",
+	L"INT8",
+	L"INT16",
+	L"INT32",
+	L"INT64",
+	L"UINT8",
+	L"UINT16",
+	L"UINT32",
+	L"UINT64"
 };
 
 /*!
