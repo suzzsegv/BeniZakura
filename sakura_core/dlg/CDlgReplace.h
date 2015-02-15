@@ -51,7 +51,6 @@ public:
 	std::wstring	m_strText2;	// 置換後文字列
 	int				m_nReplaceKeySequence;	//置換後シーケンス
 	BOOL			m_bSelectedArea;	/* 選択範囲内置換 */
-	int				m_bNOTIFYNOTFOUND;				/* 検索／置換  見つからないときメッセージを表示 */
 	BOOL			m_bSelected;	/* テキスト選択中か */
 	int				m_nReplaceTarget;	/* 置換対象 */	// 2001.12.03 hor
 	int				m_nPaste;			/* 貼り付け？ */	// 2001.12.03 hor

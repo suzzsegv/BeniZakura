@@ -36,7 +36,6 @@ const DWORD p_helpids[] = {	//11900
 	IDC_CHK_WORD,					HIDC_REP_CHK_WORD,					//単語単位
 	IDC_CHK_LOHICASE,				HIDC_REP_CHK_LOHICASE,				//大文字小文字
 	IDC_CHK_REGULAREXP,				HIDC_REP_CHK_REGULAREXP,			//正規表現
-	IDC_CHECK_NOTIFYNOTFOUND,		HIDC_REP_CHECK_NOTIFYNOTFOUND,		//見つからないときに通知
 	IDC_CHECK_bAutoCloseDlgReplace,	HIDC_REP_CHECK_bAutoCloseDlgReplace,	//自動的に閉じる
 	IDC_COMBO_TEXT,					HIDC_REP_COMBO_TEXT,				//置換前
 	IDC_COMBO_TEXT2,				HIDC_REP_COMBO_TEXT2,				//置換後
@@ -104,7 +103,6 @@ HWND CDlgReplace::DoModeless( HINSTANCE hInstance, HWND hwndParent, LPARAM lPara
 	m_sSearchOption = m_pShareData->m_sSearchOptionForReplaceDialog;		// 検索オプション
 	m_bConsecutiveAll = m_pShareData->m_Common.m_sSearch.m_bConsecutiveAll;	// 「すべて置換」は置換の繰返し	// 2007.01.16 ryoji
 	m_bSelectedArea = m_pShareData->m_Common.m_sSearch.m_bSelectedArea;		// 選択範囲内置換
-	m_bNOTIFYNOTFOUND = m_pShareData->m_Common.m_sSearch.m_bNOTIFYNOTFOUND;	// 検索／置換  見つからないときメッセージを表示
 	m_bSelected = bSelected;
 	m_ptEscCaretPos_PHY = ((CEditView*)lParam)->GetCaret().GetCaretLogicPos();	// 検索/置換開始時のカーソル位置退避
 	((CEditView*)lParam)->m_bSearch = TRUE;							// 検索/置換開始位置の登録有無			02/07/28 ai
@@ -157,10 +155,6 @@ void CDlgReplace::SetData( void )
 		::EnableWindow( ::GetDlgItem( GetHwnd(), IDC_CHECK_CONSECUTIVEALL ), FALSE );	// 2007.01.16 ryoji
 	}
 	// To Here Jun. 29, 2001 genta
-
-	/* 検索／置換  見つからないときメッセージを表示 */
-	::CheckDlgButton( GetHwnd(), IDC_CHECK_NOTIFYNOTFOUND, m_bNOTIFYNOTFOUND );
-
 
 	/* 置換 ダイアログを自動的に閉じる */
 	::CheckDlgButton( GetHwnd(), IDC_CHECK_bAutoCloseDlgReplace, m_pShareData->m_Common.m_sSearch.m_bAutoCloseDlgReplace );
@@ -239,12 +233,9 @@ int CDlgReplace::GetData( void )
 	m_sSearchOption.bRegularExp = (0!=IsDlgButtonChecked( GetHwnd(), IDC_CHK_REGULAREXP ));
 	/* 選択範囲内置換 */
 	m_bSelectedArea = ::IsDlgButtonChecked( GetHwnd(), IDC_RADIO_SELECTEDAREA );
-	/* 検索／置換  見つからないときメッセージを表示 */
-	m_bNOTIFYNOTFOUND = ::IsDlgButtonChecked( GetHwnd(), IDC_CHECK_NOTIFYNOTFOUND );
 
 	m_pShareData->m_Common.m_sSearch.m_bConsecutiveAll = m_bConsecutiveAll;	// 1==「すべて置換」は置換の繰返し	// 2007.01.16 ryoji
 	m_pShareData->m_Common.m_sSearch.m_bSelectedArea = m_bSelectedArea;		// 選択範囲内置換
-	m_pShareData->m_Common.m_sSearch.m_bNOTIFYNOTFOUND = m_bNOTIFYNOTFOUND;	// 検索／置換  見つからないときメッセージを表示
 
 	/* 検索文字列 */
 	int nBufferSize = ::GetWindowTextLength( GetItemHwnd(IDC_COMBO_TEXT) ) + 1;
