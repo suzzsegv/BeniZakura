@@ -347,6 +347,7 @@ F_SETFONTSIZE		= 31121,	// フォントサイズ設定					int fontSize, int shift
 F_FONT_ZOOM_IN		= 31122,	// フォントの拡大
 F_FONT_ZOOM_OUT		= 31123,	// フォントの縮小
 F_FONT_ZOOM_RESET	= 31124,	// フォントサイズのリセット
+F_FONT_MINIMIZE		= 31125,	// フォントサイズ最小化
 
 F_SHOW_TAB_CHAR		= 31130,	// TAB記号の表示(トグル)
 F_SHOW_EOL_CHAR		= 31131,	// 改行記号の表示(トグル)

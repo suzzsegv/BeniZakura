@@ -385,6 +385,7 @@ const EFunctionCode pnFuncList_Set[] = {	//Oct. 16, 2000 JEPRO •Ï”–¼•ÏX(List9
 	F_FONT_ZOOM_IN		,	/* ƒtƒHƒ“ƒg‚ÌŠg‘å */
 	F_FONT_ZOOM_OUT		,	/* ƒtƒHƒ“ƒg‚Ìk¬ */
 	F_FONT_ZOOM_RESET	,	/* ƒtƒHƒ“ƒgƒTƒCƒY‚ÌƒŠƒZƒbƒg */
+	F_FONT_MINIMIZE		,	/* ƒtƒHƒ“ƒgƒTƒCƒYÅ¬‰» */
 	F_SHOW_TAB_CHAR		,	/* TAB‹L†‚Ì•\Ž¦(ƒgƒOƒ‹) */
 	F_SHOW_EOL_CHAR		,	/* ‰üs‹L†‚Ì•\Ž¦(ƒgƒOƒ‹) */
 	F_TAB_WIDTH_2		,	/* TAB • 2 */

@@ -495,6 +495,9 @@ BOOL CViewCommander::HandleCommand(
 	case F_FONT_ZOOM_RESET:
 		Command_SETFONTSIZE(120, 0);
 		break;
+	case F_FONT_MINIMIZE:
+		Command_SETFONTSIZE(40, 0);
+		break;
 
 	case F_SHOW_TAB_CHAR:
 		Command_ShowTabChar();

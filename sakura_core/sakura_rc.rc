@@ -2426,6 +2426,7 @@ BEGIN
     F_FONT_ZOOM_IN          "フォントサイズの拡大"
     F_FONT_ZOOM_OUT         "フォントサイズの縮小"
     F_FONT_ZOOM_RESET       "フォントサイズのリセット"
+    F_FONT_MINIMIZE         "フォントサイズ最小化"
 END
 
 STRINGTABLE
