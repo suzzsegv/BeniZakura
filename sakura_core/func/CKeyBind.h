@@ -73,6 +73,11 @@ public:
 
 	static TCHAR* MakeMenuLabel(const TCHAR* sName, const TCHAR* sKey);
 	static bool CKeyBind::InitKeyAssign( DLLSHAREDATA* pShareData );
+	static void SetDefaultKeyBindToBenizakura(struct CommonSetting_KeyBind* pKeyBind);
+	static void SetDefaultKeyBindToSakura(struct CommonSetting_KeyBind* pKeyBind);
+
+private:
+	static void SetDefaultKeyBind(struct CommonSetting_KeyBind* pKeyBind, const KeyData* pKeyData);
 
 protected:
 	/*

@@ -21,9 +21,11 @@
 #include "prop/CPropCommon.h"
 #include "env/CShareData.h"
 #include "typeprop/CImpExpManager.h"	// 20210/4/23 Uchi
+#include "func/CKeyBind.h"
 #include "util/shell.h"
 #include "sakura_rc.h"
 #include "sakura.hh"
+
 
 #define STR_SHIFT_PLUS        _T("Shift+")  //@@@ 2001.11.08 add MIK
 #define STR_CTRL_PLUS         _T("Ctrl+")  //@@@ 2001.11.08 add MIK
@@ -126,6 +128,11 @@ INT_PTR CPropKeybind::DispatchEvent(
 
 	switch( uMsg ){
 	case WM_INITDIALOG:
+		HWND	hwndWork;
+		hwndWork = ::GetDlgItem(hwndDlg, IDC_COMBO_KEY_BIND_PRESET);
+		Combo_AddString(hwndWork, L"紅桜");
+		Combo_AddString(hwndWork, L"サクラエディタ");
+
 		/* ダイアログデータの設定 Keybind */
 		SetData( hwndDlg );
 		// Modified by KEITA for WIN64 2003.9.6
@@ -382,6 +389,28 @@ INT_PTR CPropKeybind::DispatchEvent(
 //@@@ 2001.11.08 add end MIK
 
 		}
+		if( hwndCtl == ::GetDlgItem(hwndDlg, IDC_COMBO_KEY_BIND_PRESET) ){
+			switch( wNotifyCode ){
+			case CBN_SELCHANGE:
+				nIndex = Combo_GetCurSel(hwndCtl);
+				switch(nIndex){
+				case 0:
+					CKeyBind::SetDefaultKeyBindToBenizakura(&m_Common.m_sKeyBind);
+					break;
+				case 1:
+					CKeyBind::SetDefaultKeyBindToSakura(&m_Common.m_sKeyBind);
+					break;
+				default:
+					break;
+				}
+				ChangeKeyList(hwndDlg);
+				HWND hwndCtrl;
+				hwndCtrl = ::GetDlgItem(hwndDlg, IDC_LIST_FUNC);
+				::SendMessageCmd(hwndDlg, WM_COMMAND, MAKELONG(IDC_LIST_FUNC, LBN_SELCHANGE), (LPARAM)hwndCtrl);
+				return TRUE;
+			}
+		}
+
 		break;
 
 	case WM_TIMER:
