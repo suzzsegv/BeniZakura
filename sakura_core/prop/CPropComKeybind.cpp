@@ -132,6 +132,7 @@ INT_PTR CPropKeybind::DispatchEvent(
 		hwndWork = ::GetDlgItem(hwndDlg, IDC_COMBO_KEY_BIND_PRESET);
 		Combo_AddString(hwndWork, L"紅桜");
 		Combo_AddString(hwndWork, L"サクラエディタ");
+		Combo_AddString(hwndWork, L"秀丸エディタ");
 
 		/* ダイアログデータの設定 Keybind */
 		SetData( hwndDlg );
@@ -399,6 +400,9 @@ INT_PTR CPropKeybind::DispatchEvent(
 					break;
 				case 1:
 					CKeyBind::SetDefaultKeyBindToSakura(&m_Common.m_sKeyBind);
+					break;
+				case 2:
+					CKeyBind::SetDefaultKeyBindToHidemaru(&m_Common.m_sKeyBind);
 					break;
 				default:
 					break;
