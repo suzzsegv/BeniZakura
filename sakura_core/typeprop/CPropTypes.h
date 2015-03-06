@@ -160,6 +160,10 @@ protected:
 public:
 	static BOOL SelectColor( HWND , COLORREF*, DWORD* );	//!< 色選択ダイアログ
 private:
+	#undef __COLOR_INFO_DUMP_TO_TEXT_AT_EXPORT__
+	#ifdef __COLOR_INFO_DUMP_TO_TEXT_AT_EXPORT__
+		void ColorInfoDumpToTextFile(void);
+	#endif
 };
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //

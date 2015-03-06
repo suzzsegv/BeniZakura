@@ -118,10 +118,59 @@ bool CPropTypesColor::Import( HWND hwndDlg )
 }
 
 
+#ifdef __COLOR_INFO_DUMP_TO_TEXT_AT_EXPORT__
+/*!
+	カラー情報をテキストファイルに出力する.
+
+	プリセット配色としてカラー設定を実行ファイルに取り込む場合の、
+	支援処理.
+*/
+void CPropTypesColor::ColorInfoDumpToTextFile(void)
+{
+	FILE* fp;
+	int i;
+
+	fp = _wfopen(L"colorDump.txt",L"w");
+	for( i = 0; i < COLORIDX_LAST; i++ ){
+		if(m_Types.m_ColorInfoArr[i].m_bDisp == true){
+			fwprintf(fp, L"TRUE,\t\t");
+		}else{
+			fwprintf(fp, L"FALSE,\t\t");
+		}
+		if(m_Types.m_ColorInfoArr[i].m_bBoldFont == true){
+			fwprintf(fp, L"TRUE,\t\t");
+		}else{
+			fwprintf(fp, L"FALSE,\t\t");
+		}
+		if(m_Types.m_ColorInfoArr[i].m_bUnderLine == true){
+			fwprintf(fp, L"TRUE,\t\t");
+		}else{
+			fwprintf(fp, L"FALSE,\t\t");
+		}
+		fwprintf (fp, L"RGB(0x%02x, 0x%02x, 0x%02x),\t", 
+			GetRValue(m_Types.m_ColorInfoArr[i].m_colTEXT),
+			GetGValue(m_Types.m_ColorInfoArr[i].m_colTEXT),
+			GetBValue(m_Types.m_ColorInfoArr[i].m_colTEXT)
+		);
+		fwprintf (fp, L"RGB(0x%02x, 0x%02x, 0x%02x),", 
+			GetRValue(m_Types.m_ColorInfoArr[i].m_colBACK),
+			GetGValue(m_Types.m_ColorInfoArr[i].m_colBACK),
+			GetBValue(m_Types.m_ColorInfoArr[i].m_colBACK)
+		);
+		fwprintf (fp, L"\n");
+	}
+	fclose(fp);
+}
+#endif
+
 /* 色の設定をエクスポート */
 // 2010/4/23 Uchi Exportの外出し
 bool CPropTypesColor::Export( HWND hwndDlg )
 {
+#ifdef __COLOR_INFO_DUMP_TO_TEXT_AT_EXPORT__
+	ColorInfoDumpToTextFile();
+#endif
+
 	CImpExpColors	cImpExpColors( m_Types.m_ColorInfoArr);
 
 	// エクスポート
