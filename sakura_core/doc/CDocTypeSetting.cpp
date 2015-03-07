@@ -398,6 +398,12 @@ void SetDefaultColorInfo(ColorInfo* pColorInfo, ColorTheme themeNum)
  */
 void SetColorTheme(ColorInfo* pColorInfo, ColorTheme themeNum)
 {
+	pColorInfo[COLORIDX_CARETLINEBG].m_bDisp = ColorInfo_DEFAULT[themeNum][COLORIDX_CARETLINEBG].m_sColorInfoBase.m_bDisp;
+	pColorInfo[COLORIDX_UNDERLINE].m_bDisp = ColorInfo_DEFAULT[themeNum][COLORIDX_UNDERLINE].m_sColorInfoBase.m_bDisp;
+	pColorInfo[COLORIDX_CURSORVLINE].m_bDisp = ColorInfo_DEFAULT[themeNum][COLORIDX_CURSORVLINE].m_sColorInfoBase.m_bDisp;
+	pColorInfo[COLORIDX_TAB].m_bDisp = ColorInfo_DEFAULT[themeNum][COLORIDX_TAB].m_sColorInfoBase.m_bDisp;
+	pColorInfo[COLORIDX_EOL].m_bDisp = ColorInfo_DEFAULT[themeNum][COLORIDX_EOL].m_sColorInfoBase.m_bDisp;
+
 	for( int i = 0; i < COLORIDX_LAST; i++ ){
 		pColorInfo->m_bBoldFont = ColorInfo_DEFAULT[themeNum][i].m_sColorInfoBase.m_bBoldFont;
 		pColorInfo->m_bUnderLine = ColorInfo_DEFAULT[themeNum][i].m_sColorInfoBase.m_bUnderLine;
