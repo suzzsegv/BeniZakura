@@ -299,6 +299,8 @@ INT_PTR CPropTypesColor::DispatchEvent(
 		hwndWork = ::GetDlgItem(hwndDlg, IDC_COMBO_THEME);
 		Combo_AddString(hwndWork, L"紅桜");
 		Combo_AddString(hwndWork, L"サクラエディタ");
+		Combo_AddString(hwndWork, L"MIFES Blue");
+		Combo_AddString(hwndWork, L"Monokai");
 		Combo_AddString(hwndWork, L"VS2012 Dark");
 
 		/* ダイアログデータの設定 color */
@@ -374,6 +376,12 @@ INT_PTR CPropTypesColor::DispatchEvent(
 					themeNum = COLOR_THEME_SAKURA;
 					break;
 				case 2:
+					themeNum = COLOR_THEME_MIFES_BLUE;
+					break;
+				case 3:
+					themeNum = COLOR_THEME_MONOKAI;
+					break;
+				case 4:
 					themeNum = COLOR_THEME_VS2012DARK;
 					break;
 				default:
