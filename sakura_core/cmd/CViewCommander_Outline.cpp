@@ -66,11 +66,11 @@ BOOL CViewCommander::Command_FUNCLIST(
 	if( nOutlineType == OUTLINE_DEFAULT ){
 		/* タイプ別に設定されたアウトライン解析方法 */
 		nOutlineType = GetDocument()->m_cDocType.GetDocumentAttribute().m_eDefaultOutline;
-		if( nOutlineType == OUTLINE_CPP ){
-			if( CheckEXT( GetDocument()->m_cDocFile.GetFilePath(), _T("c") ) ){
-				nOutlineType = OUTLINE_C;	/* これでC関数一覧リストビューになる */
-			}
-		}
+//		if( nOutlineType == OUTLINE_CPP ){
+//			if( CheckEXT( GetDocument()->m_cDocFile.GetFilePath(), _T("c") ) ){
+//				nOutlineType = OUTLINE_C;	/* これでC関数一覧リストビューになる */
+//			}
+//		}
 	}
 
 	if( NULL != GetEditWindow()->m_cDlgFuncList.GetHwnd() ){
