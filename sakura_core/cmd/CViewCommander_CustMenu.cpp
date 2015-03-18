@@ -133,11 +133,26 @@ int CViewCommander::Command_CUSTMENU( int nMenuIdx )
 				GetDllShareData().m_Common.m_sCustomMenu.m_nCustMenuItemFuncArr[nMenuIdx][i] , pszMenuLabel, L"" );
 		}
 	}
-	po.x = 0;
-	po.y = 0;
-	//2002/04/08 YAZAKI カスタムメニューもマウスカーソルの位置に表示するように変更。
-	::GetCursorPos( &po );
-	po.y -= 4;
+
+	const CTextArea& textArea = m_pCommanderView->GetTextArea();
+	CLayoutXInt lX = GetCaret().GetCaretLayoutPos().GetX2() - textArea.GetViewLeftCol();
+	if(lX < 0){
+		po.x = 0;
+	}else if(lX > textArea.m_nViewColNum){
+		po.x = textArea.GetAreaRight();
+	}else{
+		po.x = textArea.GetAreaLeft() + (Int)(lX + 1) * m_pCommanderView->GetTextMetrics().GetHankakuDx();
+	}
+	CLayoutYInt lY = GetCaret().GetCaretLayoutPos().GetY2() - textArea.GetViewTopLine();
+	if(lY < 0){
+		po.y = 0;
+	}else if(lY > textArea.m_nViewRowNum){
+		po.y = textArea.GetAreaBottom();
+	}else{
+		po.y = textArea.GetAreaTop() + (Int)(lY + 1) * m_pCommanderView->GetTextMetrics().GetHankakuDy();
+	}
+	m_pCommanderView->ClientToScreen(&po);
+
 	nId = ::TrackPopupMenu(
 		hMenu,
 		TPM_TOPALIGN
