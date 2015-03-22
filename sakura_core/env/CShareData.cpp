@@ -349,19 +349,6 @@ bool CShareData::InitShareData()
 		m_pShareData->m_Common.m_sWindow.m_bSplitterWndHScroll = FALSE;	// 2001/06/20 asa-o 分割ウィンドウの水平スクロールの同期をとる
 		m_pShareData->m_Common.m_sWindow.m_bSplitterWndVScroll = FALSE;	// 2001/06/20 asa-o 分割ウィンドウの垂直スクロールの同期をとる
 
-		/* カスタムメニュー情報 */
-		auto_sprintf( m_pShareData->m_Common.m_sCustomMenu.m_szCustMenuNameArr[0], LTEXT("右クリックメニュー") );
-		for( int i = 1; i < MAX_CUSTOM_MENU; ++i ){
-			auto_sprintf( m_pShareData->m_Common.m_sCustomMenu.m_szCustMenuNameArr[i], LTEXT("MENU%d"), i );
-			m_pShareData->m_Common.m_sCustomMenu.m_nCustMenuItemNumArr[i] = 0;
-			for( int j = 0; j < MAX_CUSTOM_MENU_ITEMS; ++j ){
-				m_pShareData->m_Common.m_sCustomMenu.m_nCustMenuItemFuncArr[i][j] = F_0;
-				m_pShareData->m_Common.m_sCustomMenu.m_nCustMenuItemKeyArr [i][j] = '\0';
-			}
-		}
-		auto_sprintf( m_pShareData->m_Common.m_sCustomMenu.m_szCustMenuNameArr[CUSTMENU_INDEX_FOR_TABWND], LTEXT("タブメニュー") );	//@@@ 2003.06.13 MIK
-
-
 		/* 見出し記号 */
 		wcscpy( m_pShareData->m_Common.m_sFormat.m_szMidashiKigou, L"１２３４５６７８９０（(［[「『【■□▲△▼▽◆◇○◎●§・※☆★第①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩ一二三四五六七八九十壱弐参伍" );
 		/* 引用符 */
@@ -1071,253 +1058,263 @@ void CShareData::InitToolButtons(DLLSHAREDATA* pShareData)
 */
 void CShareData::InitPopupMenu(DLLSHAREDATA* pShareData)
 {
-	/* カスタムメニュー 規定値 */
-	
-	CommonSetting_CustomMenu& rMenu = m_pShareData->m_Common.m_sCustomMenu;
+	CommonSetting_CustomMenu& rMenu = pShareData->m_Common.m_sCustomMenu;
+
+	/* 一旦、全て初期化しておく */
+	for(int i = 0; i < MAX_CUSTOM_MENU; i++){
+		auto_sprintf(rMenu.m_szCustMenuNameArr[i], LTEXT("MENU%d"), i);
+		rMenu.m_nCustMenuItemNumArr[i] = 0;
+		for(int j = 0; j < MAX_CUSTOM_MENU_ITEMS; j++){
+			rMenu.m_nCustMenuItemFuncArr[i][j] = F_0;
+			rMenu.m_nCustMenuItemKeyArr[i][j] = '\0';
+		}
+	}
 
 	/* 右クリックメニュー */
+	auto_sprintf(rMenu.m_szCustMenuNameArr[0], LTEXT("右クリックメニュー"));
 	int n = 0;
 	rMenu.m_nCustMenuItemFuncArr[0][n] = F_CUT;
-	rMenu.m_nCustMenuItemKeyArr [0][n] = 'T';
+	rMenu.m_nCustMenuItemKeyArr[0][n] = 'T';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[0][n] = F_COPY;
-	rMenu.m_nCustMenuItemKeyArr [0][n] = 'C';
+	rMenu.m_nCustMenuItemKeyArr[0][n] = 'C';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[0][n] = F_PASTE;
-	rMenu.m_nCustMenuItemKeyArr [0][n] = 'P';
+	rMenu.m_nCustMenuItemKeyArr[0][n] = 'P';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[0][n] = F_DELETE;
-	rMenu.m_nCustMenuItemKeyArr [0][n] = 'D';
+	rMenu.m_nCustMenuItemKeyArr[0][n] = 'D';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[0][n] = F_SELECTALL;
-	rMenu.m_nCustMenuItemKeyArr [0][n] = 'A';
+	rMenu.m_nCustMenuItemKeyArr[0][n] = 'A';
 	n++;
-	rMenu.m_nCustMenuItemFuncArr[0][n] = F_0;	/* ------ */
-	rMenu.m_nCustMenuItemKeyArr [0][n] = '\0';
+	rMenu.m_nCustMenuItemFuncArr[0][n] = F_0; /* ------ */
+	rMenu.m_nCustMenuItemKeyArr[0][n] = '\0';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[0][n] = F_GOFILETOP;
-	rMenu.m_nCustMenuItemKeyArr [0][n] = 'T';
+	rMenu.m_nCustMenuItemKeyArr[0][n] = 'T';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[0][n] = F_GOFILEEND;
-	rMenu.m_nCustMenuItemKeyArr [0][n] = 'B';
+	rMenu.m_nCustMenuItemKeyArr[0][n] = 'B';
 	n++;
-	rMenu.m_nCustMenuItemFuncArr[0][n] = F_0;	/* ------ */
-	rMenu.m_nCustMenuItemKeyArr [0][n] = '\0';
+	rMenu.m_nCustMenuItemFuncArr[0][n] = F_0; /* ------ */
+	rMenu.m_nCustMenuItemKeyArr[0][n] = '\0';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[0][n] = F_SEARCH_DIALOG;
-	rMenu.m_nCustMenuItemKeyArr [0][n] = 'F';
+	rMenu.m_nCustMenuItemKeyArr[0][n] = 'F';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[0][n] = F_REPLACE_DIALOG;
-	rMenu.m_nCustMenuItemKeyArr [0][n] = 'R';
+	rMenu.m_nCustMenuItemKeyArr[0][n] = 'R';
 	n++;
-	rMenu.m_nCustMenuItemFuncArr[0][n] = F_0;	/* ------ */
-	rMenu.m_nCustMenuItemKeyArr [0][n] = '\0';
+	rMenu.m_nCustMenuItemFuncArr[0][n] = F_0; /* ------ */
+	rMenu.m_nCustMenuItemKeyArr[0][n] = '\0';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[0][n] = F_WINCLOSE;
-	rMenu.m_nCustMenuItemKeyArr [0][n] = '\0';
+	rMenu.m_nCustMenuItemKeyArr[0][n] = '\0';
 	n++;
 	rMenu.m_nCustMenuItemNumArr[0] = n;
 
 	/* カスタムメニュー１ */
 	n = 0;
 	rMenu.m_nCustMenuItemFuncArr[1][n] = F_FILESAVECLOSE;
-	rMenu.m_nCustMenuItemKeyArr [1][n] = 'S';
+	rMenu.m_nCustMenuItemKeyArr[1][n] = 'S';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[1][n] = F_FILESAVE;
-	rMenu.m_nCustMenuItemKeyArr [1][n] = 'U';
+	rMenu.m_nCustMenuItemKeyArr[1][n] = 'U';
 	n++;
-	rMenu.m_nCustMenuItemFuncArr[1][n] = F_0;	/* ------ */
-	rMenu.m_nCustMenuItemKeyArr [1][n] = '\0';
+	rMenu.m_nCustMenuItemFuncArr[1][n] = F_0; /* ------ */
+	rMenu.m_nCustMenuItemKeyArr[1][n] = '\0';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[1][n] = F_FILESAVEAS_DIALOG;
-	rMenu.m_nCustMenuItemKeyArr [1][n] = 'C';
+	rMenu.m_nCustMenuItemKeyArr[1][n] = 'C';
 	n++;
-	rMenu.m_nCustMenuItemFuncArr[1][n] = F_0;	/* ------ */
-	rMenu.m_nCustMenuItemKeyArr [1][n] = '\0';
+	rMenu.m_nCustMenuItemFuncArr[1][n] = F_0; /* ------ */
+	rMenu.m_nCustMenuItemKeyArr[1][n] = '\0';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[1][n] = F_WINCLOSE;
-	rMenu.m_nCustMenuItemKeyArr [1][n] = 'Q';
+	rMenu.m_nCustMenuItemKeyArr[1][n] = 'Q';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[1][n] = F_EXITALL;
-	rMenu.m_nCustMenuItemKeyArr [1][n] = 'X';
+	rMenu.m_nCustMenuItemKeyArr[1][n] = 'X';
 	n++;
-	rMenu.m_nCustMenuItemFuncArr[1][n] = F_0;	/* ------ */
-	rMenu.m_nCustMenuItemKeyArr [1][n] = '\0';
+	rMenu.m_nCustMenuItemFuncArr[1][n] = F_0; /* ------ */
+	rMenu.m_nCustMenuItemKeyArr[1][n] = '\0';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[1][n] = F_FILE_REOPEN;
-	rMenu.m_nCustMenuItemKeyArr [1][n] = 'O';
+	rMenu.m_nCustMenuItemKeyArr[1][n] = 'O';
 	n++;
-	rMenu.m_nCustMenuItemFuncArr[1][n] = F_0;	/* ------ */
-	rMenu.m_nCustMenuItemKeyArr [1][n] = '\0';
+	rMenu.m_nCustMenuItemFuncArr[1][n] = F_0; /* ------ */
+	rMenu.m_nCustMenuItemKeyArr[1][n] = '\0';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[1][n] = F_FILEOPEN;
-	rMenu.m_nCustMenuItemKeyArr [1][n] = 'F';
+	rMenu.m_nCustMenuItemKeyArr[1][n] = 'F';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[1][n] = F_FILENEW;
-	rMenu.m_nCustMenuItemKeyArr [1][n] = 'N';
+	rMenu.m_nCustMenuItemKeyArr[1][n] = 'N';
 	n++;
 	rMenu.m_nCustMenuItemNumArr[1] = n;
 
 	/* カスタムメニュー２ */
 	n = 0;
 	rMenu.m_nCustMenuItemFuncArr[2][n] = F_SEARCH_DIALOG;
-	rMenu.m_nCustMenuItemKeyArr [2][n] = 'S';
+	rMenu.m_nCustMenuItemKeyArr[2][n] = 'S';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[2][n] = F_REPLACE_DIALOG;
-	rMenu.m_nCustMenuItemKeyArr [2][n] = 'R';
+	rMenu.m_nCustMenuItemKeyArr[2][n] = 'R';
 	n++;
-	rMenu.m_nCustMenuItemFuncArr[2][n] = F_0;	/* ------ */
-	rMenu.m_nCustMenuItemKeyArr [2][n] = '\0';
+	rMenu.m_nCustMenuItemFuncArr[2][n] = F_0; /* ------ */
+	rMenu.m_nCustMenuItemKeyArr[2][n] = '\0';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[2][n] = F_JUMP_DIALOG;
-	rMenu.m_nCustMenuItemKeyArr [2][n] = 'J';
+	rMenu.m_nCustMenuItemKeyArr[2][n] = 'J';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[2][n] = F_GOFILETOP;
-	rMenu.m_nCustMenuItemKeyArr [2][n] = 'T';
+	rMenu.m_nCustMenuItemKeyArr[2][n] = 'T';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[2][n] = F_GOFILEEND;
-	rMenu.m_nCustMenuItemKeyArr [2][n] = 'B';
+	rMenu.m_nCustMenuItemKeyArr[2][n] = 'B';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[2][n] = F_TAGJUMPBACK;
-	rMenu.m_nCustMenuItemKeyArr [2][n] = 'P';
+	rMenu.m_nCustMenuItemKeyArr[2][n] = 'P';
 	n++;
-	rMenu.m_nCustMenuItemFuncArr[2][n] = F_0;	/* ------ */
-	rMenu.m_nCustMenuItemKeyArr [2][n] = '\0';
+	rMenu.m_nCustMenuItemFuncArr[2][n] = F_0; /* ------ */
+	rMenu.m_nCustMenuItemKeyArr[2][n] = '\0';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[2][n] = F_WIN_OUTPUT;
-	rMenu.m_nCustMenuItemKeyArr [2][n] = 'W';
+	rMenu.m_nCustMenuItemKeyArr[2][n] = 'W';
 	n++;
-	rMenu.m_nCustMenuItemFuncArr[2][n] = F_0;	/* ------ */
-	rMenu.m_nCustMenuItemKeyArr [2][n] = '\0';
+	rMenu.m_nCustMenuItemFuncArr[2][n] = F_0; /* ------ */
+	rMenu.m_nCustMenuItemKeyArr[2][n] = '\0';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[2][n] = F_GREP_DIALOG;
-	rMenu.m_nCustMenuItemKeyArr [2][n] = 'G';
+	rMenu.m_nCustMenuItemKeyArr[2][n] = 'G';
 	n++;
 	rMenu.m_nCustMenuItemNumArr[2] = n;
 
 	/* カスタムメニュー３ */
 	n = 0;
 	rMenu.m_nCustMenuItemFuncArr[3][n] = F_UNDO;
-	rMenu.m_nCustMenuItemKeyArr [3][n] = 'U';
+	rMenu.m_nCustMenuItemKeyArr[3][n] = 'U';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[3][n] = F_REDO;
-	rMenu.m_nCustMenuItemKeyArr [3][n] = 'R';
+	rMenu.m_nCustMenuItemKeyArr[3][n] = 'R';
 	n++;
-	rMenu.m_nCustMenuItemFuncArr[3][n] = F_0;	/* ------ */
-	rMenu.m_nCustMenuItemKeyArr [3][n] = '\0';
+	rMenu.m_nCustMenuItemFuncArr[3][n] = F_0; /* ------ */
+	rMenu.m_nCustMenuItemKeyArr[3][n] = '\0';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[3][n] = F_SPLIT_V;
-	rMenu.m_nCustMenuItemKeyArr [3][n] = '1';
+	rMenu.m_nCustMenuItemKeyArr[3][n] = '1';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[3][n] = F_SPLIT_H;
-	rMenu.m_nCustMenuItemKeyArr [3][n] = '2';
+	rMenu.m_nCustMenuItemKeyArr[3][n] = '2';
 	n++;
-	rMenu.m_nCustMenuItemFuncArr[3][n] = F_0;	/* ------ */
-	rMenu.m_nCustMenuItemKeyArr [3][n] = '\0';
+	rMenu.m_nCustMenuItemFuncArr[3][n] = F_0; /* ------ */
+	rMenu.m_nCustMenuItemKeyArr[3][n] = '\0';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[3][n] = F_SHOWTOOLBAR;
-	rMenu.m_nCustMenuItemKeyArr [3][n] = 'T';
+	rMenu.m_nCustMenuItemKeyArr[3][n] = 'T';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[3][n] = F_SHOWSTATUSBAR;
-	rMenu.m_nCustMenuItemKeyArr [3][n] = 'S';
+	rMenu.m_nCustMenuItemKeyArr[3][n] = 'S';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[3][n] = F_SHOWTAB;
-	rMenu.m_nCustMenuItemKeyArr [3][n] = 'M';
+	rMenu.m_nCustMenuItemKeyArr[3][n] = 'M';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[3][n] = F_SHOWFUNCKEY;
-	rMenu.m_nCustMenuItemKeyArr [3][n] = 'F';
+	rMenu.m_nCustMenuItemKeyArr[3][n] = 'F';
 	n++;
-	rMenu.m_nCustMenuItemFuncArr[3][n] = F_0;	/* ------ */
-	rMenu.m_nCustMenuItemKeyArr [3][n] = '\0';
+	rMenu.m_nCustMenuItemFuncArr[3][n] = F_0; /* ------ */
+	rMenu.m_nCustMenuItemKeyArr[3][n] = '\0';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[3][n] = F_BEGIN_BOX;
-	rMenu.m_nCustMenuItemKeyArr [3][n] = 'Y';
+	rMenu.m_nCustMenuItemKeyArr[3][n] = 'Y';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[3][n] = F_PASTEBOX;
-	rMenu.m_nCustMenuItemKeyArr [3][n] = 'P';
+	rMenu.m_nCustMenuItemKeyArr[3][n] = 'P';
 	n++;
 	rMenu.m_nCustMenuItemNumArr[3] = n;
 
 	/* カスタムメニュー４ */
 	n = 0;
 	rMenu.m_nCustMenuItemFuncArr[4][n] = F_OUTLINE;
-	rMenu.m_nCustMenuItemKeyArr [4][n] = 'T';
+	rMenu.m_nCustMenuItemKeyArr[4][n] = 'T';
 	n++;
-	rMenu.m_nCustMenuItemFuncArr[4][n] = F_0;	/* ------ */
-	rMenu.m_nCustMenuItemKeyArr [4][n] = '\0';
+	rMenu.m_nCustMenuItemFuncArr[4][n] = F_0; /* ------ */
+	rMenu.m_nCustMenuItemKeyArr[4][n] = '\0';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[4][n] = F_RECKEYMACRO;
-	rMenu.m_nCustMenuItemKeyArr [4][n] = 'M';
+	rMenu.m_nCustMenuItemKeyArr[4][n] = 'M';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[4][n] = F_EXECKEYMACRO;
-	rMenu.m_nCustMenuItemKeyArr [4][n] = 'X';
+	rMenu.m_nCustMenuItemKeyArr[4][n] = 'X';
 	n++;
-	rMenu.m_nCustMenuItemFuncArr[4][n] = F_0;	/* ------ */
-	rMenu.m_nCustMenuItemKeyArr [4][n] = '\0';
+	rMenu.m_nCustMenuItemFuncArr[4][n] = F_0; /* ------ */
+	rMenu.m_nCustMenuItemKeyArr[4][n] = '\0';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[4][n] = F_PRINT_PREVIEW;
-	rMenu.m_nCustMenuItemKeyArr [4][n] = 'V';
+	rMenu.m_nCustMenuItemKeyArr[4][n] = 'V';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[4][n] = F_PRINT;
-	rMenu.m_nCustMenuItemKeyArr [4][n] = 'P';
+	rMenu.m_nCustMenuItemKeyArr[4][n] = 'P';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[4][n] = F_PRINT_PAGESETUP;
-	rMenu.m_nCustMenuItemKeyArr [4][n] = 'U';
+	rMenu.m_nCustMenuItemKeyArr[4][n] = 'U';
 	n++;
 	rMenu.m_nCustMenuItemNumArr[4] = n;
 
-	/* タブメニュー */	//@@@ 2003.06.14 MIK
+	/* タブメニュー */
+	auto_sprintf(rMenu.m_szCustMenuNameArr[CUSTMENU_INDEX_FOR_TABWND], LTEXT("タブメニュー"));
 	n = 0;
 	rMenu.m_nCustMenuItemFuncArr[CUSTMENU_INDEX_FOR_TABWND][n] = F_FILESAVE;
-	rMenu.m_nCustMenuItemKeyArr [CUSTMENU_INDEX_FOR_TABWND][n] = 'S';
+	rMenu.m_nCustMenuItemKeyArr[CUSTMENU_INDEX_FOR_TABWND][n] = 'S';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[CUSTMENU_INDEX_FOR_TABWND][n] = F_FILESAVEAS_DIALOG;
-	rMenu.m_nCustMenuItemKeyArr [CUSTMENU_INDEX_FOR_TABWND][n] = 'A';
+	rMenu.m_nCustMenuItemKeyArr[CUSTMENU_INDEX_FOR_TABWND][n] = 'A';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[CUSTMENU_INDEX_FOR_TABWND][n] = F_FILECLOSE;
-	rMenu.m_nCustMenuItemKeyArr [CUSTMENU_INDEX_FOR_TABWND][n] = 'R';	// 2007.06.26 ryoji B -> R
+	rMenu.m_nCustMenuItemKeyArr[CUSTMENU_INDEX_FOR_TABWND][n] = 'R';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[CUSTMENU_INDEX_FOR_TABWND][n] = F_FILECLOSE_OPEN;
-	rMenu.m_nCustMenuItemKeyArr [CUSTMENU_INDEX_FOR_TABWND][n] = 'L';
+	rMenu.m_nCustMenuItemKeyArr[CUSTMENU_INDEX_FOR_TABWND][n] = 'L';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[CUSTMENU_INDEX_FOR_TABWND][n] = F_WINCLOSE;
-	rMenu.m_nCustMenuItemKeyArr [CUSTMENU_INDEX_FOR_TABWND][n] = 'C';
+	rMenu.m_nCustMenuItemKeyArr[CUSTMENU_INDEX_FOR_TABWND][n] = 'C';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[CUSTMENU_INDEX_FOR_TABWND][n] = F_FILE_REOPEN;
-	rMenu.m_nCustMenuItemKeyArr [CUSTMENU_INDEX_FOR_TABWND][n] = 'W';
+	rMenu.m_nCustMenuItemKeyArr[CUSTMENU_INDEX_FOR_TABWND][n] = 'W';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[CUSTMENU_INDEX_FOR_TABWND][n] = F_0;
-	rMenu.m_nCustMenuItemKeyArr [CUSTMENU_INDEX_FOR_TABWND][n] = '\0';
+	rMenu.m_nCustMenuItemKeyArr[CUSTMENU_INDEX_FOR_TABWND][n] = '\0';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[CUSTMENU_INDEX_FOR_TABWND][n] = F_GROUPCLOSE;
-	rMenu.m_nCustMenuItemKeyArr [CUSTMENU_INDEX_FOR_TABWND][n] = 'G';
+	rMenu.m_nCustMenuItemKeyArr[CUSTMENU_INDEX_FOR_TABWND][n] = 'G';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[CUSTMENU_INDEX_FOR_TABWND][n] = F_TAB_CLOSEOTHER;
-	rMenu.m_nCustMenuItemKeyArr [CUSTMENU_INDEX_FOR_TABWND][n] = 'O';
+	rMenu.m_nCustMenuItemKeyArr[CUSTMENU_INDEX_FOR_TABWND][n] = 'O';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[CUSTMENU_INDEX_FOR_TABWND][n] = F_TAB_CLOSELEFT;
-	rMenu.m_nCustMenuItemKeyArr [CUSTMENU_INDEX_FOR_TABWND][n] = 'H';
+	rMenu.m_nCustMenuItemKeyArr[CUSTMENU_INDEX_FOR_TABWND][n] = 'H';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[CUSTMENU_INDEX_FOR_TABWND][n] = F_TAB_CLOSERIGHT;
-	rMenu.m_nCustMenuItemKeyArr [CUSTMENU_INDEX_FOR_TABWND][n] = 'M';
+	rMenu.m_nCustMenuItemKeyArr[CUSTMENU_INDEX_FOR_TABWND][n] = 'M';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[CUSTMENU_INDEX_FOR_TABWND][n] = F_0;
-	rMenu.m_nCustMenuItemKeyArr [CUSTMENU_INDEX_FOR_TABWND][n] = '\0';
+	rMenu.m_nCustMenuItemKeyArr[CUSTMENU_INDEX_FOR_TABWND][n] = '\0';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[CUSTMENU_INDEX_FOR_TABWND][n] = F_TAB_MOVERIGHT;
-	rMenu.m_nCustMenuItemKeyArr [CUSTMENU_INDEX_FOR_TABWND][n] = '0';
+	rMenu.m_nCustMenuItemKeyArr[CUSTMENU_INDEX_FOR_TABWND][n] = '0';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[CUSTMENU_INDEX_FOR_TABWND][n] = F_TAB_MOVELEFT;
-	rMenu.m_nCustMenuItemKeyArr [CUSTMENU_INDEX_FOR_TABWND][n] = '1';
+	rMenu.m_nCustMenuItemKeyArr[CUSTMENU_INDEX_FOR_TABWND][n] = '1';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[CUSTMENU_INDEX_FOR_TABWND][n] = F_TAB_SEPARATE;
-	rMenu.m_nCustMenuItemKeyArr [CUSTMENU_INDEX_FOR_TABWND][n] = 'E';
+	rMenu.m_nCustMenuItemKeyArr[CUSTMENU_INDEX_FOR_TABWND][n] = 'E';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[CUSTMENU_INDEX_FOR_TABWND][n] = F_TAB_JOINTNEXT;
-	rMenu.m_nCustMenuItemKeyArr [CUSTMENU_INDEX_FOR_TABWND][n] = 'X';
+	rMenu.m_nCustMenuItemKeyArr[CUSTMENU_INDEX_FOR_TABWND][n] = 'X';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[CUSTMENU_INDEX_FOR_TABWND][n] = F_TAB_JOINTPREV;
-	rMenu.m_nCustMenuItemKeyArr [CUSTMENU_INDEX_FOR_TABWND][n] = 'V';
+	rMenu.m_nCustMenuItemKeyArr[CUSTMENU_INDEX_FOR_TABWND][n] = 'V';
 	n++;
 	rMenu.m_nCustMenuItemNumArr[CUSTMENU_INDEX_FOR_TABWND] = n;
 }
