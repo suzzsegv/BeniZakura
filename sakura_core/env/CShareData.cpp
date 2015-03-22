@@ -1115,6 +1115,7 @@ void CShareData::InitPopupMenu(DLLSHAREDATA* pShareData)
 	rMenu.m_nCustMenuItemNumArr[0] = n;
 
 	/* カスタムメニュー１ */
+	auto_sprintf(rMenu.m_szCustMenuNameArr[1], LTEXT("RED2 MENU1"));
 	n = 0;
 	rMenu.m_nCustMenuItemFuncArr[1][n] = F_FILESAVECLOSE;
 	rMenu.m_nCustMenuItemKeyArr[1][n] = 'S';
@@ -1155,6 +1156,7 @@ void CShareData::InitPopupMenu(DLLSHAREDATA* pShareData)
 	rMenu.m_nCustMenuItemNumArr[1] = n;
 
 	/* カスタムメニュー２ */
+	auto_sprintf(rMenu.m_szCustMenuNameArr[2], LTEXT("RED2 MENU2"));
 	n = 0;
 	rMenu.m_nCustMenuItemFuncArr[2][n] = F_SEARCH_DIALOG;
 	rMenu.m_nCustMenuItemKeyArr[2][n] = 'S';
@@ -1192,6 +1194,7 @@ void CShareData::InitPopupMenu(DLLSHAREDATA* pShareData)
 	rMenu.m_nCustMenuItemNumArr[2] = n;
 
 	/* カスタムメニュー３ */
+	auto_sprintf(rMenu.m_szCustMenuNameArr[3], LTEXT("RED2 MENU3"));
 	n = 0;
 	rMenu.m_nCustMenuItemFuncArr[3][n] = F_UNDO;
 	rMenu.m_nCustMenuItemKeyArr[3][n] = 'U';
@@ -1235,6 +1238,7 @@ void CShareData::InitPopupMenu(DLLSHAREDATA* pShareData)
 	rMenu.m_nCustMenuItemNumArr[3] = n;
 
 	/* カスタムメニュー４ */
+	auto_sprintf(rMenu.m_szCustMenuNameArr[4], LTEXT("RED2 MENU4"));
 	n = 0;
 	rMenu.m_nCustMenuItemFuncArr[4][n] = F_OUTLINE;
 	rMenu.m_nCustMenuItemKeyArr[4][n] = 'T';
@@ -1261,6 +1265,74 @@ void CShareData::InitPopupMenu(DLLSHAREDATA* pShareData)
 	rMenu.m_nCustMenuItemKeyArr[4][n] = 'U';
 	n++;
 	rMenu.m_nCustMenuItemNumArr[4] = n;
+
+	/* カスタムメニュー５ */
+	auto_sprintf(rMenu.m_szCustMenuNameArr[5], LTEXT("FINAL Ctrl+Q MENU"));
+	n = 0;
+	rMenu.m_nCustMenuItemFuncArr[5][n] = F_GOLINETOP;
+	rMenu.m_nCustMenuItemKeyArr[5][n] = 'S';
+	n++;
+	rMenu.m_nCustMenuItemFuncArr[5][n] = F_GOLINEEND;
+	rMenu.m_nCustMenuItemKeyArr[5][n] = 'D';
+	n++;
+	rMenu.m_nCustMenuItemFuncArr[5][n] = F_0; /* ------ */
+	rMenu.m_nCustMenuItemKeyArr[5][n] = '\0';
+	n++;
+	rMenu.m_nCustMenuItemFuncArr[5][n] = F_GOFILETOP;
+	rMenu.m_nCustMenuItemKeyArr[5][n] = 'R';
+	n++;
+	rMenu.m_nCustMenuItemFuncArr[5][n] = F_GOFILEEND;
+	rMenu.m_nCustMenuItemKeyArr[5][n] = 'C';
+	n++;
+	rMenu.m_nCustMenuItemFuncArr[5][n] = F_0; /* ------ */
+	rMenu.m_nCustMenuItemKeyArr[5][n] = '\0';
+	n++;
+	rMenu.m_nCustMenuItemFuncArr[5][n] = F_LineDeleteToStart;
+	rMenu.m_nCustMenuItemKeyArr[5][n] = 'H';
+	n++;
+	rMenu.m_nCustMenuItemFuncArr[5][n] = F_LineDeleteToEnd;
+	rMenu.m_nCustMenuItemKeyArr[5][n] = 'Y';
+	n++;
+	rMenu.m_nCustMenuItemFuncArr[5][n] = F_0; /* ------ */
+	rMenu.m_nCustMenuItemKeyArr[5][n] = '\0';
+	n++;
+	rMenu.m_nCustMenuItemFuncArr[5][n] = F_JUMP_DIALOG;
+	rMenu.m_nCustMenuItemKeyArr[5][n] = 'L';
+	n++;
+	rMenu.m_nCustMenuItemFuncArr[5][n] = F_JUMP_SRCHSTARTPOS;
+	rMenu.m_nCustMenuItemKeyArr[5][n] = 'V';
+	n++;
+	rMenu.m_nCustMenuItemFuncArr[5][n] = F_0; /* ------ */
+	rMenu.m_nCustMenuItemKeyArr[5][n] = '\0';
+	n++;
+	rMenu.m_nCustMenuItemFuncArr[5][n] = F_TAGJUMP;
+	rMenu.m_nCustMenuItemKeyArr[5][n] = 'T';
+	n++;
+	rMenu.m_nCustMenuItemFuncArr[5][n] = F_BOOKMARK_VIEW;
+	rMenu.m_nCustMenuItemKeyArr[5][n] = 'M';
+	n++;
+	rMenu.m_nCustMenuItemFuncArr[5][n] = F_0; /* ------ */
+	rMenu.m_nCustMenuItemKeyArr[5][n] = '\0';
+	n++;
+	rMenu.m_nCustMenuItemFuncArr[5][n] = F_SEARCH_DIALOG;
+	rMenu.m_nCustMenuItemKeyArr[5][n] = 'F';
+	n++;
+	rMenu.m_nCustMenuItemFuncArr[5][n] = F_REPLACE_DIALOG;
+	rMenu.m_nCustMenuItemKeyArr[5][n] = 'A';
+	n++;
+	rMenu.m_nCustMenuItemFuncArr[5][n] = F_GREP_DIALOG;
+	rMenu.m_nCustMenuItemKeyArr[5][n] = 'G';
+	n++;
+	rMenu.m_nCustMenuItemFuncArr[5][n] = F_0; /* ------ */
+	rMenu.m_nCustMenuItemKeyArr[5][n] = '\0';
+	n++;
+	rMenu.m_nCustMenuItemFuncArr[5][n] = F_RECKEYMACRO;
+	rMenu.m_nCustMenuItemKeyArr[5][n] = 'Q';
+	n++;
+	rMenu.m_nCustMenuItemFuncArr[5][n] = F_EXECKEYMACRO;
+	rMenu.m_nCustMenuItemKeyArr[5][n] = 'B';
+	n++;
+	rMenu.m_nCustMenuItemNumArr[5] = n;
 
 	/* タブメニュー */
 	auto_sprintf(rMenu.m_szCustMenuNameArr[CUSTMENU_INDEX_FOR_TABWND], LTEXT("タブメニュー"));
