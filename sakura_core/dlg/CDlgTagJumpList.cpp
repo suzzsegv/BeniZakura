@@ -269,9 +269,6 @@ void CDlgTagJumpList::SetData( void )
 		if( m_pszKeyword != NULL ){
 			::DlgItem_SetText( GetHwnd(), IDC_KEYWORD, m_pszKeyword );
 		}
-		else if( cRecentTagJump.GetItemCount() > 0 ){
-			Combo_SetCurSel( hwndKey, 0 );
-		}
 		cRecentTagJump.Terminate();
 	}
 	//	To Here 2005.04.03 MIK İ’è’l‚Ì“Ç‚İ‚İ
