@@ -285,8 +285,8 @@ BOOL CViewCommander::HandleCommand(
 	case F_DOWN:			Command_DOWN( m_pCommanderView->GetSelectionInfo().m_bSelectingLock, bRepeat ); break;			//カーソル下移動
 	case F_LEFT:			Command_LEFT( m_pCommanderView->GetSelectionInfo().m_bSelectingLock, bRepeat ); break;			//カーソル左移動
 	case F_RIGHT:			Command_RIGHT( m_pCommanderView->GetSelectionInfo().m_bSelectingLock, false, bRepeat ); break;	//カーソル右移動
-	case F_UP2:				Command_UP2( m_pCommanderView->GetSelectionInfo().m_bSelectingLock ); break;						//カーソル上移動(２行づつ)
-	case F_DOWN2:			Command_DOWN2( m_pCommanderView->GetSelectionInfo().m_bSelectingLock ); break;					//カーソル下移動(２行づつ)
+	case F_UP2:				Command_UP2( m_pCommanderView->GetSelectionInfo().m_bSelectingLock ); break;
+	case F_DOWN2:			Command_DOWN2( m_pCommanderView->GetSelectionInfo().m_bSelectingLock ); break;
 	case F_WORDLEFT:		Command_WORDLEFT( m_pCommanderView->GetSelectionInfo().m_bSelectingLock ); break;				/* 単語の左端に移動 */
 	case F_WORDRIGHT:		Command_WORDRIGHT( m_pCommanderView->GetSelectionInfo().m_bSelectingLock ); break;				/* 単語の右端に移動 */
 	//	0ct. 29, 2001 genta マクロ向け機能拡張
@@ -319,8 +319,8 @@ BOOL CViewCommander::HandleCommand(
 	case F_DOWN_SEL:		Command_DOWN( true, bRepeat ); break;			//(範囲選択)カーソル下移動
 	case F_LEFT_SEL:		Command_LEFT( true, bRepeat ); break;			//(範囲選択)カーソル左移動
 	case F_RIGHT_SEL:		Command_RIGHT( true, false, bRepeat ); break;	//(範囲選択)カーソル右移動
-	case F_UP2_SEL:			Command_UP2( true ); break;						//(範囲選択)カーソル上移動(２行ごと)
-	case F_DOWN2_SEL:		Command_DOWN2( true );break;					//(範囲選択)カーソル下移動(２行ごと)
+	case F_UP2_SEL:			Command_UP2( true ); break;
+	case F_DOWN2_SEL:		Command_DOWN2( true );break;
 	case F_WORDLEFT_SEL:	Command_WORDLEFT( true );break;					//(範囲選択)単語の左端に移動
 	case F_WORDRIGHT_SEL:	Command_WORDRIGHT( true );break;				//(範囲選択)単語の右端に移動
 	case F_GOLINETOP_SEL:	Command_GOLINETOP( true, lparam1 | 1 );break;	//(範囲選択)行頭に移動(折り返し単位/改行単位)
@@ -343,8 +343,8 @@ BOOL CViewCommander::HandleCommand(
 	case F_DOWN_BOX:		if( ! this->m_pCommanderView->GetSelectionInfo().IsBoxSelecting() ) { this->Command_BEGIN_BOXSELECT( false ); } this->Command_DOWN( true, bRepeat ); break;		//(矩形選択)カーソル下移動
 	case F_LEFT_BOX:		if( ! this->m_pCommanderView->GetSelectionInfo().IsBoxSelecting() ) { this->Command_BEGIN_BOXSELECT( false ); } this->Command_LEFT( true, bRepeat ); break;		//(矩形選択)カーソル左移動
 	case F_RIGHT_BOX:		if( ! this->m_pCommanderView->GetSelectionInfo().IsBoxSelecting() ) { this->Command_BEGIN_BOXSELECT( false ); } this->Command_RIGHT( true, false, bRepeat ); break;	//(矩形選択)カーソル右移動
-	case F_UP2_BOX:			if( ! this->m_pCommanderView->GetSelectionInfo().IsBoxSelecting() ) { this->Command_BEGIN_BOXSELECT( false ); } this->Command_UP2( true ); break;				//(矩形選択)カーソル上移動(２行ごと)
-	case F_DOWN2_BOX:		if( ! this->m_pCommanderView->GetSelectionInfo().IsBoxSelecting() ) { this->Command_BEGIN_BOXSELECT( false ); } this->Command_DOWN2( true );break;				//(矩形選択)カーソル下移動(２行ごと)
+	case F_UP2_BOX:			if( ! this->m_pCommanderView->GetSelectionInfo().IsBoxSelecting() ) { this->Command_BEGIN_BOXSELECT( false ); } this->Command_UP2( true ); break;
+	case F_DOWN2_BOX:		if( ! this->m_pCommanderView->GetSelectionInfo().IsBoxSelecting() ) { this->Command_BEGIN_BOXSELECT( false ); } this->Command_DOWN2( true );break;
 	case F_WORDLEFT_BOX:	if( ! this->m_pCommanderView->GetSelectionInfo().IsBoxSelecting() ) { this->Command_BEGIN_BOXSELECT( false ); } this->Command_WORDLEFT( true );break;			//(矩形選択)単語の左端に移動
 	case F_WORDRIGHT_BOX:	if( ! this->m_pCommanderView->GetSelectionInfo().IsBoxSelecting() ) { this->Command_BEGIN_BOXSELECT( false ); } this->Command_WORDRIGHT( true );break;			//(矩形選択)単語の右端に移動
 	case F_GOLOGICALLINETOP_BOX:if( ! this->m_pCommanderView->GetSelectionInfo().IsBoxSelecting() ) { this->Command_BEGIN_BOXSELECT( false ); } this->Command_GOLINETOP( true, 8 | lparam1 );break;	//(矩形選択)行頭に移動(改行単位)

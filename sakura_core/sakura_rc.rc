@@ -2118,8 +2118,8 @@ BEGIN
     F_DOWN                  "カーソル下移動"
     F_LEFT                  "カーソル左移動"
     F_RIGHT                 "カーソル右移動"
-    F_UP2                   "カーソル上移動(２行ごと)"
-    F_DOWN2                 "カーソル下移動(２行ごと)"
+    F_UP2                   "カーソル上移動(複数行)"
+    F_DOWN2                 "カーソル下移動(複数行)"
 END
 
 STRINGTABLE
@@ -2171,12 +2171,12 @@ BEGIN
     F_DOWN_SEL              "(選択)カーソル下移動"
     F_LEFT_SEL              "(選択)カーソル左移動"
     F_RIGHT_SEL             "(選択)カーソル右移動"
-    F_UP2_SEL               "(選択)カーソル上移動(２行ごと)"
+    F_UP2_SEL               "(選択)カーソル上移動(複数行)"
 END
 
 STRINGTABLE
 BEGIN
-    F_DOWN2_SEL             "(選択)カーソル下移動(２行ごと)"
+    F_DOWN2_SEL             "(選択)カーソル下移動(複数行)"
     F_WORDLEFT_SEL          "(選択)単語の左端に移動"
     F_WORDRIGHT_SEL         "(選択)単語の右端に移動"
 END
@@ -2214,8 +2214,8 @@ BEGIN
     F_DOWN_BOX              "(矩形選択)カーソル下移動"
     F_LEFT_BOX              "(矩形選択)カーソル左移動"
     F_RIGHT_BOX             "(矩形選択)カーソル右移動"
-    F_UP2_BOX               "(矩形選択)カーソル上移動(２行ごと)"
-    F_DOWN2_BOX             "(矩形選択)カーソル下移動(２行ごと)"
+    F_UP2_BOX               "(矩形選択)カーソル上移動(複数行)"
+    F_DOWN2_BOX             "(矩形選択)カーソル下移動(複数行)"
     F_WORDLEFT_BOX          "(矩形選択)単語の左端に移動"
     F_WORDRIGHT_BOX         "(矩形選択)単語の右端に移動"
 END

@@ -167,8 +167,8 @@ const EFunctionCode pnFuncList_Move[] = {	//Oct. 16, 2000 JEPRO 変数名変更(List1
 	F_DOWN				,	//カーソル下移動
 	F_LEFT				,	//カーソル左移動
 	F_RIGHT				,	//カーソル右移動
-	F_UP2				,	//カーソル上移動(２行ごと)
-	F_DOWN2				,	//カーソル下移動(２行ごと)
+	F_UP2				,
+	F_DOWN2				,
 	F_WORDLEFT			,	//単語の左端に移動
 	F_WORDRIGHT			,	//単語の右端に移動
 	F_GOLINETOP			,	//行頭に移動(折り返し単位)
@@ -206,8 +206,8 @@ const EFunctionCode pnFuncList_Select[] = {
 	F_DOWN_SEL				,	//(範囲選択)カーソル下移動
 	F_LEFT_SEL				,	//(範囲選択)カーソル左移動
 	F_RIGHT_SEL				,	//(範囲選択)カーソル右移動
-	F_UP2_SEL				,	//(範囲選択)カーソル上移動(２行ごと)
-	F_DOWN2_SEL				,	//(範囲選択)カーソル下移動(２行ごと)
+	F_UP2_SEL				,
+	F_DOWN2_SEL				,
 	F_WORDLEFT_SEL			,	//(範囲選択)単語の左端に移動
 	F_WORDRIGHT_SEL			,	//(範囲選択)単語の右端に移動
 	F_GOLINETOP_SEL			,	//(範囲選択)行頭に移動(折り返し単位)
@@ -234,8 +234,8 @@ const EFunctionCode pnFuncList_Box[] = {
 	F_DOWN_BOX			,	//(矩形選択)カーソル下移動
 	F_LEFT_BOX			,	//(矩形選択)カーソル左移動
 	F_RIGHT_BOX			,	//(矩形選択)カーソル右移動
-	F_UP2_BOX			,	//(矩形選択)カーソル上移動(２行ごと)
-	F_DOWN2_BOX			,	//(矩形選択)カーソル下移動(２行ごと)
+	F_UP2_BOX			,
+	F_DOWN2_BOX			,
 	F_WORDLEFT_BOX		,	//(矩形選択)単語の左端に移動
 	F_WORDRIGHT_BOX		,	//(矩形選択)単語の右端に移動
 	F_GOLOGICALLINETOP_BOX	,	//(矩形選択)行頭に移動(改行単位)
@@ -641,8 +641,8 @@ int FuncID_To_HelpContextID( EFunctionCode nFuncID )
 	case F_DOWN:			return HLP000289;	//カーソル下移動	// 2006.10.11 ryoji
 	case F_LEFT:			return HLP000289;	//カーソル左移動	// 2006.10.11 ryoji
 	case F_RIGHT:			return HLP000289;	//カーソル右移動	// 2006.10.11 ryoji
-	case F_UP2:				return HLP000220;	//カーソル上移動(２行ごと)
-	case F_DOWN2:			return HLP000221;	//カーソル下移動(２行ごと)
+	case F_UP2:				return HLP000220;
+	case F_DOWN2:			return HLP000221;
 	case F_WORDLEFT:		return HLP000222;	//単語の左端に移動
 	case F_WORDRIGHT:		return HLP000223;	//単語の右端に移動
 	case F_GOLINETOP:		return HLP000224;	//行頭に移動(折り返し単位)
@@ -675,8 +675,8 @@ int FuncID_To_HelpContextID( EFunctionCode nFuncID )
 	case F_DOWN_SEL:		return HLP000290;	//(範囲選択)カーソル下移動	// 2006.10.11 ryoji
 	case F_LEFT_SEL:		return HLP000290;	//(範囲選択)カーソル左移動	// 2006.10.11 ryoji
 	case F_RIGHT_SEL:		return HLP000290;	//(範囲選択)カーソル右移動	// 2006.10.11 ryoji
-	case F_UP2_SEL:			return HLP000234;	//(範囲選択)カーソル上移動(２行ごと)
-	case F_DOWN2_SEL:		return HLP000235;	//(範囲選択)カーソル下移動(２行ごと)
+	case F_UP2_SEL:			return HLP000234;
+	case F_DOWN2_SEL:		return HLP000235;
 	case F_WORDLEFT_SEL:	return HLP000236;	//(範囲選択)単語の左端に移動
 	case F_WORDRIGHT_SEL:	return HLP000237;	//(範囲選択)単語の右端に移動
 	case F_GONEXTPARAGRAPH_SEL:	return HLP000273;	//(範囲選択)前の段落に移動	//@@@ 2003.06.15 MIK
@@ -703,8 +703,8 @@ int FuncID_To_HelpContextID( EFunctionCode nFuncID )
 	case F_DOWN_BOX:		return ;	//(矩形選択)カーソル下移動
 	case F_LEFT_BOX:		return ;	/(矩形選択)カーソル左移動
 	case F_RIGHT_BOX:		return ;	//(矩形選択)カーソル右移動
-	case F_UP2_BOX:			return ;	//(矩形選択)カーソル上移動(２行ごと)
-	case F_DOWN2_BOX:		return ;	//(矩形選択)カーソル下移動(２行ごと)
+	case F_UP2_BOX:			return ;
+	case F_DOWN2_BOX:		return ;
 	case F_WORDLEFT_BOX:	return ;	//(矩形選択)単語の左端に移動
 	case F_WORDRIGHT_BOX:	return ;	//(矩形選択)単語の右端に移動
 	case F_GOLINETOP_BOX:	return ;	//(矩形選択)行頭に移動(折り返し単位)

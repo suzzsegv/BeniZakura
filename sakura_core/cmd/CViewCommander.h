@@ -167,8 +167,8 @@ public:
 	int Command_DOWN( bool bSelect, bool bRepeat );			/* カーソル下移動 */
 	int  Command_LEFT( bool, bool );			/* カーソル左移動 */
 	void Command_RIGHT( bool bSelect, bool bIgnoreCurrentSelection, bool bRepeat );	/* カーソル右移動 */
-	void Command_UP2( bool bSelect );				/* カーソル上移動（２行づつ） */
-	void Command_DOWN2( bool bSelect );				/* カーソル下移動（２行づつ） */
+	void Command_UP2( bool bSelect );
+	void Command_DOWN2( bool bSelect );
 	void Command_WORDLEFT( bool bSelect );			/* 単語の左端に移動 */
 	void Command_WORDRIGHT( bool bSelect );			/* 単語の右端に移動 */
 	//	Oct. 29, 2001 genta マクロ向け機能拡張

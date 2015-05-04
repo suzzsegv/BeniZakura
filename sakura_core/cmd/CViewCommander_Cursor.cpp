@@ -367,19 +367,27 @@ void CViewCommander::Command_RIGHT( bool bSelect, bool bIgnoreCurrentSelection, 
 
 
 
-/* カーソル上移動(２行づつ) */
+/* カーソル上移動(複数行) */
 void CViewCommander::Command_UP2( bool bSelect )
 {
-	GetCaret().Cursor_UPDOWN( CLayoutInt(-2), bSelect );
+	CLayoutInt lineNum;
+
+	lineNum = GetDllShareData().m_Common.m_sGeneral.m_nRepeatedScrollLineNum;
+	GetCaret().Cursor_UPDOWN( lineNum * -2, bSelect );
+
 	return;
 }
 
 
 
-/* カーソル下移動(２行づつ) */
+/* カーソル下移動(複数行) */
 void CViewCommander::Command_DOWN2( bool bSelect )
 {
-	GetCaret().Cursor_UPDOWN( CLayoutInt(2), bSelect );
+	CLayoutInt lineNum;
+
+	lineNum = GetDllShareData().m_Common.m_sGeneral.m_nRepeatedScrollLineNum;
+	GetCaret().Cursor_UPDOWN( lineNum * 2, bSelect );
+
 	return;
 }
 
