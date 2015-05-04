@@ -350,6 +350,19 @@ bool CNormalProcess::InitializeProcess()
 				pEditWnd->GetActiveView().GetCaret().MoveCursor( ptPos, true );
 				pEditWnd->GetActiveView().GetCaret().m_nCaretPosX_Prev =
 					pEditWnd->GetActiveView().GetCaret().GetCaretLayoutPos().GetX2();
+
+				// カーソル位置を画面中央に
+				{
+					CLayoutInt nViewTopLine;
+					CTextArea& textArea = pEditWnd->GetActiveView().GetTextArea();
+
+					nViewTopLine = pEditWnd->GetActiveView().GetCaret().GetCaretLayoutPos().GetY2()
+									- ( textArea.m_nViewRowNum / 2 );
+					if( nViewTopLine < 0 ){
+						nViewTopLine = CLayoutInt(0);
+					}
+					textArea.SetViewTopLine( nViewTopLine );
+				}
 			}
 			pEditWnd->GetActiveView().RedrawAll();
 		}
