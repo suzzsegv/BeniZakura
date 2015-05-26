@@ -180,7 +180,6 @@ bool CNormalProcess::InitializeProcess()
 		/* GREP */
 		// 2010.06.16 Moca Grepでもオプション指定を適用
 		pEditWnd->SetDocumentTypeWhenCreate( fi.m_nCharCode, false, nType );
-		pEditWnd->m_cDlgFuncList.Refresh();	// アウトラインを予め表示しておく
 		HWND hEditWnd = pEditWnd->GetHwnd();
 		if( !::IsIconic( hEditWnd ) && pEditWnd->m_cDlgFuncList.GetHwnd() ){
 			RECT rc;
@@ -210,7 +209,6 @@ bool CNormalProcess::InitializeProcess()
 				gi.bGrepOutputLine,
 				gi.nGrepOutputStyle
 			);
-			pEditWnd->m_cDlgFuncList.Refresh();	// アウトラインを再解析する
 			//return true; // 2003.06.23 Moca
 		}
 		else{
