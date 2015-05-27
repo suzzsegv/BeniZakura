@@ -134,24 +134,35 @@ int CViewCommander::Command_CUSTMENU( int nMenuIdx )
 		}
 	}
 
-	const CTextArea& textArea = m_pCommanderView->GetTextArea();
-	CLayoutXInt lX = GetCaret().GetCaretLayoutPos().GetX2() - textArea.GetViewLeftCol();
-	if(lX < 0){
+	/*
+	 * タブメニューとして使用しているカスタムメニューの場合にはマウスカーソル
+	 * 位置に、それ以外のカスタムメニューの場合には、カーソル位置にメニューを
+	 * 表示する.
+	 */
+	if( nMenuIdx == CUSTMENU_INDEX_FOR_TABWND ){
 		po.x = 0;
-	}else if(lX > textArea.m_nViewColNum){
-		po.x = textArea.GetAreaRight();
-	}else{
-		po.x = textArea.GetAreaLeft() + (Int)(lX + 1) * m_pCommanderView->GetTextMetrics().GetHankakuDx();
-	}
-	CLayoutYInt lY = GetCaret().GetCaretLayoutPos().GetY2() - textArea.GetViewTopLine();
-	if(lY < 0){
 		po.y = 0;
-	}else if(lY > textArea.m_nViewRowNum){
-		po.y = textArea.GetAreaBottom();
+		::GetCursorPos( &po );
 	}else{
-		po.y = textArea.GetAreaTop() + (Int)(lY + 1) * m_pCommanderView->GetTextMetrics().GetHankakuDy();
+		const CTextArea& textArea = m_pCommanderView->GetTextArea();
+		CLayoutXInt lX = GetCaret().GetCaretLayoutPos().GetX2() - textArea.GetViewLeftCol();
+		if(lX < 0){
+			po.x = 0;
+		}else if(lX > textArea.m_nViewColNum){
+			po.x = textArea.GetAreaRight();
+		}else{
+			po.x = textArea.GetAreaLeft() + (Int)(lX + 1) * m_pCommanderView->GetTextMetrics().GetHankakuDx();
+		}
+		CLayoutYInt lY = GetCaret().GetCaretLayoutPos().GetY2() - textArea.GetViewTopLine();
+		if(lY < 0){
+			po.y = 0;
+		}else if(lY > textArea.m_nViewRowNum){
+			po.y = textArea.GetAreaBottom();
+		}else{
+			po.y = textArea.GetAreaTop() + (Int)(lY + 1) * m_pCommanderView->GetTextMetrics().GetHankakuDy();
+		}
+		m_pCommanderView->ClientToScreen(&po);
 	}
-	m_pCommanderView->ClientToScreen(&po);
 
 	nId = ::TrackPopupMenu(
 		hMenu,
