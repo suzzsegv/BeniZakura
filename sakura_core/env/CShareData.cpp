@@ -1091,15 +1091,6 @@ void CShareData::InitPopupMenu(DLLSHAREDATA* pShareData)
 	rMenu.m_nCustMenuItemFuncArr[0][n] = F_0; /* ------ */
 	rMenu.m_nCustMenuItemKeyArr[0][n] = '\0';
 	n++;
-	rMenu.m_nCustMenuItemFuncArr[0][n] = F_GOFILETOP;
-	rMenu.m_nCustMenuItemKeyArr[0][n] = 'T';
-	n++;
-	rMenu.m_nCustMenuItemFuncArr[0][n] = F_GOFILEEND;
-	rMenu.m_nCustMenuItemKeyArr[0][n] = 'B';
-	n++;
-	rMenu.m_nCustMenuItemFuncArr[0][n] = F_0; /* ------ */
-	rMenu.m_nCustMenuItemKeyArr[0][n] = '\0';
-	n++;
 	rMenu.m_nCustMenuItemFuncArr[0][n] = F_SEARCH_DIALOG;
 	rMenu.m_nCustMenuItemKeyArr[0][n] = 'F';
 	n++;
