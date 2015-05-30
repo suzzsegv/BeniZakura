@@ -216,6 +216,102 @@ const char* stristr_j( const char* s1, const char* s2 )
 	return NULL;
 }
 
+/*!
+	文字列中に指定した文字が順番通りに含まれているかどうかを返す.
+
+	@param pStr: 検索対象文字列
+	@param pMatchChars: 検索する文字群.
+
+	@retval true: 指定した文字が含まれている.
+	@retval false: 含まれていない.
+ */
+bool isIncludedCharsByCaseSensitive(const char* pStr, const char* pMatchChars)
+{
+	if(*pMatchChars == '\0'){
+		return false;
+	}
+	bool matchCharsRemained = true;
+
+	if(*pStr == '\0'){
+		return false;
+	}
+	bool strRemained = true;
+
+	char c1 = *pStr++;
+	char c2 = *pMatchChars++;
+	while(matchCharsRemained){
+		while(strRemained){
+			if(c1 == c2){
+				break;
+			}
+			c1 = *pStr++;
+			if(c1 == '\0'){
+				strRemained = false;
+				return false;
+			}
+		}
+		c2 = *pMatchChars++;
+		if(c2 == '\0'){
+			matchCharsRemained = false;
+			return true;
+		}
+		c1 = *pStr++;
+		if(c1 == '\0'){
+			strRemained = false;
+			return false;
+		}
+	}
+	return false;
+}
+
+/*!
+	大文字小文字区別せず、文字列中に指定した文字が順番通りに含まれているかどうかを返す.
+
+	@param pStr: 検索対象文字列
+	@param pMatchChars: 検索する文字群.
+
+	@retval true: 指定した文字が含まれている.
+	@retval false: 含まれていない.
+ */
+bool isIncludedCharsByCaseInsensitive(const char* pStr, const char* pMatchChars)
+{
+	if(*pMatchChars == '\0'){
+		return false;
+	}
+	bool matchCharsRemained = true;
+
+	if(*pStr == '\0'){
+		return false;
+	}
+	bool strRemained = true;
+
+	char c1 = toupper(*pStr++);
+	char c2 = toupper(*pMatchChars++);
+	while(matchCharsRemained){
+		while(strRemained){
+			if(c1 == c2){
+				break;
+			}
+			c1 = toupper(*pStr++);
+			if(c1 == '\0'){
+				strRemained = false;
+				return false;
+			}
+		}
+		c2 = toupper(*pMatchChars++);
+		if(c2 == '\0'){
+			matchCharsRemained = false;
+			return true;
+		}
+		c1 = toupper(*pStr++);
+		if(c1 == '\0'){
+			strRemained = false;
+			return false;
+		}
+	}
+	return false;
+}
+
 
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //

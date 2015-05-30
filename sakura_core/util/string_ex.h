@@ -129,6 +129,10 @@ CHAR_TYPE* my_strtok(
 int my_stricmp( const char *s1, const char *s2 );
 int my_strnicmp( const char *s1, const char *s2, size_t n );
 
+// •¶š‚ÌB–†ŒŸõ
+bool isIncludedCharsByCaseSensitive(const char* pStr, const char* pMatchChars);
+bool isIncludedCharsByCaseInsensitive(const char* pStr, const char* pMatchChars);
+
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 //                           ŒİŠ·                              //

@@ -90,6 +90,12 @@ protected:
 	LPVOID	GetHelpIdTable( void );
 
 private:
+	struct STagFindState{
+		int   m_nDepth;
+		int   m_nMatchAll;
+		TCHAR m_szCurPath[1024];
+	};
+	
 	void	StopTimer( void );
 	void	StartTimer( int );
 
@@ -106,11 +112,33 @@ private:
 	void SetTextDir();
 	void FindNext( bool );
 	void find_key( const wchar_t* keyword );
-	int find_key_core(int, const wchar_t*, bool, bool, bool, bool, int);
-	
+	int find_key_core(const wchar_t*, bool, bool);
+	int SearchKeywordInTagFile
+		(
+			TCHAR* pTagFileName,
+			const ACHAR* paszKeyword,
+			int	length,
+			bool bTagJumpAnyWhere,
+			bool bTagJumpExactMatch,
+			bool bTagJumpICase,
+			bool bTagJumpICaseByTags,
+			int  nTop,
+			struct STagFindState& rState
+		);
+	int FuzzyMatchInTagFile
+		(
+			TCHAR* pTagFileName,
+			const ACHAR* paszKeyword,
+			int	length,
+			bool bTagJumpAnyWhere,
+			bool bTagJumpExactMatch,
+			bool bTagJumpICase,
+			bool bTagJumpICaseByTags,
+			int  nTop,
+			struct STagFindState& rState
+		);
+
 	bool IsDirectTagJump();
-	
-	void ClearPrevFindInfo();
 
 	//! depthから完全パス名(相対パス/絶対パス)を作成する
 	static TCHAR* GetFullPathFromDepth( TCHAR*, int, TCHAR*, const TCHAR*, int );
@@ -122,15 +150,6 @@ private:
 
 	CFontAutoDeleter	m_listViewFont;
 
-	struct STagFindState{
-		int   m_nDepth;
-		int   m_nMatchAll;
-		int   m_nNextMode;
-		int   m_nLoop;
-		bool  m_bJumpPath;
-		TCHAR m_szCurPath[1024];
-	};
-	
 	bool	m_bDirectTagJump;
 
 	int		m_nIndex;		//!< 選択された要素番号
@@ -139,21 +158,7 @@ private:
 	int		m_nLoop;		//!< さかのぼれる階層数
 	CSortedTagJumpList*	m_pcList;	//!< タグジャンプ情報
 	UINT	m_nTimerId;		//!< タイマ番号
-	BOOL	m_bTagJumpICase;	//!< 大文字小文字を同一視
-	BOOL	m_bTagJumpAnyWhere;	//!< 文字列の途中にマッチ
-	BOOL	m_bTagJumpExactMatch; //! 完全一致(画面無し)
-
-	int 	m_nTop;			//!< ページめくりの表示の先頭(0開始)
 	bool	m_bNextItem;	//!< まだ次にヒットするものがある
-
-	// 絞り込み検索用
-	STagFindState* m_psFindPrev; //<! 前回の最後に検索した状態
-	STagFindState* m_psFind0Match; //<! 前回の1つもHitしなかった最後のtags
-
-	CNativeW	m_strOldKeyword;	//!< 前回のキーワード
-	BOOL	m_bOldTagJumpICase;	//!< 前回の大文字小文字を同一視
-	BOOL	m_bOldTagJumpAnyWhere;	//!< 前回の文字列の途中にマッチ
-	
 	POINT	m_ptDefaultSize;
 	RECT	m_rcItems[11];
 };

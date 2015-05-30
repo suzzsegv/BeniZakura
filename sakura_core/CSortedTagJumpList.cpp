@@ -134,11 +134,18 @@ BOOL CSortedTagJumpList::AddParamA( const ACHAR* keyword, const ACHAR* filename,
 	if( _tcslen( item->filename ) >= MAX_TAG_STRING_LENGTH ) item->filename[ MAX_TAG_STRING_LENGTH-1 ] = 0;
 	if( _tcslen( item->note     ) >= MAX_TAG_STRING_LENGTH ) item->note[     MAX_TAG_STRING_LENGTH-1 ] = 0;
 
-	//アイテムをリストの適当な位置に追加する。
+	//アイテムをリストの最終位置に追加する。
 	prev = NULL;
 	for( p = m_pTagjump; p; p = p->next )
 	{
-		if( _tcscmp( p->keyword, item->keyword ) > 0 ) break;
+		/* すでに登録済みのシンボルは登録しない */
+		if( (p->no == item->no)
+		 && (_tcscmp( p->keyword, item->keyword ) == 0)
+		 && (_tcscmp( p->filename, item->filename ) == 0) )
+		{
+			Free( item );
+			return TRUE;
+		}
 		prev = p;
 	}
 	item->next = p;
