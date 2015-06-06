@@ -415,13 +415,16 @@ bool CShareData::InitShareData()
 			m_pShareData->m_Common.m_sSearch.m_bNOTIFYNOTFOUND = TRUE;			/* 検索／置換  見つからないときメッセージを表示 */
 			m_pShareData->m_Common.m_sSearch.m_sSearchOption.bLoHiCase = true;
 
+			m_pShareData->m_sSearchOptionForFindDialog.bLoHiCase = true;
 			m_pShareData->m_Common.m_sSearch.m_bSearchAll = FALSE;				/* 検索／置換／ブックマーク  先頭（末尾）から再検索 2002.01.26 hor */
 			m_pShareData->m_Common.m_sSearch.m_bAutoCloseDlgFind = TRUE;		/* 検索ダイアログを自動的に閉じる */
 
+			m_pShareData->m_sSearchOptionForReplaceDialog.bLoHiCase = true;
 			m_pShareData->m_Common.m_sSearch.m_bAutoCloseDlgReplace = TRUE;		/* 置換 ダイアログを自動的に閉じる */
 			m_pShareData->m_Common.m_sSearch.m_bConsecutiveAll = 0;				// 「すべて置換」は置換の繰返し	// 2007.01.16 ryoji
 			m_pShareData->m_Common.m_sSearch.m_bSelectedArea = FALSE;			// 選択範囲内置換
 
+			m_pShareData->m_sSearchOptionForGrepDialog.bLoHiCase = true;
 			m_pShareData->m_Common.m_sSearch.m_bGrepExitConfirm = FALSE;		/* Grepモードで保存確認するか */
 			m_pShareData->m_Common.m_sSearch.m_bGrepRealTimeView = TRUE;		/* Grep: 結果のリアルタイム表示 */
 
