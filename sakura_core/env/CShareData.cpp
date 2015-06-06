@@ -284,17 +284,11 @@ bool CShareData::InitShareData()
 		m_pShareData->m_Common.m_sGeneral.m_bStopsBothEndsWhenSearchWord = FALSE;	/* 単語単位で移動するときに、単語の両端で止まるか */
 		m_pShareData->m_Common.m_sGeneral.m_bStopsBothEndsWhenSearchParagraph = FALSE;	/* 単語単位で移動するときに、単語の両端で止まるか */
 
-		m_pShareData->m_Common.m_sSearch.m_sSearchOption.Reset();			// 検索オプション
-		m_pShareData->m_Common.m_sSearch.m_sSearchOption.bLoHiCase = true;
-		m_pShareData->m_Common.m_sSearch.m_bConsecutiveAll = 0;			// 「すべて置換」は置換の繰返し	// 2007.01.16 ryoji
-		m_pShareData->m_Common.m_sSearch.m_bSelectedArea = FALSE;			// 選択範囲内置換
 		m_pShareData->m_Common.m_sHelper.m_szExtHelp[0] = L'\0';			// 外部ヘルプ１
 		m_pShareData->m_Common.m_sHelper.m_szExtHtmlHelp[0] = L'\0';		// 外部HTMLヘルプ
 		
 		m_pShareData->m_Common.m_sHelper.m_szMigemoDll[0] = L'\0';			/* migemo dll */
 		m_pShareData->m_Common.m_sHelper.m_szMigemoDict[0] = L'\0';		/* migemo dict */
-
-		m_pShareData->m_Common.m_sSearch.m_bNOTIFYNOTFOUND = TRUE;		/* 検索／置換  見つからないときメッセージを表示 */
 
 		m_pShareData->m_Common.m_sGeneral.m_bCloseAllConfirm = FALSE;		/* [すべて閉じる]で他に編集用のウィンドウがあれば確認する */	// 2006.12.25 ryoji
 		m_pShareData->m_Common.m_sGeneral.m_bExitConfirm = FALSE;			/* 終了時の確認をする */
@@ -304,17 +298,6 @@ bool CShareData::InitShareData()
 		m_pShareData->m_Common.m_sGeneral.m_nHorizontalScrollByWheel = 0;	/* キー/マウスボタン + ホイールスクロールで横スクロールする */		// 2009.01.17 nasukoji
 
 		m_pShareData->m_Common.m_sEdit.m_bAddCRLFWhenCopy = false;			/* 折り返し行に改行を付けてコピー */
-		m_pShareData->m_Common.m_sSearch.m_bGrepSubFolder = TRUE;			/* Grep: サブフォルダも検索 */
-		m_pShareData->m_Common.m_sSearch.m_bGrepOutputLine = TRUE;			/* Grep: 行を出力するか該当部分だけ出力するか */
-		m_pShareData->m_Common.m_sSearch.m_nGrepOutputStyle = 1;			/* Grep: 出力形式 */
-		m_pShareData->m_Common.m_sSearch.m_bGrepDefaultFolder = true;		/* Grep: フォルダの初期値をカレントフォルダにする */
-		m_pShareData->m_Common.m_sSearch.m_nGrepCharSet = CODE_AUTODETECT;	/* Grep: 文字コードセット */
-		m_pShareData->m_Common.m_sSearch.m_bGrepRealTimeView = TRUE;		/* Grep: 結果のリアルタイム表示 */
-		m_pShareData->m_Common.m_sSearch.m_bCaretTextForSearch = false;		/* カーソル位置の文字列をデフォルトの検索文字列にする */
-		m_pShareData->m_Common.m_sSearch.m_bInheritKeyOtherView = true;
-		m_pShareData->m_Common.m_sSearch.m_szRegexpLib[0] =_T('\0');		/* 2007.08.12 genta 正規表現DLL */
-		m_pShareData->m_Common.m_sSearch.m_bGTJW_RETURN = TRUE;				/* エンターキーでタグジャンプ */
-		m_pShareData->m_Common.m_sSearch.m_bGTJW_LDBLCLK = TRUE;			/* ダブルクリックでタグジャンプ */
 
 //キーワード：ツールバー順序
 		//	Jan. 30, 2005 genta 関数として独立
@@ -379,7 +362,6 @@ bool CShareData::InitShareData()
 		m_pShareData->m_Common.m_sEdit.m_bUseOLE_DropSource = TRUE;			/* OLEによるドラッグ元にするか */
 		m_pShareData->m_Common.m_sGeneral.m_bDispExitingDialog = FALSE;		/* 終了ダイアログを表示する */
 		m_pShareData->m_Common.m_sEdit.m_bSelectClickedURL = TRUE;			/* URLがクリックされたら選択するか */
-		m_pShareData->m_Common.m_sSearch.m_bGrepExitConfirm = FALSE;			/* Grepモードで保存確認するか */
 //		m_pShareData->m_Common.m_bRulerDisp = TRUE;					/* ルーラー表示 */
 		m_pShareData->m_Common.m_sWindow.m_nRulerHeight = 13;					/* ルーラーの高さ */
 		m_pShareData->m_Common.m_sWindow.m_nRulerBottomSpace = 0;				/* ルーラーとテキストの隙間 */
@@ -422,6 +404,37 @@ bool CShareData::InitShareData()
 			m_pShareData->m_Common.m_sFile.m_nAlertFileSize = 10;			// 警告を始めるファイルサイズ（MB単位）
 		}
 
+		//[検索]タブ
+		{
+			m_pShareData->m_Common.m_sSearch.m_sSearchOption.Reset();			// 検索オプション
+
+			m_pShareData->m_Common.m_sSearch.m_bCaretTextForSearch = false;		/* カーソル位置の文字列をデフォルトの検索文字列にする */
+			m_pShareData->m_Common.m_sSearch.m_bInheritKeyOtherView = true;
+			m_pShareData->m_Common.m_sSearch.m_szRegexpLib[0] =_T('\0');		/* 2007.08.12 genta 正規表現DLL */
+
+			m_pShareData->m_Common.m_sSearch.m_bNOTIFYNOTFOUND = TRUE;			/* 検索／置換  見つからないときメッセージを表示 */
+			m_pShareData->m_Common.m_sSearch.m_sSearchOption.bLoHiCase = true;
+
+			m_pShareData->m_Common.m_sSearch.m_bSearchAll = FALSE;				/* 検索／置換／ブックマーク  先頭（末尾）から再検索 2002.01.26 hor */
+			m_pShareData->m_Common.m_sSearch.m_bAutoCloseDlgFind = TRUE;		/* 検索ダイアログを自動的に閉じる */
+
+			m_pShareData->m_Common.m_sSearch.m_bAutoCloseDlgReplace = TRUE;		/* 置換 ダイアログを自動的に閉じる */
+			m_pShareData->m_Common.m_sSearch.m_bConsecutiveAll = 0;				// 「すべて置換」は置換の繰返し	// 2007.01.16 ryoji
+			m_pShareData->m_Common.m_sSearch.m_bSelectedArea = FALSE;			// 選択範囲内置換
+
+			m_pShareData->m_Common.m_sSearch.m_bGrepExitConfirm = FALSE;		/* Grepモードで保存確認するか */
+			m_pShareData->m_Common.m_sSearch.m_bGrepRealTimeView = TRUE;		/* Grep: 結果のリアルタイム表示 */
+
+			m_pShareData->m_Common.m_sSearch.m_bGrepSubFolder = TRUE;			/* Grep: サブフォルダも検索 */
+			m_pShareData->m_Common.m_sSearch.m_bGrepOutputLine = TRUE;			/* Grep: 行を出力するか該当部分だけ出力するか */
+			m_pShareData->m_Common.m_sSearch.m_nGrepOutputStyle = 1;			/* Grep: 出力形式 */
+			m_pShareData->m_Common.m_sSearch.m_bGrepDefaultFolder = true;		/* Grep: フォルダの初期値をカレントフォルダにする */
+			m_pShareData->m_Common.m_sSearch.m_nGrepCharSet = CODE_AUTODETECT;	/* Grep: 文字コードセット */
+
+			m_pShareData->m_Common.m_sSearch.m_bGTJW_RETURN = TRUE;				/* エンターキーでタグジャンプ */
+			m_pShareData->m_Common.m_sSearch.m_bGTJW_LDBLCLK = TRUE;			/* ダブルクリックでタグジャンプ */
+		}
+
 		m_pShareData->m_Common.m_sEdit.m_bNotOverWriteCRLF = TRUE;			/* 改行は上書きしない */
 		m_pShareData->m_Common.m_sEdit.m_bOverWriteFixMode = false;			// 文字幅に合わせてスペースを詰める
 		::SetRect( &m_pShareData->m_Common.m_sOthers.m_rcOpenDialog, 0, 0, 0, 0 );	/* 「開く」ダイアログのサイズと位置 */
@@ -431,11 +444,8 @@ bool CShareData::InitShareData()
 		::SetRect( &m_pShareData->m_Common.m_sOthers.m_rcTagJumpDialog, 0, 0, 0, 0 );
 		m_pShareData->m_Common.m_sEdit.m_eOpenDialogDir = OPENDIALOGDIR_CUR;
 		auto_strcpy(m_pShareData->m_Common.m_sEdit.m_OpenDialogSelDir, _T("%Personal%\\"));
-		m_pShareData->m_Common.m_sSearch.m_bAutoCloseDlgFind = TRUE;			/* 検索ダイアログを自動的に閉じる */
-		m_pShareData->m_Common.m_sSearch.m_bSearchAll		 = FALSE;			/* 検索／置換／ブックマーク  先頭（末尾）から再検索 2002.01.26 hor */
 		m_pShareData->m_Common.m_sWindow.m_bScrollBarHorz = TRUE;				/* 水平スクロールバーを使う */
 		m_pShareData->m_Common.m_sOutline.m_bAutoCloseDlgFuncList = TRUE;		/* アウトライン ダイアログを自動的に閉じる */	//Nov. 18, 2000 JEPRO TRUE→FALSE に変更
-		m_pShareData->m_Common.m_sSearch.m_bAutoCloseDlgReplace = TRUE;		/* 置換 ダイアログを自動的に閉じる */
 		m_pShareData->m_Common.m_sEdit.m_bAutoColumnPaste = TRUE;			/* 矩形コピーのテキストは常に矩形貼り付け */
 		m_pShareData->m_Common.m_sGeneral.m_bNoCaretMoveByActivation = FALSE;	/* マウスクリックにてアクティベートされた時はカーソル位置を移動しない 2007.10.02 nasukoji (add by genta) */
 
