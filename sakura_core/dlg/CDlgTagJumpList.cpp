@@ -186,7 +186,7 @@ void CDlgTagJumpList::Empty( void )
 /*
 	モーダルダイアログの表示
 
-	@param[in] lParam 0=ダイレクトタグジャンプ, 1=キーワードを指定してタグジャンプ
+	@param[in] lParam 0=ダイレクトタグジャンプ, 1=シンボル検索(キーワード指定タグジャンプ)
 */
 int CDlgTagJumpList::DoModal(
 	HINSTANCE	hInstance,

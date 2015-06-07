@@ -962,7 +962,7 @@ void CMacro::HandleCommand(
 			}
 		}
 		break;	//	Jan. 29, 2005 genta ”²‚¯‚Ä‚¢‚½
-	case F_TAGJUMP_KEYWORD:	// @@ 2005.03.31 MIK
+	case F_SYMBOL_SEARCH:
 		{
 			//ˆø”‚ÍNULL‚Å‚àOK
 			pcEditView->GetCommander().HandleCommand( Index, false, (LPARAM)Argument[0], 0, 0, 0);

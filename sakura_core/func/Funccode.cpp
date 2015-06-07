@@ -338,7 +338,7 @@ const EFunctionCode pnFuncList_Search[] = {	//Oct. 16, 2000 JEPRO 変数名変更(Lis
 	F_TAGJUMPBACK		,	//タグジャンプバック機能
 	F_TAGS_MAKE			,	//タグファイルの作成	//@@@ 2003.04.13 MIK
 	F_DIRECT_TAGJUMP	,	//ダイレクトタグジャンプ	//@@@ 2003.04.15 MIK
-	F_TAGJUMP_KEYWORD	,	//キーワードを指定してダイレクトタグジャンプ	//@@@ 2005.03.31 MIK
+	F_SYMBOL_SEARCH		,	//シンボル検索(キーワード指定タグジャンプ)
 	F_COMPARE			,	//ファイル内容比較
 	F_DIFF_DIALOG		,	//DIFF差分表示(ダイアログ)
 	F_DIFF_NEXT			,	//次の差分へ
@@ -794,7 +794,7 @@ int FuncID_To_HelpContextID( EFunctionCode nFuncID )
 	case F_TAGJUMP_LIST:		return HLP000281;	//タグジャンプ一覧	//@@@ 2003.04.17 MIK
 	case F_DIRECT_TAGJUMP:		return HLP000281;	//ダイレクトタグジャンプ	//@@@ 2003.04.17 MIK
 	case F_TAGJUMP_CLOSE:		return HLP000291;	//閉じてタグジャンプ(元ウィンドウClose)	// 2006.10.11 ryoji
-	case F_TAGJUMP_KEYWORD:		return HLP000310;	//キーワードを指定してタグジャンプ	// 2006.10.05 ryoji
+	case F_SYMBOL_SEARCH:		return HLP000310;	//シンボル検索(キーワード指定タグジャンプ)
 	case F_COMPARE:				return HLP000116;	//ファイル内容比較
 	case F_DIFF_DIALOG:			return HLP000251;	//DIFF差分表示(ダイアログ)	//@@@ 2002.05.25 MIK
 //	case F_DIFF:				return HLP000251;	//DIFF差分表示	//@@@ 2002.05.25 MIK
@@ -1197,7 +1197,7 @@ bool IsFuncEnable( CEditDoc* pcEditDoc, DLLSHAREDATA* pShareData, EFunctionCode 
 		return true;
 	// 20100402 Moca (無題)もダイレクトタグジャンプできるように
 	case F_DIRECT_TAGJUMP:	//ダイレクトタグジャンプ	//@@@ 2003.04.15 MIK
-	case F_TAGJUMP_KEYWORD:	//キーワードを指定してダイレクトタグジャンプ	//@@@ 2005.03.31 MIK
+	case F_SYMBOL_SEARCH:	//シンボル検索(キーワード指定タグジャンプ)
 	//	2003.05.12 MIK タグファイル作成先を選べるようにしたので、常に作成可能とする
 //	case F_TAGS_MAKE:	//タグファイルの作成	//@@@ 2003.04.13 MIK
 		if( false == CEditApp::getInstance()->m_pcGrepAgent->m_bGrepMode

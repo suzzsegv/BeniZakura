@@ -491,7 +491,7 @@ bool CViewCommander::Command_TagJumpByTagsFile( bool bClose )
 
 
 /*!
-	キーワードを指定してタグジャンプ(ダイアログ)
+	シンボル検索(キーワード指定タグジャンプ) ダイアログ
 	@param keyword NULL許容
 	@author MIK
 	@date 2005.03.31 新規作成

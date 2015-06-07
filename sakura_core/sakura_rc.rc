@@ -492,7 +492,7 @@ END
 
 IDD_TAGJUMPLIST DIALOGEX 0, 0, 482, 179
 STYLE DS_SETFONT | DS_CONTEXTHELP | WS_POPUP | WS_CLIPCHILDREN | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
-CAPTION "タグジャンプ"
+CAPTION "シンボル検索"
 FONT 12, "ＭＳ Ｐゴシック", 400, 0, 0x80
 BEGIN
     LTEXT           "DIR",IDC_STATIC_BASEDIR,6,162,468,12,SS_NOPREFIX
@@ -2345,7 +2345,7 @@ STRINGTABLE
 BEGIN
     F_DIRECT_TAGJUMP        "ダイレクトタグジャンプ"
     F_TAGJUMP_CLOSE         "閉じてタグジャンプ"
-    F_TAGJUMP_KEYWORD       "キーワードを指定してタグジャンプ..."
+    F_SYMBOL_SEARCH         "シンボル検索..."
     F_COMPARE               "ファイル内容比較..."
 END
 
