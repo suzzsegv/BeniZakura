@@ -604,7 +604,7 @@ const KeyData BenizakuraDefaultKeyBindTable[] = {
 	{ 'L',		_T("L"),			F_0,				F_0,				F_SEARCH_WORD,				F_0,				F_SEARCH_WORDEND,		F_0,				F_0,					F_0				},
 	{ 'M',		_T("M"),			F_0,				F_0,				F_BOOKMARK_SET,				F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ 'N',		_T("N"),			F_0,				F_0,				F_SEARCH_NEXT,				F_0,				F_NEXTWINDOW,			F_0,				F_0,					F_0				},
-	{ 'O',		_T("O"),			F_0,				F_0,				F_SHOW_EOL_CHAR,			F_SHOW_TAB_CHAR,	F_0,					F_0,				F_0,					F_0				},
+	{ 'O',		_T("O"),			F_0,				F_0,				F_SYMBOL_SEARCH,			F_SYMBOL_SEARCH,	F_0,					F_0,				F_0,					F_0				},
 	{ 'P',		_T("P"),			F_0,				F_0,				F_SEARCH_PREV,				F_0,				F_PREVWINDOW,			F_0,				F_0,					F_0				},
 	{ 'Q',		_T("Q"),			F_0,				F_0,				F_CUSTMENU_5,				F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ 'R',		_T("R"),			F_0,				F_0,				F_REPLACE_DIALOG,			F_GOFILETOP,		F_0,					F_0,				F_0,					F_0				},
