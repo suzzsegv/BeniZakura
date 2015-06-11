@@ -358,6 +358,45 @@ void CViewCommander::Command_EXECCOMMAND( LPCWSTR cmd_string, const int nFlgOpt,
 
 
 /*!
+	Calc ‚ð‹N“®‚·‚é.
+ */
+void CViewCommander::Command_ExecCalc( void )
+{
+	BOOL succeeded;
+	STARTUPINFO si;
+	PROCESS_INFORMATION pi;
+	const int CommandLineMax = 1024;
+	wchar_t CommandLine[CommandLineMax];
+
+	GetSystemDirectory(CommandLine, CommandLineMax);
+	wcscat_s(CommandLine, CommandLineMax, L"\\calc.exe");
+
+	ZeroMemory( &si, sizeof(si) );
+
+	succeeded = CreateProcessW
+		(
+			NULL,
+			CommandLine,
+			NULL,
+			NULL,
+			FALSE,
+			0,
+			NULL,
+			NULL,
+			&si,
+			&pi
+		);
+
+	if( succeeded == FALSE ){
+		return;
+	}
+
+	CloseHandle( pi.hThread );
+	CloseHandle( pi.hProcess );
+}
+
+
+/*!
 	Explorer ‚ð‹N“®‚·‚é.
  */
 void CViewCommander::Command_ExecExplorer( void )

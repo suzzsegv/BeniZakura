@@ -505,6 +505,7 @@ const int nFincList_Support_Num = _countof( pnFuncList_Support );	//Oct. 16, 200
 
 /* ÇªÇÃëº */	//Oct. 16, 2000 JEPRO ïœêîñºïœçX(List12Å®List_Others)
 const EFunctionCode pnFuncList_Others[] = {
+	F_EXEC_CALC,
 	F_EXEC_EXPLORER,
 	F_EXEC_THG_ANNOTATE
 };

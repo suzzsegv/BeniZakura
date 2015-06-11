@@ -537,7 +537,7 @@ const KeyData BenizakuraDefaultKeyBindTable[] = {
 	{ VK_F4,	_T("F4" ),			F_CUSTMENU_4,		F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ VK_F5,	_T("F5" ),			F_OPTION,			F_BOOKMARK_VIEW,	F_OPTION_TYPE,				F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ VK_F6,	_T("F6" ),			F_BEGIN_SEL,		F_BEGIN_BOX,		F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
-	{ VK_F7,	_T("F7" ),			F_CUT,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
+	{ VK_F7,	_T("F7" ),			F_CUT,				F_EXEC_CALC,		F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ VK_F8,	_T("F8" ),			F_COPY,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ VK_F9,	_T("F9" ),			F_PASTE,			F_PASTEBOX,			F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ VK_F10,	_T("F10"),			F_TAGJUMP,			F_TAGJUMPBACK,		F_SYMBOL_SEARCH,			F_0,				F_TAGS_MAKE,			F_0,				F_0,					F_0				},

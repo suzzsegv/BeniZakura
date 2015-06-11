@@ -2447,6 +2447,7 @@ BEGIN
     F_EXECMD                "外部コマンド実行"
     F_EXEC_THG_ANNOTATE     "TortoiseHg annotate 起動"
     F_EXEC_EXPLORER         "Explorer 起動"
+    F_EXEC_CALC             "電卓"
 END
 
 STRINGTABLE
