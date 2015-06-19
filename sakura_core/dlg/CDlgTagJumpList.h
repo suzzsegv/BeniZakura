@@ -160,7 +160,7 @@ private:
 	UINT	m_nTimerId;		//!< タイマ番号
 	bool	m_bNextItem;	//!< まだ次にヒットするものがある
 	POINT	m_ptDefaultSize;
-	RECT	m_rcItems[11];
+	RECT	m_rcItems[2];
 };
 
 #endif	//SAKURA_CDLGTAGJUMPLIST_H_
