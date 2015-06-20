@@ -251,6 +251,9 @@ void CDlgTagJumpList::UpdateData( bool bInit )
 
 	count = m_pcList->GetCount();
 
+	const int SymbolNameMax = 64;
+	wchar_t symbolName[SymbolNameMax + 1];
+	symbolName[SymbolNameMax] = 0;
 	TCHAR	tmp[32];
 	for( nIndex = 0; nIndex < count; nIndex++ )
 	{
@@ -258,11 +261,25 @@ void CDlgTagJumpList::UpdateData( bool bInit )
 		item = m_pcList->GetPtr( nIndex );
 		if( NULL == item ) break;
 
-		lvi.mask     = LVIF_TEXT;
-		lvi.iItem    = nIndex;
-		lvi.iSubItem = 0;
-		lvi.pszText  = item->keyword;
-		ListView_InsertItem( hwndList, &lvi );
+		TCHAR	*p;
+		p = GetNameByType( item->type, item->filename );
+		{
+			if( wcscmp( p, L"function" ) == 0 ){
+				_snwprintf( symbolName, SymbolNameMax, L"%s()", item->keyword );
+			}else if( (wcscmp( p, L"struct" ) == 0) || (wcscmp( p, L"class" ) == 0) ){
+				_snwprintf( symbolName, SymbolNameMax, L"%s::", item->keyword );
+			}else{
+				_snwprintf( symbolName, SymbolNameMax, L"%s", item->keyword );
+			}
+
+			lvi.mask     = LVIF_TEXT;
+			lvi.iItem    = nIndex;
+			lvi.iSubItem = 0;
+			lvi.pszText  = symbolName;
+			ListView_InsertItem( hwndList, &lvi );
+			ListView_SetItemText( hwndList, nIndex, 3, p );
+		}
+		free( p );
 
 		if( item->baseDirId ){
 			auto_sprintf( tmp, _T("(%d)"), item->depth );
@@ -273,11 +290,6 @@ void CDlgTagJumpList::UpdateData( bool bInit )
 
 		auto_sprintf( tmp, _T("%d"), item->no );
 		ListView_SetItemText( hwndList, nIndex, 2, tmp );
-
-		TCHAR	*p;
-		p = GetNameByType( item->type, item->filename );
-		ListView_SetItemText( hwndList, nIndex, 3, p );
-		free( p );
 
 		ListView_SetItemText( hwndList, nIndex, 4, item->filename );
 
