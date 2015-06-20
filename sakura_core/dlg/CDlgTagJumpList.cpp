@@ -281,19 +281,12 @@ void CDlgTagJumpList::UpdateData( bool bInit )
 		}
 		free( p );
 
-		if( item->baseDirId ){
-			auto_sprintf( tmp, _T("(%d)"), item->depth );
-		}else{
-			auto_sprintf( tmp, _T("%d"), item->depth );
-		}
-		ListView_SetItemText( hwndList, nIndex, 1, tmp );
+		ListView_SetItemText( hwndList, nIndex, 1, item->filename );
 
 		auto_sprintf( tmp, _T("%d"), item->no );
 		ListView_SetItemText( hwndList, nIndex, 2, tmp );
 
-		ListView_SetItemText( hwndList, nIndex, 4, item->filename );
-
-		ListView_SetItemText( hwndList, nIndex, 5, item->note );
+		ListView_SetItemText( hwndList, nIndex, 4, item->note );
 
 		ListView_SetItemState( hwndList, nIndex, 0, LVIS_SELECTED | LVIS_FOCUSED );
 	}
@@ -318,7 +311,7 @@ void CDlgTagJumpList::UpdateData( bool bInit )
 //		ListView_SetItemText( hwndList, nIndex, 1, _T("") );
 //		ListView_SetItemText( hwndList, nIndex, 2, _T("") );
 //		ListView_SetItemText( hwndList, nIndex, 3, _T("") );
-		ListView_SetItemText( hwndList, nIndex, 4, const_cast<TCHAR*>(pszMsgText) );
+		ListView_SetItemText( hwndList, nIndex, 1, const_cast<TCHAR*>(pszMsgText) );
 //		ListView_SetItemText( hwndList, nIndex, 5, _T("") );
 	}
 
@@ -428,14 +421,14 @@ BOOL CDlgTagJumpList::OnInitDialog( HWND hwndDlg, WPARAM wParam, LPARAM lParam )
 	col.mask     = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM;
 	col.fmt      = LVCFMT_LEFT;
 	col.cx       = nWidth * 20 / 100;
-	col.pszText  = _T("キーワード");
+	col.pszText  = _T("シンボル");
 	col.iSubItem = 0;
 	ListView_InsertColumn( hwndList, 0, &col );
 
 	col.mask     = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM;
-	col.fmt      = LVCFMT_CENTER;
-	col.cx       = nWidth * 7 / 100;
-	col.pszText  = _T("階層");
+	col.fmt      = LVCFMT_LEFT;
+	col.cx       = nWidth * 35 / 100;
+	col.pszText  = _T("ファイル名");
 	col.iSubItem = 1;
 	ListView_InsertColumn( hwndList, 1, &col );
 
@@ -455,17 +448,10 @@ BOOL CDlgTagJumpList::OnInitDialog( HWND hwndDlg, WPARAM wParam, LPARAM lParam )
 
 	col.mask     = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM;
 	col.fmt      = LVCFMT_LEFT;
-	col.cx       = nWidth * 35 / 100;
-	col.pszText  = _T("ファイル名");
-	col.iSubItem = 4;
-	ListView_InsertColumn( hwndList, 4, &col );
-
-	col.mask     = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM;
-	col.fmt      = LVCFMT_LEFT;
 	col.cx       = nWidth * 21 / 100;
 	col.pszText  = _T("備考");
-	col.iSubItem = 5;
-	ListView_InsertColumn( hwndList, 5, &col );
+	col.iSubItem = 4;
+	ListView_InsertColumn( hwndList, 4, &col );
 
 	/* 行選択 */
 	lngStyle = ListView_GetExtendedListViewStyle( hwndList );
