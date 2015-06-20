@@ -480,10 +480,16 @@ BOOL CDlgTagJumpList::OnBnClicked( int wID )
 	switch( wID )
 	{
 	case IDOK:			/* 左右に表示 */
-		StopTimer();
-		/* ダイアログデータの取得 */
-		::EndDialog( GetHwnd(), (BOOL)GetData() );
-		return TRUE;
+		{
+			BOOL succeeded = GetData();
+			if( succeeded == TRUE ){
+				StopTimer();
+				::EndDialog( GetHwnd(), succeeded );
+				return TRUE;
+			}
+			return FALSE;
+		}
+		break;
 
 	case IDCANCEL:
 		StopTimer();
