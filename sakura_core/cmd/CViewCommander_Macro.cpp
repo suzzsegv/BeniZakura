@@ -397,6 +397,50 @@ void CViewCommander::Command_ExecCalc( void )
 
 
 /*!
+	Command Prompt ‚ð‹N“®‚·‚é.
+ */
+void CViewCommander::Command_ExecCommandPrompt( void )
+{
+	BOOL succeeded;
+	STARTUPINFO si;
+	PROCESS_INFORMATION pi;
+	const int CommandLineMax = 1024;
+	wchar_t CommandLine[CommandLineMax];
+	wchar_t CurrentFilePathName[_MAX_PATH];
+
+	CSakuraEnvironment::ExpandParameter( L"$e", CurrentFilePathName, (_MAX_PATH - 1) );
+
+	GetSystemDirectory(CommandLine, CommandLineMax);
+	wcscat_s(CommandLine, CommandLineMax, L"\\cmd.exe /K \"cd ");
+	wcscat_s(CommandLine, CommandLineMax, CurrentFilePathName);
+	wcscat_s(CommandLine, CommandLineMax, L"\"");
+
+	ZeroMemory( &si, sizeof(si) );
+
+	succeeded = CreateProcessW
+		(
+			NULL,
+			CommandLine,
+			NULL,
+			NULL,
+			FALSE,
+			0,
+			NULL,
+			NULL,
+			&si,
+			&pi
+		);
+
+	if( succeeded == FALSE ){
+		return;
+	}
+
+	CloseHandle( pi.hThread );
+	CloseHandle( pi.hProcess );
+}
+
+
+/*!
 	Explorer ‚ð‹N“®‚·‚é.
  */
 void CViewCommander::Command_ExecExplorer( void )

@@ -613,7 +613,7 @@ const KeyData BenizakuraDefaultKeyBindTable[] = {
 	{ 'U',		_T("U"),			F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ 'V',		_T("V"),			F_0,				F_0,				F_PASTE,					F_LineDeleteToStart,F_0,					F_0,				F_0,					F_0				},
 	{ 'W',		_T("W"),			F_0,				F_0,				F_WINCLOSE,					F_0,				F_0,					F_0,				F_0,					F_0				},
-	{ 'X',		_T("X"),			F_0,				F_0,				F_CUT,						F_0,				F_0,					F_0,				F_0,					F_0				},
+	{ 'X',		_T("X"),			F_0,				F_0,				F_CUT,						F_EXEC_CMD_PROMPT,	F_0,					F_0,				F_0,					F_0				},
 	{ 'Y',		_T("Y"),			F_0,				F_0,				F_CUT_LINE,					F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ 'Z',		_T("Z"),			F_0,				F_0,				F_UNDO,						F_REDO,				F_REDO,					F_0,				F_0,					F_0				},
 

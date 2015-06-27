@@ -358,6 +358,7 @@ public:
 //	To Here 2006.12.03 maru à¯êîÇÃägí£
 
 	void CViewCommander::Command_ExecCalc( void );
+	void CViewCommander::Command_ExecCommandPrompt( void );
 	void CViewCommander::Command_ExecExplorer( void );
 	void CViewCommander::Command_ExecThgAnnotate( void );
 

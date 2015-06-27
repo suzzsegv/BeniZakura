@@ -556,6 +556,10 @@ BOOL CViewCommander::HandleCommand(
 		Command_ExecCalc();
 		break;
 
+	case F_EXEC_CMD_PROMPT:
+		Command_ExecCommandPrompt();
+		break;
+
 	case F_EXEC_EXPLORER:
 		Command_ExecExplorer();
 		break;
