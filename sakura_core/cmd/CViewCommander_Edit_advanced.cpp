@@ -47,19 +47,6 @@ using namespace std; // 2002/2/3 aroka to here
 /* インデント ver1 */
 void CViewCommander::Command_INDENT( wchar_t wcChar, EIndentType eIndent )
 {
-	using namespace WCODE;
-
-#if 1	// ↓ここを残せば選択幅ゼロを最大にする（従来互換挙動）。無くても Command_INDENT() ver0 が適切に動作するように変更されたので、削除しても特に不都合にはならない。
-	// From Here 2001.12.03 hor
-	/* SPACEorTABインンデントで矩形選択桁がゼロの時は選択範囲を最大にする */
-	//	Aug. 14, 2005 genta 折り返し幅をLayoutMgrから取得するように
-	if( INDENT_NONE != eIndent && m_pCommanderView->GetSelectionInfo().IsBoxSelecting() && GetSelect().GetFrom().x==GetSelect().GetTo().x ){
-		GetSelect().SetToX( GetDocument()->m_cLayoutMgr.GetMaxLineKetas() );
-		m_pCommanderView->RedrawAll();
-		return;
-	}
-	// To Here 2001.12.03 hor
-#endif
 	Command_INDENT( &wcChar, CLogicInt(1), eIndent );
 	return;
 }
