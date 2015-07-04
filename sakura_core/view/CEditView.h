@@ -263,6 +263,11 @@ public:
 	void DeleteCompatibleBitmap();							//!< メモリBMPを削除
 
 public:
+	void DispZeroWidthSelected(
+		CGraphics& gr,			//!< 作画するウィンドウのDC
+		CLayoutInt nLineNum,	//!< 処理対象レイアウト行番号(0開始)
+		const CMyPoint&	ptXY	//!< 相対レイアウト0桁目の左端座標, 対象行の上端座標
+	);
 	void DispTextSelected( HDC hdc, CLayoutInt nLineNum, const CMyPoint& ptXY, CLayoutInt nX_Layout );	/* テキスト反転 */
 	void RedrawAll();											/* フォーカス移動時の再描画 */
 	void Redraw();										// 2001/06/21 asa-o 再描画

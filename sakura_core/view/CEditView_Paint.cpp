@@ -1072,6 +1072,14 @@ bool CEditView::DrawLayoutLine(SColorStrategyInfo* pInfo)
 		pInfo->pDispPos->GetDrawPos().y + nLineHeight
 	);
 
+	if(pcLayout){
+		DispZeroWidthSelected(
+			pInfo->gr,
+			pInfo->pDispPos->GetLayoutLineRef(),
+			CMyPoint(pInfo->sDispPosBegin.GetDrawPos().x, pInfo->pDispPos->GetDrawPos().y)
+		);
+	}
+
 	// 反転描画
 	if( pcLayout && GetSelectionInfo().IsTextSelected() ){
 		DispTextSelected(
@@ -1090,6 +1098,70 @@ bool CEditView::DrawLayoutLine(SColorStrategyInfo* pInfo)
 
 
 
+
+
+/*!
+	ゼロ幅矩形選択の直線表示
+ */
+void CEditView::DispZeroWidthSelected(
+	CGraphics& gr,			//!< 作画するウィンドウのDC
+	CLayoutInt nLineNum,	//!< 処理対象レイアウト行番号(0開始)
+	const CMyPoint&	ptXY	//!< 相対レイアウト0桁目の左端座標, 対象行の上端座標
+)
+{
+	if(GetSelectionInfo().IsTextSelected() == false){
+		return;
+	}
+
+	CLayoutRange& sSelect = GetSelectionInfo().m_sSelect;
+	// 対象行が選択範囲外の場合はリターン
+	if(nLineNum < sSelect.GetFrom().y || nLineNum > sSelect.GetTo().y){
+		return;
+	}
+	// 選択範囲がゼロ幅の可能性がない場合にはリターン
+	if(sSelect.GetFrom().x != sSelect.GetTo().x){
+		return;
+	}
+
+	const CLayout* pcLayout = m_pcEditDoc->m_cLayoutMgr.SearchLineByLayoutY(nLineNum);
+	CLayoutRange selectArea = GetSelectionInfo().GetSelectAreaLine(nLineNum, pcLayout);
+	CLayoutInt nSelectFrom = selectArea.GetFrom().x;
+	CLayoutInt nSelectTo = selectArea.GetTo().x;
+
+	// 選択範囲がゼロ幅ではない場合にはリターン
+	if(nSelectFrom != nSelectTo){
+		return;
+	}
+	// 選択範囲の X 位置が画面外の場合にはリターン
+	if(nSelectFrom > GetTextArea().GetRightCol()
+	|| nSelectFrom < GetTextArea().GetViewLeftCol()){
+		return;
+	}
+
+	// 描画
+	int nCharWidth = GetTextMetrics().GetHankakuDx();
+	int nLineHeight = GetTextMetrics().GetHankakuDy();
+	RECT rcClip;
+
+	rcClip.left = ptXY.x + (Int)nSelectFrom * nCharWidth;
+	rcClip.right = rcClip.left + t_max(nCharWidth / 6, 1);
+	rcClip.top = ptXY.y;
+	rcClip.bottom = ptXY.y + nLineHeight;
+
+#if 0
+	// αブレンドあり
+	CTypeSupport cTextType(this, COLORIDX_TEXT);
+	CTypeSupport cSelectType(this, COLORIDX_SELECT);
+	COLORREF crSelect = GetBackColorByColorInfo2(cSelectType.GetColorInfo(), cTextType.GetColorInfo());
+#else
+	// αブレンドなし
+	CTypeSupport cSelectType(this, COLORIDX_SELECT);
+	COLORREF crSelect = cSelectType.GetBackColor();
+#endif
+
+	HBRUSH hbrSelect = ::CreateSolidBrush(crSelect);
+	::FillRect(gr, &rcClip, hbrSelect);
+}
 
 
 /* テキスト反転
