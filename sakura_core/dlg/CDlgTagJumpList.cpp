@@ -268,6 +268,8 @@ void CDlgTagJumpList::UpdateData( bool bInit )
 				_snwprintf( symbolName, SymbolNameMax, L"%s()", item->keyword );
 			}else if( (wcscmp( p, L"struct" ) == 0) || (wcscmp( p, L"class" ) == 0) ){
 				_snwprintf( symbolName, SymbolNameMax, L"%s::", item->keyword );
+			}else if( wcscmp( p, L"prototype" ) == 0 ){
+				_snwprintf( symbolName, SymbolNameMax, L"%s();", item->keyword );
 			}else{
 				_snwprintf( symbolName, SymbolNameMax, L"%s", item->keyword );
 			}
