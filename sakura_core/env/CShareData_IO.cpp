@@ -27,12 +27,16 @@
 #include "env/CShareData_IO.h"
 #include "doc/CDocTypeSetting.h" // ColorInfo !!
 #include "CShareData.h"
+#include "util/module.h"
 #include "util/string_ex2.h"
 #include "util/window.h"
 #include "view/CEditView.h" // SColorStrategyInfo
 #include "view/colors/CColorStrategy.h"
 #include "plugin/CPlugin.h"
 #include "uiparts/CMenuDrawer.h"
+
+#define MRU_INI_FILE_NAME L"BeniZakura.mru.ini"
+
 
 void ShareData_IO_Sub_LogFont( CDataProfile& cProfile, const WCHAR* pszSecName,
 	const WCHAR* pszKeyLf, const WCHAR* pszKeyPointSize, const WCHAR* pszKeyFaceName, LOGFONT& lf, INT& nPointSize );
@@ -52,6 +56,7 @@ void SetValueLimit(T& target, int maxval)
 /* 共有データのロード */
 bool CShareData_IO::LoadShareData()
 {
+	loadMruIniFile();
 	return ShareData_IO_2( true );
 }
 
@@ -59,6 +64,7 @@ bool CShareData_IO::LoadShareData()
 void CShareData_IO::SaveShareData()
 {
 	ShareData_IO_2( false );
+	saveMruIniFile();
 }
 
 /*!
@@ -118,7 +124,6 @@ bool CShareData_IO::ShareData_IO_2( bool bRead )
 	CMenuDrawer* pcMenuDrawer = new CMenuDrawer; // 2010/7/4 Uchi
 
 	// Feb. 12, 2006 D.S.Koba
-	ShareData_IO_Mru( cProfile );
 	ShareData_IO_Keys( cProfile );
 	ShareData_IO_Grep( cProfile );
 	ShareData_IO_Folders( cProfile );
@@ -149,6 +154,39 @@ bool CShareData_IO::ShareData_IO_2( bool bRead )
 //	MYTRACE( _T("Iniファイル処理 所要時間(ミリ秒) = %d\n"), cRunningTimerStart.Read() );
 
 	return true;
+}
+
+/*!
+	MRU 用 ini ファイル読み込み
+*/
+void CShareData_IO::loadMruIniFile(void)
+{
+	CDataProfile cProfile;
+	wchar_t fullPathIniFileName[_MAX_PATH + 1];
+
+	GetInidir(fullPathIniFileName, MRU_INI_FILE_NAME);
+
+	cProfile.SetReadingMode();
+	if(cProfile.ReadProfile(fullPathIniFileName) == false){
+		return;
+	}
+	ShareData_IO_Mru(cProfile);
+}
+
+/*!
+	MRU 用 ini ファイル保存
+*/
+void CShareData_IO::saveMruIniFile(void)
+{
+	CDataProfile cProfile;
+	wchar_t fullPathIniFileName[_MAX_PATH + 1];
+
+	cProfile.SetWritingMode();
+
+	GetInidir(fullPathIniFileName, MRU_INI_FILE_NAME);
+
+	ShareData_IO_Mru( cProfile );
+	cProfile.WriteProfile( fullPathIniFileName, L" 最近使ったファイル/フォルダ" );
 }
 
 /*!

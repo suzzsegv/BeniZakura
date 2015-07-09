@@ -42,6 +42,8 @@ public:
 
 protected:
 	static bool ShareData_IO_2( bool );	/* 共有データの保存 */
+	static void loadMruIniFile(void);
+	static void saveMruIniFile(void);
 
 	// Feb. 12, 2006 D.S.Koba
 	static void ShareData_IO_Mru( CDataProfile& );
