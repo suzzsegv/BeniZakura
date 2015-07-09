@@ -356,12 +356,10 @@ static void GetAccessKeyLabelByIndex(TCHAR* pszLabel, bool bEspaceAmp, int index
 		if( bEspaceAmp ){
 			pszLabel[0] = _T('&');
 			pszLabel[1] = c;
-			pszLabel[2] = _T(' ');
-			pszLabel[3] = _T('\0');
+			pszLabel[2] = _T('\0');
 		}else{
 			pszLabel[0] = c;
-			pszLabel[1] = _T(' ');
-			pszLabel[2] = _T('\0');
+			pszLabel[1] = _T('\0');
 		}
 	}else{
 		pszLabel[0] = _T('\0');
@@ -454,14 +452,15 @@ bool CFileNameManager::GetMenuFullLabel(
 		}
 		pszName = szFileName;
 	}
-	const TCHAR* pszCharset = _T("");
-	if( IsValidCodeType(nCharCode)){
-		pszCharset = CCodeTypeName(nCharCode).Bracket();
-	}
-	
-	int ret = auto_snprintf_s( pszOutput, nBuffSize, _T("%ts%ts%ts %ts%ts"),
-		szAccKey, (bFavorite ? _T("Åö ") : _T("")), pszName,
-		(bModified ? _T("*"):_T(" ")), pszCharset
+
+	TCHAR szFolder[_MAX_DIR];
+	TCHAR szFile[_MAX_FNAME];
+	SplitPath_FolderAndFile( pszName, szFolder, szFile );
+
+	int ret = auto_snprintf_s( pszOutput, nBuffSize, _T("%ts%ts%ts / %ts\\ (%ts)"),
+		(bFavorite ? _T("Åö ") : _T("")), szFile, (bModified ? _T("*"):_T("")),
+		szFolder,
+		szAccKey
 	);
 	return 0 < ret;
 }

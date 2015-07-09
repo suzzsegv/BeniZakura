@@ -83,10 +83,10 @@ HMENU CMRUFolder::CreateMenu( HMENU	hMenuPopUp, CMenuDrawer* pCMenuDrawer ) cons
 
 		bFavorite = m_cRecentFolder.IsFavorite( i );
 		const int nAccKey = i % 36;
-		auto_sprintf( szMemu, _T("&%tc %ts%ts"), 
-			(nAccKey < 10) ? (_T('0') + nAccKey) : (_T('A') + nAccKey - 10), 
+		auto_sprintf( szMemu, _T("%ts%ts (&%tc)"), 
 			(!m_pShareData->m_Common.m_sWindow.m_bMenuIcon && bFavorite) ? _T("Åö ") : _T(""),
-			szFolder2 );
+			szFolder2,
+			(nAccKey < 10) ? (_T('0') + nAccKey) : (_T('A') + nAccKey - 10) );
 
 		//	ÉÅÉjÉÖÅ[Ç…í«â¡
 		pCMenuDrawer->MyAppendMenu( hMenuPopUp, MF_BYPOSITION | MF_STRING, IDM_SELOPENFOLDER + i, szMemu, _T(""), TRUE,
