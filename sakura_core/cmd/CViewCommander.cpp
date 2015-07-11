@@ -751,6 +751,9 @@ void CViewCommander::Command_SearchWord(void)
 	m_pCommanderView->m_sCurSearchOption.bLoHiCase = true;
 	m_pCommanderView->m_sCurSearchOption.bWordOnly = bWordOnly;
 
+	// 検索開始位置を登録
+	m_pCommanderView->m_ptSrchStartPos_PHY = m_pCommanderView->GetCaret().GetCaretLogicPos();
+
 	// 共有データへ登録
 	if(cmemCurText.GetStringLength() < _MAX_PATH){
 		CSearchKeywordManager().AddToSearchKeyArr(cmemCurText.GetStringPtr());
