@@ -1301,7 +1301,7 @@ void CShareData::InitPopupMenu(DLLSHAREDATA* pShareData)
 	rMenu.m_nCustMenuItemKeyArr[5][n] = '\0';
 	n++;
 	rMenu.m_nCustMenuItemFuncArr[5][n] = F_VIEWMODE;
-	rMenu.m_nCustMenuItemKeyArr[5][n] = 'T';
+	rMenu.m_nCustMenuItemKeyArr[5][n] = 'V';
 	n++;
 	rMenu.m_nCustMenuItemNumArr[5] = n;
 
