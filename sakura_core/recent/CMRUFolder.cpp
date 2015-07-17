@@ -19,6 +19,7 @@
 #include "env/CShareData.h"
 #include "env/DLLSHAREDATA.h"
 #include "uiparts/CMenuDrawer.h"	//	これでいいのか？
+#include "util/string_ex.h"
 #include "util/string_ex2.h"
 
 /*!	コンストラクタ
@@ -77,6 +78,7 @@ HMENU CMRUFolder::CreateMenu( HMENU	hMenuPopUp, CMenuDrawer* pCMenuDrawer ) cons
 		if ( i >= m_cRecentFolder.GetViewCount() ) break;
 
 		CFileNameManager::getInstance()->GetTransformFileNameFast( m_cRecentFolder.GetItemText( i ), szMemu, _MAX_PATH );
+		wcsReplace( szMemu, L'\\', L'/' );
 		//	&を&&に置換。
 		//	Jan. 19, 2002 genta
 		dupamp( szMemu, szFolder2 );

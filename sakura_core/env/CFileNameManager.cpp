@@ -33,6 +33,7 @@
 #include "util/module.h"
 #include "util/os.h"
 #include "util/shell.h"
+#include "util/string_ex.h"
 #include "util/string_ex2.h"
 #include "_main/CCommandLine.h"
 #include "_os/COsVersionInfo.h"
@@ -434,7 +435,6 @@ bool CFileNameManager::GetMenuFullLabel(
 	GetAccessKeyLabelByIndex( szAccKey, bEspaceAmp, index, bAccKeyZeroOrigin );
 	if( pszFile[0] ){
 		this->GetTransformFileNameFast( pszFile, szFileName, _MAX_PATH );
-
 		// szFileName Å® szMenu2
 		//	Jan. 19, 2002 genta
 		//	ÉÅÉjÉÖÅ[ï∂éöóÒÇÃ&Ççló∂
@@ -456,8 +456,9 @@ bool CFileNameManager::GetMenuFullLabel(
 	TCHAR szFolder[_MAX_DIR];
 	TCHAR szFile[_MAX_FNAME];
 	SplitPath_FolderAndFile( pszName, szFolder, szFile );
+	wcsReplace( szFolder, L'\\', L'/' );
 
-	int ret = auto_snprintf_s( pszOutput, nBuffSize, _T("%ts%ts%ts / %ts\\ (%ts)"),
+	int ret = auto_snprintf_s( pszOutput, nBuffSize, _T("%ts%ts%ts  -  %ts (%ts)"),
 		(bFavorite ? _T("Åö ") : _T("")), szFile, (bModified ? _T("*"):_T("")),
 		szFolder,
 		szAccKey

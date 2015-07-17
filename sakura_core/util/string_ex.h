@@ -133,6 +133,9 @@ int my_strnicmp( const char *s1, const char *s2, size_t n );
 bool isIncludedCharsByCaseSensitive(const char* pStr, const char* pMatchChars);
 bool isIncludedCharsByCaseInsensitive(const char* pStr, const char* pMatchChars);
 
+// •¶Žš—ñ’†‚Ì•¶Žš’uŠ·
+void wcsReplace(wchar_t* pStr, wchar_t oldChar, wchar_t newChar);
+
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 //                           ŒÝŠ·                              //

@@ -314,6 +314,29 @@ bool isIncludedCharsByCaseInsensitive(const char* pStr, const char* pMatchChars)
 
 
 
+/*!
+	文字列中の文字置換
+
+	@param pStr: 置換対象の文字列.
+	@param oldChar: 置換対象の文字.
+	@param newChar: 置換後の文字.
+
+	@retval N/A
+ */
+void wcsReplace(wchar_t* pStr, wchar_t oldChar, wchar_t newChar)
+{
+	wchar_t c;
+
+	c = *pStr;
+	while(c != L'\0'){
+		if(c == oldChar){
+			*pStr = newChar;
+		}
+		pStr++;
+		c = *pStr;
+	}
+}
+
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 //                           互換                              //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
