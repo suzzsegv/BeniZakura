@@ -1109,7 +1109,7 @@ void CEditView::DispZeroWidthSelected(
 	const CMyPoint&	ptXY	//!< 相対レイアウト0桁目の左端座標, 対象行の上端座標
 )
 {
-	if(GetSelectionInfo().IsTextSelected() == false){
+	if(GetSelectionInfo().IsBoxSelecting() == false){
 		return;
 	}
 
