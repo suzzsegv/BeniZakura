@@ -872,7 +872,7 @@ void CGrepAgent::SetGrepResult(
 
 	/* ÉmÅ[É}Éã */
 	if( 1 == nGrepOutputStyle ){
-		nWorkLen = ::auto_sprintf( pWork, L"%ts(%d,%d)%ts: ", pszFullPath, nLine, nColumn, pszCodeName );
+		nWorkLen = ::auto_sprintf( pWork, L"%ts(%d,%d): ", pszFullPath, nLine, nColumn );
 		nMaxOutStr = 2000; // 2003.06.10 Moca ç≈ëÂí∑ïœçX
 	}
 	/* WZïó */
