@@ -314,7 +314,7 @@ bool CShareData::InitShareData()
 																		// ... TRUE/FALSE が逆のようなので、直したほうがよい。
 		wcscpy(	//@@@ 2003.06.13 MIK
 			m_pShareData->m_Common.m_sTabBar.m_szTabWndCaption,
-			L"${w?【Grep】$h$:【アウトプット】$:$f$n$}${U?(更新)$}${R?(ビューモード)$:(上書き禁止)$}${M?【キーマクロの記録中】$}"
+			L"${w?【Grep】$h$:【アウトプット】$:$f$n$}${U?*$}${R?(ビューモード)$:(上書き禁止)$}${M?【キーマクロの記録中】$}"
 		);
 		m_pShareData->m_Common.m_sTabBar.m_bSameTabWidth = FALSE;			//タブを等幅にする			//@@@ 2006.01.28 ryoji
 		m_pShareData->m_Common.m_sTabBar.m_bDispTabIcon = FALSE;			//タブにアイコンを表示する	//@@@ 2006.01.28 ryoji
@@ -517,10 +517,10 @@ bool CShareData::InitShareData()
 		//	Apr. 05, 2003 genta ウィンドウキャプションの初期値
 		//	Aug. 16, 2003 genta $N(ファイル名省略表示)をデフォルトに変更
 		_tcscpy( m_pShareData->m_Common.m_sWindow.m_szWindowCaptionActive, 
-			_T("${w?$h$:アウトプット$:${I?$f$n$:$N$n$}$}${U?(更新)$} -")
+			_T("${w?$h$:アウトプット$:${I?$f$n$:$N$n$}$}${U?*$} -")
 			_T(" $A $V ${R?(ビューモード)$:(上書き禁止)$}${X?$:(排他:上書き禁止)$:(排他:読み書き禁止)$}${M? 【キーマクロの記録中】$}") );
 		_tcscpy( m_pShareData->m_Common.m_sWindow.m_szWindowCaptionInactive, 
-			_T("${w?$h$:アウトプット$:${I?$f$n$:$N$n$}$}${U?(更新)$} -")
+			_T("${w?$h$:アウトプット$:${I?$f$n$:$N$n$}$}${U?*$} -")
 			_T(" $A $V ${R?(ビューモード)$:(上書き禁止)$}${X?$:(排他:上書き禁止)$:(排他:読み書き禁止)$}${M? 【キーマクロの記録中】$}") );
 
 		//	From Here Sep. 14, 2001 genta
