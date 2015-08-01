@@ -1900,8 +1900,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 2015,7,1,27
- PRODUCTVERSION 2015,7,1,27
+ FILEVERSION 2015,8,1,28
+ PRODUCTVERSION 2015,8,1,28
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -1919,13 +1919,13 @@ BEGIN
             VALUE "Comments", "このソフトはフリーソフトです。"
             VALUE "CompanyName", "BeniZakura"
             VALUE "FileDescription", "紅桜 Text Editor"
-            VALUE "FileVersion", "2015.7.1.27"
+            VALUE "FileVersion", "2015.8.1.28"
             VALUE "InternalName", "BeniZakura"
             VALUE "LegalCopyright", "Copyright (C) 1998-2014  by Norio Nakatani & Collaborators"
             VALUE "LegalTrademarks", " "
             VALUE "OriginalFilename", "BeniZakura.exe"
             VALUE "ProductName", "紅桜"
-            VALUE "ProductVersion", "2015.7.1.27"
+            VALUE "ProductVersion", "2015.8.1.28"
         END
     END
     BLOCK "VarFileInfo"
