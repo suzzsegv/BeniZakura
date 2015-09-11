@@ -740,6 +740,7 @@
 #define IDD_WINPOSSIZE                  5220
 #define IDD_PLUGIN_OPTION               5221
 #define IDC_CHECK_TAG_MAKE_EXTRA_KINDS  9000
+#define IDC_CHECK_TAG_MAKE_UTF8         9001
 #define IDC_STATIC                      -1
 
 // Next default values for new objects

@@ -152,6 +152,7 @@ struct DLLSHAREDATA{
 	int							m_nTagsOpt;					/* TAGSオプション(チェック) */	//@@@ 2003.05.12 MIK
 		#define TAGS_OPTION_DEFAULT_TAG_MAKE_RECURSE		0x0001
 		#define TAGS_OPTION_DEFAULT_TAG_MAKE_EXTRA_KINDS	0x0002
+		#define TAGS_OPTION_DEFAULT_TAG_MAKE_UTF8			0x0004
 
 
 	// -- -- テンポラリ -- -- //

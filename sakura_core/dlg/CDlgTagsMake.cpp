@@ -135,6 +135,7 @@ void CDlgTagsMake::SetData( void )
 	m_nTagsOpt = m_pShareData->m_nTagsOpt;
 	if( m_nTagsOpt & TAGS_OPTION_DEFAULT_TAG_MAKE_RECURSE ) ::CheckDlgButton( GetHwnd(), IDC_CHECK_TAG_MAKE_RECURSE, TRUE );
 	if( m_nTagsOpt & TAGS_OPTION_DEFAULT_TAG_MAKE_EXTRA_KINDS ) ::CheckDlgButton( GetHwnd(), IDC_CHECK_TAG_MAKE_EXTRA_KINDS, TRUE );
+	if( m_nTagsOpt & TAGS_OPTION_DEFAULT_TAG_MAKE_UTF8 ) ::CheckDlgButton( GetHwnd(), IDC_CHECK_TAG_MAKE_UTF8, TRUE );
 
 	//コマンドライン
 	Combo_LimitText( ::GetDlgItem( GetHwnd(), IDC_EDIT_TAG_MAKE_CMDLINE ), _countof( m_pShareData->m_szTagsCmdLine ) );
@@ -160,6 +161,7 @@ int CDlgTagsMake::GetData( void )
 	m_nTagsOpt = 0;
 	if( ::IsDlgButtonChecked( GetHwnd(), IDC_CHECK_TAG_MAKE_RECURSE ) == BST_CHECKED ) m_nTagsOpt |= TAGS_OPTION_DEFAULT_TAG_MAKE_RECURSE;
 	if( ::IsDlgButtonChecked( GetHwnd(), IDC_CHECK_TAG_MAKE_EXTRA_KINDS ) == BST_CHECKED ) m_nTagsOpt |= TAGS_OPTION_DEFAULT_TAG_MAKE_EXTRA_KINDS;
+	if( ::IsDlgButtonChecked( GetHwnd(), IDC_CHECK_TAG_MAKE_UTF8 ) == BST_CHECKED ) m_nTagsOpt |= TAGS_OPTION_DEFAULT_TAG_MAKE_UTF8;
 	m_pShareData->m_nTagsOpt = m_nTagsOpt;
 
 	//コマンドライン
