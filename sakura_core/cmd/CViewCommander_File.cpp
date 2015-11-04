@@ -273,12 +273,23 @@ void CViewCommander::Command_FILE_REOPEN(
 */
 void CViewCommander::Command_FileExclusiveLock( )
 {
-	bool succeeded;
+	EShareMode fileShareMode;
+	fileShareMode = CAppMode::getInstance()->GetFileShareMode();
+	if(fileShareMode == SHAREMODE_DENY_READWRITE){
+		m_pCommanderView->SendStatusMessage(_T("ファイルは既に排他ロック（読み書き禁止）状態です。"));
+		GetEditWindow()->UpdateCaption();
+		return;
+	}
 
+	bool succeeded;
 	succeeded = GetDocument( )->m_cDocFileOperation.LockExclusive( );
 	if( succeeded == false ){
 		return;
 	}
+
+	// 同一ファイルの再オープン
+	CEditDoc* pcDoc = GetDocument();
+	pcDoc->m_cDocFileOperation.ReloadCurrentFile(pcDoc->m_cDocFile.GetCodeSet());
 
 	m_pCommanderView->SendStatusMessage( _T( "ファイルを排他ロック（読み書き禁止）状態に変更しました。" ) );
 	GetEditWindow( )->UpdateCaption( );
@@ -289,14 +300,25 @@ void CViewCommander::Command_FileExclusiveLock( )
 
  	現在編集中のファイルを共有ロック（上書き禁止）状態に変更する。
 */
-void CViewCommander::Command_FileShareLock( )
+void CViewCommander::Command_FileShareLock()
 {
-	bool succeeded;
+	EShareMode fileShareMode;
+	fileShareMode = CAppMode::getInstance()->GetFileShareMode();
+	if(fileShareMode == SHAREMODE_DENY_WRITE){
+		m_pCommanderView->SendStatusMessage(_T("ファイルは既に共有ロック（上書き禁止）状態です。"));
+		GetEditWindow()->UpdateCaption();
+		return;
+	}
 
+	bool succeeded;
 	succeeded = GetDocument( )->m_cDocFileOperation.LockShared( );
 	if( succeeded == false ){
 		return;
 	}
+
+	// 同一ファイルの再オープン
+	CEditDoc* pcDoc = GetDocument();
+	pcDoc->m_cDocFileOperation.ReloadCurrentFile(pcDoc->m_cDocFile.GetCodeSet());
 
 	m_pCommanderView->SendStatusMessage( _T( "ファイルを共有ロック（上書き禁止）状態に変更しました。" ) );
 	GetEditWindow( )->UpdateCaption( );
