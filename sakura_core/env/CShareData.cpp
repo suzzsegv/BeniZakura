@@ -138,6 +138,8 @@ bool CShareData::InitShareData()
 		_tcscpy(m_pShareData->m_Common.m_sMacro.m_szKeyMacroFileName, _T(""));	/* キーワードマクロのファイル名 */ //@@@ 2002.1.24 YAZAKI
 		m_pShareData->m_sFlags.m_bRecordingKeyMacro = FALSE;		/* キーボードマクロの記録中 */
 		m_pShareData->m_sFlags.m_hwndRecordingKeyMacro = NULL;	/* キーボードマクロを記録中のウィンドウ */
+		m_pShareData->m_sFlags.sessionRestored = false;
+		m_pShareData->m_sFlags.sessionSaved = false;
 
 		// 2004.05.13 Moca リソースから製品バージョンの取得
 		GetAppVersionInfo( NULL, VS_VERSION_INFO,

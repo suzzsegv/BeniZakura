@@ -188,6 +188,7 @@ env/CShareData.o \
 env/CShareData_IO.o \
 env/CTagJumpManager.o \
 env/DLLSHAREDATA.o \
+env/SessionStore.o \
 extmodule/CBregexp.o \
 extmodule/CBregexpDll2.o \
 extmodule/CDllHandler.o \

@@ -1494,12 +1494,10 @@ LRESULT CEditWnd::DispatchEvent(
 		return 0L;
 	case WM_QUERYENDSESSION:	//OSÇÃèIóπ
 		if( OnClose( NULL ) ){
-			::DestroyWindow( hwnd );
+			CControlTray::TerminateApplication( GetHwnd() );
 			return TRUE;
 		}
-		else{
-			return FALSE;
-		}
+		return FALSE;
 	case WM_CLOSE:
 		if( OnClose( NULL ) ){
 			::DestroyWindow( hwnd );

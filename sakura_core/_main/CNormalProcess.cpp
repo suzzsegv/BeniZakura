@@ -35,6 +35,7 @@
 #include "plugin/CJackManager.h"
 #include "CAppMode.h"
 #include "env/CDocTypeManager.h"
+#include "env/SessionStore.h"
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 //               コンストラクタ・デストラクタ                  //
@@ -82,6 +83,8 @@ bool CNormalProcess::InitializeProcess()
 	if ( !CProcess::InitializeProcess() ){
 		return false;
 	}
+
+	SessionStore::createUniqInstance();
 
 	/* コマンドラインオプション */
 	bool			bViewMode = false;
@@ -426,6 +429,8 @@ bool CNormalProcess::InitializeProcess()
 		CEditView& view = pEditWnd->GetActiveView();
 		view.GetCommander().HandleCommand( F_EXECEXTMACRO, true, (LPARAM)pszMacro, (LPARAM)pszMacroType, 0, 0 );
 	}
+
+	SessionStore::getInstance()->restore(pEditWnd, &fi);
 
 	// 複数ファイル読み込み
 	int fileNum = CCommandLine::getInstance()->GetFileNum();

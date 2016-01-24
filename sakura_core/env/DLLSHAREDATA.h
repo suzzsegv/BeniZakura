@@ -65,6 +65,8 @@ struct SShare_Flags{
 	*/
 	BOOL				m_bRecordingKeyMacro;		/* キーボードマクロの記録中 */
 	HWND				m_hwndRecordingKeyMacro;	/* キーボードマクロを記録中のウィンドウ */
+	bool				sessionRestored;
+	bool				sessionSaved;
 };
 
 //共有ワークバッファ

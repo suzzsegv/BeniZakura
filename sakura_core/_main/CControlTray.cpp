@@ -46,6 +46,7 @@
 #include "env/CShareData_IO.h"
 #include "env/CSakuraEnvironment.h"
 #include "env/CHelpManager.h"
+#include "env/SessionStore.h"
 #include "doc/CDocListener.h" // SLoadInfo,EditInfo
 #include "recent/CMRUFile.h"
 #include "recent/CMRUFolder.h"
@@ -1357,6 +1358,8 @@ BOOL CControlTray::CloseAllEditor(
 	EditNode*	pWndArr;
 	int		n;
 
+	SessionStore::getInstance()->save();
+
 	n = CAppNodeManager::getInstance()->GetOpenedWindowArr( &pWndArr, FALSE );
 	if( 0 == n ){
 		return TRUE;
@@ -1648,6 +1651,8 @@ void CControlTray::OnDestroy()
 
 	// アクセラレータテーブルの削除
 	DeleteAccelTbl();
+
+	SessionStore::destroyUniqInstance();
 
 	m_hWnd = NULL;
 }
