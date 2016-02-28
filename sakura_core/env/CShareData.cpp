@@ -1258,6 +1258,12 @@ void CShareData::InitPopupMenu(DLLSHAREDATA* pShareData)
 	rMenu.m_nCustMenuItemFuncArr[4][n] = F_EXECKEYMACRO;
 	rMenu.m_nCustMenuItemKeyArr[4][n] = 'X';
 	n++;
+	rMenu.m_nCustMenuItemFuncArr[4][n] = F_SAVEKEYMACRO;
+	rMenu.m_nCustMenuItemKeyArr[4][n] = 'S';
+	n++;
+	rMenu.m_nCustMenuItemFuncArr[4][n] = F_LOADKEYMACRO;
+	rMenu.m_nCustMenuItemKeyArr[4][n] = 'O';
+	n++;
 	rMenu.m_nCustMenuItemFuncArr[4][n] = F_0; /* ------ */
 	rMenu.m_nCustMenuItemKeyArr[4][n] = '\0';
 	n++;
