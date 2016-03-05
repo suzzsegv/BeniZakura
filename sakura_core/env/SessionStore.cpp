@@ -36,6 +36,7 @@
 #include "_main/CControlTray.h"
 #include "_main/CMutex.h"
 #include "_main/CProcess.h"
+#include "util/file.h"
 #include "util/module.h"
 
 #include "SessionStore.h"
@@ -129,11 +130,13 @@ void SessionStore::restore(CEditWnd* pEditWnd, EditInfo* pEditInfo)
 	bool succeeded;
 	succeeded = fileOneRecordRead(fullPathFileName);
 	while(succeeded == true){
-		wcscpy_s(resoreFileInfo.m_szPath, _MAX_PATH, fullPathFileName);
-		CControlTray::OpenNewEditor2(
-									CProcess::getInstance()->GetProcessInstance(), pEditWnd->GetHwnd(),
-									&resoreFileInfo, false, true, false
-									);
+		if(IsFileExists(fullPathFileName, true) == true){
+			wcscpy_s(resoreFileInfo.m_szPath, _MAX_PATH, fullPathFileName);
+			CControlTray::OpenNewEditor2(
+										CProcess::getInstance()->GetProcessInstance(), pEditWnd->GetHwnd(),
+										&resoreFileInfo, false, true, false
+										);
+		}
 		succeeded = fileOneRecordRead(fullPathFileName);
 	}
 	fileClose();
