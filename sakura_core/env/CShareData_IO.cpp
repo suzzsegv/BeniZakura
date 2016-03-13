@@ -35,7 +35,7 @@
 #include "plugin/CPlugin.h"
 #include "uiparts/CMenuDrawer.h"
 
-#define MRU_INI_FILE_NAME L"BeniZakura.mru.ini"
+#define MRU_INI_FILE_NAME L"BeniZakura.RecentFiles.ini"
 #define MAIN_MENU_INI_FILE_NAME L"BeniZakura.MainMenu.ini"
 #define CUSTOM_MENU_INI_FILE_NAME L"BeniZakura.CustomMenu.ini"
 
