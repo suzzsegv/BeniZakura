@@ -42,6 +42,10 @@ public:
 
 protected:
 	static bool ShareData_IO_2( bool );	/* 共有データの保存 */
+	static void loadMainMenuIniFile(void);
+	static void saveMainMenuIniFile(void);
+	static void loadCustomMenuIniFile(void);
+	static void saveCustomMenuIniFile(void);
 	static void loadMruIniFile(void);
 	static void saveMruIniFile(void);
 

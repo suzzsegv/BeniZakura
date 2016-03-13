@@ -36,6 +36,8 @@
 #include "uiparts/CMenuDrawer.h"
 
 #define MRU_INI_FILE_NAME L"BeniZakura.mru.ini"
+#define MAIN_MENU_INI_FILE_NAME L"BeniZakura.MainMenu.ini"
+#define CUSTOM_MENU_INI_FILE_NAME L"BeniZakura.CustomMenu.ini"
 
 
 void ShareData_IO_Sub_LogFont( CDataProfile& cProfile, const WCHAR* pszSecName,
@@ -56,6 +58,8 @@ void SetValueLimit(T& target, int maxval)
 /* 共有データのロード */
 bool CShareData_IO::LoadShareData()
 {
+	loadMainMenuIniFile();
+	loadCustomMenuIniFile();
 	loadMruIniFile();
 	return ShareData_IO_2( true );
 }
@@ -63,8 +67,10 @@ bool CShareData_IO::LoadShareData()
 /* 共有データの保存 */
 void CShareData_IO::SaveShareData()
 {
-	ShareData_IO_2( false );
+	saveMainMenuIniFile();
+	saveCustomMenuIniFile();
 	saveMruIniFile();
+	ShareData_IO_2( false );
 }
 
 /*!
@@ -132,7 +138,6 @@ bool CShareData_IO::ShareData_IO_2( bool bRead )
 	ShareData_IO_Common( cProfile );
 	ShareData_IO_Plugin( cProfile, pcMenuDrawer );		// Move here	2010/6/24 Uchi
 	ShareData_IO_Toolbar( cProfile, pcMenuDrawer );
-	ShareData_IO_CustMenu( cProfile );
 	ShareData_IO_Font( cProfile );
 	ShareData_IO_KeyBind( cProfile );
 	ShareData_IO_Print( cProfile );
@@ -140,7 +145,6 @@ bool CShareData_IO::ShareData_IO_2( bool bRead )
 	ShareData_IO_KeyWords( cProfile );
 	ShareData_IO_Macro( cProfile );
 	ShareData_IO_Statusbar( cProfile );		// 2008/6/21 Uchi
-	ShareData_IO_MainMenu( cProfile );		// 2010/5/15 Uchi
 	ShareData_IO_Other( cProfile );
 
 	delete pcMenuDrawer;					// 2010/7/4 Uchi
@@ -186,7 +190,7 @@ void CShareData_IO::saveMruIniFile(void)
 	GetInidir(fullPathIniFileName, MRU_INI_FILE_NAME);
 
 	ShareData_IO_Mru( cProfile );
-	cProfile.WriteProfile( fullPathIniFileName, L" 最近使ったファイル/フォルダ" );
+	cProfile.WriteProfile(fullPathIniFileName, L" 最近使ったファイル/フォルダ");
 }
 
 /*!
@@ -859,6 +863,39 @@ void CShareData_IO::ShareData_IO_Toolbar( CDataProfile& cProfile, CMenuDrawer* p
 			toolbar.m_nToolBarButtonIdxArr[i] = 0;
 		}
 	}
+}
+
+/*!
+	Custom Menu 用 ini ファイル読み込み
+*/
+void CShareData_IO::loadCustomMenuIniFile(void)
+{
+	CDataProfile cProfile;
+	wchar_t fullPathIniFileName[_MAX_PATH + 1];
+
+	GetInidir(fullPathIniFileName, CUSTOM_MENU_INI_FILE_NAME);
+
+	cProfile.SetReadingMode();
+	if(cProfile.ReadProfile(fullPathIniFileName) == false){
+		return;
+	}
+	ShareData_IO_CustMenu(cProfile);
+}
+
+/*!
+	Custom Menu 用 ini ファイル保存
+*/
+void CShareData_IO::saveCustomMenuIniFile(void)
+{
+	CDataProfile cProfile;
+	wchar_t fullPathIniFileName[_MAX_PATH + 1];
+
+	cProfile.SetWritingMode();
+
+	GetInidir(fullPathIniFileName, CUSTOM_MENU_INI_FILE_NAME);
+
+	ShareData_IO_CustMenu(cProfile);
+	cProfile.WriteProfile(fullPathIniFileName, L" カスタムメニュー");
 }
 
 /*!
@@ -1807,6 +1844,39 @@ void CShareData_IO::ShareData_IO_Plugin( CDataProfile& cProfile, CMenuDrawer* pc
 			}
 		}
 	}
+}
+
+/*!
+	Main Menu 用 ini ファイル読み込み
+*/
+void CShareData_IO::loadMainMenuIniFile(void)
+{
+	CDataProfile cProfile;
+	wchar_t fullPathIniFileName[_MAX_PATH + 1];
+
+	GetInidir(fullPathIniFileName, MAIN_MENU_INI_FILE_NAME);
+
+	cProfile.SetReadingMode();
+	if(cProfile.ReadProfile(fullPathIniFileName) == false){
+		return;
+	}
+	ShareData_IO_MainMenu(cProfile);
+}
+
+/*!
+	Main Menu 用 ini ファイル保存
+*/
+void CShareData_IO::saveMainMenuIniFile(void)
+{
+	CDataProfile cProfile;
+	wchar_t fullPathIniFileName[_MAX_PATH + 1];
+
+	cProfile.SetWritingMode();
+
+	GetInidir(fullPathIniFileName, MAIN_MENU_INI_FILE_NAME);
+
+	ShareData_IO_MainMenu(cProfile);
+	cProfile.WriteProfile(fullPathIniFileName, L" メインメニュー");
 }
 
 void CShareData_IO::ShareData_IO_MainMenu( CDataProfile& cProfile )
