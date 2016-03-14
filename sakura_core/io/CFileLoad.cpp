@@ -157,7 +157,7 @@ ECodeType CFileLoad::FileOpen( LPCTSTR pFileName, ECodeType CharCode, int nFlag,
 		}
 	}
 	// To Here Jun. 08, 2003
-	// 不正な文字コードのときはデフォルト(SJIS:無変換)を設定
+	// 不正な文字コードのときはデフォルトを設定
 	if( !IsValidCodeType(CharCode) ){
 		CharCode = CODE_DEFAULT;
 	}

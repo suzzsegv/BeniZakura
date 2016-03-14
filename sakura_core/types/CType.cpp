@@ -109,8 +109,8 @@ void _DefaultConfig(STypeConfig* pType)
 
 	// •¶ŽšƒR[ƒhÝ’è
 	pType->m_encoding.m_bPriorCesu8 = false;
-	pType->m_encoding.m_eDefaultCodetype = CODE_SJIS;
-	pType->m_encoding.m_eDefaultEoltype = EOL_CRLF;
+	pType->m_encoding.m_eDefaultCodetype = CODE_DEFAULT;
+	pType->m_encoding.m_eDefaultEoltype = EOL_LF;
 	pType->m_encoding.m_bDefaultBom = false;
 
 	//@@@2002.2.4 YAZAKI
