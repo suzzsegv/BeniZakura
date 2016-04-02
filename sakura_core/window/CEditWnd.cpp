@@ -371,14 +371,11 @@ void CEditWnd::_GetWindowRectForInit(CMyRect* rcResult, int nGroup, const STabGr
 
 	// 必要なら、タブグループにフィットするよう、変更
 	if(sTabGroupInfo.IsValid()){
-		RECT rcWork, rcMon;
-		GetMonitorWorkRect( sTabGroupInfo.hwndTop, &rcWork, &rcMon );
-
 		const WINDOWPLACEMENT& wpTop = sTabGroupInfo.wpTop;
 		nWinCX = wpTop.rcNormalPosition.right  - wpTop.rcNormalPosition.left;
 		nWinCY = wpTop.rcNormalPosition.bottom - wpTop.rcNormalPosition.top;
-		nWinOX = wpTop.rcNormalPosition.left   + (rcWork.left - rcMon.left);
-		nWinOY = wpTop.rcNormalPosition.top    + (rcWork.top - rcMon.top);
+		nWinOX = wpTop.rcNormalPosition.left;
+		nWinOY = wpTop.rcNormalPosition.top;
 	}
 
 	//結果
@@ -457,8 +454,12 @@ void CEditWnd::_GetTabGroupInfo(STabGroupInfo* pTabGroupInfo, int& nGroup)
 
 			wpTop.length = sizeof(wpTop);
 			if( ::GetWindowPlacement( hwndTop, &wpTop ) ){	// 現在の先頭ウィンドウから位置を取得
-				if( wpTop.showCmd == SW_SHOWMINIMIZED )
+				if( wpTop.showCmd == SW_SHOWMINIMIZED ){
 					wpTop.showCmd = pEditNode->m_showCmdRestore;
+				}
+				if (wpTop.showCmd == SW_SHOWNORMAL){
+					wpTop.rcNormalPosition = pEditNode->rcNormalPosition;
+				}
 			}
 			else{
 				hwndTop = NULL;
@@ -1311,21 +1312,21 @@ LRESULT CEditWnd::DispatchEvent(
 		if( WINSIZEMODE_SAVE == m_pShareData->m_Common.m_sWindow.m_eSaveWindowPos ){
 			if( !::IsZoomed( GetHwnd() ) && !::IsIconic( GetHwnd() ) ){
 				// 2005.11.23 Moca ワークエリア座標だとずれるのでスクリーン座標に変更
-				// Aero Snapで縦方向最大化で終了して次回起動するときは元のサイズにする必要があるので、
-				// GetWindowRect()ではなくGetWindowPlacement()で得たワークエリア座標をスクリーン座標に変換して記憶する	// 2009.09.02 ryoji
-				RECT rcWin;
-				WINDOWPLACEMENT wp;
-				wp.length = sizeof(wp);
-				::GetWindowPlacement( GetHwnd(), &wp );	// ワークエリア座標
-				rcWin = wp.rcNormalPosition;
-				RECT rcWork, rcMon;
-				GetMonitorWorkRect( GetHwnd(), &rcWork, &rcMon );
-				::OffsetRect(&rcWin, rcWork.left - rcMon.left, rcWork.top - rcMon.top);	// スクリーン座標に変換
-				m_pShareData->m_Common.m_sWindow.m_nWinPosX = rcWin.left;
-				m_pShareData->m_Common.m_sWindow.m_nWinPosY = rcWin.top;
+				RECT rcWork;
+				::GetWindowRect( hwnd, &rcWork);
+				m_pShareData->m_Common.m_sWindow.m_nWinPosX = rcWork.left;
+				m_pShareData->m_Common.m_sWindow.m_nWinPosY = rcWork.top;
 			}
 		}
 		// To Here 2004.05.13 Moca ウィンドウ位置継承
+
+		// ウィンドウ位置を記憶
+		if ((::IsZoomed(hwnd) == FALSE) && (::IsIconic(hwnd) == FALSE)){
+			EditNode* pEditNode = CAppNodeManager::getInstance()->GetEditNode(hwnd);
+			if(pEditNode != NULL){
+				::GetWindowRect(hwnd, &pEditNode->rcNormalPosition);
+			}
+		}
 		return DefWindowProc( hwnd, uMsg, wParam, lParam );
 	//To here 2003.05.31 MIK
 	case WM_SYSCOMMAND:
@@ -2923,31 +2924,22 @@ LRESULT CEditWnd::OnSize( WPARAM wParam, LPARAM lParam )
 					m_pShareData->m_Common.m_sWindow.m_nWinSizeType = wParam;
 				}
 			}else{
-				// Aero Snapの縦方向最大化状態で終了して次回起動するときは元のサイズにする必要があるので、
-				// GetWindowRect()ではなくGetWindowPlacement()で得たワークエリア座標をスクリーン座標に変換して記憶する	// 2009.09.02 ryoji
-				WINDOWPLACEMENT wp;
-				wp.length = sizeof(wp);
-				::GetWindowPlacement( GetHwnd(), &wp );	// ワークエリア座標
-				rcWin = wp.rcNormalPosition;
-				RECT rcWork, rcMon;
-				GetMonitorWorkRect( GetHwnd(), &rcWork, &rcMon );
-				::OffsetRect(&rcWin, rcWork.left - rcMon.left, rcWork.top - rcMon.top);	// スクリーン座標に変換
-				/* ウィンドウサイズに関するデータが変更されたか */
-				if( m_pShareData->m_Common.m_sWindow.m_nWinSizeType != (int)wParam ||
-					m_pShareData->m_Common.m_sWindow.m_nWinSizeCX != rcWin.right - rcWin.left ||
-					m_pShareData->m_Common.m_sWindow.m_nWinSizeCY != rcWin.bottom - rcWin.top
-				){
-					m_pShareData->m_Common.m_sWindow.m_nWinSizeType = wParam;
-					m_pShareData->m_Common.m_sWindow.m_nWinSizeCX = rcWin.right - rcWin.left;
-					m_pShareData->m_Common.m_sWindow.m_nWinSizeCY = rcWin.bottom - rcWin.top;
-				}
+				::GetWindowRect(GetHwnd(), &rcWin);
+				m_pShareData->m_Common.m_sWindow.m_nWinSizeType = wParam;
+				m_pShareData->m_Common.m_sWindow.m_nWinSizeCX = rcWin.right - rcWin.left;
+				m_pShareData->m_Common.m_sWindow.m_nWinSizeCY = rcWin.bottom - rcWin.top;
+				m_pShareData->m_Common.m_sWindow.m_nWinPosX = rcWin.left;
+				m_pShareData->m_Common.m_sWindow.m_nWinPosY = rcWin.top;
 			}
 		}
 
-		// 元に戻すときのサイズ種別を記憶	// 2007.06.20 ryoji
-		EditNode *p = CAppNodeManager::getInstance()->GetEditNode( GetHwnd() );
-		if( p != NULL ){
-			p->m_showCmdRestore = ::IsZoomed( p->GetHwnd() )? SW_SHOWMAXIMIZED: SW_SHOWNORMAL;
+		// 元に戻すときのサイズ種別とウィンドウサイズを記憶
+		EditNode *pEditNode = CAppNodeManager::getInstance()->GetEditNode( GetHwnd() );
+		if( pEditNode != NULL ){
+			pEditNode->m_showCmdRestore = ::IsZoomed( pEditNode->GetHwnd() )? SW_SHOWMAXIMIZED: SW_SHOWNORMAL;
+			if((wParam != SIZE_MAXIMIZED)){
+				::GetWindowRect(GetHwnd(), &pEditNode->rcNormalPosition);
+			}
 		}
 	}
 

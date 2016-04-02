@@ -528,11 +528,19 @@ BOOL CTabWnd::SeparateGroup( HWND hwndSrc, HWND hwndDst, POINT ptDrag, POINT ptD
 
 	EditNode* pSrcEditNode = CAppNodeManager::getInstance()->GetEditNode( hwndSrc );
 	EditNode* pDstEditNode = CAppNodeManager::getInstance()->GetEditNode( hwndDst );
-	int showCmdRestore = pDstEditNode? pDstEditNode->m_showCmdRestore: SW_SHOWNA;
+	int showCmdRestore;
+	RECT rcDstNormalPosition;
+	if(pDstEditNode == NULL){
+		showCmdRestore = SW_SHOWNA;
+	}else{
+		showCmdRestore = pDstEditNode->m_showCmdRestore;
+		rcDstNormalPosition = pDstEditNode->rcNormalPosition;
+	}
 
 	// グループ変更するウィンドウが先頭ウィンドウなら次のウィンドウを可視にする（手前には出さない）
 	// そうでなければ新規グループになる場合に別ウィンドウよりは手前に表示されるよう不可視のまま先頭ウィンドウのすぐ後ろにもってきておく
-	HWND hwndTop = CAppNodeManager::getInstance()->GetEditNode(hwndSrc)->GetGroup().GetTopEditNode()->GetHwnd();
+	EditNode* pEditNode = CAppNodeManager::getInstance()->GetEditNode(hwndSrc);
+	HWND hwndTop = pEditNode->GetGroup().GetTopEditNode()->GetHwnd();
 	bool bSrcIsTop = ( hwndSrc == hwndTop );
 	if( bSrcIsTop )
 	{
@@ -563,6 +571,7 @@ BOOL CTabWnd::SeparateGroup( HWND hwndSrc, HWND hwndDst, POINT ptDrag, POINT ptD
 		::GetWindowPlacement( hwndTop, &wp );
 		if( wp.showCmd != SW_SHOWMAXIMIZED )
 		{
+			wp.rcNormalPosition = pEditNode->rcNormalPosition;
 			// 移動元の先頭ウィンドウのサイズで画面内を相対移動する
 			wp.rcNormalPosition.left += (ptDrop.x - ptDrag.x);
 			wp.rcNormalPosition.right += (ptDrop.x - ptDrag.x);
@@ -575,6 +584,12 @@ BOOL CTabWnd::SeparateGroup( HWND hwndSrc, HWND hwndDst, POINT ptDrag, POINT ptD
 				wp.rcNormalPosition.bottom += ( rcDstWork.top - wp.rcNormalPosition.top );
 				wp.rcNormalPosition.top = rcDstWork.top;
 			}
+			::SetWindowPos( hwndSrc, HWND_TOP,
+				wp.rcNormalPosition.left,
+				wp.rcNormalPosition.top,
+				wp.rcNormalPosition.right - wp.rcNormalPosition.left,
+				wp.rcNormalPosition.bottom - wp.rcNormalPosition.top,
+				SWP_SHOWWINDOW);
 		}
 		else
 		{
@@ -608,9 +623,8 @@ BOOL CTabWnd::SeparateGroup( HWND hwndSrc, HWND hwndDst, POINT ptDrag, POINT ptD
 				wp.rcNormalPosition.bottom += (rcDstWork.top - wp.rcNormalPosition.top);
 				wp.rcNormalPosition.top += (rcDstWork.top - wp.rcNormalPosition.top);
 			}
+			SetCarmWindowPlacement( hwndSrc, &wp );
 		}
-
-		SetCarmWindowPlacement( hwndSrc, &wp );
 	}
 	else
 	{	// 既存グループのウィンドウ処理
@@ -623,9 +637,25 @@ BOOL CTabWnd::SeparateGroup( HWND hwndSrc, HWND hwndDst, POINT ptDrag, POINT ptD
 
 			// ウィンドウを移動先に表示する
 			::GetWindowPlacement( hwndDst, &wp );
-			if( wp.showCmd == SW_SHOWMINIMIZED )
+			if( wp.showCmd == SW_SHOWMINIMIZED ){
 				wp.showCmd = showCmdRestore;
-			SetCarmWindowPlacement( hwndSrc, &wp );
+			}
+			if(wp.showCmd == SW_SHOWNORMAL){
+				if(::IsIconic(hwndSrc) || ::IsZoomed(hwndSrc)){
+					ShowWindow(hwndSrc, SW_SHOWNOACTIVATE);
+				}
+				wp.rcNormalPosition = rcDstNormalPosition;
+				::SetWindowPos( hwndSrc, HWND_TOP,
+					wp.rcNormalPosition.left,
+					wp.rcNormalPosition.top,
+					wp.rcNormalPosition.right - wp.rcNormalPosition.left,
+					wp.rcNormalPosition.bottom - wp.rcNormalPosition.top,
+					SWP_SHOWWINDOW);
+			}else{
+				if(::IsZoomed(hwndSrc) == FALSE){
+					ShowWindow(hwndSrc, SW_MAXIMIZE);
+				}
+			}
 			::ShowWindow( hwndDst, SW_HIDE );	// 移動先の以前の先頭ウィンドウを消す
 		}
 	}
@@ -1997,11 +2027,23 @@ void CTabWnd::AdjustWindowPlacement( void )
 			HWND hwndInsertAfter = pEditNode->m_hWnd;
 			wp.length = sizeof( wp );
 			::GetWindowPlacement( hwndInsertAfter, &wp );
-			if( wp.showCmd == SW_SHOWMINIMIZED )
+			if( wp.showCmd == SW_SHOWMINIMIZED ){
 				wp.showCmd = pEditNode->m_showCmdRestore;
-			::SetWindowPos( hwnd, hwndInsertAfter, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE );
-			SetCarmWindowPlacement( hwnd, &wp );	// 位置を復元する
-			::UpdateWindow( hwnd );	// 強制描画
+			}
+			if(wp.showCmd == SW_SHOWNORMAL){
+				if(::IsIconic(hwnd) || ::IsZoomed(hwnd)){
+					ShowWindow(hwnd, SW_SHOWNOACTIVATE);
+				}
+				wp.rcNormalPosition = pEditNode->rcNormalPosition;
+				::SetWindowPos( hwnd, HWND_TOP,
+					wp.rcNormalPosition.left,
+					wp.rcNormalPosition.top,
+					wp.rcNormalPosition.right - wp.rcNormalPosition.left,
+					wp.rcNormalPosition.bottom - wp.rcNormalPosition.top,
+					SWP_SHOWWINDOW);
+				return;
+			}
+			ShowWindow(hwnd, SW_MAXIMIZE);
 		}
 	}
 }
