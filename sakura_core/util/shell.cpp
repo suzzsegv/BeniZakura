@@ -560,21 +560,10 @@ BOOL MyWinHelp(HWND hwndCaller, UINT uCommand, DWORD_PTR dwData)
 		if (bDesktop && hWnd != NULL){
 			::SetForegroundWindow( hWnd );	// ヘルプ画面を手前に出す
 		}
-	}
-	else {
-		if( uCommandOrg == HELP_CONTEXTMENU)
-			return FALSE;	// 右クリックでは何もしないでおく
-
-		// オンラインヘルプを呼び出す
-		if( uCommandOrg != HELP_CONTEXT )
-			dwData = 1;	// 目次ページ
-
-		TCHAR buf[256];
-		_stprintf( buf, _T("http://sakura-editor.sourceforge.net/cgi-bin/hid2.cgi?%d"), dwData );
-		ShellExecute( ::GetActiveWindow(), NULL, buf, NULL, NULL, SW_SHOWNORMAL );
+		return TRUE;
 	}
 
-	return TRUE;
+	return FALSE;
 }
 
 /*フォント選択ダイアログ
