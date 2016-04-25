@@ -618,6 +618,9 @@ BOOL CViewCommander::HandleCommand(
 		//Oct. 17, 2000 JEPRO 名前を変更(F_FILECLOSEALL→F_WIN_CLOSEALL)
 		Command_FILECLOSEALL();
 		break;
+	case F_GREP_WIN_ALL_CLOSE:
+		Command_GrepWindowAllClose();
+		break;
 	case F_BIND_WINDOW:		Command_BIND_WINDOW();break;	//結合して表示 2004.07.14 Kazika 新規追加
 	case F_CASCADE:			Command_CASCADE();break;		//重ねて表示
 	case F_TILE_V:			Command_TILE_V();break;			//上下に並べて表示

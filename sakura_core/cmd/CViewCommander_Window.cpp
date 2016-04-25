@@ -78,6 +78,18 @@ void CViewCommander::Command_FILECLOSEALL( void )
 
 
 
+/*!
+ * Grep ウィンドウをすべて閉じる
+ */
+void CViewCommander::Command_GrepWindowAllClose( void )
+{
+	HWND hWnd = GetMainWindow();
+
+	CAppNodeGroupHandle(0).SendMessageToAllEditors(MYWM_GREP_CLOSE, (WPARAM)0, (LPARAM)0, hWnd);
+}
+
+
+
 /* このタブ以外を閉じる */	// 2008.11.22 syat
 // 2009.12.26 syat このウィンドウ以外を閉じるとの兼用化
 void CViewCommander::Command_TAB_CLOSEOTHER( void )

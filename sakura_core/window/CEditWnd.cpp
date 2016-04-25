@@ -1606,6 +1606,18 @@ LRESULT CEditWnd::DispatchEvent(
 		::AllowSetForegroundWindow(wParam);
 		return 0L;
 
+	case MYWM_GREP_CLOSE:
+		{
+			CGrepAgent* pGrepAgent = CEditApp::getInstance()->m_pcGrepAgent;
+			if(pGrepAgent->m_bGrepMode == true){
+				if(pGrepAgent->m_bGrepRunning == false){
+					if(OnClose(NULL)){
+						::DestroyWindow(hwnd);
+					}
+				}
+			}
+		}
+		return 0L;
 
 	case MYWM_GETFILEINFO:
 		/* トレイからエディタへの編集ファイル名要求通知 */

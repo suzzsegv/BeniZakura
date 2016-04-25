@@ -407,6 +407,7 @@ F_SPLIT_H			= 31311,	//左右に分割								なし
 F_SPLIT_VH			= 31312,	//縦横に分割								なし
 F_WINCLOSE			= 31320,	//閉じる									なし
 F_WIN_CLOSEALL		= 31321,	//すべて閉じる								なし
+F_GREP_WIN_ALL_CLOSE = 31322,	// Grep ウィンドウをすべて閉じる			なし
 F_CASCADE			= 31330,	//重ねて表示								なし
 F_TILE_V			= 31331,	//上下に並べて表示							なし
 F_TILE_H			= 31332,	//左右に並べて表示							なし
@@ -433,15 +434,10 @@ F_TAB_CLOSEOTHER	= 31388,	// このタブ以外を閉じる						なし
 F_TAB_CLOSELEFT		= 31389,	// 左をすべて閉じる							なし
 F_TAB_CLOSERIGHT	= 31390,	// 右をすべて閉じる							なし
 
-
 // 支援
 F_HOKAN				= 31430,	// 入力補完											なし
 F_TOGGLE_KEY_SEARCH	= 31431,	// キーワードヘルプ自動表示							なし
-F_HELP_CONTENTS		= 31440,	// ヘルプ目次										なし
-F_HELP_SEARCH		= 31441,	// ヘルプキーワード検索								なし
 F_MENU_ALLFUNC		= 31445,	// コマンド一覧										なし
-F_EXTHELP1			= 31450,	// 外部ヘルプ１										なし
-F_EXTHTMLHELP		= 31451,	// 外部HTMLヘルプ									const WCHAR* helpfile, const WCHAR* keyword
 F_ABOUT				= 31455,	// バージョン情報									なし
 
 

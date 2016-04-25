@@ -2462,6 +2462,7 @@ BEGIN
     F_SPLIT_VH              "縦横に分割／分割解除"
     F_WINCLOSE              "閉じる"
     F_WIN_CLOSEALL          "すべて閉じる"
+    F_GREP_WIN_ALL_CLOSE    "Grepウィンドウをすべて閉じる"
 END
 
 STRINGTABLE

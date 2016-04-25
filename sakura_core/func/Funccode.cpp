@@ -459,6 +459,7 @@ const EFunctionCode pnFuncList_Win[] = {	//Oct. 16, 2000 JEPRO •Ï”–¼•ÏX(List7
 	F_SPLIT_VH			,	//c‰¡‚É•ªŠ„	//Sept. 17, 2000 jepro à–¾‚Éu‚Év‚ð’Ç‰Á
 	F_WINCLOSE			,	//ƒEƒBƒ“ƒhƒE‚ð•Â‚¶‚é
 	F_WIN_CLOSEALL		,	//‚·‚×‚Ä‚ÌƒEƒBƒ“ƒhƒE‚ð•Â‚¶‚é	//Oct. 17, 2000 JEPRO –¼‘O‚ð•ÏX(F_FILECLOSEALL¨F_WIN_CLOSEALL)
+	F_GREP_WIN_ALL_CLOSE	,	// Grep ƒEƒBƒ“ƒhƒE‚ð‚·‚×‚Ä•Â‚¶‚é
 	F_TAB_CLOSEOTHER	,	//‚±‚Ìƒ^ƒuˆÈŠO‚ð•Â‚¶‚é	// 2008.11.22 syat
 	F_NEXTWINDOW		,	//ŽŸ‚ÌƒEƒBƒ“ƒhƒE
 	F_PREVWINDOW		,	//‘O‚ÌƒEƒBƒ“ƒhƒE
