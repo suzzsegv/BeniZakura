@@ -2041,9 +2041,11 @@ void CTabWnd::AdjustWindowPlacement( void )
 					wp.rcNormalPosition.right - wp.rcNormalPosition.left,
 					wp.rcNormalPosition.bottom - wp.rcNormalPosition.top,
 					SWP_SHOWWINDOW);
+				::UpdateWindow(hwnd);
 				return;
 			}
 			ShowWindow(hwnd, SW_MAXIMIZE);
+			::UpdateWindow(hwnd);
 		}
 	}
 }
