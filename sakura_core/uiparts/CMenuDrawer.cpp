@@ -511,11 +511,11 @@ CMenuDrawer::CMenuDrawer()
 
 /* 支援(11段目残りの10個: 343-352) */
 /* 343 */		F_HOKAN			/*, TBSTATE_ENABLED, TBSTYLE_BUTTON, 0, 0 */,	//入力補完
-/* 344 */		F_HELP_CONTENTS /*, TBSTATE_ENABLED, TBSTYLE_BUTTON, 0, 0 */,	//ヘルプ目次			//Nov. 25, 2000 JEPRO 追加
-/* 345 */		F_HELP_SEARCH	/*, TBSTATE_ENABLED, TBSTYLE_BUTTON, 0, 0 */,	//ヘルプキーワード検索	//Nov. 25, 2000 JEPRO 追加
+/* 344 */		F_DISABLE		/*, TBSTATE_ENABLED, TBSTYLE_BUTTON, 0, 0 */,	//ヘルプ目次 -> N/A
+/* 345 */		F_DISABLE		/*, TBSTATE_ENABLED, TBSTYLE_BUTTON, 0, 0 */,	//ヘルプキーワード検索 -> N/A
 /* 346 */		F_MENU_ALLFUNC	/*, TBSTATE_ENABLED, TBSTYLE_BUTTON, 0, 0 */,	//コマンド一覧			//Sept. 30, 2000 JEPRO 追加
-/* 347 */		F_EXTHELP1		/*, TBSTATE_ENABLED, TBSTYLE_BUTTON, 0, 0 */,	//外部ヘルプ１
-/* 348 */		F_EXTHTMLHELP	/*, TBSTATE_ENABLED, TBSTYLE_BUTTON, 0, 0 */,	//外部HTMLヘルプ
+/* 347 */		F_DISABLE		/*, TBSTATE_ENABLED, TBSTYLE_BUTTON, 0, 0 */,	//外部ヘルプ１ -> N/A
+/* 348 */		F_DISABLE		/*, TBSTATE_ENABLED, TBSTYLE_BUTTON, 0, 0 */,	//外部HTMLヘルプ -> N/A
 /* 349 */		F_ABOUT			/*, TBSTATE_ENABLED, TBSTYLE_BUTTON, 0, 0 */,	//バージョン情報	//Dec. 24, 2000 JEPRO 追加
 /* 350 */		F_DISABLE		/*, TBSTATE_ENABLED, TBSTYLE_BUTTON, 0, 0 */,	//ダミー
 /* 351 */		F_DISABLE		/*, TBSTATE_ENABLED, TBSTYLE_BUTTON, 0, 0 */,	//ダミー
@@ -1170,35 +1170,6 @@ void CMenuDrawer::DrawItem( DRAWITEMSTRUCT* lpdis )
 		}
 	}
 	::SetTextColor( hdc, ::GetSysColor(nTxSysColor) );
-
-#ifdef _DEBUG
-	// デバッグ用：メニュー項目に対して、ヘルプがない場合に背景色を青くする
-	TCHAR	szText[1024];
-	MENUITEMINFO mii;
-	// メニュー項目に関する情報を取得します。
-	memset_raw( &mii, 0, sizeof( mii ) );
-
-	mii.cbSize = SIZEOF_MENUITEMINFO; // Win95対策済みのsizeof(MENUITEMINFO)値
-
-	mii.fMask = MIIM_CHECKMARKS | MIIM_DATA | MIIM_ID | MIIM_STATE | MIIM_SUBMENU | MIIM_TYPE;
-	mii.fType = MFT_STRING;
-	_tcscpy( szText, _T("--unknown--") );
-	mii.dwTypeData = szText;
-	mii.cch = _countof( szText ) - 1;
-	if( 0 != ::GetMenuItemInfo( (HMENU)lpdis->hwndItem, lpdis->itemID, FALSE, &mii )
-	 && NULL == mii.hSubMenu
-	 && 0 == /* CEditWnd */::FuncID_To_HelpContextID( (EFunctionCode)lpdis->itemID ) 	/* 機能IDに対応するメニューコンテキスト番号を返す */
-	){
-		//@@@ 2001.12.21 YAZAKI
-		if( lpdis->itemState & ODS_SELECTED ){
-			::SetTextColor( hdc, ::GetSysColor( COLOR_HIGHLIGHTTEXT ) );	//	ハイライトカラー
-		}
-		else {
-			::SetTextColor( hdc, RGB( 0, 0, 255 ) );	//	青くしてる。
-		}
-//		::SetTextColor( hdc, RGB( 0, 0, 255 ) );
-	}
-#endif
 
 	rcText = lpdis->rcItem;
 	rcText.left += nIndentLeft + 1;

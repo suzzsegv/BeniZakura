@@ -33,25 +33,7 @@
 #include "dlg/CDlgWinSize.h"
 #include "util/shell.h"
 #include "sakura_rc.h"
-#include "sakura.hh"
 
-static const DWORD p_helpids[] = {	// 2006.10.10 ryoji
-	IDOK,						HIDOK_WINSIZE,				// 閉じる
-	IDC_BUTTON_HELP,			HIDC_BUTTON_WINSIZE_HELP,	// ヘルプ
-	IDC_EDIT_WX,				HIDC_EDIT_WX,				// 幅
-	IDC_EDIT_WY,				HIDC_EDIT_WY,				// 高さ
-	IDC_EDIT_SX,				HIDC_EDIT_SX,				// X座標
-	IDC_EDIT_SY,				HIDC_EDIT_SY,				// Y座標
-//	IDC_CHECK_WINPOS,			HIDC_CHECK_WINPOS,
-	IDC_RADIO_WINSIZE_DEF,		HIDC_RADIO_WINSIZE_DEF,		// 大きさ/指定しない
-	IDC_RADIO_WINSIZE_SAVE,		HIDC_RADIO_WINSIZE_SAVE,	// 大きさ/継承する
-	IDC_RADIO_WINSIZE_SET,		HIDC_RADIO_WINSIZE_SET,		// 大きさ/直接指定
-	IDC_RADIO_WINPOS_DEF,		HIDC_RADIO_WINPOS_DEF,		// 位置/指定しない
-	IDC_RADIO_WINPOS_SAVE,		HIDC_RADIO_WINPOS_SAVE, 	// 位置/継承する
-	IDC_RADIO_WINPOS_SET,		HIDC_RADIO_WINPOS_SET,  	// 位置/直接指定
-	IDC_COMBO_WINTYPE,			HIDC_COMBO_WINTYPE,
-	0, 0
-};
 
 CDlgWinSize::CDlgWinSize()
 {
@@ -109,9 +91,6 @@ BOOL CDlgWinSize::OnInitDialog( HWND hwndDlg, WPARAM wParam, LPARAM lParam )
 BOOL CDlgWinSize::OnBnClicked( int wID )
 {
 	switch( wID ){
-	case IDC_BUTTON_HELP:	// 2006/09/09 novice id修正
-		MyWinHelp( GetHwnd(), HELP_CONTEXT, HLP000286 );	// 2006.10.10 ryoji MyWinHelpに変更に変更
-		return TRUE;
 	case IDC_RADIO_WINPOS_DEF:
 	case IDC_RADIO_WINPOS_SAVE:
 	case IDC_RADIO_WINPOS_SET:
@@ -239,10 +218,4 @@ void CDlgWinSize::RenewItemState( void )
 	::EnableWindow( ::GetDlgItem( GetHwnd(), IDC_EDIT_SX ), state );
 	::EnableWindow( ::GetDlgItem( GetHwnd(), IDC_EDIT_SY ), state );
 }
-
-LPVOID CDlgWinSize::GetHelpIdTable( void )
-{
-	return (LPVOID)p_helpids;
-}
-
 

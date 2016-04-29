@@ -33,21 +33,6 @@
 #include "util/os.h"
 #include "util/module.h"
 #include "sakura_rc.h"
-#include "sakura.hh"
-
-// オープンファイル CDlgOpenFile.cpp	//@@@ 2002.01.07 add start MIK
-static const DWORD p_helpids[] = {	//13100
-//	IDOK,					HIDOK_OPENDLG,		//Winのヘルプで勝手に出てくる
-//	IDCANCEL,				HIDCANCEL_OPENDLG,		//Winのヘルプで勝手に出てくる
-//	IDC_BUTTON_HELP,		HIDC_OPENDLG_BUTTON_HELP,		//ヘルプボタン
-	IDC_COMBO_CODE,			HIDC_OPENDLG_COMBO_CODE,		//文字コードセット
-	IDC_COMBO_MRU,			HIDC_OPENDLG_COMBO_MRU,			//最近のファイル
-	IDC_COMBO_OPENFOLDER,	HIDC_OPENDLG_COMBO_OPENFOLDER,	//最近のフォルダ
-	IDC_COMBO_EOL,			HIDC_OPENDLG_COMBO_EOL,			//改行コード
-	IDC_CHECK_BOM,			HIDC_OPENDLG_CHECK_BOM,			//BOM	// 2006.08.06 ryoji
-//	IDC_STATIC,				-1,
-	0, 0
-};	//@@@ 2002.01.07 add end MIK
 
 #ifndef OFN_ENABLESIZING
 	#define OFN_ENABLESIZING	0x00800000
@@ -57,7 +42,6 @@ WNDPROC			m_wpOpenDialogProc;
 
 std::vector<LPCTSTR>	m_vMRU;
 std::vector<LPCTSTR>	m_vOPENFOLDER;
-int				m_nHelpTopicID;
 bool			m_bViewMode;		/* ビューモードか */
 BOOL			m_bIsSaveDialog;	/* 保存のダイアログか */
 
@@ -92,10 +76,6 @@ LRESULT APIENTRY OFNHookProcMain( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lP
 		/* ボタン／チェックボックスがクリックされた */
 		case BN_CLICKED:
 			switch( wID ){
-			case pshHelp:
-				/* ヘルプ */
-				MyWinHelp( hwnd, HELP_CONTEXT, m_nHelpTopicID );	// 2006.10.10 ryoji MyWinHelpに変更に変更
-				break;
 			case chx1:	// The read-only check box
 				m_bViewMode = ( 0 != ::IsDlgButtonChecked( hwnd , chx1 ) );
 				break;
@@ -509,20 +489,6 @@ UINT_PTR CALLBACK OFNHookProc(
 		}
 		break;	/* WM_COMMAND */
 
-	//@@@ 2002.01.08 add start
-	case WM_HELP:
-		{
-			HELPINFO *p = (HELPINFO *)lParam;
-			MyWinHelp( (HWND)p->hItemHandle, HELP_WM_HELP, (ULONG_PTR)(LPVOID)p_helpids );	// 2006.10.10 ryoji MyWinHelpに変更に変更
-		}
-		return TRUE;
-
-	//Context Menu
-	case WM_CONTEXTMENU:
-		MyWinHelp( hdlg, HELP_CONTEXTMENU, (ULONG_PTR)(LPVOID)p_helpids );	// 2006.10.10 ryoji MyWinHelpに変更に変更
-		return TRUE;
-	//@@@ 2002.01.08 add end
-
 	default:
 		return FALSE;
 	}
@@ -569,8 +535,6 @@ CDlgOpenFile::CDlgOpenFile()
 
 
 	_tcscpy( m_szDefaultWildCard, _T("*.*") );	/*「開く」での最初のワイルドカード（保存時の拡張子補完でも使用される） */
-
-	m_nHelpTopicID = 0;
 
 	return;
 }
@@ -779,7 +743,6 @@ bool CDlgOpenFile::DoModalOpenDlg( SLoadInfo* pLoadInfo, std::vector<std::tstrin
 	//メンバの初期化
 	m_bViewMode = pLoadInfo->bViewMode;
 	m_nCharCode = pLoadInfo->eCharCode;	/* 文字コード自動判別 */
-	m_nHelpTopicID = ::FuncID_To_HelpContextID(F_FILEOPEN);	//Stonee, 2001/05/18 機能番号からヘルプトピック番号を調べるようにした
 	m_bUseEol = false;	//	Feb. 9, 2001 genta
 	m_bUseBom = false;	//	Jul. 26, 2003 ryoji
 
@@ -913,7 +876,6 @@ bool CDlgOpenFile::DoModalSaveDlg(SSaveInfo* pSaveInfo, bool bSimpleMode)
 		m_bUseBom = false;
 	}
 
-	m_nHelpTopicID = ::FuncID_To_HelpContextID(F_FILESAVEAS_DIALOG);	//Stonee, 2001/05/18 機能番号からヘルプトピック番号を調べるようにした
 	if( GetSaveFileNameRecover( &m_ofn ) ){
 		pSaveInfo->cFilePath = m_ofn.lpstrFile;
 		if( m_ofn.Flags & OFN_ENABLEHOOK )

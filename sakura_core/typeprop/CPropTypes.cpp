@@ -126,7 +126,7 @@ int CPropTypes::DoPropertySheet( int nPageNum )
 	nIdx = 0;
 	memset_raw( &psp[nIdx], 0, sizeof_raw( psp[nIdx] ) );
 	psp[nIdx].dwSize      = sizeof_raw( psp[nIdx] );
-	psp[nIdx].dwFlags     = /*PSP_USEICONID |*/ PSP_USETITLE | PSP_HASHELP;
+	psp[nIdx].dwFlags     = /*PSP_USEICONID |*/ PSP_USETITLE;
 	psp[nIdx].hInstance   = m_hInstance;
 	psp[nIdx].pszTemplate = MAKEINTRESOURCE( IDD_PROP_SCREEN );
 	psp[nIdx].pszIcon     = NULL;
@@ -138,7 +138,7 @@ int CPropTypes::DoPropertySheet( int nPageNum )
 
 	memset_raw( &psp[nIdx], 0, sizeof_raw( psp[nIdx] ) );
 	psp[nIdx].dwSize      = sizeof_raw( psp[nIdx] );
-	psp[nIdx].dwFlags     = /*PSP_USEICONID |*/ PSP_USETITLE | PSP_HASHELP;
+	psp[nIdx].dwFlags     = /*PSP_USEICONID |*/ PSP_USETITLE;
 	psp[nIdx].hInstance   = m_hInstance;
 	psp[nIdx].pszTemplate = MAKEINTRESOURCE( IDD_PROP_COLOR );
 	psp[nIdx].pszIcon     = NULL /*MAKEINTRESOURCE( IDI_BORDER) */;
@@ -151,7 +151,7 @@ int CPropTypes::DoPropertySheet( int nPageNum )
 	// 2013.03.10 aroka ADD-start タイプ別設定に「ウィンドウ」タブを追加
 	memset_raw( &psp[nIdx], 0, sizeof_raw( psp[nIdx] ) );
 	psp[nIdx].dwSize      = sizeof_raw( psp[nIdx] );
-	psp[nIdx].dwFlags     = PSP_USETITLE | PSP_HASHELP;
+	psp[nIdx].dwFlags     = PSP_USETITLE;
 	psp[nIdx].hInstance   = m_hInstance;
 	psp[nIdx].pszTemplate = MAKEINTRESOURCE( IDD_PROP_WINDOW );
 	psp[nIdx].pszIcon     = NULL;
@@ -165,7 +165,7 @@ int CPropTypes::DoPropertySheet( int nPageNum )
 	// 2001/06/14 Start by asa-o: タイプ別設定に支援タブ追加
 	memset_raw( &psp[nIdx], 0, sizeof_raw( psp[nIdx] ) );
 	psp[nIdx].dwSize      = sizeof_raw( psp[nIdx] );
-	psp[nIdx].dwFlags     = PSP_USETITLE | PSP_HASHELP;
+	psp[nIdx].dwFlags     = PSP_USETITLE;
 	psp[nIdx].hInstance   = m_hInstance;
 	psp[nIdx].pszTemplate = MAKEINTRESOURCE( IDD_PROP_SUPPORT );
 	psp[nIdx].pszIcon     = NULL;
@@ -179,7 +179,7 @@ int CPropTypes::DoPropertySheet( int nPageNum )
 	// 2001.11.17 add start MIK タイプ別設定に正規表現キーワードタブ追加
 	memset_raw( &psp[nIdx], 0, sizeof_raw( psp[nIdx] ) );
 	psp[nIdx].dwSize      = sizeof_raw( psp[nIdx] );
-	psp[nIdx].dwFlags     = PSP_USETITLE | PSP_HASHELP;
+	psp[nIdx].dwFlags     = PSP_USETITLE;
 	psp[nIdx].hInstance   = m_hInstance;
 	psp[nIdx].pszTemplate = MAKEINTRESOURCE( IDD_PROP_REGEX );
 	psp[nIdx].pszIcon     = NULL;
@@ -193,7 +193,7 @@ int CPropTypes::DoPropertySheet( int nPageNum )
 	// 2006.04.10 fon ADD-start タイプ別設定に「キーワードヘルプ」タブを追加
 	memset_raw( &psp[nIdx], 0, sizeof_raw( psp[nIdx] ) );
 	psp[nIdx].dwSize      = sizeof_raw( psp[nIdx] );
-	psp[nIdx].dwFlags     = PSP_USETITLE | PSP_HASHELP;
+	psp[nIdx].dwFlags     = PSP_USETITLE;
 	psp[nIdx].hInstance   = m_hInstance;
 	psp[nIdx].pszTemplate = MAKEINTRESOURCE( IDD_PROP_KEYHELP );
 	psp[nIdx].pszIcon     = NULL;
@@ -212,7 +212,7 @@ int CPropTypes::DoPropertySheet( int nPageNum )
 	psh.dwSize = sizeof_old_PROPSHEETHEADER;
 
 	// JEPROtest Sept. 30, 2000 タイプ別設定の隠れ[適用]ボタンの正体はここ。行頭のコメントアウトを入れ替えてみればわかる
-	psh.dwFlags    = /*PSH_USEICONID |*/ PSH_NOAPPLYNOW | PSH_PROPSHEETPAGE/* | PSH_HASHELP*/;
+	psh.dwFlags    = PSH_NOAPPLYNOW | PSH_PROPSHEETPAGE | PSH_NOCONTEXTHELP;
 	psh.hwndParent = m_hwndParent;
 	psh.hInstance  = m_hInstance;
 	psh.pszIcon    = NULL;
@@ -270,29 +270,3 @@ int CPropTypes::DoPropertySheet( int nPageNum )
 	return nRet;
 }
 
-
-
-// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                         イベント                            //
-// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-
-/* ヘルプ */
-//2001.05.18 Stonee 機能番号からヘルプトピック番号を調べるようにした
-//2001.07.03 JEPRO  支援タブのヘルプを有効化
-//2001.11.17 MIK    IDD_PROP_REGEX
-void CPropTypes::OnHelp( HWND hwndParent, int nPageID )
-{
-	int		nContextID;
-	switch( nPageID ){
-	case IDD_PROP_SCREEN:	nContextID = ::FuncID_To_HelpContextID(F_TYPE_SCREEN);			break;
-	case IDD_PROP_COLOR:	nContextID = ::FuncID_To_HelpContextID(F_TYPE_COLOR);			break;
-	case IDD_PROP_WINDOW:	nContextID = ::FuncID_To_HelpContextID(F_TYPE_WINDOW);			break;
-	case IDD_PROP_SUPPORT:	nContextID = ::FuncID_To_HelpContextID(F_TYPE_HELPER);			break;
-	case IDD_PROP_REGEX:	nContextID = ::FuncID_To_HelpContextID(F_TYPE_REGEX_KEYWORD);	break;
-	case IDD_PROP_KEYHELP:	nContextID = ::FuncID_To_HelpContextID(F_TYPE_KEYHELP);			break;
-	default:				nContextID = -1;												break;
-	}
-	if( -1 != nContextID ){
-		MyWinHelp( hwndParent, HELP_CONTEXT, nContextID );	// 2006.10.10 ryoji MyWinHelpに変更に変更
-	}
-}

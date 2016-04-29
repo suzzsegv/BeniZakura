@@ -21,18 +21,7 @@
 #include "prop/CPropCommon.h"
 #include "util/shell.h"
 #include "sakura_rc.h"
-#include "sakura.hh"
 
-
-static const DWORD p_helpids[] = {
-	IDC_CHECK_DISP_UNICODE_IN_SJIS,		HIDC_CHECK_DISP_UNICODE_IN_SJIS,		// SJISで文字コード値をUnicodeで表示する
-	IDC_CHECK_DISP_UNICODE_IN_JIS,		HIDC_CHECK_DISP_UNICODE_IN_JIS,			// JISで文字コード値をUnicodeで表示する
-	IDC_CHECK_DISP_UNICODE_IN_EUC,		HIDC_CHECK_DISP_UNICODE_IN_EUC,			// EUCで文字コード値をUnicodeで表示する
-	IDC_CHECK_DISP_UTF8_CODEPOINT,		HIDC_CHECK_DISP_UTF8_CODEPOINT,			// UTF-8をコードポイントで表示する
-	IDC_CHECK_DISP_SP_CODEPOINT,		HIDC_CHECK_DISP_SP_CODEPOINT,			// サロゲートペアをコードポイントで表示する
-	IDC_CHECK_DISP_SELCOUNT_BY_BYTE,	HIDC_CHECK_DISP_SELCOUNT_BY_BYTE,		// 選択文字数を文字単位ではなくバイト単位で表示する
-	0, 0
-};
 
 /*!
 	@param hwndDlg ダイアログボックスのWindow Handle
@@ -75,9 +64,6 @@ INT_PTR CPropStatusbar::DispatchEvent(
 		pNMHDR = (NMHDR*)lParam;
 		pMNUD  = (NM_UPDOWN*)lParam;
 		switch( pNMHDR->code ){
-		case PSN_HELP:
-			OnHelp( hwndDlg, IDD_PROP_STATUSBAR );
-			return TRUE;
 		case PSN_KILLACTIVE:
 			DEBUG_TRACE( _T("statusbar PSN_KILLACTIVE\n") );
 
@@ -90,24 +76,6 @@ INT_PTR CPropStatusbar::DispatchEvent(
 			return TRUE;
 		}
 		break;	/* WM_NOTIFY */
-
-//@@@ 2001.02.04 Start by MIK: Popup Help
-	case WM_HELP:
-		{
-			HELPINFO *p = (HELPINFO *)lParam;
-			MyWinHelp( (HWND)p->hItemHandle, HELP_WM_HELP, (ULONG_PTR)(LPVOID)p_helpids );	// 2006.10.10 ryoji MyWinHelpに変更に変更
-		}
-		return TRUE;
-		/*NOTREACHED*/
-		//break;
-//@@@ 2001.02.04 End
-
-//@@@ 2001.12.22 Start by MIK: Context Menu Help
-	//Context Menu
-	case WM_CONTEXTMENU:
-		MyWinHelp( hwndDlg, HELP_CONTEXTMENU, (ULONG_PTR)(LPVOID)p_helpids );	// 2006.10.10 ryoji MyWinHelpに変更に変更
-		return TRUE;
-//@@@ 2001.12.22 End
 
 	}
 	return FALSE;

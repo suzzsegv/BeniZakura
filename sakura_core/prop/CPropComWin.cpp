@@ -22,35 +22,7 @@
 #include "dlg/CDlgWinSize.h"	//	2004.05.13 Moca
 #include "util/shell.h"
 #include "sakura_rc.h"
-#include "sakura.hh"
 
-//@@@ 2001.02.04 Start by MIK: Popup Help
-static const DWORD p_helpids[] = {	//11200
-	IDC_CHECK_DispFUNCKEYWND,		HIDC_CHECK_DispFUNCKEYWND,		//ファンクションキー表示
-	IDC_CHECK_DispSTATUSBAR,		HIDC_CHECK_DispSTATUSBAR,		//ステータスバー表示
-	IDC_CHECK_DispTOOLBAR,			HIDC_CHECK_DispTOOLBAR,			//ツールバー表示
-	IDC_CHECK_bScrollBarHorz,		HIDC_CHECK_bScrollBarHorz,		//水平スクロールバー
-	IDC_CHECK_bMenuIcon,			HIDC_CHECK_bMenuIcon,			//アイコン付きメニュー
-	IDC_CHECK_SplitterWndVScroll,	HIDC_CHECK_SplitterWndVScroll,	//垂直スクロールの同期	//Jul. 05, 2001 JEPRO 追加
-	IDC_CHECK_SplitterWndHScroll,	HIDC_CHECK_SplitterWndHScroll,	//水平スクロールの同期	//Jul. 05, 2001 JEPRO 追加
-	IDC_EDIT_nRulerBottomSpace,		HIDC_EDIT_nRulerBottomSpace,	//ルーラーの高さ
-	IDC_EDIT_nRulerHeight,			HIDC_EDIT_nRulerHeight,			//ルーラーとテキストの間隔
-	IDC_EDIT_nLineNumberRightSpace,	HIDC_EDIT_nLineNumberRightSpace,	//行番号とテキストの隙間
-	IDC_RADIO_FUNCKEYWND_PLACE1,	HIDC_RADIO_FUNCKEYWND_PLACE1,	//ファンクションキー表示位置
-	IDC_RADIO_FUNCKEYWND_PLACE2,	HIDC_RADIO_FUNCKEYWND_PLACE2,	//ファンクションキー表示位置
-	IDC_EDIT_FUNCKEYWND_GROUPNUM,	HIDC_EDIT_FUNCKEYWND_GROUPNUM,	//ファンクションキーのグループボタン数
-	IDC_SPIN_nRulerBottomSpace,		HIDC_EDIT_nRulerBottomSpace,
-	IDC_SPIN_nRulerHeight,			HIDC_EDIT_nRulerHeight,
-	IDC_SPIN_nLineNumberRightSpace,	HIDC_EDIT_nLineNumberRightSpace,
-	IDC_SPIN_FUNCKEYWND_GROUPNUM,	HIDC_EDIT_FUNCKEYWND_GROUPNUM,
-	IDC_WINCAPTION_ACTIVE,			HIDC_WINCAPTION_ACTIVE,			//アクティブ時	//@@@ 2003.06.15 MIK
-	IDC_WINCAPTION_INACTIVE,		HIDC_WINCAPTION_INACTIVE,		//非アクティブ時	//@@@ 2003.06.15 MIK
-	IDC_BUTTON_WINSIZE,				HIDC_BUTTON_WINSIZE,			//位置と大きさの設定	// 2006.08.06 ryoji
-	//	Feb. 11, 2007 genta TAB関連は「タブバー」シートへ移動
-//	IDC_STATIC,						-1,
-	0, 0
-};
-//@@@ 2001.02.04 End
 
 //	From Here Jun. 2, 2001 genta
 /*!
@@ -109,9 +81,6 @@ INT_PTR CPropWin::DispatchEvent(
 		switch( idCtrl ){
 		default:
 			switch( pNMHDR->code ){
-			case PSN_HELP:
-				OnHelp( hwndDlg, IDD_PROP_WIN );
-				return TRUE;
 			case PSN_KILLACTIVE:
 //				MYTRACE( _T("Window PSN_KILLACTIVE\n") );
 				/* ダイアログデータの取得 Window */
@@ -237,24 +206,6 @@ INT_PTR CPropWin::DispatchEvent(
 		}
 		break;
 //	To Here Sept. 9, 2000
-
-//@@@ 2001.02.04 Start by MIK: Popup Help
-	case WM_HELP:
-		{
-			HELPINFO *p = (HELPINFO *)lParam;
-			MyWinHelp( (HWND)p->hItemHandle, HELP_WM_HELP, (ULONG_PTR)(LPVOID)p_helpids );	// 2006.10.10 ryoji MyWinHelpに変更に変更
-		}
-		return TRUE;
-		/*NOTREACHED*/
-		//break;
-//@@@ 2001.02.04 End
-
-//@@@ 2001.12.22 Start by MIK: Context Menu Help
-	//Context Menu
-	case WM_CONTEXTMENU:
-		MyWinHelp( hwndDlg, HELP_CONTEXTMENU, (ULONG_PTR)(LPVOID)p_helpids );	// 2006.10.10 ryoji MyWinHelpに変更に変更
-		return TRUE;
-//@@@ 2001.12.22 End
 
 	}
 	return FALSE;

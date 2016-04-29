@@ -105,9 +105,6 @@ public:
 	virtual BOOL OnActivate( WPARAM wParam, LPARAM lParam ){return FALSE;}	//@@@ 2003.04.08 MIK
 	virtual int OnVKeyToItem( WPARAM wParam, LPARAM lParam ){ return -1; }
 	virtual LRESULT OnCharToItem( WPARAM wParam, LPARAM lParam ){ return -1; }
-	virtual BOOL OnPopupHelp( WPARAM, LPARAM );	//@@@ 2002.01.18 add
-	virtual BOOL OnContextMenu( WPARAM, LPARAM );	//@@@ 2002.01.18 add
-	virtual LPVOID GetHelpIdTable(void);	//@@@ 2002.01.18 add
 
 	void ResizeItem( HWND hTarget, const POINT& ptDlgDefalut, const POINT& ptDlgNew, const RECT& rcItemDefault, EAnchorStyle anchor, bool bUpdate = true);
 	void GetItemClientRect( int wID, RECT& rc );

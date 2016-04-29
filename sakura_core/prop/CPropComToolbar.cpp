@@ -22,29 +22,7 @@
 #include "uiparts/CImageListMgr.h" // 2005/8/9 aroka
 #include "util/shell.h"
 #include "sakura_rc.h"
-#include "sakura.hh"
 
-
-//@@@ 2001.02.04 Start by MIK: Popup Help
-static const DWORD p_helpids[] = {	//11000
-	IDC_BUTTON_DELETE,				HIDC_BUTTON_DELETE_TOOLBAR,				//ツールバーから機能削除
-	IDC_BUTTON_INSERTSEPARATOR,		HIDC_BUTTON_INSERTSEPARATOR_TOOLBAR,	//セパレータ挿入
-	IDC_BUTTON_INSERT,				HIDC_BUTTON_INSERT_TOOLBAR,				//ツールバーへ機能挿入
-	IDC_BUTTON_ADD,					HIDC_BUTTON_ADD_TOOLBAR,				//ツールバーへ機能追加
-	IDC_BUTTON_UP,					HIDC_BUTTON_UP_TOOLBAR,					//ツールバーの機能を上へ移動
-	IDC_BUTTON_DOWN,				HIDC_BUTTON_DOWN_TOOLBAR,				//ツールバーの機能を下へ移動
-	IDC_CHECK_TOOLBARISFLAT,		HIDC_CHECK_TOOLBARISFLAT,				//フラットなボタン
-	IDC_COMBO_FUNCKIND,				HIDC_COMBO_FUNCKIND_TOOLBAR,			//機能の種別
-	IDC_LIST_FUNC,					HIDC_LIST_FUNC_TOOLBAR,					//機能一覧
-	IDC_LIST_RES,					HIDC_LIST_RES_TOOLBAR,					//ツールバー一覧
-	IDC_BUTTON_INSERTWRAP,			HIDC_BUTTON_INSERTWRAP,					//ツールバー折返	// 2006.08.06 ryoji
-	IDC_LABEL_MENUFUNCKIND,			-1,
-	IDC_LABEL_MENUFUNC,				-1,
-	IDC_LABEL_TOOLBAR,				-1,
-//	IDC_STATIC,						-1,
-	0, 0
-};
-//@@@ 2001.02.04 End
 
 //	From Here Jun. 2, 2001 genta
 /*!
@@ -201,9 +179,6 @@ INT_PTR CPropToolbar::DispatchEvent(
 		pNMHDR = (NMHDR*)lParam;
 		pMNUD  = (NM_UPDOWN*)lParam;
 		switch( pNMHDR->code ){
-		case PSN_HELP:
-			OnHelp( hwndDlg, IDD_PROP_TOOLBAR );
-			return TRUE;
 		case PSN_KILLACTIVE:
 //			MYTRACE( _T("PROP_TOOLBAR PSN_KILLACTIVE\n") );
 			/* ダイアログデータの取得 Toolbar */
@@ -434,24 +409,6 @@ INT_PTR CPropToolbar::DispatchEvent(
 	case WM_DESTROY:
 		::KillTimer( hwndDlg, 1 );
 		break;
-
-//@@@ 2001.02.04 Start by MIK: Popup Help
-	case WM_HELP:
-		{
-			HELPINFO *p = (HELPINFO *)lParam;
-			MyWinHelp( (HWND)p->hItemHandle, HELP_WM_HELP, (ULONG_PTR)(LPVOID)p_helpids );	// 2006.10.10 ryoji MyWinHelpに変更に変更
-		}
-		return TRUE;
-		/*NOTREACHED*/
-		//break;
-//@@@ 2001.02.04 End
-
-//@@@ 2001.12.22 Start by MIK: Context Menu Help
-	//Context Menu
-	case WM_CONTEXTMENU:
-		MyWinHelp( hwndDlg, HELP_CONTEXTMENU, (ULONG_PTR)(LPVOID)p_helpids );	// 2006.10.10 ryoji MyWinHelpに変更に変更
-		return TRUE;
-//@@@ 2001.12.22 End
 
 	}
 	return FALSE;

@@ -31,21 +31,10 @@
 #include "CDlgTypeAscertain.h"
 #include "env/CDocTypeManager.h"
 #include "util/shell.h"
-#include "sakura.hh"
 #include "sakura_rc.h"
 
 //内部使用定数
 static const int PROP_TEMPCHANGE_FLAG = 0x10000;
-
-// タイプ別設定インポート確認 CDlgTypeAscertain.cpp
-const DWORD p_helpids[] = {
-	IDC_COMBO_COLORS,		HIDC_COMBO_COLORS,		//色指定
-	IDOK,					HIDOK_DTA,				//OK
-	IDCANCEL,				HIDCANCEL_DTA,			//キャンセル
-	IDC_BUTTON_HELP,		HIDC_DTA_BUTTON_HELP,	//ヘルプ
-//	IDC_STATIC,				-1,
-	0, 0
-};
 
 //  Constructors
 CDlgTypeAscertain::CDlgTypeAscertain()
@@ -67,10 +56,6 @@ int CDlgTypeAscertain::DoModal( HINSTANCE hInstance, HWND hwndParent, SAscertain
 BOOL CDlgTypeAscertain::OnBnClicked( int wID )
 {
 	switch( wID ){
-	case IDC_BUTTON_HELP:
-		/* 「タイプ別設定インポート」のヘルプ */
-		MyWinHelp( GetHwnd(), HELP_CONTEXT, HLP000338 );
-		return TRUE;
 	case IDOK:
 		TCHAR	buff1[_MAX_PATH + 20];
 		wchar_t	buff2[_MAX_PATH + 20];
@@ -150,7 +135,3 @@ void CDlgTypeAscertain::SetData( void )
 	return;
 }
 
-LPVOID CDlgTypeAscertain::GetHelpIdTable(void)
-{
-	return (LPVOID)p_helpids;
-}

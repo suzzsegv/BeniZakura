@@ -35,36 +35,12 @@
 #include "dlg/CDlgInput1.h"
 #include "util/shell.h"
 #include "sakura_rc.h"
-#include "sakura.hh"
 
 using std::wstring;
 
 // TreeView 表示固定初期値
 const WCHAR	DEFAULT_NODE[]	= L"編集してください";
 const WCHAR	DEFAULT_SEPA[]	= L"――――――――――";
-
-static const DWORD p_helpids[] = {
-	IDC_COMBO_FUNCKIND,				HIDC_COMBO_FUNCKIND,				//機能の種別
-	IDC_LIST_FUNC,					HIDC_LIST_FUNC,						//機能一覧
-	IDC_TREE_RES,					HIDC_TREE_RES,						//メニュー一覧
-	IDC_BUTTON_DELETE,				HIDC_BUTTON_TREE_DELETE,			//メニューから機能削除
-	IDC_BUTTON_INSERT_NODE,			HIDC_BUTTON_TREE_INSERT_NODE,		//メニューへノード追加
-	IDC_BUTTON_INSERTSEPARATOR,		HIDC_BUTTON_TREE_INSERT_SEPARATOR,	//メニューへ区切線挿入
-	IDC_BUTTON_INSERT,				HIDC_BUTTON_TREE_INSERT,			//メニューへ機能挿入(上)
-	IDC_BUTTON_INSERT_A,			HIDC_BUTTON_TREE_INSERT_A,			//メニューへ機能挿入(下)
-	IDC_BUTTON_ADD,					HIDC_BUTTON_TREE_ADD,				//メニューへ機能追加
-	IDC_BUTTON_UP,					HIDC_BUTTON_TREE_UP,				//メニューの機能を上へ移動
-	IDC_BUTTON_DOWN,				HIDC_BUTTON_TREE_DOWN,				//メニューの機能を下へ移動
-	IDC_BUTTON_RIGHT,				HIDC_BUTTON_TREE_RIGHT,				//メニューの機能を右へ移動
-	IDC_BUTTON_LEFT,				HIDC_BUTTON_TREE_LEFT,				//メニューの機能を左へ移動
-	IDC_BUTTON_IMPORT,				HIDC_BUTTON_IMPORT,					//メニューのインポート
-	IDC_BUTTON_EXPORT,				HIDC_BUTTON_EXPORT,					//メニューのエクスポート
-	IDC_BUTTON_CHECK,				HIDC_BUTTON_NENU_CHECK,				//メニューの検査
-	IDC_BUTTON_CLEAR,				HIDC_BUTTON_TREE_CLEAR,				//メニューをクリア
-	IDC_BUTTON_INITIALIZE,			HIDC_BUTTON_TREE_INITIALIZE,		//メニューを初期状態に戻す
-	IDC_CHECK_KEY_PARENTHESES,		HIDC_CHECK_KEY_PARENTHESES,			//アクセスキーを必ず( )付で表示(&P)
-	0, 0
-};
 
 // 内部使用変数
 // 機能格納(Work)
@@ -277,9 +253,6 @@ INT_PTR CPropMainMenu::DispatchEvent(
 		ptdi = (TV_DISPINFO*)lParam;
 
 		switch( pNMHDR->code ){
-		case PSN_HELP:
-			OnHelp( hwndDlg, IDD_PROP_MAINMENU );
-			return TRUE;
 		case PSN_KILLACTIVE:
 			/* ダイアログデータの取得 Menu */
 			GetData( hwndDlg );
@@ -811,19 +784,6 @@ INT_PTR CPropMainMenu::DispatchEvent(
 		msMenu.clear();
 		nMenuCnt = 0;
 		break;
-
-	case WM_HELP:
-		{
-			HELPINFO *p = (HELPINFO *)lParam;
-			MyWinHelp( (HWND)p->hItemHandle, HELP_WM_HELP, (ULONG_PTR)(LPVOID)p_helpids );
-		}
-		return TRUE;
-
-	//Context Menu
-	case WM_CONTEXTMENU:
-		MyWinHelp( hwndDlg, HELP_CONTEXTMENU, (ULONG_PTR)(LPVOID)p_helpids );
-
-		return TRUE;
 	}
 	return FALSE;
 }

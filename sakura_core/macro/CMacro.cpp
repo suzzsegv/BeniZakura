@@ -931,7 +931,6 @@ void CMacro::HandleCommand(
 		break;
 	/* 2‚Â‚Ìˆø”‚ª•¶Žš—ñ */
 	// Jul. 5, 2002 genta
-	case F_EXTHTMLHELP:
 	case F_EXECEXTMACRO:				// 2009.06.14 syat
 		pcEditView->GetCommander().HandleCommand( Index, false, (LPARAM)Argument[0], (LPARAM)Argument[1], 0, 0);
 		break;

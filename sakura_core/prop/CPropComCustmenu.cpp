@@ -23,35 +23,8 @@
 #include "util/shell.h"
 #include "typeprop/CImpExpManager.h"	// 20210/4/23 Uchi
 #include "sakura_rc.h"
-#include "sakura.hh"
 
 using namespace std;
-
-//@@@ 2001.02.04 Start by MIK: Popup Help
-static const DWORD p_helpids[] = {	//10100
-	IDC_BUTTON_DELETE,				HIDC_BUTTON_DELETE,				//メニューから機能削除
-	IDC_BUTTON_INSERTSEPARATOR,		HIDC_BUTTON_INSERTSEPARATOR,	//セパレータ挿入
-	IDC_BUTTON_INSERT,				HIDC_BUTTON_INSERT,				//メニューへ機能挿入
-	IDC_BUTTON_ADD,					HIDC_BUTTON_ADD,				//メニューへ機能追加
-	IDC_BUTTON_UP,					HIDC_BUTTON_UP,					//メニューの機能を上へ移動
-	IDC_BUTTON_DOWN,				HIDC_BUTTON_DOWN,				//メニューの機能を下へ移動
-	IDC_BUTTON_IMPORT,				HIDC_BUTTON_IMPORT,				//インポート
-	IDC_BUTTON_EXPORT,				HIDC_BUTTON_EXPORT,				//エクスポート
-	IDC_COMBO_FUNCKIND,				HIDC_COMBO_FUNCKIND,			//機能の種別
-	IDC_COMBO_MENU,					HIDC_COMBO_MENU,				//メニューの種別
-	IDC_EDIT_MENUNAME,				HIDC_EDIT_MENUNAME,				//メニュー名		// 2009.02.20 ryoji
-	IDC_BUTTON_MENUNAME,			HIDC_BUTTON_MENUNAME,			//メニュー名設定	// 2009.02.20 ryoji
-	IDC_LIST_FUNC,					HIDC_LIST_FUNC,					//機能一覧
-	IDC_LIST_RES,					HIDC_LIST_RES,					//メニュー一覧
-//	IDC_LABEL_MENUFUNCKIND,			-1,
-//	IDC_LABEL_MENUCHOICE,			-1,
-//	IDC_LABEL_MENUFUNC,				-1,
-//	IDC_LABEL_MENU,					-1,
-//	IDC_LABEL_MENUKEYCHANGE,		-1,
-//	IDC_STATIC,						-1,
-	0, 0
-};
-//@@@ 2001.02.04 End
 
 //	From Here Jun. 2, 2001 genta
 /*!
@@ -123,9 +96,6 @@ INT_PTR CPropCustmenu::DispatchEvent(
 		pNMHDR = (NMHDR*)lParam;
 		pMNUD  = (NM_UPDOWN*)lParam;
 		switch( pNMHDR->code ){
-		case PSN_HELP:
-			OnHelp( hwndDlg, IDD_PROP_CUSTMENU );
-			return TRUE;
 		case PSN_KILLACTIVE:
 //			MYTRACE( _T("Custom menu PSN_KILLACTIVE\n") );
 			/* ダイアログデータの取得 Custom menu */
@@ -585,24 +555,6 @@ INT_PTR CPropCustmenu::DispatchEvent(
 	case WM_DESTROY:
 		::KillTimer( hwndDlg, 1 );
 		break;
-
-//@@@ 2001.02.04 Start by MIK: Popup Help
-	case WM_HELP:
-		{
-			HELPINFO *p = (HELPINFO *)lParam;
-			MyWinHelp( (HWND)p->hItemHandle, HELP_WM_HELP, (ULONG_PTR)(LPVOID)p_helpids );	// 2006.10.10 ryoji MyWinHelpに変更に変更
-		}
-		return TRUE;
-		/*NOTREACHED*/
-		//break;
-//@@@ 2001.02.04 End
-
-//@@@ 2001.12.22 Start by MIK: Context Menu Help
-	//Context Menu
-	case WM_CONTEXTMENU:
-		MyWinHelp( hwndDlg, HELP_CONTEXTMENU, (ULONG_PTR)(LPVOID)p_helpids );	// 2006.10.10 ryoji MyWinHelpに変更に変更
-		return TRUE;
-//@@@ 2001.12.22 End
 
 	}
 	return FALSE;

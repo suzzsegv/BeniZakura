@@ -365,7 +365,6 @@ LRESULT CControlTray::DispatchEvent(
 {
 	int				nId;
 	HWND			hwndWork;
-	LPHELPINFO		lphi;
 
 	int			nRowNum;
 	EditNode*	pEditNodeArr;
@@ -443,46 +442,6 @@ LRESULT CControlTray::DispatchEvent(
 		::SendMessage( (HWND)lParam, MYWM_UIPI_CHECK,  (WPARAM)0, (LPARAM)0 );	// 返事を返す
 		return 0L;
 
-	case MYWM_HTMLHELP:
-		{
-			TCHAR* pWork = m_pShareData->m_sWorkBuffer.GetWorkBuffer<TCHAR>();
-
-			//szHtmlFile取得
-			TCHAR	szHtmlHelpFile[1024];
-			_tcscpy( szHtmlHelpFile, pWork );
-			int		nLen = _tcslen( szHtmlHelpFile );
-
-			//	Jul. 6, 2001 genta HtmlHelpの呼び出し方法変更
-			hwndHtmlHelp = OpenHtmlHelp(
-				NULL,
-				szHtmlHelpFile,
-				HH_DISPLAY_TOPIC,
-				(DWORD_PTR)0,
-				true
-			);
-
-			HH_AKLINK	link;
-			link.cbStruct		= sizeof_raw(link);
-			link.fReserved		= FALSE;
-			link.pszKeywords	= to_tchar(&pWork[nLen+1]);
-			link.pszUrl			= NULL;
-			link.pszMsgText		= NULL;
-			link.pszMsgTitle	= NULL;
-			link.pszWindow		= NULL;
-			link.fIndexOnFail	= TRUE;
-
-			//	Jul. 6, 2001 genta HtmlHelpの呼び出し方法変更
-			hwndHtmlHelp = OpenHtmlHelp(
-				NULL,
-				szHtmlHelpFile,
-				HH_KEYWORD_LOOKUP,
-				(DWORD_PTR)&link,
-				false
-			);
-		}
-		return (LRESULT)hwndHtmlHelp;
-
-
 	/* 編集ウィンドウオブジェクトからのオブジェクト削除要求 */
 	case MYWM_DELETE_ME:
 		// タスクトレイのアイコンを常駐しない、または、トレイにアイコンを作っていない
@@ -539,14 +498,6 @@ LRESULT CControlTray::DispatchEvent(
 		return 0L;
 
 //	case WM_QUERYENDSESSION:
-	case WM_HELP:
-		lphi = (LPHELPINFO) lParam;
-		switch( lphi->iContextType ){
-		case HELPINFO_MENUITEM:
-			MyWinHelp( hwnd, HELP_CONTEXT, FuncID_To_HelpContextID( (EFunctionCode)lphi->iCtrlId ) );
-			break;
-		}
-		return TRUE;
 		case WM_COMMAND:
 			OnCommand( HIWORD(wParam), LOWORD(wParam), (HWND) lParam );
 			return 0L;
@@ -603,36 +554,6 @@ LRESULT CControlTray::DispatchEvent(
 				/* ポップアップメニュー(トレイ右ボタン) */
 				nId = CreatePopUpMenu_R();
 				switch( nId ){
-				case F_HELP_CONTENTS:
-					/* ヘルプ目次 */
-					ShowWinHelpContents( GetTrayHwnd() );	//	目次を表示する
-					break;
-				case F_HELP_SEARCH:
-					/* ヘルプキーワード検索 */
-					MyWinHelp( GetTrayHwnd(), HELP_KEY, (ULONG_PTR)_T("") );	// 2006.10.10 ryoji MyWinHelpに変更に変更
-					break;
-				case F_EXTHELP1:
-					/* 外部ヘルプ１ */
-					do{
-						if( CHelpManager().ExtWinHelpIsSet() ) {	//	共通設定のみ確認
-							break;
-						}
-						else{
-							ErrorBeep();
-						}
-					}while(IDYES == ::MYMESSAGEBOX( 
-							NULL, MB_YESNOCANCEL | MB_ICONEXCLAMATION | MB_APPLMODAL | MB_TOPMOST,
-							GSTR_APPNAME,
-							_T("外部ヘルプ１が設定されていません。\n今すぐ設定しますか?"))
-					);/*do-while*/
-
-					break;
-				case F_EXTHTMLHELP:
-					/* 外部HTMLヘルプ */
-					{
-//						CEditView::Command_EXTHTMLHELP();
-					}
-					break;
 				case F_TYPE_LIST:	// タイプ別設定一覧
 					{
 						CDlgTypeList			cDlgTypeList;
@@ -1527,8 +1448,6 @@ int	CControlTray::CreatePopUpMenu_R( void )
 	m_CMenuDrawer.MyAppendMenu( hMenuTop, MF_BYPOSITION | MF_STRING | MF_POPUP, (UINT)hMenu, L"TrayR", L"" );
 
 	/* トレイ右クリックの「ヘルプ」メニュー */
-	m_CMenuDrawer.MyAppendMenu( hMenu, MF_BYPOSITION | MF_STRING, F_HELP_CONTENTS , _T(""), _T("O"), FALSE );
-	m_CMenuDrawer.MyAppendMenu( hMenu, MF_BYPOSITION | MF_STRING, F_HELP_SEARCH , _T(""), _T("S"), FALSE );	//Nov. 25, 2000 JEPRO 「トピックの」→「キーワード」に変更
 	m_CMenuDrawer.MyAppendMenuSep( hMenu, MF_BYPOSITION | MF_SEPARATOR, 0, NULL, FALSE );
 	m_CMenuDrawer.MyAppendMenu( hMenu, MF_BYPOSITION | MF_STRING, F_TYPE_LIST, _T(""), _T("L"), FALSE );
 	m_CMenuDrawer.MyAppendMenu( hMenu, MF_BYPOSITION | MF_STRING, F_OPTION, _T(""), _T("C"), FALSE );

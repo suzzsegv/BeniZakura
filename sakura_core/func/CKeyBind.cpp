@@ -659,7 +659,7 @@ const KeyData SakuraDefaultKeyBindTable[] = {
 
 	/* ファンクションキー */
 	//keycode,	keyname,			なし,				Shitf+,				Ctrl+,						Shift+Ctrl+,		Alt+,					Shit+Alt+,			Ctrl+Alt+,				Shift+Ctrl+Alt+
-	{ VK_F1,	_T("F1" ),			F_EXTHTMLHELP,		F_MENU_ALLFUNC,		F_EXTHELP1,					F_ABOUT,			F_HELP_CONTENTS,		F_HELP_SEARCH,		F_0,					F_0				},
+	{ VK_F1,	_T("F1" ),			F_0,				F_MENU_ALLFUNC,		F_0,						F_ABOUT,			F_0,					F_0,				F_0,					F_0				},
 	{ VK_F2,	_T("F2" ),			F_BOOKMARK_NEXT,	F_BOOKMARK_PREV,	F_BOOKMARK_SET,				F_BOOKMARK_RESET,	F_BOOKMARK_VIEW,		F_0,				F_0,					F_0				},
 	{ VK_F3,	_T("F3" ),			F_SEARCH_NEXT,		F_SEARCH_PREV,		F_SEARCH_CLEARMARK,			F_JUMP_SRCHSTARTPOS,F_0,					F_0,				F_0,					F_0				},
 	{ VK_F4,	_T("F4" ),			F_SPLIT_V,			F_SPLIT_H,			F_0,						F_FILECLOSE_OPEN,	F_0,					F_EXITALLEDITORS,	F_EXITALL,				F_0				},
@@ -779,7 +779,7 @@ const KeyData HidemaruDefaultKeyBindTable[] = {
 
 	/* ファンクションキー */
 	//keycode,	keyname,			なし,				Shitf+,				Ctrl+,						Shift+Ctrl+,		Alt+,					Shit+Alt+,			Ctrl+Alt+,				Shift+Ctrl+Alt+
-	{ VK_F1,	_T("F1" ),			F_EXTHTMLHELP,		F_RECKEYMACRO,		F_EXTHELP1,					F_0,				F_0,					F_0,				F_0,					F_0				},
+	{ VK_F1,	_T("F1" ),			F_0,				F_RECKEYMACRO,		F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ VK_F2,	_T("F2" ),			F_0,				F_EXECKEYMACRO,		F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ VK_F3,	_T("F3" ),			F_SEARCH_NEXT,		F_SEARCH_PREV,		F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ VK_F4,	_T("F4" ),			/* N/A */ F_0, 		/* N/A */ F_0,		F_FILECLOSE,				F_0,				F_0,					F_0,				F_0,					F_0				},

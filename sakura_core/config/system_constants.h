@@ -577,9 +577,6 @@ enum e_PM_SETCARETPOS_SELECTSTATE {
 /*! 新しい編集ウィンドウの作成依頼(コマンドラインを渡す) */
 #define	MYWM_OPENNEWEDITOR	(WM_APP+210)
 
-//ヘルプっぽい何か
-#define	MYWM_HTMLHELP			(WM_APP+212)
-
 /*! タブウインドウ用メッセージ */
 #define	MYWM_TAB_WINDOW_NOTIFY	(WM_APP+213)	//@@@ 2003.05.31 MIK
 

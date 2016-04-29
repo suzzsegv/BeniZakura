@@ -40,23 +40,9 @@
 #include "io/CTextStream.h"
 #include "io/CZipFile.h"
 #include "sakura_rc.h"
-#include "sakura.hh"
 
 static void LoadPluginTemp(CommonSetting& common, CMenuDrawer& cMenuDrawer);
 
-//! Popup Help用ID
-static const DWORD p_helpids[] = {	//11700
-	IDC_CHECK_PluginEnable,	HIDC_CHECK_PluginEnable,	//プラグインを有効にする
-	IDC_PLUGINLIST,			HIDC_PLUGINLIST,			//プラグインリスト
-	IDC_PLUGIN_INST_ZIP,	HIDC_PLUGIN_INST_ZIP,		//Zipプラグインを追加	// 2011/11/2 Uchi
-	IDC_PLUGIN_SearchNew,	HIDC_PLUGIN_SearchNew,		//新規プラグインを追加
-	IDC_PLUGIN_OpenFolder,	HIDC_PLUGIN_OpenFolder,		//フォルダを開く
-	IDC_PLUGIN_Remove,		HIDC_PLUGIN_Remove,			//プラグインを削除
-	IDC_PLUGIN_OPTION,		HIDC_PLUGIN_OPTION,			//プラグイン設定	// 2010/3/22 Uchi
-	IDC_PLUGIN_README,		HIDC_PLUGIN_README,			//ReadMe表示		// 2011/11/2 Uchi
-//	IDC_STATIC,			-1,
-	0, 0
-};
 
 /*!
 	@param hwndDlg ダイアログボックスのWindow Handle
@@ -140,9 +126,6 @@ INT_PTR CPropPlugin::DispatchEvent( HWND hwndDlg, UINT uMsg, WPARAM wParam, LPAR
 			break;
 		default:
 			switch( pNMHDR->code ){
-			case PSN_HELP:
-				OnHelp( hwndDlg, IDD_PROP_PLUGIN );
-				return TRUE;
 			case PSN_KILLACTIVE:
 				/* ダイアログデータの取得 Plugin */
 				GetData( hwndDlg );
@@ -269,25 +252,7 @@ INT_PTR CPropPlugin::DispatchEvent( HWND hwndDlg, UINT uMsg, WPARAM wParam, LPAR
 			//}
 			break;
 		}
-
 		break;	/* WM_COMMAND */
-//@@@ 2001.02.04 Start by MIK: Popup Help
-	case WM_HELP:
-		{
-			HELPINFO *p = (HELPINFO *)lParam;
-			MyWinHelp( (HWND)p->hItemHandle, HELP_WM_HELP, (ULONG_PTR)(LPVOID)p_helpids );	// 2006.10.10 ryoji MyWinHelpに変更に変更
-		}
-		return TRUE;
-		/*NOTREACHED*/
-		//break;
-//@@@ 2001.02.04 End
-
-//@@@ 2001.12.22 Start by MIK: Context Menu Help
-	//Context Menu
-	case WM_CONTEXTMENU:
-		MyWinHelp( hwndDlg, HELP_CONTEXTMENU, (ULONG_PTR)(LPVOID)p_helpids );	// 2006.10.10 ryoji MyWinHelpに変更に変更
-		return TRUE;
-//@@@ 2001.12.22 End
 
 	}
 	return FALSE;

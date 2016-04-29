@@ -35,25 +35,6 @@
 #include "prop/CPropCommon.h"
 #include "util/shell.h"
 #include "sakura_rc.h"
-#include "sakura.hh"
-
-
-static const DWORD p_helpids[] = {	//13400
-	IDC_LIST_FNAME,			HIDC_LIST_FNAME, 		// ファイル名置換リスト
-	IDC_EDIT_FNAME_FROM,	HIDC_EDIT_FNAME_FROM,	// 置換前
-	IDC_EDIT_FNAME_TO,		HIDC_EDIT_FNAME_TO,		// 置換後
-	IDC_BUTTON_FNAME_INS,	HIDC_BUTTON_FNAME_INS,	// 挿入
-	IDC_BUTTON_FNAME_ADD,	HIDC_BUTTON_FNAME_ADD,	// 追加
-	IDC_BUTTON_FNAME_UPD,	HIDC_BUTTON_FNAME_UPD,	// 更新
-	IDC_BUTTON_FNAME_DEL,	HIDC_BUTTON_FNAME_DEL,	// 削除
-	IDC_BUTTON_FNAME_TOP,	HIDC_BUTTON_FNAME_TOP,	// 先頭
-	IDC_BUTTON_FNAME_UP,	HIDC_BUTTON_FNAME_UP,	// 上へ
-	IDC_BUTTON_FNAME_DOWN,	HIDC_BUTTON_FNAME_DOWN,	// 下へ
-	IDC_BUTTON_FNAME_LAST,	HIDC_BUTTON_FNAME_LAST,	// 最終
-//	IDC_CHECK_FNAME,		HIDC_CHECK_FNAME,	// ファイル名を簡易表示する
-	0, 0 // 
-};
-
 
 
 INT_PTR CALLBACK CPropFileName::DlgProc_page(
@@ -138,9 +119,6 @@ INT_PTR CPropFileName::DispatchEvent( HWND hwndDlg, UINT uMsg, WPARAM wParam, LP
 				break;
 			default:
 				switch( pNMHDR->code ){
-				case PSN_HELP:
-					OnHelp( hwndDlg, IDD_PROP_FNAME );
-					return TRUE;
 				case PSN_KILLACTIVE:
 					// ダイアログデータの取得
 					GetData( hwndDlg );
@@ -244,22 +222,6 @@ INT_PTR CPropFileName::DispatchEvent( HWND hwndDlg, UINT uMsg, WPARAM wParam, LP
 		}
 
 		break;	/* WM_COMMAND */
-//@@@ 2001.02.04 Start by MIK: Popup Help
-	case WM_HELP:
-		{
-			HELPINFO *p = (HELPINFO *)lParam;
-			MyWinHelp( (HWND)p->hItemHandle, HELP_WM_HELP, (ULONG_PTR)(LPVOID)p_helpids );	// 2006.10.10 ryoji MyWinHelpに変更に変更
-		}
-		return TRUE;
-//@@@ 2001.02.04 End
-
-//@@@ 2001.12.22 Start by MIK: Context Menu Help
-	//Context Menu
-	case WM_CONTEXTMENU:
-		MyWinHelp( hwndDlg, HELP_CONTEXTMENU, (ULONG_PTR)(LPVOID)p_helpids );	// 2006.10.10 ryoji MyWinHelpに変更に変更
-		return TRUE;
-//@@@ 2001.12.22 End
-
 	}
 	return FALSE;
 }

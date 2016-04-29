@@ -406,8 +406,6 @@ INT_PTR CDialog::DispatchEvent( HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM l
 	case WM_ACTIVATE:	return OnActivate( wParam, lParam );	//@@@ 2003.04.08 MIK
 	case WM_VKEYTOITEM:	return OnVKeyToItem( wParam, lParam );
 	case WM_CHARTOITEM:	return OnCharToItem( wParam, lParam );
-	case WM_HELP:		return OnPopupHelp( wParam, lParam );	//@@@ 2002.01.18 add
-	case WM_CONTEXTMENU:return OnContextMenu( wParam, lParam );	//@@@ 2002.01.18 add
 	}
 	return FALSE;
 }
@@ -465,30 +463,6 @@ BOOL CDialog::OnCommand( WPARAM wParam, LPARAM lParam )
 
 	return FALSE;
 }
-
-//@@@ 2002.01.18 add start
-BOOL CDialog::OnPopupHelp( WPARAM wPara, LPARAM lParam )
-{
-	HELPINFO *p = (HELPINFO *)lParam;
-	MyWinHelp( (HWND)p->hItemHandle, HELP_WM_HELP, (ULONG_PTR)GetHelpIdTable() );	// 2006.10.10 ryoji MyWinHelpに変更に変更
-	return TRUE;
-}
-
-BOOL CDialog::OnContextMenu( WPARAM wPara, LPARAM lParam )
-{
-	MyWinHelp( m_hWnd, HELP_CONTEXTMENU, (ULONG_PTR)GetHelpIdTable() );	// 2006.10.10 ryoji MyWinHelpに変更に変更
-	return TRUE;
-}
-
-const DWORD p_helpids[] = {
-	0, 0
-};
-
-LPVOID CDialog::GetHelpIdTable(void)
-{
-	return (LPVOID)p_helpids;
-}
-//@@@ 2002.01.18 add end
 
 BOOL CDialog::OnCbnSelEndOk( HWND hwndCtl, int wID )
 {

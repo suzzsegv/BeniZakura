@@ -403,12 +403,7 @@ public:
 	void Command_ToggleKeySearch( void );	/* キャレット位置の単語を辞書検索する機能ON-OFF */	// 2006.03.24 fon
 
 	void Command_HOKAN( void );			/* 入力補完 */
-	void Command_HELP_CONTENTS( void );	/* ヘルプ目次 */			//Nov. 25, 2000 JEPRO added
-	void Command_HELP_SEARCH( void );	/* ヘルプキーワード検索 */	//Nov. 25, 2000 JEPRO added
 	void Command_MENU_ALLFUNC( void );	/* コマンド一覧 */
-	void Command_EXTHELP1( void );		/* 外部ヘルプ１ */
-	//	Jul. 5, 2002 genta
-	void Command_EXTHTMLHELP( const WCHAR* helpfile = NULL, const WCHAR* kwd = NULL );	/* 外部HTMLヘルプ */
 	void Command_ABOUT( void );			/* バージョン情報 */	//Dec. 24, 2000 JEPRO 追加
 
 	/* その他 */

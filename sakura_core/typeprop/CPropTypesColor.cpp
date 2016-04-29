@@ -31,7 +31,6 @@
 #include "util/shell.h"
 #include "util/window.h"
 #include "sakura_rc.h"
-#include "sakura.hh"
 #include "prop/CPropCommon.h"
 
 using namespace std;
@@ -40,39 +39,6 @@ using namespace std;
 static const TCHAR* TSTR_PTRCUSTOMCOLORS = _T("ptrCustomColors");
 
 WNDPROC	m_wpColorListProc;
-
-static const DWORD p_helpids2[] = {	//11400
-	IDC_LIST_COLORS,				HIDC_LIST_COLORS,				//色指定
-	IDC_CHECK_DISP,					HIDC_CHECK_DISP,				//色分け表示
-	IDC_CHECK_BOLD,					HIDC_CHECK_BOLD,				//太字
-	IDC_CHECK_UNDERLINE,			HIDC_CHECK_UNDERLINE,			//下線
-	IDC_BUTTON_TEXTCOLOR,			HIDC_BUTTON_TEXTCOLOR,			//文字色
-	IDC_BUTTON_BACKCOLOR,			HIDC_BUTTON_BACKCOLOR,			//背景色
-	IDC_BUTTON_SAMETEXTCOLOR,		HIDC_BUTTON_SAMETEXTCOLOR,		//文字色統一
-	IDC_BUTTON_SAMEBKCOLOR,			HIDC_BUTTON_SAMEBKCOLOR,		//背景色統一
-	IDC_BUTTON_IMPORT,				HIDC_BUTTON_IMPORT_COLOR,		//インポート
-	IDC_BUTTON_EXPORT,				HIDC_BUTTON_EXPORT_COLOR,		//エクスポート
-	IDC_COMBO_SET,					HIDC_COMBO_SET_COLOR,			//強調キーワード１セット名
-	IDC_BUTTON_KEYWORD_SELECT,		HIDC_BUTTON_KEYWORD_SELECT,		//強調キーワード2～10	// 2006.08.06 ryoji
-	IDC_EDIT_BLOCKCOMMENT_FROM,		HIDC_EDIT_BLOCKCOMMENT_FROM,	//ブロックコメント１開始
-	IDC_EDIT_BLOCKCOMMENT_TO,		HIDC_EDIT_BLOCKCOMMENT_TO,		//ブロックコメント１終了
-	IDC_EDIT_BLOCKCOMMENT_FROM2,	HIDC_EDIT_BLOCKCOMMENT_FROM2,	//ブロックコメント２開始
-	IDC_EDIT_BLOCKCOMMENT_TO2,		HIDC_EDIT_BLOCKCOMMENT_TO2,		//ブロックコメント２終了
-	IDC_EDIT_LINECOMMENT,			HIDC_EDIT_LINECOMMENT,			//行コメント１
-	IDC_EDIT_LINECOMMENT2,			HIDC_EDIT_LINECOMMENT2,			//行コメント２
-	IDC_EDIT_LINECOMMENT3,			HIDC_EDIT_LINECOMMENT3,			//行コメント３
-	IDC_EDIT_LINECOMMENTPOS,		HIDC_EDIT_LINECOMMENTPOS,		//桁数１
-	IDC_EDIT_LINECOMMENTPOS2,		HIDC_EDIT_LINECOMMENTPOS2,		//桁数２
-	IDC_EDIT_LINECOMMENTPOS3,		HIDC_EDIT_LINECOMMENTPOS3,		//桁数３
-	IDC_CHECK_LCPOS,				HIDC_CHECK_LCPOS,				//桁指定１
-	IDC_CHECK_LCPOS2,				HIDC_CHECK_LCPOS2,				//桁指定２
-	IDC_CHECK_LCPOS3,				HIDC_CHECK_LCPOS3,				//桁指定３
-	IDC_RADIO_ESCAPETYPE_1,			HIDC_RADIO_ESCAPETYPE_1,		//文字列エスケープ（C言語風）
-	IDC_RADIO_ESCAPETYPE_2,			HIDC_RADIO_ESCAPETYPE_2,		//文字列エスケープ（PL/SQL風）
-	IDC_EDIT_VERTLINE,				HIDC_EDIT_VERTLINE,				//縦線の桁指定	// 2006.08.06 ryoji
-//	IDC_STATIC,						-1,
-	0, 0
-};
 
 
 //	行コメントに関する情報
@@ -643,11 +609,6 @@ INT_PTR CPropTypesColor::DispatchEvent(
 		//	To Here Jun. 01, 2001
 		default:
 			switch( pNMHDR->code ){
-			case PSN_HELP:
-//	Sept. 10, 2000 JEPRO ID名を実際の名前に変更するため以下の行はコメントアウト
-//				OnHelp( hwndDlg, IDD_PROP1P3 );
-				OnHelp( hwndDlg, IDD_PROP_COLOR );
-				return TRUE;
 			case PSN_KILLACTIVE:
 //				MYTRACE( _T("color PSN_KILLACTIVE\n") );
 				/* ダイアログデータの取得 color */
@@ -677,24 +638,6 @@ INT_PTR CPropTypesColor::DispatchEvent(
 			return TRUE;
 		}
 		break;
-
-//@@@ 2001.02.04 Start by MIK: Popup Help
-	case WM_HELP:
-		{
-			HELPINFO *p = (HELPINFO *)lParam;
-			MyWinHelp( (HWND)p->hItemHandle, HELP_WM_HELP, (ULONG_PTR)(LPVOID)p_helpids2 );	// 2006.10.10 ryoji MyWinHelpに変更に変更
-		}
-		return TRUE;
-		/*NOTREACHED*/
-//		break;
-//@@@ 2001.02.04 End
-
-//@@@ 2001.11.17 add start MIK
-	//Context Menu
-	case WM_CONTEXTMENU:
-		MyWinHelp( hwndDlg, HELP_CONTEXTMENU, (ULONG_PTR)(LPVOID)p_helpids2 );	// 2006.10.10 ryoji MyWinHelpに変更に変更
-		return TRUE;
-//@@@ 2001.11.17 add end MIK
 
 	}
 	return FALSE;

@@ -25,34 +25,8 @@
 #include "view/CEditView.h" // SColorStrategyInfo
 #include "view/colors/CColorStrategy.h"
 #include "sakura_rc.h"
-#include "sakura.hh"
 
 using namespace std;
-
-
-static const DWORD p_helpids[] = {	//11600
-	IDC_BUTTON_REGEX_IMPORT,	HIDC_BUTTON_REGEX_IMPORT,	//インポート
-	IDC_BUTTON_REGEX_EXPORT,	HIDC_BUTTON_REGEX_EXPORT,	//エクスポート
-	IDC_BUTTON_REGEX_INS,		HIDC_BUTTON_REGEX_INS,		//挿入
-	IDC_BUTTON_REGEX_ADD,		HIDC_BUTTON_REGEX_ADD,		//追加
-	IDC_BUTTON_REGEX_UPD,		HIDC_BUTTON_REGEX_UPD,		//更新
-	IDC_BUTTON_REGEX_DEL,		HIDC_BUTTON_REGEX_DEL,		//削除
-	IDC_BUTTON_REGEX_TOP,		HIDC_BUTTON_REGEX_TOP,		//先頭
-	IDC_BUTTON_REGEX_LAST,		HIDC_BUTTON_REGEX_LAST,		//最終
-	IDC_BUTTON_REGEX_UP,		HIDC_BUTTON_REGEX_UP,		//上へ
-	IDC_BUTTON_REGEX_DOWN,		HIDC_BUTTON_REGEX_DOWN,		//下へ
-	IDC_CHECK_REGEX,			HIDC_CHECK_REGEX,			//正規表現キーワードを使用する
-	IDC_COMBO_REGEX_COLOR,		HIDC_COMBO_REGEX_COLOR,		//色
-	IDC_EDIT_REGEX,				HIDC_EDIT_REGEX,			//正規表現キーワード
-	IDC_LIST_REGEX,				HIDC_LIST_REGEX,			//リスト
-	IDC_LABEL_REGEX_KEYWORD,	HIDC_EDIT_REGEX,			
-	IDC_LABEL_REGEX_COLOR,		HIDC_COMBO_REGEX_COLOR,		
-	IDC_FRAME_REGEX,			HIDC_LIST_REGEX,			
-	IDC_LABEL_REGEX_VERSION,	HIDC_LABEL_REGEX_VERSION,	//バージョン
-//	IDC_STATIC,						-1,
-	0, 0
-};
-
 
 
 // Import
@@ -460,9 +434,6 @@ INT_PTR CPropTypesRegex::DispatchEvent(
 		idCtrl = (int)wParam;
 		pNMHDR = (NMHDR*)lParam;
 		switch( pNMHDR->code ){
-		case PSN_HELP:
-			OnHelp( hwndDlg, IDD_PROP_REGEX );
-			return TRUE;
 		case PSN_KILLACTIVE:
 			/* ダイアログデータの取得 正規表現キーワード */
 			GetData( hwndDlg );
@@ -527,20 +498,6 @@ INT_PTR CPropTypesRegex::DispatchEvent(
 			break;
 		}
 		break;
-
-	case WM_HELP:
-		{
-			HELPINFO *p = (HELPINFO *)lParam;
-			MyWinHelp( (HWND)p->hItemHandle, HELP_WM_HELP, (ULONG_PTR)(LPVOID)p_helpids );	// 2006.10.10 ryoji MyWinHelpに変更に変更
-		}
-		return TRUE;
-		/*NOTREACHED*/
-		//break;
-
-	//Context Menu
-	case WM_CONTEXTMENU:
-		MyWinHelp( hwndDlg, HELP_CONTEXTMENU, (ULONG_PTR)(LPVOID)p_helpids );	// 2006.10.10 ryoji MyWinHelpに変更に変更
-		return TRUE;
 
 	}
 	return FALSE;

@@ -34,16 +34,7 @@
 #include "func/Funccode.h"
 #include "util/shell.h"
 #include "sakura_rc.h"
-#include "sakura.hh"
 
-const DWORD p_helpids[] = {	//13300
-	IDC_LIST_CTRLCODE,		HIDC_LIST_CTRLCODE,
-	IDOK,					HIDC_CTRLCODE_IDOK,
-	IDCANCEL,				HIDC_CTRLCODE_IDCANCEL,
-	IDC_BUTTON_HELP,		HIDC_BUTTON_CTRLCODE_HELP,
-//	IDC_STATIC,				-1,
-	0, 0
-};
 
 struct ctrl_info_t {
 	wchar_t			code;		//入力する文字コード
@@ -232,11 +223,6 @@ BOOL CDlgCtrlCode::OnBnClicked( int wID )
 {
 	switch( wID )
 	{
-	case IDC_BUTTON_HELP:
-		/* ヘルプ */
-		MyWinHelp( GetHwnd(), HELP_CONTEXT, ::FuncID_To_HelpContextID(F_CTRL_CODE_DIALOG) );	// 2006.10.10 ryoji MyWinHelpに変更に変更
-		return TRUE;
-
 	case IDOK:			/* 左右に表示 */
 		/* ダイアログデータの取得 */
 		::EndDialog( GetHwnd(), GetData() );
@@ -312,10 +298,4 @@ BOOL CDlgCtrlCode::OnNotify( WPARAM wParam, LPARAM lParam )
 	/* 基底クラスメンバ */
 	return CDialog::OnNotify( wParam, lParam );
 }
-
-LPVOID CDlgCtrlCode::GetHelpIdTable( void )
-{
-	return (LPVOID)p_helpids;
-}
-
 

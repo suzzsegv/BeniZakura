@@ -25,27 +25,7 @@
 #include "_main/CAppMode.h"
 #include "doc/CEditDoc.h"
 #include "sakura_rc.h"
-#include "sakura.hh"
 
-//外部コマンド CDlgExec.cpp	//@@@ 2002.01.07 add start MIK
-const DWORD p_helpids[] = {	//12100
-	IDC_BUTTON_REFERENCE,			HIDC_EXEC_BUTTON_REFERENCE,		//参照
-	IDOK,							HIDOK_EXEC,						//実行
-	IDCANCEL,						HIDCANCEL_EXEC,					//キャンセル
-	IDC_BUTTON_HELP,				HIDC_EXEC_BUTTON_HELP,			//ヘルプ
-	IDC_CHECK_GETSTDOUT,			HIDC_EXEC_CHECK_GETSTDOUT,		//標準出力を得る
-	IDC_COMBO_CODE_GET,				HIDC_COMBO_CODE_GET,			//標準出力文字コード
-	IDC_COMBO_m_szCommand,			HIDC_EXEC_COMBO_m_szCommand,	//コマンド
-	IDC_RADIO_OUTPUT,				HIDC_RADIO_OUTPUT,				//標準出力リダイレクト先：アウトプットウィンドウ
-	IDC_RADIO_EDITWINDOW,			HIDC_RADIO_EDITWINDOW,			//標準出力リダイレクト先：編集中のウィンドウ
-	IDC_CHECK_SENDSTDIN,			HIDC_CHECK_SENDSTDIN,			//標準入力に送る
-	IDC_COMBO_CODE_SEND,			HIDC_COMBO_CODE_SEND,			//標準出力文字コード
-	IDC_CHECK_CUR_DIR,				HIDC_CHECK_CUR_DIR,				//カレントディレクトリ
-	IDC_COMBO_CUR_DIR,				HIDC_COMBO_CUR_DIR,				//カレントディレクトリ指定
-	IDC_BUTTON_REFERENCE2,			HIDC_COMBO_CUR_DIR,				//カレントディレクトリ指定(参照)
-//	IDC_STATIC,						-1,
-	0, 0
-};	//@@@ 2002.01.07 add end MIK
 
 CDlgExec::CDlgExec()
 {
@@ -226,12 +206,6 @@ BOOL CDlgExec::OnBnClicked( int wID )
 			BST_CHECKED == ::IsDlgButtonChecked( GetHwnd(), IDC_CHECK_CUR_DIR ) );
 		break;
 
-	case IDC_BUTTON_HELP:
-		/* 「検索」のヘルプ */
-		//Stonee, 2001/03/12 第四引数を、機能番号からヘルプトピック番号を調べるようにした
-		MyWinHelp( GetHwnd(), HELP_CONTEXT, ::FuncID_To_HelpContextID(F_EXECMD_DIALOG) );	// 2006.10.10 ryoji MyWinHelpに変更に変更
-		break;
-
 	//From Here Mar. 28, 2001 JEPRO
 	case IDC_BUTTON_REFERENCE:	/* ファイル名の「参照...」ボタン */
 		{
@@ -275,12 +249,5 @@ BOOL CDlgExec::OnBnClicked( int wID )
 	}
 	return FALSE;
 }
-
-//@@@ 2002.01.18 add start
-LPVOID CDlgExec::GetHelpIdTable(void)
-{
-	return (LPVOID)p_helpids;
-}
-//@@@ 2002.01.18 add end
 
 

@@ -61,7 +61,6 @@ protected:
 	BOOL	OnBnClicked( int );
 	BOOL	OnNotify( WPARAM wParam, LPARAM lParam );
 	BOOL	OnActivate( WPARAM wParam, LPARAM lParam );
-	LPVOID	GetHelpIdTable( void );
 	INT_PTR DispatchEvent( HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam );	// 標準以外のメッセージを捕捉する
 	BOOL	OnSize( WPARAM wParam, LPARAM lParam );
 	BOOL	OnMove( WPARAM wParam, LPARAM lParam );
@@ -131,7 +130,7 @@ private:
 	ListViewSortInfo    m_aListViewInfo[FAVORITE_INFO_MAX];
 	POINT				m_ptDefaultSize;
 	RECT				m_rcListDefault;
-	RECT				m_rcItems[10];
+	RECT				m_rcItems[9];
 
 	int		m_nCurrentTab;
 	int		m_nExceptTab;

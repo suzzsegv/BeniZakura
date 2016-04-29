@@ -25,27 +25,7 @@
 #include "dlg/CDlgInput1.h"
 #include "util/shell.h"
 #include "sakura_rc.h"
-#include "sakura.hh"
 
-
-//@@@ 2001.02.04 Start by MIK: Popup Help
-static const DWORD p_helpids[] = {	//10800
-	IDC_BUTTON_ADDSET,				HIDC_BUTTON_ADDSET,			//キーワードセット追加
-	IDC_BUTTON_DELSET,				HIDC_BUTTON_DELSET,			//キーワードセット削除
-	IDC_BUTTON_ADDKEYWORD,			HIDC_BUTTON_ADDKEYWORD,		//キーワード追加
-	IDC_BUTTON_EDITKEYWORD,			HIDC_BUTTON_EDITKEYWORD,	//キーワード編集
-	IDC_BUTTON_DELKEYWORD,			HIDC_BUTTON_DELKEYWORD,		//キーワード削除
-	IDC_BUTTON_IMPORT,				HIDC_BUTTON_IMPORT_KEYWORD,	//インポート
-	IDC_BUTTON_EXPORT,				HIDC_BUTTON_EXPORT_KEYWORD,	//エクスポート
-	IDC_CHECK_KEYWORDCASE,			HIDC_CHECK_KEYWORDCASE,		//キーワードの英大文字小文字区別
-	IDC_COMBO_SET,					HIDC_COMBO_SET,				//強調キーワードセット名
-	IDC_LIST_KEYWORD,				HIDC_LIST_KEYWORD,			//キーワード一覧
-	IDC_BUTTON_KEYCLEAN		,		HIDC_BUTTON_KEYCLEAN,		//キーワード整理	// 2006.08.06 ryoji
-	IDC_BUTTON_KEYSETRENAME,		HIDC_BUTTON_KEYSETRENAME,	//セットの名称変更	// 2006.08.06 ryoji
-//	IDC_STATIC,						-1,
-	0, 0
-};
-//@@@ 2001.02.04 End
 
 //	From Here Jun. 2, 2001 genta
 /*!
@@ -222,9 +202,6 @@ INT_PTR CPropKeyword::DispatchEvent(
 			}
 		}else{
 			switch( pNMHDR->code ){
-			case PSN_HELP:
-				OnHelp( hwndDlg, IDD_PROP_KEYWORD );
-				return TRUE;
 			case PSN_KILLACTIVE:
 				DEBUG_TRACE( _T("Keyword PSN_KILLACTIVE\n") );
 				/* ダイアログデータの取得 Keyword */
@@ -430,24 +407,6 @@ INT_PTR CPropKeyword::DispatchEvent(
 	case WM_DESTROY:
 		::KillTimer( hwndDlg, 1 );
 		break;
-
-//@@@ 2001.02.04 Start by MIK: Popup Help
-	case WM_HELP:
-		{
-			HELPINFO *p = (HELPINFO *)lParam;
-			MyWinHelp( (HWND)p->hItemHandle, HELP_WM_HELP, (ULONG_PTR)(LPVOID)p_helpids );	// 2006.10.10 ryoji MyWinHelpに変更に変更
-		}
-		return TRUE;
-		/*NOTREACHED*/
-		//break;
-//@@@ 2001.02.04 End
-
-//@@@ 2001.12.22 Start by MIK: Context Menu Help
-	//Context Menu
-	case WM_CONTEXTMENU:
-		MyWinHelp( hwndDlg, HELP_CONTEXTMENU, (ULONG_PTR)(LPVOID)p_helpids );	// 2006.10.10 ryoji MyWinHelpに変更に変更
-		return TRUE;
-//@@@ 2001.12.22 End
 
 	}
 	return FALSE;

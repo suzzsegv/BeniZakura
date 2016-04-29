@@ -59,10 +59,6 @@ public:
 	void GetTypeData( STypeConfig& t ) const { t = m_Types; }	//!< タイプ別設定データの取得  Jan. 23, 2005 genta
 
 protected:
-	//イベント
-	void OnHelp( HWND , int );	//!< ヘルプ
-
-protected:
 	//各種参照
 	HINSTANCE	m_hInstance;	//!< アプリケーションインスタンスのハンドル
 	HWND		m_hwndParent;	//!< オーナーウィンドウのハンドル

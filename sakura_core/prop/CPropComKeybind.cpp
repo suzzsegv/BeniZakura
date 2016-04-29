@@ -24,37 +24,12 @@
 #include "func/CKeyBind.h"
 #include "util/shell.h"
 #include "sakura_rc.h"
-#include "sakura.hh"
 
 
 #define STR_SHIFT_PLUS        _T("Shift+")  //@@@ 2001.11.08 add MIK
 #define STR_CTRL_PLUS         _T("Ctrl+")  //@@@ 2001.11.08 add MIK
 #define STR_ALT_PLUS          _T("Alt+")  //@@@ 2001.11.08 add MIK
 
-//@@@ 2001.02.04 Start by MIK: Popup Help
-static const DWORD p_helpids[] = {	//10700
-	IDC_BUTTON_IMPORT,				HIDC_BUTTON_IMPORT_KEYBIND,		//インポート
-	IDC_BUTTON_EXPORT,				HIDC_BUTTON_EXPORT_KEYBIND,		//エクスポート
-	IDC_BUTTON_ASSIGN,				HIDC_BUTTON_ASSIGN,				//キー割り当て
-	IDC_BUTTON_RELEASE,				HIDC_BUTTON_RELEASE,			//キー解除
-	IDC_CHECK_SHIFT,				HIDC_CHECK_SHIFT,				//Shiftキー
-	IDC_CHECK_CTRL,					HIDC_CHECK_CTRL,				//Ctrlキー
-	IDC_CHECK_ALT,					HIDC_CHECK_ALT,					//Altキー
-	IDC_COMBO_FUNCKIND,				HIDC_COMBO_FUNCKIND_KEYBIND,	//機能の種別
-	IDC_EDIT_KEYSFUNC,				HIDC_EDIT_KEYSFUNC,				//キーに割り当てられている機能
-	IDC_LIST_FUNC,					HIDC_LIST_FUNC_KEYBIND,			//機能一覧
-	IDC_LIST_KEY,					HIDC_LIST_KEY,					//キー一覧
-	IDC_LIST_ASSIGNEDKEYS,			HIDC_LIST_ASSIGNEDKEYS,			//機能に割り当てられているキー
-	IDC_LABEL_MENUFUNCKIND,			-1,
-	IDC_LABEL_MENUFUNC,				-1,
-	IDC_LABEL_KEYKIND,				-1,
-	IDC_LABEL_FUNCtoKEY,			-1,
-	IDC_LABEL_KEYtoFUNC,			-1,
-	IDC_CHECK_ACCELTBL_EACHWIN,		HIDC_CHECK_ACCELTBL_EACHWIN,	// ウィンドウ毎にアクセラレータテーブルを作成する(Wine用)
-//	IDC_STATIC,						-1,
-	0, 0
-};
-//@@@ 2001.02.04 End
 
 //	From Here Jun. 2, 2001 genta
 /*!
@@ -167,10 +142,6 @@ INT_PTR CPropKeybind::DispatchEvent(
 		pNMHDR = (NMHDR*)lParam;
 		pMNUD  = (NM_UPDOWN*)lParam;
 		switch( pNMHDR->code ){
-		case PSN_HELP:
-//			OnHelp( hwndDlg, IDD_PROP1P5 );		// Sept. 9, 2000 JEPRO 実際のID名に変更
-			OnHelp( hwndDlg, IDD_PROP_KEYBIND );
-			return TRUE;
 		case PSN_KILLACTIVE:
 //			MYTRACE( _T("Keybind PSN_KILLACTIVE\n") );
 			/* ダイアログデータの取得 Keybind */
@@ -429,24 +400,6 @@ INT_PTR CPropKeybind::DispatchEvent(
 	case WM_DESTROY:
 		::KillTimer( hwndDlg, 1 );	// 2007.11.02 ryoji
 		break;
-
-//@@@ 2001.02.04 Start by MIK: Popup Help
-	case WM_HELP:
-		{
-			HELPINFO *p = (HELPINFO *)lParam;
-			MyWinHelp( (HWND)p->hItemHandle, HELP_WM_HELP, (ULONG_PTR)(LPVOID)p_helpids );	// 2006.10.10 ryoji MyWinHelpに変更に変更
-		}
-		return TRUE;
-		/*NOTREACHED*/
-		//break;
-//@@@ 2001.02.04 End
-
-//@@@ 2001.11.07 Start by MIK: Context Menu Help
-	//Context Menu
-	case WM_CONTEXTMENU:
-		MyWinHelp( hwndDlg, HELP_CONTEXTMENU, (ULONG_PTR)(LPVOID)p_helpids );	// 2006.10.10 ryoji MyWinHelpに変更に変更
-		return TRUE;
-//@@@ 2001.11.07 End
 
 	}
 	return FALSE;

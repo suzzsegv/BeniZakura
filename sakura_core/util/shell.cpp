@@ -265,25 +265,6 @@ int MyPropertySheet( LPPROPSHEETHEADER lppsph )
 
 
 
-/*	ヘルプの目次を表示
-	目次タブを表示。問題があるバージョンでは、目次ページを表示。
-*/
-void ShowWinHelpContents( HWND hwnd )
-{
-	if ( HasWinHelpContentsProblem() ){
-		/* 目次ページを表示する */
-		MyWinHelp( hwnd, HELP_CONTENTS , 0 );	// 2006.10.10 ryoji MyWinHelpに変更
-		return;
-	}
-	/* 目次タブを表示する */
-	MyWinHelp( hwnd, HELP_COMMAND, (ULONG_PTR)"CONTENTS()" );	// 2006.10.10 ryoji MyWinHelpに変更
-	return;
-}
-
-
-
-
-
 // Stonee, 2001/12/21
 // NetWork上のリソースに接続するためのダイアログを出現させる
 // NO_ERROR:成功 ERROR_CANCELLED:キャンセル それ以外:失敗
@@ -324,50 +305,6 @@ DWORD NetConnect ( const TCHAR strNetWorkPass[] )
 
 	return dwRet;
 }
-
-
-
-
-//	From Here Jun. 26, 2001 genta
-/*!
-	HTML Helpコンポーネントのアクセスを提供する。
-	内部で保持すべきデータは特になく、至る所から使われるのでGlobal変数にするが、
-	直接のアクセスはOpenHtmlHelp()関数のみから行う。
-	他のファイルからはCHtmlHelpクラスは隠されている。
-*/
-CHtmlHelp g_cHtmlHelp;
-
-/*!
-	HTML Helpを開く
-	HTML Helpが利用可能であれば引数をそのまま渡し、そうでなければメッセージを表示する。
-
-	@return 開いたヘルプウィンドウのウィンドウハンドル。開けなかったときはNULL。
-*/
-
-HWND OpenHtmlHelp(
-	HWND		hWnd,	//!< [in] 呼び出し元ウィンドウのウィンドウハンドル
-	LPCTSTR		szFile,	//!< [in] HTML Helpのファイル名。不等号に続けてウィンドウタイプ名を指定可能。
-	UINT		uCmd,	//!< [in] HTML Help に渡すコマンド
-	DWORD_PTR	data,	//!< [in] コマンドに応じたデータ
-	bool		msgflag	//!< [in] エラーメッセージを表示するか。省略時はtrue。
-)
-{
-	if( DLL_SUCCESS == g_cHtmlHelp.InitDll() ){
-		return g_cHtmlHelp.HtmlHelp( hWnd, szFile, uCmd, data );
-	}
-	if( msgflag ){
-		::MessageBox(
-			hWnd,
-			_T("HHCTRL.OCXが見つかりません。\r\n")
-			_T("HTMLヘルプを利用するにはHHCTRL.OCXが必要です。\r\n"),
-			_T("情報"),
-			MB_OK | MB_ICONEXCLAMATION
-		);
-	}
-	return NULL;
-}
-
-//	To Here Jun. 26, 2001 genta
 
 
 
@@ -446,125 +383,6 @@ BOOL ResolveShortcutLink( HWND hwnd, LPCTSTR lpszLinkFile, LPTSTR lpszPath )
 
 
 
-
-
-/*! ヘルプファイルのフルパスを返す
- 
-    @return パスを格納したバッファのポインタ
- 
-    @note 実行ファイルと同じ位置の sakura.chm ファイルを返す。
-        パスが UNC のときは _MAX_PATH に収まらない可能性がある。
- 
-    @date 2002/01/19 aroka ；nMaxLen 引数追加
-	@date 2007/10/23 kobake 引数説明の誤りを修正(in→out)
-	@date 2007/10/23 kobake CEditAppのメンバ関数に変更
-	@date 2007/10/23 kobake シグニチャ変更。constポインタを返すだけのインターフェースにしました。
-*/
-static LPCTSTR GetHelpFilePath()
-{
-	static TCHAR szHelpFile[_MAX_PATH] = _T("");
-	if(szHelpFile[0]==_T('\0')){
-		GetExedir( szHelpFile, _T("sakura.chm") );
-	}
-	return szHelpFile;
-}
-
-/*!	WinHelp のかわりに HtmlHelp を呼び出す
-
-	@author ryoji
-	@date 2006.07.22 ryoji 新規
-*/
-BOOL MyWinHelp(HWND hwndCaller, UINT uCommand, DWORD_PTR dwData)
-{
-	UINT uCommandOrg = uCommand;	// WinHelp のコマンド
-	bool bDesktop = false;	// デスクトップを親にしてヘルプ画面を出すかどうか
-	HH_POPUP hp;	// ポップアップヘルプ用の構造体
-
-	// Note: HH_TP_HELP_CONTEXTMENU や HELP_WM_HELP ではヘルプコンパイル時の
-	// トピックファイルを Cshelp.txt 以外にしている場合、
-	// そのファイル名を .chm パス名に追加指定する必要がある。
-	//     例）sakura.chm::/xxx.txt
-
-	switch( uCommandOrg )
-	{
-	case HELP_COMMAND:	// [ヘルプ]-[目次]
-	case HELP_CONTENTS:
-		uCommand = HH_DISPLAY_TOC;
-		hwndCaller = ::GetDesktopWindow();
-		bDesktop = true;
-		break;
-	case HELP_KEY:	// [ヘルプ]-[キーワード検索]
-		uCommand = HH_DISPLAY_INDEX;
-		hwndCaller = ::GetDesktopWindow();
-		bDesktop = true;
-		break;
-	case HELP_CONTEXT:	// メニュー上での[F1]キー／ダイアログの[ヘルプ]ボタン
-		uCommand = HH_HELP_CONTEXT;
-		hwndCaller = ::GetDesktopWindow();
-		bDesktop = true;
-		break;
-	case HELP_CONTEXTMENU:	// コントロール上での右クリック
-	case HELP_WM_HELP:		// [？]ボタンを押してコントロールをクリック／コントロールにフォーカスを置いて[F1]キー
-		uCommand = HH_DISPLAY_TEXT_POPUP;
-		{
-			// ポップアップヘルプ用の構造体に値をセットする
-			HWND hwndCtrl;	// ヘルプ表示対象のコントロール
-			int nCtrlID;	// 対象コントロールの ID
-			DWORD* pHelpIDs;	// コントロール ID とヘルプ ID の対応表へのポインタ
-
-			memset(&hp, 0, sizeof(hp));	// 構造体をゼロクリア
-			hp.cbStruct = sizeof(hp);
-			hp.pszFont = _T("ＭＳ Ｐゴシック, 9");
-			hp.clrForeground = hp.clrBackground = -1;
-			hp.rcMargins.left = hp.rcMargins.top = hp.rcMargins.right = hp.rcMargins.bottom = -1;
-			if( uCommandOrg == HELP_CONTEXTMENU ){
-				// マウスカーソル位置から対象コントロールと表示位置を求める
-				if( !::GetCursorPos(&hp.pt) )
-					return FALSE;
-				hwndCtrl = ::WindowFromPoint(hp.pt);
-			}
-			else{
-				// 対象コントロールは hwndCaller
-				// [F1]キーの場合もあるので対象コントロールの位置から表示位置を決める
-				RECT rc;
-				hwndCtrl = hwndCaller;
-				if( !::GetWindowRect( hwndCtrl, &rc ) )
-					return FALSE;
-				hp.pt.x = (rc.left + rc.right) / 2;
-				hp.pt.y = rc.top;
-			}
-			// 対象コントロールに対応するヘルプ ID を探す
-			nCtrlID = ::GetDlgCtrlID( hwndCtrl );
-			if( nCtrlID <= 0 )
-				return FALSE;
-			pHelpIDs = (DWORD*)dwData;
-			for (;;) {
-				if( *pHelpIDs == 0 )
-					return FALSE;	// 見つからなかった
-				if( *pHelpIDs == nCtrlID )
-					break;			// 見つかった
-				pHelpIDs += 2;
-			}
-			hp.idString = *(pHelpIDs + 1);	// 見つけたヘルプ ID を設定する
-			dwData = (DWORD_PTR)&hp;	// 引数をポップアップヘルプ用の構造体に差し替える
-		}
-		break;
-	default:
-		return FALSE;
-	}
-
-	LPCTSTR lpszHelp = GetHelpFilePath();
-	if( IsFileExists( lpszHelp, true ) ){
-		// HTML ヘルプを呼び出す
-		HWND hWnd = OpenHtmlHelp( hwndCaller, lpszHelp, uCommand, dwData );
-		if (bDesktop && hWnd != NULL){
-			::SetForegroundWindow( hWnd );	// ヘルプ画面を手前に出す
-		}
-		return TRUE;
-	}
-
-	return FALSE;
-}
 
 /*フォント選択ダイアログ
 	@param plf [in/out]

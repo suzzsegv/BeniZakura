@@ -60,7 +60,6 @@ private:
 	BOOL	OnInitDialog( HWND, WPARAM wParam, LPARAM lParam );
 	BOOL	OnBnClicked( int );
 	BOOL	OnNotify( WPARAM wParam, LPARAM lParam );
-	LPVOID	GetHelpIdTable( void );
 
 	void	SetData( void );	/* ダイアログデータの設定 */
 	int		GetData( void );	/* ダイアログデータの取得 */

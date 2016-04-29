@@ -26,19 +26,7 @@
 #include "util/module.h"
 #include "hgrev.h"
 #include "sakura_rc.h" // 2002/2/10 aroka 復帰
-#include "sakura.hh"
 
-// バージョン情報 CDlgAbout.cpp	//@@@ 2002.01.07 add start MIK
-const DWORD p_helpids[] = {	//12900
-	IDOK,					HIDOK_ABOUT,
-	IDC_EDIT_ABOUT,			HIDC_ABOUT_EDIT_ABOUT,
-//	IDC_STATIC_URL_UR,		12970,
-//	IDC_STATIC_URL_ORG,		12971,
-//	IDC_STATIC_UPDATE,		12972,
-//	IDC_STATIC_VER,			12973,
-//	IDC_STATIC,				-1,
-	0, 0
-};	//@@@ 2002.01.07 add end MIK
 
 //	From Here Feb. 7, 2002 genta
 // 2006.01.17 Moca COMPILER_VERを追加
@@ -261,11 +249,6 @@ BOOL CDlgAbout::OnStnClicked( int wID )
 }
 
 //@@@ 2002.01.18 add start
-LPVOID CDlgAbout::GetHelpIdTable(void)
-{
-	return (LPVOID)p_helpids;
-}
-
 BOOL CUrlWnd::SetSubclassWindow( HWND hWnd )
 {
 	// STATICウィンドウをサブクラス化する

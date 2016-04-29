@@ -58,7 +58,6 @@ protected:
 	BOOL OnBnClicked( int );
 	int  GetData( void );
 	void SetData( void );
-	LPVOID GetHelpIdTable( void );
 
 	int m_nSet[ KEYWORD_SELECT_NUM ];
 	CKeyWordSetMgr*	m_pCKeyWordSetMgr;

@@ -26,33 +26,7 @@
 #include "env/DLLSHAREDATA.h"
 #include "env/CSakuraEnvironment.h"
 #include "sakura_rc.h"
-#include "sakura.hh"
 
-//GREP CDlgGrep.cpp	//@@@ 2002.01.07 add start MIK
-const DWORD p_helpids[] = {	//12000
-	IDC_BUTTON_FOLDER,				HIDC_GREP_BUTTON_FOLDER,			//フォルダ
-	IDC_BUTTON_CURRENTFOLDER,		HIDC_GREP_BUTTON_CURRENTFOLDER,		//現フォルダ
-	IDOK,							HIDOK_GREP,							//検索
-	IDCANCEL,						HIDCANCEL_GREP,						//キャンセル
-	IDC_BUTTON_HELP,				HIDC_GREP_BUTTON_HELP,				//ヘルプ
-	IDC_CHK_WORD,					HIDC_GREP_CHK_WORD,					//単語単位
-	IDC_CHK_SUBFOLDER,				HIDC_GREP_CHK_SUBFOLDER,			//サブフォルダも検索
-	IDC_CHK_FROMTHISTEXT,			HIDC_GREP_CHK_FROMTHISTEXT,			//このファイルから
-	IDC_CHK_LOHICASE,				HIDC_GREP_CHK_LOHICASE,				//大文字小文字
-	IDC_CHK_REGULAREXP,				HIDC_GREP_CHK_REGULAREXP,			//正規表現
-	IDC_COMBO_CHARSET,				HIDC_GREP_COMBO_CHARSET,			//文字コードセット
-	IDC_COMBO_TEXT,					HIDC_GREP_COMBO_TEXT,				//条件
-	IDC_COMBO_FILE,					HIDC_GREP_COMBO_FILE,				//ファイル
-	IDC_COMBO_FOLDER,				HIDC_GREP_COMBO_FOLDER,				//フォルダ
-	IDC_RADIO_OUTPUTLINE,			HIDC_GREP_RADIO_OUTPUTLINE,			//結果出力：行単位
-	IDC_RADIO_OUTPUTMARKED,			HIDC_GREP_RADIO_OUTPUTMARKED,		//結果出力：該当部分
-	IDC_RADIO_OUTPUTSTYLE1,			HIDC_GREP_RADIO_OUTPUTSTYLE1,		//結果出力形式：ノーマル
-	IDC_RADIO_OUTPUTSTYLE2,			HIDC_GREP_RADIO_OUTPUTSTYLE2,		//結果出力形式：ファイル毎
-	IDC_STATIC_JRE32VER,			HIDC_GREP_STATIC_JRE32VER,			//正規表現バージョン
-	IDC_CHK_DEFAULTFOLDER,			HIDC_GREP_CHK_DEFAULTFOLDER,		//フォルダの初期値をカレントフォルダにする
-//	IDC_STATIC,						-1,
-	0, 0
-};	//@@@ 2002.01.07 add end MIK
 
 CDlgGrep::CDlgGrep()
 {
@@ -224,11 +198,6 @@ BOOL CDlgGrep::OnDestroy()
 BOOL CDlgGrep::OnBnClicked( int wID )
 {
 	switch( wID ){
-	case IDC_BUTTON_HELP:
-		/* 「Grep」のヘルプ */
-		//Stonee, 2001/03/12 第四引数を、機能番号からヘルプトピック番号を調べるようにした
-		MyWinHelp( GetHwnd(), HELP_CONTEXT, ::FuncID_To_HelpContextID(F_GREP_DIALOG) );	// 2006.10.10 ryoji MyWinHelpに変更に変更
-		return TRUE;
 	case IDC_CHK_FROMTHISTEXT:	/* この編集中のテキストから検索する */
 		// 2010.05.30 関数化
 		SetDataFromThisText( 0 != ::IsDlgButtonChecked( GetHwnd(), IDC_CHK_FROMTHISTEXT ) );
@@ -567,13 +536,6 @@ int CDlgGrep::GetData( void )
 
 	return TRUE;
 }
-
-//@@@ 2002.01.18 add start
-LPVOID CDlgGrep::GetHelpIdTable(void)
-{
-	return (LPVOID)p_helpids;
-}
-//@@@ 2002.01.18 add end
 
 
 /*!

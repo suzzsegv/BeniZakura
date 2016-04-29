@@ -135,7 +135,6 @@ protected:
 	/*
 	||  実装ヘルパ関数
 	*/
-	void OnHelp( HWND, int );	/* ヘルプ */
 	int	SearchIntArr( int , int* , int );
 //	void DrawToolBarItemList( DRAWITEMSTRUCT* );	/* ツールバーボタンリストのアイテム描画 */
 //	void DrawColorButton( DRAWITEMSTRUCT* , COLORREF );	/* 色ボタンの描画 */ // 2002.11.09 Moca 未使用

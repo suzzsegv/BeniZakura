@@ -50,7 +50,6 @@ protected:
 	BOOL OnInitDialog( HWND, WPARAM, LPARAM );
 	BOOL OnBnClicked( int );
 	BOOL OnStnClicked( int );
-	LPVOID GetHelpIdTable(void);	//@@@ 2002.01.18 add
 private:
 	CUrlWnd m_UrlUrWnd;
 	CUrlWnd m_UrlOrgWnd;

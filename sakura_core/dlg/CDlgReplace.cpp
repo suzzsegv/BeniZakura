@@ -22,35 +22,7 @@
 #include "util/shell.h"
 #include "util/window.h"
 #include "sakura_rc.h"
-#include "sakura.hh"
 
-//置換 CDlgReplace.cpp	//@@@ 2002.01.07 add start MIK
-const DWORD p_helpids[] = {	//11900
-	IDC_BUTTON_SEARCHNEXT,			HIDC_REP_BUTTON_SEARCHNEXT,			//下検索
-	IDC_BUTTON_SEARCHPREV,			HIDC_REP_BUTTON_SEARCHPREV,			//上検索
-	IDC_BUTTON_REPALCE,				HIDC_REP_BUTTON_REPALCE,			//置換
-	IDC_BUTTON_REPALCEALL,			HIDC_REP_BUTTON_REPALCEALL,			//全置換
-	IDCANCEL,						HIDCANCEL_REP,						//キャンセル
-	IDC_BUTTON_HELP,				HIDC_REP_BUTTON_HELP,				//ヘルプ
-	IDC_CHK_PASTE,					HIDC_REP_CHK_PASTE,					//クリップボードから貼り付け
-	IDC_CHK_WORD,					HIDC_REP_CHK_WORD,					//単語単位
-	IDC_CHK_LOHICASE,				HIDC_REP_CHK_LOHICASE,				//大文字小文字
-	IDC_CHK_REGULAREXP,				HIDC_REP_CHK_REGULAREXP,			//正規表現
-	IDC_CHECK_bAutoCloseDlgReplace,	HIDC_REP_CHECK_bAutoCloseDlgReplace,	//自動的に閉じる
-	IDC_COMBO_TEXT,					HIDC_REP_COMBO_TEXT,				//置換前
-	IDC_COMBO_TEXT2,				HIDC_REP_COMBO_TEXT2,				//置換後
-	IDC_RADIO_REPLACE,				HIDC_REP_RADIO_REPLACE,				//置換対象：置換
-	IDC_RADIO_INSERT,				HIDC_REP_RADIO_INSERT,				//置換対象：挿入
-	IDC_RADIO_ADD,					HIDC_REP_RADIO_ADD,					//置換対象：追加
-	IDC_RADIO_SELECTEDAREA,			HIDC_REP_RADIO_SELECTEDAREA,		//範囲：全体
-	IDC_RADIO_ALLAREA,				HIDC_REP_RADIO_ALLAREA,				//範囲：選択範囲
-	IDC_STATIC_JRE32VER,			HIDC_REP_STATIC_JRE32VER,			//正規表現バージョン
-	IDC_BUTTON_SETMARK,				HIDC_REP_BUTTON_SETMARK,			//2002.01.16 hor 検索該当行をマーク
-	IDC_CHECK_SEARCHALL,			HIDC_REP_CHECK_SEARCHALL,			//2002.01.26 hor 先頭（末尾）から再検索
-	IDC_CHECK_CONSECUTIVEALL,		HIDC_REP_CHECK_CONSECUTIVEALL,		//「すべて置換」は置換の繰返し	// 2007.01.16 ryoji
-//	IDC_STATIC,						-1,
-	0, 0
-};	//@@@ 2002.01.07 add end MIK
 
 CDlgReplace::CDlgReplace()
 {
@@ -411,11 +383,6 @@ BOOL CDlgReplace::OnBnClicked( int wID )
 		}
 		return TRUE;
 // To Here 2001.12.03 hor
-	case IDC_BUTTON_HELP:
-		/* 「置換」のヘルプ */
-		//Stonee, 2001/03/12 第四引数を、機能番号からヘルプトピック番号を調べるようにした
-		MyWinHelp( GetHwnd(), HELP_CONTEXT, ::FuncID_To_HelpContextID(F_REPLACE_DIALOG) );	// 2006.10.10 ryoji MyWinHelpに変更に変更
-		return TRUE;
 //	case IDC_CHK_LOHICASE:	/* 大文字と小文字を区別する */
 //		MYTRACE( _T("IDC_CHK_LOHICASE\n") );
 //		return TRUE;
@@ -604,12 +571,4 @@ BOOL CDlgReplace::OnActivate( WPARAM wParam, LPARAM lParam )
 
 	return CDialog::OnActivate(wParam, lParam);
 }
-
-//@@@ 2002.01.18 add start
-LPVOID CDlgReplace::GetHelpIdTable(void)
-{
-	return (LPVOID)p_helpids;
-}
-//@@@ 2002.01.18 add end
-
 

@@ -40,55 +40,7 @@
 #include "util/shell.h"
 #include "util/window.h"
 #include "sakura_rc.h"	// 2002/2/10 aroka
-#include "sakura.hh"
 
-// 印刷設定 CDlgPrintSetting.cpp	//@@@ 2002.01.07 add start MIK
-const DWORD p_helpids[] = {	//12500
-	IDC_COMBO_SETTINGNAME,			HIDC_PS_COMBO_SETTINGNAME,	//ページ設定
-	IDC_BUTTON_EDITSETTINGNAME,		HIDC_PS_BUTTON_EDITSETTINGNAME,	//設定名変更
-	IDC_COMBO_FONT_HAN,				HIDC_PS_COMBO_FONT_HAN,		//半角フォント
-	IDC_COMBO_FONT_ZEN,				HIDC_PS_COMBO_FONT_ZEN,		//全角フォント
-	IDC_EDIT_FONTHEIGHT,			HIDC_PS_EDIT_FONTHEIGHT,	//フォント高
-	IDC_SPIN_FONTHEIGHT,			HIDC_PS_EDIT_FONTHEIGHT,	//12570,
-	IDC_SPIN_LINESPACE,				HIDC_PS_EDIT_LINESPACE,		//12571,
-	IDC_EDIT_LINESPACE,				HIDC_PS_EDIT_LINESPACE,		//行送り
-	IDC_EDIT_DANSUU,				HIDC_PS_EDIT_DANSUU,		//段数
-	IDC_SPIN_DANSUU,				HIDC_PS_EDIT_DANSUU,		//12572,
-	IDC_EDIT_DANSPACE,				HIDC_PS_EDIT_DANSPACE,		//段の隙間
-	IDC_SPIN_DANSPACE,				HIDC_PS_EDIT_DANSPACE,		//12573,
-	IDC_COMBO_PAPER,				HIDC_PS_COMBO_PAPER,		//用紙サイズ
-	IDC_RADIO_PORTRAIT,				HIDC_PS_STATIC_PAPERORIENT,	//横向き
-	IDC_RADIO_LANDSCAPE,			HIDC_PS_STATIC_PAPERORIENT,	//縦向き
-	IDC_EDIT_MARGINTY,				HIDC_PS_EDIT_MARGINTY,		//余白上
-	IDC_SPIN_MARGINTY,				HIDC_PS_EDIT_MARGINTY,		//12574,
-	IDC_EDIT_MARGINBY,				HIDC_PS_EDIT_MARGINBY,		//余白下
-	IDC_SPIN_MARGINBY,				HIDC_PS_EDIT_MARGINBY,		//12575,
-	IDC_EDIT_MARGINLX,				HIDC_PS_EDIT_MARGINLX,		//余白左
-	IDC_SPIN_MARGINLX,				HIDC_PS_EDIT_MARGINLX,		//12576,
-	IDC_EDIT_MARGINRX,				HIDC_PS_EDIT_MARGINRX,		//余白右
-	IDC_SPIN_MARGINRX,				HIDC_PS_EDIT_MARGINRX,		//12577,
-	IDC_CHECK_WORDWRAP,				HIDC_PS_CHECK_WORDWRAP,		//ワードラップ
-	IDC_CHECK_LINENUMBER,			HIDC_PS_CHECK_LINENUMBER,	//行番号
-	IDC_CHECK_PS_KINSOKUHEAD,		HIDC_PS_CHECK_KINSOKUHEAD,	//行頭禁則	//@@@ 2002.04.09 MIK
-	IDC_CHECK_PS_KINSOKUTAIL,		HIDC_PS_CHECK_KINSOKUTAIL,	//行末禁則	//@@@ 2002.04.09 MIK
-	IDC_CHECK_PS_KINSOKURET,		HIDC_PS_CHECK_KINSOKURET,	//改行文字をぶら下げる	//@@@ 2002.04.14 MIK
-	IDC_CHECK_PS_KINSOKUKUTO,		HIDC_PS_CHECK_KINSOKUKUTO,	//句読点をぶら下げる	//@@@ 2002.04.17 MIK
-	IDC_CHECK_COLORPRINT,			HIDC_PS_CHECK_COLORPRINT,	//カラー印刷			// 2013/4/26 Uchi
-	IDC_EDIT_HEAD1,					HIDC_PS_EDIT_HEAD1,			//ヘッダー(左寄せ)		// 2006.10.11 ryoji
-	IDC_EDIT_HEAD2,					HIDC_PS_EDIT_HEAD2,			//ヘッダー(中央寄せ)	// 2006.10.11 ryoji
-	IDC_EDIT_HEAD3,					HIDC_PS_EDIT_HEAD3,			//ヘッダー(右寄せ)		// 2006.10.11 ryoji
-	IDC_EDIT_FOOT1,					HIDC_PS_EDIT_FOOT1,			//フッター(左寄せ)		// 2006.10.11 ryoji
-	IDC_EDIT_FOOT2,					HIDC_PS_EDIT_FOOT2,			//フッター(中央寄せ)	// 2006.10.11 ryoji
-	IDC_EDIT_FOOT3,					HIDC_PS_EDIT_FOOT3,			//フッター(右寄せ)		// 2006.10.11 ryoji
-	IDC_CHECK_USE_FONT_HEAD,		HIDC_PS_FONT_HEAD,			//ヘッダー(フォント)	// 2013.05.16 Uchi
-	IDC_BUTTON_FONT_HEAD,			HIDC_PS_FONT_HEAD,			//ヘッダー(フォント)	// 2013.05.16 Uchi
-	IDC_CHECK_USE_FONT_FOOT,		HIDC_PS_FONT_FOOT,			//フッター(フォント)	// 2013/5/16 Uchi
-	IDC_BUTTON_FONT_FOOT,			HIDC_PS_FONT_FOOT,			//フッター(フォント)	// 2013/5/16 Uchi
-	IDOK,							HIDOK_PS,					//OK
-	IDCANCEL,						HIDCANCEL_PS,				//キャンセル
-	IDC_BUTTON_HELP,				HIDC_PS_BUTTON_HELP,		//ヘルプ
-	0, 0
-};	//@@@ 2002.01.07 add end MIK
 
 #define IDT_PRINTSETTING 1467
 
@@ -243,11 +195,6 @@ BOOL CDlgPrintSetting::OnBnClicked( int wID )
 	CDlgInput1		cDlgInput1;
 	HWND			hwndComboSettingName;
 	switch( wID ){
-	case IDC_BUTTON_HELP:
-		/* 「印刷ページ設定」のヘルプ */
-		//Stonee, 2001/03/12 第四引数を、機能番号からヘルプトピック番号を調べるようにした
-		MyWinHelp( GetHwnd(), HELP_CONTEXT, ::FuncID_To_HelpContextID(F_PRINT_PAGESETUP) );	// 2006.10.10 ryoji MyWinHelpに変更に変更
-		return TRUE;
 	case IDC_BUTTON_EDITSETTINGNAME:
 		_tcscpy( szWork, m_PrintSettingArr[m_nCurrentPrintSetting].m_szPrintSettingName );
 		{
@@ -872,14 +819,6 @@ void CDlgPrintSetting::UpdatePrintableLineAndColumn()
 	m_bPrintableLinesAndColumnInvalid = true;
 	::PostMessageA( GetHwnd(), WM_COMMAND, MAKELONG( IDC_STATIC_ENABLECOLUMNS, STN_CLICKED ), (LPARAM)::GetDlgItem( GetHwnd(), IDC_STATIC_ENABLECOLUMNS ) );
 }
-
-
-//@@@ 2002.01.18 add start
-LPVOID CDlgPrintSetting::GetHelpIdTable(void)
-{
-	return (LPVOID)p_helpids;
-}
-//@@@ 2002.01.18 add end
 
 
 // フォント名/使用ボタンの設定

@@ -59,7 +59,6 @@ protected:
 	BOOL	OnBnClicked( int );
 	BOOL	OnLbnSelChange( HWND hwndCtl, int wID );
 	BOOL	OnEnChange( HWND hwndCtl, int wID );
-	LPVOID	GetHelpIdTable(void);
 	INT_PTR DispatchEvent( HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam );	// 標準以外のメッセージを捕捉する
 	BOOL OnInitDialog( HWND, WPARAM, LPARAM );
 	BOOL OnSize( WPARAM wParam, LPARAM lParam );
@@ -72,7 +71,7 @@ protected:
 private:
 	int			m_nIndexSave;		// 最後に選択されていた番号
 	POINT		m_ptDefaultSize;
-	RECT		m_rcItems[22];
+	RECT		m_rcItems[21];
 
 public:
 	SFilePath	m_szFile1;			// 自ファイル

@@ -65,7 +65,6 @@ protected:
 	BOOL OnInitDialog( HWND, WPARAM, LPARAM );
 	BOOL OnDestroy();
 	BOOL OnBnClicked( int );
-	LPVOID GetHelpIdTable(void);	//@@@ 2002.01.18 add
 	void SetCurrentFolderToFolderComboBox( void );
 	bool SetVcsRepositoryRootFolderToFolderComboBox( void );
 

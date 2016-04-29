@@ -24,19 +24,6 @@
 #include "util/shell.h"
 #include "window/CEditWnd.h"
 #include "sakura_rc.h"
-#include "sakura.hh"
-
-// ジャンプ CDlgJump.cpp
-const DWORD p_helpids[] = {	//12800
-	IDC_BUTTON_JUMP,				HIDC_JUMP_BUTTON_JUMP,			//ジャンプ
-	IDCANCEL,						HIDCANCEL_JUMP,					//キャンセル
-	IDC_EDIT_LINENUM,				HIDC_JUMP_EDIT_LINENUM,			//行番号
-	IDC_RADIO_LINENUM_LAYOUT,		HIDC_JUMP_RADIO_LINENUM_LAYOUT,	//折り返し単位
-	IDC_RADIO_LINENUM_CRLF,			HIDC_JUMP_RADIO_LINENUM_CRLF,	//改行単位
-	IDC_SPIN_LINENUM,				HIDC_JUMP_EDIT_LINENUM,			//12870,	//
-	0, 0
-};
-
 
 
 CDlgJump::CDlgJump()
@@ -171,13 +158,5 @@ int CDlgJump::GetData( void )
 	}
 	return TRUE;
 }
-
-
-
-LPVOID CDlgJump::GetHelpIdTable(void)
-{
-	return (LPVOID)p_helpids;
-}
-
 
 

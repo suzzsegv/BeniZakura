@@ -52,7 +52,6 @@ protected:
 	BOOL OnBnClicked( int );
 	int  GetData( void );
 	void SetData( void );
-	LPVOID GetHelpIdTable( void );
 
 	void RenewItemState( void );
 

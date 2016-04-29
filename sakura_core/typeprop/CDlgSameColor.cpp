@@ -34,24 +34,7 @@
 #include "view/CEditView.h" // SColorStrategyInfo
 #include "view/colors/CColorStrategy.h"
 #include "sakura_rc.h"
-#include "sakura.hh"
 
-static const DWORD p_helpids[] = {	// 2006.10.10 ryoji
-	IDOK,						HIDOK_SAMECOLOR,						// OK
-	IDCANCEL,					HIDCANCEL_SAMECOLOR,					// キャンセル
-	IDC_BUTTON_HELP,			HIDC_BUTTON_SAMECOLOR_HELP,				// ヘルプ
-	IDC_LIST_COLORS,			HIDC_LIST_SAMECOLOR_COLORS,				// 変更対象の色
-	IDC_BUTTON_SELALL,			HIDC_BUTTON_SAMECOLOR_SELALL,			// 全チェック
-	IDC_BUTTON_SELNOTING,		HIDC_BUTTON_SAMECOLOR_SELNOTING,		// 全解除
-	IDC_LIST_ITEMINFO,			HIDC_LIST_SAMECOLOR_ITEMINFO,			// 選択中の色に対応する項目のリスト
-	IDC_STATIC_COLOR,			HIDC_STATIC_COLOR,						// 統一色
-	0, 0
-};
-
-LPVOID CDlgSameColor::GetHelpIdTable( void )
-{
-	return (LPVOID)p_helpids;
-}
 
 CDlgSameColor::CDlgSameColor() :
 	m_wpColorStaticProc(NULL),
@@ -200,11 +183,6 @@ BOOL CDlgSameColor::OnBnClicked( int wID )
 	int j;
 
 	switch( wID ){
-	case IDC_BUTTON_HELP:
-		// ヘルプ	// 2006.10.07 ryoji
-		MyWinHelp( GetHwnd(), HELP_CONTEXT, HLP000316 );	// 2006.10.10 ryoji MyWinHelpに変更に変更
-		return TRUE;
-
 	case IDC_BUTTON_SELALL:
 	case IDC_BUTTON_SELNOTING:
 		// 全選択／全解除の処理

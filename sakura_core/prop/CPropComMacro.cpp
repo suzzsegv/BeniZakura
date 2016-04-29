@@ -41,27 +41,7 @@
 #include "util/string_ex2.h"
 #include "util/module.h"
 #include "sakura_rc.h"
-#include "sakura.hh"
 
-//! Popup Help用ID
-//@@@ 2001.12.22 Start by MIK: Popup Help
-static const DWORD p_helpids[] = {	//11700
-	IDC_MACRODIRREF,	HIDC_MACRODIRREF,	//マクロディレクトリ参照
-	IDC_MACRO_REG,		HIDC_MACRO_REG,		//マクロ設定
-	IDC_COMBO_MACROID,	HIDC_COMBO_MACROID,	//ID
-	IDC_MACROPATH,		HIDC_MACROPATH,		//File
-	IDC_MACRONAME,		HIDC_MACRONAME,		//マクロ名
-	IDC_MACROLIST,		HIDC_MACROLIST,		//マクロリスト
-	IDC_MACRODIR,		HIDC_MACRODIR,		//マクロ一覧
-	IDC_CHECK_RELOADWHENEXECUTE,	HIDC_CHECK_RELOADWHENEXECUTE,	//マクロを実行するたびにファイルを読み込みなおす	// 2006.08.06 ryoji
-	IDC_CHECK_MacroOnOpened,		HIDC_CHECK_MacroOnOpened,		//オープン後自動実行マクロ	// 2006.09.01 ryoji
-	IDC_CHECK_MacroOnTypeChanged,	HIDC_CHECK_MacroOnTypeChanged,	//タイプ変更後自動実行マクロ	// 2006.09.01 ryoji
-	IDC_CHECK_MacroOnSave,			HIDC_CHECK_MacroOnSave,			//保存前自動実行マクロ	// 2006.09.01 ryoji
-	IDC_MACROCANCELTIMER,			HIDC_MACROCANCELTIMER,			//マクロ停止ダイアログ表示待ち時間	// 2011.08.04 syat
-//	IDC_STATIC,			-1,
-	0, 0
-};
-//@@@ 2001.12.22 End
 
 /*!
 	@param hwndDlg ダイアログボックスのWindow Handle
@@ -122,9 +102,6 @@ INT_PTR CPropMacro::DispatchEvent( HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARA
 			break;
 		default:
 			switch( pNMHDR->code ){
-			case PSN_HELP:
-				OnHelp( hwndDlg, IDD_PROP_MACRO );
-				return TRUE;
 			case PSN_KILLACTIVE:
 				/* ダイアログデータの取得 Macro */
 				GetData( hwndDlg );
@@ -178,25 +155,7 @@ INT_PTR CPropMacro::DispatchEvent( HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARA
 			break;
 		// To Here 2003.06.23 Moca
 		}
-
 		break;	/* WM_COMMAND */
-//@@@ 2001.02.04 Start by MIK: Popup Help
-	case WM_HELP:
-		{
-			HELPINFO *p = (HELPINFO *)lParam;
-			MyWinHelp( (HWND)p->hItemHandle, HELP_WM_HELP, (ULONG_PTR)(LPVOID)p_helpids );	// 2006.10.10 ryoji MyWinHelpに変更に変更
-		}
-		return TRUE;
-		/*NOTREACHED*/
-		//break;
-//@@@ 2001.02.04 End
-
-//@@@ 2001.12.22 Start by MIK: Context Menu Help
-	//Context Menu
-	case WM_CONTEXTMENU:
-		MyWinHelp( hwndDlg, HELP_CONTEXTMENU, (ULONG_PTR)(LPVOID)p_helpids );	// 2006.10.10 ryoji MyWinHelpに変更に変更
-		return TRUE;
-//@@@ 2001.12.22 End
 
 	}
 	return FALSE;

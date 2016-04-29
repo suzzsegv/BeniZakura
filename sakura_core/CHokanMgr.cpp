@@ -692,15 +692,3 @@ bool CHokanMgr::AddKouhoUnique(vector_ex<std::wstring>& kouhoList, const std::ws
 	return kouhoList.push_back_unique(strWord);
 }
 
-//@@@ 2002.01.18 add start
-const DWORD p_helpids[] = {
-	0, 0
-};
-
-LPVOID CHokanMgr::GetHelpIdTable(void)
-{
-	return (LPVOID)p_helpids;
-}
-//@@@ 2002.01.18 add end
-
-

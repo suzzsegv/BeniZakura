@@ -45,7 +45,6 @@ protected:
 	BOOL OnBnClicked( int );
 	INT_PTR DispatchEvent( HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam );
 	void SetData();	/* ダイアログデータの設定 */
-	LPVOID GetHelpIdTable(void);	//@@@ 2002.01.18 add
 	bool Import( void );			// 2010/4/12 Uchi
 	bool Export( void );			// 2010/4/12 Uchi
 	bool InitializeType( void );	// 2010/4/12 Uchi

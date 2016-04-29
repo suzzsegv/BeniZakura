@@ -86,13 +86,6 @@ public:
 	int				m_nWinHeight;
 	int				m_nColumnWidth;
 	int				m_bTimerFlag;
-
-protected:
-	/*
-	||  À‘•ƒwƒ‹ƒpŠÖ”
-	*/
-	LPVOID GetHelpIdTable(void);	//@@@ 2002.01.18 add
-
 };
 
 

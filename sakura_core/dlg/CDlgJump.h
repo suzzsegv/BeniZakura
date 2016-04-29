@@ -40,7 +40,6 @@ protected:
 	*/
 	BOOL OnNotify( WPARAM,  LPARAM );
 	BOOL OnBnClicked( int );
-	LPVOID GetHelpIdTable(void);
 	void SetData( void );		/* ダイアログデータの設定 */
 	int GetData( void );		/* ダイアログデータの取得 */
 };

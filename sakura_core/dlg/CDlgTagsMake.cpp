@@ -35,19 +35,7 @@
 #include "func/Funccode.h"
 #include "util/shell.h"
 #include "sakura_rc.h"
-#include "sakura.hh"
 
-const DWORD p_helpids[] = {	//13700
-	IDC_EDIT_TAG_MAKE_FOLDER,	HIDC_EDIT_TAG_MAKE_FOLDER,	//タグ作成フォルダ
-	IDC_BUTTON_TAG_MAKE_REF,	HIDC_BUTTON_TAG_MAKE_REF,	//参照
-	IDC_EDIT_TAG_MAKE_CMDLINE,	HIDC_EDIT_TAG_MAKE_CMDLINE,	//コマンドライン
-	IDC_CHECK_TAG_MAKE_RECURSE,	HIDC_CHECK_TAG_MAKE_RECURSE,	//サブフォルダも対象
-	IDOK,						HIDC_TAG_MAKE_IDOK,
-	IDCANCEL,					HIDC_TAG_MAKE_IDCANCEL,
-	IDC_BUTTON_HELP,			HIDC_BUTTON_TAG_MAKE_HELP,
-//	IDC_STATIC,						-1,
-	0, 0
-};
 
 CDlgTagsMake::CDlgTagsMake()
 {
@@ -74,11 +62,6 @@ BOOL CDlgTagsMake::OnBnClicked( int wID )
 {
 	switch( wID )
 	{
-	case IDC_BUTTON_HELP:
-		/* ヘルプ */
-		MyWinHelp( GetHwnd(), HELP_CONTEXT, ::FuncID_To_HelpContextID(F_TAGS_MAKE) );	// 2006.10.10 ryoji MyWinHelpに変更に変更
-		return TRUE;
-
 	case IDC_BUTTON_TAG_MAKE_REF:	/* 参照 */
 		SelectFolder( GetHwnd() );
 		return TRUE;
@@ -170,10 +153,4 @@ int CDlgTagsMake::GetData( void )
 
 	return TRUE;
 }
-
-LPVOID CDlgTagsMake::GetHelpIdTable( void )
-{
-	return (LPVOID)p_helpids;
-}
-
 

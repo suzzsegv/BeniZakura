@@ -19,17 +19,6 @@
 #include "Funccode_enum.h"	// EFunctionCode
 #include "util/shell.h"
 #include "sakura_rc.h"
-#include "sakura.hh"
-
-// 入力 CDlgInput1.cpp	//@@@ 2002.01.07 add start MIK
-static const DWORD p_helpids[] = {	//13000
-	IDOK,					HIDOK_DLG1,
-	IDCANCEL,				HIDCANCEL_DLG1,
-	IDC_EDIT_INPUT1,		HIDC_DLG1_EDIT1,	//入力フィールド	IDC_EDIT1->IDC_EDIT_INPUT1	2008/7/3 Uchi
-	IDC_STATIC_MSG,			HIDC_DLG1_EDIT1,	//メッセージ
-//	IDC_STATIC,				-1,
-	0, 0
-};	//@@@ 2002.01.07 add end MIK
 
 
 /* ダイアログプロシージャ */
@@ -169,19 +158,6 @@ INT_PTR CDlgInput1::DispatchEvent(
 			break;	//@@@ 2002.01.07 add
 		}
 		break;	//@@@ 2002.01.07 add
-	//@@@ 2002.01.07 add start
-	case WM_HELP:
-		{
-			HELPINFO *p = (HELPINFO *)lParam;
-			MyWinHelp( (HWND)p->hItemHandle, HELP_WM_HELP, (ULONG_PTR)(LPVOID)p_helpids );	// 2006.10.10 ryoji MyWinHelpに変更に変更
-		}
-		return TRUE;
-
-	//Context Menu
-	case WM_CONTEXTMENU:
-		MyWinHelp( hwndDlg, HELP_CONTEXTMENU, (ULONG_PTR)(LPVOID)p_helpids );	// 2006.10.10 ryoji MyWinHelpに変更に変更
-		return TRUE;
-	//@@@ 2002.01.07 add end
 	}
 	return FALSE;
 }

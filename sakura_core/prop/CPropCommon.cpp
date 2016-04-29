@@ -227,7 +227,8 @@ int CPropCommon::DoPropertySheet( int nPageNum/*, int nActiveItem*/ )
 			PROPSHEETPAGE *p = &psp[nIdx];
 			memset_raw( p, 0, sizeof_raw( *p ) );
 			p->dwSize      = sizeof_raw( *p );
-			p->dwFlags     = PSP_USETITLE | PSP_HASHELP;
+			p->dwFlags = PSP_USETITLE;
+			p->dwFlags &= ~PSP_HASHELP;
 			p->hInstance   = G_AppInstance();
 			p->pszTemplate = MAKEINTRESOURCE( ComPropSheetInfoList[i].resId );
 			p->pszIcon     = NULL;
@@ -248,7 +249,7 @@ int CPropCommon::DoPropertySheet( int nPageNum/*, int nActiveItem*/ )
 	psh.dwSize = sizeof_old_PROPSHEETHEADER;
 
 	//	JEPROtest Sept. 30, 2000 共通設定の隠れ[適用]ボタンの正体はここ。行頭のコメントアウトを入れ替えてみればわかる
-	psh.dwFlags    = PSH_NOAPPLYNOW | PSH_PROPSHEETPAGE;
+	psh.dwFlags    = PSH_NOAPPLYNOW | PSH_PROPSHEETPAGE | PSH_NOCONTEXTHELP;
 	psh.hwndParent = m_hwndParent;
 	psh.hInstance  = G_AppInstance();
 	psh.pszIcon    = NULL;
@@ -333,87 +334,6 @@ void CPropCommon::ApplyData( void )
 			CTypeConfig(i)->m_nKeyWordSetIdx[j] = m_Types_nKeyWordSetIdx[i][j];
 		}
 	}
-}
-
-
-
-/* ヘルプ */
-//Stonee, 2001/05/18 機能番号からヘルプトピック番号を調べるようにした
-void CPropCommon::OnHelp( HWND hwndParent, int nPageID )
-{
-	int		nContextID;
-	switch( nPageID ){
-	case IDD_PROP_GENERAL:
-		nContextID = ::FuncID_To_HelpContextID(F_OPTION_GENERAL);
-		break;
-	case IDD_PROP_FORMAT:
-		nContextID = ::FuncID_To_HelpContextID(F_OPTION_FORMAT);
-		break;
-	case IDD_PROP_FILE:
-		nContextID = ::FuncID_To_HelpContextID(F_OPTION_FILE);
-		break;
-//	Sept. 10, 2000 JEPRO ID名を実際の名前に変更するため以下の行はコメントアウト
-//	変更は少し後の行(Sept. 9, 2000)で行っている
-//	case IDD_PROP1P5:
-//		nContextID = 84;
-//		break;
-	case IDD_PROP_TOOLBAR:
-		nContextID = ::FuncID_To_HelpContextID(F_OPTION_TOOLBAR);
-		break;
-	case IDD_PROP_KEYWORD:
-		nContextID = ::FuncID_To_HelpContextID(F_OPTION_KEYWORD);
-		break;
-	case IDD_PROP_CUSTMENU:
-		nContextID = ::FuncID_To_HelpContextID(F_OPTION_CUSTMENU);
-		break;
-	case IDD_PROP_HELPER:
-		nContextID = ::FuncID_To_HelpContextID(F_OPTION_HELPER);
-		break;
-
-	// From Here Sept. 9, 2000 JEPRO 共通設定のヘルプボタンが効かなくなっていた部分を以下の追加によって修正
-	case IDD_PROP_EDIT:
-		nContextID = ::FuncID_To_HelpContextID(F_OPTION_EDIT);
-		break;
-	case IDD_PROP_BACKUP:
-		nContextID = ::FuncID_To_HelpContextID(F_OPTION_BACKUP);
-		break;
-	case IDD_PROP_WIN:
-		nContextID = ::FuncID_To_HelpContextID(F_OPTION_WINDOW);
-		break;
-	case IDD_PROP_TAB:
-		nContextID = ::FuncID_To_HelpContextID(F_OPTION_TAB);
-		break;
-	case IDD_PROP_STATUSBAR:
-		nContextID = ::FuncID_To_HelpContextID(F_OPTION_STATUSBAR);
-		break;
-	case IDD_PROP_GREP:
-		nContextID = ::FuncID_To_HelpContextID(F_OPTION_GREP);
-		break;
-	case IDD_PROP_KEYBIND:
-		nContextID = ::FuncID_To_HelpContextID(F_OPTION_KEYBIND);
-		break;
-	// To Here Sept. 9, 2000
-	case IDD_PROP_MACRO:	//@@@ 2002.01.02
-		nContextID = ::FuncID_To_HelpContextID(F_OPTION_MACRO);
-		break;
-	case IDD_PROP_FNAME:	// 2002.12.09 Moca FNAME追加
-		nContextID = ::FuncID_To_HelpContextID(F_OPTION_FNAME);
-		break;
-	case IDD_PROP_PLUGIN:	//@@@ 2002.01.02
-		nContextID = ::FuncID_To_HelpContextID(F_OPTION_PLUGIN);
-		break;
-	case IDD_PROP_MAINMENU:	//@@@ 2010/6/2 Uchi
-		nContextID = ::FuncID_To_HelpContextID(F_OPTION_MAINMENU);
-		break;
-
-	default:
-		nContextID = -1;
-		break;
-	}
-	if( -1 != nContextID ){
-		MyWinHelp( hwndParent, HELP_CONTEXT, nContextID );	// 2006.10.10 ryoji MyWinHelpに変更に変更
-	}
-	return;
 }
 
 

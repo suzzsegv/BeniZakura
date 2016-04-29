@@ -217,7 +217,6 @@
     <ClInclude Include="..\sakura_core\env\CDocTypeManager.h" />
     <ClInclude Include="..\sakura_core\env\CFileNameManager.h" />
     <ClInclude Include="..\sakura_core\env\CFormatManager.h" />
-    <ClInclude Include="..\sakura_core\env\CHelpManager.h" />
     <ClInclude Include="..\sakura_core\env\CommonSetting.h" />
     <ClInclude Include="..\sakura_core\env\CSakuraEnvironment.h" />
     <ClInclude Include="..\sakura_core\env\CSearchKeywordManager.h" />
@@ -431,7 +430,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\sakura_core\Funccode_x.hsrc" />
-    <None Include="..\sakura_core\sakura.hh" />
     <None Include="..\resource\auto_scroll_center.bmp" />
     <None Include="..\resource\auto_scroll_center.cur" />
     <None Include="..\resource\auto_scroll_down.cur" />
@@ -550,7 +548,6 @@
     <ClCompile Include="..\sakura_core\env\CDocTypeManager.cpp" />
     <ClCompile Include="..\sakura_core\env\CFileNameManager.cpp" />
     <ClCompile Include="..\sakura_core\env\CFormatManager.cpp" />
-    <ClCompile Include="..\sakura_core\env\CHelpManager.cpp" />
     <ClCompile Include="..\sakura_core\env\CommonSetting.cpp" />
     <ClCompile Include="..\sakura_core\env\CSakuraEnvironment.cpp" />
     <ClCompile Include="..\sakura_core\env\CSearchKeywordManager.cpp" />

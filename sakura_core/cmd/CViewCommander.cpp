@@ -652,18 +652,11 @@ BOOL CViewCommander::HandleCommand(
 
 	/* 支援 */
 	case F_HOKAN:			Command_HOKAN();break;			//入力補完
-	case F_HELP_CONTENTS:	Command_HELP_CONTENTS();break;	/* ヘルプ目次 */				//Nov. 25, 2000 JEPRO 追加
-	case F_HELP_SEARCH:		Command_HELP_SEARCH();break;	/* ヘルプトキーワード検索 */	//Nov. 25, 2000 JEPRO 追加
 	case F_TOGGLE_KEY_SEARCH:	Command_ToggleKeySearch();break;	/* キャレット位置の単語を辞書検索する機能ON-OFF */	// 2006.03.24 fon
 	case F_MENU_ALLFUNC:									/* コマンド一覧 */
 		/* 再帰処理対策 */
 		m_pCommanderView->SetUndoBuffer( true );
 		Command_MENU_ALLFUNC();return bRet;
-	case F_EXTHELP1:	Command_EXTHELP1();break;		/* 外部ヘルプ１ */
-	case F_EXTHTMLHELP:	/* 外部HTMLヘルプ */
-		//	Jul. 5, 2002 genta
-		Command_EXTHTMLHELP( (const WCHAR*)lparam1, (const WCHAR*)lparam2 );
-		break;
 	case F_ABOUT:	Command_ABOUT();break;				/* バージョン情報 */	//Dec. 24, 2000 JEPRO 追加
 
 	/* その他 */

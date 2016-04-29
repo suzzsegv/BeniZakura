@@ -62,7 +62,6 @@ protected:
 	BOOL OnActivate( WPARAM wParam, LPARAM lParam );	// 2009.11.29 ryoji
 
 	// virtual BOOL OnKeyDown( WPARAM wParam, LPARAM lParam );
-	LPVOID GetHelpIdTable(void);	//@@@ 2002.01.18 add
 };
 
 

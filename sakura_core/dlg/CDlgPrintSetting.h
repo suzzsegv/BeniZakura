@@ -72,7 +72,6 @@ protected:
 	BOOL OnStnClicked( int );
 	BOOL OnEnChange( HWND hwndCtl, int wID );
 	BOOL OnEnKillFocus( HWND hwndCtl, int wID );
-	LPVOID GetHelpIdTable(void);	//@@@ 2002.01.18 add
 
 	void OnChangeSettingType( BOOL );	/* 設定のタイプが変わった */
 	void OnSpin( int , BOOL );	/* スピンコントロールの処理 */

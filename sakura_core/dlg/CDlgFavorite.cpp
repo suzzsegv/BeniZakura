@@ -44,30 +44,7 @@
 #include "util/os.h"
 #include "util/input.h"
 #include "sakura_rc.h"
-#include "sakura.hh"
 
-const DWORD p_helpids[] = {
-	IDC_TAB_FAVORITE,				HIDC_TAB_FAVORITE,				//タブ
-	IDC_LIST_FAVORITE_FILE,			HIDC_LIST_FAVORITE_FILE,		//ファイル
-	IDC_LIST_FAVORITE_FOLDER,		HIDC_LIST_FAVORITE_FOLDER,		//フォルダ
-	IDC_LIST_FAVORITE_EXCEPTMRU,	HIDC_LIST_FAVORITE_EXCEPTMRU,	//MRU除外
-	IDC_LIST_FAVORITE_SEARCH,		HIDC_LIST_FAVORITE_SEARCH,		//検索
-	IDC_LIST_FAVORITE_REPLACE,		HIDC_LIST_FAVORITE_REPLACE,		//置換
-	IDC_LIST_FAVORITE_GREP_FILE,	HIDC_LIST_FAVORITE_GREPFILE,	//GREPファイル
-	IDC_LIST_FAVORITE_GREP_FOLDER,	HIDC_LIST_FAVORITE_GREPFOLDER,	//GREPフォルダ
-	IDC_LIST_FAVORITE_CMD,			HIDC_LIST_FAVORITE_CMD,			//コマンド
-	IDC_LIST_FAVORITE_CUR_DIR,		HIDC_LIST_FAVORITE_CUR_DIR,		//カレントディレクトリ
-//	IDC_STATIC_BUTTONS,				-1,
-	IDC_BUTTON_CLEAR,				HIDC_BUTTON_FAVORITE_CLEAR,		//すべて	// 2006.10.10 ryoji
-	IDC_BUTTON_DELETE_NOFAVORATE,   HIDC_BUTTON_FAVORITE_DELETE_NOFAVORATE,  //お気に入り以外
-	IDC_BUTTON_DELETE_NOTFOUND,		HIDC_BUTTON_FAVORITE_DELETE_NOTFOUND		,  //存在しない項目
-	IDC_BUTTON_DELETE_SELECTED,     HIDC_BUTTON_FAVORITE_DELETE_SELECTED,    //選択項目
-	IDC_BUTTON_ADD_FAVORITE,        HIDC_BUTTON_ADD_FAVORITE,		// 追加
-	IDOK,							HIDC_FAVORITE_IDOK,				//閉じる
-	IDC_BUTTON_HELP,				HIDC_BUTTON_FAVORITE_HELP,		//ヘルプ
-//	IDC_STATIC_FAVORITE_MSG,		-1,
-	0, 0
-};
 
 static const SAnchorList anchorList[] = {
 	{IDC_TAB_FAVORITE,              ANCHOR_LEFT_RIGHT},
@@ -78,7 +55,6 @@ static const SAnchorList anchorList[] = {
 	{IDC_BUTTON_DELETE_SELECTED,	ANCHOR_BOTTOM},
 	{IDC_BUTTON_ADD_FAVORITE, 		ANCHOR_BOTTOM},
 	{IDOK, 							ANCHOR_BOTTOM},
-	{IDC_BUTTON_HELP, 				ANCHOR_BOTTOM},
 	{IDC_STATIC_FAVORITE_MSG, 		ANCHOR_BOTTOM},
 };
 
@@ -487,11 +463,6 @@ BOOL CDlgFavorite::OnBnClicked( int wID )
 {
 	switch( wID )
 	{
-	case IDC_BUTTON_HELP:
-		/* ヘルプ */
-		MyWinHelp( GetHwnd(), HELP_CONTEXT, ::FuncID_To_HelpContextID( F_FAVORITE ) );	// 2006.10.10 ryoji MyWinHelpに変更に変更
-		return TRUE;
-
 	case IDOK:
 		/* ダイアログデータの取得 */
 		::EndDialog( GetHwnd(), (BOOL)GetData() );
@@ -723,11 +694,6 @@ BOOL CDlgFavorite::OnActivate( WPARAM wParam, LPARAM lParam )
 
 	/* 基底クラスメンバ */
 	return CDialog::OnActivate( wParam, lParam );
-}
-
-LPVOID CDlgFavorite::GetHelpIdTable( void )
-{
-	return (LPVOID)p_helpids;
 }
 
 /*

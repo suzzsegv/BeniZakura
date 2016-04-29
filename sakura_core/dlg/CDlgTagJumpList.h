@@ -87,7 +87,6 @@ protected:
 	BOOL	OnCbnEditChange( HWND hwndCtl, int wID );
 	//BOOL	OnEnChange( HWND hwndCtl, int wID );
 	BOOL	OnTimer( WPARAM wParam );
-	LPVOID	GetHelpIdTable( void );
 
 private:
 	struct STagFindState{

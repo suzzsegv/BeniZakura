@@ -64,7 +64,6 @@ protected:
 	// 実装ヘルパ関数
 	BOOL OnBnClicked( int );
 	void SetData();	/* ダイアログデータの設定 */
-	LPVOID GetHelpIdTable(void);
 
 private:
 	SAscertainInfo* m_psi;			// インターフェイス

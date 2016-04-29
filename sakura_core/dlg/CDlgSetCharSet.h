@@ -43,7 +43,6 @@ protected:
 	BOOL	OnInitDialog( HWND, WPARAM, LPARAM );
 	BOOL	OnBnClicked( int );
 	BOOL	OnCbnSelChange( HWND, int );
-	LPVOID	GetHelpIdTable( void );
 
 	void	SetData( void );	/* ダイアログデータの設定 */
 	int 	GetData( void );	/* ダイアログデータの取得 */

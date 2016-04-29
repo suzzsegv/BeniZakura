@@ -23,7 +23,6 @@
 #include "env/CDocTypeManager.h"
 #include "util/shell.h"
 #include "sakura_rc.h"
-#include "sakura.hh"
 #include "util/RegKey.h"
 
 typedef std::basic_string<TCHAR> tstring;
@@ -41,22 +40,6 @@ int CheckExt(LPCTSTR sExt, bool *pbRMenu, bool *pbDblClick);
 
 //内部使用定数
 static const int PROP_TEMPCHANGE_FLAG = 0x10000;
-
-// タイプ別設定一覧 CDlgTypeList.cpp	//@@@ 2002.01.07 add start MIK
-const DWORD p_helpids[] = {	//12700
-	IDC_BUTTON_TEMPCHANGE,	HIDC_TL_BUTTON_TEMPCHANGE,	//一時適用
-	IDOK,					HIDOK_TL,					//設定
-	IDCANCEL,				HIDCANCEL_TL,				//キャンセル
-	IDC_BUTTON_HELP,		HIDC_TL_BUTTON_HELP,		//ヘルプ
-	IDC_LIST_TYPES,			HIDC_TL_LIST_TYPES,			//リスト
-	IDC_BUTTON_IMPORT,		HIDC_TL_BUTTON_IMPORT,		//インポート
-	IDC_BUTTON_EXPORT,		HIDC_TL_BUTTON_EXPORT,		//エクスポート
-	IDC_BUTTON_INITIALIZE,	HIDC_TL_BUTTON_INIT,		//初期化
-	IDC_CHECK_EXT_RMENU,	HIDC_TL_CHECK_RMENU,		//右クリックメニューに追加
-	IDC_CHECK_EXT_DBLCLICK,	HIDC_TL_CHECK_DBLCLICK,		//ダブルクリックで開く
-//	IDC_STATIC,				-1,
-	0, 0
-};	//@@@ 2002.01.07 add end MIK
 
 /* モーダルダイアログの表示 */
 int CDlgTypeList::DoModal( HINSTANCE hInstance, HWND hwndParent, SResult* psResult )
@@ -97,11 +80,6 @@ BOOL CDlgTypeList::OnLbnDblclk( int wID )
 BOOL CDlgTypeList::OnBnClicked( int wID )
 {
 	switch( wID ){
-	case IDC_BUTTON_HELP:
-		/* 「タイプ別設定一覧」のヘルプ */
-		//Stonee, 2001/03/12 第四引数を、機能番号からヘルプトピック番号を調べるようにした
-		MyWinHelp( GetHwnd(), HELP_CONTEXT, ::FuncID_To_HelpContextID(F_TYPE_LIST) );	// 2006.10.10 ryoji MyWinHelpに変更に変更
-		return TRUE;
 	//	Nov. 29, 2000	From Here	genta
 	//	適用する型の一時的変更
 	case IDC_BUTTON_TEMPCHANGE:
@@ -297,14 +275,6 @@ void CDlgTypeList::SetData( void )
 	::EnableWindow( GetItemHwnd(IDC_BUTTON_TEMPCHANGE), m_bEnableTempChange );
 	return;
 }
-
-//@@@ 2002.01.18 add start
-LPVOID CDlgTypeList::GetHelpIdTable(void)
-{
-	return (LPVOID)p_helpids;
-}
-//@@@ 2002.01.18 add end
-
 
 
 // タイプ別設定インポート

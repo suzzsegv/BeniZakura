@@ -120,7 +120,6 @@ protected:
 
 	// 2001.12.03 hor
 //	void SetTreeBookMark( HWND );		/* ツリーコントロールの初期化：ブックマーク */
-	LPVOID GetHelpIdTable(void);	//@@@ 2002.01.18 add
 	void Key2Command( WORD );		//	キー操作→コマンド変換
 	bool HitTestSplitter( int xPos, int yPos );
 	int HitTestCaptionButton( int xPos, int yPos );
@@ -177,7 +176,7 @@ private:
 
 	POINT				m_ptDefaultSize;
 	POINT				m_ptDefaultSizeClient;
-	RECT				m_rcItems[12];
+	RECT				m_rcItems[11];
 };
 
 

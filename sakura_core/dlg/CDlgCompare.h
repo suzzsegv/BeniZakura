@@ -44,7 +44,6 @@ protected:
 	||  実装ヘルパ関数
 	*/
 	BOOL OnBnClicked( int );
-	LPVOID GetHelpIdTable(void);	//@@@ 2002.01.18 add
 
 	INT_PTR DispatchEvent( HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam );	// 標準以外のメッセージを捕捉する
 	BOOL OnInitDialog( HWND, WPARAM, LPARAM );
@@ -57,7 +56,7 @@ protected:
 
 private:
 	POINT			m_ptDefaultSize;
-	RECT			m_rcItems[6];
+	RECT			m_rcItems[5];
 };
 
 

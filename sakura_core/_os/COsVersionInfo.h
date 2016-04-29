@@ -116,14 +116,6 @@ public:
 		return (m_cOsVersionInfo.dwPlatformId == VER_PLATFORM_WIN32_WINDOWS);
 	}
 
-	/*	::WinHelp( hwnd, lpszHelp, HELP_COMMAND, (ULONG_PTR)"CONTENTS()" );
-		が使用できないバージョンなら、true
-		使用できるバージョンなら、false
-	*/
-	bool _HasWinHelpContentsProblem(){
-		return ( _IsWin32NT() && (m_cOsVersionInfo.dwMajorVersion <= 4));
-	}
-
 	/*	再変換がOS標準で提供されていないか。
 		提供されていないなら、false。
 		提供されているなら、true。
@@ -211,14 +203,6 @@ inline bool IsWin32NT() {
 	return true;
 #else
 	return COsVersionInfo()._IsWin32NT();
-#endif
-}
-
-inline bool HasWinHelpContentsProblem() {
-#if (WINVER >= _WIN32_WINNT_WIN2K)
-	return false;
-#else
-	return COsVersionInfo()._HasWinHelpContentsProblem();
 #endif
 }
 

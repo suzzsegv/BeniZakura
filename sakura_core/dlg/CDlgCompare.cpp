@@ -23,24 +23,11 @@
 #include "util/shell.h"
 #include "util/string_ex2.h"
 #include "sakura_rc.h"
-#include "sakura.hh"
 
-// ファイル内容比較 CDlgCompare.cpp	//@@@ 2002.01.07 add start MIK
-const DWORD p_helpids[] = {	//12300
-//	IDC_STATIC,						-1,
-	IDOK,							HIDOK_CMP,					//OK
-	IDCANCEL,						HIDCANCEL_CMP,				//キャンセル
-	IDC_BUTTON_HELP,				HIDC_CMP_BUTTON_HELP,		//ヘルプ
-	IDC_CHECK_TILE_H,				HIDC_CMP_CHECK_TILE_H,		//左右に表示
-	IDC_LIST_FILES,					HIDC_CMP_LIST_FILES,		//ファイル一覧
-	IDC_STATIC_COMPARESRC,			HIDC_CMP_STATIC_COMPARESRC,	//ソースファイル
-	0, 0
-};	//@@@ 2002.01.07 add end MIK
 
 static const SAnchorList anchorList[] = {
 	{IDOK,					ANCHOR_BOTTOM},
 	{IDCANCEL,				ANCHOR_BOTTOM},
-	{IDC_BUTTON_HELP,		ANCHOR_BOTTOM},
 	{IDC_CHECK_TILE_H,		ANCHOR_LEFT},
 	{IDC_LIST_FILES,        ANCHOR_ALL},
 	{IDC_STATIC_COMPARESRC, ANCHOR_LEFT_RIGHT},
@@ -80,11 +67,6 @@ int CDlgCompare::DoModal(
 BOOL CDlgCompare::OnBnClicked( int wID )
 {
 	switch( wID ){
-	case IDC_BUTTON_HELP:
-		/* 「内容比較」のヘルプ */
-		//Stonee, 2001/03/12 第四引数を、機能番号からヘルプトピック番号を調べるようにした
-		MyWinHelp( GetHwnd(), HELP_CONTEXT, ::FuncID_To_HelpContextID(F_COMPARE) );	// 2006.10.10 ryoji MyWinHelpに変更に変更
-		return TRUE;
 //	From Here Oct. 10, 2000 JEPRO added  Ref. code はCDlgFind.cpp の OnBnClicked
 //	チェックボックスをボタン化してCDlgCompare.cppに直接書き込んでみたが失敗
 //	ダイアログのボタンは下に不可視化しておいてあります。
@@ -223,13 +205,6 @@ int CDlgCompare::GetData( void )
 		return TRUE;
 	}
 }
-
-//@@@ 2002.01.18 add start
-LPVOID CDlgCompare::GetHelpIdTable(void)
-{
-	return (LPVOID)p_helpids;
-}
-//@@@ 2002.01.18 add end
 
 INT_PTR CDlgCompare::DispatchEvent( HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam )
 {

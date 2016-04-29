@@ -37,7 +37,6 @@
 #include "util/string_ex2.h"
 #include "util/module.h"
 #include "sakura_rc.h"
-#include "sakura.hh"
 
 // BOOL変数の表示
 #ifdef _UNICODE
@@ -55,23 +54,6 @@ static inline void CtrlShow(HWND hwndDlg, int id, BOOL bShow)
 	::ShowWindow( hWnd, bShow? SW_SHOW: SW_HIDE );
 	::EnableWindow( hWnd, bShow );
 }
-
-const DWORD p_helpids[] = {
-	IDC_LIST_PLUGIN_OPTIONS,		HIDC_LIST_PLUGIN_OPTIONS,		// オプションリスト
-	IDC_EDIT_PLUGIN_OPTION,			HIDC_EDIT_PLUGIN_OPTION,		// オプション編集
-	IDC_EDIT_PLUGIN_OPTION_DIR,		HIDC_EDIT_PLUGIN_OPTION,		// オプション編集
-	IDC_BUTTON_PLUGIN_OPTION_DIR,	HIDC_EDIT_PLUGIN_OPTION,		// オプション編集
-	IDC_EDIT_PLUGIN_OPTION_NUM,		HIDC_EDIT_PLUGIN_OPTION,		// オプション編集
-	IDC_SPIN_PLUGIN_OPTION,			HIDC_EDIT_PLUGIN_OPTION,		// オプション編集
-	IDC_CHECK_PLUGIN_OPTION,		HIDC_EDIT_PLUGIN_OPTION,		// オプション編集
-	IDC_COMBO_PLUGIN_OPTION,		HIDC_EDIT_PLUGIN_OPTION,		// オプション編集
-	IDOK,							HIDC_FAVORITE_IDOK,				//OK
-	IDCANCEL,						HIDC_FAVORITE_IDCANCEL,			//キャンセル
-	IDC_PLUGIN_README,				HIDC_PLUGIN_README,				//ReadMe
-	IDC_BUTTON_HELP,				HIDC_BUTTON_FAVORITE_HELP,		//ヘルプ
-//	IDC_STATIC,						-1,
-	0, 0
-};
 
 CDlgPluginOption::CDlgPluginOption()
 {
@@ -412,11 +394,6 @@ BOOL CDlgPluginOption::OnBnClicked( int wID )
 		}
 		return TRUE;
 
-	case IDC_BUTTON_HELP:
-		/* ヘルプ */
-		MyWinHelp( GetHwnd(), HELP_CONTEXT, HLP000153 );	// 『プラグイン設定』Helpの指定 	2011/11/26 Uchi
-		return TRUE;
-
 	case IDOK:
 		// 編集中のデータの戻し
 		SetFromEdit( m_Line );
@@ -481,12 +458,6 @@ BOOL CDlgPluginOption::OnActivate( WPARAM wParam, LPARAM lParam )
 
 	/* 基底クラスメンバ */
 	return CDialog::OnActivate( wParam, lParam );
-}
-
-
-LPVOID CDlgPluginOption::GetHelpIdTable( void )
-{
-	return (LPVOID)p_helpids;
 }
 
 

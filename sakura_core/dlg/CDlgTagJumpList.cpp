@@ -44,12 +44,7 @@
 #include "util/file.h"
 #include "util/window.h"
 #include "sakura_rc.h"
-#include "sakura.hh"
 
-
-const DWORD p_helpids[] = {
-	0, 0
-};
 
 static const SAnchorList anchorList[] = {
 	{IDC_STATIC_BASEDIR,	ANCHOR_BOTTOM},
@@ -620,11 +615,6 @@ BOOL CDlgTagJumpList::OnCbnSelChange( HWND hwndCtl, int wID )
 
 	/* äÓíÍÉNÉâÉXÉÅÉìÉo */
 	return CDialog::OnCbnSelChange( hwndCtl, wID );
-}
-
-LPVOID CDlgTagJumpList::GetHelpIdTable( void )
-{
-	return (LPVOID)p_helpids;
 }
 
 bool CDlgTagJumpList::GetSelectedParam( TCHAR *s0, TCHAR *s1, int *n2, TCHAR *s3, TCHAR *s4, int *depth, TCHAR *baseDir )

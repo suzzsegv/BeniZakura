@@ -49,7 +49,6 @@ public:
 
 protected:
 
-	virtual LPVOID GetHelpIdTable( void );
 	virtual INT_PTR DispatchEvent( HWND, UINT, WPARAM, LPARAM );	//! ダイアログのメッセージ処理
 	virtual BOOL OnInitDialog( HWND, WPARAM, LPARAM );			//!< WM_INITDIALOG 処理
 	virtual BOOL OnBnClicked( int );							//!< BN_CLICKED 処理

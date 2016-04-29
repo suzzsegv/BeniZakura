@@ -16,18 +16,6 @@
 #include "util/shell.h"
 #include "env/DLLSHAREDATA.h"
 #include "sakura_rc.h"
-#include "sakura.hh"
-
-//文字コードセット設定 CDlgSetCharSet
-const DWORD p_helpids[] = {
-	IDOK,							HIDOK_GREP,							//検索
-	IDCANCEL,						HIDCANCEL_GREP,						//キャンセル
-	IDC_BUTTON_HELP,				HIDC_GREP_BUTTON_HELP,				//ヘルプ
-	IDC_COMBO_CHARSET,				HIDC_OPENDLG_COMBO_CODE,			//文字コードセット
-	IDC_CHECK_BOM,					HIDC_OPENDLG_CHECK_BOM,				//条件
-	0, 0
-};
-
 
 
 CDlgSetCharSet::CDlgSetCharSet()
@@ -77,10 +65,6 @@ BOOL CDlgSetCharSet::OnInitDialog( HWND hwndDlg, WPARAM wParam, LPARAM lParam )
 BOOL CDlgSetCharSet::OnBnClicked( int wID )
 {
 	switch( wID ){
-	case IDC_BUTTON_HELP:
-		/* 「文字コードセット設定」のヘルプ */
-		MyWinHelp( GetHwnd(), HELP_CONTEXT, ::FuncID_To_HelpContextID(F_CHG_CHARSET) );
-		return TRUE;
 	case IDOK:
 		/* ダイアログデータの取得 */
 		if( GetData() ){
@@ -157,13 +141,6 @@ BOOL CDlgSetCharSet::OnCbnSelChange( HWND hwndCtl, int wID )
 		break;
 	}
 	return TRUE;
-}
-
-
-
-LPVOID CDlgSetCharSet::GetHelpIdTable(void)
-{
-	return (LPVOID)p_helpids;
 }
 
 

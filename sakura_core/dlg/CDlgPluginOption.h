@@ -76,7 +76,6 @@ protected:
 	BOOL	OnCbnSelChange( HWND hwndCtl, int wID );
 	BOOL	OnEnChange( HWND hwndCtl, int wID );
 	BOOL	OnActivate( WPARAM wParam, LPARAM lParam );
-	LPVOID	GetHelpIdTable( void );
 
 	void	SetData( void );	/* ダイアログデータの設定 */
 	int		GetData( void );	/* ダイアログデータの取得 */

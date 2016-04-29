@@ -23,25 +23,7 @@
 #include "view/CEditView.h"
 #include "util/shell.h"
 #include "sakura_rc.h"
-#include "sakura.hh"
 
-//検索 CDlgFind.cpp	//@@@ 2002.01.07 add start MIK
-const DWORD p_helpids[] = {	//11800
-	IDC_BUTTON_SEARCHNEXT,			HIDC_FIND_BUTTON_SEARCHNEXT,		//次を検索
-	IDC_BUTTON_SEARCHPREV,			HIDC_FIND_BUTTON_SEARCHPREV,		//前を検索
-	IDCANCEL,						HIDCANCEL_FIND,						//キャンセル
-	IDC_BUTTON_HELP,				HIDC_FIND_BUTTON_HELP,				//ヘルプ
-	IDC_CHK_WORD,					HIDC_FIND_CHK_WORD,					//単語単位
-	IDC_CHK_LOHICASE,				HIDC_FIND_CHK_LOHICASE,				//大文字小文字
-	IDC_CHK_REGULAREXP,				HIDC_FIND_CHK_REGULAREXP,			//正規表現
-	IDC_CHECK_bAutoCloseDlgFind,	HIDC_FIND_CHECK_bAutoCloseDlgFind,	//自動的に閉じる
-	IDC_COMBO_TEXT,					HIDC_FIND_COMBO_TEXT,				//検索文字列
-	IDC_STATIC_JRE32VER,			HIDC_FIND_STATIC_JRE32VER,			//正規表現バージョン
-	IDC_BUTTON_SETMARK,				HIDC_FIND_BUTTON_SETMARK,			//2002.01.16 hor 検索該当行をマーク
-	IDC_CHECK_SEARCHALL,			HIDC_FIND_CHECK_SEARCHALL,			//2002.01.26 hor 先頭（末尾）から再検索
-//	IDC_STATIC,						-1,
-	0, 0
-};	//@@@ 2002.01.07 add end MIK
 
 CDlgFind::CDlgFind()
 {
@@ -265,11 +247,6 @@ BOOL CDlgFind::OnBnClicked( int wID )
 	int			nRet;
 	CEditView*	pcEditView = (CEditView*)m_lParam;
 	switch( wID ){
-	case IDC_BUTTON_HELP:
-		/* 「検索」のヘルプ */
-		//Stonee, 2001/03/12 第四引数を、機能番号からヘルプトピック番号を調べるようにした
-		MyWinHelp( GetHwnd(), HELP_CONTEXT, ::FuncID_To_HelpContextID(F_SEARCH_DIALOG) );	//Apr. 5, 2001 JEPRO 修正漏れを追加	// 2006.10.10 ryoji MyWinHelpに変更に変更
-		break;
 	case IDC_CHK_REGULAREXP:	/* 正規表現 */
 //		MYTRACE( _T("IDC_CHK_REGULAREXP ::IsDlgButtonChecked( GetHwnd(), IDC_CHK_REGULAREXP ) = %d\n"), ::IsDlgButtonChecked( GetHwnd(), IDC_CHK_REGULAREXP ) );
 		if( ::IsDlgButtonChecked( GetHwnd(), IDC_CHK_REGULAREXP ) ){
@@ -403,12 +380,5 @@ BOOL CDlgFind::OnActivate( WPARAM wParam, LPARAM lParam )
 
 	return CDialog::OnActivate(wParam, lParam);
 }
-
-//@@@ 2002.01.18 add start
-LPVOID CDlgFind::GetHelpIdTable(void)
-{
-	return (LPVOID)p_helpids;
-}
-//@@@ 2002.01.18 add end
 
 

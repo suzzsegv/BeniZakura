@@ -36,7 +36,6 @@
 #include "env/CAppNodeManager.h"
 #include "extmodule/CUxTheme.h"
 #include "sakura_rc.h"
-#include "sakura.hh"
 
 // 画面ドッキング用の定義	// 2010.06.05 ryoji
 #define DEFINE_SYNCCOLOR
@@ -48,29 +47,10 @@
 #define VIEWTYPE_LIST	0
 #define VIEWTYPE_TREE	1
 
-//アウトライン解析 CDlgFuncList.cpp	//@@@ 2002.01.07 add start MIK
-const DWORD p_helpids[] = {	//12200
-	IDC_BUTTON_COPY,					HIDC_FL_BUTTON_COPY,	//コピー
-	IDOK,								HIDOK_FL,				//ジャンプ
-	IDCANCEL,							HIDCANCEL_FL,			//キャンセル
-	IDC_BUTTON_HELP,					HIDC_FL_BUTTON_HELP,	//ヘルプ
-	IDC_CHECK_bAutoCloseDlgFuncList,	HIDC_FL_CHECK_bAutoCloseDlgFuncList,	//自動的に閉じる
-	IDC_LIST_FL,						HIDC_FL_LIST1,			//トピックリスト	IDC_LIST1->IDC_LIST_FL	2008/7/3 Uchi
-	IDC_TREE_FL,						HIDC_FL_TREE1,			//トピックツリー	IDC_TREE1->IDC_TREE_FL	2008/7/3 Uchi
-	IDC_CHECK_bFunclistSetFocusOnJump,	HIDC_FL_CHECK_bFunclistSetFocusOnJump,	//ジャンプでフォーカス移動する
-	IDC_CHECK_bMarkUpBlankLineEnable,	HIDC_FL_CHECK_bMarkUpBlankLineEnable,	//空行を無視する
-	IDC_COMBO_nSortType,				HIDC_COMBO_nSortType,	//順序
-	IDC_BUTTON_WINSIZE,					HIDC_FL_BUTTON_WINSIZE,	//ウィンドウ位置保存	// 2006.08.06 ryoji
-	IDC_BUTTON_MENU,					HIDC_FL_BUTTON_MENU,	//ウィンドウの位置メニュー
-//	IDC_STATIC,							-1,
-	0, 0
-};	//@@@ 2002.01.07 add end MIK
-
 static const SAnchorList anchorList[] = {
 	{IDC_BUTTON_COPY, ANCHOR_BOTTOM},
 	{IDOK, ANCHOR_BOTTOM},
 	{IDCANCEL, ANCHOR_BOTTOM},
-	{IDC_BUTTON_HELP, ANCHOR_BOTTOM},
 	{IDC_CHECK_bAutoCloseDlgFuncList, ANCHOR_BOTTOM},
 	{IDC_LIST_FL, ANCHOR_ALL},
 	{IDC_TREE_FL, ANCHOR_ALL},
@@ -1675,11 +1655,6 @@ BOOL CDlgFuncList::OnBnClicked( int wID )
 		ptMenu.y = rcMenu.bottom;
 		DoMenu( ptMenu, GetHwnd() );
 		return TRUE;
-	case IDC_BUTTON_HELP:
-		/* 「アウトライン解析」のヘルプ */
-		//Apr. 5, 2001 JEPRO 修正漏れを追加 (Stonee, 2001/03/12 第四引数を、機能番号からヘルプトピック番号を調べるようにした)
-		MyWinHelp( GetHwnd(), HELP_CONTEXT, ::FuncID_To_HelpContextID(F_OUTLINE) );	// 2006.10.10 ryoji MyWinHelpに変更に変更
-		return TRUE;
 	case IDOK:
 		return OnJump();
 	case IDCANCEL:
@@ -2135,14 +2110,6 @@ BOOL CDlgFuncList::OnJump( bool bCheckAutoClose )	//2002.02.08 hor 引数追加
 	}
 	return TRUE;
 }
-
-
-//@@@ 2002.01.18 add start
-LPVOID CDlgFuncList::GetHelpIdTable(void)
-{
-	return (LPVOID)p_helpids;
-}
-//@@@ 2002.01.18 add end
 
 
 /*!	キー操作をコマンドに変換するヘルパー関数
@@ -3099,7 +3066,7 @@ BOOL CDlgFuncList::OnContextMenu( WPARAM wParam, LPARAM lParam )
 		return TRUE;
 	}
 
-	return CDialog::OnContextMenu( wParam, lParam );	// その他のコントロール上ではポップアップヘルプを表示する
+	return FALSE;
 }
 
 /** タイトルバーのドラッグ＆ドロップでドッキング配置する際の移動先矩形を求める

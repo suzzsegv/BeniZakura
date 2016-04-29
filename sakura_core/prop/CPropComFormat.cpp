@@ -21,25 +21,7 @@
 #include "env/DLLSHAREDATA.h" // CFormatManager.hより前に必要
 #include "env/CFormatManager.h"
 #include "sakura_rc.h"
-#include "sakura.hh"
 
-
-//@@@ 2001.02.04 Start by MIK: Popup Help
-static const DWORD p_helpids[] = {	//10400
-	IDC_EDIT_DFORM,						HIDC_EDIT_DFORM,		//日付書式
-	IDC_EDIT_TFORM,						HIDC_EDIT_TFORM,		//時刻書式
-	IDC_EDIT_DFORM_EX,					HIDC_EDIT_DFORM_EX,		//日付書式（表示例）
-	IDC_EDIT_TFORM_EX,					HIDC_EDIT_TFORM_EX,		//時刻書式（表示例）
-	IDC_EDIT_MIDASHIKIGOU,				HIDC_EDIT_MIDASHIKIGOU,	//見出し記号
-	IDC_EDIT_INYOUKIGOU,				HIDC_EDIT_INYOUKIGOU,	//引用符
-	IDC_RADIO_DFORM_0,					HIDC_RADIO_DFORM_0,		//日付書式（標準）
-	IDC_RADIO_DFORM_1,					HIDC_RADIO_DFORM_1,		//日付書式（カスタム）
-	IDC_RADIO_TFORM_0,					HIDC_RADIO_TFORM_0,		//時刻書式（標準）
-	IDC_RADIO_TFORM_1,					HIDC_RADIO_TFORM_1,		//時刻書式（カスタム）
-//	IDC_STATIC,							-1,
-	0, 0
-};
-//@@@ 2001.02.04 End
 
 //@@@ 2002.01.12 add start
 static const char *p_date_form[] = {
@@ -208,9 +190,6 @@ INT_PTR CPropFormat::DispatchEvent(
 //			return 0L;
 //		default:
 			switch( pNMHDR->code ){
-			case PSN_HELP:
-				OnHelp( hwndDlg, IDD_PROP_FORMAT );
-				return TRUE;
 			case PSN_KILLACTIVE:
 //				MYTRACE( _T("Format PSN_KILLACTIVE\n") );
 				/* ダイアログデータの取得 Format */
@@ -230,24 +209,6 @@ INT_PTR CPropFormat::DispatchEvent(
 //		MYTRACE( _T("pMNUD->iPos    =%d\n"), pMNUD->iPos );
 //		MYTRACE( _T("pMNUD->iDelta  =%d\n"), pMNUD->iDelta );
 		break;	/* WM_NOTIFY */
-
-//@@@ 2001.02.04 Start by MIK: Popup Help
-	case WM_HELP:
-		{
-			HELPINFO *p = (HELPINFO *)lParam;
-			MyWinHelp( (HWND)p->hItemHandle, HELP_WM_HELP, (ULONG_PTR)(LPVOID)p_helpids );	// 2006.10.10 ryoji MyWinHelpに変更に変更
-		}
-		return TRUE;
-		/*NOTREACHED*/
-		break;
-//@@@ 2001.02.04 End
-
-//@@@ 2001.12.22 Start by MIK: Context Menu Help
-	//Context Menu
-	case WM_CONTEXTMENU:
-		MyWinHelp( hwndDlg, HELP_CONTEXTMENU, (ULONG_PTR)(LPVOID)p_helpids );	// 2006.10.10 ryoji MyWinHelpに変更に変更
-		return TRUE;
-//@@@ 2001.12.22 End
 
 	}
 	return FALSE;

@@ -1089,7 +1089,6 @@ LRESULT CEditWnd::DispatchEvent(
 	LPNMHDR				pnmh;
 	int					nPane;
 	EditInfo*			pfi;
-	LPHELPINFO			lphi;
 	const wchar_t*		pLine;
 	CLogicInt			nLineLen;
 
@@ -1241,15 +1240,6 @@ LRESULT CEditWnd::DispatchEvent(
 
 	case WM_COPY:
 		return GetActiveView().GetCommander().HandleCommand( F_COPY, true, 0, 0, 0, 0 );
-
-	case WM_HELP:
-		lphi = (LPHELPINFO) lParam;
-		switch( lphi->iContextType ){
-		case HELPINFO_MENUITEM:
-			MyWinHelp( hwnd, HELP_CONTEXT, FuncID_To_HelpContextID( (EFunctionCode)lphi->iCtrlId ) );
-			break;
-		}
-		return TRUE;
 
 	case WM_ACTIVATEAPP:
 		m_bIsActiveApp = (wParam != 0);	// 自アプリがアクティブかどうか
