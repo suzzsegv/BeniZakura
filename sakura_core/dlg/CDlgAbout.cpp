@@ -159,8 +159,11 @@ BOOL CDlgAbout::OnInitDialog( HWND hwndDlg, WPARAM wParam, LPARAM lParam )
 	case 1800:
 		wcscpy( vcVersion, L"Visual Studio 2013" );
 		break;
+	case 1900:
+		wcscpy( vcVersion, L"Visual Studio 2015" );
+		break;
 	default:
-		wcscpy( vcVersion, L"Unknown" );
+		auto_sprintf( vcVersion, L"MSC Ver.%d", _MSC_VER / 100 );
 		break;
 	}
 	auto_sprintf( szMsg, L"      %s  %s   Built with %s\r\n", _T(__DATE__), _T(__TIME__), vcVersion );
