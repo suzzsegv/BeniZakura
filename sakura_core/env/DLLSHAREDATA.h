@@ -128,10 +128,6 @@ struct DLLSHAREDATA{
 	SSearchOption				m_sSearchOptionForGrepDialog;			//!< Grep ダイアログ用 検索条件
 	SSearchOption				m_sSearchOptionForReplaceDialog;		//!< 置換ダイアログ用 検索条件
 
-	// プラグイン
-	short						m_PlugCmdIcon[MAX_PLUGIN*MAX_PLUG_CMD];	//!< プラグイン コマンド ICON 番号	// 2010/7/3 Uchi
-	int							m_maxTBNum;								//!< ツールバーボタン 最大値		// 2010/7/5 Uchi
-
 	// -- -- 保存対象 -- -- //
 	//設定
 	CommonSetting				m_Common;								// 共通設定

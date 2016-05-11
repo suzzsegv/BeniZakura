@@ -145,7 +145,6 @@ dlg/CDlgGrep.o \
 dlg/CDlgInput1.o \
 dlg/CDlgJump.o \
 dlg/CDlgOpenFile.o \
-dlg/CDlgPluginOption.o \
 dlg/CDlgPrintSetting.o \
 dlg/CDlgProperty.o \
 dlg/CDlgReplace.o \
@@ -229,11 +228,6 @@ outline/CDlgFuncList.o \
 outline/CFuncInfo.o \
 outline/CFuncInfoArr.o \
 parse/CWordParse.o \
-plugin/CDllPlugin.o \
-plugin/CJackManager.o \
-plugin/CPlugin.o \
-plugin/CPluginManager.o \
-plugin/CWSHPlugin.o \
 print/CPrint.o \
 print/CPrintPreview.o \
 prop/CPropComBackup.o \
@@ -250,7 +244,6 @@ prop/CPropComKeyword.o \
 prop/CPropComMacro.o \
 prop/CPropComMainMenu.o \
 prop/CPropCommon.o \
-prop/CPropComPlugin.o \
 prop/CPropComStatusbar.o \
 prop/CPropComTab.o \
 prop/CPropComToolbar.o \

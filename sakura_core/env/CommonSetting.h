@@ -573,34 +573,6 @@ struct CommonSetting_Statusbar
 };
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                        プラグイン                           //
-// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-
-//プラグイン状態
-enum EPluginState {
-	PLS_NONE,			//!< プラグインテーブルに登録がない
-	PLS_INSTALLED,		//!< 追加された
-	PLS_UPDATED,		//!< 更新された
-	PLS_STOPPED,		//!< 停止している
-	PLS_LOADED,			//!< 読み込まれた
-	PLS_DELETED			//!< 削除された
-};
-
-struct PluginRec
-{
-	WCHAR			m_szId[MAX_PLUGIN_ID];		//!< プラグインID
-	WCHAR			m_szName[MAX_PLUGIN_NAME];	//!< プラグインフォルダ/設定ファイル名
-	EPluginState	m_state;					//!< プラグイン状態。設定ファイルに保存せずメモリ上のみ。
-	int 			m_nCmdNum;					//!< プラグイン コマンドの数	// 2010/7/3 Uchi
-};
-
-struct CommonSetting_Plugin
-{
-	BOOL			m_bEnablePlugin;			//!< プラグインを使用するかどうか
-	PluginRec		m_PluginTable[MAX_PLUGIN];	//!< プラグインテーブル
-};
-
-// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 //                        メインメニュー                       //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 // 種類
@@ -661,7 +633,6 @@ struct CommonSetting
 	CommonSetting_Others			m_sOthers;
 	//
 	CommonSetting_Statusbar			m_sStatusbar;		// ステータスバー		// 2008/6/21 Uchi
-	CommonSetting_Plugin			m_sPlugin;			// プラグイン 2009/11/30 syat
 	CommonSetting_MainMenu			m_sMainMenu;		// メインメニュー		// 2010/5/15 Uchi
 };
 

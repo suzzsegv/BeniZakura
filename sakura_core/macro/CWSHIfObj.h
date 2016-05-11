@@ -38,7 +38,7 @@
 #include "macro/CSMacroMgr.h" // MacroFuncInfo, MacroFuncInfoArray
 class CEditView;
 
-/* CWSHIfObj - プラグインやマクロに公開するオブジェクト
+/* CWSHIfObj - マクロに公開するオブジェクト
  * 使用上の注意:
  *   1. 生成はnewで。
  *      参照カウンタを持つので、自動変数で生成するとスコープ抜けて解放されるときにヒープエラーが出ます。

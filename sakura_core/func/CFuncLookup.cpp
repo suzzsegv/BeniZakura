@@ -34,7 +34,6 @@
 
 #include "StdAfx.h"
 #include "func/CFuncLookup.h"
-#include "plugin/CJackManager.h"
 
 //	オフセット値
 const int LUOFFSET_MACRO = 0;
@@ -45,7 +44,6 @@ const int LUOFFSET_PLUGIN = 2;
 const TCHAR *DynCategory[] = {
 	_T("外部マクロ"),
 	_T("カスタムメニュー"),
-	_T("プラグイン")
 };
 
 /*!	@brief 分類中の位置に対応する機能番号を返す．
@@ -80,10 +78,6 @@ EFunctionCode CFuncLookup::Pos2FuncCode( int category, int position, bool bGetUn
 			return F_MENU_RBUTTON;
 		else if( position < MAX_CUSTOM_MENU )
 			return (EFunctionCode)(F_CUSTMENU_BASE + position);
-	}
-	else if( category == nsFuncCode::nFuncKindNum + LUOFFSET_PLUGIN ){
-		//	プラグイン
-		return CJackManager::getInstance()->GetCommandCode( position );
 	}
 	return F_DISABLE;
 }
@@ -146,11 +140,6 @@ bool CFuncLookup::Funccode2Name( int funccode, WCHAR* ptr, int bufsize ) const
 			return true;	// 定義されたコマンド
 		}
 	}
-	else if( F_PLUGCOMMAND_FIRST <= funccode && funccode < F_PLUGCOMMAND_LAST ){
-		if( CJackManager::getInstance()->GetCommandName( funccode, ptr, bufsize ) > 0 ){
-			return true;	// プラグインコマンド
-		}
-	}
 
 	// 未定義コマンド
 	if( ::LoadStringW_AnyBuild( G_AppInstance(), F_DISABLE, ptr, bufsize ) > 0 ){
@@ -180,9 +169,6 @@ const TCHAR* CFuncLookup::Category2Name( int category ) const
 	else if( category == nsFuncCode::nFuncKindNum + LUOFFSET_CUSTMENU ){
 		return DynCategory[1];
 	}
-	else if( category == nsFuncCode::nFuncKindNum + LUOFFSET_PLUGIN ){
-		return DynCategory[2];
-	}
 	return NULL;
 }
 
@@ -206,8 +192,6 @@ void CFuncLookup::SetCategory2Combo( HWND hComboBox ) const
 	Combo_AddString( hComboBox, DynCategory[0] );
 	//	カスタムメニュー
 	Combo_AddString( hComboBox, DynCategory[1] );
-	//	プラグイン
-	Combo_AddString( hComboBox, DynCategory[2] );
 }
 
 /*!	@brief 指定された分類に属する機能リストをListBoxに登録する．
@@ -255,10 +239,6 @@ int CFuncLookup::GetItemCount(int category) const
 	else if( category == nsFuncCode::nFuncKindNum + LUOFFSET_CUSTMENU ){
 		//	カスタムメニュー
 		return MAX_CUSTOM_MENU;
-	}
-	else if( category == nsFuncCode::nFuncKindNum + LUOFFSET_PLUGIN ){
-		//	プラグインコマンド
-		return CJackManager::getInstance()->GetCommandCount();
 	}
 	return 0;
 }

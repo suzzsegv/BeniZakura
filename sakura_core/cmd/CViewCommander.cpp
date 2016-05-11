@@ -32,7 +32,6 @@
 //@@@ 2002.2.2 YAZAKI マクロはCSMacroMgrに統一
 #include "macro/CSMacroMgr.h"
 #include "CEditApp.h"
-#include "plugin/CJackManager.h"
 
 
 /*!
@@ -665,26 +664,7 @@ BOOL CViewCommander::HandleCommand(
 	case F_0: break; // F_0でプラグインが実行されるバグ対策	// ← rev1886 の問題は呼び元で対策したが安全弁として残す
 
 	default:
-		//プラグインコマンドを実行する
-		{
-			m_pCommanderView->SetUndoBuffer( true ); // 2013.05.01 追加。再帰対応
-
-			CPlug::Array plugs;
-			CJackManager::getInstance()->GetUsablePlug( PP_COMMAND, nCommand, &plugs );
-
-			if( plugs.size() > 0 ){
-				assert_warning( 1 == plugs.size() );
-				//インタフェースオブジェクト準備
-				CWSHIfObj::List params;
-				//プラグイン呼び出し
-				( *plugs.begin() )->Invoke( m_pCommanderView, params );
-
-				/* フォーカス移動時の再描画 */
-				m_pCommanderView->RedrawAll();
-				return bRet;
-			}
-		}
-
+		break;
 	}
 
 	/* アンドゥバッファの処理 */

@@ -65,7 +65,6 @@
 #include "util/window.h"
 #include "util/shell.h"
 #include "util/string_ex2.h"
-#include "plugin/CJackManager.h"
 #include "CGrepAgent.h"
 #include "CMarkMgr.h"
 #include "doc/layout/CLayout.h"
@@ -668,9 +667,6 @@ HWND CEditWnd::Create(
 	//イメージ、ヘルパなどの作成
 	m_CMenuDrawer.Create( G_AppInstance(), GetHwnd(), &CEditApp::getInstance()->GetIcons() );
 
-	// プラグインコマンドを登録する
-	RegisterPluginCommand();
-
 	// -- -- -- -- 子ウィンドウ作成 -- -- -- -- //
 
 	/* 分割フレーム作成 */
@@ -902,17 +898,6 @@ void CEditWnd::LayoutMainMenu()
 				for (j = 0; j < MAX_CUSTMACRO; ++j) {
 					MacroRec *mp = &m_pShareData->m_Common.m_sMacro.m_MacroTable[j];
 					if (mp->IsEnabled()) {
-						nCount++;
-					}
-				}
-				break;
-			case F_PLUGIN_LIST:				// プラグインコマンドリスト
-				//プラグインコマンドを提供するプラグインを列挙する
-				{
-					const CJackManager* pcJackManager = CJackManager::getInstance();
-
-					CPlug::Array plugs = pcJackManager->GetPlugs( PP_COMMAND );
-					for( CPlug::ArrayIter it = plugs.begin(); it != plugs.end(); it++ ){
 						nCount++;
 					}
 				}
@@ -1547,21 +1532,6 @@ LRESULT CEditWnd::DispatchEvent(
 	case MYWM_CLOSE:
 		/* エディタへの終了要求 */
 		if( FALSE != ( nRet = OnClose( (HWND)lParam )) ){	// Jan. 23, 2002 genta 警告抑制
-			//プラグイン：DocumentCloseイベント実行
-			CPlug::Array plugs;
-			CWSHIfObj::List params;
-			CJackManager::getInstance()->GetUsablePlug( PP_DOCUMENT_CLOSE, 0, &plugs );
-			for( CPlug::ArrayIter it = plugs.begin(); it != plugs.end(); it++ ){
-				(*it)->Invoke(&this->GetActiveView(), params);
-			}
-
-			//プラグイン：EditorEndイベント実行
-			plugs.clear();
-			CJackManager::getInstance()->GetUsablePlug( PP_EDITOR_END, 0, &plugs );
-			for( CPlug::ArrayIter it = plugs.begin(); it != plugs.end(); it++ ){
-				(*it)->Invoke(&this->GetActiveView(), params);
-			}
-
 			// タブまとめ表示では閉じる動作はオプション指定に従う	// 2006.02.13 ryoji
 			if( !(BOOL)wParam ){	// 全終了要求でない場合
 				// タブまとめ表示で(無題)を残す指定の場合、残ウィンドウが１個なら新規エディタを起動して終了する
@@ -2254,29 +2224,6 @@ void CEditWnd::InitMenu( HMENU hMenu, UINT uPos, BOOL fSystemMenu )
 					}
 					break;
 				}
-				// プラグインコマンド
-				if (cMainMenu->m_nFunc >= F_PLUGCOMMAND_FIRST && cMainMenu->m_nFunc < F_PLUGCOMMAND_LAST) {
-					const CJackManager* pcJackManager = CJackManager::getInstance();
-
-					CPlug::Array plugs = pcJackManager->GetPlugs( PP_COMMAND );
-					j = -1;
-					for (CPlug::ArrayIter it = plugs.begin(); it != plugs.end(); it++) {
-						if ((*it)->GetFunctionCode() == cMainMenu->m_nFunc) {
-							//コマンドを登録
-							j = cMainMenu->m_nFunc - F_PLUGCOMMAND_FIRST;
-							m_CMenuDrawer.MyAppendMenu( hMenu, MF_BYPOSITION | MF_STRING,
-								(*it)->GetFunctionCode(), (*it)->m_sLabel.c_str(), cMainMenu->m_sKey,
-								TRUE, (*it)->GetFunctionCode() );
-						}
-					}
-					if (j == -1) {
-						// not found
-						psName = L"-- undefined plugin command --";
-						m_CMenuDrawer.MyAppendMenu( hMenu, MF_BYPOSITION | MF_STRING | MF_GRAYED,
-							cMainMenu->m_nFunc, psName, cMainMenu->m_sKey );
-					}
-					break;
-				}
 				switch (cMainMenu->m_nFunc) {
 				case F_RECKEYMACRO:
 				case F_SAVEKEYMACRO:
@@ -2433,31 +2380,6 @@ void CEditWnd::InitMenu( HMENU hMenu, UINT uPos, BOOL fSystemMenu )
 							}
 							bInList = true;
 						}
-					}
-					break;
-				case F_PLUGIN_LIST:				// プラグインコマンドリスト
-					//プラグインコマンドを提供するプラグインを列挙する
-					{
-						const CJackManager* pcJackManager = CJackManager::getInstance();
-						const CPlugin* prevPlugin = NULL;
-						HMENU hMenuPlugin = 0;
-
-						CPlug::Array plugs = pcJackManager->GetPlugs( PP_COMMAND );
-						for( CPlug::ArrayIter it = plugs.begin(); it != plugs.end(); it++ ){
-							const CPlugin* curPlugin = &(*it)->m_cPlugin;
-							if( curPlugin != prevPlugin ){
-								//プラグインが変わったらプラグインポップアップメニューを登録
-								hMenuPlugin = ::CreatePopupMenu();
-								m_CMenuDrawer.MyAppendMenu( hMenu, MF_BYPOSITION | MF_STRING | MF_POPUP, (UINT)hMenuPlugin, curPlugin->m_sName.c_str(), L"" );
-								prevPlugin = curPlugin;
-							}
-
-							//コマンドを登録
-							m_CMenuDrawer.MyAppendMenu( hMenuPlugin, MF_BYPOSITION | MF_STRING,
-								(*it)->GetFunctionCode(), to_tchar( (*it)->m_sLabel.c_str() ), _T(""),
-								TRUE, (*it)->GetFunctionCode() );
-						}
-						bInList = (prevPlugin != NULL);
 					}
 					break;
 				}
@@ -4586,34 +4508,6 @@ void CEditWnd::DeleteAccelTbl( void )
 		m_hAccelWine = NULL;
 	}
 }
-
-//プラグインコマンドをエディタに登録する
-void CEditWnd::RegisterPluginCommand( int idCommand )
-{
-	CPlug* plug = CJackManager::getInstance()->GetCommandById( idCommand );
-	RegisterPluginCommand( plug );
-}
-
-//プラグインコマンドをエディタに登録する（一括）
-void CEditWnd::RegisterPluginCommand()
-{
-	const CPlug::Array& plugs = CJackManager::getInstance()->GetPlugs( PP_COMMAND );
-	for( CPlug::ArrayIter it = plugs.begin(); it != plugs.end(); it++ ) {
-		RegisterPluginCommand( *it );
-	}
-}
-
-//プラグインコマンドをエディタに登録する
-void CEditWnd::RegisterPluginCommand( CPlug* plug )
-{
-	int iBitmap = CMenuDrawer::TOOLBAR_ICON_PLUGCOMMAND_DEFAULT - 1;
-	if( !plug->m_sIcon.empty() ){
-		iBitmap = m_CMenuDrawer.m_pcIcons->Add( to_tchar(plug->m_cPlugin.GetFilePath( to_tchar(plug->m_sIcon.c_str()) ).c_str()) );
-	}
-
-	m_CMenuDrawer.AddToolButton( iBitmap, plug->GetFunctionCode() );
-}
-
 
 LOGFONT& CEditWnd::GetLogfont()
 {

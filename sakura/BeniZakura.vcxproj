@@ -356,7 +356,6 @@
     <ClInclude Include="..\sakura_core\dlg\CDlgInput1.h" />
     <ClInclude Include="..\sakura_core\dlg\CDlgJump.h" />
     <ClInclude Include="..\sakura_core\dlg\CDlgOpenFile.h" />
-    <ClInclude Include="..\sakura_core\dlg\CDlgPluginOption.h" />
     <ClInclude Include="..\sakura_core\dlg\CDlgPrintSetting.h" />
     <ClInclude Include="..\sakura_core\dlg\CDlgProperty.h" />
     <ClInclude Include="..\sakura_core\dlg\CDlgReplace.h" />
@@ -400,15 +399,6 @@
     <ClInclude Include="..\sakura_core\func\CFuncLookup.h" />
     <ClInclude Include="..\sakura_core\func\CKeyBind.h" />
     <ClInclude Include="..\sakura_core\func\Funccode.h" />
-    <ClInclude Include="..\sakura_core\plugin\CComplementIfObj.h" />
-    <ClInclude Include="..\sakura_core\plugin\CDllPlugin.h" />
-    <ClInclude Include="..\sakura_core\plugin\CJackManager.h" />
-    <ClInclude Include="..\sakura_core\plugin\COutlineIfObj.h" />
-    <ClInclude Include="..\sakura_core\plugin\CPlugin.h" />
-    <ClInclude Include="..\sakura_core\plugin\CPluginIfObj.h" />
-    <ClInclude Include="..\sakura_core\plugin\CPluginManager.h" />
-    <ClInclude Include="..\sakura_core\plugin\CSmartIndentIfObj.h" />
-    <ClInclude Include="..\sakura_core\plugin\CWSHPlugin.h" />
     <ClInclude Include="..\sakura_core\mfclike\CMyWnd.h" />
     <ClInclude Include="..\sakura_core\cmd\CViewCommander.h" />
     <ClInclude Include="..\sakura_core\cmd\CViewCommander_inline.h" />
@@ -660,7 +650,6 @@
     <ClCompile Include="..\sakura_core\prop\CPropComMacro.cpp" />
     <ClCompile Include="..\sakura_core\prop\CPropComMainMenu.cpp" />
     <ClCompile Include="..\sakura_core\prop\CPropCommon.cpp" />
-    <ClCompile Include="..\sakura_core\prop\CPropComPlugin.cpp" />
     <ClCompile Include="..\sakura_core\prop\CPropComStatusbar.cpp" />
     <ClCompile Include="..\sakura_core\prop\CPropComTab.cpp" />
     <ClCompile Include="..\sakura_core\prop\CPropComToolbar.cpp" />
@@ -728,7 +717,6 @@
     <ClCompile Include="..\sakura_core\dlg\CDlgInput1.cpp" />
     <ClCompile Include="..\sakura_core\dlg\CDlgJump.cpp" />
     <ClCompile Include="..\sakura_core\dlg\CDlgOpenFile.cpp" />
-    <ClCompile Include="..\sakura_core\dlg\CDlgPluginOption.cpp" />
     <ClCompile Include="..\sakura_core\dlg\CDlgPrintSetting.cpp" />
     <ClCompile Include="..\sakura_core\dlg\CDlgProperty.cpp" />
     <ClCompile Include="..\sakura_core\dlg\CDlgReplace.cpp" />
@@ -770,11 +758,6 @@
     <ClCompile Include="..\sakura_core\func\CFuncLookup.cpp" />
     <ClCompile Include="..\sakura_core\func\CKeyBind.cpp" />
     <ClCompile Include="..\sakura_core\func\Funccode.cpp" />
-    <ClCompile Include="..\sakura_core\plugin\CDllPlugin.cpp" />
-    <ClCompile Include="..\sakura_core\plugin\CJackManager.cpp" />
-    <ClCompile Include="..\sakura_core\plugin\CPlugin.cpp" />
-    <ClCompile Include="..\sakura_core\plugin\CPluginManager.cpp" />
-    <ClCompile Include="..\sakura_core\plugin\CWSHPlugin.cpp" />
     <ClCompile Include="..\sakura_core\mfclike\CMyWnd.cpp" />
     <ClCompile Include="..\sakura_core\cmd\CViewCommander.cpp" />
     <ClCompile Include="..\sakura_core\cmd\CViewCommander_Bookmark.cpp" />

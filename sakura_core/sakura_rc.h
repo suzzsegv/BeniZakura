@@ -614,14 +614,6 @@
 #define IDC_CHECK_MacroOnOpened         1562
 #define IDC_CHECK_MacroOnTypeChanged    1563
 #define IDC_CHECK_MacroOnSave           1564
-#define IDC_PLUGINLIST                  1565
-#define IDC_CHECK_PluginEnable          1566
-#define IDC_PLUGIN_SearchNew            1567
-#define IDC_PLUGIN_Remove               1568
-#define IDC_LABEL_PLUGIN_Description    1569
-#define IDC_LABEL_PLUGIN_Author         1570
-#define IDC_LABEL_PLUGIN_Version        1571
-#define IDC_PLUGIN_OPTION               1572
 #define IDC_LIST_PLUGIN_OPTIONS         1573
 #define IDC_EDIT_PLUGIN_OPTION          1574
 #define IDC_EDIT_PLUGIN_OPTION_NUM      1575
@@ -637,8 +629,6 @@
 #define IDC_BUTTON_DELETE_NOFAVORATE    1583
 #define IDC_BUTTON_DELETE_NOTFOUND      1584
 #define IDC_BUTTON_DELETE_SELECTED      1585
-//#define IDC_BUTTON_PREVTAG              1586
-//#define IDC_BUTTON_NEXTTAG              1587
 #define IDC_STATIC_BASEDIR              1588
 #define IDC_TREE_RES                    1589
 #define IDC_BUTTON_INSERT_NODE          1590
@@ -666,7 +656,6 @@
 #define IDC_CHECK_OpenNewWin            1612
 #define IDC_BUTTON_TABFONT              1613
 #define IDC_MACROCANCELTIMER            1614
-#define IDC_PLUGIN_OpenFolder           1615
 #define IDC_CHECK_INHERIT_KEY_OTHER_VIEW 1616
 #define IDC_LIST_FAVORITE_EXCEPTMRU     1617
 #define IDC_BUTTON_ADD_FAVORITE         1618
@@ -676,7 +665,6 @@
 #define IDC_SPIN_AUTOLOAD_DELAY         1622
 #define IDC_CHECK_KINSOKUHIDE           1623
 #define IDC_PLUGIN_README               1624
-#define IDC_PLUGIN_INST_ZIP             1625
 #define IDC_CHECK_HOKANBYKEYWORD        1626
 #define IDC_RADIO_CURDIR                1627
 #define IDC_RADIO_MRUDIR                1628
@@ -735,7 +723,6 @@
 #define IDD_PROP_KEYWORD                5213
 #define IDD_PROP_HELPER                 5214
 #define IDD_PROP_MACRO                  5215
-#define IDD_PROP_PLUGIN                 5216
 #define IDD_PROP_MAINMENU               5217
 #define IDD_WINPOSSIZE                  5220
 #define IDD_PLUGIN_OPTION               5221

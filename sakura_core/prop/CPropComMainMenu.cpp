@@ -73,7 +73,6 @@ static	SSpecialFunc	sSpecialFuncs[] = {
 		{F_FOLDER_USED_RECENTLY,	L"最近使ったフォルダ",},
 		{F_CUSTMENU_LIST,			L"カスタムメニューリスト",},
 		{F_USERMACRO_LIST,			L"登録済みマクロリスト",},
-		{F_PLUGIN_LIST,				L"プラグインコマンドリスト",},
 };
 
 static	int 	nSpecialFuncsNum;		// 特別機能のコンボボックス内での番号

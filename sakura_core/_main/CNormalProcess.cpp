@@ -31,8 +31,6 @@
 #include "debug/CRunningTimer.h"
 #include "util/window.h"
 #include "util/file.h"
-#include "plugin/CPluginManager.h"
-#include "plugin/CJackManager.h"
 #include "CAppMode.h"
 #include "env/CDocTypeManager.h"
 #include "env/SessionStore.h"
@@ -128,18 +126,6 @@ bool CNormalProcess::InitializeProcess()
 			return false;
 		}
 	}
-
-
-	// プラグイン読み込み
-	MY_TRACETIME( cRunningTimer, "Before Init Jack" );
-	/* ジャック初期化 */
-	CJackManager::getInstance();
-	MY_TRACETIME( cRunningTimer, "After Init Jack" );
-
-	MY_TRACETIME( cRunningTimer, "Before Load Plugins" );
-	/* プラグイン読み込み */
-	CPluginManager::getInstance()->LoadAllPlugin();
-	MY_TRACETIME( cRunningTimer, "After Load Plugins" );
 
 	// エディタアプリケーションを作成。2007.10.23 kobake
 	// グループIDを取得
@@ -266,22 +252,6 @@ bool CNormalProcess::InitializeProcess()
 			pEditWnd->m_cDlgFuncList.Refresh();	// アウトラインを再解析する
 			//return true; // 2003.06.23 Moca
 		}
-
-		//プラグイン：EditorStartイベント実行
-		CPlug::Array plugs;
-		CWSHIfObj::List params;
-		CJackManager::getInstance()->GetUsablePlug( PP_EDITOR_START, 0, &plugs );
-		for( CPlug::ArrayIter it = plugs.begin(); it != plugs.end(); it++ ){
-			(*it)->Invoke(&pEditWnd->GetActiveView(), params);
-		}
-
-		//プラグイン：DocumentOpenイベント実行
-		plugs.clear();
-		CJackManager::getInstance()->GetUsablePlug( PP_DOCUMENT_OPEN, 0, &plugs );
-		for( CPlug::ArrayIter it = plugs.begin(); it != plugs.end(); it++ ){
-			(*it)->Invoke(&pEditWnd->GetActiveView(), params);
-		}
-
 		return true; // 2003.06.23 Moca
 	}
 	else{
@@ -403,18 +373,6 @@ bool CNormalProcess::InitializeProcess()
 		::CloseHandle( hMutex );
 	}
 
-	//プラグイン：EditorStartイベント実行
-	CPlug::Array plugs;
-	CWSHIfObj::List params;
-	CJackManager::getInstance()->GetUsablePlug(
-			PP_EDITOR_START,
-			0,
-			&plugs
-		);
-	for( CPlug::ArrayIter it = plugs.begin(); it != plugs.end(); it++ ){
-		(*it)->Invoke(&pEditWnd->GetActiveView(), params);
-	}
-
 	// 2006.09.03 ryoji オープン後自動実行マクロを実行する
 	if( !( bDebugMode || bGrepMode ) )
 		pEditWnd->GetDocument().RunAutoMacro( GetDllShareData().m_Common.m_sMacro.m_nMacroOnOpened );
@@ -454,13 +412,6 @@ bool CNormalProcess::InitializeProcess()
 		CCommandLine::getInstance()->ClearFile();
 	}
 
-	//プラグイン：DocumentOpenイベント実行
-	plugs.clear();
-	CJackManager::getInstance()->GetUsablePlug( PP_DOCUMENT_OPEN, 0, &plugs );
-	for( CPlug::ArrayIter it = plugs.begin(); it != plugs.end(); it++ ){
-		(*it)->Invoke(&pEditWnd->GetActiveView(), params);
-	}
-
 	return pEditWnd->GetHwnd() ? true : false;
 }
 
@@ -488,9 +439,7 @@ bool CNormalProcess::MainLoop()
 */
 void CNormalProcess::OnExitProcess()
 {
-	/* プラグイン解放 */
 	SAFE_DELETE(m_pcEditApp);
-	CPluginManager::getInstance()->UnloadAllPlugin();		// Mpve here	2010/7/11 Uchi
 }
 
 

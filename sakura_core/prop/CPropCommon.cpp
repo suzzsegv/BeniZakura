@@ -218,7 +218,6 @@ int CPropCommon::DoPropertySheet( int nPageNum/*, int nActiveItem*/ )
 		{ _T("強調キーワード"),		IDD_PROP_KEYWORD,	CPropKeyword::DlgProc_page },
 		{ _T("支援"),				IDD_PROP_HELPER,	CPropHelper::DlgProc_page },
 		{ _T("マクロ"),				IDD_PROP_MACRO,		CPropMacro::DlgProc_page },
-		{ _T("プラグイン"),			IDD_PROP_PLUGIN,	CPropPlugin::DlgProc_page },
 	};
 
 	PROPSHEETPAGE		psp[32];

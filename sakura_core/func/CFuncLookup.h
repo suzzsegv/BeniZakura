@@ -80,7 +80,7 @@ public:
 	void SetListItem( HWND hListBox, int category ) const;
 	
 	int GetCategoryCount(void) const {
-		return nsFuncCode::nFuncKindNum + 3;	//分類＋外部マクロ＋カスタムメニュー＋プラグイン
+		return nsFuncCode::nFuncKindNum + 2;	//分類＋外部マクロ＋カスタムメニュー
 	}
 	
 	int GetItemCount(int category) const;

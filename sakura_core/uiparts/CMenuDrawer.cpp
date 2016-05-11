@@ -1477,8 +1477,7 @@ int CMenuDrawer::FindIndexFromCommandId( int idCommand, bool bOnlyFunc ) const
 {
 	if( bOnlyFunc ){
 		// 機能の範囲外（セパレータや折り返しなど特別なもの）は除外する
-		if ( !( F_MENU_FIRST <= idCommand && idCommand < F_MENU_NOT_USED_FIRST )
-			&& !( F_PLUGCOMMAND_FIRST <= idCommand && idCommand < F_PLUGCOMMAND_LAST )){
+		if ( !( F_MENU_FIRST <= idCommand && idCommand < F_MENU_NOT_USED_FIRST ) ){
 			return -1;
 		}
 	}
@@ -1671,64 +1670,3 @@ typedef struct _TBBUTTON {
 	return;
 }
 
-//ツールバーボタンを追加する
-//	マネージメント機能追加	2010/7/3 Uchi 
-//		全ウィンドウで同じ機能番号の場合、同じICON番号を持つように調整
-void CMenuDrawer::AddToolButton( int iBitmap, int iCommand )
-{
-	TBBUTTON tbb;
-	int 	iCmdNo;
-	int 	i;
-	
-	if (m_pShareData->m_maxTBNum < m_nMyButtonNum) {
-		m_pShareData->m_maxTBNum = m_nMyButtonNum;
-	}
-
-	if (iCommand >= F_PLUGCOMMAND_FIRST && iCommand <= F_PLUGCOMMAND_LAST) {
-		iCmdNo = iCommand - F_PLUGCOMMAND_FIRST;
-		if (m_pShareData->m_PlugCmdIcon[iCmdNo] != 0) {
-			if (m_tbMyButton.size() <= (size_t)(int)m_pShareData->m_PlugCmdIcon[iCmdNo]) {
-				// このウィンドウで未登録
-				// 空きを詰め込む
-				SetTBBUTTONVal( &tbb,TOOLBAR_ICON_PLUGCOMMAND_DEFAULT-1, 0, 0, TBSTYLE_BUTTON, 0, 0 );
-				for (i = m_tbMyButton.size(); i < m_pShareData->m_PlugCmdIcon[iCmdNo]; i++) {
-					m_tbMyButton.push_back( tbb );
-					m_nMyButtonNum++;
-				}
-
-				// 未登録
-				SetTBBUTTONVal( &tbb, iBitmap, iCommand, TBSTATE_ENABLED, TBSTYLE_BUTTON, 0, 0 );
-				//最後に追加に変更
-				m_tbMyButton.push_back( tbb );
-				m_nMyButtonNum++;
-			}
-			else {
-				// 再設定
-				SetTBBUTTONVal( &m_tbMyButton[m_pShareData->m_PlugCmdIcon[iCmdNo]],
-					iBitmap, iCommand, TBSTATE_ENABLED, TBSTYLE_BUTTON, 0, 0 );
-			}
-		}
-		else {
-			// 全体で未登録
-			if (m_tbMyButton.size() < (size_t)m_pShareData->m_maxTBNum) {
-				// 空きを詰め込む
-				SetTBBUTTONVal( &tbb, TOOLBAR_ICON_PLUGCOMMAND_DEFAULT-1, 0, 0, TBSTYLE_BUTTON, 0, 0 );
-				for (i = m_tbMyButton.size(); i < m_pShareData->m_maxTBNum; i++) {
-					m_tbMyButton.push_back( tbb );
-					m_nMyButtonNum++;
-				}
-			}
-			// 新規登録
-			SetTBBUTTONVal( &tbb, iBitmap, iCommand, TBSTATE_ENABLED, TBSTYLE_BUTTON, 0, 0 );
-
-			m_pShareData->m_PlugCmdIcon[iCmdNo] = (short)m_tbMyButton.size();
-			//最後から２番目に挿入する。一番最後は番兵で固定。
-			//2010.06.23 Moca 最後に追加に変更
-			m_tbMyButton.push_back( tbb );
-			m_nMyButtonNum++;
-		}
-	}
-	if (m_pShareData->m_maxTBNum < m_nMyButtonNum) {
-		m_pShareData->m_maxTBNum = m_nMyButtonNum;
-	}
-}

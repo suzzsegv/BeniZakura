@@ -67,7 +67,6 @@ enum ComPropSheetOrder {
 	ID_PAGENUM_KEYWORD,			// 強調キーワード
 	ID_PAGENUM_HELPER,			// 支援
 	ID_PAGENUM_MACRO,			// マクロ
-	ID_PAGENUM_PLUGIN,			// プラグイン
 };
 /*-----------------------------------------------------------------------
 クラスの宣言
@@ -487,28 +486,6 @@ protected:
 	INT_PTR DispatchEvent( HWND, UINT, WPARAM, LPARAM );
 	void SetData( HWND );	//!< ダイアログデータの設定
 	int  GetData( HWND );	//!< ダイアログデータの取得
-};
-
-//==============================================================
-//!	プラグインページ
-class CPropPlugin : CPropCommon
-{
-public:
-	//!	Dialog Procedure
-	static INT_PTR CALLBACK DlgProc_page(
-		HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam );
-	std::tstring GetReadMeFile(const std::tstring& sName);	//	Readme ファイルの取得
-	bool BrowseReadMe(const std::tstring& sReadMeName);		//	Readme ファイルの表示
-protected:
-	//! Message Handler
-	INT_PTR DispatchEvent( HWND, UINT, WPARAM, LPARAM );
-	void SetData( HWND );	//!< ダイアログデータの設定
-	int  GetData( HWND );	//!< ダイアログデータの取得
-
-private:
-	void SetData_LIST( HWND );
-	void InitDialog( HWND hwndDlg );	//!< Pluginページの初期化
-	void EnablePluginPropInput(HWND hwndDlg);
 };
 
 //==============================================================

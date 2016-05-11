@@ -85,7 +85,6 @@ public:
 	int GetIconIdByFuncId( int nIndex ) const;
 
 	TBBUTTON getButton( int nToolBarNo ) const; // 20050809 aroka
-	void AddToolButton( int iBitmap, int iCommand );	//ツールバーボタンを追加する 2009.11.14 syat
 	
 	// iBitmapに対応する定数
 	static const int TOOLBAR_ICON_MACRO_INTERNAL = 384;		//外部マクロ既定アイコン

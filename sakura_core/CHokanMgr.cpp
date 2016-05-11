@@ -19,8 +19,6 @@
 #include "CHokanMgr.h"
 #include "env/CShareData.h"
 #include "view/CEditView.h"
-#include "plugin/CJackManager.h"
-#include "plugin/CComplementIfObj.h"
 #include "util/input.h"
 #include "util/os.h"
 #include "util/other_util.h"
@@ -176,36 +174,6 @@ int CHokanMgr::Search(
 			bHokanLoHiCase,
 			m_vKouho
 		);
-	}
-
-	{
-		int nOption = (
-			  (bHokanLoHiCase ? 0x01 : 0)
-			  | (bHokanByFile ? 0x02 : 0)
-			);
-		
-		CPlug::Array plugs;
-		CPlug::Array plugType;
-		CJackManager::getInstance()->GetUsablePlug( PP_COMPLEMENTGLOBAL, 0, &plugs );
-		if( nHokanType != 0 ){
-			CJackManager::getInstance()->GetUsablePlug( PP_COMPLEMENT, nHokanType, &plugType );
-			if( 0 < plugType.size() ){
-				plugs.push_back( plugType[0] );
-			}
-		}
-
-		for( CPlug::Array::iterator it = plugs.begin(); it != plugs.end(); ++it ){
-			//インタフェースオブジェクト準備
-			CWSHIfObj::List params;
-			std::wstring curWord = pszCurWord;
-			CComplementIfObj* objComp = new CComplementIfObj( curWord , this, nOption );
-			objComp->AddRef();
-			params.push_back( objComp );
-			//プラグイン呼び出し
-			(*it)->Invoke( pcEditView, params );
-
-			objComp->Release();
-		}
 	}
 
 	if( 0 == m_vKouho.size() ){

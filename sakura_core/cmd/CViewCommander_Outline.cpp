@@ -23,8 +23,6 @@
 #include "CViewCommander_inline.h"
 
 #include "outline/CFuncInfoArr.h"
-#include "plugin/CJackManager.h"
-#include "plugin/COutlineIfObj.h"
 #include "sakura_rc.h"
 
 
@@ -60,7 +58,6 @@ BOOL CViewCommander::Command_FUNCLIST(
 	static CFuncInfoArr	cFuncInfoArr;
 //	int		nLine;
 //	int		nListType;
-	std::tstring sTitleOverride;				//プラグインによるダイアログタイトル上書き
 
 	//	2001.12.03 hor & 2002.3.13 YAZAKI
 	if( nOutlineType == OUTLINE_DEFAULT ){
@@ -110,29 +107,6 @@ BOOL CViewCommander::Command_FUNCLIST(
 		//	fall though
 		//	ここには何も入れてはいけない 2007.02.28 genta 注意書き
 	default:
-		//プラグインから検索する
-		{
-			CPlug::Array plugs;
-			CJackManager::getInstance()->GetUsablePlug( PP_OUTLINE, nOutlineType, &plugs );
-
-			if( plugs.size() > 0 ){
-				assert_warning( 1 == plugs.size() );
-				//インタフェースオブジェクト準備
-				CWSHIfObj::List params;
-				COutlineIfObj* objOutline = new COutlineIfObj( cFuncInfoArr );
-				objOutline->AddRef();
-				params.push_back( objOutline );
-				//プラグイン呼び出し
-				( *plugs.begin() )->Invoke( m_pCommanderView, params );
-
-				nListType = objOutline->m_nListType;			//ダイアログの表示方法をを上書き
-				sTitleOverride = objOutline->m_sOutlineTitle;	//ダイアログタイトルを上書き
-
-				objOutline->Release();
-				break;
-			}
-		}
-
 		//それ以外
 		GetDocument()->m_cDocOutline.MakeTopicList_txt( &cFuncInfoArr );
 		break;
@@ -161,11 +135,6 @@ BOOL CViewCommander::Command_FUNCLIST(
 		if( bForeground ){
 			::SetFocus( GetEditWindow()->m_cDlgFuncList.GetHwnd() );
 		}
-	}
-
-	// ダイアログタイトルを上書き
-	if( ! sTitleOverride.empty() ){
-		GetEditWindow()->m_cDlgFuncList.SetWindowText( sTitleOverride.c_str() );
 	}
 
 	bIsProcessing = false;

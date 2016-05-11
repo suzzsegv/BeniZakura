@@ -1344,27 +1344,6 @@ BEGIN
     PUSHBUTTON      "設定(&A)",IDC_MACRO_REG,250,190,38,14
 END
 
-IDD_PROP_PLUGIN DIALOGEX 0, 0, 293, 240
-STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-FONT 9, "ＭＳ Ｐゴシック", 0, 0, 0x1
-BEGIN
-    LTEXT           "プラグイン一覧",IDC_STATIC,4,9,36,8
-    CONTROL         "プラグインを有効にする(&E)",IDC_CHECK_PluginEnable,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,21,100,10
-    PUSHBUTTON      "ZIPプラグインを導入(&Z)",IDC_PLUGIN_INST_ZIP,192,6,96,14
-    PUSHBUTTON      "フォルダを開く(&F)",IDC_PLUGIN_OpenFolder,120,20,70,14
-    PUSHBUTTON      "新規プラグインを追加(&I)",IDC_PLUGIN_SearchNew,192,20,96,14
-    CONTROL         "List1",IDC_PLUGINLIST,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_AUTOARRANGE | LVS_NOSORTHEADER | WS_BORDER | WS_TABSTOP,3,41,285,108
-    LTEXT           "説明",IDC_STATIC,11,160,50,8
-    LTEXT           "",IDC_LABEL_PLUGIN_Description,66,160,200,8
-    LTEXT           "作者",IDC_STATIC,11,175,50,8
-    LTEXT           "",IDC_LABEL_PLUGIN_Author,66,175,200,8
-    LTEXT           "バージョン",IDC_STATIC,11,190,50,8
-    LTEXT           "",IDC_LABEL_PLUGIN_Version,66,190,200,8
-    PUSHBUTTON      "削除(&R)",IDC_PLUGIN_Remove,6,205,80,14
-    PUSHBUTTON      "設定(&P)",IDC_PLUGIN_OPTION,96,205,80,14
-    PUSHBUTTON      "ReadMe(&M)",IDC_PLUGIN_README,186,205,80,14
-END
-
 IDD_PROP_MAINMENU DIALOGEX 0, 0, 293, 240
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "メインメニュー"
@@ -1849,10 +1828,6 @@ BEGIN
         BOTTOMMARGIN, 237
     END
 
-    IDD_PROP_PLUGIN, DIALOG
-    BEGIN
-    END
-
     IDD_PROP_MAINMENU, DIALOG
     BEGIN
     END
@@ -1919,9 +1894,13 @@ END
 //
 
 IDB_MYTOOL              BITMAP                  "../resource/mytool.bmp"
+
 IDB_SCROLL_CENTER       BITMAP                  "../resource/auto_scroll_center.bmp"
+
 IDB_SCROLL_VERTICAL     BITMAP                  "../resource/auto_scroll_vertical.bmp"
+
 IDB_SCROLL_HORIZONTAL   BITMAP                  "../resource/auto_scroll_horizontal.bmp"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -1931,8 +1910,11 @@ IDB_SCROLL_HORIZONTAL   BITMAP                  "../resource/auto_scroll_horizon
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
 IDI_ICON_STD            ICON                    "../resource/icon_std.ico"
+
 IDI_ICON_GREP           ICON                    "../resource/icon_grep.ico"
+
 IDI_PRINTER             ICON                    "../resource/printer.ico"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -1940,23 +1922,41 @@ IDI_PRINTER             ICON                    "../resource/printer.ico"
 //
 
 IDC_CURSOR_COPYARROW    CURSOR                  "../resource/cursor_copy.cur"
+
 IDC_CURSOR_MOVEARROW    CURSOR                  "../resource/cursor_move.cur"
+
 IDC_CURSOR_RVARROW      CURSOR                  "../resource/cursor_rvarrow.cur"
+
 IDC_CURSOR_ISEARCH_F    CURSOR                  "../resource/cursor_isf.cur"
+
 IDC_CURSOR_ISEARCH_B    CURSOR                  "../resource/cursor_isb.cur"
+
 IDC_CURSOR_TAB_SEPARATE CURSOR                  "../resource/cursor_tab_separate.cur"
+
 IDC_CURSOR_TAB_JOIN     CURSOR                  "../resource/cursor_tab_join.cur"
+
 IDC_CURSOR_AUTOSCROLL_CENTER CURSOR                  "../resource/auto_scroll_center.cur"
+
 IDC_CURSOR_AUTOSCROLL_HORIZONTAL CURSOR                  "../resource/auto_scroll_horizontal.cur"
+
 IDC_CURSOR_AUTOSCROLL_VERTICAL CURSOR                  "../resource/auto_scroll_vertical.cur"
+
 IDC_CURSOR_AUTOSCROLL_UP CURSOR                  "../resource/auto_scroll_up.cur"
+
 IDC_CURSOR_AUTOSCROLL_DOWN CURSOR                  "../resource/auto_scroll_down.cur"
+
 IDC_CURSOR_AUTOSCROLL_LEFT CURSOR                  "../resource/auto_scroll_left.cur"
+
 IDC_CURSOR_AUTOSCROLL_RIGHT CURSOR                  "../resource/auto_scroll_right.cur"
+
 IDC_CURSOR_AUTOSCROLL_UP_LEFT CURSOR                  "../resource/auto_scroll_up_left.cur"
+
 IDC_CURSOR_AUTOSCROLL_UP_RIGHT CURSOR                  "../resource/auto_scroll_up_right.cur"
+
 IDC_CURSOR_AUTOSCROLL_DOWN_LEFT CURSOR                  "../resource/auto_scroll_down_left.cur"
+
 IDC_CURSOR_AUTOSCROLL_DOWN_RIGHT CURSOR                  "../resource/auto_scroll_down_right.cur"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -1964,6 +1964,7 @@ IDC_CURSOR_AUTOSCROLL_DOWN_RIGHT CURSOR                  "../resource/auto_scrol
 //
 
 IDR_MENU1               100                     "../resource/MainMenu.ini"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //

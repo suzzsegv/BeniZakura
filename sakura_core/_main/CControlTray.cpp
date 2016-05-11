@@ -35,8 +35,6 @@
 #include "debug/CRunningTimer.h"
 #include "window/CEditWnd.h"		//Nov. 21, 2000 JEPROtest
 #include "dlg/CDlgAbout.h"		//Nov. 21, 2000 JEPROtest
-#include "plugin/CPluginManager.h"
-#include "plugin/CJackManager.h"
 #include "io/CTextStream.h"
 #include "util/module.h"
 #include "util/shell.h"
@@ -562,31 +560,13 @@ LRESULT CControlTray::DispatchEvent(
 						sResult.bTempChange = false;
 						if( cDlgTypeList.DoModal( G_AppInstance(), GetTrayHwnd(), &sResult ) ){
 							// タイプ別設定
-							CPluginManager::getInstance()->LoadAllPlugin();
 							m_pcPropertyManager->OpenPropertySheetTypes( -1, sResult.cDocumentType );
-							CPluginManager::getInstance()->UnloadAllPlugin();
 						}
 					}
 					break;
 				case F_OPTION:	// 共通設定
 					{
-						CPluginManager::getInstance()->LoadAllPlugin();
-						{
-							// アイコンの登録
-							const CPlug::Array& plugs = CJackManager::getInstance()->GetPlugs( PP_COMMAND );
-							m_CMenuDrawer.m_pcIcons->ResetExtend();
-							for( CPlug::ArrayIter it = plugs.begin(); it != plugs.end(); it++ ) {
-								int iBitmap = CMenuDrawer::TOOLBAR_ICON_PLUGCOMMAND_DEFAULT - 1;
-								const CPlug* plug = *it;
-								if( !plug->m_sIcon.empty() ){
-									iBitmap = m_CMenuDrawer.m_pcIcons->Add(
-										to_tchar(plug->m_cPlugin.GetFilePath( to_tchar(plug->m_sIcon.c_str()) ).c_str()) );
-								}
-								m_CMenuDrawer.AddToolButton( iBitmap, plug->GetFunctionCode() );
-							}
-						}
 						m_pcPropertyManager->OpenPropertySheet(-1);
-						CPluginManager::getInstance()->UnloadAllPlugin();
 					}
 					break;
 				case F_ABOUT:

@@ -23,8 +23,6 @@
 
 #include "view/CRuler.h"
 #include "uiparts/CWaitCursor.h"
-#include "plugin/CJackManager.h"
-#include "plugin/CSmartIndentIfObj.h"
 #include "debug/CRunningTimer.h"
 
 
@@ -174,33 +172,6 @@ end_of_for:;
 		m_pCommanderView->SmartIndent_CPP( wcChar );
 		break;
 	default:
-		//プラグインから検索する
-		{
-			CPlug::Array plugs;
-			CJackManager::getInstance()->GetUsablePlug( PP_SMARTINDENT, nSIndentType, &plugs );
-
-			if( plugs.size() > 0 ){
-				assert_warning( 1 == plugs.size() );
-				//インタフェースオブジェクト準備
-				CWSHIfObj::List params;
-				CSmartIndentIfObj* objIndent = new CSmartIndentIfObj( wcChar );	//スマートインデントオブジェクト
-				objIndent->AddRef();
-				params.push_back( objIndent );
-
-				//キー入力をアンドゥバッファに反映
-				m_pCommanderView->SetUndoBuffer();
-
-				//キー入力とは別の操作ブロックにする（ただしプラグイン内の操作はまとめる）
-				if( GetOpeBlk() == NULL ){
-					SetOpeBlk(new COpeBlk);
-				}
-				GetOpeBlk()->AddRef();	// ※ReleaseはHandleCommandの最後で行う
-
-				//プラグイン呼び出し
-				( *plugs.begin() )->Invoke( m_pCommanderView, params );
-				objIndent->Release();
-			}
-		}
 		break;
 	}
 
