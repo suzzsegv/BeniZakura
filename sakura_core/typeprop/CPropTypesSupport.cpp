@@ -101,54 +101,6 @@ INT_PTR CPropTypesSupport::DispatchEvent(
 					}
 				}
 				return TRUE;
-			case IDC_BUTTON_TYPEOPENHELP:	/* 外部ヘルプ１の「参照...」ボタン */
-				{
-					CDlgOpenFile	cDlgOpenFile;
-					TCHAR			szPath[_MAX_PATH + 1];
-					// 2003.06.23 Moca 相対パスは実行ファイルからのパスとして開く
-					// 2007.05.21 ryoji 相対パスは設定ファイルからのパスを優先
-					if( _IS_REL_PATH( m_Types.m_szExtHelp ) ){
-						GetInidirOrExedir( szPath, m_Types.m_szExtHelp, TRUE );
-					}else{
-						_tcscpy( szPath, m_Types.m_szExtHelp );
-					}
-					/* ファイルオープンダイアログの初期化 */
-					cDlgOpenFile.Create(
-						m_hInstance,
-						hwndDlg,
-						_T("*.hlp;*.chm;*.col"),
-						szPath
-					);
-					if( cDlgOpenFile.DoModal_GetOpenFileName( szPath ) ){
-						_tcscpy( m_Types.m_szExtHelp, szPath );
-						::DlgItem_SetText( hwndDlg, IDC_EDIT_TYPEEXTHELP, m_Types.m_szExtHelp );
-					}
-				}
-				return TRUE;
-			case IDC_BUTTON_TYPEOPENEXTHTMLHELP:	/* 外部HTMLヘルプの「参照...」ボタン */
-				{
-					CDlgOpenFile	cDlgOpenFile;
-					TCHAR			szPath[_MAX_PATH + 1];
-					// 2003.06.23 Moca 相対パスは実行ファイルからのパスとして開く
-					// 2007.05.21 ryoji 相対パスは設定ファイルからのパスを優先
-					if( _IS_REL_PATH( m_Types.m_szExtHtmlHelp ) ){
-						GetInidirOrExedir( szPath, m_Types.m_szExtHtmlHelp, TRUE );
-					}else{
-						_tcscpy( szPath, m_Types.m_szExtHtmlHelp );
-					}
-					/* ファイルオープンダイアログの初期化 */
-					cDlgOpenFile.Create(
-						m_hInstance,
-						hwndDlg,
-						_T("*.chm;*.col"),
-						szPath
-					);
-					if( cDlgOpenFile.DoModal_GetOpenFileName( szPath ) ){
-						_tcscpy( m_Types.m_szExtHtmlHelp, szPath );
-						::DlgItem_SetText( hwndDlg, IDC_EDIT_TYPEEXTHTMLHELP, m_Types.m_szExtHtmlHelp );
-					}
-				}
-				return TRUE;
 			}
 			break;	/* BN_CLICKED */
 		}
@@ -201,11 +153,6 @@ void CPropTypesSupport::SetData( HWND hwndDlg )
 	::CheckDlgButton( hwndDlg, IDC_CHECK_HOKANBYFILE, m_Types.m_bUseHokanByFile ? BST_CHECKED : BST_UNCHECKED);
 	CheckDlgButtonBool( hwndDlg, IDC_CHECK_HOKANBYKEYWORD, m_Types.m_bUseHokanByKeyword );
 
-	//@@@ 2002.2.2 YAZAKI
-	::DlgItem_SetText( hwndDlg, IDC_EDIT_TYPEEXTHELP, m_Types.m_szExtHelp );
-	::DlgItem_SetText( hwndDlg, IDC_EDIT_TYPEEXTHTMLHELP, m_Types.m_szExtHtmlHelp );
-	::CheckDlgButton( hwndDlg, IDC_CHECK_TYPEHTMLHELPISSINGLE, m_Types.m_bHtmlHelpIsSingle ? BST_CHECKED : BST_UNCHECKED);
-
 	// 終了時、改行の一致を検査する	2013/4/14 Uchi
 	::CheckDlgButton( hwndDlg, IDC_CHECK_CHKENTERATEND, m_Types.m_bChkEnterAtEnd ? BST_CHECKED : BST_UNCHECKED);
 }
@@ -236,11 +183,6 @@ int CPropTypesSupport::GetData( HWND hwndDlg )
 			m_Types.m_nHokanType = (*GetHokanMethodList())[i - 1].nMethod;
 		}
 	}
-
-	//@@@ 2002.2.2 YAZAKI
-	::DlgItem_GetText( hwndDlg, IDC_EDIT_TYPEEXTHELP, m_Types.m_szExtHelp, _countof2( m_Types.m_szExtHelp ));
-	::DlgItem_GetText( hwndDlg, IDC_EDIT_TYPEEXTHTMLHELP, m_Types.m_szExtHtmlHelp, _countof2( m_Types.m_szExtHtmlHelp ));
-	m_Types.m_bHtmlHelpIsSingle = ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_TYPEHTMLHELPISSINGLE ) != 0;
 
 	// 終了時、改行の一致を検査する	2013/4/14 Uchi
 	m_Types.m_bChkEnterAtEnd = ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_CHKENTERATEND ) != 0;

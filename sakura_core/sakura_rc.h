@@ -120,7 +120,6 @@
 #define IDC_EDIT_INPUT1                 1060
 #define IDC_EDIT_PROPERTY               1061
 #define IDC_EDIT_BACKUPFOLDER           1062
-#define IDC_EDIT_EXTHELP1               1063
 #define IDC_EDIT_PLSQL_E1               1064
 #define IDC_EDIT_BLOCKCOMMENT_FROM      1065
 #define IDC_EDIT_TYPENAME               1066
@@ -128,7 +127,6 @@
 #define IDC_BUTTON_REPALCE              1068
 #define IDC_BUTTON_DELETE               1069
 #define IDC_BUTTON_DELKEYWORD           1070
-#define IDC_EDIT_EXTHTMLHELP            1071
 #define IDC_EDIT_TFORM                  1072
 #define IDC_EDIT_BLOCKCOMMENT_FROM2     1073
 #define IDC_EDIT_FNAME_TO               1074
@@ -312,7 +310,6 @@
 #define IDC_CHECK_DRAGDROP              1254
 #define IDC_CHECK_DROPSOURCE            1255
 #define IDC_CHECK_COPYnDISABLESELECTEDAREA 1256
-#define IDC_CHECK_HTMLHELPISSINGLE      1257
 #define IDC_CHECK_bEnableLineModePaste  1258
 #define IDC_CHECK_bSelectClickedURL     1259
 #define IDC_EDIT_nRulerHeight           1260
@@ -447,11 +444,6 @@
 #define IDC_CHECK_INS_SPACE             1395
 #define IDC_CHK_PASTE                   1396
 #define IDC_CHECK_SEARCHALL             1397
-#define IDC_EDIT_TYPEEXTHELP            1398
-#define IDC_EDIT_TYPEEXTHTMLHELP        1399
-#define IDC_BUTTON_TYPEOPENHELP         1400
-#define IDC_BUTTON_TYPEOPENEXTHTMLHELP  1401
-#define IDC_CHECK_TYPEHTMLHELPISSINGLE  1402
 #define IDC_CHECK_DispTabWndMultiWin    1403
 #define IDC_EDIT_OUTLINERULEFILE        1404
 #define IDC_BUTTON_RULEFILE_REF         1405

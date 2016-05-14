@@ -439,13 +439,6 @@ struct CommonSetting_Helper
 	BOOL		m_bHokanKey_RIGHT;				// VK_RIGHT		補完決定キーが有効/無効
 	BOOL		m_bHokanKey_SPACE;				// VK_SPACE		補完決定キーが有効/無効 $$$ほぼ未使用
 
-	//外部ヘルプの設定
-	TCHAR		m_szExtHelp[_MAX_PATH];
-
-	//外部HTMLヘルプの設定
-	TCHAR		m_szExtHtmlHelp[_MAX_PATH];
-	bool		m_bHtmlHelpIsSingle;			// HtmlHelpビューアはひとつ (ビューアを複数起動しない)
-
 	//migemo設定
 	TCHAR		m_szMigemoDll[_MAX_PATH];		// migemo dll
 	TCHAR		m_szMigemoDict[_MAX_PATH];		// migemo dict

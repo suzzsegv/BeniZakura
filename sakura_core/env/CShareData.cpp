@@ -286,9 +286,6 @@ bool CShareData::InitShareData()
 		m_pShareData->m_Common.m_sGeneral.m_bStopsBothEndsWhenSearchWord = FALSE;	/* 単語単位で移動するときに、単語の両端で止まるか */
 		m_pShareData->m_Common.m_sGeneral.m_bStopsBothEndsWhenSearchParagraph = FALSE;	/* 単語単位で移動するときに、単語の両端で止まるか */
 
-		m_pShareData->m_Common.m_sHelper.m_szExtHelp[0] = L'\0';			// 外部ヘルプ１
-		m_pShareData->m_Common.m_sHelper.m_szExtHtmlHelp[0] = L'\0';		// 外部HTMLヘルプ
-		
 		m_pShareData->m_Common.m_sHelper.m_szMigemoDll[0] = L'\0';			/* migemo dll */
 		m_pShareData->m_Common.m_sHelper.m_szMigemoDict[0] = L'\0';		/* migemo dict */
 
@@ -375,7 +372,6 @@ bool CShareData::InitShareData()
 		m_pShareData->m_Common.m_sEdit.m_bCopyAndDisablSelection = TRUE;	/* コピーしたら選択解除 */
 		m_pShareData->m_Common.m_sEdit.m_bEnableNoSelectCopy = TRUE;		/* 選択なしでコピーを可能にする */	// 2007.11.18 ryoji
 		m_pShareData->m_Common.m_sEdit.m_bEnableLineModePaste = true;		/* ラインモード貼り付けを可能にする */	// 2007.10.08 ryoji
-		m_pShareData->m_Common.m_sHelper.m_bHtmlHelpIsSingle = true;		/* HtmlHelpビューアはひとつ */
 		m_pShareData->m_Common.m_sCompare.m_bCompareAndTileHorz = TRUE;		/* 文書比較後、左右に並べて表示 */
 		m_pShareData->m_Common.m_sEdit.m_bConvertEOLPaste = false;			/* 改行コードを変換して貼り付ける */	// 2009.02.28 salarm
 

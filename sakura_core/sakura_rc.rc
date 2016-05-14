@@ -726,14 +726,7 @@ BEGIN
     CONTROL         "編集中のファイル(&F)",IDC_CHECK_HOKANBYFILE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,142,31,75,10
     CONTROL         "強調キーワード(&K)",IDC_CHECK_HOKANBYKEYWORD,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,217,31,75,10
     GROUPBOX        "入力補完機能",IDC_STATIC,3,3,295,45,WS_GROUP
-    GROUPBOX        "外部ヘルプの設定(&L)",IDC_STATIC,3,55,295,32,WS_GROUP
-    EDITTEXT        IDC_EDIT_TYPEEXTHELP,8,68,264,12,ES_AUTOHSCROLL | WS_GROUP
-    PUSHBUTTON      "(&2)...",IDC_BUTTON_TYPEOPENHELP,275,67,19,14
-    GROUPBOX        "外部HTMLヘルプの設定(&P)",IDC_STATIC,3,95,295,45,WS_GROUP
-    EDITTEXT        IDC_EDIT_TYPEEXTHTMLHELP,8,109,264,12,ES_AUTOHSCROLL | WS_GROUP
-    PUSHBUTTON      "(&3)...",IDC_BUTTON_TYPEOPENEXTHTMLHELP,275,107,19,14
-    CONTROL         "ビューアを複数起動しない(&N)",IDC_CHECK_TYPEHTMLHELPISSINGLE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,125,109,10
-    CONTROL         "終了時、改行の一致を検査する(&E)",IDC_CHECK_CHKENTERATEND,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,145,116,8
+    CONTROL         "終了時、改行の一致を検査する(&E)",IDC_CHECK_CHKENTERATEND,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,54,116,8
 END
 
 IDD_PROP_REGEX DIALOGEX 0, 0, 302, 244
@@ -1299,23 +1292,16 @@ BEGIN
     CONTROL         "→(&R)",IDC_CHECK_m_bHokanKey_RIGHT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,122,15,33,10
     GROUPBOX        "入力補完機能",IDC_STATIC,3,3,285,30,WS_GROUP
     LTEXT           "候補決定キー",IDC_STATIC,7,17,45,8
-    GROUPBOX        "外部ヘルプの設定(&L)",IDC_STATIC,3,37,285,32,WS_GROUP
-    EDITTEXT        IDC_EDIT_EXTHELP1,8,50,253,12,ES_AUTOHSCROLL | WS_GROUP
-    PUSHBUTTON      "(&1)...",IDC_BUTTON_OPENHELP1,264,49,19,14
-    GROUPBOX        "外部HTMLヘルプの設定(&P)",IDC_STATIC,3,73,285,45,WS_GROUP
-    EDITTEXT        IDC_EDIT_EXTHTMLHELP,8,89,253,12,ES_AUTOHSCROLL | WS_GROUP
-    PUSHBUTTON      "(&2)...",IDC_BUTTON_OPENEXTHTMLHELP,264,88,19,14
-    CONTROL         "ビューアを複数起動しない(&N)",IDC_CHECK_HTMLHELPISSINGLE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,105,108,10
-    GROUPBOX        "キーワードヘルプ",IDC_STATIC,3,123,285,33,WS_GROUP
-    RTEXT           "Font",IDC_STATIC_KEYWORDHELPFONT,8,136,219,17
-    PUSHBUTTON      "フォント(&F)...",IDC_BUTTON_KEYWORDHELPFONT,232,136,51,14
-    LTEXT           "DLL(&M)",IDC_STATIC,7,172,26,8
-    EDITTEXT        IDC_EDIT_MIGEMO_DLL,36,170,224,12,ES_AUTOHSCROLL | WS_GROUP
-    PUSHBUTTON      "(&3)...",IDC_BUTTON_OPENMDLL,264,169,19,14
-    LTEXT           "辞書(&I)",IDC_STATIC,7,188,25,8
-    EDITTEXT        IDC_EDIT_MIGEMO_DICT,36,187,224,12,ES_AUTOHSCROLL
-    PUSHBUTTON      "(&4)...",IDC_BUTTON_OPENMDICT,264,187,19,14
-    GROUPBOX        "migemo設定",IDC_STATIC,3,159,285,47,WS_GROUP
+    GROUPBOX        "キーワードヘルプ",IDC_STATIC,3,42,285,33,WS_GROUP
+    RTEXT           "Font",IDC_STATIC_KEYWORDHELPFONT,8,55,219,17
+    PUSHBUTTON      "フォント(&F)...",IDC_BUTTON_KEYWORDHELPFONT,232,55,51,14
+    LTEXT           "DLL(&M)",IDC_STATIC,7,97,26,8
+    EDITTEXT        IDC_EDIT_MIGEMO_DLL,36,95,224,12,ES_AUTOHSCROLL | WS_GROUP
+    PUSHBUTTON      "(&1)...",IDC_BUTTON_OPENMDLL,264,94,19,14
+    LTEXT           "辞書(&I)",IDC_STATIC,7,113,25,8
+    EDITTEXT        IDC_EDIT_MIGEMO_DICT,36,112,224,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "(&2)...",IDC_BUTTON_OPENMDICT,264,112,19,14
+    GROUPBOX        "migemo設定",IDC_STATIC,3,84,285,47,WS_GROUP
 END
 
 IDD_PROP_MACRO DIALOGEX 0, 0, 293, 240
@@ -1919,9 +1905,13 @@ END
 //
 
 IDB_MYTOOL              BITMAP                  "../resource/mytool.bmp"
+
 IDB_SCROLL_CENTER       BITMAP                  "../resource/auto_scroll_center.bmp"
+
 IDB_SCROLL_VERTICAL     BITMAP                  "../resource/auto_scroll_vertical.bmp"
+
 IDB_SCROLL_HORIZONTAL   BITMAP                  "../resource/auto_scroll_horizontal.bmp"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -1931,8 +1921,11 @@ IDB_SCROLL_HORIZONTAL   BITMAP                  "../resource/auto_scroll_horizon
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
 IDI_ICON_STD            ICON                    "../resource/icon_std.ico"
+
 IDI_ICON_GREP           ICON                    "../resource/icon_grep.ico"
+
 IDI_PRINTER             ICON                    "../resource/printer.ico"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -1940,23 +1933,41 @@ IDI_PRINTER             ICON                    "../resource/printer.ico"
 //
 
 IDC_CURSOR_COPYARROW    CURSOR                  "../resource/cursor_copy.cur"
+
 IDC_CURSOR_MOVEARROW    CURSOR                  "../resource/cursor_move.cur"
+
 IDC_CURSOR_RVARROW      CURSOR                  "../resource/cursor_rvarrow.cur"
+
 IDC_CURSOR_ISEARCH_F    CURSOR                  "../resource/cursor_isf.cur"
+
 IDC_CURSOR_ISEARCH_B    CURSOR                  "../resource/cursor_isb.cur"
+
 IDC_CURSOR_TAB_SEPARATE CURSOR                  "../resource/cursor_tab_separate.cur"
+
 IDC_CURSOR_TAB_JOIN     CURSOR                  "../resource/cursor_tab_join.cur"
+
 IDC_CURSOR_AUTOSCROLL_CENTER CURSOR                  "../resource/auto_scroll_center.cur"
+
 IDC_CURSOR_AUTOSCROLL_HORIZONTAL CURSOR                  "../resource/auto_scroll_horizontal.cur"
+
 IDC_CURSOR_AUTOSCROLL_VERTICAL CURSOR                  "../resource/auto_scroll_vertical.cur"
+
 IDC_CURSOR_AUTOSCROLL_UP CURSOR                  "../resource/auto_scroll_up.cur"
+
 IDC_CURSOR_AUTOSCROLL_DOWN CURSOR                  "../resource/auto_scroll_down.cur"
+
 IDC_CURSOR_AUTOSCROLL_LEFT CURSOR                  "../resource/auto_scroll_left.cur"
+
 IDC_CURSOR_AUTOSCROLL_RIGHT CURSOR                  "../resource/auto_scroll_right.cur"
+
 IDC_CURSOR_AUTOSCROLL_UP_LEFT CURSOR                  "../resource/auto_scroll_up_left.cur"
+
 IDC_CURSOR_AUTOSCROLL_UP_RIGHT CURSOR                  "../resource/auto_scroll_up_right.cur"
+
 IDC_CURSOR_AUTOSCROLL_DOWN_LEFT CURSOR                  "../resource/auto_scroll_down_left.cur"
+
 IDC_CURSOR_AUTOSCROLL_DOWN_RIGHT CURSOR                  "../resource/auto_scroll_down_right.cur"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -1964,6 +1975,23 @@ IDC_CURSOR_AUTOSCROLL_DOWN_RIGHT CURSOR                  "../resource/auto_scrol
 //
 
 IDR_MENU1               100                     "../resource/MainMenu.ini"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_PROP_HELPER AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_PROP_SUPPORT AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
