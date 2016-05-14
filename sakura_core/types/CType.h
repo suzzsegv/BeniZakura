@@ -168,10 +168,6 @@ struct STypeConfig{
 	//	2001/06/19 asa-o
 	bool				m_bHokanLoHiCase;				//!< 入力補完機能：英大文字小文字を同一視する
 
-	SFilePath			m_szExtHelp;					/* 外部ヘルプ１ */
-	SFilePath			m_szExtHtmlHelp;				/* 外部HTMLヘルプ */
-	bool				m_bHtmlHelpIsSingle;			// HtmlHelpビューアはひとつ
-
 	bool				m_bChkEnterAtEnd;				//!< 終了時、改行の一致を検査する	2013/4/14 Uchi
 
 	SEncodingConfig		m_encoding;						//!< エンコードオプション

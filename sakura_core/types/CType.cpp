@@ -113,11 +113,6 @@ void _DefaultConfig(STypeConfig* pType)
 	pType->m_encoding.m_eDefaultEoltype = EOL_LF;
 	pType->m_encoding.m_bDefaultBom = false;
 
-	//@@@2002.2.4 YAZAKI
-	pType->m_szExtHelp[0] = L'\0';
-	pType->m_szExtHtmlHelp[0] = L'\0';
-	pType->m_bHtmlHelpIsSingle = true;
-
 	pType->m_bAutoIndent = true;			/* オートインデント */
 	pType->m_bAutoIndent_ZENSPACE = true;	/* 日本語空白もインデント */
 	pType->m_bRTrimPrevLine = false;		// 2005.10.11 ryoji 改行時に末尾の空白を削除

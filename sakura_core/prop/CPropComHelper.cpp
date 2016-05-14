@@ -80,12 +80,6 @@ INT_PTR CPropHelper::DispatchEvent(
 		// Modified by KEITA for WIN64 2003.9.6
 		::SetWindowLongPtr( hwndDlg, DWLP_USER, lParam );
 
-		/* ユーザーがエディット コントロールに入力できるテキストの長さを制限する */
-		/* 外部ヘルプ１ */
-		EditCtl_LimitText( ::GetDlgItem( hwndDlg, IDC_EDIT_EXTHELP1 ), _MAX_PATH - 1 );
-		/* 外部HTMLヘルプ */
-		EditCtl_LimitText( ::GetDlgItem( hwndDlg, IDC_EDIT_EXTHTMLHELP ), _MAX_PATH - 1 );
-
 		return TRUE;
 	case WM_COMMAND:
 		wNotifyCode = HIWORD(wParam);	/* 通知コード */
@@ -97,54 +91,6 @@ INT_PTR CPropHelper::DispatchEvent(
 			/* ダイアログデータの取得 Helper */
 			GetData( hwndDlg );
 			switch( wID ){
-			case IDC_BUTTON_OPENHELP1:	/* 外部ヘルプ１の「参照...」ボタン */
-				{
-					CDlgOpenFile	cDlgOpenFile;
-					TCHAR			szPath[_MAX_PATH];
-					// 2003.06.23 Moca 相対パスは実行ファイルからのパス
-					// 2007.05.21 ryoji 相対パスは設定ファイルからのパスを優先
-					if( _IS_REL_PATH( m_Common.m_sHelper.m_szExtHelp ) ){
-						GetInidirOrExedir( szPath, m_Common.m_sHelper.m_szExtHelp, TRUE );
-					}else{
-						_tcscpy( szPath, m_Common.m_sHelper.m_szExtHelp );
-					}
-					/* ファイルオープンダイアログの初期化 */
-					cDlgOpenFile.Create(
-						G_AppInstance(),
-						hwndDlg,
-						_T("*.hlp;*.chm;*.col"),
-						szPath
-					);
-					if( cDlgOpenFile.DoModal_GetOpenFileName( szPath ) ){
-						_tcscpy( m_Common.m_sHelper.m_szExtHelp, szPath );
-						::DlgItem_SetText( hwndDlg, IDC_EDIT_EXTHELP1, m_Common.m_sHelper.m_szExtHelp );
-					}
-				}
-				return TRUE;
-			case IDC_BUTTON_OPENEXTHTMLHELP:	/* 外部HTMLヘルプの「参照...」ボタン */
-				{
-					CDlgOpenFile	cDlgOpenFile;
-					TCHAR			szPath[_MAX_PATH];
-					// 2003.06.23 Moca 相対パスは実行ファイルからのパス
-					// 2007.05.21 ryoji 相対パスは設定ファイルからのパスを優先
-					if( _IS_REL_PATH( m_Common.m_sHelper.m_szExtHtmlHelp ) ){
-						GetInidirOrExedir( szPath, m_Common.m_sHelper.m_szExtHtmlHelp, TRUE );
-					}else{
-						_tcscpy( szPath, m_Common.m_sHelper.m_szExtHtmlHelp );
-					}
-					/* ファイルオープンダイアログの初期化 */
-					cDlgOpenFile.Create(
-						G_AppInstance(),
-						hwndDlg,
-						_T("*.chm;*.col"),
-						szPath
-					);
-					if( cDlgOpenFile.DoModal_GetOpenFileName( szPath ) ){
-						_tcscpy( m_Common.m_sHelper.m_szExtHtmlHelp, szPath );
-						::DlgItem_SetText( hwndDlg, IDC_EDIT_EXTHTMLHELP, m_Common.m_sHelper.m_szExtHtmlHelp );
-					}
-				}
-				return TRUE;
 			// ai 02/05/21 Add S
 			case IDC_BUTTON_KEYWORDHELPFONT:	/* キーワードヘルプの「フォント」ボタン */
 				{
@@ -256,15 +202,6 @@ void CPropHelper::SetData( HWND hwndDlg )
 	::CheckDlgButton( hwndDlg, IDC_CHECK_m_bHokanKey_TAB, m_Common.m_sHelper.m_bHokanKey_TAB );		//VK_TAB    補完決定キーが有効/無効
 	::CheckDlgButton( hwndDlg, IDC_CHECK_m_bHokanKey_RIGHT, m_Common.m_sHelper.m_bHokanKey_RIGHT );	//VK_RIGHT  補完決定キーが有効/無効
 
-	/* 外部ヘルプ１ */
-	::DlgItem_SetText( hwndDlg, IDC_EDIT_EXTHELP1, m_Common.m_sHelper.m_szExtHelp );
-
-	/* 外部HTMLヘルプ */
-	::DlgItem_SetText( hwndDlg, IDC_EDIT_EXTHTMLHELP, m_Common.m_sHelper.m_szExtHtmlHelp );
-
-	/* HtmlHelpビューアはひとつ */
-	::CheckDlgButton( hwndDlg, IDC_CHECK_HTMLHELPISSINGLE, m_Common.m_sHelper.m_bHtmlHelpIsSingle ? BST_CHECKED : BST_UNCHECKED );
-
 	// キーワードヘルプ フォント	// 2013/4/24 Uchi
 	m_hKeywordHelpFont = SetFontLabel( hwndDlg, IDC_STATIC_KEYWORDHELPFONT, m_Common.m_sHelper.m_lf, m_Common.m_sHelper.m_nPointSize);
 
@@ -281,15 +218,6 @@ int CPropHelper::GetData( HWND hwndDlg )
 	m_Common.m_sHelper.m_bHokanKey_RETURN = ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_m_bHokanKey_RETURN );//VK_RETURN 補完決定キーが有効/無効
 	m_Common.m_sHelper.m_bHokanKey_TAB = ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_m_bHokanKey_TAB );		//VK_TAB    補完決定キーが有効/無効
 	m_Common.m_sHelper.m_bHokanKey_RIGHT = ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_m_bHokanKey_RIGHT );	//VK_RIGHT  補完決定キーが有効/無効
-
-	/* 外部ヘルプ１ */
-	::DlgItem_GetText( hwndDlg, IDC_EDIT_EXTHELP1, m_Common.m_sHelper.m_szExtHelp, _countof( m_Common.m_sHelper.m_szExtHelp ));
-
-	/* 外部HTMLヘルプ */
-	::DlgItem_GetText( hwndDlg, IDC_EDIT_EXTHTMLHELP, m_Common.m_sHelper.m_szExtHtmlHelp, _countof( m_Common.m_sHelper.m_szExtHtmlHelp ));
-
-	/* HtmlHelpビューアはひとつ */
-	m_Common.m_sHelper.m_bHtmlHelpIsSingle = ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_HTMLHELPISSINGLE ) != 0;
 
 	//migemo dict
 	::DlgItem_GetText( hwndDlg, IDC_EDIT_MIGEMO_DLL, m_Common.m_sHelper.m_szMigemoDll, _countof( m_Common.m_sHelper.m_szMigemoDll ));
