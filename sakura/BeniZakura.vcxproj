@@ -89,6 +89,9 @@
     <PostBuildEvent>
       <Command>call postBuild.bat "$(TargetPath).manifest"</Command>
     </PostBuildEvent>
+    <Manifest>
+      <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
+    </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_Unicode|Win32'">
     <PreBuildEvent>
@@ -121,6 +124,10 @@
     <PostBuildEvent>
       <Command>call postBuild.bat "$(TargetPath).manifest"</Command>
     </PostBuildEvent>
+    <Manifest>
+      <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
+      <OutputManifestFile />
+    </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\sakura_core\Funccode_define.h" />
