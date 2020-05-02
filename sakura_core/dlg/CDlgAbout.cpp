@@ -128,7 +128,7 @@ BOOL CDlgAbout::OnInitDialog( HWND hwndDlg, WPARAM wParam, LPARAM lParam )
 	/* バージョン情報 */
 
 	CNativeT cmemMsg;
-	cmemMsg.AppendString(_T("\r\n紅桜   "));
+	cmemMsg.AppendString(_T("\r\n紅桜  "));
 
 	DWORD dwVersionMS, dwVersionLS;
 	GetAppVersionInfo( NULL, VS_VERSION_INFO, &dwVersionMS, &dwVersionLS );
@@ -163,19 +163,19 @@ BOOL CDlgAbout::OnInitDialog( HWND hwndDlg, WPARAM wParam, LPARAM lParam )
 		wcscpy( vcVersion, L"Visual Studio 2015" );
 		break;
 	default:
-		auto_sprintf( vcVersion, L"MSC Ver.%d", _MSC_VER / 100 );
+		auto_sprintf(vcVersion, L"MSC Ver.%d.%02d", _MSC_VER / 100, _MSC_VER % 100);
 		break;
 	}
-	auto_sprintf( szMsg, L"      %s  %s   Built with %s\r\n", _T(__DATE__), _T(__TIME__), vcVersion );
+	auto_sprintf( szMsg, L"  %s %s  Built with %s\r\n", _T(__DATE__), _T(__TIME__), vcVersion );
 	cmemMsg.AppendString( szMsg );
 	cmemMsg.AppendString( _T("\r\n") );
-	cmemMsg.AppendString( _T("      Copyright (C) 2012, 2013, 2014, 2015, 2016 by Satoshi Suzuki\r\n") );
+	cmemMsg.AppendString( _T("  Copyright (C) 2012-2020 by Satoshi Suzuki\r\n") );
 	cmemMsg.AppendString( _T("\r\n") );
 	cmemMsg.AppendString( _T("\r\n") );
 
-	cmemMsg.AppendString( _T("Based on サクラエディタ   Ver.2.0.8.1+\r\n") );
+	cmemMsg.AppendString( _T("Based on サクラエディタ  Ver.2.0.8.1+\r\n") );
 	cmemMsg.AppendString( _T("\r\n") );
-	cmemMsg.AppendString( _T("      Copyright (C) 1998-2014  by Norio Nakatani & Collaborators\r\n") );
+	cmemMsg.AppendString( _T("  Copyright (C) 1998-2014 by Norio Nakatani & Collaborators\r\n") );
 	cmemMsg.AppendString( _T("\r\n") );
 
 // パッチ(かリビジョン)の情報をコンパイル時に渡せるようにする
