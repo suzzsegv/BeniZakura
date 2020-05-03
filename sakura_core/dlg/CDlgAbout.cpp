@@ -24,7 +24,7 @@
 #include "uiparts/HandCursor.h"
 #include "util/file.h"
 #include "util/module.h"
-#include "hgrev.h"
+#include "gitrev.h"
 #include "sakura_rc.h" // 2002/2/10 aroka •œ‹A
 
 
@@ -133,16 +133,7 @@ BOOL CDlgAbout::OnInitDialog( HWND hwndDlg, WPARAM wParam, LPARAM lParam )
 	DWORD dwVersionMS, dwVersionLS;
 	GetAppVersionInfo( NULL, VS_VERSION_INFO, &dwVersionMS, &dwVersionLS );
 
-	if( HG_REV_DISTANCE == 0 ){
-		auto_sprintf( szMsg, _T("%s\r\n"),
-			_T(HG_REV)
-		);
-	}else{
-		auto_sprintf( szMsg, _T("%s +%d\r\n"),
-			_T(HG_REV),
-			HG_REV_DISTANCE
-		);
-	}
+	auto_sprintf(szMsg, _T("%s\r\n"), _T(GIT_REV));
 	cmemMsg.AppendString( szMsg );
 	cmemMsg.AppendString( _T("\r\n") );
 

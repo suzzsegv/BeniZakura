@@ -1,0 +1,12 @@
+.vs
+*.orig
+Debug*
+Release*
+*.vcproj.*
+*.vcxproj.*
+*.exe
+*.ncb
+*.pdb
+*.suo
+*.iobj
+*.ipdb
