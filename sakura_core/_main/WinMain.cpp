@@ -20,6 +20,7 @@
 */
 
 #include "StdAfx.h"
+#include <locale.h>
 #include <Ole2.h>
 #include "CProcessFactory.h"
 #include "CProcess.h"
