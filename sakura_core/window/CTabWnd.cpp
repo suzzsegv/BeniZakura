@@ -2005,7 +2005,6 @@ void CTabWnd::AdjustWindowPlacement( void )
 	if( m_pShareData->m_Common.m_sTabBar.m_bDispTabWnd && !m_pShareData->m_Common.m_sTabBar.m_bDispTabWndMultiWin )
 	{
 		HWND hwnd = GetParentHwnd();	// 自身の編集ウィンドウ
-		WINDOWPLACEMENT wp;
 		if( !::IsWindowVisible( hwnd ) )	// 可視化するときだけ引き継ぐ
 		{
 			// なるべく画面を手前に出さずに可視化する
@@ -2016,35 +2015,52 @@ void CTabWnd::AdjustWindowPlacement( void )
 			//  ・最大化切替（SW_SHOWMAXIMIZED）の際、以前に通常表示だった画面のステータスバーやファンクションキーが一時的に通常サイズで表示される
 
 			// ウィンドウを背後に配置する
-			// Note. WS_EX_TOPMOST については hwndInsertAfter ウィンドウの状態が引き継がれる
-			EditNode* pEditNode;
-			pEditNode = CAppNodeManager::getInstance()->GetEditNode(hwnd)->GetGroup().GetTopEditNode();
-			if( pEditNode == NULL )
-			{
+			// Note. WS_EX_TOPMOST については hwndTop ウィンドウの状態が引き継がれる
+			EditNode* pTopEditNode;
+			pTopEditNode = CAppNodeManager::getInstance()->GetEditNode(hwnd)->GetGroup().GetTopEditNode();
+			if( pTopEditNode == NULL ){
 				::ShowWindow( hwnd, SW_SHOWNA );
 				return;
 			}
-			HWND hwndInsertAfter = pEditNode->m_hWnd;
-			wp.length = sizeof( wp );
-			::GetWindowPlacement( hwndInsertAfter, &wp );
-			if( wp.showCmd == SW_SHOWMINIMIZED ){
-				wp.showCmd = pEditNode->m_showCmdRestore;
+			HWND hwndTop = pTopEditNode->m_hWnd;
+			WINDOWPLACEMENT wpTop;
+			wpTop.length = sizeof(wpTop);
+			::GetWindowPlacement( hwndTop, &wpTop );
+			if( wpTop.showCmd == SW_SHOWMINIMIZED ){
+				wpTop.showCmd = pTopEditNode->m_showCmdRestore;
 			}
-			if(wp.showCmd == SW_SHOWNORMAL){
+			if(wpTop.showCmd == SW_SHOWNORMAL){
 				if(::IsIconic(hwnd) || ::IsZoomed(hwnd)){
 					ShowWindow(hwnd, SW_SHOWNOACTIVATE);
 				}
-				wp.rcNormalPosition = pEditNode->rcNormalPosition;
+				wpTop.rcNormalPosition = pTopEditNode->rcNormalPosition;
 				::SetWindowPos( hwnd, HWND_TOP,
-					wp.rcNormalPosition.left,
-					wp.rcNormalPosition.top,
-					wp.rcNormalPosition.right - wp.rcNormalPosition.left,
-					wp.rcNormalPosition.bottom - wp.rcNormalPosition.top,
+					wpTop.rcNormalPosition.left,
+					wpTop.rcNormalPosition.top,
+					wpTop.rcNormalPosition.right - wpTop.rcNormalPosition.left,
+					wpTop.rcNormalPosition.bottom - wpTop.rcNormalPosition.top,
 					SWP_SHOWWINDOW);
 				::UpdateWindow(hwnd);
 				return;
 			}
-			ShowWindow(hwnd, SW_MAXIMIZE);
+			// wpTop.showCmd == SW_SHOWMAXIMIZED
+			if (::IsZoomed(hwnd)) {
+				WINDOWPLACEMENT wpCurrent;
+				wpCurrent.length = sizeof(wpCurrent);
+				::GetWindowPlacement(hwnd, &wpCurrent);
+				if (!::EqualRect(&wpCurrent.rcNormalPosition, &wpTop.rcNormalPosition)) {
+					// カレントウィンドウの通常時のウィンドウ位置＆サイズが
+					// トップウィンドウの通常時のウィンドウ位置＆サイズと異なっている場合、
+					// 別のモニタへ移動してから最大化した可能性があるため、
+					// トップウィンドウの通常ウィンドウと同じ位置に表示してから最大化を行う
+					wpTop.showCmd = SW_SHOWNOACTIVATE;
+					::SetWindowPlacement(hwnd, &wpTop);
+					wpTop.showCmd = SW_SHOWMAXIMIZED;
+				} else {
+					wpTop.showCmd = SW_SHOWNA;
+				}
+			}
+			::SetWindowPlacement(hwnd, &wpTop);
 			::UpdateWindow(hwnd);
 		}
 	}
