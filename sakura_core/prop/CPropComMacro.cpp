@@ -1,5 +1,5 @@
 /*!	@file
-	‹¤’Êİ’èƒ_ƒCƒAƒƒOƒ{ƒbƒNƒXAuƒ}ƒNƒvƒy[ƒW
+	å…±é€šè¨­å®šãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒœãƒƒã‚¯ã‚¹ã€ã€Œãƒã‚¯ãƒ­ã€ãƒšãƒ¼ã‚¸
 
 	@author genta
 	@date Jun. 2, 2001 genta
@@ -44,10 +44,10 @@
 
 
 /*!
-	@param hwndDlg ƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX‚ÌWindow Handle
-	@param uMsg ƒƒbƒZ[ƒW
-	@param wParam ƒpƒ‰ƒ[ƒ^1
-	@param lParam ƒpƒ‰ƒ[ƒ^2
+	@param hwndDlg ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒœãƒƒã‚¯ã‚¹ã®Window Handle
+	@param uMsg ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+	@param wParam ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿1
+	@param lParam ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿2
 */
 INT_PTR CALLBACK CPropMacro::DlgProc_page(
 	HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam )
@@ -55,11 +55,11 @@ INT_PTR CALLBACK CPropMacro::DlgProc_page(
 	return DlgProc( reinterpret_cast<pDispatchPage>(&CPropMacro::DispatchEvent), hwndDlg, uMsg, wParam, lParam );
 }
 
-/*! Macroƒy[ƒW‚ÌƒƒbƒZ[ƒWˆ—
-	@param hwndDlg ƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX‚ÌWindow Handlw
-	@param uMsg ƒƒbƒZ[ƒW
-	@param wParam ƒpƒ‰ƒ[ƒ^1
-	@param lParam ƒpƒ‰ƒ[ƒ^2
+/*! Macroãƒšãƒ¼ã‚¸ã®ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å‡¦ç†
+	@param hwndDlg ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒœãƒƒã‚¯ã‚¹ã®Window Handlw
+	@param uMsg ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+	@param wParam ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿1
+	@param lParam ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿2
 */
 INT_PTR CPropMacro::DispatchEvent( HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam )
 {
@@ -74,13 +74,13 @@ INT_PTR CPropMacro::DispatchEvent( HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARA
 	switch( uMsg ){
 
 	case WM_INITDIALOG:
-		/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìİ’è Macro */
+		/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®è¨­å®š Macro */
 		InitDialog( hwndDlg );
 		SetData( hwndDlg );
 		// Modified by KEITA for WIN64 2003.9.6
 		::SetWindowLongPtr( hwndDlg, DWLP_USER, lParam );
 
-		//	Oct. 5, 2002 genta ƒGƒfƒBƒbƒg ƒRƒ“ƒgƒ[ƒ‹‚É“ü—Í‚Å‚«‚éƒeƒLƒXƒg‚Ì’·‚³‚ğ§ŒÀ‚·‚é
+		//	Oct. 5, 2002 genta ã‚¨ãƒ‡ã‚£ãƒƒãƒˆ ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã«å…¥åŠ›ã§ãã‚‹ãƒ†ã‚­ã‚¹ãƒˆã®é•·ã•ã‚’åˆ¶é™ã™ã‚‹
 		EditCtl_LimitText( ::GetDlgItem( hwndDlg, IDC_MACRONAME ), _countof( m_Common.m_sMacro.m_MacroTable[0].m_szName ) - 1 );
 		Combo_LimitText( ::GetDlgItem( hwndDlg, IDC_MACROPATH ), _countof( m_Common.m_sMacro.m_MacroTable[0].m_szFile ) - 1 );
 		// 2003.06.23 Moca
@@ -103,10 +103,10 @@ INT_PTR CPropMacro::DispatchEvent( HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARA
 		default:
 			switch( pNMHDR->code ){
 			case PSN_KILLACTIVE:
-				/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìæ“¾ Macro */
+				/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®å–å¾— Macro */
 				GetData( hwndDlg );
 				return TRUE;
-//@@@ 2002.01.03 YAZAKI ÅŒã‚É•\¦‚µ‚Ä‚¢‚½ƒV[ƒg‚ğ³‚µ‚­Šo‚¦‚Ä‚¢‚È‚¢ƒoƒOC³
+//@@@ 2002.01.03 YAZAKI æœ€å¾Œã«è¡¨ç¤ºã—ã¦ã„ãŸã‚·ãƒ¼ãƒˆã‚’æ­£ã—ãè¦šãˆã¦ã„ãªã„ãƒã‚°ä¿®æ­£
 			case PSN_SETACTIVE:
 				m_nPageNum = ID_PAGENUM_MACRO;
 				return TRUE;
@@ -116,18 +116,18 @@ INT_PTR CPropMacro::DispatchEvent( HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARA
 		break;
 
 	case WM_COMMAND:
-		wNotifyCode = HIWORD(wParam);	/* ’Ê’mƒR[ƒh */
-		wID = LOWORD(wParam);			/* €–ÚID¤ ƒRƒ“ƒgƒ[ƒ‹ID¤ ‚Ü‚½‚ÍƒAƒNƒZƒ‰ƒŒ[ƒ^ID */
-		hwndCtl = (HWND) lParam;		/* ƒRƒ“ƒgƒ[ƒ‹‚Ìƒnƒ“ƒhƒ‹ */
+		wNotifyCode = HIWORD(wParam);	/* é€šçŸ¥ã‚³ãƒ¼ãƒ‰ */
+		wID = LOWORD(wParam);			/* é …ç›®IDã€ ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«IDã€ ã¾ãŸã¯ã‚¢ã‚¯ã‚»ãƒ©ãƒ¬ãƒ¼ã‚¿ID */
+		hwndCtl = (HWND) lParam;		/* ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã®ãƒãƒ³ãƒ‰ãƒ« */
 
 		switch( wNotifyCode ){
-		/* ƒ{ƒ^ƒ“^ƒ`ƒFƒbƒNƒ{ƒbƒNƒX‚ªƒNƒŠƒbƒN‚³‚ê‚½ */
+		/* ãƒœã‚¿ãƒ³ï¼ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹ãŒã‚¯ãƒªãƒƒã‚¯ã•ã‚ŒãŸ */
 		case BN_CLICKED:
 			switch( wID ){
-			case IDC_MACRODIRREF:	// ƒ}ƒNƒƒfƒBƒŒƒNƒgƒŠQÆ
+			case IDC_MACRODIRREF:	// ãƒã‚¯ãƒ­ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªå‚ç…§
 				SelectBaseDir_Macro( hwndDlg );
 				break;
-			case IDC_MACRO_REG:		// ƒ}ƒNƒİ’è
+			case IDC_MACRO_REG:		// ãƒã‚¯ãƒ­è¨­å®š
 				SetMacro2List_Macro( hwndDlg );
 				break;
 			}
@@ -139,7 +139,7 @@ INT_PTR CPropMacro::DispatchEvent( HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARA
 				break;
 			}
 			break;	/* CBN_DROPDOWN */
-		// From Here 2003.06.23 Moca ƒ}ƒNƒƒtƒHƒ‹ƒ_‚ÌÅŒã‚Ì\‚ª‚È‚¯‚ê‚Î•t‚¯‚é
+		// From Here 2003.06.23 Moca ãƒã‚¯ãƒ­ãƒ•ã‚©ãƒ«ãƒ€ã®æœ€å¾Œã®\ãŒãªã‘ã‚Œã°ä»˜ã‘ã‚‹
 		case EN_KILLFOCUS:
 			switch( wID ){
 			case IDC_MACRODIR:
@@ -163,16 +163,16 @@ INT_PTR CPropMacro::DispatchEvent( HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARA
 
 
 /*!
-	ƒ_ƒCƒAƒƒOã‚ÌƒRƒ“ƒgƒ[ƒ‹‚Éƒf[ƒ^‚ğİ’è‚·‚é
+	ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ä¸Šã®ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã«ãƒ‡ãƒ¼ã‚¿ã‚’è¨­å®šã™ã‚‹
 
-	@param hwndDlg ƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX‚ÌƒEƒBƒ“ƒhƒEƒnƒ“ƒhƒ‹
+	@param hwndDlg ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒœãƒƒã‚¯ã‚¹ã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒãƒ³ãƒ‰ãƒ«
 */
 void CPropMacro::SetData( HWND hwndDlg )
 {
 	int index;
 	LVITEM sItem;
 
-	//	ƒ}ƒNƒƒf[ƒ^
+	//	ãƒã‚¯ãƒ­ãƒ‡ãƒ¼ã‚¿
 	HWND hListView = ::GetDlgItem( hwndDlg, IDC_MACROLIST );
 	
 	for( index = 0; index < MAX_CUSTMACRO; ++index ){
@@ -197,7 +197,7 @@ void CPropMacro::SetData( HWND hwndDlg )
 		sItem.pszText = const_cast<TCHAR*>(m_pShareData->m_Common.m_sMacro.m_MacroTable[index].m_bReloadWhenExecute ? _T("on") : _T("off"));
 		ListView_SetItem( hListView, &sItem );
 
-		// ©“®Àsƒ}ƒNƒ	// 2006.09.01 ryoji
+		// è‡ªå‹•å®Ÿè¡Œãƒã‚¯ãƒ­	// 2006.09.01 ryoji
 		TCHAR szText[8];
 		szText[0] = _T('\0');
 		if( index == m_pShareData->m_Common.m_sMacro.m_nMacroOnOpened )
@@ -214,20 +214,20 @@ void CPropMacro::SetData( HWND hwndDlg )
 		ListView_SetItem( hListView, &sItem );
 	}
 	
-	//	ƒ}ƒNƒƒfƒBƒŒƒNƒgƒŠ
+	//	ãƒã‚¯ãƒ­ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª
 	::DlgItem_SetText( hwndDlg, IDC_MACRODIR, /*m_pShareData->*/m_Common.m_sMacro.m_szMACROFOLDER );
 
 	nLastPos_Macro = -1;
 	
-	//	ƒŠƒXƒgƒrƒ…[‚Ìs‘I‘ğ‚ğ‰Â”\‚É‚·‚éD
-	//	IE 3.xˆÈ~‚ª“ü‚Á‚Ä‚¢‚éê‡‚Ì‚İ“®ì‚·‚éD
-	//	‚±‚ê‚ª–³‚­‚Ä‚àC”Ô†•”•ª‚µ‚©‘I‘ğ‚Å‚«‚È‚¢‚¾‚¯‚Å‘€ì©‘Ì‚Í‰Â”\D
+	//	ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã®è¡Œé¸æŠã‚’å¯èƒ½ã«ã™ã‚‹ï¼
+	//	IE 3.xä»¥é™ãŒå…¥ã£ã¦ã„ã‚‹å ´åˆã®ã¿å‹•ä½œã™ã‚‹ï¼
+	//	ã“ã‚ŒãŒç„¡ãã¦ã‚‚ï¼Œç•ªå·éƒ¨åˆ†ã—ã‹é¸æŠã§ããªã„ã ã‘ã§æ“ä½œè‡ªä½“ã¯å¯èƒ½ï¼
 	DWORD dwStyle;
 	dwStyle = ListView_GetExtendedListViewStyle( hListView );
 	dwStyle |= LVS_EX_FULLROWSELECT;
 	ListView_SetExtendedListViewStyle( hListView, dwStyle );
 	
-	//	ƒ}ƒNƒ’â~ƒ_ƒCƒAƒƒO•\¦‘Ò‚¿ŠÔ
+	//	ãƒã‚¯ãƒ­åœæ­¢ãƒ€ã‚¤ã‚¢ãƒ­ã‚°è¡¨ç¤ºå¾…ã¡æ™‚é–“
 	TCHAR szCancelTimer[16] = {0};
 	::DlgItem_SetText( hwndDlg, IDC_MACROCANCELTIMER, _itot(m_Common.m_sMacro.m_nMacroCancelTimer, szCancelTimer, 10) );
 
@@ -235,25 +235,25 @@ void CPropMacro::SetData( HWND hwndDlg )
 }
 
 /*!
-	ƒ_ƒCƒAƒƒOã‚ÌƒRƒ“ƒgƒ[ƒ‹‚©‚çƒf[ƒ^‚ğæ“¾‚µ‚Äƒƒ‚ƒŠ‚ÉŠi”[‚·‚é
+	ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ä¸Šã®ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã‹ã‚‰ãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—ã—ã¦ãƒ¡ãƒ¢ãƒªã«æ ¼ç´ã™ã‚‹
 
-	@param hwndDlg ƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX‚ÌƒEƒBƒ“ƒhƒEƒnƒ“ƒhƒ‹
+	@param hwndDlg ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒœãƒƒã‚¯ã‚¹ã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒãƒ³ãƒ‰ãƒ«
 */
 
 int CPropMacro::GetData( HWND hwndDlg )
 {
-//@@@ 2002.01.03 YAZAKI ÅŒã‚É•\¦‚µ‚Ä‚¢‚½ƒV[ƒg‚ğ³‚µ‚­Šo‚¦‚Ä‚¢‚È‚¢ƒoƒOC³
+//@@@ 2002.01.03 YAZAKI æœ€å¾Œã«è¡¨ç¤ºã—ã¦ã„ãŸã‚·ãƒ¼ãƒˆã‚’æ­£ã—ãè¦šãˆã¦ã„ãªã„ãƒã‚°ä¿®æ­£
 //	m_nPageNum = ID_PAGENUM_MACRO;
 
 	int index;
 	LVITEM sItem;
 
-	// ©“®Àsƒ}ƒNƒ•Ï”‰Šú‰»	// 2006.09.01 ryoji
+	// è‡ªå‹•å®Ÿè¡Œãƒã‚¯ãƒ­å¤‰æ•°åˆæœŸåŒ–	// 2006.09.01 ryoji
 	m_Common.m_sMacro.m_nMacroOnOpened = -1;
 	m_Common.m_sMacro.m_nMacroOnTypeChanged = -1;
 	m_Common.m_sMacro.m_nMacroOnSave = -1;
 
-	//	ƒ}ƒNƒƒf[ƒ^
+	//	ãƒã‚¯ãƒ­ãƒ‡ãƒ¼ã‚¿
 	HWND hListView = ::GetDlgItem( hwndDlg, IDC_MACROLIST );
 
 	for( index = 0; index < MAX_CUSTMACRO; ++index ){
@@ -262,7 +262,7 @@ int CPropMacro::GetData( HWND hwndDlg )
 		sItem.mask = LVIF_TEXT;
 		sItem.iSubItem = 1;
 		sItem.cchTextMax = MACRONAME_MAX - 1;
-//@@@ 2002.01.03 YAZAKI ‹¤’Êİ’èwƒ}ƒNƒx‚ªƒ^ƒu‚ğØ‚è‘Ö‚¦‚é‚¾‚¯‚Åİ’è‚ª•Û‘¶‚³‚ê‚È‚¢‚æ‚¤‚ÉB
+//@@@ 2002.01.03 YAZAKI å…±é€šè¨­å®šã€ãƒã‚¯ãƒ­ã€ãŒã‚¿ãƒ–ã‚’åˆ‡ã‚Šæ›¿ãˆã‚‹ã ã‘ã§è¨­å®šãŒä¿å­˜ã•ã‚Œãªã„ã‚ˆã†ã«ã€‚
 		sItem.pszText = /*m_pShareData->*/m_Common.m_sMacro.m_MacroTable[index].m_szName;
 		ListView_GetItem( hListView, &sItem );
 
@@ -271,7 +271,7 @@ int CPropMacro::GetData( HWND hwndDlg )
 		sItem.mask = LVIF_TEXT;
 		sItem.iSubItem = 2;
 		sItem.cchTextMax = _MAX_PATH;
-//@@@ 2002.01.03 YAZAKI ‹¤’Êİ’èwƒ}ƒNƒx‚ªƒ^ƒu‚ğØ‚è‘Ö‚¦‚é‚¾‚¯‚Åİ’è‚ª•Û‘¶‚³‚ê‚È‚¢‚æ‚¤‚ÉB
+//@@@ 2002.01.03 YAZAKI å…±é€šè¨­å®šã€ãƒã‚¯ãƒ­ã€ãŒã‚¿ãƒ–ã‚’åˆ‡ã‚Šæ›¿ãˆã‚‹ã ã‘ã§è¨­å®šãŒä¿å­˜ã•ã‚Œãªã„ã‚ˆã†ã«ã€‚
 		sItem.pszText = /*m_pShareData->*/m_Common.m_sMacro.m_MacroTable[index].m_szFile;
 		ListView_GetItem( hListView, &sItem );
 
@@ -290,7 +290,7 @@ int CPropMacro::GetData( HWND hwndDlg )
 			m_Common.m_sMacro.m_MacroTable[index].m_bReloadWhenExecute = false;
 		}
 
-		// ©“®Àsƒ}ƒNƒ	// 2006.09.01 ryoji
+		// è‡ªå‹•å®Ÿè¡Œãƒã‚¯ãƒ­	// 2006.09.01 ryoji
 		memset_raw( &sItem, 0, sizeof( sItem ));
 		sItem.iItem = index;
 		sItem.mask = LVIF_TEXT;
@@ -313,13 +313,13 @@ int CPropMacro::GetData( HWND hwndDlg )
 		}
 	}
 
-	//	ƒ}ƒNƒƒfƒBƒŒƒNƒgƒŠ
-//@@@ 2002.01.03 YAZAKI ‹¤’Êİ’èwƒ}ƒNƒx‚ªƒ^ƒu‚ğØ‚è‘Ö‚¦‚é‚¾‚¯‚Åİ’è‚ª•Û‘¶‚³‚ê‚È‚¢‚æ‚¤‚ÉB
+	//	ãƒã‚¯ãƒ­ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª
+//@@@ 2002.01.03 YAZAKI å…±é€šè¨­å®šã€ãƒã‚¯ãƒ­ã€ãŒã‚¿ãƒ–ã‚’åˆ‡ã‚Šæ›¿ãˆã‚‹ã ã‘ã§è¨­å®šãŒä¿å­˜ã•ã‚Œãªã„ã‚ˆã†ã«ã€‚
 	::DlgItem_GetText( hwndDlg, IDC_MACRODIR, m_Common.m_sMacro.m_szMACROFOLDER, _MAX_PATH );
-	// 2003.06.23 Moca ƒ}ƒNƒƒtƒHƒ‹ƒ_‚ÌÅŒã‚Ì\‚ª‚È‚¯‚ê‚Î•t‚¯‚é
+	// 2003.06.23 Moca ãƒã‚¯ãƒ­ãƒ•ã‚©ãƒ«ãƒ€ã®æœ€å¾Œã®\ãŒãªã‘ã‚Œã°ä»˜ã‘ã‚‹
 	AddLastChar( m_Common.m_sMacro.m_szMACROFOLDER, _MAX_PATH, _T('\\') );
 	
-	//	ƒ}ƒNƒ’â~ƒ_ƒCƒAƒƒO•\¦‘Ò‚¿ŠÔ
+	//	ãƒã‚¯ãƒ­åœæ­¢ãƒ€ã‚¤ã‚¢ãƒ­ã‚°è¡¨ç¤ºå¾…ã¡æ™‚é–“
 	TCHAR szCancelTimer[16] = {0};
 	::DlgItem_GetText( hwndDlg, IDC_MACROCANCELTIMER, szCancelTimer, _countof(szCancelTimer) );
 	m_Common.m_sMacro.m_nMacroCancelTimer = _ttoi(szCancelTimer);
@@ -333,18 +333,18 @@ void CPropMacro::InitDialog( HWND hwndDlg )
 		const TCHAR *title;
 		int width;
 	} ColumnList[] = {
-		{ _T("”Ô†"), 40 },
-		{ _T("ƒ}ƒNƒ–¼"), 150 },
-		{ _T("ƒtƒ@ƒCƒ‹–¼"), 150 },
-		{ _T("Às‚É“Ç‚İ‚İ"), 40 },
-		{ _T("©“®Às"), 40 },
+		{ _T("ç•ªå·"), 40 },
+		{ _T("ãƒã‚¯ãƒ­å"), 150 },
+		{ _T("ãƒ•ã‚¡ã‚¤ãƒ«å"), 150 },
+		{ _T("å®Ÿè¡Œæ™‚ã«èª­ã¿è¾¼ã¿"), 40 },
+		{ _T("è‡ªå‹•å®Ÿè¡Œ"), 40 },
 	};
 
-	//	ListView‚Ì‰Šú‰»
+	//	ListViewã®åˆæœŸåŒ–
 	HWND hListView = ::GetDlgItem( hwndDlg, IDC_MACROLIST );
 	if( hListView == NULL ){
 		PleaseReportToAuthor( hwndDlg, _T("PropComMacro::InitDlg::NoListView") );
-		return;	//	‚æ‚­‚í‚©‚ç‚ñ‚¯‚Ç¸”s‚µ‚½	
+		return;	//	ã‚ˆãã‚ã‹ã‚‰ã‚“ã‘ã©å¤±æ•—ã—ãŸ	
 	}
 
 	LVCOLUMN sColumn;
@@ -361,15 +361,15 @@ void CPropMacro::InitDialog( HWND hwndDlg )
 		
 		if( ListView_InsertColumn( hListView, pos, &sColumn ) < 0 ){
 			PleaseReportToAuthor( hwndDlg, _T("PropComMacro::InitDlg::ColumnRegistrationFail") );
-			return;	//	‚æ‚­‚í‚©‚ç‚ñ‚¯‚Ç¸”s‚µ‚½
+			return;	//	ã‚ˆãã‚ã‹ã‚‰ã‚“ã‘ã©å¤±æ•—ã—ãŸ
 		}
 	}
 
-	//	ƒƒ‚ƒŠ‚ÌŠm•Û
-	//	•K—v‚È”‚¾‚¯æ‚ÉŠm•Û‚·‚éD
+	//	ãƒ¡ãƒ¢ãƒªã®ç¢ºä¿
+	//	å¿…è¦ãªæ•°ã ã‘å…ˆã«ç¢ºä¿ã™ã‚‹ï¼
 	ListView_SetItemCount( hListView, MAX_CUSTMACRO );
 
-	//	Index•”•ª‚Ì“o˜^
+	//	Indexéƒ¨åˆ†ã®ç™»éŒ²
 	for( pos = 0; pos < MAX_CUSTMACRO ; ++pos ){
 		LVITEM sItem;
 		TCHAR buf[4];
@@ -383,7 +383,7 @@ void CPropMacro::InitDialog( HWND hwndDlg )
 		ListView_InsertItem( hListView, &sItem );
 	}
 	
-	// “o˜^æw’è ComboBox‚Ì‰Šú‰»
+	// ç™»éŒ²å…ˆæŒ‡å®š ComboBoxã®åˆæœŸåŒ–
 	HWND hNumCombo = ::GetDlgItem( hwndDlg, IDC_COMBO_MACROID );
 	for( pos = 0; pos < MAX_CUSTMACRO ; ++pos ){
 		wchar_t buf[10];
@@ -391,11 +391,11 @@ void CPropMacro::InitDialog( HWND hwndDlg )
 		int result = Combo_AddString( hNumCombo, buf );
 		if( result == CB_ERR ){
 			PleaseReportToAuthor( hwndDlg, _T("PropComMacro::InitDlg::AddMacroId") );
-			return;	//	‚æ‚­‚í‚©‚ç‚ñ‚¯‚Ç¸”s‚µ‚½
+			return;	//	ã‚ˆãã‚ã‹ã‚‰ã‚“ã‘ã©å¤±æ•—ã—ãŸ
 		}
 		else if( result == CB_ERRSPACE ){
 			PleaseReportToAuthor( hwndDlg, _T("PropComMacro::InitDlg::AddMacroId/InsufficientSpace") );
-			return;	//	‚æ‚­‚í‚©‚ç‚ñ‚¯‚Ç¸”s‚µ‚½
+			return;	//	ã‚ˆãã‚ã‹ã‚‰ã‚“ã‘ã©å¤±æ•—ã—ãŸ
 		}
 	}
 	Combo_SetCurSel( hNumCombo, 0 );
@@ -409,14 +409,14 @@ void CPropMacro::SetMacro2List_Macro( HWND hwndDlg )
 	HWND hListView = ::GetDlgItem( hwndDlg, IDC_MACROLIST );
 	HWND hNum = ::GetDlgItem( hwndDlg, IDC_COMBO_MACROID );
 
-	//	İ’èææ“¾
+	//	è¨­å®šå…ˆå–å¾—
 	index = Combo_GetCurSel( hNum );
 	if( index == CB_ERR ){
 		PleaseReportToAuthor( hwndDlg, _T("PropComMacro::SetMacro2List::GetCurSel") );
-		return;	//	‚æ‚­‚í‚©‚ç‚ñ‚¯‚Ç¸”s‚µ‚½
+		return;	//	ã‚ˆãã‚ã‹ã‚‰ã‚“ã‘ã©å¤±æ•—ã—ãŸ
 	}
 
-	// ƒ}ƒNƒ–¼
+	// ãƒã‚¯ãƒ­å
 	memset_raw( &sItem, 0, sizeof( sItem ));
 	sItem.iItem = index;
 	sItem.mask = LVIF_TEXT;
@@ -427,7 +427,7 @@ void CPropMacro::SetMacro2List_Macro( HWND hwndDlg )
 	sItem.pszText = buf;
 	ListView_SetItem( hListView, &sItem );
 
-	// ƒtƒ@ƒCƒ‹–¼
+	// ãƒ•ã‚¡ã‚¤ãƒ«å
 	memset_raw( &sItem, 0, sizeof( sItem ));
 	sItem.iItem = index;
 	sItem.mask = LVIF_TEXT;
@@ -437,7 +437,7 @@ void CPropMacro::SetMacro2List_Macro( HWND hwndDlg )
 	sItem.pszText = buf;
 	ListView_SetItem( hListView, &sItem );
 
-	// ƒ`ƒFƒbƒN
+	// ãƒã‚§ãƒƒã‚¯
 	memset_raw( &sItem, 0, sizeof( sItem ));
 	sItem.iItem = index;
 	sItem.mask = LVIF_TEXT;
@@ -445,7 +445,7 @@ void CPropMacro::SetMacro2List_Macro( HWND hwndDlg )
 	sItem.pszText = const_cast<TCHAR*>(::IsDlgButtonChecked( hwndDlg, IDC_CHECK_RELOADWHENEXECUTE ) ? _T("on") : _T("off"));
 	ListView_SetItem( hListView, &sItem );
 
-	// ©“®Àsƒ}ƒNƒ	// 2006.09.01 ryoji
+	// è‡ªå‹•å®Ÿè¡Œãƒã‚¯ãƒ­	// 2006.09.01 ryoji
 	int nMacroOnOpened = -1;
 	int nMacroOnTypeChanged = -1;
 	int nMacroOnSave = -1;
@@ -502,27 +502,27 @@ void CPropMacro::SetMacro2List_Macro( HWND hwndDlg )
 }
 
 /*!
-	MacroŠi”[—pƒfƒBƒŒƒNƒgƒŠ‚ğ‘I‘ğ‚·‚é
+	Macroæ ¼ç´ç”¨ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’é¸æŠã™ã‚‹
 
-	@param hwndDlg [in] ƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX‚ÌƒEƒBƒ“ƒhƒEƒnƒ“ƒhƒ‹
+	@param hwndDlg [in] ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒœãƒƒã‚¯ã‚¹ã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒãƒ³ãƒ‰ãƒ«
 */
 void CPropMacro::SelectBaseDir_Macro( HWND hwndDlg )
 {
 	TCHAR szDir[_MAX_PATH];
 
-	/* ŒŸõƒtƒHƒ‹ƒ_ */
+	/* æ¤œç´¢ãƒ•ã‚©ãƒ«ãƒ€ */
 	::DlgItem_GetText( hwndDlg, IDC_MACRODIR, szDir, _countof(szDir) );
 
-	// 2003.06.23 Moca ‘Š‘ÎƒpƒX‚ÍÀsƒtƒ@ƒCƒ‹‚©‚ç‚ÌƒpƒX
-	// 2007.05.19 ryoji ‘Š‘ÎƒpƒX‚Íİ’èƒtƒ@ƒCƒ‹‚©‚ç‚ÌƒpƒX‚ğ—Dæ
+	// 2003.06.23 Moca ç›¸å¯¾ãƒ‘ã‚¹ã¯å®Ÿè¡Œãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ã®ãƒ‘ã‚¹
+	// 2007.05.19 ryoji ç›¸å¯¾ãƒ‘ã‚¹ã¯è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ã®ãƒ‘ã‚¹ã‚’å„ªå…ˆ
 	if( _IS_REL_PATH( szDir ) ){
 		TCHAR folder[_MAX_PATH];
 		_tcscpy( folder, szDir );
 		GetInidirOrExedir( szDir, folder );
 	}
 
-	if( SelectDir( hwndDlg, _T("MacroƒfƒBƒŒƒNƒgƒŠ‚Ì‘I‘ğ"), szDir, szDir ) ){
-		//	––”ö‚É\\ƒ}[ƒN‚ğ’Ç‰Á‚·‚éD
+	if( SelectDir( hwndDlg, _T("Macroãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®é¸æŠ"), szDir, szDir ) ){
+		//	æœ«å°¾ã«\\ãƒãƒ¼ã‚¯ã‚’è¿½åŠ ã™ã‚‹ï¼
 		AddLastChar( szDir, _countof(szDir), _T('\\') );
 		::DlgItem_SetText( hwndDlg, IDC_MACRODIR, szDir );
 	}
@@ -530,10 +530,10 @@ void CPropMacro::SelectBaseDir_Macro( HWND hwndDlg )
 
 
 /*!
-	ƒ}ƒNƒƒtƒ@ƒCƒ‹w’è—pƒRƒ“ƒ{ƒ{ƒbƒNƒX‚Ìƒhƒƒbƒvƒ_ƒEƒ“ƒŠƒXƒg‚ªŠJ‚©‚ê‚é‚Æ‚«‚ÉC
-	w’èƒfƒBƒŒƒNƒgƒŠ‚Ìƒtƒ@ƒCƒ‹ˆê——‚©‚çŒó•â‚ğ¶¬‚·‚éD
+	ãƒã‚¯ãƒ­ãƒ•ã‚¡ã‚¤ãƒ«æŒ‡å®šç”¨ã‚³ãƒ³ãƒœãƒœãƒƒã‚¯ã‚¹ã®ãƒ‰ãƒ­ãƒƒãƒ—ãƒ€ã‚¦ãƒ³ãƒªã‚¹ãƒˆãŒé–‹ã‹ã‚Œã‚‹ã¨ãã«ï¼Œ
+	æŒ‡å®šãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®ãƒ•ã‚¡ã‚¤ãƒ«ä¸€è¦§ã‹ã‚‰å€™è£œã‚’ç”Ÿæˆã™ã‚‹ï¼
 
-	@param hwndDlg [in] ƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX‚ÌƒEƒBƒ“ƒhƒEƒnƒ“ƒhƒ‹
+	@param hwndDlg [in] ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒœãƒƒã‚¯ã‚¹ã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒãƒ³ãƒ‰ãƒ«
 */
 void CPropMacro::OnFileDropdown_Macro( HWND hwndDlg )
 {
@@ -543,19 +543,19 @@ void CPropMacro::OnFileDropdown_Macro( HWND hwndDlg )
 	TCHAR path[_MAX_PATH * 2];
 	::DlgItem_GetText( hwndDlg, IDC_MACRODIR, path, _countof(path) );
 
-	// 2003.06.23 Moca ‘Š‘ÎƒpƒX‚ÍÀsƒtƒ@ƒCƒ‹‚©‚ç‚ÌƒpƒX
-	// 2007.05.19 ryoji ‘Š‘ÎƒpƒX‚Íİ’èƒtƒ@ƒCƒ‹‚©‚ç‚ÌƒpƒX‚ğ—Dæ
+	// 2003.06.23 Moca ç›¸å¯¾ãƒ‘ã‚¹ã¯å®Ÿè¡Œãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ã®ãƒ‘ã‚¹
+	// 2007.05.19 ryoji ç›¸å¯¾ãƒ‘ã‚¹ã¯è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ã®ãƒ‘ã‚¹ã‚’å„ªå…ˆ
 	if( _IS_REL_PATH( path ) ){
 		TCHAR folder[_MAX_PATH * 2];
 		_tcscpy( folder, path );
 		GetInidirOrExedir( path, folder );
 	}
-	_tcscat( path, _T("*.*") );	//	2002/05/01 YAZAKI ‚Ç‚ñ‚Èƒtƒ@ƒCƒ‹‚à‚Ç‚ñ‚Æ—ˆ‚¢B
+	_tcscat( path, _T("*.*") );	//	2002/05/01 YAZAKI ã©ã‚“ãªãƒ•ã‚¡ã‚¤ãƒ«ã‚‚ã©ã‚“ã¨æ¥ã„ã€‚
 
-	//	Œó•â‚Ì‰Šú‰»
+	//	å€™è£œã®åˆæœŸåŒ–
 	Combo_ResetContent( hCombo );
 
-	//	ƒtƒ@ƒCƒ‹‚ÌŒŸõ
+	//	ãƒ•ã‚¡ã‚¤ãƒ«ã®æ¤œç´¢
 	WIN32_FIND_DATA wf;
 	hFind = FindFirstFile(path, &wf);
 
@@ -564,10 +564,10 @@ void CPropMacro::OnFileDropdown_Macro( HWND hwndDlg )
 	}
 
 	do {
-		//	ƒRƒ“ƒ{ƒ{ƒbƒNƒX‚Éİ’è
-		//	‚Å‚à.‚Æ..‚ÍŠ¨•ÙB
+		//	ã‚³ãƒ³ãƒœãƒœãƒƒã‚¯ã‚¹ã«è¨­å®š
+		//	ã§ã‚‚.ã¨..ã¯å‹˜å¼ã€‚
 		//if (_tcscmp( wf.cFileName, _T(".") ) != 0 && _tcscmp( wf.cFileName, _T("..") ) != 0){
-		if( (wf.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == 0 ){	// 2009.02.12 ryoji ƒtƒHƒ‹ƒ_‚ğœŠO
+		if( (wf.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == 0 ){	// 2009.02.12 ryoji ãƒ•ã‚©ãƒ«ãƒ€ã‚’é™¤å¤–
 			int result = Combo_AddString( hCombo, wf.cFileName );
 			if( result == CB_ERR || result == CB_ERRSPACE )
 				break;
@@ -582,7 +582,7 @@ void CPropMacro::CheckListPosition_Macro( HWND hwndDlg )
 	HWND hListView = ::GetDlgItem( hwndDlg, IDC_MACROLIST );
 	HWND hNum = ::GetDlgItem( hwndDlg, IDC_COMBO_MACROID );
 	
-	//	Œ»İ‚ÌFocusæ“¾
+	//	ç¾åœ¨ã®Focuså–å¾—
 	int current = ListView_GetNextItem( hListView, -1, LVNI_SELECTED);
 
 	if( current == -1 || current == nLastPos_Macro )
@@ -590,10 +590,10 @@ void CPropMacro::CheckListPosition_Macro( HWND hwndDlg )
 
 	nLastPos_Macro = current;
 	
-	//	‰Šú’l‚Ìİ’è
+	//	åˆæœŸå€¤ã®è¨­å®š
 	Combo_SetCurSel( hNum, nLastPos_Macro );
 	
-	TCHAR buf[MAX_PATH + MACRONAME_MAX];	// MAX_PATH‚ÆMACRONAME_MAX‚Ì—¼•û‚æ‚è‘å‚«‚¢’l
+	TCHAR buf[MAX_PATH + MACRONAME_MAX];	// MAX_PATHã¨MACRONAME_MAXã®ä¸¡æ–¹ã‚ˆã‚Šå¤§ãã„å€¤
 	LVITEM sItem;
 
 	memset_raw( &sItem, 0, sizeof( sItem ));
@@ -630,7 +630,7 @@ void CPropMacro::CheckListPosition_Macro( HWND hwndDlg )
 		::CheckDlgButton( hwndDlg, IDC_CHECK_RELOADWHENEXECUTE, false );
 	}
 
-	// ©“®Àsƒ}ƒNƒ	// 2006.09.01 ryoji
+	// è‡ªå‹•å®Ÿè¡Œãƒã‚¯ãƒ­	// 2006.09.01 ryoji
 	memset_raw( &sItem, 0, sizeof( sItem ));
 	sItem.iItem = current;
 	sItem.mask = LVIF_TEXT;

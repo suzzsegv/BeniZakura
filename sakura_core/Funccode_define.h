@@ -1,8 +1,8 @@
 #ifndef SAKURA_HEADERMAKE_98B26AB2_D5C9_4884_8D15_D1F3A2936253_H_
 #define SAKURA_HEADERMAKE_98B26AB2_D5C9_4884_8D15_D1F3A2936253_H_
 
-//‚±‚Ìƒtƒ@ƒCƒ‹‚Í HeaderMake ‚É‚æ‚è Funccode_x.hsrc ‚©‚ç¶¬‚³‚ê‚½ƒtƒ@ƒCƒ‹‚Å‚·B
-//’¼Ú•ÒW‚µ‚È‚¢‚Å‚­‚¾‚³‚¢B
+//ã“ã®ãƒ•ã‚¡ã‚¤ãƒ«ã¯ HeaderMake ã«ã‚ˆã‚Š Funccode_x.hsrc ã‹ã‚‰ç”Ÿæˆã•ã‚ŒãŸãƒ•ã‚¡ã‚¤ãƒ«ã§ã™ã€‚
+//ç›´æ¥ç·¨é›†ã—ãªã„ã§ãã ã•ã„ã€‚
 
 #define F_INVALID -1
 #define F_DEFAULT 0

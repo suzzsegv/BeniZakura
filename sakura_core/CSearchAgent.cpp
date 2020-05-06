@@ -19,7 +19,7 @@
 inline int CSearchStringPattern::GetMapIndex( wchar_t c )
 {
 	// ASCII    => 0x000 - 0x0ff
-	// ‚»‚êˆÈŠO => 0x100 - 0x1ff
+	// ãã‚Œä»¥å¤– => 0x100 - 0x1ff
 	return ((c & 0xff00) ? 0x100 : 0 ) | (c & 0xff);
 }
 
@@ -34,9 +34,9 @@ CSearchStringPattern::CSearchStringPattern( const wchar_t* pszPattern, int nPatt
 {
 	m_pszPatternCase = new wchar_t[nPatternLen + 1];
 	m_nPatternLen = nPatternLen;
-	m_bIgnoreCase = !bLoHiCase; // ’: ƒtƒ‰ƒO‚ª”½‘Î
+	m_bIgnoreCase = !bLoHiCase; // æ³¨: ãƒ•ãƒ©ã‚°ãŒåå¯¾
 	if( m_bIgnoreCase ){
-		//note: ‡¬•¶š,ƒTƒƒQ[ƒg‚Ìu‘å•¶š¬•¶š“¯ˆê‹v–¢‘Î‰
+		//note: åˆæˆæ–‡å­—,ã‚µãƒ­ã‚²ãƒ¼ãƒˆã®ã€Œå¤§æ–‡å­—å°æ–‡å­—åŒä¸€è¦–ã€æœªå¯¾å¿œ
 		for( int i = 0; i < m_nPatternLen; i++ ){
 			m_pszPatternCase[i] = (wchar_t)skr_towupper(pszPattern[i]);
 		}
@@ -65,8 +65,8 @@ CSearchStringPattern::CSearchStringPattern( const wchar_t* pszPattern, int nPatt
 
 #ifdef SEARCH_STRING_SUNDAY_QUICK
 	const int BM_MAPSIZE = 0x1ff + 1;
-	// 64KB ‚àì‚ç‚È‚¢‚ÅAASCII ‚»‚êˆÈŠO(•ïŠ‡) ‚Ì2‚Â‚Ìî•ñ‚Ì‚İ‹L˜^‚·‚é
-	// u‚ v‚Æu˜§v@u‚£v‚Æu‹v‚Í’l‚ğ‹¤—L‚µ‚Ä‚¢‚é
+	// 64KB ã‚‚ä½œã‚‰ãªã„ã§ã€ASCII ãã‚Œä»¥å¤–(åŒ…æ‹¬) ã®2ã¤ã®æƒ…å ±ã®ã¿è¨˜éŒ²ã™ã‚‹
+	// ã€Œã‚ã€ã¨ã€Œä¹‚ã€ã€€ã€Œã…ã€ã¨ã€Œå±…ã€ã¯å€¤ã‚’å…±æœ‰ã—ã¦ã„ã‚‹
 	m_pnUseCharSkipArr = new int[BM_MAPSIZE];
 	for( int n = 0; n < BM_MAPSIZE; ++n ){
 		m_pnUseCharSkipArr[n] = nPatternLen + 1;
@@ -93,8 +93,8 @@ CSearchStringPattern::~CSearchStringPattern()
 #define toLoHiUpper(bLoHiCase, ch) (bLoHiCase? (ch) : skr_towupper(ch))
 
 /*!
-	•¶š—ñŒŸõ
-	@return Œ©‚Â‚©‚Á‚½êŠ‚Ìƒ|ƒCƒ“ƒ^BŒ©‚Â‚©‚ç‚È‚©‚Á‚½‚çNULLB
+	æ–‡å­—åˆ—æ¤œç´¢
+	@return è¦‹ã¤ã‹ã£ãŸå ´æ‰€ã®ãƒã‚¤ãƒ³ã‚¿ã€‚è¦‹ã¤ã‹ã‚‰ãªã‹ã£ãŸã‚‰NULLã€‚
 */
 const wchar_t* CSearchAgent::SearchString(
 	const wchar_t*	pLine,
@@ -117,12 +117,12 @@ const wchar_t* CSearchAgent::SearchString(
 		return NULL;
 	}
 
-	// üŒ`’Tõ
+	// ç·šå½¢æ¢ç´¢
 	const int nCompareTo = nLineLen - nPatternLen;	//	Mar. 4, 2001 genta
 
 #ifdef SEARCH_STRING_KMP
-	/* ‘å•¶š¬•¶š‚ğ‹æ•Ê‚µ‚È‚¢A‚©‚ÂAŒŸõŒê‚ª5•¶šˆÈ‰º‚Ìê‡‚Í’Êí‚ÌŒŸõ‚ğs‚¤
-	 * ‚»‚¤‚Å‚È‚¢ê‡‚ÍKMP{SUNDAY QUICKƒAƒ‹ƒSƒŠƒYƒ€‚ğg‚Á‚½ŒŸõ‚ğs‚¤ */
+	/* å¤§æ–‡å­—å°æ–‡å­—ã‚’åŒºåˆ¥ã—ãªã„ã€ã‹ã¤ã€æ¤œç´¢èªãŒ5æ–‡å­—ä»¥ä¸‹ã®å ´åˆã¯é€šå¸¸ã®æ¤œç´¢ã‚’è¡Œã†
+	 * ãã†ã§ãªã„å ´åˆã¯KMPï¼‹SUNDAY QUICKã‚¢ãƒ«ã‚´ãƒªã‚ºãƒ ã‚’ä½¿ã£ãŸæ¤œç´¢ã‚’è¡Œã† */
 	if ( bLoHiCase || nPatternLen > 5 ) {
 		const wchar_t pattern0 = pszPattern[0];
 		const int* const nextTable = pattern.GetKMPNextTable();
@@ -136,7 +136,7 @@ const wchar_t* CSearchAgent::SearchString(
 #endif
 				continue;
 			}
-			// “r’†‚Ü‚Åˆê’v‚È‚ç‚¸‚ç‚µ‚ÄŒp‘±(KMP)
+			// é€”ä¸­ã¾ã§ä¸€è‡´ãªã‚‰ãšã‚‰ã—ã¦ç¶™ç¶š(KMP)
 			int i = 1;
 			nPos++;
 			while ( 0 < i ){
@@ -149,11 +149,11 @@ const wchar_t* CSearchAgent::SearchString(
 				}
 				i = nextTable[i];
 			}
-			assert( 0 == i ); // -1ƒ`ƒFƒbƒN
+			assert( 0 == i ); // -1ãƒã‚§ãƒƒã‚¯
 		}
 	} else {
 #endif
-		// ’Êí”Å
+		// é€šå¸¸ç‰ˆ
 		int	nPos;
 		for( nPos = nIdxPos; nPos <= nCompareTo; nPos += CNativeW::GetSizeOfChar(pLine, nLineLen, nPos) ){
 			int n = bLoHiCase?
@@ -169,7 +169,7 @@ const wchar_t* CSearchAgent::SearchString(
 	return NULL;
 }
 
-/* ŒŸõğŒ‚Ìî•ñ(ƒL[•¶š—ñ‚Ì‘SŠp‚©”¼Šp‚©‚Ì”z—ñ)ì¬ */
+/* æ¤œç´¢æ¡ä»¶ã®æƒ…å ±(ã‚­ãƒ¼æ–‡å­—åˆ—ã®å…¨è§’ã‹åŠè§’ã‹ã®é…åˆ—)ä½œæˆ */
 void CSearchAgent::CreateCharCharsArr(
 	const wchar_t*	pszPattern,
 	int				nSrcLen,
@@ -194,7 +194,7 @@ void CSearchAgent::CreateCharCharsArr(
 	return;
 }
 
-/*!	’PŒê’PˆÊ‚Ì’PŒêƒŠƒXƒgì¬
+/*!	å˜èªå˜ä½ã®å˜èªãƒªã‚¹ãƒˆä½œæˆ
 */
 void CSearchAgent::CreateWordList(
 	std::vector<std::pair<const wchar_t*, CLogicInt> >&	searchWords,
@@ -203,12 +203,12 @@ void CSearchAgent::CreateWordList(
 )
 {
 	for( CLogicInt pos = CLogicInt(0); pos < nPatternLen; ) {
-		CLogicInt begin, end; // ŒŸõŒê‚ÉŠÜ‚Ü‚ê‚é’PŒê?‚Ì pos‚ğŠî€‚Æ‚µ‚½‘Š‘ÎˆÊ’uBWhereCurrentWord_2()‚Ìd—l‚Å‚Í‹ó”’•¶š—ñ‚à’PŒê‚ÉŠÜ‚Ü‚ê‚éB
+		CLogicInt begin, end; // æ¤œç´¢èªã«å«ã¾ã‚Œã‚‹å˜èª?ã® posã‚’åŸºæº–ã¨ã—ãŸç›¸å¯¾ä½ç½®ã€‚WhereCurrentWord_2()ã®ä»•æ§˜ã§ã¯ç©ºç™½æ–‡å­—åˆ—ã‚‚å˜èªã«å«ã¾ã‚Œã‚‹ã€‚
 		if( CWordParse::WhereCurrentWord_2( pszPattern + pos, nPatternLen - pos, CLogicInt(0), &begin, &end, NULL, NULL )
 			&& begin == 0 && begin < end
 		) {
 			if( ! WCODE::IsWordDelimiter( pszPattern[pos] ) ) {
-				// pszPattern[pos]...pszPattern[pos + end] ‚ªŒŸõŒê‚ÉŠÜ‚Ü‚ê‚é’PŒêB
+				// pszPattern[pos]...pszPattern[pos + end] ãŒæ¤œç´¢èªã«å«ã¾ã‚Œã‚‹å˜èªã€‚
 				searchWords.push_back( std::make_pair( pszPattern + pos, end ) );
 			}
 			pos += end;
@@ -219,7 +219,7 @@ void CSearchAgent::CreateWordList(
 }
 
 
-/*!	’PŒê’PˆÊŒŸõ
+/*!	å˜èªå˜ä½æ¤œç´¢
 */
 const wchar_t* CSearchAgent::SearchStringWord(
 	const wchar_t*	pLine,
@@ -237,7 +237,7 @@ const wchar_t* CSearchAgent::SearchStringWord(
 		size_t nSize = searchWords.size();
 		for( size_t iSW = 0; iSW < nSize; ++iSW ) {
 			if( searchWords[iSW].second == nNextWordTo2 - nNextWordFrom2 ){
-				/* 1==‘å•¶š¬•¶š‚Ì‹æ•Ê */
+				/* 1==å¤§æ–‡å­—å°æ–‡å­—ã®åŒºåˆ¥ */
 				if( (!bLoHiCase && 0 == auto_memicmp( &(pLine[nNextWordFrom2]) , searchWords[iSW].first, searchWords[iSW].second ) ) ||
 					(bLoHiCase && 0 == auto_memcmp( &(pLine[nNextWordFrom2]) , searchWords[iSW].first, searchWords[iSW].second ) )
 				){
@@ -247,7 +247,7 @@ const wchar_t* CSearchAgent::SearchStringWord(
 			}
 		}
 		if( !CWordParse::SearchNextWordPosition( pLine, CLogicInt(nLineLen), nNextWordFrom, &nNextWordFrom, FALSE ) ){
-			break;	//	Ÿ‚Ì’PŒê‚ª–³‚¢B
+			break;	//	æ¬¡ã®å˜èªãŒç„¡ã„ã€‚
 		}
 	}
 	*pnMatchLen = 0;
@@ -257,8 +257,8 @@ const wchar_t* CSearchAgent::SearchStringWord(
 
 
 
-/* Œ»İˆÊ’u‚Ì’PŒê‚Ì”ÍˆÍ‚ğ’²‚×‚é */
-// 2001/06/23 N.Nakatani WhereCurrentWord()•ÏX WhereCurrentWord_2‚ğƒR[ƒ‹‚·‚é‚æ‚¤‚É‚µ‚½
+/* ç¾åœ¨ä½ç½®ã®å˜èªã®ç¯„å›²ã‚’èª¿ã¹ã‚‹ */
+// 2001/06/23 N.Nakatani WhereCurrentWord()å¤‰æ›´ WhereCurrentWord_2ã‚’ã‚³ãƒ¼ãƒ«ã™ã‚‹ã‚ˆã†ã«ã—ãŸ
 bool CSearchAgent::WhereCurrentWord(
 	CLogicInt	nLineNum,
 	CLogicInt	nIdx,
@@ -279,20 +279,20 @@ bool CSearchAgent::WhereCurrentWord(
 	CLogicInt		nLineLen;
 	const wchar_t*	pLine = pDocLine->GetDocLineStrWithEOL( &nLineLen );
 
-	/* Œ»İˆÊ’u‚Ì’PŒê‚Ì”ÍˆÍ‚ğ’²‚×‚é */
+	/* ç¾åœ¨ä½ç½®ã®å˜èªã®ç¯„å›²ã‚’èª¿ã¹ã‚‹ */
 	return CWordParse::WhereCurrentWord_2( pLine, nLineLen, nIdx, pnIdxFrom, pnIdxTo, pcmcmWord, pcmcmWordLeft );
 }
 
 
 
 
-// Œ»İˆÊ’u‚Ì¶‰E‚Ì’PŒê‚Ìæ“ªˆÊ’u‚ğ’²‚×‚é
+// ç¾åœ¨ä½ç½®ã®å·¦å³ã®å˜èªã®å…ˆé ­ä½ç½®ã‚’èª¿ã¹ã‚‹
 bool CSearchAgent::PrevOrNextWord(
-	CLogicInt	nLineNum,		//	s”
-	CLogicInt	nIdx,			//	Œ…”
-	CLogicInt*	pnColumnNew,	//	Œ©‚Â‚©‚Á‚½ˆÊ’u
-	BOOL		bLEFT,			//	TRUE:‘O•ûi¶j‚ÖŒü‚©‚¤BFALSE:Œã•ûi‰Ej‚ÖŒü‚©‚¤B
-	BOOL		bStopsBothEnds	//	’PŒê‚Ì—¼’[‚Å~‚Ü‚é
+	CLogicInt	nLineNum,		//	è¡Œæ•°
+	CLogicInt	nIdx,			//	æ¡æ•°
+	CLogicInt*	pnColumnNew,	//	è¦‹ã¤ã‹ã£ãŸä½ç½®
+	BOOL		bLEFT,			//	TRUE:å‰æ–¹ï¼ˆå·¦ï¼‰ã¸å‘ã‹ã†ã€‚FALSE:å¾Œæ–¹ï¼ˆå³ï¼‰ã¸å‘ã‹ã†ã€‚
+	BOOL		bStopsBothEnds	//	å˜èªã®ä¸¡ç«¯ã§æ­¢ã¾ã‚‹
 )
 {
 	using namespace WCODE;
@@ -305,30 +305,30 @@ bool CSearchAgent::PrevOrNextWord(
 	CLogicInt		nLineLen;
 	const wchar_t*	pLine = pDocLine->GetDocLineStrWithEOL( &nLineLen );
 
-	// ABC D[EOF]‚Æ‚È‚Á‚Ä‚¢‚½‚Æ‚«‚ÉAD‚ÌŒã‚ë‚ÉƒJ[ƒ\ƒ‹‚ğ‡‚í‚¹A’PŒê‚Ì¶’[‚ÉˆÚ“®‚·‚é‚ÆAA‚ÉƒJ[ƒ\ƒ‹‚ª‚ ‚¤ƒoƒOC³BYAZAKI
+	// ABC D[EOF]ã¨ãªã£ã¦ã„ãŸã¨ãã«ã€Dã®å¾Œã‚ã«ã‚«ãƒ¼ã‚½ãƒ«ã‚’åˆã‚ã›ã€å˜èªã®å·¦ç«¯ã«ç§»å‹•ã™ã‚‹ã¨ã€Aã«ã‚«ãƒ¼ã‚½ãƒ«ãŒã‚ã†ãƒã‚°ä¿®æ­£ã€‚YAZAKI
 	if( nIdx >= nLineLen ){
 		if (bLEFT && nIdx == nLineLen){
 		}
 		else {
-			// 2011.12.26 EOF‚æ‚è‰E‚Ös‚±‚¤‚Æ‚·‚é‚Æ‚«‚àfalse‚ğ•Ô‚·‚æ‚¤‚É
+			// 2011.12.26 EOFã‚ˆã‚Šå³ã¸è¡Œã“ã†ã¨ã™ã‚‹ã¨ãã‚‚falseã‚’è¿”ã™ã‚ˆã†ã«
 			// nIdx = nLineLen - CLogicInt(1);
 			return false;
 		}
 	}
-	/* Œ»İˆÊ’u‚Ì•¶š‚Ìí—Ş‚É‚æ‚Á‚Ä‚Í‘I‘ğ•s”\ */
+	/* ç¾åœ¨ä½ç½®ã®æ–‡å­—ã®ç¨®é¡ã«ã‚ˆã£ã¦ã¯é¸æŠä¸èƒ½ */
 	if( !bLEFT && ( pLine[nIdx] == CR || pLine[nIdx] == LF ) ){
 		return false;
 	}
-	/* ‘O‚Ì’PŒê‚©HŒã‚ë‚Ì’PŒê‚©H */
+	/* å‰ã®å˜èªã‹ï¼Ÿå¾Œã‚ã®å˜èªã‹ï¼Ÿ */
 	if( bLEFT ){
-		/* Œ»İˆÊ’u‚Ì•¶š‚Ìí—Ş‚ğ’²‚×‚é */
+		/* ç¾åœ¨ä½ç½®ã®æ–‡å­—ã®ç¨®é¡ã‚’èª¿ã¹ã‚‹ */
 		ECharKind	nCharKind = CWordParse::WhatKindOfChar( pLine, nLineLen, nIdx );
 		if( nIdx == 0 ){
 			return false;
 		}
 
-		/* •¶ší—Ş‚ª•Ï‚í‚é‚Ü‚Å‘O•û‚ÖƒT[ƒ` */
-		/* ‹ó”’‚Æƒ^ƒu‚Í–³‹‚·‚é */
+		/* æ–‡å­—ç¨®é¡ãŒå¤‰ã‚ã‚‹ã¾ã§å‰æ–¹ã¸ã‚µãƒ¼ãƒ */
+		/* ç©ºç™½ã¨ã‚¿ãƒ–ã¯ç„¡è¦–ã™ã‚‹ */
 		int		nCount = 0;
 		CLogicInt	nIdxNext = nIdx;
 		CLogicInt	nCharChars = CLogicInt(&pLine[nIdxNext] - CNativeW::GetCharPrev( pLine, nLineLen, &pLine[nIdxNext] ));
@@ -339,7 +339,7 @@ bool CSearchAgent::PrevOrNextWord(
 
 			ECharKind nCharKindMerge = CWordParse::WhatKindOfTwoChars( nCharKindNext, nCharKind );
 			if( nCharKindMerge == CK_NULL ){
-				/* ƒT[ƒ`ŠJnˆÊ’u‚Ì•¶š‚ª‹ó”’‚Ü‚½‚Íƒ^ƒu‚Ìê‡ */
+				/* ã‚µãƒ¼ãƒé–‹å§‹ä½ç½®ã®æ–‡å­—ãŒç©ºç™½ã¾ãŸã¯ã‚¿ãƒ–ã®å ´åˆ */
 				if( nCharKind == CK_TAB	|| nCharKind == CK_SPACE ){
 					if ( bStopsBothEnds && nCount ){
 						nIdxNext = nIdxNextPrev;
@@ -369,19 +369,19 @@ bool CSearchAgent::PrevOrNextWord(
 
 
 
-/*! ’PŒêŒŸõ
+/*! å˜èªæ¤œç´¢
 
-	@date 2003.05.22 ‚©‚ë‚Æ s“ªˆ—‚È‚ÇŒ©’¼‚µ
-	@date 2005.11.26 ‚©‚ë‚Æ \r‚â.‚ª\r\n‚Éƒqƒbƒg‚µ‚È‚¢‚æ‚¤‚É
+	@date 2003.05.22 ã‹ã‚ã¨ è¡Œé ­å‡¦ç†ãªã©è¦‹ç›´ã—
+	@date 2005.11.26 ã‹ã‚ã¨ \rã‚„.ãŒ\r\nã«ãƒ’ãƒƒãƒˆã—ãªã„ã‚ˆã†ã«
 */
-/* Œ©‚Â‚©‚ç‚È‚¢ê‡‚Í‚O‚ğ•Ô‚· */
+/* è¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã¯ï¼ã‚’è¿”ã™ */
 int CSearchAgent::SearchWord(
-	CLogicPoint				ptSerachBegin,	//!< ŒŸõŠJnˆÊ’u
-	const wchar_t*			pszPattern,		//!< ŒŸõğŒ
-	ESearchDirection		eDirection,		//!< ŒŸõ•ûŒü
-	const SSearchOption&	sSearchOption,	//!< ŒŸõƒIƒvƒVƒ‡ƒ“
-	CLogicRange*			pMatchRange,	//!< [out] ƒ}ƒbƒ`”ÍˆÍBƒƒWƒbƒN’PˆÊB
-	CBregexp*				pRegexp			//!< [in]  ³‹K•\Œ»ƒRƒ“ƒpƒCƒ‹ƒf[ƒ^BŠù‚ÉƒRƒ“ƒpƒCƒ‹‚³‚ê‚Ä‚¢‚é•K—v‚ª‚ ‚é
+	CLogicPoint				ptSerachBegin,	//!< æ¤œç´¢é–‹å§‹ä½ç½®
+	const wchar_t*			pszPattern,		//!< æ¤œç´¢æ¡ä»¶
+	ESearchDirection		eDirection,		//!< æ¤œç´¢æ–¹å‘
+	const SSearchOption&	sSearchOption,	//!< æ¤œç´¢ã‚ªãƒ—ã‚·ãƒ§ãƒ³
+	CLogicRange*			pMatchRange,	//!< [out] ãƒãƒƒãƒç¯„å›²ã€‚ãƒ­ã‚¸ãƒƒã‚¯å˜ä½ã€‚
+	CBregexp*				pRegexp			//!< [in]  æ­£è¦è¡¨ç¾ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ãƒ‡ãƒ¼ã‚¿ã€‚æ—¢ã«ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã•ã‚Œã¦ã„ã‚‹å¿…è¦ãŒã‚ã‚‹
 )
 {
 	CDocLine*	pDocLine;
@@ -396,81 +396,81 @@ int CSearchAgent::SearchWord(
 	CLogicInt	nHitPosOld;
 	int			nRetVal = 0;
 	//	Jun. 10, 2003 Moca
-	//	lstrlen‚ğ–ˆ‰ñŒÄ‚Î‚¸‚ÉnPatternLen‚ğg‚¤‚æ‚¤‚É‚·‚é
+	//	lstrlenã‚’æ¯å›å‘¼ã°ãšã«nPatternLenã‚’ä½¿ã†ã‚ˆã†ã«ã™ã‚‹
 	const int	nPatternLen = wcslen( pszPattern );	//2001/06/23 N.Nakatani
 #ifdef MEASURE_SEARCH_TIME
 	long clockStart, clockEnd;
 	clockStart = clock();
 #endif
 
-	//³‹K•\Œ»
+	//æ­£è¦è¡¨ç¾
 	if( sSearchOption.bRegularExp ){
-		nLinePos = ptSerachBegin.GetY2();		// ŒŸõsŒŸõŠJns
+		nLinePos = ptSerachBegin.GetY2();		// æ¤œç´¢è¡Œï¼æ¤œç´¢é–‹å§‹è¡Œ
 		pDocLine = m_pcDocLineMgr->GetLine( nLinePos );
-		//‘O•ûŒŸõ
+		//å‰æ–¹æ¤œç´¢
 		if( eDirection == SEARCH_BACKWARD ){
 			//
-			// ‘O•û(ª)ŒŸõ(³‹K•\Œ»)
+			// å‰æ–¹(â†‘)æ¤œç´¢(æ­£è¦è¡¨ç¾)
 			//
-			nHitTo = ptSerachBegin.x;				// ŒŸõŠJnˆÊ’u
+			nHitTo = ptSerachBegin.x;				// æ¤œç´¢é–‹å§‹ä½ç½®
 			nIdxPos = 0;
 			while( NULL != pDocLine ){
 				pLine = pDocLine->GetDocLineStrWithEOL( &nLineLen );
-				nHitPos		= -1;	// -1:‚±‚Ìs‚Åƒ}ƒbƒ`ˆÊ’u‚È‚µ
+				nHitPos		= -1;	// -1:ã“ã®è¡Œã§ãƒãƒƒãƒä½ç½®ãªã—
 				for (;;) {
 					nHitPosOld = nHitPos;
 					nIdxPosOld = nIdxPos;
-					// ’·‚³‚O‚Åƒ}ƒbƒ`‚µ‚½‚Ì‚ÅA‚±‚ÌˆÊ’u‚ÅÄ“xƒ}ƒbƒ`‚µ‚È‚¢‚æ‚¤‚ÉA‚P•¶ši‚ß‚é
+					// é•·ã•ï¼ã§ãƒãƒƒãƒã—ãŸã®ã§ã€ã“ã®ä½ç½®ã§å†åº¦ãƒãƒƒãƒã—ãªã„ã‚ˆã†ã«ã€ï¼‘æ–‡å­—é€²ã‚ã‚‹
 					if (nIdxPos == nHitPos) {
 						// 2005-09-02 D.S.Koba GetSizeOfChar
 						nIdxPos += (CNativeW::GetSizeOfChar( pLine, nLineLen, nIdxPos ) == 2 ? 2 : 1);
 					}
 					if (	nIdxPos <= pDocLine->GetLengthWithoutEOL() 
 						&&	pRegexp->Match( pLine, nLineLen, nIdxPos ) ){
-						// ŒŸõ‚Éƒ}ƒbƒ`‚µ‚½I
+						// æ¤œç´¢ã«ãƒãƒƒãƒã—ãŸï¼
 						nHitPos = pRegexp->GetIndex();
 						nIdxPos = pRegexp->GetLastIndex();
 						if( nHitPos >= nHitTo ){
-							// ƒ}ƒbƒ`‚µ‚½‚Ì‚ÍAƒJ[ƒ\ƒ‹ˆÊ’uˆÈ~‚¾‚Á‚½
-							// ‚·‚Å‚Éƒ}ƒbƒ`‚µ‚½ˆÊ’u‚ª‚ ‚ê‚ÎA‚»‚ê‚ğ•Ô‚µA‚È‚¯‚ê‚Î‘O‚Ìs‚Ö
+							// ãƒãƒƒãƒã—ãŸã®ã¯ã€ã‚«ãƒ¼ã‚½ãƒ«ä½ç½®ä»¥é™ã ã£ãŸ
+							// ã™ã§ã«ãƒãƒƒãƒã—ãŸä½ç½®ãŒã‚ã‚Œã°ã€ãã‚Œã‚’è¿”ã—ã€ãªã‘ã‚Œã°å‰ã®è¡Œã¸
 							break;
 						}
 					} else {
-						// ƒ}ƒbƒ`‚µ‚È‚©‚Á‚½
-						// ‚·‚Å‚Éƒ}ƒbƒ`‚µ‚½ˆÊ’u‚ª‚ ‚ê‚ÎA‚»‚ê‚ğ•Ô‚µA‚È‚¯‚ê‚Î‘O‚Ìs‚Ö
+						// ãƒãƒƒãƒã—ãªã‹ã£ãŸ
+						// ã™ã§ã«ãƒãƒƒãƒã—ãŸä½ç½®ãŒã‚ã‚Œã°ã€ãã‚Œã‚’è¿”ã—ã€ãªã‘ã‚Œã°å‰ã®è¡Œã¸
 						break;
 					}
 				}
 
 				if ( -1 != nHitPosOld ) {
-					// ‚±‚Ìs‚Åƒ}ƒbƒ`‚µ‚½ˆÊ’u‚ª‘¶İ‚·‚é‚Ì‚ÅA‚±‚Ìs‚ÅŒŸõI—¹
-					pMatchRange->SetFromX( nHitPosOld );	// ƒ}ƒbƒ`ˆÊ’ufrom
-					pMatchRange->SetToX  ( nIdxPosOld );	// ƒ}ƒbƒ`ˆÊ’uto
+					// ã“ã®è¡Œã§ãƒãƒƒãƒã—ãŸä½ç½®ãŒå­˜åœ¨ã™ã‚‹ã®ã§ã€ã“ã®è¡Œã§æ¤œç´¢çµ‚äº†
+					pMatchRange->SetFromX( nHitPosOld );	// ãƒãƒƒãƒä½ç½®from
+					pMatchRange->SetToX  ( nIdxPosOld );	// ãƒãƒƒãƒä½ç½®to
 					break;
 				} else {
-					// ‚±‚Ìs‚Åƒ}ƒbƒ`‚µ‚½ˆÊ’u‚ª‘¶İ‚µ‚È‚¢‚Ì‚ÅA‘O‚Ìs‚ğŒŸõ‚Ö
+					// ã“ã®è¡Œã§ãƒãƒƒãƒã—ãŸä½ç½®ãŒå­˜åœ¨ã—ãªã„ã®ã§ã€å‰ã®è¡Œã‚’æ¤œç´¢ã¸
 					nLinePos--;
 					pDocLine = pDocLine->GetPrevLine();
 					nIdxPos = 0;
 					if( NULL != pDocLine ){
-						nHitTo = pDocLine->GetLengthWithEOL() + 1;		// ‘O‚Ìs‚ÌNULL•¶š(\0)‚É‚àƒ}ƒbƒ`‚³‚¹‚é‚½‚ß‚É+1 2003.05.16 ‚©‚ë‚Æ 
+						nHitTo = pDocLine->GetLengthWithEOL() + 1;		// å‰ã®è¡Œã®NULLæ–‡å­—(\0)ã«ã‚‚ãƒãƒƒãƒã•ã›ã‚‹ãŸã‚ã«+1 2003.05.16 ã‹ã‚ã¨ 
 					}
 				}
 			}
 		}
-		//Œã•ûŒŸõ
+		//å¾Œæ–¹æ¤œç´¢
 		else {
 			//
-			// Œã•ûŒŸõ(³‹K•\Œ»)
+			// å¾Œæ–¹æ¤œç´¢(æ­£è¦è¡¨ç¾)
 			//
 			nIdxPos = ptSerachBegin.x;
 			while( NULL != pDocLine ){
 				pLine = pDocLine->GetDocLineStrWithEOL( &nLineLen );
 				if(		nIdxPos <= pDocLine->GetLengthWithoutEOL() 
 					&&	pRegexp->Match( pLine, nLineLen, nIdxPos ) ){
-					// ƒ}ƒbƒ`‚µ‚½
-					pMatchRange->SetFromX( pRegexp->GetIndex()     );	// ƒ}ƒbƒ`ˆÊ’ufrom
-					pMatchRange->SetToX  ( pRegexp->GetLastIndex() );	// ƒ}ƒbƒ`ˆÊ’uto
+					// ãƒãƒƒãƒã—ãŸ
+					pMatchRange->SetFromX( pRegexp->GetIndex()     );	// ãƒãƒƒãƒä½ç½®from
+					pMatchRange->SetToX  ( pRegexp->GetLastIndex() );	// ãƒãƒƒãƒä½ç½®to
 					break;
 				}
 				++nLinePos;
@@ -479,32 +479,32 @@ int CSearchAgent::SearchWord(
 			}
 		}
 		//
-		// ³‹K•\Œ»ŒŸõ‚ÌŒãˆ—
+		// æ­£è¦è¡¨ç¾æ¤œç´¢ã®å¾Œå‡¦ç†
 		if ( pDocLine != NULL ) {
-			// ƒ}ƒbƒ`‚µ‚½s‚ª‚ ‚é
-			pMatchRange->SetFromY(nLinePos); // ƒ}ƒbƒ`s
-			pMatchRange->SetToY  (nLinePos); // ƒ}ƒbƒ`s
+			// ãƒãƒƒãƒã—ãŸè¡ŒãŒã‚ã‚‹
+			pMatchRange->SetFromY(nLinePos); // ãƒãƒƒãƒè¡Œ
+			pMatchRange->SetToY  (nLinePos); // ãƒãƒƒãƒè¡Œ
 			nRetVal = 1;
-			// ƒŒƒCƒAƒEƒgs‚Å‚Í‰üs•¶š“à‚ÌˆÊ’u‚ğ•\Œ»‚Å‚«‚È‚¢‚½‚ßAƒ}ƒbƒ`ŠJnˆÊ’u‚ğ•â³
+			// ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆè¡Œã§ã¯æ”¹è¡Œæ–‡å­—å†…ã®ä½ç½®ã‚’è¡¨ç¾ã§ããªã„ãŸã‚ã€ãƒãƒƒãƒé–‹å§‹ä½ç½®ã‚’è£œæ­£
 			if (pMatchRange->GetFrom().x > pDocLine->GetLengthWithoutEOL()) {
-				// \r\n‰üs‚É\n‚Éƒ}ƒbƒ`‚·‚é‚Æ’uŠ·‚Å‚«‚È‚¢•s‹ï‡‚Æ‚È‚é‚½‚ß
-				// ‰üs•¶š“à‚Åƒ}ƒbƒ`‚µ‚½ê‡A‰üs•¶š‚Ìn‚ß‚©‚çƒ}ƒbƒ`‚µ‚½‚±‚Æ‚É‚·‚é
+				// \r\næ”¹è¡Œæ™‚ã«\nã«ãƒãƒƒãƒã™ã‚‹ã¨ç½®æ›ã§ããªã„ä¸å…·åˆã¨ãªã‚‹ãŸã‚
+				// æ”¹è¡Œæ–‡å­—å†…ã§ãƒãƒƒãƒã—ãŸå ´åˆã€æ”¹è¡Œæ–‡å­—ã®å§‹ã‚ã‹ã‚‰ãƒãƒƒãƒã—ãŸã“ã¨ã«ã™ã‚‹
 				pMatchRange->SetFromX( pDocLine->GetLengthWithoutEOL() );
 			}
 		}
 	}
-	//’PŒê‚Ì‚İŒŸõ
+	//å˜èªã®ã¿æ¤œç´¢
 	else if( sSearchOption.bWordOnly ){
-		// ŒŸõŒê‚ğ’PŒê‚É•ªŠ„‚µ‚Ä searchWords‚ÉŠi”[‚·‚éB
-		std::vector<std::pair<const wchar_t*, CLogicInt> > searchWords; // ’PŒê‚ÌŠJnˆÊ’u‚Æ’·‚³‚Ì”z—ñB
+		// æ¤œç´¢èªã‚’å˜èªã«åˆ†å‰²ã—ã¦ searchWordsã«æ ¼ç´ã™ã‚‹ã€‚
+		std::vector<std::pair<const wchar_t*, CLogicInt> > searchWords; // å˜èªã®é–‹å§‹ä½ç½®ã¨é•·ã•ã®é…åˆ—ã€‚
 		CreateWordList( searchWords, pszPattern, nPatternLen );
 		/*
 			2001/06/23 Norio Nakatani
-			’PŒê’PˆÊ‚ÌŒŸõ‚ğŒ±“I‚ÉÀ‘•B’PŒê‚ÍWhereCurrentWord()‚Å”»•Ê‚µ‚Ä‚Ü‚·‚Ì‚ÅA
-			‰p’PŒê‚âC/C++¯•Êq‚È‚Ç‚ÌŒŸõğŒ‚È‚çƒqƒbƒg‚µ‚Ü‚·B
+			å˜èªå˜ä½ã®æ¤œç´¢ã‚’è©¦é¨“çš„ã«å®Ÿè£…ã€‚å˜èªã¯WhereCurrentWord()ã§åˆ¤åˆ¥ã—ã¦ã¾ã™ã®ã§ã€
+			è‹±å˜èªã‚„C/C++è­˜åˆ¥å­ãªã©ã®æ¤œç´¢æ¡ä»¶ãªã‚‰ãƒ’ãƒƒãƒˆã—ã¾ã™ã€‚
 		*/
 
-		// ‘O•ûŒŸõ
+		// å‰æ–¹æ¤œç´¢
 		if( eDirection == SEARCH_BACKWARD ){
 			nLinePos = ptSerachBegin.GetY2();
 			pDocLine = m_pcDocLineMgr->GetLine( nLinePos );
@@ -520,15 +520,15 @@ int CSearchAgent::SearchWord(
 						size_t nSize = searchWords.size();
 						for( size_t iSW = 0; iSW < nSize; ++iSW ) {
 							if( searchWords[iSW].second == nNextWordTo2 - nNextWordFrom2 ){
-								const wchar_t* pData = pDocLine->GetPtr();	// 2002/2/10 aroka CMemory•ÏX
-								/* 1==‘å•¶š¬•¶š‚Ì‹æ•Ê */
+								const wchar_t* pData = pDocLine->GetPtr();	// 2002/2/10 aroka CMemoryå¤‰æ›´
+								/* 1==å¤§æ–‡å­—å°æ–‡å­—ã®åŒºåˆ¥ */
 								if( (!sSearchOption.bLoHiCase && 0 == auto_memicmp( &(pData[nNextWordFrom2]) , searchWords[iSW].first, searchWords[iSW].second ) ) ||
 									(sSearchOption.bLoHiCase && 0 ==	 auto_memcmp( &(pData[nNextWordFrom2]) , searchWords[iSW].first, searchWords[iSW].second ) )
 								){
-									pMatchRange->SetFromY(nLinePos);	// ƒ}ƒbƒ`s
-									pMatchRange->SetToY  (nLinePos);	// ƒ}ƒbƒ`s
-									pMatchRange->SetFromX(nNextWordFrom2);						// ƒ}ƒbƒ`ˆÊ’ufrom
-									pMatchRange->SetToX  (pMatchRange->GetFrom().x + searchWords[iSW].second);// ƒ}ƒbƒ`ˆÊ’uto
+									pMatchRange->SetFromY(nLinePos);	// ãƒãƒƒãƒè¡Œ
+									pMatchRange->SetToY  (nLinePos);	// ãƒãƒƒãƒè¡Œ
+									pMatchRange->SetFromX(nNextWordFrom2);						// ãƒãƒƒãƒä½ç½®from
+									pMatchRange->SetToX  (pMatchRange->GetFrom().x + searchWords[iSW].second);// ãƒãƒƒãƒä½ç½®to
 									nRetVal = 1;
 									goto end_of_func;
 								}
@@ -537,7 +537,7 @@ int CSearchAgent::SearchWord(
 						continue;
 					}
 				}
-				/* ‘O‚Ìs‚ğŒ©‚És‚­ */
+				/* å‰ã®è¡Œã‚’è¦‹ã«è¡Œã */
 				nLinePos--;
 				pDocLine = pDocLine->GetPrevLine();
 				if( NULL != pDocLine ){
@@ -548,7 +548,7 @@ int CSearchAgent::SearchWord(
 				}
 			}
 		}
-		// Œã•ûŒŸõ
+		// å¾Œæ–¹æ¤œç´¢
 		else{
 			nLinePos = ptSerachBegin.GetY2();
 			pDocLine = m_pcDocLineMgr->GetLine( nLinePos );
@@ -558,14 +558,14 @@ int CSearchAgent::SearchWord(
 				int nMatchLen;
 				pszRes = SearchStringWord(pLine, nLineLen, nNextWordFrom, searchWords, sSearchOption.bLoHiCase, &nMatchLen);
 				if( NULL != pszRes ){
-					pMatchRange->SetFromY(nLinePos);	// ƒ}ƒbƒ`s
-					pMatchRange->SetToY  (nLinePos);	// ƒ}ƒbƒ`s
-					pMatchRange->SetFromX(CLogicInt(pszRes - pLine));						// ƒ}ƒbƒ`ˆÊ’ufrom
-					pMatchRange->SetToX  (pMatchRange->GetFrom().x + nMatchLen);// ƒ}ƒbƒ`ˆÊ’uto
+					pMatchRange->SetFromY(nLinePos);	// ãƒãƒƒãƒè¡Œ
+					pMatchRange->SetToY  (nLinePos);	// ãƒãƒƒãƒè¡Œ
+					pMatchRange->SetFromX(CLogicInt(pszRes - pLine));						// ãƒãƒƒãƒä½ç½®from
+					pMatchRange->SetToX  (pMatchRange->GetFrom().x + nMatchLen);// ãƒãƒƒãƒä½ç½®to
 					nRetVal = 1;
 					goto end_of_func;
 				}
-				/* Ÿ‚Ìs‚ğŒ©‚És‚­ */
+				/* æ¬¡ã®è¡Œã‚’è¦‹ã«è¡Œã */
 				nLinePos++;
 				pDocLine = pDocLine->GetNextLine();
 				nNextWordFrom = CLogicInt(0);
@@ -575,10 +575,10 @@ int CSearchAgent::SearchWord(
 		nRetVal = 0;
 		goto end_of_func;
 	}
-	//•’Ê‚ÌŒŸõ (³‹K•\Œ»‚Å‚à’PŒê’PˆÊ‚Å‚à‚È‚¢)
+	//æ™®é€šã®æ¤œç´¢ (æ­£è¦è¡¨ç¾ã§ã‚‚å˜èªå˜ä½ã§ã‚‚ãªã„)
 	else{
 		const CSearchStringPattern pattern(pszPattern, nPatternLen, sSearchOption.bLoHiCase);
-		//‘O•ûŒŸõ
+		//å‰æ–¹æ¤œç´¢
 		if( eDirection == SEARCH_BACKWARD ){
 			nLinePos = ptSerachBegin.GetY2();
 			nHitTo = ptSerachBegin.x;
@@ -599,13 +599,13 @@ int CSearchAgent::SearchWord(
 					);
 					if( NULL != pszRes ){
 						nHitPos = pszRes - pLine;
-						nIdxPos = nHitPos + nPatternLen;	// ƒ}ƒbƒ`•¶š—ñ’·i‚ß‚é‚æ‚¤‚É•ÏX 2005.10.28 Karoto
+						nIdxPos = nHitPos + nPatternLen;	// ãƒãƒƒãƒæ–‡å­—åˆ—é•·é€²ã‚ã‚‹ã‚ˆã†ã«å¤‰æ›´ 2005.10.28 Karoto
 						if( nHitPos >= nHitTo ){
 							if( -1 != nHitPosOld ){
-								pMatchRange->SetFromY(nLinePos);	// ƒ}ƒbƒ`s
-								pMatchRange->SetToY  (nLinePos);	// ƒ}ƒbƒ`s
-								pMatchRange->SetFromX(nHitPosOld);	// ƒ}ƒbƒ`ˆÊ’ufrom
- 								pMatchRange->SetToX  (nIdxPosOld);	// ƒ}ƒbƒ`ˆÊ’uto
+								pMatchRange->SetFromY(nLinePos);	// ãƒãƒƒãƒè¡Œ
+								pMatchRange->SetToY  (nLinePos);	// ãƒãƒƒãƒè¡Œ
+								pMatchRange->SetFromX(nHitPosOld);	// ãƒãƒƒãƒä½ç½®from
+ 								pMatchRange->SetToX  (nIdxPosOld);	// ãƒãƒƒãƒä½ç½®to
 								nRetVal = 1;
 								goto end_of_func;
 							}else{
@@ -614,10 +614,10 @@ int CSearchAgent::SearchWord(
 						}
 					}else{
 						if( -1 != nHitPosOld ){
-							pMatchRange->SetFromY(nLinePos);	// ƒ}ƒbƒ`s
-							pMatchRange->SetToY  (nLinePos);	// ƒ}ƒbƒ`s
-							pMatchRange->SetFromX(nHitPosOld);	// ƒ}ƒbƒ`ˆÊ’ufrom
-							pMatchRange->SetToX  (nIdxPosOld);	// ƒ}ƒbƒ`ˆÊ’uto
+							pMatchRange->SetFromY(nLinePos);	// ãƒãƒƒãƒè¡Œ
+							pMatchRange->SetToY  (nLinePos);	// ãƒãƒƒãƒè¡Œ
+							pMatchRange->SetFromX(nHitPosOld);	// ãƒãƒƒãƒä½ç½®from
+							pMatchRange->SetToX  (nIdxPosOld);	// ãƒãƒƒãƒä½ç½®to
 							nRetVal = 1;
 							goto end_of_func;
 						}else{
@@ -635,7 +635,7 @@ int CSearchAgent::SearchWord(
 			nRetVal = 0;
 			goto end_of_func;
 		}
-		//Œã•ûŒŸõ
+		//å¾Œæ–¹æ¤œç´¢
 		else{
 			nIdxPos = ptSerachBegin.x;
 			nLinePos = ptSerachBegin.GetY2();
@@ -649,10 +649,10 @@ int CSearchAgent::SearchWord(
 					pattern
 				);
 				if( NULL != pszRes ){
-					pMatchRange->SetFromY(nLinePos);	// ƒ}ƒbƒ`s
-					pMatchRange->SetToY  (nLinePos);	// ƒ}ƒbƒ`s
-					pMatchRange->SetFromX(CLogicInt(pszRes - pLine));							// ƒ}ƒbƒ`ˆÊ’ufrom (•¶š’PˆÊ)
-					pMatchRange->SetToX  (pMatchRange->GetFrom().x + nPatternLen);	// ƒ}ƒbƒ`ˆÊ’uto   (•¶š’PˆÊ)
+					pMatchRange->SetFromY(nLinePos);	// ãƒãƒƒãƒè¡Œ
+					pMatchRange->SetToY  (nLinePos);	// ãƒãƒƒãƒè¡Œ
+					pMatchRange->SetFromX(CLogicInt(pszRes - pLine));							// ãƒãƒƒãƒä½ç½®from (æ–‡å­—å˜ä½)
+					pMatchRange->SetToX  (pMatchRange->GetFrom().x + nPatternLen);	// ãƒãƒƒãƒä½ç½®to   (æ–‡å­—å˜ä½)
 					nRetVal = 1;
 					goto end_of_func;
 				}
@@ -679,19 +679,19 @@ end_of_func:;
 
 
 
-/* w’è”ÍˆÍ‚Ìƒf[ƒ^‚ğ’uŠ·(íœ & ƒf[ƒ^‚ğ‘}“ü)
-  From‚ğŠÜ‚ŞˆÊ’u‚©‚çTo‚Ì’¼‘O‚ğŠÜ‚Şƒf[ƒ^‚ğíœ‚·‚é
-  From‚ÌˆÊ’u‚ÖƒeƒLƒXƒg‚ğ‘}“ü‚·‚é
+/* æŒ‡å®šç¯„å›²ã®ãƒ‡ãƒ¼ã‚¿ã‚’ç½®æ›(å‰Šé™¤ & ãƒ‡ãƒ¼ã‚¿ã‚’æŒ¿å…¥)
+  Fromã‚’å«ã‚€ä½ç½®ã‹ã‚‰Toã®ç›´å‰ã‚’å«ã‚€ãƒ‡ãƒ¼ã‚¿ã‚’å‰Šé™¤ã™ã‚‹
+  Fromã®ä½ç½®ã¸ãƒ†ã‚­ã‚¹ãƒˆã‚’æŒ¿å…¥ã™ã‚‹
 */
 void CSearchAgent::ReplaceData( DocLineReplaceArg* pArg )
 {
 //	MY_RUNNINGTIMER( cRunningTimer, "CDocLineMgr::ReplaceData()" );
 
-	/* ‘}“ü‚É‚æ‚Á‚Ä‘‚¦‚½s‚Ì” */
+	/* æŒ¿å…¥ã«ã‚ˆã£ã¦å¢—ãˆãŸè¡Œã®æ•° */
 	pArg->nInsLineNum = CLogicInt(0);
-	/* íœ‚µ‚½s‚Ì‘” */
+	/* å‰Šé™¤ã—ãŸè¡Œã®ç·æ•° */
 	pArg->nDeletedLineNum = CLogicInt(0);
-	/* íœ‚³‚ê‚½ƒf[ƒ^ */
+	/* å‰Šé™¤ã•ã‚ŒãŸãƒ‡ãƒ¼ã‚¿ */
 	pArg->pcmemDeleted->SetString(L"");
 
 	CDocLine* pCDocLine;
@@ -713,15 +713,15 @@ void CSearchAgent::ReplaceData( DocLineReplaceArg* pArg )
 	//	May 15, 2000
 	CEol cEOLType;
 	CEol cEOLTypeNext;
-	HWND		hwndCancel = NULL;	//	‰Šú‰»
-	HWND		hwndProgress = NULL;	//	‰Šú‰»
+	HWND		hwndCancel = NULL;	//	åˆæœŸåŒ–
+	HWND		hwndProgress = NULL;	//	åˆæœŸåŒ–
 
 	pArg->ptNewPos = pArg->sDelRange.GetFrom();
 
-	/* ‘å—Ê‚Ìƒf[ƒ^‚ğ‘€ì‚·‚é‚Æ‚« */
+	/* å¤§é‡ã®ãƒ‡ãƒ¼ã‚¿ã‚’æ“ä½œã™ã‚‹ã¨ã */
 	CDlgCancel*	pCDlgCancel = NULL;
 	if( 3000 < pArg->sDelRange.GetTo().y - pArg->sDelRange.GetFrom().y || 1024000 < pArg->nInsDataLen){
-		/* i’»ƒ_ƒCƒAƒƒO‚Ì•\¦ */
+		/* é€²æ—ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®è¡¨ç¤º */
 		pCDlgCancel = new CDlgCancel;
 		if( NULL != ( hwndCancel = pCDlgCancel->DoModeless( ::GetModuleHandle( NULL ), NULL, IDD_OPERATIONRUNNING ) ) ){
 			hwndProgress = ::GetDlgItem( hwndCancel, IDC_PROGRESS );
@@ -730,7 +730,7 @@ void CSearchAgent::ReplaceData( DocLineReplaceArg* pArg )
 		}
 	}
 
-	// ƒoƒbƒtƒ@‚ğŠm•Û
+	// ãƒãƒƒãƒ•ã‚¡ã‚’ç¢ºä¿
 	nWorkLen = 0;
 	i = pArg->sDelRange.GetFrom().y;
 	pCDocLine = m_pcDocLineMgr->GetLine( CLogicInt(i) );
@@ -741,29 +741,29 @@ void CSearchAgent::ReplaceData( DocLineReplaceArg* pArg )
 	}
 	pArg->pcmemDeleted->AllocStringBuffer( nWorkLen );
 
-	// íœƒf[ƒ^‚Ìæ“¾‚Ìƒ‹[ƒv
-	/* ‘O‚©‚çˆ—‚µ‚Ä‚¢‚­ */
-	/* Œ»İs‚Ìî•ñ‚ğ“¾‚é */
+	// å‰Šé™¤ãƒ‡ãƒ¼ã‚¿ã®å–å¾—ã®ãƒ«ãƒ¼ãƒ—
+	/* å‰ã‹ã‚‰å‡¦ç†ã—ã¦ã„ã */
+	/* ç¾åœ¨è¡Œã®æƒ…å ±ã‚’å¾—ã‚‹ */
 	pCDocLine = m_pcDocLineMgr->GetLine( pArg->sDelRange.GetFrom().GetY2() );
 	for( i = pArg->sDelRange.GetFrom().y; i <= pArg->sDelRange.GetTo().y && NULL != pCDocLine; i++ ){
-		pLine = pCDocLine->GetPtr(); // 2002/2/10 aroka CMemory•ÏX
-		nLineLen = pCDocLine->GetLengthWithEOL(); // 2002/2/10 aroka CMemory•ÏX
+		pLine = pCDocLine->GetPtr(); // 2002/2/10 aroka CMemoryå¤‰æ›´
+		nLineLen = pCDocLine->GetLengthWithEOL(); // 2002/2/10 aroka CMemoryå¤‰æ›´
 		pCDocLinePrev = pCDocLine->GetPrevLine();
 		pCDocLineNext = pCDocLine->GetNextLine();
-		/* Œ»İs‚ÌíœŠJnˆÊ’u‚ğ’²‚×‚é */
+		/* ç¾åœ¨è¡Œã®å‰Šé™¤é–‹å§‹ä½ç½®ã‚’èª¿ã¹ã‚‹ */
 		if( i == pArg->sDelRange.GetFrom().y ){
 			nWorkPos = pArg->sDelRange.GetFrom().x;
 		}else{
 			nWorkPos = 0;
 		}
-		/* Œ»İs‚Ìíœƒf[ƒ^’·‚ğ’²‚×‚é */
+		/* ç¾åœ¨è¡Œã®å‰Šé™¤ãƒ‡ãƒ¼ã‚¿é•·ã‚’èª¿ã¹ã‚‹ */
 		if( i == pArg->sDelRange.GetTo().y ){
 			nWorkLen = pArg->sDelRange.GetTo().x - nWorkPos;
 		}else{
-			nWorkLen = nLineLen - nWorkPos; // 2002/2/10 aroka CMemory•ÏX
+			nWorkLen = nLineLen - nWorkPos; // 2002/2/10 aroka CMemoryå¤‰æ›´
 		}
 		if( 0 == nWorkLen ){
-			/* ‘O‚Ìs‚Ö */
+			/* å‰ã®è¡Œã¸ */
 			goto next_line;
 		}
 		if( 0 > nWorkLen ){
@@ -778,15 +778,15 @@ void CSearchAgent::ReplaceData( DocLineReplaceArg* pArg )
 			);
 		}
 
-		/* ‰üs‚àíœ‚·‚é‚ñ‚©‚¡‚Ì‚§EEEH */
+		/* æ”¹è¡Œã‚‚å‰Šé™¤ã™ã‚‹ã‚“ã‹ãƒã®ã‰ãƒ»ãƒ»ãƒ»ï¼Ÿ */
 		if( EOL_NONE != pCDocLine->GetEol() &&
-			nWorkPos + nWorkLen > nLineLen - pCDocLine->GetEol().GetLen() // 2002/2/10 aroka CMemory•ÏX
+			nWorkPos + nWorkLen > nLineLen - pCDocLine->GetEol().GetLen() // 2002/2/10 aroka CMemoryå¤‰æ›´
 		){
-			/* íœ‚·‚é’·‚³‚É‰üs‚àŠÜ‚ß‚é */
-			nWorkLen = nLineLen - nWorkPos; // 2002/2/10 aroka CMemory•ÏX
+			/* å‰Šé™¤ã™ã‚‹é•·ã•ã«æ”¹è¡Œã‚‚å«ã‚ã‚‹ */
+			nWorkLen = nLineLen - nWorkPos; // 2002/2/10 aroka CMemoryå¤‰æ›´
 		}
-		/* íœ‚³‚ê‚½ƒf[ƒ^‚ğ•Û‘¶ */
-		// 2002/2/10 aroka from here CMemory•ÏX ”O‚Ì‚½‚ßB
+		/* å‰Šé™¤ã•ã‚ŒãŸãƒ‡ãƒ¼ã‚¿ã‚’ä¿å­˜ */
+		// 2002/2/10 aroka from here CMemoryå¤‰æ›´ å¿µã®ãŸã‚ã€‚
 		if( pLine != pCDocLine->GetPtr() ){
 			PleaseReportToAuthor(
 				NULL,
@@ -804,9 +804,9 @@ void CSearchAgent::ReplaceData( DocLineReplaceArg* pArg )
 		}
 
 next_line:;
-		/* Ÿ‚Ìs‚ÌƒIƒuƒWƒFƒNƒg‚Ìƒ|ƒCƒ“ƒ^ */
+		/* æ¬¡ã®è¡Œã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒã‚¤ãƒ³ã‚¿ */
 		pCDocLine = pCDocLineNext;
-		/* Å‹ßQÆ‚µ‚½s”Ô†‚Æsƒf[ƒ^ */
+		/* æœ€è¿‘å‚ç…§ã—ãŸè¡Œç•ªå·ã¨è¡Œãƒ‡ãƒ¼ã‚¿ */
 		++m_pcDocLineMgr->m_nPrevReferLine;
 		m_pcDocLineMgr->m_pCodePrevRefer = pCDocLine;
 
@@ -817,88 +817,88 @@ next_line:;
 
 			}
 		}
-	} // íœƒf[ƒ^‚Ìæ“¾‚Ìƒ‹[ƒv
+	} // å‰Šé™¤ãƒ‡ãƒ¼ã‚¿ã®å–å¾—ã®ãƒ«ãƒ¼ãƒ—
 
 
-	/* Œ»İs‚Ìî•ñ‚ğ“¾‚é */
+	/* ç¾åœ¨è¡Œã®æƒ…å ±ã‚’å¾—ã‚‹ */
 	pCDocLine = m_pcDocLineMgr->GetLine( pArg->sDelRange.GetTo().GetY2() );
 	i = pArg->sDelRange.GetTo().y;
 	if( 0 < pArg->sDelRange.GetTo().y && NULL == pCDocLine ){
 		pCDocLine = m_pcDocLineMgr->GetLine( pArg->sDelRange.GetTo().GetY2() - CLogicInt(1) );
 		i--;
 	}
-	/* Œã‚ë‚©‚çˆ—‚µ‚Ä‚¢‚­ */
+	/* å¾Œã‚ã‹ã‚‰å‡¦ç†ã—ã¦ã„ã */
 	for( ; i >= pArg->sDelRange.GetFrom().y && NULL != pCDocLine; i-- ){
-		pLine = pCDocLine->GetPtr(); // 2002/2/10 aroka CMemory•ÏX
-		nLineLen = pCDocLine->GetLengthWithEOL(); // 2002/2/10 aroka CMemory•ÏX
+		pLine = pCDocLine->GetPtr(); // 2002/2/10 aroka CMemoryå¤‰æ›´
+		nLineLen = pCDocLine->GetLengthWithEOL(); // 2002/2/10 aroka CMemoryå¤‰æ›´
 		pCDocLinePrev = pCDocLine->GetPrevLine();
 		pCDocLineNext = pCDocLine->GetNextLine();
-		/* Œ»İs‚ÌíœŠJnˆÊ’u‚ğ’²‚×‚é */
+		/* ç¾åœ¨è¡Œã®å‰Šé™¤é–‹å§‹ä½ç½®ã‚’èª¿ã¹ã‚‹ */
 		if( i == pArg->sDelRange.GetFrom().y ){
 			nWorkPos = pArg->sDelRange.GetFrom().x;
 		}else{
 			nWorkPos = 0;
 		}
-		/* Œ»İs‚Ìíœƒf[ƒ^’·‚ğ’²‚×‚é */
+		/* ç¾åœ¨è¡Œã®å‰Šé™¤ãƒ‡ãƒ¼ã‚¿é•·ã‚’èª¿ã¹ã‚‹ */
 		if( i == pArg->sDelRange.GetTo().y ){
 			nWorkLen = pArg->sDelRange.GetTo().x - nWorkPos;
 		}else{
-			nWorkLen = nLineLen - nWorkPos; // 2002/2/10 aroka CMemory•ÏX
+			nWorkLen = nLineLen - nWorkPos; // 2002/2/10 aroka CMemoryå¤‰æ›´
 		}
 
 		if( 0 == nWorkLen ){
-			/* ‘O‚Ìs‚Ö */
+			/* å‰ã®è¡Œã¸ */
 			goto prev_line;
 		}
-		/* ‰üs‚àíœ‚·‚é‚ñ‚©‚¡‚Ì‚§EEEH */
+		/* æ”¹è¡Œã‚‚å‰Šé™¤ã™ã‚‹ã‚“ã‹ãƒã®ã‰ãƒ»ãƒ»ãƒ»ï¼Ÿ */
 		if( EOL_NONE != pCDocLine->GetEol() &&
-			nWorkPos + nWorkLen > nLineLen - pCDocLine->GetEol().GetLen() // 2002/2/10 aroka CMemory•ÏX
+			nWorkPos + nWorkLen > nLineLen - pCDocLine->GetEol().GetLen() // 2002/2/10 aroka CMemoryå¤‰æ›´
 		){
-			/* íœ‚·‚é’·‚³‚É‰üs‚àŠÜ‚ß‚é */
-			nWorkLen = nLineLen - nWorkPos; // 2002/2/10 aroka CMemory•ÏX
+			/* å‰Šé™¤ã™ã‚‹é•·ã•ã«æ”¹è¡Œã‚‚å«ã‚ã‚‹ */
+			nWorkLen = nLineLen - nWorkPos; // 2002/2/10 aroka CMemoryå¤‰æ›´
 		}
 
 
-		/* s‘S‘Ì‚Ìíœ */
-		if( nWorkLen >= nLineLen ){ // 2002/2/10 aroka CMemory•ÏX
-			/* íœ‚µ‚½s‚Ì‘” */
+		/* è¡Œå…¨ä½“ã®å‰Šé™¤ */
+		if( nWorkLen >= nLineLen ){ // 2002/2/10 aroka CMemoryå¤‰æ›´
+			/* å‰Šé™¤ã—ãŸè¡Œã®ç·æ•° */
 			++(pArg->nDeletedLineNum);
-			/* sƒIƒuƒWƒFƒNƒg‚ÌíœAƒŠƒXƒg•ÏXAs”-- */
+			/* è¡Œã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å‰Šé™¤ã€ãƒªã‚¹ãƒˆå¤‰æ›´ã€è¡Œæ•°-- */
 			m_pcDocLineMgr->DeleteLine( pCDocLine );
 			pCDocLine = NULL;
 		}
-		/* Ÿ‚Ìs‚Æ˜AŒ‹‚·‚é‚æ‚¤‚Èíœ */
-		else if( nWorkPos + nWorkLen >= nLineLen ){ // 2002/2/10 aroka CMemory•ÏX
+		/* æ¬¡ã®è¡Œã¨é€£çµã™ã‚‹ã‚ˆã†ãªå‰Šé™¤ */
+		else if( nWorkPos + nWorkLen >= nLineLen ){ // 2002/2/10 aroka CMemoryå¤‰æ›´
 
-			/* s“àƒf[ƒ^íœ */
-			{// 20020119 aroka ƒuƒƒbƒN“à‚É pWork ‚ğ•Â‚¶‚ß‚½
+			/* è¡Œå†…ãƒ‡ãƒ¼ã‚¿å‰Šé™¤ */
+			{// 20020119 aroka ãƒ–ãƒ­ãƒƒã‚¯å†…ã« pWork ã‚’é–‰ã˜è¾¼ã‚ãŸ
 				wchar_t* pWork = new wchar_t[nWorkPos + 1];
-				auto_memcpy( pWork, pLine, nWorkPos ); // 2002/2/10 aroka ‰½“x‚à GetPtr ‚ğŒÄ‚Î‚È‚¢
+				auto_memcpy( pWork, pLine, nWorkPos ); // 2002/2/10 aroka ä½•åº¦ã‚‚ GetPtr ã‚’å‘¼ã°ãªã„
 				pCDocLine->SetDocLineString( pWork, nWorkPos );
 				delete [] pWork;
 			}
 
-			/* Ÿ‚Ìs‚ª‚ ‚é */
+			/* æ¬¡ã®è¡ŒãŒã‚ã‚‹ */
 			if( pCDocLineNext ){
-				/* Ÿ‚Ìs‚Ìƒf[ƒ^‚ğÅŒã‚É’Ç‰Á */
+				/* æ¬¡ã®è¡Œã®ãƒ‡ãƒ¼ã‚¿ã‚’æœ€å¾Œã«è¿½åŠ  */
 				{
 					CNativeW tmp = pCDocLine->_GetDocLineDataWithEOL() + pCDocLineNext->_GetDocLineDataWithEOL();
 					pCDocLine->SetDocLineString(tmp);
 				}
 
-				/* Ÿ‚Ìs sƒIƒuƒWƒFƒNƒg‚Ìíœ */
+				/* æ¬¡ã®è¡Œ è¡Œã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å‰Šé™¤ */
 				m_pcDocLineMgr->DeleteLine( pCDocLineNext );
 				pCDocLineNext = NULL;
 
-				/* íœ‚µ‚½s‚Ì‘” */
+				/* å‰Šé™¤ã—ãŸè¡Œã®ç·æ•° */
 				++(pArg->nDeletedLineNum);
 			}
-			CModifyVisitor().SetLineModified(pCDocLine,true);	/* •ÏXƒtƒ‰ƒO */
+			CModifyVisitor().SetLineModified(pCDocLine,true);	/* å¤‰æ›´ãƒ•ãƒ©ã‚° */
 		}
 		else{
-		/* s“à‚¾‚¯‚Ìíœ */
-			{// 20020119 aroka ƒuƒƒbƒN“à‚É pWork ‚ğ•Â‚¶‚ß‚½
-				// 2002/2/10 aroka CMemory•ÏX ‰½“x‚à GetLength,GetPtr ‚ğ‚æ‚Î‚È‚¢B
+		/* è¡Œå†…ã ã‘ã®å‰Šé™¤ */
+			{// 20020119 aroka ãƒ–ãƒ­ãƒƒã‚¯å†…ã« pWork ã‚’é–‰ã˜è¾¼ã‚ãŸ
+				// 2002/2/10 aroka CMemoryå¤‰æ›´ ä½•åº¦ã‚‚ GetLength,GetPtr ã‚’ã‚ˆã°ãªã„ã€‚
 				int nLength = pCDocLine->GetLengthWithEOL();
 				wchar_t* pWork = new wchar_t[nLength - nWorkLen + 1];
 				wmemcpy( pWork, pLine, nWorkPos );
@@ -908,13 +908,13 @@ next_line:;
 				pCDocLine->SetDocLineString( pWork, nLength - nWorkLen );
 				delete [] pWork;
 			}
-			CModifyVisitor().SetLineModified(pCDocLine,true);	/* •ÏXƒtƒ‰ƒO */
+			CModifyVisitor().SetLineModified(pCDocLine,true);	/* å¤‰æ›´ãƒ•ãƒ©ã‚° */
 		}
 
 prev_line:;
-		/* ’¼‘O‚Ìs‚ÌƒIƒuƒWƒFƒNƒg‚Ìƒ|ƒCƒ“ƒ^ */
+		/* ç›´å‰ã®è¡Œã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒã‚¤ãƒ³ã‚¿ */
 		pCDocLine = pCDocLinePrev;
-		/* Å‹ßQÆ‚µ‚½s”Ô†‚Æsƒf[ƒ^ */
+		/* æœ€è¿‘å‚ç…§ã—ãŸè¡Œç•ªå·ã¨è¡Œãƒ‡ãƒ¼ã‚¿ */
 		--m_pcDocLineMgr->m_nPrevReferLine;
 		m_pcDocLineMgr->m_pCodePrevRefer = pCDocLine;
 
@@ -927,15 +927,15 @@ prev_line:;
 	}
 
 
-	/* ƒf[ƒ^‘}“üˆ— */
+	/* ãƒ‡ãƒ¼ã‚¿æŒ¿å…¥å‡¦ç† */
 	if( 0 == pArg->nInsDataLen ){
 		goto end_of_func;
 	}
 	nAllLinesOld = m_pcDocLineMgr->GetLineCount();
-	pArg->ptNewPos.y = pArg->sDelRange.GetFrom().y;	/* ‘}“ü‚³‚ê‚½•”•ª‚ÌŸ‚ÌˆÊ’u‚Ìs */
-	pArg->ptNewPos.x = 0;	/* ‘}“ü‚³‚ê‚½•”•ª‚ÌŸ‚ÌˆÊ’u‚Ìƒf[ƒ^ˆÊ’u */
+	pArg->ptNewPos.y = pArg->sDelRange.GetFrom().y;	/* æŒ¿å…¥ã•ã‚ŒãŸéƒ¨åˆ†ã®æ¬¡ã®ä½ç½®ã®è¡Œ */
+	pArg->ptNewPos.x = 0;	/* æŒ¿å…¥ã•ã‚ŒãŸéƒ¨åˆ†ã®æ¬¡ã®ä½ç½®ã®ãƒ‡ãƒ¼ã‚¿ä½ç½® */
 
-	/* ‘}“üƒf[ƒ^‚ğsI’[‚Å‹æØ‚Á‚½s”ƒJƒEƒ“ƒ^ */
+	/* æŒ¿å…¥ãƒ‡ãƒ¼ã‚¿ã‚’è¡Œçµ‚ç«¯ã§åŒºåˆ‡ã£ãŸè¡Œæ•°ã‚«ã‚¦ãƒ³ã‚¿ */
 	nCount = 0;
 	pArg->nInsLineNum = CLogicInt(0);
 	pCDocLine = m_pcDocLineMgr->GetLine( pArg->sDelRange.GetFrom().GetY2() );
@@ -943,15 +943,15 @@ prev_line:;
 
 
 	if( NULL == pCDocLine ){
-		/* ‚±‚±‚ÅNULL‚ª‹A‚Á‚Ä‚­‚é‚Æ‚¢‚¤‚±‚Æ‚ÍA*/
-		/* ‘SƒeƒLƒXƒg‚ÌÅŒã‚ÌŸ‚Ìs‚ğ’Ç‰Á‚µ‚æ‚¤‚Æ‚µ‚Ä‚¢‚é‚±‚Æ‚ğ¦‚· */
+		/* ã“ã“ã§NULLãŒå¸°ã£ã¦ãã‚‹ã¨ã„ã†ã“ã¨ã¯ã€*/
+		/* å…¨ãƒ†ã‚­ã‚¹ãƒˆã®æœ€å¾Œã®æ¬¡ã®è¡Œã‚’è¿½åŠ ã—ã‚ˆã†ã¨ã—ã¦ã„ã‚‹ã“ã¨ã‚’ç¤ºã™ */
 		cmemPrevLine.SetString(L"");
 		cmemNextLine.SetString(L"");
 		cEOLTypeNext.SetType( EOL_NONE );
 	}else{
-		CModifyVisitor().SetLineModified(pCDocLine,true);	/* •ÏXƒtƒ‰ƒO */
+		CModifyVisitor().SetLineModified(pCDocLine,true);	/* å¤‰æ›´ãƒ•ãƒ©ã‚° */
 
-		// 2002/2/10 aroka ‰½“x‚à GetPtr ‚ğŒÄ‚Î‚È‚¢
+		// 2002/2/10 aroka ä½•åº¦ã‚‚ GetPtr ã‚’å‘¼ã°ãªã„
 		pLine = pCDocLine->GetDocLineStrWithEOL( &nLineLen );
 		cmemPrevLine.SetString( pLine, pArg->sDelRange.GetFrom().x );
 		cmemNextLine.SetString( &pLine[pArg->sDelRange.GetFrom().x], nLineLen - pArg->sDelRange.GetFrom().x );
@@ -961,16 +961,16 @@ prev_line:;
 	nBgn = 0;
 	for( nPos = 0; nPos < pArg->nInsDataLen; ){
 		if( pArg->pInsData[nPos] == '\n' || pArg->pInsData[nPos] == '\r' ){
-			/* sI’[q‚Ìí—Ş‚ğ’²‚×‚é */
+			/* è¡Œçµ‚ç«¯å­ã®ç¨®é¡ã‚’èª¿ã¹ã‚‹ */
 			cEOLType.SetTypeByString( &(pArg->pInsData[nPos]), pArg->nInsDataLen - nPos );
-			/* sI’[q‚àŠÜ‚ß‚ÄƒeƒLƒXƒg‚ğƒoƒbƒtƒ@‚ÉŠi”[ */
+			/* è¡Œçµ‚ç«¯å­ã‚‚å«ã‚ã¦ãƒ†ã‚­ã‚¹ãƒˆã‚’ãƒãƒƒãƒ•ã‚¡ã«æ ¼ç´ */
 			cmemCurLine.SetString( &(pArg->pInsData[nBgn]), nPos - nBgn + cEOLType.GetLen() );
 			nBgn = nPos + cEOLType.GetLen();
 			nPos = nBgn;
 			if( NULL == pCDocLine){
 				CDocLine* pCDocLineNew = m_pcDocLineMgr->AddNewLine();
 
-				/* ‘}“üƒf[ƒ^‚ğsI’[‚Å‹æØ‚Á‚½s”ƒJƒEƒ“ƒ^ */
+				/* æŒ¿å…¥ãƒ‡ãƒ¼ã‚¿ã‚’è¡Œçµ‚ç«¯ã§åŒºåˆ‡ã£ãŸè¡Œæ•°ã‚«ã‚¦ãƒ³ã‚¿ */
 				if( 0 == nCount ){
 					pCDocLineNew->SetDocLineString( cmemPrevLine + cmemCurLine );
 				}
@@ -980,20 +980,20 @@ prev_line:;
 				pCDocLine = NULL;
 			}
 			else{
-				/* ‘}“üƒf[ƒ^‚ğsI’[‚Å‹æØ‚Á‚½s”ƒJƒEƒ“ƒ^ */
+				/* æŒ¿å…¥ãƒ‡ãƒ¼ã‚¿ã‚’è¡Œçµ‚ç«¯ã§åŒºåˆ‡ã£ãŸè¡Œæ•°ã‚«ã‚¦ãƒ³ã‚¿ */
 				if( 0 == nCount ){
 					pCDocLine->SetDocLineString( cmemPrevLine + cmemCurLine );
 					pCDocLine = pCDocLine->GetNextLine();
 				}
 				else{
-					CDocLine* pCDocLineNew = m_pcDocLineMgr->InsertNewLine(pCDocLine);	//pCDocLine‚Ì‘O‚É‘}“ü
+					CDocLine* pCDocLineNew = m_pcDocLineMgr->InsertNewLine(pCDocLine);	//pCDocLineã®å‰ã«æŒ¿å…¥
 					pCDocLineNew->SetDocLineString( cmemCurLine );
 				}
 			}
 
-			/* ‘}“üƒf[ƒ^‚ğsI’[‚Å‹æØ‚Á‚½s”ƒJƒEƒ“ƒ^ */
+			/* æŒ¿å…¥ãƒ‡ãƒ¼ã‚¿ã‚’è¡Œçµ‚ç«¯ã§åŒºåˆ‡ã£ãŸè¡Œæ•°ã‚«ã‚¦ãƒ³ã‚¿ */
 			++nCount;
-			++(pArg->ptNewPos.y);	/* ‘}“ü‚³‚ê‚½•”•ª‚ÌŸ‚ÌˆÊ’u‚Ìs */
+			++(pArg->ptNewPos.y);	/* æŒ¿å…¥ã•ã‚ŒãŸéƒ¨åˆ†ã®æ¬¡ã®ä½ç½®ã®è¡Œ */
 			if( NULL != hwndCancel ){
 				if( 0 != pArg->nInsDataLen && ( 0 == (nPos % 1024) ) ){
 					nProgress = nPos * 100 / pArg->nInsDataLen;
@@ -1009,8 +1009,8 @@ prev_line:;
 		cmemCurLine.SetString( &(pArg->pInsData[nBgn]), nPos - nBgn );
 		cmemCurLine += cmemNextLine;
 		if( NULL == pCDocLine){
-			CDocLine* pCDocLineNew = m_pcDocLineMgr->AddNewLine();	//––”ö‚É’Ç‰Á
-			/* ‘}“üƒf[ƒ^‚ğsI’[‚Å‹æØ‚Á‚½s”ƒJƒEƒ“ƒ^ */
+			CDocLine* pCDocLineNew = m_pcDocLineMgr->AddNewLine();	//æœ«å°¾ã«è¿½åŠ 
+			/* æŒ¿å…¥ãƒ‡ãƒ¼ã‚¿ã‚’è¡Œçµ‚ç«¯ã§åŒºåˆ‡ã£ãŸè¡Œæ•°ã‚«ã‚¦ãƒ³ã‚¿ */
 			if( 0 == nCount ){
 				pCDocLineNew->SetDocLineString( cmemPrevLine + cmemCurLine );
 			}
@@ -1018,33 +1018,33 @@ prev_line:;
 				pCDocLineNew->SetDocLineString( cmemCurLine );
 			}
 			pCDocLine = NULL;
-			pArg->ptNewPos.x = nPos - nBgn;	/* ‘}“ü‚³‚ê‚½•”•ª‚ÌŸ‚ÌˆÊ’u‚Ìƒf[ƒ^ˆÊ’u */
+			pArg->ptNewPos.x = nPos - nBgn;	/* æŒ¿å…¥ã•ã‚ŒãŸéƒ¨åˆ†ã®æ¬¡ã®ä½ç½®ã®ãƒ‡ãƒ¼ã‚¿ä½ç½® */
 		}
 		else{
-			/* ‘}“üƒf[ƒ^‚ğsI’[‚Å‹æØ‚Á‚½s”ƒJƒEƒ“ƒ^ */
+			/* æŒ¿å…¥ãƒ‡ãƒ¼ã‚¿ã‚’è¡Œçµ‚ç«¯ã§åŒºåˆ‡ã£ãŸè¡Œæ•°ã‚«ã‚¦ãƒ³ã‚¿ */
 			if( 0 == nCount ){
 				pCDocLine->SetDocLineString( cmemPrevLine + cmemCurLine );
 
 				pCDocLine = pCDocLine->GetNextLine();
-				pArg->ptNewPos.x = cmemPrevLine.GetStringLength() + nPos - nBgn;	/* ‘}“ü‚³‚ê‚½•”•ª‚ÌŸ‚ÌˆÊ’u‚Ìƒf[ƒ^ˆÊ’u */
+				pArg->ptNewPos.x = cmemPrevLine.GetStringLength() + nPos - nBgn;	/* æŒ¿å…¥ã•ã‚ŒãŸéƒ¨åˆ†ã®æ¬¡ã®ä½ç½®ã®ãƒ‡ãƒ¼ã‚¿ä½ç½® */
 			}
 			else{
-				CDocLine* pCDocLineNew = m_pcDocLineMgr->InsertNewLine(pCDocLine);	//pCDocLine‚Ì‘O‚É‘}“ü
+				CDocLine* pCDocLineNew = m_pcDocLineMgr->InsertNewLine(pCDocLine);	//pCDocLineã®å‰ã«æŒ¿å…¥
 
 				pCDocLineNew->SetDocLineString( cmemCurLine );
 
-				pArg->ptNewPos.x = nPos - nBgn;	/* ‘}“ü‚³‚ê‚½•”•ª‚ÌŸ‚ÌˆÊ’u‚Ìƒf[ƒ^ˆÊ’u */
+				pArg->ptNewPos.x = nPos - nBgn;	/* æŒ¿å…¥ã•ã‚ŒãŸéƒ¨åˆ†ã®æ¬¡ã®ä½ç½®ã®ãƒ‡ãƒ¼ã‚¿ä½ç½® */
 			}
 		}
 	}
 	pArg->nInsLineNum = m_pcDocLineMgr->GetLineCount() - nAllLinesOld;
 end_of_func:;
 	if( NULL != pCDlgCancel ){
-		// i’»ƒ_ƒCƒAƒƒO‚ğ•\¦‚µ‚È‚¢ê‡‚Æ“¯‚¶“®‚«‚É‚È‚é‚æ‚¤‚Éƒ_ƒCƒAƒƒO‚Í’x‰„”jŠü‚·‚é
-		// ‚±‚±‚Å pCDlgCancel ‚ğ delete ‚·‚é‚Æ delete ‚©‚ç–ß‚é‚Ü‚Å‚ÌŠÔ‚É
-		// ƒ_ƒCƒAƒƒO”jŠü -> •ÒW‰æ–Ê‚ÖƒtƒH[ƒJƒXˆÚ“® -> ƒLƒƒƒŒƒbƒgˆÊ’u’²®
-		// ‚Ü‚Åˆê‹C‚É“®‚­‚Ì‚Å–³Œø‚ÈƒŒƒCƒAƒEƒgî•ñQÆ‚ÅˆÙíI—¹‚·‚é‚±‚Æ‚ª‚ ‚é
-		pCDlgCancel->DeleteAsync();	// ©“®”jŠü‚ğ’x‰„Às‚·‚é	// 2008.05.28 ryoji
+		// é€²æ—ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’è¡¨ç¤ºã—ãªã„å ´åˆã¨åŒã˜å‹•ãã«ãªã‚‹ã‚ˆã†ã«ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã¯é…å»¶ç ´æ£„ã™ã‚‹
+		// ã“ã“ã§ pCDlgCancel ã‚’ delete ã™ã‚‹ã¨ delete ã‹ã‚‰æˆ»ã‚‹ã¾ã§ã®é–“ã«
+		// ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ç ´æ£„ -> ç·¨é›†ç”»é¢ã¸ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ç§»å‹• -> ã‚­ãƒ£ãƒ¬ãƒƒãƒˆä½ç½®èª¿æ•´
+		// ã¾ã§ä¸€æ°—ã«å‹•ãã®ã§ç„¡åŠ¹ãªãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆæƒ…å ±å‚ç…§ã§ç•°å¸¸çµ‚äº†ã™ã‚‹ã“ã¨ãŒã‚ã‚‹
+		pCDlgCancel->DeleteAsync();	// è‡ªå‹•ç ´æ£„ã‚’é…å»¶å®Ÿè¡Œã™ã‚‹	// 2008.05.28 ryoji
 	}
 	return;
 }

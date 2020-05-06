@@ -41,7 +41,7 @@ public:
 		CreateFont(plf);
 	}
 
-	HFONT ChooseFontHandle( bool bBold, bool bUnderLine ) const;		/* ƒtƒHƒ“ƒg‚ğ‘I‚Ô */
+	HFONT ChooseFontHandle( bool bBold, bool bUnderLine ) const;		/* ãƒ•ã‚©ãƒ³ãƒˆã‚’é¸ã¶ */
 
 	HFONT GetFontHan() const
 	{
@@ -51,10 +51,10 @@ private:
 	void CreateFont(const LOGFONT *plf);
 	void DeleteFont();
 
-	HFONT	m_hFont_HAN;			/* Œ»İ‚ÌƒtƒHƒ“ƒgƒnƒ“ƒhƒ‹ */
-	HFONT	m_hFont_HAN_BOLD;		/* Œ»İ‚ÌƒtƒHƒ“ƒgƒnƒ“ƒhƒ‹(‘¾š) */
-	HFONT	m_hFont_HAN_UL;			/* Œ»İ‚ÌƒtƒHƒ“ƒgƒnƒ“ƒhƒ‹(‰ºü) */
-	HFONT	m_hFont_HAN_BOLD_UL;	/* Œ»İ‚ÌƒtƒHƒ“ƒgƒnƒ“ƒhƒ‹(‘¾šA‰ºü) */
+	HFONT	m_hFont_HAN;			/* ç¾åœ¨ã®ãƒ•ã‚©ãƒ³ãƒˆãƒãƒ³ãƒ‰ãƒ« */
+	HFONT	m_hFont_HAN_BOLD;		/* ç¾åœ¨ã®ãƒ•ã‚©ãƒ³ãƒˆãƒãƒ³ãƒ‰ãƒ«(å¤ªå­—) */
+	HFONT	m_hFont_HAN_UL;			/* ç¾åœ¨ã®ãƒ•ã‚©ãƒ³ãƒˆãƒãƒ³ãƒ‰ãƒ«(ä¸‹ç·š) */
+	HFONT	m_hFont_HAN_BOLD_UL;	/* ç¾åœ¨ã®ãƒ•ã‚©ãƒ³ãƒˆãƒãƒ³ãƒ‰ãƒ«(å¤ªå­—ã€ä¸‹ç·š) */
 };
 
 #endif /* SAKURA_CVIEWFONT_9E51373D_58BA_4A64_9930_5174F7BF9C929_H_ */

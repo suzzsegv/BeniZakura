@@ -27,7 +27,7 @@
 #include "CConvert.h"
 
 
-//!半角にできるものは全部半角に変換
+//!蜊願ｧ偵↓縺ｧ縺阪ｋ繧ゅ�ｮ縺ｯ蜈ｨ驛ｨ蜊願ｧ偵↓螟画鋤
 class CConvert_ToHankaku : public CConvert{
 public:
 	bool DoConvert(CNativeW* pcData);
@@ -35,9 +35,9 @@ public:
 
 
 enum EToHankakuMode{
-	TO_KATAKANA	= 0x01, //!< カタカナに影響アリ
-	TO_HIRAGANA	= 0x02, //!< ひらがなに影響アリ
-	TO_EISU		= 0x04, //!< 英数字に影響アリ
+	TO_KATAKANA	= 0x01, //!< 繧ｫ繧ｿ繧ｫ繝翫↓蠖ｱ髻ｿ繧｢繝ｪ
+	TO_HIRAGANA	= 0x02, //!< 縺ｲ繧峨′縺ｪ縺ｫ蠖ｱ髻ｿ繧｢繝ｪ
+	TO_EISU		= 0x04, //!< 闍ｱ謨ｰ蟄励↓蠖ｱ髻ｿ繧｢繝ｪ
 };
 
 #endif /* SAKURA_CCONVERT_TOHANKAKU_AA990D46_6904_44DF_8162_B2D96E20AE3A_H_ */

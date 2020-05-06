@@ -1,5 +1,5 @@
 /*!	@file
-	@brief �����񋤒ʒ�`
+	@brief 文字列共通定義
 
 	@author Norio Nakatani
 */
@@ -19,11 +19,11 @@
 #include "window/CEditWnd.h"
 #include "CNormalProcess.h"
 
-//2007.10.02 kobake CEditWnd�̃C���X�^���X�ւ̃|�C���^�������ɕۑ����Ă���
+//2007.10.02 kobake CEditWndのインスタンスへのポインタをここに保存しておく
 CEditWnd* g_pcEditWnd = NULL;
 
 
-/*! �I��̈�`��p�p�����[�^ */
+/*! 選択領域描画用パラメータ */
 const COLORREF	SELECTEDAREA_RGB = RGB( 255, 255, 255 );
 const int		SELECTEDAREA_ROP2 = R2_XORPEN;
 

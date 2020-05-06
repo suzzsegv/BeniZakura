@@ -27,7 +27,7 @@
 #include "CConvert.h"
 
 
-//!‚Å‚«‚éŒÀ‚è‘SŠp‚Ğ‚ç‚ª‚È‚É‚·‚é
+//!ã§ãã‚‹é™ã‚Šå…¨è§’ã²ã‚‰ãŒãªã«ã™ã‚‹
 class CConvert_ToZenhira : public CConvert{
 public:
 	bool DoConvert(CNativeW* pcData);

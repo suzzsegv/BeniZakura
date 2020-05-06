@@ -1,9 +1,9 @@
 /*!	@file
-	@brief ƒAƒEƒgƒ‰ƒCƒ“‰ğÍƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX
+	@brief ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³è§£æãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒœãƒƒã‚¯ã‚¹
 
 	@author Norio Nakatani
-	@date 1998/06/23 V‹Kì¬
-	@date 1998/12/04 Äì¬
+	@date 1998/06/23 æ–°è¦ä½œæˆ
+	@date 1998/12/04 å†ä½œæˆ
 */
 /*
 	Copyright (C) 1998-2001, Norio Nakatani
@@ -33,7 +33,7 @@ class CFuncInfoArr; // 2002/2/10 aroka
 #define OUTLINE_LAYOUT_BACKGROUND (1)
 #define OUTLINE_LAYOUT_FILECHANGED (2)
 
-//!	ƒAƒEƒgƒ‰ƒCƒ“‰ğÍƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX
+//!	ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³è§£æãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒœãƒƒã‚¯ã‚¹
 class CDlgFuncList : public CDialog
 {
 public:
@@ -44,9 +44,9 @@ public:
 	/*
 	||  Attributes & Operations
 	*/
-	INT_PTR DispatchEvent( HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam );	// 2007.11.07 ryoji •W€ˆÈŠO‚ÌƒƒbƒZ[ƒW‚ğ•ß‘¨‚·‚é
-	HWND DoModeless( HINSTANCE, HWND, LPARAM, CFuncInfoArr*, CLayoutInt, CLayoutInt, int, int, bool );/* ƒ‚[ƒhƒŒƒXƒ_ƒCƒAƒƒO‚Ì•\¦ */
-	void ChangeView( LPARAM );	/* ƒ‚[ƒhƒŒƒXFŒŸõ‘ÎÛ‚Æ‚È‚éƒrƒ…[‚Ì•ÏX */
+	INT_PTR DispatchEvent( HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam );	// 2007.11.07 ryoji æ¨™æº–ä»¥å¤–ã®ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’æ•æ‰ã™ã‚‹
+	HWND DoModeless( HINSTANCE, HWND, LPARAM, CFuncInfoArr*, CLayoutInt, CLayoutInt, int, int, bool );/* ãƒ¢ãƒ¼ãƒ‰ãƒ¬ã‚¹ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®è¡¨ç¤º */
+	void ChangeView( LPARAM );	/* ãƒ¢ãƒ¼ãƒ‰ãƒ¬ã‚¹æ™‚ï¼šæ¤œç´¢å¯¾è±¡ã¨ãªã‚‹ãƒ“ãƒ¥ãƒ¼ã®å¤‰æ›´ */
 	bool IsDocking() { return m_eDockSide > DOCKSIDE_FLOAT; }
 	EDockSide GetDockSide() { return m_eDockSide; }
 
@@ -61,7 +61,7 @@ public:
 	int& ProfDockRight() { return (ProfDockSet() == 0)? CommonSet().m_cxOutlineDockRight: TypeSet().m_cxOutlineDockRight; }
 	int& ProfDockBottom() { return (ProfDockSet() == 0)? CommonSet().m_cyOutlineDockBottom: TypeSet().m_cyOutlineDockBottom; }
 
-	/*! Œ»İ‚Ìí•Ê‚Æ“¯‚¶‚È‚ç
+	/*! ç¾åœ¨ã®ç¨®åˆ¥ã¨åŒã˜ãªã‚‰
 	*/
 	bool CheckListType( int nOutLineType ) const { return nOutLineType == m_nOutlineType; }
 	void Redraw( int nOutLineType, int nListType, CFuncInfoArr*, CLayoutInt nCurLine, CLayoutInt nCurCol );
@@ -70,21 +70,21 @@ public:
 	void OnOutlineNotify( WPARAM wParam, LPARAM lParam );
 	void SyncFont( void );
 	void SyncColor( void );
-	void SetWindowText( const TCHAR* szTitle );		//ƒ_ƒCƒAƒƒOƒ^ƒCƒgƒ‹‚Ìİ’è
+	void SetWindowText( const TCHAR* szTitle );		//ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚¿ã‚¤ãƒˆãƒ«ã®è¨­å®š
 	bool m_bInChangeLayout;
 
-	CFuncInfoArr*	m_pcFuncInfoArr;	/* ŠÖ”î•ñ”z—ñ */
-	CLayoutInt		m_nCurLine;			/* Œ»İs */
-	CLayoutInt		m_nCurCol;			/* Œ»İŒ… */
-	int				m_nSortCol;			/* ƒ\[ƒg‚·‚é—ñ”Ô† */
-	int				m_nSortColOld;		//!< ƒ\[ƒg‚·‚é—ñ”Ô†(OLD)
-	bool			m_bSortDesc;		//!< ~‡
-	int				m_nDocType;			/* ƒhƒLƒ…ƒƒ“ƒg‚Ìí—Ş */
-	int				m_nOutlineType;		/* ƒAƒEƒgƒ‰ƒCƒ“‰ğÍ‚Ìí•Ê */
-	int				m_nListType;		/* ˆê——‚Ìí—Ş */
-	CNativeW		m_cmemClipText;		/* ƒNƒŠƒbƒvƒ{[ƒhƒRƒs[—pƒeƒLƒXƒg */
-	int				m_bLineNumIsCRLF;	/* s”Ô†‚Ì•\¦ FALSE=Ü‚è•Ô‚µ’PˆÊ^TRUE=‰üs’PˆÊ */
-	bool			m_bEditWndReady;	/* ƒGƒfƒBƒ^‰æ–Ê‚Ì€”õŠ®—¹ */
+	CFuncInfoArr*	m_pcFuncInfoArr;	/* é–¢æ•°æƒ…å ±é…åˆ— */
+	CLayoutInt		m_nCurLine;			/* ç¾åœ¨è¡Œ */
+	CLayoutInt		m_nCurCol;			/* ç¾åœ¨æ¡ */
+	int				m_nSortCol;			/* ã‚½ãƒ¼ãƒˆã™ã‚‹åˆ—ç•ªå· */
+	int				m_nSortColOld;		//!< ã‚½ãƒ¼ãƒˆã™ã‚‹åˆ—ç•ªå·(OLD)
+	bool			m_bSortDesc;		//!< é™é †
+	int				m_nDocType;			/* ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆã®ç¨®é¡ */
+	int				m_nOutlineType;		/* ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³è§£æã®ç¨®åˆ¥ */
+	int				m_nListType;		/* ä¸€è¦§ã®ç¨®é¡ */
+	CNativeW		m_cmemClipText;		/* ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ã‚³ãƒ”ãƒ¼ç”¨ãƒ†ã‚­ã‚¹ãƒˆ */
+	int				m_bLineNumIsCRLF;	/* è¡Œç•ªå·ã®è¡¨ç¤º FALSE=æŠ˜ã‚Šè¿”ã—å˜ä½ï¼TRUE=æ”¹è¡Œå˜ä½ */
+	bool			m_bEditWndReady;	/* ã‚¨ãƒ‡ã‚£ã‚¿ç”»é¢ã®æº–å‚™å®Œäº† */
 protected:
 	BOOL OnInitDialog( HWND, WPARAM, LPARAM );
 	BOOL OnBnClicked( int );
@@ -94,33 +94,33 @@ protected:
 	BOOL OnDestroy(void); // 20060201 aroka
 	BOOL OnCbnSelChange( HWND hwndCtl, int wID ); // 2002/11/1 frozen
 	BOOL OnContextMenu( WPARAM, LPARAM );
-	void SetData();	/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìİ’è */
-	int GetData( void );	/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìæ“¾ */
+	void SetData();	/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®è¨­å®š */
+	int GetData( void );	/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®å–å¾— */
 
 	/*
-	||  À‘•ƒwƒ‹ƒpŠÖ”
+	||  å®Ÿè£…ãƒ˜ãƒ«ãƒ‘é–¢æ•°
 	*/
-	BOOL OnJump( bool bCheckAutoClose = true );	//	bCheckAutoCloseFu‚±‚Ìƒ_ƒCƒAƒƒO‚ğ©“®“I‚É•Â‚¶‚év‚ğƒ`ƒFƒbƒN‚·‚é‚©‚Ç‚¤‚©
-	void SetTreeCpp( HWND );	/* ƒcƒŠ[ƒRƒ“ƒgƒ[ƒ‹‚Ì‰Šú‰»FC++ƒƒ\ƒbƒhƒcƒŠ[ */
-	void SetTreeJava( HWND, BOOL );	/* ƒcƒŠ[ƒRƒ“ƒgƒ[ƒ‹‚Ì‰Šú‰»FJavaƒƒ\ƒbƒhƒcƒŠ[ */
-	void SetTree(bool tagjump = false);		/* ƒcƒŠ[ƒRƒ“ƒgƒ[ƒ‹‚Ì‰Šú‰»F”Ä—p•i */
-	void SetListVB( void );			/* ƒŠƒXƒgƒrƒ…[ƒRƒ“ƒgƒ[ƒ‹‚Ì‰Šú‰»FVisualBasic */		// Jul 10, 2003  little YOSHI
+	BOOL OnJump( bool bCheckAutoClose = true );	//	bCheckAutoCloseï¼šã€Œã“ã®ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’è‡ªå‹•çš„ã«é–‰ã˜ã‚‹ã€ã‚’ãƒã‚§ãƒƒã‚¯ã™ã‚‹ã‹ã©ã†ã‹
+	void SetTreeCpp( HWND );	/* ãƒ„ãƒªãƒ¼ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã®åˆæœŸåŒ–ï¼šC++ãƒ¡ã‚½ãƒƒãƒ‰ãƒ„ãƒªãƒ¼ */
+	void SetTreeJava( HWND, BOOL );	/* ãƒ„ãƒªãƒ¼ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã®åˆæœŸåŒ–ï¼šJavaãƒ¡ã‚½ãƒƒãƒ‰ãƒ„ãƒªãƒ¼ */
+	void SetTree(bool tagjump = false);		/* ãƒ„ãƒªãƒ¼ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã®åˆæœŸåŒ–ï¼šæ±ç”¨å“ */
+	void SetListVB( void );			/* ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã®åˆæœŸåŒ–ï¼šVisualBasic */		// Jul 10, 2003  little YOSHI
 
 	// 2002/11/1 frozen 
-	void SortTree(HWND hWndTree,HTREEITEM htiParent);//!< ƒcƒŠ[ƒrƒ…[‚Ì€–Ú‚ğƒ\[ƒg‚·‚éiƒ\[ƒgŠî€‚Ím_nSortType‚ğg—pj
+	void SortTree(HWND hWndTree,HTREEITEM htiParent);//!< ãƒ„ãƒªãƒ¼ãƒ“ãƒ¥ãƒ¼ã®é …ç›®ã‚’ã‚½ãƒ¼ãƒˆã™ã‚‹ï¼ˆã‚½ãƒ¼ãƒˆåŸºæº–ã¯m_nSortTypeã‚’ä½¿ç”¨ï¼‰
 #if 0
-2002.04.01 YAZAKI SetTreeTxt()ASetTreeTxtNest()‚Í”p~BGetTreeTextNext‚Í‚à‚Æ‚à‚Æg—p‚³‚ê‚Ä‚¢‚È‚©‚Á‚½B
-	void SetTreeTxt( HWND );	/* ƒcƒŠ[ƒRƒ“ƒgƒ[ƒ‹‚Ì‰Šú‰»FƒeƒLƒXƒgƒgƒsƒbƒNƒcƒŠ[ */
+2002.04.01 YAZAKI SetTreeTxt()ã€SetTreeTxtNest()ã¯å»ƒæ­¢ã€‚GetTreeTextNextã¯ã‚‚ã¨ã‚‚ã¨ä½¿ç”¨ã•ã‚Œã¦ã„ãªã‹ã£ãŸã€‚
+	void SetTreeTxt( HWND );	/* ãƒ„ãƒªãƒ¼ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã®åˆæœŸåŒ–ï¼šãƒ†ã‚­ã‚¹ãƒˆãƒˆãƒ”ãƒƒã‚¯ãƒ„ãƒªãƒ¼ */
 	int SetTreeTxtNest( HWND, HTREEITEM, int, int, HTREEITEM*, int );
 	void GetTreeTextNext( HWND, HTREEITEM, int );
 #endif
 
-	//	Apr. 23, 2005 genta ƒŠƒXƒgƒrƒ…[‚Ìƒ\[ƒg‚ğŠÖ”‚Æ‚µ‚Ä“Æ—§‚³‚¹‚½
+	//	Apr. 23, 2005 genta ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã®ã‚½ãƒ¼ãƒˆã‚’é–¢æ•°ã¨ã—ã¦ç‹¬ç«‹ã•ã›ãŸ
 	void SortListView(HWND hwndList, int sortcol);
 
 	// 2001.12.03 hor
-//	void SetTreeBookMark( HWND );		/* ƒcƒŠ[ƒRƒ“ƒgƒ[ƒ‹‚Ì‰Šú‰»FƒuƒbƒNƒ}[ƒN */
-	void Key2Command( WORD );		//	ƒL[‘€ì¨ƒRƒ}ƒ“ƒh•ÏŠ·
+//	void SetTreeBookMark( HWND );		/* ãƒ„ãƒªãƒ¼ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã®åˆæœŸåŒ–ï¼šãƒ–ãƒƒã‚¯ãƒãƒ¼ã‚¯ */
+	void Key2Command( WORD );		//	ã‚­ãƒ¼æ“ä½œâ†’ã‚³ãƒãƒ³ãƒ‰å¤‰æ›
 	bool HitTestSplitter( int xPos, int yPos );
 	int HitTestCaptionButton( int xPos, int yPos );
 	INT_PTR OnNcCalcSize( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam );
@@ -145,27 +145,27 @@ private:
 
 	//	May 18, 2001 genta
 	/*!
-		@brief ƒAƒEƒgƒ‰ƒCƒ“‰ğÍí•Ê
+		@brief ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³è§£æç¨®åˆ¥
 
 		0: List, 1: Tree
 	*/
 	int	m_nViewType;
 
-	// 2002.02.16 hor Tree‚Ìƒ_ƒuƒ‹ƒNƒŠƒbƒN‚ÅƒtƒH[ƒJƒXˆÚ“®‚Å‚«‚é‚æ‚¤‚É 1/4
-	// (–³—–î—‚È‚Ì‚Å‚Ç‚È‚½‚©C³‚¨Šè‚¢‚µ‚Ü‚·)
+	// 2002.02.16 hor Treeã®ãƒ€ãƒ–ãƒ«ã‚¯ãƒªãƒƒã‚¯ã§ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ç§»å‹•ã§ãã‚‹ã‚ˆã†ã« 1/4
+	// (ç„¡ç†çŸ¢ç†ãªã®ã§ã©ãªãŸã‹ä¿®æ­£ãŠé¡˜ã„ã—ã¾ã™)
 	bool m_bWaitTreeProcess;
 
 	// 2002/11/1 frozen
-	//! ƒcƒŠ[ƒrƒ…[‚ğƒ\[ƒg‚·‚éŠî€
-	// 0 ƒfƒtƒHƒ‹ƒg(ƒm[ƒh‚ÉŠÖ˜A‚Ã‚¯‚ê‚ç‚ê‚½’l‡)
-	// 1 ƒAƒ‹ƒtƒ@ƒxƒbƒg‡
+	//! ãƒ„ãƒªãƒ¼ãƒ“ãƒ¥ãƒ¼ã‚’ã‚½ãƒ¼ãƒˆã™ã‚‹åŸºæº–
+	// 0 ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ(ãƒãƒ¼ãƒ‰ã«é–¢é€£ã¥ã‘ã‚Œã‚‰ã‚ŒãŸå€¤é †)
+	// 1 ã‚¢ãƒ«ãƒ•ã‚¡ãƒ™ãƒƒãƒˆé †
 	int m_nSortType;
 
-	// ‘I‘ğ’†‚ÌŠÖ”î•ñ
+	// é¸æŠä¸­ã®é–¢æ•°æƒ…å ±
 	CFuncInfo* m_cFuncInfo;
 
-	EDockSide	m_eDockSide;	// Œ»İ‚Ì‰æ–Ê‚Ì•\¦ˆÊ’u
-	HWND		m_hwndToolTip;	/*!< ƒc[ƒ‹ƒ`ƒbƒviƒ{ƒ^ƒ“—pj */
+	EDockSide	m_eDockSide;	// ç¾åœ¨ã®ç”»é¢ã®è¡¨ç¤ºä½ç½®
+	HWND		m_hwndToolTip;	/*!< ãƒ„ãƒ¼ãƒ«ãƒãƒƒãƒ—ï¼ˆãƒœã‚¿ãƒ³ç”¨ï¼‰ */
 	bool		m_bStretching;
 	bool		m_bHovering;
 	int			m_nHilightedBtn;

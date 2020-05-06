@@ -14,10 +14,10 @@
 // move end
 #include "CLatin1.h"
 
-//! eCodeType‚É“K‡‚·‚é CCodeBaseƒCƒ“ƒXƒ^ƒ“ƒX ‚ğ¶¬
+//! eCodeTypeã«é©åˆã™ã‚‹ CCodeBaseã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ ã‚’ç”Ÿæˆ
 CCodeBase* CCodeFactory::CreateCodeBase(
-	ECodeType	eCodeType,		//!< •¶šƒR[ƒh
-	int			nFlag			//!< bit 0: MIME Encode‚³‚ê‚½ƒwƒbƒ_‚ğdecode‚·‚é‚©‚Ç‚¤‚©
+	ECodeType	eCodeType,		//!< æ–‡å­—ã‚³ãƒ¼ãƒ‰
+	int			nFlag			//!< bit 0: MIME Encodeã•ã‚ŒãŸãƒ˜ãƒƒãƒ€ã‚’decodeã™ã‚‹ã‹ã©ã†ã‹
 )
 {
   	switch( eCodeType ){

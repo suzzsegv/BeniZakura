@@ -26,7 +26,7 @@
 
 #include "view/figures/CFigureStrategy.h"
 
-//! 半角スペース描画
+//! 蜊願ｧ偵せ繝壹�ｼ繧ｹ謠冗判
 class CFigure_HanSpace : public CFigureSpace{
 public:
 	//traits

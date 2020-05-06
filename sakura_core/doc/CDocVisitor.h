@@ -32,7 +32,7 @@ class CDocVisitor{
 public:
 	CDocVisitor(CEditDoc* pcDoc) : m_pcDocRef(pcDoc) { }
 
-	void SetAllEol(CEol cEol); //!< ‰üsƒR[ƒh‚ð“ˆê‚·‚é
+	void SetAllEol(CEol cEol); //!< æ”¹è¡Œã‚³ãƒ¼ãƒ‰ã‚’çµ±ä¸€ã™ã‚‹
 private:
 	CEditDoc* m_pcDocRef;
 };

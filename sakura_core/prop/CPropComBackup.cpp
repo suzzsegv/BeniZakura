@@ -1,5 +1,5 @@
 /*!	@file
-	@brief ‹¤’ÊÝ’èƒ_ƒCƒAƒƒOƒ{ƒbƒNƒXAuƒoƒbƒNƒAƒbƒvvƒy[ƒW
+	@brief å…±é€šè¨­å®šãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒœãƒƒã‚¯ã‚¹ã€ã€Œãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ã€ãƒšãƒ¼ã‚¸
 
 	@author Norio Nakatani
 */
@@ -27,10 +27,10 @@
 
 //	From Here Jun. 2, 2001 genta
 /*!
-	@param hwndDlg ƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX‚ÌWindow Handle
-	@param uMsg ƒƒbƒZ[ƒW
-	@param wParam ƒpƒ‰ƒ[ƒ^1
-	@param lParam ƒpƒ‰ƒ[ƒ^2
+	@param hwndDlg ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒœãƒƒã‚¯ã‚¹ã®Window Handle
+	@param uMsg ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+	@param wParam ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿1
+	@param lParam ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿2
 */
 INT_PTR CALLBACK CPropBackup::DlgProc_page(
 	HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam )
@@ -40,7 +40,7 @@ INT_PTR CALLBACK CPropBackup::DlgProc_page(
 //	To Here Jun. 2, 2001 genta
 
 
-/* ƒƒbƒZ[ƒWˆ— */
+/* ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å‡¦ç† */
 INT_PTR CPropBackup::DispatchEvent( HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam )
 {
 	WORD		wNotifyCode;
@@ -50,21 +50,21 @@ INT_PTR CPropBackup::DispatchEvent( HWND hwndDlg, UINT uMsg, WPARAM wParam, LPAR
 	NM_UPDOWN*	pMNUD;
 	int			idCtrl;
 //	int			nVal;
-	int			nVal;	//Sept.21, 2000 JEPRO ƒXƒsƒ“—v‘f‚ð‰Á‚¦‚½‚Ì‚Å•œŠˆ‚³‚¹‚½
+	int			nVal;	//Sept.21, 2000 JEPRO ã‚¹ãƒ”ãƒ³è¦ç´ ã‚’åŠ ãˆãŸã®ã§å¾©æ´»ã•ã›ãŸ
 //	int			nDummy;
 //	int			nCharChars;
 
 	switch( uMsg ){
 
 	case WM_INITDIALOG:
-		/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚ÌÝ’è Backup */
+		/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®è¨­å®š Backup */
 		SetData( hwndDlg );
 		// Modified by KEITA for WIN64 2003.9.6
 		::SetWindowLongPtr( hwndDlg, DWLP_USER, lParam );
 
-		/* ƒ†[ƒU[‚ªƒGƒfƒBƒbƒg ƒRƒ“ƒgƒ[ƒ‹‚É“ü—Í‚Å‚«‚éƒeƒLƒXƒg‚Ì’·‚³‚ð§ŒÀ‚·‚é */
-		//	Oct. 5, 2002 genta ƒoƒbƒNƒAƒbƒvƒtƒHƒ‹ƒ_–¼‚Ì“ü—ÍƒTƒCƒY‚ðŽw’è
-		//	Oct. 8, 2002 genta ÅŒã‚É•t‰Á‚³‚ê‚é\‚Ì—Ìˆæ‚ðŽc‚·‚½‚ßƒoƒbƒtƒ@ƒTƒCƒY-1‚µ‚©“ü—Í‚³‚¹‚È‚¢
+		/* ãƒ¦ãƒ¼ã‚¶ãƒ¼ãŒã‚¨ãƒ‡ã‚£ãƒƒãƒˆ ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã«å…¥åŠ›ã§ãã‚‹ãƒ†ã‚­ã‚¹ãƒˆã®é•·ã•ã‚’åˆ¶é™ã™ã‚‹ */
+		//	Oct. 5, 2002 genta ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ•ã‚©ãƒ«ãƒ€åã®å…¥åŠ›ã‚µã‚¤ã‚ºã‚’æŒ‡å®š
+		//	Oct. 8, 2002 genta æœ€å¾Œã«ä»˜åŠ ã•ã‚Œã‚‹\ã®é ˜åŸŸã‚’æ®‹ã™ãŸã‚ãƒãƒƒãƒ•ã‚¡ã‚µã‚¤ã‚º-1ã—ã‹å…¥åŠ›ã•ã›ãªã„
 		EditCtl_LimitText( ::GetDlgItem( hwndDlg, IDC_EDIT_BACKUPFOLDER ), _countof2(m_Common.m_sBackup.m_szBackUpFolder) - 1 - 1 );
 		// 20051107 aroka
 		EditCtl_LimitText( ::GetDlgItem( hwndDlg, IDC_EDIT_BACKUPFILE ), _countof2(m_Common.m_sBackup.m_szBackUpPathAdvanced) - 1 - 1 );
@@ -78,10 +78,10 @@ INT_PTR CPropBackup::DispatchEvent( HWND hwndDlg, UINT uMsg, WPARAM wParam, LPAR
 		default:
 			switch( pNMHDR->code ){
 			case PSN_KILLACTIVE:
-				/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚ÌŽæ“¾ Backup */
+				/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®å–å¾— Backup */
 				GetData( hwndDlg );
 				return TRUE;
-//@@@ 2002.01.03 YAZAKI ÅŒã‚É•\Ž¦‚µ‚Ä‚¢‚½ƒV[ƒg‚ð³‚µ‚­Šo‚¦‚Ä‚¢‚È‚¢ƒoƒOC³
+//@@@ 2002.01.03 YAZAKI æœ€å¾Œã«è¡¨ç¤ºã—ã¦ã„ãŸã‚·ãƒ¼ãƒˆã‚’æ­£ã—ãè¦šãˆã¦ã„ãªã„ãƒã‚°ä¿®æ­£
 			case PSN_SETACTIVE:
 				m_nPageNum = ID_PAGENUM_BACKUP;
 				return TRUE;
@@ -89,7 +89,7 @@ INT_PTR CPropBackup::DispatchEvent( HWND hwndDlg, UINT uMsg, WPARAM wParam, LPAR
 			break;
 
 		case IDC_SPIN_BACKUP_GENS:
-			/* ƒoƒbƒNƒAƒbƒvƒtƒ@ƒCƒ‹‚Ì¢‘ã” */
+			/* ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«ã®ä¸–ä»£æ•° */
 			nVal = ::GetDlgItemInt( hwndDlg, IDC_EDIT_BACKUP_3, NULL, FALSE );
 			if( pMNUD->iDelta < 0 ){
 				++nVal;
@@ -106,27 +106,27 @@ INT_PTR CPropBackup::DispatchEvent( HWND hwndDlg, UINT uMsg, WPARAM wParam, LPAR
 			::SetDlgItemInt( hwndDlg, IDC_EDIT_BACKUP_3, nVal, FALSE );
 			return TRUE;
 		}
-//****	To Here Sept. 21, 2000 JEPRO ƒ_ƒCƒAƒƒO—v‘f‚ÉƒXƒsƒ“‚ð“ü‚ê‚é‚Ì‚ÅˆÈ‰º‚ÌWM_NOTIFY‚ðƒRƒƒ“ƒgƒAƒEƒg‚É‚µ‰º‚ÉC³‚ð’u‚¢‚½
+//****	To Here Sept. 21, 2000 JEPRO ãƒ€ã‚¤ã‚¢ãƒ­ã‚°è¦ç´ ã«ã‚¹ãƒ”ãƒ³ã‚’å…¥ã‚Œã‚‹ã®ã§ä»¥ä¸‹ã®WM_NOTIFYã‚’ã‚³ãƒ¡ãƒ³ãƒˆã‚¢ã‚¦ãƒˆã«ã—ä¸‹ã«ä¿®æ­£ã‚’ç½®ã„ãŸ
 		break;
 
 	case WM_COMMAND:
-		wNotifyCode	= HIWORD(wParam);	/* ’Ê’mƒR[ƒh */
-		wID			= LOWORD(wParam);	/* €–ÚID¤ ƒRƒ“ƒgƒ[ƒ‹ID¤ ‚Ü‚½‚ÍƒAƒNƒZƒ‰ƒŒ[ƒ^ID */
-		hwndCtl		= (HWND) lParam;	/* ƒRƒ“ƒgƒ[ƒ‹‚Ìƒnƒ“ƒhƒ‹ */
+		wNotifyCode	= HIWORD(wParam);	/* é€šçŸ¥ã‚³ãƒ¼ãƒ‰ */
+		wID			= LOWORD(wParam);	/* é …ç›®IDã€ ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«IDã€ ã¾ãŸã¯ã‚¢ã‚¯ã‚»ãƒ©ãƒ¬ãƒ¼ã‚¿ID */
+		hwndCtl		= (HWND) lParam;	/* ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã®ãƒãƒ³ãƒ‰ãƒ« */
 		switch( wNotifyCode ){
-		/* ƒ{ƒ^ƒ“^ƒ`ƒFƒbƒNƒ{ƒbƒNƒX‚ªƒNƒŠƒbƒN‚³‚ê‚½ */
+		/* ãƒœã‚¿ãƒ³ï¼ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹ãŒã‚¯ãƒªãƒƒã‚¯ã•ã‚ŒãŸ */
 		case BN_CLICKED:
 			switch( wID ){
 			case IDC_RADIO_BACKUP_TYPE1:
 				//	Aug. 16, 2000 genta
-				//	ƒoƒbƒNƒAƒbƒv•ûŽ®’Ç‰Á
+				//	ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—æ–¹å¼è¿½åŠ 
 			case IDC_RADIO_BACKUP_TYPE3:
 			case IDC_CHECK_BACKUP:
 			case IDC_CHECK_BACKUPFOLDER:
 				//	Aug. 21, 2000 genta
 			case IDC_CHECK_AUTOSAVE:
-			//	Jun.  5, 2004 genta IDC_RADIO_BACKUP_TYPE2‚ð”pŽ~‚µ‚ÄC
-			//	IDC_RADIO_BACKUP_DATETYPE1, IDC_RADIO_BACKUP_DATETYPE2‚ð“¯—ñ‚ÉŽ‚Á‚Ä‚«‚½
+			//	Jun.  5, 2004 genta IDC_RADIO_BACKUP_TYPE2ã‚’å»ƒæ­¢ã—ã¦ï¼Œ
+			//	IDC_RADIO_BACKUP_DATETYPE1, IDC_RADIO_BACKUP_DATETYPE2ã‚’åŒåˆ—ã«æŒã£ã¦ããŸ
 			case IDC_RADIO_BACKUP_DATETYPE1:
 			case IDC_RADIO_BACKUP_DATETYPE2:
 			// 20051107 aroka
@@ -135,28 +135,28 @@ INT_PTR CPropBackup::DispatchEvent( HWND hwndDlg, UINT uMsg, WPARAM wParam, LPAR
 				UpdateBackupFile( hwndDlg );
 				EnableBackupInput(hwndDlg);
 				return TRUE;
-			case IDC_BUTTON_BACKUP_FOLDER_REF:	/* ƒtƒHƒ‹ƒ_ŽQÆ */
+			case IDC_BUTTON_BACKUP_FOLDER_REF:	/* ãƒ•ã‚©ãƒ«ãƒ€å‚ç…§ */
 				{
-					/* ƒoƒbƒNƒAƒbƒv‚ðì¬‚·‚éƒtƒHƒ‹ƒ_ */
+					/* ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ã‚’ä½œæˆã™ã‚‹ãƒ•ã‚©ãƒ«ãƒ€ */
 					TCHAR		szFolder[_MAX_PATH];
 					::DlgItem_GetText( hwndDlg, IDC_EDIT_BACKUPFOLDER, szFolder, _countof( szFolder ));
 
-					if( SelectDir( hwndDlg, _T("ƒoƒbƒNƒAƒbƒv‚ðì¬‚·‚éƒtƒHƒ‹ƒ_‚ð‘I‚ñ‚Å‚­‚¾‚³‚¢"), szFolder, szFolder ) ){
+					if( SelectDir( hwndDlg, _T("ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ã‚’ä½œæˆã™ã‚‹ãƒ•ã‚©ãƒ«ãƒ€ã‚’é¸ã‚“ã§ãã ã•ã„"), szFolder, szFolder ) ){
 						_tcscpy( m_Common.m_sBackup.m_szBackUpFolder, szFolder );
 						::DlgItem_SetText( hwndDlg, IDC_EDIT_BACKUPFOLDER, m_Common.m_sBackup.m_szBackUpFolder );
 					}
 					UpdateBackupFile( hwndDlg );
 				}
 				return TRUE;
-			default: // 20051107 aroka Defaultß ’Ç‰Á
+			default: // 20051107 aroka Defaultç¯€ è¿½åŠ 
 				GetData( hwndDlg );
 				UpdateBackupFile( hwndDlg );
 			}
 			break;	/* BN_CLICKED */
-		case EN_CHANGE: // 20051107 aroka ƒtƒHƒ‹ƒ_‚ª•ÏX‚³‚ê‚½‚çƒŠƒAƒ‹ƒ^ƒCƒ€‚ÉƒGƒfƒBƒbƒgƒ{ƒbƒNƒX“à‚ðXV
+		case EN_CHANGE: // 20051107 aroka ãƒ•ã‚©ãƒ«ãƒ€ãŒå¤‰æ›´ã•ã‚ŒãŸã‚‰ãƒªã‚¢ãƒ«ã‚¿ã‚¤ãƒ ã«ã‚¨ãƒ‡ã‚£ãƒƒãƒˆãƒœãƒƒã‚¯ã‚¹å†…ã‚’æ›´æ–°
 			switch( wID ){
 			case IDC_EDIT_BACKUPFOLDER:
-				// 2009.02.21 ryoji Œã‚ë‚É\‚ª’Ç‰Á‚³‚ê‚é‚Ì‚ÅC1•¶Žš—]—T‚ð‚Ý‚é•K—v‚ª‚ ‚éD
+				// 2009.02.21 ryoji å¾Œã‚ã«\ãŒè¿½åŠ ã•ã‚Œã‚‹ã®ã§ï¼Œ1æ–‡å­—ä½™è£•ã‚’ã¿ã‚‹å¿…è¦ãŒã‚ã‚‹ï¼Ž
 				::DlgItem_GetText( hwndDlg, IDC_EDIT_BACKUPFOLDER, m_Common.m_sBackup.m_szBackUpFolder, _countof2(m_Common.m_sBackup.m_szBackUpFolder) - 1 );
 				UpdateBackupFile( hwndDlg );
 				break;
@@ -170,38 +170,38 @@ INT_PTR CPropBackup::DispatchEvent( HWND hwndDlg, UINT uMsg, WPARAM wParam, LPAR
 }
 
 
-/*! ƒ_ƒCƒAƒƒOƒf[ƒ^‚ÌÝ’è
-	@date 2004.06.05 genta Œ³‚ÌŠg’£Žq‚ðŽc‚·Ý’è‚ð’Ç‰ÁD
-		“úŽžŽw’è‚Åƒ`ƒFƒbƒNƒ{ƒbƒNƒX‚ª‹ó—“‚ÅŽc‚é‚ÆÝ’è‚³‚ê‚È‚¢–â‘è‚ð”ð‚¯‚é‚½‚ßC
+/*! ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®è¨­å®š
+	@date 2004.06.05 genta å…ƒã®æ‹¡å¼µå­ã‚’æ®‹ã™è¨­å®šã‚’è¿½åŠ ï¼Ž
+		æ—¥æ™‚æŒ‡å®šã§ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹ãŒç©ºæ¬„ã§æ®‹ã‚‹ã¨è¨­å®šã•ã‚Œãªã„å•é¡Œã‚’é¿ã‘ã‚‹ãŸã‚ï¼Œ
 		IDC_RADIO_BACKUP_TYPE2
-		‚ð”pŽ~‚µ‚ÄƒŒƒCƒAƒEƒg•ÏX
+		ã‚’å»ƒæ­¢ã—ã¦ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆå¤‰æ›´
 */
 void CPropBackup::SetData( HWND hwndDlg )
 {
 //	BOOL	bRet;
 
-//	BOOL				m_bGrepExitConfirm;	/* Grepƒ‚[ƒh‚Å•Û‘¶Šm”F‚·‚é‚© */
+//	BOOL				m_bGrepExitConfirm;	/* Grepãƒ¢ãƒ¼ãƒ‰ã§ä¿å­˜ç¢ºèªã™ã‚‹ã‹ */
 
 
-	/* ƒoƒbƒNƒAƒbƒv‚Ìì¬ */
+	/* ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ã®ä½œæˆ */
 	::CheckDlgButtonBool( hwndDlg, IDC_CHECK_BACKUP, m_Common.m_sBackup.m_bBackUp );
-	/* ƒoƒbƒNƒAƒbƒv‚Ìì¬‘O‚ÉŠm”F */
+	/* ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ã®ä½œæˆå‰ã«ç¢ºèª */
 	::CheckDlgButtonBool( hwndDlg, IDC_CHECK_BACKUPDIALOG, m_Common.m_sBackup.m_bBackUpDialog );
-//	/* Žw’èƒtƒHƒ‹ƒ_‚ÉƒoƒbƒNƒAƒbƒv‚ðì¬‚·‚é */ //	20051107 aroka uƒoƒbƒNƒAƒbƒv‚Ìì¬v‚É˜A“®‚³‚¹‚é
+//	/* æŒ‡å®šãƒ•ã‚©ãƒ«ãƒ€ã«ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ã‚’ä½œæˆã™ã‚‹ */ //	20051107 aroka ã€Œãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ã®ä½œæˆã€ã«é€£å‹•ã•ã›ã‚‹
 //	::CheckDlgButton( hwndDlg, IDC_CHECK_BACKUPFOLDER, .m_sBackup.m_bBackUpFolder );
 
-	/* ƒoƒbƒNƒAƒbƒvƒtƒ@ƒCƒ‹–¼‚Ìƒ^ƒCƒv 1=(.bak) 2=*_“ú•t.* */
-	//	Jun.  5, 2004 genta Œ³‚ÌŠg’£Žq‚ðŽc‚·Ý’è(5,6)‚ð’Ç‰ÁD
+	/* ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«åã®ã‚¿ã‚¤ãƒ— 1=(.bak) 2=*_æ—¥ä»˜.* */
+	//	Jun.  5, 2004 genta å…ƒã®æ‹¡å¼µå­ã‚’æ®‹ã™è¨­å®š(5,6)ã‚’è¿½åŠ ï¼Ž
 	switch( m_Common.m_sBackup.GetBackupType() ){
 	case 2:
-		::CheckDlgButton( hwndDlg, IDC_RADIO_BACKUP_DATETYPE1, 1 );	// •t‰Á‚·‚é“ú•t‚Ìƒ^ƒCƒv(Œ»Žž)
+		::CheckDlgButton( hwndDlg, IDC_RADIO_BACKUP_DATETYPE1, 1 );	// ä»˜åŠ ã™ã‚‹æ—¥ä»˜ã®ã‚¿ã‚¤ãƒ—(ç¾æ™‚åˆ»)
 		break;
 	case 3:
 	case 6:
 		::CheckDlgButton( hwndDlg, IDC_RADIO_BACKUP_TYPE3, 1 );
 		break;
 	case 4:
-		::CheckDlgButton( hwndDlg, IDC_RADIO_BACKUP_DATETYPE2, 1 );	// •t‰Á‚·‚é“ú•t‚Ìƒ^ƒCƒv(‘O‰ñ‚Ì•Û‘¶Žž)
+		::CheckDlgButton( hwndDlg, IDC_RADIO_BACKUP_DATETYPE2, 1 );	// ä»˜åŠ ã™ã‚‹æ—¥ä»˜ã®ã‚¿ã‚¤ãƒ—(å‰å›žã®ä¿å­˜æ™‚åˆ»)
 		break;
 	case 5:
 	case 1:
@@ -210,47 +210,47 @@ void CPropBackup::SetData( HWND hwndDlg )
 		break;
 	}
 	
-	//	Jun.  5, 2004 genta Œ³‚ÌŠg’£Žq‚ðŽc‚·Ý’è(5,6)‚ð’Ç‰ÁD
+	//	Jun.  5, 2004 genta å…ƒã®æ‹¡å¼µå­ã‚’æ®‹ã™è¨­å®š(5,6)ã‚’è¿½åŠ ï¼Ž
 	::CheckDlgButton( hwndDlg, IDC_CHECK_BACKUP_RETAINEXT,
 		( m_Common.m_sBackup.GetBackupType() == 5 || m_Common.m_sBackup.GetBackupType() == 6 ) ? 1 : 0
 	 );
 
-	/* ƒoƒbƒNƒAƒbƒvƒtƒ@ƒCƒ‹–¼F“ú•t‚Ì”N */
+	/* ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«åï¼šæ—¥ä»˜ã®å¹´ */
 	::CheckDlgButtonBool( hwndDlg, IDC_CHECK_BACKUP_YEAR, m_Common.m_sBackup.GetBackupOpt(BKUP_YEAR) );
-	/* ƒoƒbƒNƒAƒbƒvƒtƒ@ƒCƒ‹–¼F“ú•t‚ÌŒŽ */
+	/* ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«åï¼šæ—¥ä»˜ã®æœˆ */
 	::CheckDlgButtonBool( hwndDlg, IDC_CHECK_BACKUP_MONTH, m_Common.m_sBackup.GetBackupOpt(BKUP_MONTH) );
-	/* ƒoƒbƒNƒAƒbƒvƒtƒ@ƒCƒ‹–¼F“ú•t‚Ì“ú */
+	/* ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«åï¼šæ—¥ä»˜ã®æ—¥ */
 	::CheckDlgButtonBool( hwndDlg, IDC_CHECK_BACKUP_DAY, m_Common.m_sBackup.GetBackupOpt(BKUP_DAY) );
-	/* ƒoƒbƒNƒAƒbƒvƒtƒ@ƒCƒ‹–¼F“ú•t‚ÌŽž */
+	/* ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«åï¼šæ—¥ä»˜ã®æ™‚ */
 	::CheckDlgButtonBool( hwndDlg, IDC_CHECK_BACKUP_HOUR, m_Common.m_sBackup.GetBackupOpt(BKUP_HOUR) );
-	/* ƒoƒbƒNƒAƒbƒvƒtƒ@ƒCƒ‹–¼F“ú•t‚Ì•ª */
+	/* ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«åï¼šæ—¥ä»˜ã®åˆ† */
 	::CheckDlgButtonBool( hwndDlg, IDC_CHECK_BACKUP_MIN, m_Common.m_sBackup.GetBackupOpt(BKUP_MIN) );
-	/* ƒoƒbƒNƒAƒbƒvƒtƒ@ƒCƒ‹–¼F“ú•t‚Ì•b */
+	/* ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«åï¼šæ—¥ä»˜ã®ç§’ */
 	::CheckDlgButtonBool( hwndDlg, IDC_CHECK_BACKUP_SEC, m_Common.m_sBackup.GetBackupOpt(BKUP_SEC) );
 
-	/* Žw’èƒtƒHƒ‹ƒ_‚ÉƒoƒbƒNƒAƒbƒv‚ðì¬‚·‚é */ // 20051107 aroka ˆÚ“®F˜A“®‘ÎÛ‚É‚·‚éB
+	/* æŒ‡å®šãƒ•ã‚©ãƒ«ãƒ€ã«ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ã‚’ä½œæˆã™ã‚‹ */ // 20051107 aroka ç§»å‹•ï¼šé€£å‹•å¯¾è±¡ã«ã™ã‚‹ã€‚
 	::CheckDlgButtonBool( hwndDlg, IDC_CHECK_BACKUPFOLDER, m_Common.m_sBackup.m_bBackUpFolder );
 	::CheckDlgButtonBool( hwndDlg, IDC_CHECK_BACKUP_FOLDER_RM, m_Common.m_sBackup.m_bBackUpFolderRM );	// 2010/5/27 Uchi
 
-	/* ƒoƒbƒNƒAƒbƒv‚ðì¬‚·‚éƒtƒHƒ‹ƒ_ */
+	/* ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ã‚’ä½œæˆã™ã‚‹ãƒ•ã‚©ãƒ«ãƒ€ */
 	::DlgItem_SetText( hwndDlg, IDC_EDIT_BACKUPFOLDER, m_Common.m_sBackup.m_szBackUpFolder );
 
-	/* ƒoƒbƒNƒAƒbƒvƒtƒ@ƒCƒ‹‚ð‚²‚Ý” ‚É•ú‚èž‚Þ */	//@@@ 2001.12.11 add MIK
+	/* ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ã”ã¿ç®±ã«æ”¾ã‚Šè¾¼ã‚€ */	//@@@ 2001.12.11 add MIK
 	::CheckDlgButton( hwndDlg, IDC_CHECK_BACKUP_DUSTBOX, m_Common.m_sBackup.m_bBackUpDustBox?BST_CHECKED:BST_UNCHECKED );	//@@@ 2001.12.11 add MIK
 
-	/* ƒoƒbƒNƒAƒbƒvæƒtƒHƒ‹ƒ_‚ðÚ×Ý’è‚·‚é */ // 20051107 aroka
+	/* ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—å…ˆãƒ•ã‚©ãƒ«ãƒ€ã‚’è©³ç´°è¨­å®šã™ã‚‹ */ // 20051107 aroka
 	::CheckDlgButton( hwndDlg, IDC_CHECK_BACKUP_ADVANCED, m_Common.m_sBackup.m_bBackUpPathAdvanced?BST_CHECKED:BST_UNCHECKED );
 
-	/* ƒoƒbƒNƒAƒbƒv‚ðì¬‚·‚éƒtƒHƒ‹ƒ_‚ÌÚ×Ý’è */ // 20051107 aroka
+	/* ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ã‚’ä½œæˆã™ã‚‹ãƒ•ã‚©ãƒ«ãƒ€ã®è©³ç´°è¨­å®š */ // 20051107 aroka
 	::DlgItem_SetText( hwndDlg, IDC_EDIT_BACKUPFILE, m_Common.m_sBackup.m_szBackUpPathAdvanced );
 
-	/* ƒoƒbƒNƒAƒbƒv‚ðì¬‚·‚éƒtƒHƒ‹ƒ_‚ÌÚ×Ý’è */ // 20051128 aroka
+	/* ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ã‚’ä½œæˆã™ã‚‹ãƒ•ã‚©ãƒ«ãƒ€ã®è©³ç´°è¨­å®š */ // 20051128 aroka
 	switch( m_Common.m_sBackup.GetBackupTypeAdv() ){
 	case 2:
-		::CheckDlgButton( hwndDlg, IDC_RADIO_BACKUP_DATETYPE1A, 1 );	// •t‰Á‚·‚é“ú•t‚Ìƒ^ƒCƒv(Œ»Žž)
+		::CheckDlgButton( hwndDlg, IDC_RADIO_BACKUP_DATETYPE1A, 1 );	// ä»˜åŠ ã™ã‚‹æ—¥ä»˜ã®ã‚¿ã‚¤ãƒ—(ç¾æ™‚åˆ»)
 		break;
 	case 4:
-		::CheckDlgButton( hwndDlg, IDC_RADIO_BACKUP_DATETYPE2A, 1 );	// •t‰Á‚·‚é“ú•t‚Ìƒ^ƒCƒv(‘O‰ñ‚Ì•Û‘¶Žž)
+		::CheckDlgButton( hwndDlg, IDC_RADIO_BACKUP_DATETYPE2A, 1 );	// ä»˜åŠ ã™ã‚‹æ—¥ä»˜ã®ã‚¿ã‚¤ãƒ—(å‰å›žã®ä¿å­˜æ™‚åˆ»)
 		break;
 	default:
 		::CheckDlgButton( hwndDlg, IDC_RADIO_BACKUP_DATETYPE1A, 1 );
@@ -278,23 +278,23 @@ void CPropBackup::SetData( HWND hwndDlg )
 
 
 
-/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚ÌŽæ“¾ */
+/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®å–å¾— */
 int CPropBackup::GetData( HWND hwndDlg )
 {
-//@@@ 2002.01.03 YAZAKI ÅŒã‚É•\Ž¦‚µ‚Ä‚¢‚½ƒV[ƒg‚ð³‚µ‚­Šo‚¦‚Ä‚¢‚È‚¢ƒoƒOC³
+//@@@ 2002.01.03 YAZAKI æœ€å¾Œã«è¡¨ç¤ºã—ã¦ã„ãŸã‚·ãƒ¼ãƒˆã‚’æ­£ã—ãè¦šãˆã¦ã„ãªã„ãƒã‚°ä¿®æ­£
 //	m_nPageNum = ID_PAGENUM_BACKUP;
 
-	/* ƒoƒbƒNƒAƒbƒv‚Ìì¬ */
+	/* ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ã®ä½œæˆ */
 	m_Common.m_sBackup.m_bBackUp = ::IsDlgButtonCheckedBool( hwndDlg, IDC_CHECK_BACKUP );
-	/* ƒoƒbƒNƒAƒbƒv‚Ìì¬‘O‚ÉŠm”F */
+	/* ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ã®ä½œæˆå‰ã«ç¢ºèª */
 	m_Common.m_sBackup.m_bBackUpDialog = ::IsDlgButtonCheckedBool( hwndDlg, IDC_CHECK_BACKUPDIALOG );
-//	/* Žw’èƒtƒHƒ‹ƒ_‚ÉƒoƒbƒNƒAƒbƒv‚ðì¬‚·‚é */ // 20051107 aroka uƒoƒbƒNƒAƒbƒv‚Ìì¬v‚É˜A“®‚³‚¹‚é
+//	/* æŒ‡å®šãƒ•ã‚©ãƒ«ãƒ€ã«ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ã‚’ä½œæˆã™ã‚‹ */ // 20051107 aroka ã€Œãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ã®ä½œæˆã€ã«é€£å‹•ã•ã›ã‚‹
 //	m_Common.m_sBackup.m_bBackUpFolder = ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_BACKUPFOLDER );
 
 
-	/* ƒoƒbƒNƒAƒbƒvƒtƒ@ƒCƒ‹–¼‚Ìƒ^ƒCƒv 1=(.bak) 2=*_“ú•t.* */
+	/* ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«åã®ã‚¿ã‚¤ãƒ— 1=(.bak) 2=*_æ—¥ä»˜.* */
 	if( ::IsDlgButtonChecked( hwndDlg, IDC_RADIO_BACKUP_TYPE1 ) ){
-		//	Jun.  5, 2005 genta Šg’£Žq‚ðŽc‚·ƒpƒ^[ƒ“‚ð’Ç‰Á
+		//	Jun.  5, 2005 genta æ‹¡å¼µå­ã‚’æ®‹ã™ãƒ‘ã‚¿ãƒ¼ãƒ³ã‚’è¿½åŠ 
 		if( ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_BACKUP_RETAINEXT )){
 			m_Common.m_sBackup.SetBackupType(5);
 		}
@@ -303,12 +303,12 @@ int CPropBackup::GetData( HWND hwndDlg )
 		}
 	}
 //	if( ::IsDlgButtonChecked( hwndDlg, IDC_RADIO_BACKUP_TYPE2 ) ){
-		// 2001/06/05 Start by asa-o: “ú•t‚Ìƒ^ƒCƒv
+		// 2001/06/05 Start by asa-o: æ—¥ä»˜ã®ã‚¿ã‚¤ãƒ—
 		if( ::IsDlgButtonChecked( hwndDlg, IDC_RADIO_BACKUP_DATETYPE1 ) ){
-			m_Common.m_sBackup.SetBackupType(2);	// Œ»Žž
+			m_Common.m_sBackup.SetBackupType(2);	// ç¾æ™‚åˆ»
 		}
 		if( ::IsDlgButtonChecked( hwndDlg, IDC_RADIO_BACKUP_DATETYPE2 ) ){
-			m_Common.m_sBackup.SetBackupType(4);	// ‘O‰ñ‚Ì•Û‘¶Žž
+			m_Common.m_sBackup.SetBackupType(4);	// å‰å›žã®ä¿å­˜æ™‚åˆ»
 		}
 		// 2001/06/05 End
 //	}
@@ -324,46 +324,46 @@ int CPropBackup::GetData( HWND hwndDlg )
 		}
 	}
 
-	/* ƒoƒbƒNƒAƒbƒvƒtƒ@ƒCƒ‹–¼F“ú•t‚Ì”N */
+	/* ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«åï¼šæ—¥ä»˜ã®å¹´ */
 	m_Common.m_sBackup.SetBackupOpt(BKUP_YEAR, ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_BACKUP_YEAR ) == BST_CHECKED);
-	/* ƒoƒbƒNƒAƒbƒvƒtƒ@ƒCƒ‹–¼F“ú•t‚ÌŒŽ */
+	/* ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«åï¼šæ—¥ä»˜ã®æœˆ */
 	m_Common.m_sBackup.SetBackupOpt(BKUP_MONTH, ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_BACKUP_MONTH ) == BST_CHECKED);
-	/* ƒoƒbƒNƒAƒbƒvƒtƒ@ƒCƒ‹–¼F“ú•t‚Ì“ú */
+	/* ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«åï¼šæ—¥ä»˜ã®æ—¥ */
 	m_Common.m_sBackup.SetBackupOpt(BKUP_DAY, ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_BACKUP_DAY ) == BST_CHECKED);
-	/* ƒoƒbƒNƒAƒbƒvƒtƒ@ƒCƒ‹–¼F“ú•t‚ÌŽž */
+	/* ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«åï¼šæ—¥ä»˜ã®æ™‚ */
 	m_Common.m_sBackup.SetBackupOpt(BKUP_HOUR, ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_BACKUP_HOUR ) == BST_CHECKED);
-	/* ƒoƒbƒNƒAƒbƒvƒtƒ@ƒCƒ‹–¼F“ú•t‚Ì•ª */
+	/* ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«åï¼šæ—¥ä»˜ã®åˆ† */
 	m_Common.m_sBackup.SetBackupOpt(BKUP_MIN, ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_BACKUP_MIN ) == BST_CHECKED);
-	/* ƒoƒbƒNƒAƒbƒvƒtƒ@ƒCƒ‹–¼F“ú•t‚Ì•b */
+	/* ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«åï¼šæ—¥ä»˜ã®ç§’ */
 	m_Common.m_sBackup.SetBackupOpt(BKUP_SEC, ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_BACKUP_SEC ) == BST_CHECKED);
 
-	/* Žw’èƒtƒHƒ‹ƒ_‚ÉƒoƒbƒNƒAƒbƒv‚ðì¬‚·‚é */ // 20051107 aroka ˆÚ“®
+	/* æŒ‡å®šãƒ•ã‚©ãƒ«ãƒ€ã«ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ã‚’ä½œæˆã™ã‚‹ */ // 20051107 aroka ç§»å‹•
 	m_Common.m_sBackup.m_bBackUpFolder = ::IsDlgButtonCheckedBool( hwndDlg, IDC_CHECK_BACKUPFOLDER );
 	m_Common.m_sBackup.m_bBackUpFolderRM = ::IsDlgButtonCheckedBool( hwndDlg, IDC_CHECK_BACKUP_FOLDER_RM );	// 2010/5/27 Uchi
 
-	/* ƒoƒbƒNƒAƒbƒv‚ðì¬‚·‚éƒtƒHƒ‹ƒ_ */
-	//	Oct. 5, 2002 genta ƒTƒCƒY‚ðsizeof()‚ÅŽw’è
-	//	Oct. 8, 2002 genta Œã‚ë‚É\‚ª’Ç‰Á‚³‚ê‚é‚Ì‚ÅC1•¶Žš—]—T‚ðŒ©‚é•K—v‚ª‚ ‚éD
+	/* ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ã‚’ä½œæˆã™ã‚‹ãƒ•ã‚©ãƒ«ãƒ€ */
+	//	Oct. 5, 2002 genta ã‚µã‚¤ã‚ºã‚’sizeof()ã§æŒ‡å®š
+	//	Oct. 8, 2002 genta å¾Œã‚ã«\ãŒè¿½åŠ ã•ã‚Œã‚‹ã®ã§ï¼Œ1æ–‡å­—ä½™è£•ã‚’è¦‹ã‚‹å¿…è¦ãŒã‚ã‚‹ï¼Ž
 	::DlgItem_GetText( hwndDlg, IDC_EDIT_BACKUPFOLDER, m_Common.m_sBackup.m_szBackUpFolder, _countof2(m_Common.m_sBackup.m_szBackUpFolder) - 1);
 
-	/* ƒoƒbƒNƒAƒbƒvƒtƒ@ƒCƒ‹‚ð‚²‚Ý” ‚É•ú‚èž‚Þ */	//@@@ 2001.12.11 add MIK
+	/* ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ã”ã¿ç®±ã«æ”¾ã‚Šè¾¼ã‚€ */	//@@@ 2001.12.11 add MIK
 	m_Common.m_sBackup.m_bBackUpDustBox = (BST_CHECKED==::IsDlgButtonChecked( hwndDlg, IDC_CHECK_BACKUP_DUSTBOX ));	//@@@ 2001.12.11 add MIK
 
-	/* Žw’èƒtƒHƒ‹ƒ_‚ÉƒoƒbƒNƒAƒbƒv‚ðì¬‚·‚éÚ×Ý’è */ // 20051107 aroka
+	/* æŒ‡å®šãƒ•ã‚©ãƒ«ãƒ€ã«ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ã‚’ä½œæˆã™ã‚‹è©³ç´°è¨­å®š */ // 20051107 aroka
 	m_Common.m_sBackup.m_bBackUpPathAdvanced = (BST_CHECKED==::IsDlgButtonChecked( hwndDlg, IDC_CHECK_BACKUP_ADVANCED ));
-	/* ƒoƒbƒNƒAƒbƒv‚ðì¬‚·‚éƒtƒHƒ‹ƒ_ */ // 20051107 aroka
+	/* ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ã‚’ä½œæˆã™ã‚‹ãƒ•ã‚©ãƒ«ãƒ€ */ // 20051107 aroka
 	::DlgItem_GetText( hwndDlg, IDC_EDIT_BACKUPFILE, m_Common.m_sBackup.m_szBackUpPathAdvanced, _countof2( m_Common.m_sBackup.m_szBackUpPathAdvanced ) - 1);
 
-	// 20051128 aroka Ú×Ý’è‚Ì“ú•t‚Ìƒ^ƒCƒv
+	// 20051128 aroka è©³ç´°è¨­å®šã®æ—¥ä»˜ã®ã‚¿ã‚¤ãƒ—
 	if( ::IsDlgButtonChecked( hwndDlg, IDC_RADIO_BACKUP_DATETYPE1A ) ){
-		m_Common.m_sBackup.SetBackupTypeAdv(2);	// Œ»Žž
+		m_Common.m_sBackup.SetBackupTypeAdv(2);	// ç¾æ™‚åˆ»
 	}
 	if( ::IsDlgButtonChecked( hwndDlg, IDC_RADIO_BACKUP_DATETYPE2A ) ){
-		m_Common.m_sBackup.SetBackupTypeAdv(4);	// ‘O‰ñ‚Ì•Û‘¶Žž
+		m_Common.m_sBackup.SetBackupTypeAdv(4);	// å‰å›žã®ä¿å­˜æ™‚åˆ»
 	}
 
 	//	From Here Aug. 16, 2000 genta
-	//	¢‘ã”‚ÌŽæ“¾
+	//	ä¸–ä»£æ•°ã®å–å¾—
 	int	 nN;
 	nN = ::GetDlgItemInt( hwndDlg, IDC_EDIT_BACKUP_3, NULL, FALSE );	//	Oct. 29, 2001 genta
 
@@ -383,24 +383,24 @@ int CPropBackup::GetData( HWND hwndDlg )
 }
 
 //	From Here Aug. 16, 2000 genta
-/*!	ƒ`ƒFƒbƒNó‘Ô‚É‰ž‚¶‚Äƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX—v‘f‚ÌEnable/Disable‚ð
-	“KØ‚ÉÝ’è‚·‚é
+/*!	ãƒã‚§ãƒƒã‚¯çŠ¶æ…‹ã«å¿œã˜ã¦ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒœãƒƒã‚¯ã‚¹è¦ç´ ã®Enable/Disableã‚’
+	é©åˆ‡ã«è¨­å®šã™ã‚‹
 
-	@date 2004.06.05 genta Œ³‚ÌŠg’£Žq‚ðŽc‚·Ý’è‚ð’Ç‰ÁD
-		“úŽžŽw’è‚Åƒ`ƒFƒbƒNƒ{ƒbƒNƒX‚ª‹ó—“‚ÅŽc‚é‚ÆÝ’è‚³‚ê‚È‚¢–â‘è‚ð”ð‚¯‚é‚½‚ßC
+	@date 2004.06.05 genta å…ƒã®æ‹¡å¼µå­ã‚’æ®‹ã™è¨­å®šã‚’è¿½åŠ ï¼Ž
+		æ—¥æ™‚æŒ‡å®šã§ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹ãŒç©ºæ¬„ã§æ®‹ã‚‹ã¨è¨­å®šã•ã‚Œãªã„å•é¡Œã‚’é¿ã‘ã‚‹ãŸã‚ï¼Œ
 		IDC_RADIO_BACKUP_TYPE2
-		‚ð”pŽ~‚µ‚ÄƒŒƒCƒAƒEƒg•ÏX
-	@date 2005.11.07 aroka ƒŒƒCƒAƒEƒg‚É‡‚í‚¹‚Ä‡˜‚ð“ü‚ê‘Ö‚¦AƒCƒ“ƒfƒ“ƒg‚ð®—
-	@date 2005.11.21 aroka Ú×Ý’èƒ‚[ƒh‚Ì§Œä‚ð’Ç‰Á
-	@date 2009.02.20 ryoji IDC_LABEL_BACKUP_HELP‚É‚æ‚é•ÊƒRƒ“ƒgƒ[ƒ‹‰B‚µ‚ð”pŽ~Aif•¶§Œä‚ðShowEnableƒtƒ‰ƒO§Œä‚É’u‚«Š·‚¦‚ÄŠÈ‘f‰»‚µ‚Ä‰º‹L–â‘èC³B
-	                       EVista Aero‚¾‚ÆÚ×Ý’èON‚É‚µ‚Ä‚àÚ×Ý’èOFF€–Ú‚ª‰æ–Ê‚©‚çÁ‚¦‚È‚¢
-	                       EÚ×Ý’èOFF€–Ú‚ª”ñ•\Ž¦‚Å‚Í‚È‚©‚Á‚½‚Ì‚Å‰B‚ê‚Ä‚¢‚Ä‚àTooltipƒwƒ‹ƒv‚ª•\Ž¦‚³‚ê‚é
-	                       EÚ×Ý’èON‚È‚Ì‚ÉƒoƒbƒNƒAƒbƒvì¬OFF‚¾‚ÆÚ×Ý’èOFF€–Ú‚Ì‚Ù‚¤‚ª•\Ž¦‚³‚ê‚é
+		ã‚’å»ƒæ­¢ã—ã¦ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆå¤‰æ›´
+	@date 2005.11.07 aroka ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆã«åˆã‚ã›ã¦é †åºã‚’å…¥ã‚Œæ›¿ãˆã€ã‚¤ãƒ³ãƒ‡ãƒ³ãƒˆã‚’æ•´ç†
+	@date 2005.11.21 aroka è©³ç´°è¨­å®šãƒ¢ãƒ¼ãƒ‰ã®åˆ¶å¾¡ã‚’è¿½åŠ 
+	@date 2009.02.20 ryoji IDC_LABEL_BACKUP_HELPã«ã‚ˆã‚‹åˆ¥ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«éš ã—ã‚’å»ƒæ­¢ã€ifæ–‡åˆ¶å¾¡ã‚’ShowEnableãƒ•ãƒ©ã‚°åˆ¶å¾¡ã«ç½®ãæ›ãˆã¦ç°¡ç´ åŒ–ã—ã¦ä¸‹è¨˜å•é¡Œä¿®æ­£ã€‚
+	                       ãƒ»Vista Aeroã ã¨è©³ç´°è¨­å®šONã«ã—ã¦ã‚‚è©³ç´°è¨­å®šOFFé …ç›®ãŒç”»é¢ã‹ã‚‰æ¶ˆãˆãªã„
+	                       ãƒ»è©³ç´°è¨­å®šOFFé …ç›®ãŒéžè¡¨ç¤ºã§ã¯ãªã‹ã£ãŸã®ã§éš ã‚Œã¦ã„ã¦ã‚‚Tooltipãƒ˜ãƒ«ãƒ—ãŒè¡¨ç¤ºã•ã‚Œã‚‹
+	                       ãƒ»è©³ç´°è¨­å®šONãªã®ã«ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ä½œæˆOFFã ã¨è©³ç´°è¨­å®šOFFé …ç›®ã®ã»ã†ãŒè¡¨ç¤ºã•ã‚Œã‚‹
 */
 static inline void ShowEnable(HWND hWnd, BOOL bShow, BOOL bEnable)
 {
 	::ShowWindow( hWnd, bShow? SW_SHOW: SW_HIDE );
-	::EnableWindow( hWnd, bEnable && bShow );		// bShow=false,bEnable=true‚Ìê‡ƒVƒ‡[ƒgƒJƒbƒgƒL[‚ª•Ï‚È“®‚«‚ð‚·‚é‚Ì‚ÅC³	2010/5/27 Uchi
+	::EnableWindow( hWnd, bEnable && bShow );		// bShow=false,bEnable=trueã®å ´åˆã‚·ãƒ§ãƒ¼ãƒˆã‚«ãƒƒãƒˆã‚­ãƒ¼ãŒå¤‰ãªå‹•ãã‚’ã™ã‚‹ã®ã§ä¿®æ­£	2010/5/27 Uchi
 }
 
 void CPropBackup::EnableBackupInput(HWND hwndDlg)
@@ -423,8 +423,8 @@ void CPropBackup::EnableBackupInput(HWND hwndDlg)
 	SHOWENABLE( IDC_RADIO_BACKUP_DATETYPE2,	!bAdvanced, bBackup );
 	SHOWENABLE( IDC_LABEL_BACKUP_3,			!bAdvanced, bBackup && bType3);
 	SHOWENABLE( IDC_EDIT_BACKUP_3,			!bAdvanced, bBackup && bType3);
-	SHOWENABLE( IDC_SPIN_BACKUP_GENS,		!bAdvanced, bBackup && bType3 );	//	20051107 aroka ’Ç‰Á
-	SHOWENABLE( IDC_CHECK_BACKUP_RETAINEXT,	!bAdvanced, bBackup && (bType1 || bType3) );	//	Jun.  5, 2005 genta ’Ç‰Á
+	SHOWENABLE( IDC_SPIN_BACKUP_GENS,		!bAdvanced, bBackup && bType3 );	//	20051107 aroka è¿½åŠ 
+	SHOWENABLE( IDC_CHECK_BACKUP_RETAINEXT,	!bAdvanced, bBackup && (bType1 || bType3) );	//	Jun.  5, 2005 genta è¿½åŠ 
 	SHOWENABLE( IDC_CHECK_BACKUP_YEAR,		!bAdvanced, bBackup && (bDate1 || bDate2) );
 	SHOWENABLE( IDC_CHECK_BACKUP_MONTH,		!bAdvanced, bBackup && (bDate1 || bDate2) );
 	SHOWENABLE( IDC_CHECK_BACKUP_DAY,		!bAdvanced, bBackup && (bDate1 || bDate2) );
@@ -432,21 +432,21 @@ void CPropBackup::EnableBackupInput(HWND hwndDlg)
 	SHOWENABLE( IDC_CHECK_BACKUP_MIN,		!bAdvanced, bBackup && (bDate1 || bDate2) );
 	SHOWENABLE( IDC_CHECK_BACKUP_SEC,		!bAdvanced, bBackup && (bDate1 || bDate2) );
 
-	// Ú×Ý’è
+	// è©³ç´°è¨­å®š
 	SHOWENABLE( IDC_EDIT_BACKUPFILE,		TRUE, bBackup && bAdvanced );
-//	SHOWENABLE( IDC_LABEL_BACKUP_HELP,		bAdvanced, bBackup );	// •s‰ÂŽ‹‚Ì‚Ü‚Ü•ú’ui‘¼ƒRƒ“ƒgƒ[ƒ‹‰B‚µ‚Ì•ûŽ®‚Í”pŽ~j 2009.02.20 ryoji
+//	SHOWENABLE( IDC_LABEL_BACKUP_HELP,		bAdvanced, bBackup );	// ä¸å¯è¦–ã®ã¾ã¾æ”¾ç½®ï¼ˆä»–ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«éš ã—ã®æ–¹å¼ã¯å»ƒæ­¢ï¼‰ 2009.02.20 ryoji
 	SHOWENABLE( IDC_LABEL_BACKUP_HELP2,		bAdvanced, bBackup );
 	SHOWENABLE( IDC_RADIO_BACKUP_DATETYPE1A,	bAdvanced, bBackup );
 	SHOWENABLE( IDC_RADIO_BACKUP_DATETYPE2A,	bAdvanced, bBackup );
 
 	SHOWENABLE( IDC_CHECK_BACKUPFOLDER,		TRUE, bBackup );
-	SHOWENABLE( IDC_LABEL_BACKUP_4,			TRUE, bBackup && bFolder );	// added Sept. 6, JEPRO ƒtƒHƒ‹ƒ_Žw’è‚µ‚½‚Æ‚«‚¾‚¯Enable‚É‚È‚é‚æ‚¤‚É•ÏX
+	SHOWENABLE( IDC_LABEL_BACKUP_4,			TRUE, bBackup && bFolder );	// added Sept. 6, JEPRO ãƒ•ã‚©ãƒ«ãƒ€æŒ‡å®šã—ãŸã¨ãã ã‘Enableã«ãªã‚‹ã‚ˆã†ã«å¤‰æ›´
 	SHOWENABLE( IDC_CHECK_BACKUP_FOLDER_RM,	TRUE, bBackup && bFolder );	// 2010/5/27 Uchi
 	SHOWENABLE( IDC_EDIT_BACKUPFOLDER,		TRUE, bBackup && bFolder );
 	SHOWENABLE( IDC_BUTTON_BACKUP_FOLDER_REF,	TRUE, bBackup && bFolder );
 	SHOWENABLE( IDC_CHECK_BACKUP_DUSTBOX,	TRUE, bBackup );	//@@@ 2001.12.11 add MIK
 
-	// ì¬‘O‚ÉŠm”F
+	// ä½œæˆå‰ã«ç¢ºèª
 	SHOWENABLE( IDC_CHECK_BACKUPDIALOG,		TRUE, bBackup );
 
 	#undef SHOWENABLE
@@ -454,17 +454,17 @@ void CPropBackup::EnableBackupInput(HWND hwndDlg)
 //	To Here Aug. 16, 2000 genta
 
 
-/*!	ƒoƒbƒNƒAƒbƒvƒtƒ@ƒCƒ‹‚ÌÚ×Ý’èƒGƒfƒBƒbƒgƒ{ƒbƒNƒX‚ð“KØ‚ÉXV‚·‚é
+/*!	ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«ã®è©³ç´°è¨­å®šã‚¨ãƒ‡ã‚£ãƒƒãƒˆãƒœãƒƒã‚¯ã‚¹ã‚’é©åˆ‡ã«æ›´æ–°ã™ã‚‹
 
-	@date 2005.11.07 aroka V‹K’Ç‰Á
+	@date 2005.11.07 aroka æ–°è¦è¿½åŠ 
 
-	@note Ú×Ý’èØ‚è‘Ö‚¦Žž‚ÌƒfƒtƒHƒ‹ƒg‚ðƒIƒvƒVƒ‡ƒ“‚É‡‚í‚¹‚é‚½‚ßA
-		m_szBackUpPathAdvanced ‚ðXV‚·‚é
+	@note è©³ç´°è¨­å®šåˆ‡ã‚Šæ›¿ãˆæ™‚ã®ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚’ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã«åˆã‚ã›ã‚‹ãŸã‚ã€
+		m_szBackUpPathAdvanced ã‚’æ›´æ–°ã™ã‚‹
 */
-void CPropBackup::UpdateBackupFile(HWND hwndDlg)	//	ƒoƒbƒNƒAƒbƒvƒtƒ@ƒCƒ‹‚ÌÚ×Ý’è
+void CPropBackup::UpdateBackupFile(HWND hwndDlg)	//	ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«ã®è©³ç´°è¨­å®š
 {
 	wchar_t temp[MAX_PATH];
-	/* ƒoƒbƒNƒAƒbƒv‚ðì¬‚·‚éƒtƒ@ƒCƒ‹ */ // 20051107 aroka
+	/* ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ã‚’ä½œæˆã™ã‚‹ãƒ•ã‚¡ã‚¤ãƒ« */ // 20051107 aroka
 	if( !m_Common.m_sBackup.m_bBackUp ){
 		wcscpy( temp, LTEXT("") );
 	}
@@ -473,7 +473,7 @@ void CPropBackup::UpdateBackupFile(HWND hwndDlg)	//	ƒoƒbƒNƒAƒbƒvƒtƒ@ƒCƒ‹‚ÌÚ×Ý
 			wcscpy( temp, LTEXT("") );
 		}
 		else if( m_Common.m_sBackup.m_bBackUpDustBox  ){
-			auto_sprintf( temp, LTEXT("%ls\\"), LTEXT("(ƒSƒ~” )") );
+			auto_sprintf( temp, LTEXT("%ls\\"), LTEXT("(ã‚´ãƒŸç®±)") );
 		}
 		else{
 			auto_sprintf( temp, LTEXT(".\\") );
@@ -492,26 +492,26 @@ void CPropBackup::UpdateBackupFile(HWND hwndDlg)	//	ƒoƒbƒNƒAƒbƒvƒtƒ@ƒCƒ‹‚ÌÚ×Ý
 		case 6: // .*.b??
 			wcscat( temp, LTEXT("$0.*.b??") );
 			break;
-		case 2:	//	“ú•tCŽž
-		case 4:	//	“ú•tCŽž
+		case 2:	//	æ—¥ä»˜ï¼Œæ™‚åˆ»
+		case 4:	//	æ—¥ä»˜ï¼Œæ™‚åˆ»
 			wcscat( temp, LTEXT("$0_") );
 
-			if( m_Common.m_sBackup.GetBackupOpt(BKUP_YEAR) ){	/* ƒoƒbƒNƒAƒbƒvƒtƒ@ƒCƒ‹–¼F“ú•t‚Ì”N */
+			if( m_Common.m_sBackup.GetBackupOpt(BKUP_YEAR) ){	/* ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«åï¼šæ—¥ä»˜ã®å¹´ */
 				wcscat( temp, LTEXT("%Y") );
 			}
-			if( m_Common.m_sBackup.GetBackupOpt(BKUP_MONTH) ){	/* ƒoƒbƒNƒAƒbƒvƒtƒ@ƒCƒ‹–¼F“ú•t‚ÌŒŽ */
+			if( m_Common.m_sBackup.GetBackupOpt(BKUP_MONTH) ){	/* ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«åï¼šæ—¥ä»˜ã®æœˆ */
 				wcscat( temp, LTEXT("%m") );
 			}
-			if( m_Common.m_sBackup.GetBackupOpt(BKUP_DAY) ){	/* ƒoƒbƒNƒAƒbƒvƒtƒ@ƒCƒ‹–¼F“ú•t‚Ì“ú */
+			if( m_Common.m_sBackup.GetBackupOpt(BKUP_DAY) ){	/* ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«åï¼šæ—¥ä»˜ã®æ—¥ */
 				wcscat( temp, LTEXT("%d") );
 			}
-			if( m_Common.m_sBackup.GetBackupOpt(BKUP_HOUR) ){	/* ƒoƒbƒNƒAƒbƒvƒtƒ@ƒCƒ‹–¼F“ú•t‚ÌŽž */
+			if( m_Common.m_sBackup.GetBackupOpt(BKUP_HOUR) ){	/* ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«åï¼šæ—¥ä»˜ã®æ™‚ */
 				wcscat( temp, LTEXT("%H") );
 			}
-			if( m_Common.m_sBackup.GetBackupOpt(BKUP_MIN) ){	/* ƒoƒbƒNƒAƒbƒvƒtƒ@ƒCƒ‹–¼F“ú•t‚Ì•ª */
+			if( m_Common.m_sBackup.GetBackupOpt(BKUP_MIN) ){	/* ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«åï¼šæ—¥ä»˜ã®åˆ† */
 				wcscat( temp, LTEXT("%M") );
 			}
-			if( m_Common.m_sBackup.GetBackupOpt(BKUP_SEC) ){	/* ƒoƒbƒNƒAƒbƒvƒtƒ@ƒCƒ‹–¼F“ú•t‚Ì•b */
+			if( m_Common.m_sBackup.GetBackupOpt(BKUP_SEC) ){	/* ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«åï¼šæ—¥ä»˜ã®ç§’ */
 				wcscat( temp, LTEXT("%S") );
 			}
 
@@ -521,7 +521,7 @@ void CPropBackup::UpdateBackupFile(HWND hwndDlg)	//	ƒoƒbƒNƒAƒbƒvƒtƒ@ƒCƒ‹‚ÌÚ×Ý
 			break;
 		}
 	}
-	if( !m_Common.m_sBackup.m_bBackUpPathAdvanced ){	// Ú×Ý’èƒ‚[ƒh‚Å‚È‚¢‚Æ‚«‚¾‚¯Ž©“®XV‚·‚é
+	if( !m_Common.m_sBackup.m_bBackUpPathAdvanced ){	// è©³ç´°è¨­å®šãƒ¢ãƒ¼ãƒ‰ã§ãªã„ã¨ãã ã‘è‡ªå‹•æ›´æ–°ã™ã‚‹
 		auto_sprintf( m_Common.m_sBackup.m_szBackUpPathAdvanced, _T("%ls"), temp );
 		::DlgItem_SetText( hwndDlg, IDC_EDIT_BACKUPFILE, m_Common.m_sBackup.m_szBackUpPathAdvanced );
 	}

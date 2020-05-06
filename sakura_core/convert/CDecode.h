@@ -1,5 +1,5 @@
 /*!	@file
-	@brief デコーダーのインターフェース
+	@brief 繝�繧ｳ繝ｼ繝繝ｼ縺ｮ繧､繝ｳ繧ｿ繝ｼ繝輔ぉ繝ｼ繧ｹ
 
 	@author
 */
@@ -33,19 +33,19 @@ class CDecode {
 public:
 	virtual ~CDecode() { }
 
-	//インターフェース
+	//繧､繝ｳ繧ｿ繝ｼ繝輔ぉ繝ｼ繧ｹ
 	bool CallDecode( const CNativeW& pcData, CMemory* pDest )
 	{
 		bool bRet=DoDecode(pcData, pDest);
 		if(!bRet){
-			ErrorMessage(NULL,_WINT("変換でエラーが発生しました"));
+			ErrorMessage(NULL,_WINT("螟画鋤縺ｧ繧ｨ繝ｩ繝ｼ縺檎匱逕溘＠縺ｾ縺励◆"));
 			pDest->SetRawData( "", 0 );
 			return false;
 		}
 		return true;
 	}
 
-	//実装
+	//螳溯｣�
 	virtual bool DoDecode( const CNativeW& pcData, CMemory* pDest )=0;
 
 };

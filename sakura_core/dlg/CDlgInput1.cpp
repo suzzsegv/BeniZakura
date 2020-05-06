@@ -1,8 +1,8 @@
 /*!	@file
-	@brief 1s“ü—Íƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX
+	@brief 1è¡Œå…¥åŠ›ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒœãƒƒã‚¯ã‚¹
 
 	@author Norio Nakatani
-	@date	1998/05/31 ì¬
+	@date	1998/05/31 ä½œæˆ
 */
 /*
 	Copyright (C) 1998-2001, Norio Nakatani
@@ -21,7 +21,7 @@
 #include "sakura_rc.h"
 
 
-/* ƒ_ƒCƒAƒƒOƒvƒƒV[ƒWƒƒ */
+/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£ */
 INT_PTR CALLBACK CDlgInput1Proc(
 	HWND hwndDlg,	// handle to dialog box
 	UINT uMsg,		// message
@@ -65,7 +65,7 @@ CDlgInput1::~CDlgInput1()
 
 
 
-/* ƒ‚[ƒhƒŒƒXƒ_ƒCƒAƒƒO‚Ì•\¦ */
+/* ãƒ¢ãƒ¼ãƒ‰ãƒ¬ã‚¹ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®è¡¨ç¤º */
 BOOL CDlgInput1::DoModal(
 	HINSTANCE		hInstApp,
 	HWND			hwndParent,
@@ -76,12 +76,12 @@ BOOL CDlgInput1::DoModal(
 )
 {
 	BOOL bRet;
-	m_hInstance = hInstApp;		/* ƒAƒvƒŠƒP[ƒVƒ‡ƒ“ƒCƒ“ƒXƒ^ƒ“ƒX‚Ìƒnƒ“ƒhƒ‹ */
-	m_hwndParent = hwndParent;	/* ƒI[ƒi[ƒEƒBƒ“ƒhƒE‚Ìƒnƒ“ƒhƒ‹ */
-	m_pszTitle = pszTitle;		/* ƒ_ƒCƒAƒƒOƒ^ƒCƒgƒ‹ */
-	m_pszMessage = pszMessage;		/* ƒƒbƒZ[ƒW */
-	m_nMaxTextLen = nMaxTextLen;	/* “ü—ÍƒTƒCƒYãŒÀ */
-//	m_pszText = pszText;			/* ƒeƒLƒXƒg */
+	m_hInstance = hInstApp;		/* ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã®ãƒãƒ³ãƒ‰ãƒ« */
+	m_hwndParent = hwndParent;	/* ã‚ªãƒ¼ãƒŠãƒ¼ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ãƒãƒ³ãƒ‰ãƒ« */
+	m_pszTitle = pszTitle;		/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚¿ã‚¤ãƒˆãƒ« */
+	m_pszMessage = pszMessage;		/* ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ */
+	m_nMaxTextLen = nMaxTextLen;	/* å…¥åŠ›ã‚µã‚¤ã‚ºä¸Šé™ */
+//	m_pszText = pszText;			/* ãƒ†ã‚­ã‚¹ãƒˆ */
 	m_cmemText.SetString( pszText );
 	bRet = (BOOL)::DialogBoxParam(
 		m_hInstance,
@@ -114,7 +114,7 @@ BOOL CDlgInput1::DoModal(
 
 
 
-/* ƒ_ƒCƒAƒƒO‚ÌƒƒbƒZ[ƒWˆ— */
+/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å‡¦ç† */
 INT_PTR CDlgInput1::DispatchEvent(
 	HWND hwndDlg,	// handle to dialog box
 	UINT uMsg,		// message
@@ -128,27 +128,27 @@ INT_PTR CDlgInput1::DispatchEvent(
 //	int		nRet;
 	switch( uMsg ){
 	case WM_INITDIALOG:
-		/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìİ’è */
+		/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®è¨­å®š */
 		// Modified by KEITA for WIN64 2003.9.6
 		::SetWindowLongPtr( hwndDlg, DWLP_USER, lParam );
 
-		::SetWindowText( hwndDlg, m_pszTitle );	/* ƒ_ƒCƒAƒƒOƒ^ƒCƒgƒ‹ */
-		EditCtl_LimitText( ::GetDlgItem( hwndDlg, IDC_EDIT_INPUT1 ), m_nMaxTextLen );	/* “ü—ÍƒTƒCƒYãŒÀ */
-		DlgItem_SetText( hwndDlg, IDC_EDIT_INPUT1, m_cmemText.GetStringPtr() );	/* ƒeƒLƒXƒg */
-		::SetWindowText( ::GetDlgItem( hwndDlg, IDC_STATIC_MSG ), m_pszMessage );	/* ƒƒbƒZ[ƒW */
+		::SetWindowText( hwndDlg, m_pszTitle );	/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚¿ã‚¤ãƒˆãƒ« */
+		EditCtl_LimitText( ::GetDlgItem( hwndDlg, IDC_EDIT_INPUT1 ), m_nMaxTextLen );	/* å…¥åŠ›ã‚µã‚¤ã‚ºä¸Šé™ */
+		DlgItem_SetText( hwndDlg, IDC_EDIT_INPUT1, m_cmemText.GetStringPtr() );	/* ãƒ†ã‚­ã‚¹ãƒˆ */
+		::SetWindowText( ::GetDlgItem( hwndDlg, IDC_STATIC_MSG ), m_pszMessage );	/* ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ */
 
 		return TRUE;
 	case WM_COMMAND:
-		wNotifyCode = HIWORD(wParam);	/* ’Ê’mƒR[ƒh */
-		wID			= LOWORD(wParam);	/* €–ÚID¤ ƒRƒ“ƒgƒ[ƒ‹ID¤ ‚Ü‚½‚ÍƒAƒNƒZƒ‰ƒŒ[ƒ^ID */
-		hwndCtl		= (HWND) lParam;	/* ƒRƒ“ƒgƒ[ƒ‹‚Ìƒnƒ“ƒhƒ‹ */
+		wNotifyCode = HIWORD(wParam);	/* é€šçŸ¥ã‚³ãƒ¼ãƒ‰ */
+		wID			= LOWORD(wParam);	/* é …ç›®IDã€ ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«IDã€ ã¾ãŸã¯ã‚¢ã‚¯ã‚»ãƒ©ãƒ¬ãƒ¼ã‚¿ID */
+		hwndCtl		= (HWND) lParam;	/* ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã®ãƒãƒ³ãƒ‰ãƒ« */
 		switch( wNotifyCode ){
-		/* ƒ{ƒ^ƒ“^ƒ`ƒFƒbƒNƒ{ƒbƒNƒX‚ªƒNƒŠƒbƒN‚³‚ê‚½ */
+		/* ãƒœã‚¿ãƒ³ï¼ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹ãŒã‚¯ãƒªãƒƒã‚¯ã•ã‚ŒãŸ */
 		case BN_CLICKED:
 			switch( wID ){
 			case IDOK:
 				m_cmemText.AllocStringBuffer( ::GetWindowTextLength( ::GetDlgItem( hwndDlg, IDC_EDIT_INPUT1 ) ) );
-				::GetWindowText( ::GetDlgItem( hwndDlg, IDC_EDIT_INPUT1 ), m_cmemText.GetStringPtr(), m_nMaxTextLen + 1 );	/* ƒeƒLƒXƒg */
+				::GetWindowText( ::GetDlgItem( hwndDlg, IDC_EDIT_INPUT1 ), m_cmemText.GetStringPtr(), m_nMaxTextLen + 1 );	/* ãƒ†ã‚­ã‚¹ãƒˆ */
 				::EndDialog( hwndDlg, TRUE );
 				return TRUE;
 			case IDCANCEL:

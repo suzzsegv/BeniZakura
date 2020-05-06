@@ -1,9 +1,9 @@
 /*!	@file
-	@brief w’ès‚Ö‚ÌƒWƒƒƒ“ƒvƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX
+	@brief æŒ‡å®šè¡Œã¸ã®ã‚¸ãƒ£ãƒ³ãƒ—ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒœãƒƒã‚¯ã‚¹
 
 	@author Norio Nakatani
-	@date 1998/05/31 ì¬
-	@date 1999/12/05 Äì¬
+	@date 1998/05/31 ä½œæˆ
+	@date 1999/12/05 å†ä½œæˆ
 */
 /*
 	Copyright (C) 1998-2001, Norio Nakatani
@@ -20,7 +20,7 @@ class CDlgJump;
 #define _CDLGJUMP_H_
 
 #include "dlg/CDialog.h"
-//! w’ès‚Ö‚ÌƒWƒƒƒ“ƒvƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX
+//! æŒ‡å®šè¡Œã¸ã®ã‚¸ãƒ£ãƒ³ãƒ—ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒœãƒƒã‚¯ã‚¹
 class CDlgJump : public CDialog
 {
 public:
@@ -31,17 +31,17 @@ public:
 	/*
 	||  Attributes & Operations
 	*/
-	int DoModal( HINSTANCE, HWND, LPARAM/* , BOOL */);	/* ƒ‚[ƒ_ƒ‹ƒ_ƒCƒAƒƒO‚Ì•\¦ */
+	int DoModal( HINSTANCE, HWND, LPARAM/* , BOOL */);	/* ãƒ¢ãƒ¼ãƒ€ãƒ«ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®è¡¨ç¤º */
 
-	int			m_nLineNum;		/*!< s”Ô† */
+	int			m_nLineNum;		/*!< è¡Œç•ªå· */
 protected:
 	/*
-	||  À‘•ƒwƒ‹ƒpŠÖ”
+	||  å®Ÿè£…ãƒ˜ãƒ«ãƒ‘é–¢æ•°
 	*/
 	BOOL OnNotify( WPARAM,  LPARAM );
 	BOOL OnBnClicked( int );
-	void SetData( void );		/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìİ’è */
-	int GetData( void );		/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìæ“¾ */
+	void SetData( void );		/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®è¨­å®š */
+	int GetData( void );		/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®å–å¾— */
 };
 
 

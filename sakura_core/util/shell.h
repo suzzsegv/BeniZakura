@@ -1,5 +1,5 @@
 // 2007.10.19 kobake
-// ‚È‚ñ‚©ƒVƒFƒ‹‚Á‚Û‚¢‹@”\‚ÌŠÖ”ŒQ
+// ãªã‚“ã‹ã‚·ã‚§ãƒ«ã£ã½ã„æ©Ÿèƒ½ã®é–¢æ•°ç¾¤
 /*
 	Copyright (C) 2008, kobake
 
@@ -26,21 +26,21 @@
 #ifndef SAKURA_SHELL_A129670C_6564_4E0D_AF52_E323B0C7CA099_H_
 #define SAKURA_SHELL_A129670C_6564_4E0D_AF52_E323B0C7CA099_H_
 
-/* Shell InterfaceŒn(?) */
-BOOL SelectDir(HWND, const TCHAR*, const TCHAR*, TCHAR* );	/* ƒtƒHƒ‹ƒ_‘I‘ğƒ_ƒCƒAƒƒO */
-BOOL ResolveShortcutLink(HWND hwnd, LPCTSTR lpszLinkFile, LPTSTR lpszPath);/* ƒVƒ‡[ƒgƒJƒbƒg(.lnk)‚Ì‰ğŒˆ */
+/* Shell Interfaceç³»(?) */
+BOOL SelectDir(HWND, const TCHAR*, const TCHAR*, TCHAR* );	/* ãƒ•ã‚©ãƒ«ãƒ€é¸æŠãƒ€ã‚¤ã‚¢ãƒ­ã‚° */
+BOOL ResolveShortcutLink(HWND hwnd, LPCTSTR lpszLinkFile, LPTSTR lpszPath);/* ã‚·ãƒ§ãƒ¼ãƒˆã‚«ãƒƒãƒˆ(.lnk)ã®è§£æ±º */
 
 DWORD NetConnect ( const TCHAR strNetWorkPass[] );
 
-BOOL GetSpecialFolderPath( int nFolder, LPTSTR pszPath );	// “ÁêƒtƒHƒ‹ƒ_‚ÌƒpƒX‚ğæ“¾‚·‚é	// 2007.05.19 ryoji
+BOOL GetSpecialFolderPath( int nFolder, LPTSTR pszPath );	// ç‰¹æ®Šãƒ•ã‚©ãƒ«ãƒ€ã®ãƒ‘ã‚¹ã‚’å–å¾—ã™ã‚‹	// 2007.05.19 ryoji
 
 
 
-int MyPropertySheet( LPPROPSHEETHEADER lppsph );	// “Æ©Šg’£ƒvƒƒpƒeƒBƒV[ƒg	// 2007.05.24 ryoji
+int MyPropertySheet( LPPROPSHEETHEADER lppsph );	// ç‹¬è‡ªæ‹¡å¼µãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚·ãƒ¼ãƒˆ	// 2007.05.24 ryoji
 
 
-//!ƒtƒHƒ“ƒg‘I‘ğƒ_ƒCƒAƒƒO
-BOOL MySelectFont( LOGFONT* plf, INT* piPointSize, HWND hwndDlgOwner, bool );	// 2009.10.01 ryoji ƒ|ƒCƒ“ƒgƒTƒCƒYi1/10ƒ|ƒCƒ“ƒg’PˆÊjˆø”’Ç‰Á
+//!ãƒ•ã‚©ãƒ³ãƒˆé¸æŠãƒ€ã‚¤ã‚¢ãƒ­ã‚°
+BOOL MySelectFont( LOGFONT* plf, INT* piPointSize, HWND hwndDlgOwner, bool );	// 2009.10.01 ryoji ãƒã‚¤ãƒ³ãƒˆã‚µã‚¤ã‚ºï¼ˆ1/10ãƒã‚¤ãƒ³ãƒˆå˜ä½ï¼‰å¼•æ•°è¿½åŠ 
 
 #endif /* SAKURA_SHELL_A129670C_6564_4E0D_AF52_E323B0C7CA099_H_ */
 /*[EOF]*/

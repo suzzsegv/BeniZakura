@@ -8,15 +8,15 @@
 #include "window/CEditWnd.h"
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                     �Z�[�u���`�F�b�N                        //
+//                     セーブ時チェック                        //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
-//! CDocLineMgr���ێ�����f�[�^�ɈقȂ���s�R�[�h�����݂��Ă��邩�ǂ������肷��
+//! CDocLineMgrが保持するデータに異なる改行コードが混在しているかどうか判定する
 static bool _CheckSavingEolcode(const CDocLineMgr& pcDocLineMgr, CEol cEolType)
 {
 	bool bMix = false;
-	if( cEolType == EOL_NONE ){	//���s�R�[�h�ϊ��Ȃ�
-		CEol cEolCheck;	//��r�Ώ�EOL
+	if( cEolType == EOL_NONE ){	//改行コード変換なし
+		CEol cEolCheck;	//比較対象EOL
 		CDocLine* pcDocLine = pcDocLineMgr.GetDocLineTop();
 		if( pcDocLine ){
 			cEolCheck = pcDocLine->GetEol();
@@ -33,13 +33,13 @@ static bool _CheckSavingEolcode(const CDocLineMgr& pcDocLineMgr, CEol cEolType)
 	return bMix;
 }
 
-//! CDocLineMgr���ێ�����f�[�^���w�蕶���R�[�h�ň��S�ɕۑ��ł��邩�ǂ������肷��
+//! CDocLineMgrが保持するデータを指定文字コードで安全に保存できるかどうか判定する
 static EConvertResult _CheckSavingCharcode(const CDocLineMgr& pcDocLineMgr, ECodeType eCodeType)
 {
 	CDocLine*	pcDocLine = pcDocLineMgr.GetDocLineTop();
 	CCodeBase* pCodeBase=CCodeFactory::CreateCodeBase(eCodeType,0);
 	while( pcDocLine ){
-		// �R�[�h�ϊ� pcDocLine -> cmemTmp
+		// コード変換 pcDocLine -> cmemTmp
 		CMemory cmemTmp;
 		EConvertResult e = CIoBridge::ImplToFile(
 			pcDocLine->_GetDocLineDataWithEOL(),
@@ -51,7 +51,7 @@ static EConvertResult _CheckSavingCharcode(const CDocLineMgr& pcDocLineMgr, ECod
 			return e;
 		}
 
-		//���̍s��
+		//次の行へ
 		pcDocLine = pcDocLine->GetNextLine();
 	}
 	delete pCodeBase;
@@ -63,7 +63,7 @@ ECallbackResult CCodeChecker::OnCheckSave(SSaveInfo* pSaveInfo)
 {
 	CEditDoc* pcDoc = GetListeningDoc();
 
-	//���s�R�[�h�����݂��Ă��邩�ǂ�������
+	//改行コードが混在しているかどうか判定
 	bool bTmpResult = false;
 	if( pcDoc->m_cDocType.GetDocumentType()->m_bChkEnterAtEnd ){
 		bTmpResult = _CheckSavingEolcode(
@@ -71,43 +71,43 @@ ECallbackResult CCodeChecker::OnCheckSave(SSaveInfo* pSaveInfo)
 		);
 	}
 
-	//���[�U�₢���킹
+	//ユーザ問い合わせ
 	if (bTmpResult) {
 		int nDlgResult = MYMESSAGEBOX(
 			CEditWnd::getInstance()->GetHwnd(),
 			MB_YESNOCANCEL | MB_ICONWARNING,
 			GSTR_APPNAME,
-			_T("���s�R�[�h�����݂��Ă��܂��B\r\n")
-			_T("���݂̓��͉��s�R�[�h %ts �ɓ��ꂵ�܂����H"),
+			_T("改行コードが混在しています。\r\n")
+			_T("現在の入力改行コード %ts に統一しますか？"),
 			pcDoc->m_cDocEditor.GetNewLineCode().GetName()
 		);
 		switch(nDlgResult){
-		case IDYES:		pSaveInfo->cEol = pcDoc->m_cDocEditor.GetNewLineCode(); break; //����
-		case IDNO:		break; //���s
-		case IDCANCEL:	return CALLBACK_INTERRUPT; //���f
+		case IDYES:		pSaveInfo->cEol = pcDoc->m_cDocEditor.GetNewLineCode(); break; //統一
+		case IDNO:		break; //続行
+		case IDCANCEL:	return CALLBACK_INTERRUPT; //中断
 		}
 	}
 
-	//�w�蕶���R�[�h�ň��S�ɕۑ��ł��邩�ǂ�������
+	//指定文字コードで安全に保存できるかどうか判定
 	EConvertResult nTmpResult = _CheckSavingCharcode(
 		pcDoc->m_cDocLineMgr, pSaveInfo->eCharCode
 	);
 
-	//���[�U�₢���킹
+	//ユーザ問い合わせ
 	if(nTmpResult==RESULT_LOSESOME){
 		int nDlgResult = MYMESSAGEBOX(
 			CEditWnd::getInstance()->GetHwnd(),
 			MB_YESNO | MB_ICONWARNING,
 			GSTR_APPNAME,
-			_T("�����G���R�[�h %ts �ŕۑ����悤�Ƃ��Ă��܂����A\r\n")
-			_T("�����R�[�h�ϊ��ɂ��ꕔ�̕�����񂪎����܂��B\r\n")
-			_T("�ۑ������𑱍s���܂����H"),
+			_T("文字エンコード %ts で保存しようとしていますが、\r\n")
+			_T("文字コード変換により一部の文字情報が失われます。\r\n")
+			_T("保存処理を続行しますか？"),
 			CCodeTypeName(pSaveInfo->eCharCode).Normal()
 		);
 		switch(nDlgResult){
-		case IDYES:		break; //���s
-		case IDNO:		return CALLBACK_INTERRUPT; //���f
-		case IDCANCEL:	return CALLBACK_INTERRUPT; //���f
+		case IDYES:		break; //続行
+		case IDNO:		return CALLBACK_INTERRUPT; //中断
+		case IDCANCEL:	return CALLBACK_INTERRUPT; //中断
 		}
 	}
 	return CALLBACK_CONTINUE;
@@ -115,14 +115,14 @@ ECallbackResult CCodeChecker::OnCheckSave(SSaveInfo* pSaveInfo)
 
 void CCodeChecker::OnFinalSave(ESaveResult eSaveResult)
 {
-	//�J�L�R����
+	//カキコ結果
 	if(eSaveResult==SAVED_LOSESOME){
-		ErrorMessage(CEditWnd::getInstance()->GetHwnd(), _T("�ꕔ�̕�����񂪁A�Z�[�u���̕ϊ��ɂ�莸���܂���"));
+		ErrorMessage(CEditWnd::getInstance()->GetHwnd(), _T("一部の文字情報が、セーブ時の変換により失われました"));
 	}
 }
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                     ���[�h���`�F�b�N                        //
+//                     ロード時チェック                        //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
 void CCodeChecker::OnFinalLoad(ELoadResult eLoadResult)
@@ -130,7 +130,7 @@ void CCodeChecker::OnFinalLoad(ELoadResult eLoadResult)
 	if(eLoadResult==LOADED_LOSESOME){
 		ErrorMessage(
 			CEditWnd::getInstance()->GetHwnd(),
-			_T("�ꕔ�̕�����񂪁A���[�h���̕ϊ��ɂ�莸���܂���")
+			_T("一部の文字情報が、ロード時の変換により失われました")
 		);
 	}
 }

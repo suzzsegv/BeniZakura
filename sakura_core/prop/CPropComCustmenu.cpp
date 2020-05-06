@@ -1,5 +1,5 @@
 /*!	@file
-	‹¤’ÊÝ’èƒ_ƒCƒAƒƒOƒ{ƒbƒNƒXAuƒJƒXƒ^ƒ€ƒƒjƒ…[vƒy[ƒW
+	å…±é€šè¨­å®šãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒœãƒƒã‚¯ã‚¹ã€ã€Œã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã€ãƒšãƒ¼ã‚¸
 
 	@author Norio Nakatani
 */
@@ -28,10 +28,10 @@ using namespace std;
 
 //	From Here Jun. 2, 2001 genta
 /*!
-	@param hwndDlg ƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX‚ÌWindow Handle
-	@param uMsg ƒƒbƒZ[ƒW
-	@param wParam ƒpƒ‰ƒ[ƒ^1
-	@param lParam ƒpƒ‰ƒ[ƒ^2
+	@param hwndDlg ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒœãƒƒã‚¯ã‚¹ã®Window Handle
+	@param uMsg ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+	@param wParam ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿1
+	@param lParam ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿2
 */
 INT_PTR CALLBACK CPropCustmenu::DlgProc_page(
 	HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam )
@@ -40,7 +40,7 @@ INT_PTR CALLBACK CPropCustmenu::DlgProc_page(
 }
 //	To Here Jun. 2, 2001 genta
 
-/* Custom menu ƒƒbƒZ[ƒWˆ— */
+/* Custom menu ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å‡¦ç† */
 INT_PTR CPropCustmenu::DispatchEvent(
 	HWND	hwndDlg,	// handle to dialog box
 	UINT	uMsg,		// message
@@ -73,18 +73,18 @@ INT_PTR CPropCustmenu::DispatchEvent(
 
 	switch( uMsg ){
 	case WM_INITDIALOG:
-		/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚ÌÝ’è Custom menu */
+		/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®è¨­å®š Custom menu */
 		SetData( hwndDlg );
 		// Modified by KEITA for WIN64 2003.9.6
 		::SetWindowLongPtr( hwndDlg, DWLP_USER, lParam );
 
-		/* ƒRƒ“ƒgƒ[ƒ‹‚Ìƒnƒ“ƒhƒ‹‚ðŽæ“¾ */
+		/* ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã®ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾— */
 		hwndCOMBO_FUNCKIND = ::GetDlgItem( hwndDlg, IDC_COMBO_FUNCKIND );
 		hwndLIST_FUNC = ::GetDlgItem( hwndDlg, IDC_LIST_FUNC );
 		hwndCOMBO_MENU = ::GetDlgItem( hwndDlg, IDC_COMBO_MENU );
 		hwndLIST_RES = ::GetDlgItem( hwndDlg, IDC_LIST_RES );
 
-		/* ƒL[‘I‘ðŽž‚Ìˆ— */
+		/* ã‚­ãƒ¼é¸æŠžæ™‚ã®å‡¦ç† */
 		::SendMessageCmd( hwndDlg, WM_COMMAND, MAKELONG( IDC_COMBO_FUNCKIND, CBN_SELCHANGE ), (LPARAM)hwndCOMBO_FUNCKIND );
 
 		::SetTimer( hwndDlg, 1, 300, NULL );
@@ -98,14 +98,14 @@ INT_PTR CPropCustmenu::DispatchEvent(
 		switch( pNMHDR->code ){
 		case PSN_KILLACTIVE:
 //			MYTRACE( _T("Custom menu PSN_KILLACTIVE\n") );
-			/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚ÌŽæ“¾ Custom menu */
+			/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®å–å¾— Custom menu */
 			GetData( hwndDlg );
 			return TRUE;
-//@@@ 2002.01.03 YAZAKI ÅŒã‚É•\Ž¦‚µ‚Ä‚¢‚½ƒV[ƒg‚ð³‚µ‚­Šo‚¦‚Ä‚¢‚È‚¢ƒoƒOC³
+//@@@ 2002.01.03 YAZAKI æœ€å¾Œã«è¡¨ç¤ºã—ã¦ã„ãŸã‚·ãƒ¼ãƒˆã‚’æ­£ã—ãè¦šãˆã¦ã„ãªã„ãƒã‚°ä¿®æ­£
 		case PSN_SETACTIVE:
 			m_nPageNum = ID_PAGENUM_CUSTMENU;
 
-			// •\Ž¦‚ðXV‚·‚éiƒ}ƒNƒÝ’è‰æ–Ê‚Å‚Ìƒ}ƒNƒ–¼•ÏX‚ð”½‰fj	// 2007.11.02 ryoji
+			// è¡¨ç¤ºã‚’æ›´æ–°ã™ã‚‹ï¼ˆãƒžã‚¯ãƒ­è¨­å®šç”»é¢ã§ã®ãƒžã‚¯ãƒ­åå¤‰æ›´ã‚’åæ˜ ï¼‰	// 2007.11.02 ryoji
 			nIdx1 = Combo_GetCurSel( hwndCOMBO_MENU );
 			nIdx2 = List_GetCurSel( hwndLIST_RES );
 			nIdx3 = Combo_GetCurSel( hwndCOMBO_FUNCKIND );
@@ -127,35 +127,35 @@ INT_PTR CPropCustmenu::DispatchEvent(
 		break;
 
 	case WM_COMMAND:
-		wNotifyCode = HIWORD(wParam);	/* ’Ê’mƒR[ƒh */
-		wID = LOWORD(wParam);			/* €–ÚID¤ ƒRƒ“ƒgƒ[ƒ‹ID¤ ‚Ü‚½‚ÍƒAƒNƒZƒ‰ƒŒ[ƒ^ID */
-		hwndCtl = (HWND) lParam;		/* ƒRƒ“ƒgƒ[ƒ‹‚Ìƒnƒ“ƒhƒ‹ */
+		wNotifyCode = HIWORD(wParam);	/* é€šçŸ¥ã‚³ãƒ¼ãƒ‰ */
+		wID = LOWORD(wParam);			/* é …ç›®IDã€ ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«IDã€ ã¾ãŸã¯ã‚¢ã‚¯ã‚»ãƒ©ãƒ¬ãƒ¼ã‚¿ID */
+		hwndCtl = (HWND) lParam;		/* ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã®ãƒãƒ³ãƒ‰ãƒ« */
 
 		switch( wNotifyCode ){
-		/* ƒ{ƒ^ƒ“^ƒ`ƒFƒbƒNƒ{ƒbƒNƒX‚ªƒNƒŠƒbƒN‚³‚ê‚½ */
+		/* ãƒœã‚¿ãƒ³ï¼ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹ãŒã‚¯ãƒªãƒƒã‚¯ã•ã‚ŒãŸ */
 		case BN_CLICKED:
 			switch( wID ){
-			case IDC_BUTTON_IMPORT:	/* ƒCƒ“ƒ|[ƒg */
-				/* ƒJƒXƒ^ƒ€ƒƒjƒ…[Ý’è‚ðƒCƒ“ƒ|[ƒg‚·‚é */
+			case IDC_BUTTON_IMPORT:	/* ã‚¤ãƒ³ãƒãƒ¼ãƒˆ */
+				/* ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼è¨­å®šã‚’ã‚¤ãƒ³ãƒãƒ¼ãƒˆã™ã‚‹ */
 				Import( hwndDlg );
 				return TRUE;
-			case IDC_BUTTON_EXPORT:	/* ƒGƒNƒXƒ|[ƒg */
-				/* ƒJƒXƒ^ƒ€ƒƒjƒ…[Ý’è‚ðƒGƒNƒXƒ|[ƒg‚·‚é */
+			case IDC_BUTTON_EXPORT:	/* ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆ */
+				/* ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼è¨­å®šã‚’ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆã™ã‚‹ */
 				Export( hwndDlg );
 				return TRUE;
 			case IDC_BUTTON_MENUNAME:
-				//	ƒƒjƒ…[•¶Žš—ñ‚ÌÝ’è
+				//	ãƒ¡ãƒ‹ãƒ¥ãƒ¼æ–‡å­—åˆ—ã®è¨­å®š
 				nIdx1 = Combo_GetCurSel( hwndCOMBO_MENU );
 				if( CB_ERR == nIdx1 ){
 					break;
 				}
 				::DlgItem_GetText( hwndDlg, IDC_EDIT_MENUNAME,
 					m_Common.m_sCustomMenu.m_szCustMenuNameArr[nIdx1], MAX_CUSTOM_MENU_NAME_LEN );
-				//	Combo Box‚à•ÏX íœ•Ä“o˜^
+				//	Combo Boxã‚‚å¤‰æ›´ å‰Šé™¤ï¼†å†ç™»éŒ²
 				Combo_DeleteString( hwndCOMBO_MENU, nIdx1 );
 				Combo_InsertString( hwndCOMBO_MENU, nIdx1,
 					m_Common.m_sCustomMenu.m_szCustMenuNameArr[nIdx1] );
-				// íœ‚·‚é‚Æ‘I‘ð‚ª‰ðœ‚³‚ê‚é‚Ì‚ÅCŒ³‚É–ß‚·
+				// å‰Šé™¤ã™ã‚‹ã¨é¸æŠžãŒè§£é™¤ã•ã‚Œã‚‹ã®ã§ï¼Œå…ƒã«æˆ»ã™
 				Combo_SetCurSel( hwndCOMBO_MENU, nIdx1 );
 				return TRUE;
 			}
@@ -169,15 +169,15 @@ INT_PTR CPropCustmenu::DispatchEvent(
 				if( CB_ERR == nIdx1 ){
 					break;
 				}
-				/* ƒƒjƒ…[€–Úˆê——‚É•¶Žš—ñ‚ðƒZƒbƒgiƒŠƒXƒgƒ{ƒbƒNƒXj*/
+				/* ãƒ¡ãƒ‹ãƒ¥ãƒ¼é …ç›®ä¸€è¦§ã«æ–‡å­—åˆ—ã‚’ã‚»ãƒƒãƒˆï¼ˆãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ï¼‰*/
 				List_ResetContent( hwndLIST_RES );
 				for( i = 0; i < m_Common.m_sCustomMenu.m_nCustMenuItemNumArr[nIdx1]; ++i ){
 					if( 0 == m_Common.m_sCustomMenu.m_nCustMenuItemFuncArr[nIdx1][i] ){
-						auto_strcpy( szLabel2, LTEXT(" „Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ") );	//Oct. 18, 2000 JEPRO uƒc[ƒ‹ƒo[vƒ^ƒu‚ÅŽg‚Á‚Ä‚¢‚éƒZƒpƒŒ[ƒ^‚Æ“¯‚¶üŽí‚É“ˆê‚µ‚½
+						auto_strcpy( szLabel2, LTEXT(" â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€") );	//Oct. 18, 2000 JEPRO ã€Œãƒ„ãƒ¼ãƒ«ãƒãƒ¼ã€ã‚¿ãƒ–ã§ä½¿ã£ã¦ã„ã‚‹ã‚»ãƒ‘ãƒ¬ãƒ¼ã‚¿ã¨åŒã˜ç·šç¨®ã«çµ±ä¸€ã—ãŸ
 					}else{
 						//	Oct. 3, 2001 genta
 						m_cLookup.Funccode2Name( m_Common.m_sCustomMenu.m_nCustMenuItemFuncArr[nIdx1][i], szLabel, 256 );
-						/* ƒL[ */
+						/* ã‚­ãƒ¼ */
 						if( '\0' == m_Common.m_sCustomMenu.m_nCustMenuItemKeyArr[nIdx1][i] ){
 							auto_strcpy( szLabel2, szLabel );
 						}else{
@@ -186,7 +186,7 @@ INT_PTR CPropCustmenu::DispatchEvent(
 					}
 					::List_AddString( hwndLIST_RES, szLabel2 );
 				}
-				//	Oct. 15, 2001 genta ƒƒjƒ…[–¼‚ðÝ’è
+				//	Oct. 15, 2001 genta ãƒ¡ãƒ‹ãƒ¥ãƒ¼åã‚’è¨­å®š
 				::DlgItem_SetText( hwndDlg, IDC_EDIT_MENUNAME, m_Common.m_sCustomMenu.m_szCustMenuNameArr[nIdx1] );
 				
 				break;	/* CBN_SELCHANGE */
@@ -216,8 +216,8 @@ INT_PTR CPropCustmenu::DispatchEvent(
 					BOOL bDlgInputResult = cDlgInput1.DoModal(
 						G_AppInstance(),
 						hwndDlg,
-						_T("ƒƒjƒ…[ƒAƒCƒeƒ€‚ÌƒAƒNƒZƒXƒL[Ý’è"),
-						_T("ƒL[‚ð“ü—Í‚µ‚Ä‚­‚¾‚³‚¢B"),
+						_T("ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚¢ã‚¤ãƒ†ãƒ ã®ã‚¢ã‚¯ã‚»ã‚¹ã‚­ãƒ¼è¨­å®š"),
+						_T("ã‚­ãƒ¼ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚"),
 						1,
 						szKey
 					);
@@ -233,7 +233,7 @@ INT_PTR CPropCustmenu::DispatchEvent(
 					KEYCODE keycode[3]={0}; _tctomb(szKey, keycode);
 					m_Common.m_sCustomMenu.m_nCustMenuItemKeyArr[nIdx1][nIdx2] = keycode[0];
 				}
-//@@@ 2002.01.08 YAZAKI ƒJƒXƒ^ƒ€ƒƒjƒ…[‚ÅƒAƒNƒZƒXƒL[‚ðÁ‚µ‚½ŽžA¶ƒJƒbƒR ( ‚ªƒƒjƒ…[€–Ú‚Éˆê‰ñŽc‚éƒoƒOC³
+//@@@ 2002.01.08 YAZAKI ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã§ã‚¢ã‚¯ã‚»ã‚¹ã‚­ãƒ¼ã‚’æ¶ˆã—ãŸæ™‚ã€å·¦ã‚«ãƒƒã‚³ ( ãŒãƒ¡ãƒ‹ãƒ¥ãƒ¼é …ç›®ã«ä¸€å›žæ®‹ã‚‹ãƒã‚°ä¿®æ­£
 				if (m_Common.m_sCustomMenu.m_nCustMenuItemKeyArr[nIdx1][nIdx2]){
 					auto_sprintf( szLabel2, LTEXT("%ts(%hc)"),
 						szLabel,
@@ -263,7 +263,7 @@ INT_PTR CPropCustmenu::DispatchEvent(
 					break;
 				}
 
-				/* ƒL[ */
+				/* ã‚­ãƒ¼ */
 				if( '\0' == m_Common.m_sCustomMenu.m_nCustMenuItemKeyArr[nIdx1][nIdx2] ||
 					' '  == m_Common.m_sCustomMenu.m_nCustMenuItemKeyArr[nIdx1][nIdx2] ){
 				}else{
@@ -276,16 +276,16 @@ INT_PTR CPropCustmenu::DispatchEvent(
 			case CBN_SELCHANGE:
 				nIdx3 = Combo_GetCurSel( hwndCOMBO_FUNCKIND );
 
-				/* ‹@”\ˆê——‚É•¶Žš—ñ‚ðƒZƒbƒgiƒŠƒXƒgƒ{ƒbƒNƒXj*/
-//	Oct. 14, 2000 jepro note: ‚±‚±‚ÌforƒuƒƒbƒN‚ÅŽÀÛ‚ÉƒŠƒXƒg‚ð‘‚¢‚Ä‚¢‚é‚æ‚¤‚Å‚ ‚é
+				/* æ©Ÿèƒ½ä¸€è¦§ã«æ–‡å­—åˆ—ã‚’ã‚»ãƒƒãƒˆï¼ˆãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ï¼‰*/
+//	Oct. 14, 2000 jepro note: ã“ã“ã®forãƒ–ãƒ­ãƒƒã‚¯ã§å®Ÿéš›ã«ãƒªã‚¹ãƒˆã‚’æ›¸ã„ã¦ã„ã‚‹ã‚ˆã†ã§ã‚ã‚‹
 				// Oct. 3, 2001 genta
-				// ê—pƒ‹[ƒ`ƒ“‚É’u‚«Š·‚¦
+				// å°‚ç”¨ãƒ«ãƒ¼ãƒãƒ³ã«ç½®ãæ›ãˆ
 				m_cLookup.SetListItem( hwndLIST_FUNC, nIdx3 );
 				return TRUE;
 			}
 		}else{
 			switch( wNotifyCode ){
-			/* ƒ{ƒ^ƒ“^ƒ`ƒFƒbƒNƒ{ƒbƒNƒX‚ªƒNƒŠƒbƒN‚³‚ê‚½ */
+			/* ãƒœã‚¿ãƒ³ï¼ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹ãŒã‚¯ãƒªãƒƒã‚¯ã•ã‚ŒãŸ */
 			case BN_CLICKED:
 				switch( wID ){
 				case IDC_BUTTON_INSERTSEPARATOR:
@@ -302,7 +302,7 @@ INT_PTR CPropCustmenu::DispatchEvent(
 					if( LB_ERR == nIdx2 ){
 						nIdx2 = 0;
 					}
-					nIdx2 = List_InsertString( hwndLIST_RES, nIdx2, L" „Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ" );	//Oct. 18, 2000 JEPRO uƒc[ƒ‹ƒo[vƒ^ƒu‚ÅŽg‚Á‚Ä‚¢‚éƒZƒpƒŒ[ƒ^‚Æ“¯‚¶üŽí‚É“ˆê‚µ‚½
+					nIdx2 = List_InsertString( hwndLIST_RES, nIdx2, L" â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€" );	//Oct. 18, 2000 JEPRO ã€Œãƒ„ãƒ¼ãƒ«ãƒãƒ¼ã€ã‚¿ãƒ–ã§ä½¿ã£ã¦ã„ã‚‹ã‚»ãƒ‘ãƒ¬ãƒ¼ã‚¿ã¨åŒã˜ç·šç¨®ã«çµ±ä¸€ã—ãŸ
 					if( nIdx2 == LB_ERR || nIdx2 == LB_ERRSPACE ){
 						break;
 					}
@@ -563,7 +563,7 @@ INT_PTR CPropCustmenu::DispatchEvent(
 
 
 
-/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚ÌÝ’è Custom menu */
+/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®è¨­å®š Custom menu */
 void CPropCustmenu::SetData( HWND hwndDlg )
 {
 	HWND		hwndCOMBO_MENU;
@@ -574,35 +574,35 @@ void CPropCustmenu::SetData( HWND hwndDlg )
 	WCHAR		szLabel[300];
 	WCHAR		szLabel2[300];
 
-	/* ‹@”\Ží•Êˆê——‚É•¶Žš—ñ‚ðƒZƒbƒgiƒRƒ“ƒ{ƒ{ƒbƒNƒXj */
+	/* æ©Ÿèƒ½ç¨®åˆ¥ä¸€è¦§ã«æ–‡å­—åˆ—ã‚’ã‚»ãƒƒãƒˆï¼ˆã‚³ãƒ³ãƒœãƒœãƒƒã‚¯ã‚¹ï¼‰ */
 	hwndCombo = ::GetDlgItem( hwndDlg, IDC_COMBO_FUNCKIND );
 	m_cLookup.SetCategory2Combo( hwndCombo );	//	Oct. 3, 2001 genta
 
-	/* Ží•Ê‚Ìæ“ª‚Ì€–Ú‚ð‘I‘ðiƒRƒ“ƒ{ƒ{ƒbƒNƒXj*/
-	Combo_SetCurSel( hwndCombo, 0 );	//Oct. 14, 2000 JEPRO u--–¢’è‹`--v‚ð•\Ž¦‚³‚¹‚È‚¢‚æ‚¤‚É‘åŒ³ Funcode.cpp ‚Å•ÏX‚µ‚Ä‚ ‚é
+	/* ç¨®åˆ¥ã®å…ˆé ­ã®é …ç›®ã‚’é¸æŠžï¼ˆã‚³ãƒ³ãƒœãƒœãƒƒã‚¯ã‚¹ï¼‰*/
+	Combo_SetCurSel( hwndCombo, 0 );	//Oct. 14, 2000 JEPRO ã€Œ--æœªå®šç¾©--ã€ã‚’è¡¨ç¤ºã•ã›ãªã„ã‚ˆã†ã«å¤§å…ƒ Funcode.cpp ã§å¤‰æ›´ã—ã¦ã‚ã‚‹
 
-	/* ƒƒjƒ…[ˆê——‚É•¶Žš—ñ‚ðƒZƒbƒgiƒRƒ“ƒ{ƒ{ƒbƒNƒXj*/
+	/* ãƒ¡ãƒ‹ãƒ¥ãƒ¼ä¸€è¦§ã«æ–‡å­—åˆ—ã‚’ã‚»ãƒƒãƒˆï¼ˆã‚³ãƒ³ãƒœãƒœãƒƒã‚¯ã‚¹ï¼‰*/
 	hwndCOMBO_MENU = ::GetDlgItem( hwndDlg, IDC_COMBO_MENU );
 	for( i = 0; i < MAX_CUSTOM_MENU; ++i ){
 		Combo_AddString( hwndCOMBO_MENU, m_Common.m_sCustomMenu.m_szCustMenuNameArr[i] );
 	}
-	/* ƒƒjƒ…[ˆê——‚Ìæ“ª‚Ì€–Ú‚ð‘I‘ðiƒRƒ“ƒ{ƒ{ƒbƒNƒXj*/
+	/* ãƒ¡ãƒ‹ãƒ¥ãƒ¼ä¸€è¦§ã®å…ˆé ­ã®é …ç›®ã‚’é¸æŠžï¼ˆã‚³ãƒ³ãƒœãƒœãƒƒã‚¯ã‚¹ï¼‰*/
 	Combo_SetCurSel( hwndCOMBO_MENU, 0 );
 
-	/* ƒƒjƒ…[€–Úˆê——‚É•¶Žš—ñ‚ðƒZƒbƒgiƒŠƒXƒgƒ{ƒbƒNƒXj*/
+	/* ãƒ¡ãƒ‹ãƒ¥ãƒ¼é …ç›®ä¸€è¦§ã«æ–‡å­—åˆ—ã‚’ã‚»ãƒƒãƒˆï¼ˆãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ï¼‰*/
 	hwndLIST_RES = ::GetDlgItem( hwndDlg, IDC_LIST_RES );
 //	hwndEDIT_KEY = ::GetDlgItem( hwndDlg, IDC_EDIT_KEY );
 	List_ResetContent( hwndLIST_RES );
 	nIdx = 0;
 	for( i = 0; i < m_Common.m_sCustomMenu.m_nCustMenuItemNumArr[nIdx]; ++i ){
 		if( 0 == m_Common.m_sCustomMenu.m_nCustMenuItemFuncArr[nIdx][i] ){
-			auto_strcpy( szLabel, LTEXT(" „Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ") );	//Oct. 18, 2000 JEPRO uƒc[ƒ‹ƒo[vƒ^ƒu‚ÅŽg‚Á‚Ä‚¢‚éƒZƒpƒŒ[ƒ^‚Æ“¯‚¶üŽí‚É“ˆê‚µ‚½
+			auto_strcpy( szLabel, LTEXT(" â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€") );	//Oct. 18, 2000 JEPRO ã€Œãƒ„ãƒ¼ãƒ«ãƒãƒ¼ã€ã‚¿ãƒ–ã§ä½¿ã£ã¦ã„ã‚‹ã‚»ãƒ‘ãƒ¬ãƒ¼ã‚¿ã¨åŒã˜ç·šç¨®ã«çµ±ä¸€ã—ãŸ
 		}else{
 			//	Oct. 3, 2001 genta
 			m_cLookup.Funccode2Name( m_Common.m_sCustomMenu.m_nCustMenuItemFuncArr[nIdx][i], szLabel, 256 );
 			//::LoadString( G_AppInstance(), m_Common.m_sCustomMenu.m_nCustMenuItemFuncArr[nIdx][i], szLabel, 256 );
 		}
-		/* ƒL[ */
+		/* ã‚­ãƒ¼ */
 		if( '\0' == m_Common.m_sCustomMenu.m_nCustMenuItemKeyArr[nIdx][i] ){
 			auto_strcpy( szLabel2, szLabel );
 		}else{
@@ -614,20 +614,20 @@ void CPropCustmenu::SetData( HWND hwndDlg )
 		::List_AddString( hwndLIST_RES, szLabel2 );
 	}
 	
-	//	Oct. 15, 2001 genta ƒƒjƒ…[–¼‚ðÝ’è
+	//	Oct. 15, 2001 genta ãƒ¡ãƒ‹ãƒ¥ãƒ¼åã‚’è¨­å®š
 	::DlgItem_SetText( hwndDlg, IDC_EDIT_MENUNAME, m_Common.m_sCustomMenu.m_szCustMenuNameArr[0] );
 	
-//	/* ƒJƒXƒ^ƒ€ƒƒjƒ…[‚Ìæ“ª‚Ì€–Ú‚ð‘I‘ðiƒŠƒXƒgƒ{ƒbƒNƒXj*/	//Oct. 8, 2000 JEPRO ‚±‚±‚ðƒRƒƒ“ƒgƒAƒEƒg‚·‚é‚Ææ“ª€–Ú‚ª‘I‘ð‚³‚ê‚È‚­‚È‚é
+//	/* ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®å…ˆé ­ã®é …ç›®ã‚’é¸æŠžï¼ˆãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ï¼‰*/	//Oct. 8, 2000 JEPRO ã“ã“ã‚’ã‚³ãƒ¡ãƒ³ãƒˆã‚¢ã‚¦ãƒˆã™ã‚‹ã¨å…ˆé ­é …ç›®ãŒé¸æŠžã•ã‚Œãªããªã‚‹
 	List_SetCurSel( hwndLIST_RES, 0 );
 	return;
 }
 
 
 
-/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚ÌŽæ“¾ Custom menu */
+/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®å–å¾— Custom menu */
 int CPropCustmenu::GetData( HWND hwndDlg )
 {
-//@@@ 2002.01.03 YAZAKI ÅŒã‚É•\Ž¦‚µ‚Ä‚¢‚½ƒV[ƒg‚ð³‚µ‚­Šo‚¦‚Ä‚¢‚È‚¢ƒoƒOC³
+//@@@ 2002.01.03 YAZAKI æœ€å¾Œã«è¡¨ç¤ºã—ã¦ã„ãŸã‚·ãƒ¼ãƒˆã‚’æ­£ã—ãè¦šãˆã¦ã„ãªã„ãƒã‚°ä¿®æ­£
 //	m_nPageNum = ID_PAGENUM_CUSTMENU;
 
 	return TRUE;
@@ -637,30 +637,30 @@ int CPropCustmenu::GetData( HWND hwndDlg )
 
 
 
-/* ƒJƒXƒ^ƒ€ƒƒjƒ…[Ý’è‚ðƒCƒ“ƒ|[ƒg‚·‚é */
+/* ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼è¨­å®šã‚’ã‚¤ãƒ³ãƒãƒ¼ãƒˆã™ã‚‹ */
 void CPropCustmenu::Import( HWND hwndDlg )
 {
 	CImpExpCustMenu	cImpExpCustMenu( m_Common );
 
-	// ƒCƒ“ƒ|[ƒg
+	// ã‚¤ãƒ³ãƒãƒ¼ãƒˆ
 	if (!cImpExpCustMenu.ImportUI( G_AppInstance(), hwndDlg )) {
-		// ƒCƒ“ƒ|[ƒg‚ð‚µ‚Ä‚¢‚È‚¢
+		// ã‚¤ãƒ³ãƒãƒ¼ãƒˆã‚’ã—ã¦ã„ãªã„
 		return;
 	}
 	
-	// ‰æ–ÊXV
+	// ç”»é¢æ›´æ–°
 	HWND	hwndCtrl = ::GetDlgItem( hwndDlg, IDC_COMBO_MENU );
 	::SendMessageCmd( hwndDlg, WM_COMMAND, MAKELONG( IDC_COMBO_MENU, CBN_SELCHANGE ), (LPARAM)hwndCtrl );
 }
 
-/* ƒJƒXƒ^ƒ€ƒƒjƒ…[Ý’è‚ðƒGƒNƒXƒ|[ƒg‚·‚é */
+/* ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼è¨­å®šã‚’ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆã™ã‚‹ */
 void CPropCustmenu::Export( HWND hwndDlg )
 {
 	CImpExpCustMenu	cImpExpCustMenu( m_Common );
 
-	// ƒGƒNƒXƒ|[ƒg
+	// ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆ
 	if (!cImpExpCustMenu.ExportUI( G_AppInstance(), hwndDlg )) {
-		// ƒGƒNƒXƒ|[ƒg‚ð‚µ‚Ä‚¢‚È‚¢
+		// ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆã‚’ã—ã¦ã„ãªã„
 		return;
 	}
 }

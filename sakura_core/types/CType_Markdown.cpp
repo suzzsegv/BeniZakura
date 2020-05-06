@@ -1,5 +1,5 @@
 /*!	@file	CType_Markdown.cpp
-	@brief	ƒ^ƒCƒv•ÊÝ’è Markdown ƒfƒtƒHƒ‹ƒg’lÝ’èƒNƒ‰ƒX
+	@brief	ã‚¿ã‚¤ãƒ—åˆ¥è¨­å®š Markdown ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆå€¤è¨­å®šã‚¯ãƒ©ã‚¹
 
 	@author	Suzuki Satoshi
 */
@@ -33,21 +33,21 @@
 
 
 /*!
- *	Markdown ƒ^ƒCƒv•ÊÝ’è‚ÌƒfƒtƒHƒ‹ƒg’l‚ðÝ’è‚·‚é
+ *	Markdown ã‚¿ã‚¤ãƒ—åˆ¥è¨­å®šã®ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆå€¤ã‚’è¨­å®šã™ã‚‹
  *
- *	@return ‚È‚µ
+ *	@return ãªã—
  */
 void CType_Markdown::InitTypeConfigImp(STypeConfig* pType)
 {
-	//–¼‘O‚ÆŠg’£Žq
+	//åå‰ã¨æ‹¡å¼µå­
 	_tcscpy( pType->m_szTypeName, _T("Markdown") );
 	_tcscpy( pType->m_szTypeExts, _T("md") );
 
-	//Ý’è
-	pType->m_nMaxLineKetas = CLayoutInt(120);					/* Ü‚è•Ô‚µŒ…” */
-	pType->m_eDefaultOutline = OUTLINE_HTML;					/* ƒAƒEƒgƒ‰ƒCƒ“‰ðÍ•û–@ */
+	//è¨­å®š
+	pType->m_nMaxLineKetas = CLayoutInt(120);					/* æŠ˜ã‚Šè¿”ã—æ¡æ•° */
+	pType->m_eDefaultOutline = OUTLINE_HTML;					/* ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³è§£æžæ–¹æ³• */
 
-	//³‹K•\Œ»ƒL[ƒ[ƒh
+	//æ­£è¦è¡¨ç¾ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰
 	wchar_t* pKeyword = pType->m_RegexKeywordList;
 
 	pType->m_bUseRegexKeyword = true;

@@ -1,8 +1,8 @@
 #ifndef SAKURA_HEADERMAKE_2034D8F5_AE65_408D_9F53_D3DEA240C67BI_H_
 #define SAKURA_HEADERMAKE_2034D8F5_AE65_408D_9F53_D3DEA240C67BI_H_
 
-//‚±‚Μƒtƒ@ƒCƒ‹‚Ν HeaderMake ‚Ι‚ζ‚θ Funccode_x.hsrc ‚©‚η¶¬‚³‚κ‚½ƒtƒ@ƒCƒ‹‚Ε‚·B
-//’ΌΪ•ÒW‚µ‚Θ‚Ά‚Ε‚­‚Ύ‚³‚ΆB
+//γ“γ®γƒ•γ‚΅γ‚¤γƒ«γ― HeaderMake γ«γ‚γ‚ Funccode_x.hsrc γ‹γ‚‰η”ζγ•γ‚γγƒ•γ‚΅γ‚¤γƒ«γ§γ™γ€‚
+//η›΄ζ¥η·¨ι›†γ—γªγ„γ§γγ γ•γ„γ€‚
 
 enum EFunctionCode{
 	F_INVALID = -1,

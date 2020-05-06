@@ -1,14 +1,14 @@
 /*!	@file
-	@brief ƒ^ƒCƒv•ÊÝ’èƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX
+	@brief ã‚¿ã‚¤ãƒ—åˆ¥è¨­å®šãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒœãƒƒã‚¯ã‚¹
 
 	@author Norio Nakatani
-	@date 1998/12/24  V‹Kì¬
+	@date 1998/12/24  æ–°è¦ä½œæˆ
 */
 /*
 	Copyright (C) 1998-2002, Norio Nakatani
 	Copyright (C) 2000, jepro, genta
 	Copyright (C) 2001, jepro, genta, MIK, hor, Stonee, asa-o
-	Copyright (C) 2002, YAZAKI, aroka, MIK, genta, ‚±‚¨‚è, Moca
+	Copyright (C) 2002, YAZAKI, aroka, MIK, genta, ã“ãŠã‚Š, Moca
 	Copyright (C) 2003, MIK, zenryaku, Moca, naoh, KEITA, genta
 	Copyright (C) 2005, MIK, genta, Moca, ryoji
 	Copyright (C) 2006, ryoji, fon, novice
@@ -31,12 +31,12 @@
 
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                      ƒƒbƒZ[ƒWˆ—                         //
+//                      ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å‡¦ç†                         //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
 typedef INT_PTR (CPropTypes::*DISPATCH_EVENT_TYPE)(HWND,UINT,WPARAM,LPARAM);
 
-// ‹¤’Êƒ_ƒCƒAƒƒOƒvƒƒV[ƒWƒƒ
+// å…±é€šãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£
 INT_PTR CALLBACK PropTypesCommonProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam, DISPATCH_EVENT_TYPE pDispatch)
 {
 	PROPSHEETPAGE*	pPsp;
@@ -61,7 +61,7 @@ INT_PTR CALLBACK PropTypesCommonProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPA
 	}
 }
 
-// ŠeŽíƒ_ƒCƒAƒƒOƒvƒƒV[ƒWƒƒ
+// å„ç¨®ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£
 typedef	INT_PTR (CPropTypes::*pDispatchPage)( HWND, UINT, WPARAM, LPARAM );
 #define GEN_PROPTYPES_CALLBACK(FUNC,CLASS) \
 INT_PTR CALLBACK FUNC(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam) \
@@ -78,20 +78,20 @@ GEN_PROPTYPES_CALLBACK(PropTypesKeyHelp,	CPropTypesKeyHelp)
 
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                        ¶¬‚Æ”jŠü                           //
+//                        ç”Ÿæˆã¨ç ´æ£„                           //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
 CPropTypes::CPropTypes()
 {
-	/* ‹¤—Lƒf[ƒ^\‘¢‘Ì‚ÌƒAƒhƒŒƒX‚ð•Ô‚· */
+	/* å…±æœ‰ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“ã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’è¿”ã™ */
 	m_pShareData = &GetDllShareData();
 
-	// Mar. 31, 2003 genta ƒƒ‚ƒŠíŒ¸‚Ì‚½‚ßƒ|ƒCƒ“ƒ^‚É•ÏX
+	// Mar. 31, 2003 genta ãƒ¡ãƒ¢ãƒªå‰Šæ¸›ã®ãŸã‚ãƒã‚¤ãƒ³ã‚¿ã«å¤‰æ›´
 	m_pCKeyWordSetMgr = &m_pShareData->m_Common.m_sSpecialKeyword.m_CKeyWordSetMgr;
 
-	m_hInstance = NULL;		/* ƒAƒvƒŠƒP[ƒVƒ‡ƒ“ƒCƒ“ƒXƒ^ƒ“ƒX‚Ìƒnƒ“ƒhƒ‹ */
-	m_hwndParent = NULL;	/* ƒI[ƒi[ƒEƒBƒ“ƒhƒE‚Ìƒnƒ“ƒhƒ‹ */
-	m_hwndThis  = NULL;		/* ‚±‚Ìƒ_ƒCƒAƒƒO‚Ìƒnƒ“ƒhƒ‹ */
+	m_hInstance = NULL;		/* ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã®ãƒãƒ³ãƒ‰ãƒ« */
+	m_hwndParent = NULL;	/* ã‚ªãƒ¼ãƒŠãƒ¼ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ãƒãƒ³ãƒ‰ãƒ« */
+	m_hwndThis  = NULL;		/* ã“ã®ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®ãƒãƒ³ãƒ‰ãƒ« */
 	m_nPageNum = 0;
 
 	((CPropTypesScreen*)(this))->CPropTypes_Screen();
@@ -101,25 +101,25 @@ CPropTypes::~CPropTypes()
 {
 }
 
-/* ‰Šú‰» */
+/* åˆæœŸåŒ– */
 void CPropTypes::Create( HINSTANCE hInstApp, HWND hwndParent )
 {
-	m_hInstance = hInstApp;		/* ƒAƒvƒŠƒP[ƒVƒ‡ƒ“ƒCƒ“ƒXƒ^ƒ“ƒX‚Ìƒnƒ“ƒhƒ‹ */
-	m_hwndParent = hwndParent;	/* ƒI[ƒi[ƒEƒBƒ“ƒhƒE‚Ìƒnƒ“ƒhƒ‹ */
+	m_hInstance = hInstApp;		/* ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã®ãƒãƒ³ãƒ‰ãƒ« */
+	m_hwndParent = hwndParent;	/* ã‚ªãƒ¼ãƒŠãƒ¼ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ãƒãƒ³ãƒ‰ãƒ« */
 }
 
-// ƒL[ƒ[ƒhFƒ^ƒCƒv•ÊÝ’èƒ^ƒu‡˜(ƒvƒƒpƒeƒBƒV[ƒg)
-/* ƒvƒƒpƒeƒBƒV[ƒg‚Ìì¬ */
+// ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ï¼šã‚¿ã‚¤ãƒ—åˆ¥è¨­å®šã‚¿ãƒ–é †åº(ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚·ãƒ¼ãƒˆ)
+/* ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚·ãƒ¼ãƒˆã®ä½œæˆ */
 int CPropTypes::DoPropertySheet( int nPageNum )
 {
 	int					nRet;
 	PROPSHEETPAGE		psp[16];
 	int					nIdx;
 
-	// ƒJƒXƒ^ƒ€F‚ð‹¤—Lƒƒ‚ƒŠ‚©‚çŽæ“¾
+	// ã‚«ã‚¹ã‚¿ãƒ è‰²ã‚’å…±æœ‰ãƒ¡ãƒ¢ãƒªã‹ã‚‰å–å¾—
 	memcpy_raw( m_dwCustColors, m_pShareData->m_dwCustColors, sizeof(m_dwCustColors) );
 
-	// 2005.11.30 Moca ƒJƒXƒ^ƒ€F‚Ìæ“ª‚ÉƒeƒLƒXƒgF‚ðÝ’è‚µ‚Ä‚¨‚­
+	// 2005.11.30 Moca ã‚«ã‚¹ã‚¿ãƒ è‰²ã®å…ˆé ­ã«ãƒ†ã‚­ã‚¹ãƒˆè‰²ã‚’è¨­å®šã—ã¦ãŠã
 	m_dwCustColors[0] = m_Types.m_ColorInfoArr[COLORIDX_TEXT].m_colTEXT;
 	m_dwCustColors[1] = m_Types.m_ColorInfoArr[COLORIDX_TEXT].m_colBACK;
 
@@ -131,7 +131,7 @@ int CPropTypes::DoPropertySheet( int nPageNum )
 	psp[nIdx].pszTemplate = MAKEINTRESOURCE( IDD_PROP_SCREEN );
 	psp[nIdx].pszIcon     = NULL;
 	psp[nIdx].pfnDlgProc  = PropTypesScreen;
-	psp[nIdx].pszTitle    = _T("ƒXƒNƒŠ[ƒ“");
+	psp[nIdx].pszTitle    = _T("ã‚¹ã‚¯ãƒªãƒ¼ãƒ³");
 	psp[nIdx].lParam      = (LPARAM)this;
 	psp[nIdx].pfnCallback = NULL;
 	nIdx++;
@@ -143,12 +143,12 @@ int CPropTypes::DoPropertySheet( int nPageNum )
 	psp[nIdx].pszTemplate = MAKEINTRESOURCE( IDD_PROP_COLOR );
 	psp[nIdx].pszIcon     = NULL /*MAKEINTRESOURCE( IDI_BORDER) */;
 	psp[nIdx].pfnDlgProc  = PropTypesColor;
-	psp[nIdx].pszTitle    = _T("ƒJƒ‰[");
+	psp[nIdx].pszTitle    = _T("ã‚«ãƒ©ãƒ¼");
 	psp[nIdx].lParam      = (LPARAM)this;
 	psp[nIdx].pfnCallback = NULL;
 	nIdx++;
 
-	// 2013.03.10 aroka ADD-start ƒ^ƒCƒv•ÊÝ’è‚ÉuƒEƒBƒ“ƒhƒEvƒ^ƒu‚ð’Ç‰Á
+	// 2013.03.10 aroka ADD-start ã‚¿ã‚¤ãƒ—åˆ¥è¨­å®šã«ã€Œã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã€ã‚¿ãƒ–ã‚’è¿½åŠ 
 	memset_raw( &psp[nIdx], 0, sizeof_raw( psp[nIdx] ) );
 	psp[nIdx].dwSize      = sizeof_raw( psp[nIdx] );
 	psp[nIdx].dwFlags     = PSP_USETITLE;
@@ -156,13 +156,13 @@ int CPropTypes::DoPropertySheet( int nPageNum )
 	psp[nIdx].pszTemplate = MAKEINTRESOURCE( IDD_PROP_WINDOW );
 	psp[nIdx].pszIcon     = NULL;
 	psp[nIdx].pfnDlgProc  = PropTypesWindow;
-	psp[nIdx].pszTitle    = _T("ƒEƒBƒ“ƒhƒE");
+	psp[nIdx].pszTitle    = _T("ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦");
 	psp[nIdx].lParam      = (LPARAM)this;
 	psp[nIdx].pfnCallback = NULL;
 	nIdx++;
 	// 2013.03.10 aroka ADD-end
 
-	// 2001/06/14 Start by asa-o: ƒ^ƒCƒv•ÊÝ’è‚ÉŽx‰‡ƒ^ƒu’Ç‰Á
+	// 2001/06/14 Start by asa-o: ã‚¿ã‚¤ãƒ—åˆ¥è¨­å®šã«æ”¯æ´ã‚¿ãƒ–è¿½åŠ 
 	memset_raw( &psp[nIdx], 0, sizeof_raw( psp[nIdx] ) );
 	psp[nIdx].dwSize      = sizeof_raw( psp[nIdx] );
 	psp[nIdx].dwFlags     = PSP_USETITLE;
@@ -170,13 +170,13 @@ int CPropTypes::DoPropertySheet( int nPageNum )
 	psp[nIdx].pszTemplate = MAKEINTRESOURCE( IDD_PROP_SUPPORT );
 	psp[nIdx].pszIcon     = NULL;
 	psp[nIdx].pfnDlgProc  = PropTypesSupport;
-	psp[nIdx].pszTitle    = _T("Žx‰‡");
+	psp[nIdx].pszTitle    = _T("æ”¯æ´");
 	psp[nIdx].lParam      = (LPARAM)this;
 	psp[nIdx].pfnCallback = NULL;
 	nIdx++;
 	// 2001/06/14 End
 
-	// 2001.11.17 add start MIK ƒ^ƒCƒv•ÊÝ’è‚É³‹K•\Œ»ƒL[ƒ[ƒhƒ^ƒu’Ç‰Á
+	// 2001.11.17 add start MIK ã‚¿ã‚¤ãƒ—åˆ¥è¨­å®šã«æ­£è¦è¡¨ç¾ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ã‚¿ãƒ–è¿½åŠ 
 	memset_raw( &psp[nIdx], 0, sizeof_raw( psp[nIdx] ) );
 	psp[nIdx].dwSize      = sizeof_raw( psp[nIdx] );
 	psp[nIdx].dwFlags     = PSP_USETITLE;
@@ -184,13 +184,13 @@ int CPropTypes::DoPropertySheet( int nPageNum )
 	psp[nIdx].pszTemplate = MAKEINTRESOURCE( IDD_PROP_REGEX );
 	psp[nIdx].pszIcon     = NULL;
 	psp[nIdx].pfnDlgProc  = PropTypesRegex;
-	psp[nIdx].pszTitle    = _T("³‹K•\Œ»ƒL[ƒ[ƒh");
+	psp[nIdx].pszTitle    = _T("æ­£è¦è¡¨ç¾ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰");
 	psp[nIdx].lParam      = (LPARAM)this;
 	psp[nIdx].pfnCallback = NULL;
 	nIdx++;
 	// 2001.11.17 add end MIK
 
-	// 2006.04.10 fon ADD-start ƒ^ƒCƒv•ÊÝ’è‚ÉuƒL[ƒ[ƒhƒwƒ‹ƒvvƒ^ƒu‚ð’Ç‰Á
+	// 2006.04.10 fon ADD-start ã‚¿ã‚¤ãƒ—åˆ¥è¨­å®šã«ã€Œã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ãƒ˜ãƒ«ãƒ—ã€ã‚¿ãƒ–ã‚’è¿½åŠ 
 	memset_raw( &psp[nIdx], 0, sizeof_raw( psp[nIdx] ) );
 	psp[nIdx].dwSize      = sizeof_raw( psp[nIdx] );
 	psp[nIdx].dwFlags     = PSP_USETITLE;
@@ -198,7 +198,7 @@ int CPropTypes::DoPropertySheet( int nPageNum )
 	psp[nIdx].pszTemplate = MAKEINTRESOURCE( IDD_PROP_KEYHELP );
 	psp[nIdx].pszIcon     = NULL;
 	psp[nIdx].pfnDlgProc  = PropTypesKeyHelp;
-	psp[nIdx].pszTitle    = _T("ƒL[ƒ[ƒhƒwƒ‹ƒv");
+	psp[nIdx].pszTitle    = _T("ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ãƒ˜ãƒ«ãƒ—");
 	psp[nIdx].lParam      = (LPARAM)this;
 	psp[nIdx].pfnCallback = NULL;
 	nIdx++;
@@ -207,19 +207,19 @@ int CPropTypes::DoPropertySheet( int nPageNum )
 	PROPSHEETHEADER		psh;
 	memset_raw( &psh, 0, sizeof_raw( psh ) );
 	
-	//	Jun. 29, 2002 ‚±‚¨‚è
-	//	Windows 95‘ÎôDProperty Sheet‚ÌƒTƒCƒY‚ðWindows95‚ª”FŽ¯‚Å‚«‚é•¨‚ÉŒÅ’è‚·‚éD
+	//	Jun. 29, 2002 ã“ãŠã‚Š
+	//	Windows 95å¯¾ç­–ï¼ŽProperty Sheetã®ã‚µã‚¤ã‚ºã‚’Windows95ãŒèªè­˜ã§ãã‚‹ç‰©ã«å›ºå®šã™ã‚‹ï¼Ž
 	psh.dwSize = sizeof_old_PROPSHEETHEADER;
 
-	// JEPROtest Sept. 30, 2000 ƒ^ƒCƒv•ÊÝ’è‚Ì‰B‚ê[“K—p]ƒ{ƒ^ƒ“‚Ì³‘Ì‚Í‚±‚±Bs“ª‚ÌƒRƒƒ“ƒgƒAƒEƒg‚ð“ü‚ê‘Ö‚¦‚Ä‚Ý‚ê‚Î‚í‚©‚é
+	// JEPROtest Sept. 30, 2000 ã‚¿ã‚¤ãƒ—åˆ¥è¨­å®šã®éš ã‚Œ[é©ç”¨]ãƒœã‚¿ãƒ³ã®æ­£ä½“ã¯ã“ã“ã€‚è¡Œé ­ã®ã‚³ãƒ¡ãƒ³ãƒˆã‚¢ã‚¦ãƒˆã‚’å…¥ã‚Œæ›¿ãˆã¦ã¿ã‚Œã°ã‚ã‹ã‚‹
 	psh.dwFlags    = PSH_NOAPPLYNOW | PSH_PROPSHEETPAGE | PSH_NOCONTEXTHELP;
 	psh.hwndParent = m_hwndParent;
 	psh.hInstance  = m_hInstance;
 	psh.pszIcon    = NULL;
-	psh.pszCaption = _T("ƒ^ƒCƒv•ÊÝ’è");	// Sept. 8, 2000 jepro ’P‚È‚éuÝ’èv‚©‚ç•ÏX
+	psh.pszCaption = _T("ã‚¿ã‚¤ãƒ—åˆ¥è¨­å®š");	// Sept. 8, 2000 jepro å˜ãªã‚‹ã€Œè¨­å®šã€ã‹ã‚‰å¤‰æ›´
 	psh.nPages     = nIdx;
 
-	//- 20020106 aroka # psh.nStartPage ‚Í unsigned ‚È‚Ì‚Å•‰‚É‚È‚ç‚È‚¢
+	//- 20020106 aroka # psh.nStartPage ã¯ unsigned ãªã®ã§è² ã«ãªã‚‰ãªã„
 	if( -1 == nPageNum ){
 		psh.nStartPage = m_nPageNum;
 	}
@@ -236,7 +236,7 @@ int CPropTypes::DoPropertySheet( int nPageNum )
 	psh.ppsp = psp;
 	psh.pfnCallback = NULL;
 
-	nRet = MyPropertySheet( &psh );	// 2007.05.24 ryoji “ÆŽ©Šg’£ƒvƒƒpƒeƒBƒV[ƒg
+	nRet = MyPropertySheet( &psh );	// 2007.05.24 ryoji ç‹¬è‡ªæ‹¡å¼µãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚·ãƒ¼ãƒˆ
 
 	if( -1 == nRet ){
 		TCHAR*	pszMsgBuf;
@@ -246,16 +246,16 @@ int CPropTypes::DoPropertySheet( int nPageNum )
 			FORMAT_MESSAGE_IGNORE_INSERTS,
 			NULL,
 			::GetLastError(),
-			MAKELANGID( LANG_NEUTRAL, SUBLANG_DEFAULT ), // ƒfƒtƒHƒ‹ƒgŒ¾Œê
+			MAKELANGID( LANG_NEUTRAL, SUBLANG_DEFAULT ), // ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆè¨€èªž
 			(LPTSTR)&pszMsgBuf,
 			0,
 			NULL
 		);
 		PleaseReportToAuthor(
 			NULL,
-			_T("CPropTypes::DoPropertySheet()“à‚ÅƒGƒ‰[‚ªo‚Ü‚µ‚½B\n")
+			_T("CPropTypes::DoPropertySheet()å†…ã§ã‚¨ãƒ©ãƒ¼ãŒå‡ºã¾ã—ãŸã€‚\n")
 			_T("psh.nStartPage=[%d]\n")
-			_T("::PropertySheet()Ž¸”sB\n")
+			_T("::PropertySheet()å¤±æ•—ã€‚\n")
 			_T("\n")
 			_T("%ts\n"),
 			psh.nStartPage,
@@ -264,7 +264,7 @@ int CPropTypes::DoPropertySheet( int nPageNum )
 		::LocalFree( pszMsgBuf );
 	}
 
-	// ƒJƒXƒ^ƒ€F‚ð‹¤—Lƒƒ‚ƒŠ‚ÉÝ’è
+	// ã‚«ã‚¹ã‚¿ãƒ è‰²ã‚’å…±æœ‰ãƒ¡ãƒ¢ãƒªã«è¨­å®š
 	memcpy_raw( m_pShareData->m_dwCustColors, m_dwCustColors, sizeof(m_dwCustColors) );
 
 	return nRet;

@@ -26,16 +26,16 @@
 
 #include "mem/CMemory.h"
 
-//※CMemoryをprotect継承することにより、あまり自由にCMemoryを使えないようにしておく
+//窶ｻCMemory繧恥rotect邯呎価縺吶ｋ縺薙→縺ｫ繧医ｊ縲√≠縺ｾ繧願�ｪ逕ｱ縺ｫCMemory繧剃ｽｿ縺医↑縺�繧医≧縺ｫ縺励※縺翫￥
 class CNative : protected CMemory{
 public:
-	//CMemory*ポインタを得る
+	//CMemory*繝昴う繝ｳ繧ｿ繧貞ｾ励ｋ
 	CMemory* _GetMemory(){ return static_cast<CMemory*>(this); }
 	const CMemory* _GetMemory() const{ return static_cast<const CMemory*>(this); }
 
 public:
-	//汎用
-	void Clear(); //!< 空っぽにする
+	//豎守畑
+	void Clear(); //!< 遨ｺ縺｣縺ｽ縺ｫ縺吶ｋ
 };
 
 #include "mem/CNativeA.h"

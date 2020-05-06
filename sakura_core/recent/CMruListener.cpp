@@ -8,7 +8,7 @@
 #include "util/file.h"
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                        ƒZ[ƒu‘OŒã                           //
+//                        ã‚»ãƒ¼ãƒ–å‰å¾Œ                           //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
 void CMruListener::OnAfterSave(const SSaveInfo& sSaveInfo)
@@ -18,20 +18,20 @@ void CMruListener::OnAfterSave(const SSaveInfo& sSaveInfo)
 
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                        ƒ[ƒh‘OŒã                           //
+//                        ãƒ­ãƒ¼ãƒ‰å‰å¾Œ                           //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
-//@@@ 2001.12.26 YAZAKI MRUƒŠƒXƒg‚ÍACMRU‚ÉˆË—Š‚·‚é
+//@@@ 2001.12.26 YAZAKI MRUãƒªã‚¹ãƒˆã¯ã€CMRUã«ä¾é ¼ã™ã‚‹
 void CMruListener::OnBeforeLoad(SLoadInfo* pLoadInfo)
 {
-	// Äƒ[ƒh—p‚ÉŒ»İƒtƒ@ƒCƒ‹‚ğMRU“o˜^‚µ‚Ä‚¨‚­
-	// Mar. 30, 2003 genta ƒuƒbƒNƒ}[ƒN•Û‘¶‚Ì‚½‚ßMRU‚Ö“o˜^
-	_HoldBookmarks_And_AddToMRU();	// © V‹KƒI[ƒvƒ“iƒtƒ@ƒCƒ‹–¼–¢İ’èj‚Å‚Í‰½‚à‚µ‚È‚¢
+	// å†ãƒ­ãƒ¼ãƒ‰ç”¨ã«ç¾åœ¨ãƒ•ã‚¡ã‚¤ãƒ«ã‚’MRUç™»éŒ²ã—ã¦ãŠã
+	// Mar. 30, 2003 genta ãƒ–ãƒƒã‚¯ãƒãƒ¼ã‚¯ä¿å­˜ã®ãŸã‚MRUã¸ç™»éŒ²
+	_HoldBookmarks_And_AddToMRU();	// â† æ–°è¦ã‚ªãƒ¼ãƒ—ãƒ³ï¼ˆãƒ•ã‚¡ã‚¤ãƒ«åæœªè¨­å®šï¼‰ã§ã¯ä½•ã‚‚ã—ãªã„
 
-	// •¶šƒR[ƒhw’è‚Í–¾¦“I‚Å‚ ‚é‚©
+	// æ–‡å­—ã‚³ãƒ¼ãƒ‰æŒ‡å®šã¯æ˜ç¤ºçš„ã§ã‚ã‚‹ã‹
 	bool bSpecified = IsValidCodeType(pLoadInfo->eCharCode);
 
-	// ‘O‰ñ‚ÌƒR[ƒh -> ePrevCode
+	// å‰å›ã®ã‚³ãƒ¼ãƒ‰ -> ePrevCode
 	EditInfo	fi;
 	ECodeType ePrevCode = CODE_NONE;
 	CTypeConfig nPrevType = CTypeConfig(-1);
@@ -40,7 +40,7 @@ void CMruListener::OnBeforeLoad(SLoadInfo* pLoadInfo)
 		nPrevType = fi.m_nType;
 	}
 
-	// ƒ^ƒCƒv•Êİ’è
+	// ã‚¿ã‚¤ãƒ—åˆ¥è¨­å®š
 	if( !pLoadInfo->nType.IsValid() ){
 		if( !nPrevType.IsValid() ){
 			pLoadInfo->nType = CDocTypeManager().GetDocumentTypeOfPath( pLoadInfo->cFilePath );
@@ -50,10 +50,10 @@ void CMruListener::OnBeforeLoad(SLoadInfo* pLoadInfo)
 	}
 
 
-	// w’è‚ÌƒR[ƒh -> pLoadInfo->eCharCode
+	// æŒ‡å®šã®ã‚³ãƒ¼ãƒ‰ -> pLoadInfo->eCharCode
 	if( CODE_AUTODETECT == pLoadInfo->eCharCode ){
 		if( fexist(pLoadInfo->cFilePath) ){
-			// ƒfƒtƒHƒ‹ƒg•¶šƒR[ƒh”F¯‚Ì‚½‚ß‚Éˆê“I‚É“Ç‚İ‚İ‘ÎÛƒtƒ@ƒCƒ‹‚Ìƒtƒ@ƒCƒ‹ƒ^ƒCƒv‚ğ“K—p‚·‚é
+			// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆæ–‡å­—ã‚³ãƒ¼ãƒ‰èªè­˜ã®ãŸã‚ã«ä¸€æ™‚çš„ã«èª­ã¿è¾¼ã¿å¯¾è±¡ãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚¿ã‚¤ãƒ—ã‚’é©ç”¨ã™ã‚‹
 			const STypeConfig& type = CDocTypeManager().GetTypeSetting(pLoadInfo->nType);
 			CCodeMediator cmediator( type.m_encoding );
 			pLoadInfo->eCharCode = cmediator.CheckKanjiCodeOfFile( pLoadInfo->cFilePath );
@@ -66,11 +66,11 @@ void CMruListener::OnBeforeLoad(SLoadInfo* pLoadInfo)
 		pLoadInfo->eCharCode = ePrevCode;
 	}
 	if(CODE_NONE==pLoadInfo->eCharCode)
-		pLoadInfo->eCharCode = pLoadInfo->nType.GetTypeConfig()->m_encoding.m_eDefaultCodetype;	//–³Œø’l‚Ì‰ñ”ğ	// 2011.01.24 ryoji CODE_DEFAULT -> m_eDefaultCodetype
+		pLoadInfo->eCharCode = pLoadInfo->nType.GetTypeConfig()->m_encoding.m_eDefaultCodetype;	//ç„¡åŠ¹å€¤ã®å›é¿	// 2011.01.24 ryoji CODE_DEFAULT -> m_eDefaultCodetype
 
-	//H‚¢ˆá‚¤ê‡
+	//é£Ÿã„é•ã†å ´åˆ
 	if(IsValidCodeType(ePrevCode) && pLoadInfo->eCharCode!=ePrevCode){
-		//ƒIƒvƒVƒ‡ƒ“F‘O‰ñ‚Æ•¶šƒR[ƒh‚ªˆÙ‚È‚é‚Æ‚«‚É–â‚¢‡‚í‚¹‚ğs‚¤
+		//ã‚ªãƒ—ã‚·ãƒ§ãƒ³ï¼šå‰å›ã¨æ–‡å­—ã‚³ãƒ¼ãƒ‰ãŒç•°ãªã‚‹ã¨ãã«å•ã„åˆã‚ã›ã‚’è¡Œã†
 		if( GetDllShareData().m_Common.m_sFile.m_bQueryIfCodeChange && !pLoadInfo->bRequestReload ){
 			const TCHAR* pszCodeNameOld = CCodeTypeName(ePrevCode).Normal();
 			const TCHAR* pszCodeNameNew = CCodeTypeName(pLoadInfo->eCharCode).Normal();
@@ -78,14 +78,14 @@ void CMruListener::OnBeforeLoad(SLoadInfo* pLoadInfo)
 			int nRet = MYMESSAGEBOX(
 				CEditWnd::getInstance()->GetHwnd(),
 				MB_YESNO | MB_ICONQUESTION | MB_TOPMOST,
-				_T("•¶šƒR[ƒhî•ñ"),
+				_T("æ–‡å­—ã‚³ãƒ¼ãƒ‰æƒ…å ±"),
 				_T("%ts\n")
 				_T("\n")
-				_T("‚±‚Ìƒtƒ@ƒCƒ‹‚ğ•¶šƒR[ƒh %ts ‚ÅŠJ‚±‚¤‚Æ‚µ‚Ä‚¢‚Ü‚·‚ªA‘O‰ñ‚Í•Ê‚Ì•¶šƒR[ƒh %ts ‚ÅŠJ‚©‚ê‚Ä‚¢‚Ü‚·B\n")
-				_T("‘O‰ñ‚Æ“¯‚¶•¶šƒR[ƒh‚ğg‚¢‚Ü‚·‚©H\n")
+				_T("ã“ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚’æ–‡å­—ã‚³ãƒ¼ãƒ‰ %ts ã§é–‹ã“ã†ã¨ã—ã¦ã„ã¾ã™ãŒã€å‰å›ã¯åˆ¥ã®æ–‡å­—ã‚³ãƒ¼ãƒ‰ %ts ã§é–‹ã‹ã‚Œã¦ã„ã¾ã™ã€‚\n")
+				_T("å‰å›ã¨åŒã˜æ–‡å­—ã‚³ãƒ¼ãƒ‰ã‚’ä½¿ã„ã¾ã™ã‹ï¼Ÿ\n")
 				_T("\n")
-				_T("E[‚Í‚¢(Y)]  %ts\n")
-				_T("E[‚¢‚¢‚¦(N)]%ts"),
+				_T("ãƒ»[ã¯ã„(Y)]  ï¼%ts\n")
+				_T("ãƒ»[ã„ã„ãˆ(N)]ï¼%ts"),
 				pLoadInfo->cFilePath.c_str(),
 				pszCodeNameNew,
 				pszCodeNameOld,
@@ -93,23 +93,23 @@ void CMruListener::OnBeforeLoad(SLoadInfo* pLoadInfo)
 				pszCodeNameNew
 			);
 			if( IDYES == nRet ){
-				// ‘O‰ñ‚Ì•¶šƒR[ƒh‚ğÌ—p‚·‚é
+				// å‰å›ã®æ–‡å­—ã‚³ãƒ¼ãƒ‰ã‚’æ¡ç”¨ã™ã‚‹
 				pLoadInfo->eCharCode = ePrevCode;
 			}
 			else{
-				// Œ³Xg‚¨‚¤‚Æ‚µ‚Ä‚¢‚½•¶šƒR[ƒh‚ğÌ—p‚·‚é
+				// å…ƒã€…ä½¿ãŠã†ã¨ã—ã¦ã„ãŸæ–‡å­—ã‚³ãƒ¼ãƒ‰ã‚’æ¡ç”¨ã™ã‚‹
 				pLoadInfo->eCharCode = pLoadInfo->eCharCode;
 			}
 		}
-		//H‚¢ˆá‚Á‚Ä‚à–â‚¢‡‚í‚¹‚ğs‚í‚È‚¢ê‡
+		//é£Ÿã„é•ã£ã¦ã‚‚å•ã„åˆã‚ã›ã‚’è¡Œã‚ãªã„å ´åˆ
 		else{
-			//ƒfƒtƒHƒ‹ƒg‚Ì‰ñ“š
-			//  ©“®”»•Ê‚Ìê‡F‘O‰ñ‚Ì•¶šƒR[ƒh‚ğÌ—p
-			//  –¾¦w’è‚Ìê‡F–¾¦w’è‚Ì•¶šƒR[ƒh‚ğÌ—p
-			if(!bSpecified){ //©“®”»•Ê
+			//ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®å›ç­”
+			//  è‡ªå‹•åˆ¤åˆ¥ã®å ´åˆï¼šå‰å›ã®æ–‡å­—ã‚³ãƒ¼ãƒ‰ã‚’æ¡ç”¨
+			//  æ˜ç¤ºæŒ‡å®šã®å ´åˆï¼šæ˜ç¤ºæŒ‡å®šã®æ–‡å­—ã‚³ãƒ¼ãƒ‰ã‚’æ¡ç”¨
+			if(!bSpecified){ //è‡ªå‹•åˆ¤åˆ¥
 				pLoadInfo->eCharCode = ePrevCode;
 			}
-			else{ //–¾¦w’è
+			else{ //æ˜ç¤ºæŒ‡å®š
 				pLoadInfo->eCharCode = pLoadInfo->eCharCode;
 			}
 		}
@@ -126,25 +126,25 @@ void CMruListener::OnAfterLoad(const SLoadInfo& sLoadInfo)
 	EditInfo	eiOld;
 	bool bIsExistInMRU = cMRU.GetEditInfo(pcDoc->m_cDocFile.GetFilePath(),&eiOld);
 
-	//ƒLƒƒƒŒƒbƒgˆÊ’u‚Ì•œŒ³
+	//ã‚­ãƒ£ãƒ¬ãƒƒãƒˆä½ç½®ã®å¾©å…ƒ
 	if( bIsExistInMRU && GetDllShareData().m_Common.m_sFile.GetRestoreCurPosition() ){
-		//ƒLƒƒƒŒƒbƒgˆÊ’uæ“¾
+		//ã‚­ãƒ£ãƒ¬ãƒƒãƒˆä½ç½®å–å¾—
 		CLayoutPoint ptCaretPos;
 		pcDoc->m_cLayoutMgr.LogicToLayout(eiOld.m_ptCursor, &ptCaretPos);
 
-		//ƒrƒ…[æ“¾
+		//ãƒ“ãƒ¥ãƒ¼å–å¾—
 		CEditView& cView = pcDoc->m_pcEditWnd->GetActiveView();
 
 		if( ptCaretPos.GetY2() >= pcDoc->m_cLayoutMgr.GetLineCount() ){
-			//ƒtƒ@ƒCƒ‹‚ÌÅŒã‚ÉˆÚ“®
+			//ãƒ•ã‚¡ã‚¤ãƒ«ã®æœ€å¾Œã«ç§»å‹•
 			cView.GetCommander().HandleCommand( F_GOFILEEND, false, 0, 0, 0, 0 );
 		}
 		else{
 			cView.GetTextArea().SetViewTopLine( eiOld.m_nViewTopLine ); // 2001/10/20 novice
 			cView.GetTextArea().SetViewLeftCol( eiOld.m_nViewLeftCol ); // 2001/10/20 novice
 			// From Here Mar. 28, 2003 MIK
-			// ‰üs‚Ì^‚ñ’†‚ÉƒJ[ƒ\ƒ‹‚ª—ˆ‚È‚¢‚æ‚¤‚ÉB
-			const CDocLine *pTmpDocLine = pcDoc->m_cDocLineMgr.GetLine( eiOld.m_ptCursor.GetY2() );	// 2008.08.22 ryoji ‰üs’PˆÊ‚Ìs”Ô†‚ğ“n‚·‚æ‚¤‚ÉC³
+			// æ”¹è¡Œã®çœŸã‚“ä¸­ã«ã‚«ãƒ¼ã‚½ãƒ«ãŒæ¥ãªã„ã‚ˆã†ã«ã€‚
+			const CDocLine *pTmpDocLine = pcDoc->m_cDocLineMgr.GetLine( eiOld.m_ptCursor.GetY2() );	// 2008.08.22 ryoji æ”¹è¡Œå˜ä½ã®è¡Œç•ªå·ã‚’æ¸¡ã™ã‚ˆã†ã«ä¿®æ­£
 			if( pTmpDocLine ){
 				if( pTmpDocLine->GetLengthWithoutEOL() < eiOld.m_ptCursor.x ) ptCaretPos.x--;
 			}
@@ -154,7 +154,7 @@ void CMruListener::OnAfterLoad(const SLoadInfo& sLoadInfo)
 		}
 	}
 
-	// ƒuƒbƒNƒ}[ƒN•œŒ³  // 2002.01.16 hor
+	// ãƒ–ãƒƒã‚¯ãƒãƒ¼ã‚¯å¾©å…ƒ  // 2002.01.16 hor
 	if( bIsExistInMRU ){
 		if( GetDllShareData().m_Common.m_sFile.GetRestoreBookmarks() ){
 			CBookmarkManager(&pcDoc->m_cDocLineMgr).SetBookMarks(eiOld.m_szMarkLines);
@@ -164,13 +164,13 @@ void CMruListener::OnAfterLoad(const SLoadInfo& sLoadInfo)
 		wcscpy(eiOld.m_szMarkLines,L"");
 	}
 
-	// MRUƒŠƒXƒg‚Ö‚Ì“o˜^
+	// MRUãƒªã‚¹ãƒˆã¸ã®ç™»éŒ²
 	EditInfo	eiNew;
 	pcDoc->GetEditInfo(&eiNew);
-	// 2014.07.04 ƒuƒbƒNƒ}[ƒN‚Ì•Û(ƒGƒfƒBƒ^‚ª—‚¿‚½‚Æ‚«ƒuƒbƒNƒ}[ƒN‚ªÁ‚¦‚é‚½‚ß)
+	// 2014.07.04 ãƒ–ãƒƒã‚¯ãƒãƒ¼ã‚¯ã®ä¿æŒ(ã‚¨ãƒ‡ã‚£ã‚¿ãŒè½ã¡ãŸã¨ããƒ–ãƒƒã‚¯ãƒãƒ¼ã‚¯ãŒæ¶ˆãˆã‚‹ãŸã‚)
 	if( bIsExistInMRU ){
 		if( GetDllShareData().m_Common.m_sFile.GetRestoreBookmarks() ){
-			// SetBookMarks‚Åƒf[ƒ^‚ªNUL‹æØ‚è‚É‘‚«Š·‚í‚Á‚Ä‚¢‚é‚Ì‚ÅÄæ“¾
+			// SetBookMarksã§ãƒ‡ãƒ¼ã‚¿ãŒNULåŒºåˆ‡ã‚Šã«æ›¸ãæ›ã‚ã£ã¦ã„ã‚‹ã®ã§å†å–å¾—
 			cMRU.GetEditInfo(pcDoc->m_cDocFile.GetFilePath(),&eiOld);
 			auto_strcpy(eiNew.m_szMarkLines, eiOld.m_szMarkLines);
 		}
@@ -181,12 +181,12 @@ void CMruListener::OnAfterLoad(const SLoadInfo& sLoadInfo)
 
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                       ƒNƒ[ƒY‘OŒã                          //
+//                       ã‚¯ãƒ­ãƒ¼ã‚ºå‰å¾Œ                          //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
 ECallbackResult CMruListener::OnBeforeClose()
 {
-	//	Mar. 30, 2003 genta ƒTƒuƒ‹[ƒ`ƒ“‚É‚Ü‚Æ‚ß‚½
+	//	Mar. 30, 2003 genta ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³ã«ã¾ã¨ã‚ãŸ
 	_HoldBookmarks_And_AddToMRU();
 
 	return CALLBACK_CONTINUE;
@@ -194,27 +194,27 @@ ECallbackResult CMruListener::OnBeforeClose()
 
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                          ƒwƒ‹ƒp                             //
+//                          ãƒ˜ãƒ«ãƒ‘                             //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
 /*!
-	ƒJƒŒƒ“ƒgƒtƒ@ƒCƒ‹‚ğMRU‚É“o˜^‚·‚éB
-	ƒuƒbƒNƒ}[ƒN‚àˆê‚É“o˜^‚·‚éB
+	ã‚«ãƒ¬ãƒ³ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ã‚’MRUã«ç™»éŒ²ã™ã‚‹ã€‚
+	ãƒ–ãƒƒã‚¯ãƒãƒ¼ã‚¯ã‚‚ä¸€ç·’ã«ç™»éŒ²ã™ã‚‹ã€‚
 
-	@date 2003.03.30 genta ì¬
+	@date 2003.03.30 genta ä½œæˆ
 
 */
 void CMruListener::_HoldBookmarks_And_AddToMRU()
 {
-	//EditInfoæ“¾
+	//EditInfoå–å¾—
 	CEditDoc* pcDoc = GetListeningDoc();
 	EditInfo	fi;
 	pcDoc->GetEditInfo( &fi );
 
-	//ƒuƒbƒNƒ}[ƒNî•ñ‚Ì•Û‘¶
+	//ãƒ–ãƒƒã‚¯ãƒãƒ¼ã‚¯æƒ…å ±ã®ä¿å­˜
 	wcscpy( fi.m_szMarkLines, CBookmarkManager(&pcDoc->m_cDocLineMgr).GetBookMarks() );
 
-	//MRUƒŠƒXƒg‚É“o˜^
+	//MRUãƒªã‚¹ãƒˆã«ç™»éŒ²
 	CMRUFile	cMRU;
 	cMRU.Add( &fi );
 }

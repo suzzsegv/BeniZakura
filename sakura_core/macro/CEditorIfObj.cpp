@@ -1,5 +1,5 @@
 /*!	@file
-	@brief EditorƒIƒuƒWƒFƒNƒg
+	@brief Editorã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 
 */
 /*
@@ -30,24 +30,24 @@
 #include "macro/CMacro.h"
 #include "macro/CSMacroMgr.h"
 
-//ƒRƒ}ƒ“ƒhî•ñ‚ğæ“¾‚·‚é
+//ã‚³ãƒãƒ³ãƒ‰æƒ…å ±ã‚’å–å¾—ã™ã‚‹
 MacroFuncInfoArray CEditorIfObj::GetMacroCommandInfo() const
 {
 	return CSMacroMgr::m_MacroFuncInfoCommandArr;
 }
-//ŠÖ”î•ñ‚ğæ“¾‚·‚é
+//é–¢æ•°æƒ…å ±ã‚’å–å¾—ã™ã‚‹
 MacroFuncInfoArray CEditorIfObj::GetMacroFuncInfo() const
 {
 	return CSMacroMgr::m_MacroFuncInfoArr;
 }
 
-//ŠÖ”‚ğˆ—‚·‚é
+//é–¢æ•°ã‚’å‡¦ç†ã™ã‚‹
 bool CEditorIfObj::HandleFunction(CEditView* View, EFunctionCode ID, const VARIANT *Arguments, const int ArgSize, VARIANT &Result)
 {
 	return CMacro::HandleFunction( View, ID, Arguments, ArgSize, Result );
 }
 
-//ƒRƒ}ƒ“ƒh‚ğˆ—‚·‚é
+//ã‚³ãƒãƒ³ãƒ‰ã‚’å‡¦ç†ã™ã‚‹
 void CEditorIfObj::HandleCommand(CEditView* View, EFunctionCode ID, const WCHAR* Arguments[], const int ArgSize)
 {
 	CMacro::HandleCommand( View, ID, Arguments, ArgSize );

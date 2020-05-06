@@ -63,7 +63,7 @@ HWND CAutoScrollWnd::Create( HINSTANCE hInstance, HWND hwndParent, bool bVertica
 	m_hCenterImg = (HBITMAP)::LoadImage(hInstance, MAKEINTRESOURCE(idb), IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION);
 	HCURSOR hCursor = ::LoadCursor(GetModuleHandle(NULL), MAKEINTRESOURCE(idc));
 
-	/* ƒEƒBƒ“ƒhƒEƒNƒ‰ƒXì¬ */
+	/* ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ä½œæˆ */
 	RegisterWC(
 		hInstance,
 		NULL,
@@ -74,9 +74,9 @@ HWND CAutoScrollWnd::Create( HINSTANCE hInstance, HWND hwndParent, bool bVertica
 		m_pszClassName
 	);
 
-	/* Šî’êƒNƒ‰ƒXƒƒ“ƒoŒÄ‚Ño‚µ */
+	/* åŸºåº•ã‚¯ãƒ©ã‚¹ãƒ¡ãƒ³ãƒå‘¼ã³å‡ºã— */
 	return CWnd::Create(
-		/* ‰Šú‰» */
+		/* åˆæœŸåŒ– */
 		hwndParent,
 		0,
 		m_pszClassName,	// Pointer to a null-terminated string or is an atom.

@@ -1,5 +1,5 @@
 /*!	@file
-	@brief ‹¤’Êİ’èƒ_ƒCƒAƒƒOƒ{ƒbƒNƒXAux‰‡vƒy[ƒW
+	@brief å…±é€šè¨­å®šãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒœãƒƒã‚¯ã‚¹ã€ã€Œæ”¯æ´ã€ãƒšãƒ¼ã‚¸
 
 	@author Norio Nakatani
 */
@@ -46,10 +46,10 @@
 
 //	From Here Jun. 2, 2001 genta
 /*!
-	@param hwndDlg ƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX‚ÌWindow Handle
-	@param uMsg ƒƒbƒZ[ƒW
-	@param wParam ƒpƒ‰ƒ[ƒ^1
-	@param lParam ƒpƒ‰ƒ[ƒ^2
+	@param hwndDlg ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒœãƒƒã‚¯ã‚¹ã®Window Handle
+	@param uMsg ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+	@param wParam ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿1
+	@param lParam ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿2
 */
 INT_PTR CALLBACK CPropHelper::DlgProc_page(
 	HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam )
@@ -58,7 +58,7 @@ INT_PTR CALLBACK CPropHelper::DlgProc_page(
 }
 //	To Here Jun. 2, 2001 genta
 
-/* Helper ƒƒbƒZ[ƒWˆ— */
+/* Helper ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å‡¦ç† */
 INT_PTR CPropHelper::DispatchEvent(
 	HWND	hwndDlg,	// handle to dialog box
 	UINT	uMsg,		// message
@@ -75,24 +75,24 @@ INT_PTR CPropHelper::DispatchEvent(
 
 	switch( uMsg ){
 	case WM_INITDIALOG:
-		/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìİ’è Helper */
+		/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®è¨­å®š Helper */
 		SetData( hwndDlg );
 		// Modified by KEITA for WIN64 2003.9.6
 		::SetWindowLongPtr( hwndDlg, DWLP_USER, lParam );
 
 		return TRUE;
 	case WM_COMMAND:
-		wNotifyCode = HIWORD(wParam);	/* ’Ê’mƒR[ƒh */
-		wID			= LOWORD(wParam);	/* €–ÚID¤ ƒRƒ“ƒgƒ[ƒ‹ID¤ ‚Ü‚½‚ÍƒAƒNƒZƒ‰ƒŒ[ƒ^ID */
-		hwndCtl		= (HWND) lParam;	/* ƒRƒ“ƒgƒ[ƒ‹‚Ìƒnƒ“ƒhƒ‹ */
+		wNotifyCode = HIWORD(wParam);	/* é€šçŸ¥ã‚³ãƒ¼ãƒ‰ */
+		wID			= LOWORD(wParam);	/* é …ç›®IDã€ ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«IDã€ ã¾ãŸã¯ã‚¢ã‚¯ã‚»ãƒ©ãƒ¬ãƒ¼ã‚¿ID */
+		hwndCtl		= (HWND) lParam;	/* ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã®ãƒãƒ³ãƒ‰ãƒ« */
 		switch( wNotifyCode ){
-		/* ƒ{ƒ^ƒ“^ƒ`ƒFƒbƒNƒ{ƒbƒNƒX‚ªƒNƒŠƒbƒN‚³‚ê‚½ */
+		/* ãƒœã‚¿ãƒ³ï¼ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹ãŒã‚¯ãƒªãƒƒã‚¯ã•ã‚ŒãŸ */
 		case BN_CLICKED:
-			/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìæ“¾ Helper */
+			/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®å–å¾— Helper */
 			GetData( hwndDlg );
 			switch( wID ){
 			// ai 02/05/21 Add S
-			case IDC_BUTTON_KEYWORDHELPFONT:	/* ƒL[ƒ[ƒhƒwƒ‹ƒv‚ÌuƒtƒHƒ“ƒgvƒ{ƒ^ƒ“ */
+			case IDC_BUTTON_KEYWORDHELPFONT:	/* ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ãƒ˜ãƒ«ãƒ—ã®ã€Œãƒ•ã‚©ãƒ³ãƒˆã€ãƒœã‚¿ãƒ³ */
 				{
 					LOGFONT   lf = m_Common.m_sHelper.m_lf;
 					INT nPointSize = m_Common.m_sHelper.m_nPointSize;
@@ -100,7 +100,7 @@ INT_PTR CPropHelper::DispatchEvent(
 					if( MySelectFont( &lf, &nPointSize, hwndDlg, false) ){
 						m_Common.m_sHelper.m_lf = lf;
 						m_Common.m_sHelper.m_nPointSize = nPointSize;	// 2009.10.01 ryoji
-						// ƒL[ƒ[ƒhƒwƒ‹ƒv ƒtƒHƒ“ƒg•\¦	// 2013/4/24 Uchi
+						// ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ãƒ˜ãƒ«ãƒ— ãƒ•ã‚©ãƒ³ãƒˆè¡¨ç¤º	// 2013/4/24 Uchi
 						HFONT hFont = SetFontLabel( hwndDlg, IDC_STATIC_KEYWORDHELPFONT, m_Common.m_sHelper.m_lf, m_Common.m_sHelper.m_nPointSize);
 						if(m_hKeywordHelpFont != NULL){
 							::DeleteObject( m_hKeywordHelpFont );
@@ -110,18 +110,18 @@ INT_PTR CPropHelper::DispatchEvent(
 				}
 				return TRUE;
 			// ai 02/05/21 Add E
-			case IDC_BUTTON_OPENMDLL:	/* MIGEMODLLêŠw’èuQÆ...vƒ{ƒ^ƒ“ */
+			case IDC_BUTTON_OPENMDLL:	/* MIGEMODLLå ´æ‰€æŒ‡å®šã€Œå‚ç…§...ã€ãƒœã‚¿ãƒ³ */
 				{
 					CDlgOpenFile	cDlgOpenFile;
 					TCHAR			szPath[_MAX_PATH];
-					// 2003.06.23 Moca ‘Š‘ÎƒpƒX‚ÍÀsƒtƒ@ƒCƒ‹‚©‚ç‚ÌƒpƒX
-					// 2007.05.21 ryoji ‘Š‘ÎƒpƒX‚Íİ’èƒtƒ@ƒCƒ‹‚©‚ç‚ÌƒpƒX‚ğ—Dæ
+					// 2003.06.23 Moca ç›¸å¯¾ãƒ‘ã‚¹ã¯å®Ÿè¡Œãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ã®ãƒ‘ã‚¹
+					// 2007.05.21 ryoji ç›¸å¯¾ãƒ‘ã‚¹ã¯è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ã®ãƒ‘ã‚¹ã‚’å„ªå…ˆ
 					if( _IS_REL_PATH( m_Common.m_sHelper.m_szMigemoDll ) ){
 						GetInidirOrExedir( szPath, m_Common.m_sHelper.m_szMigemoDll, TRUE );
 					}else{
 						_tcscpy( szPath, m_Common.m_sHelper.m_szMigemoDll );
 					}
-					/* ƒtƒ@ƒCƒ‹ƒI[ƒvƒ“ƒ_ƒCƒAƒƒO‚Ì‰Šú‰» */
+					/* ãƒ•ã‚¡ã‚¤ãƒ«ã‚ªãƒ¼ãƒ—ãƒ³ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®åˆæœŸåŒ– */
 					cDlgOpenFile.Create(
 						G_AppInstance(),
 						hwndDlg,
@@ -134,17 +134,17 @@ INT_PTR CPropHelper::DispatchEvent(
 					}
 				}
 				return TRUE;
-			case IDC_BUTTON_OPENMDICT:	/* MigemoDictêŠw’èuQÆ...vƒ{ƒ^ƒ“ */
+			case IDC_BUTTON_OPENMDICT:	/* MigemoDictå ´æ‰€æŒ‡å®šã€Œå‚ç…§...ã€ãƒœã‚¿ãƒ³ */
 				{
 					TCHAR	szPath[_MAX_PATH];
-					/* ŒŸõƒtƒHƒ‹ƒ_ */
-					// 2007.05.27 ryoji ‘Š‘ÎƒpƒX‚Íİ’èƒtƒ@ƒCƒ‹‚©‚ç‚ÌƒpƒX‚ğ—Dæ
+					/* æ¤œç´¢ãƒ•ã‚©ãƒ«ãƒ€ */
+					// 2007.05.27 ryoji ç›¸å¯¾ãƒ‘ã‚¹ã¯è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ã®ãƒ‘ã‚¹ã‚’å„ªå…ˆ
 					if( _IS_REL_PATH( m_Common.m_sHelper.m_szMigemoDict ) ){
 						GetInidirOrExedir( szPath, m_Common.m_sHelper.m_szMigemoDict, TRUE );
 					}else{
 						_tcscpy( szPath, m_Common.m_sHelper.m_szMigemoDict );
 					}
-					if( SelectDir( hwndDlg, _T("ŒŸõ‚·‚éƒtƒHƒ‹ƒ_‚ğ‘I‚ñ‚Å‚­‚¾‚³‚¢"), szPath, szPath ) ){
+					if( SelectDir( hwndDlg, _T("æ¤œç´¢ã™ã‚‹ãƒ•ã‚©ãƒ«ãƒ€ã‚’é¸ã‚“ã§ãã ã•ã„"), szPath, szPath ) ){
 						_tcscpy( m_Common.m_sHelper.m_szMigemoDict, szPath );
 						::DlgItem_SetText( hwndDlg, IDC_EDIT_MIGEMO_DICT, m_Common.m_sHelper.m_szMigemoDict );
 					}
@@ -165,10 +165,10 @@ INT_PTR CPropHelper::DispatchEvent(
 			switch( pNMHDR->code ){
 			case PSN_KILLACTIVE:
 //				MYTRACE( _T("Helper PSN_KILLACTIVE\n") );
-				/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìæ“¾ Helper */
+				/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®å–å¾— Helper */
 				GetData( hwndDlg );
 				return TRUE;
-//@@@ 2002.01.03 YAZAKI ÅŒã‚É•\¦‚µ‚Ä‚¢‚½ƒV[ƒg‚ğ³‚µ‚­Šo‚¦‚Ä‚¢‚È‚¢ƒoƒOC³
+//@@@ 2002.01.03 YAZAKI æœ€å¾Œã«è¡¨ç¤ºã—ã¦ã„ãŸã‚·ãƒ¼ãƒˆã‚’æ­£ã—ãè¦šãˆã¦ã„ãªã„ãƒã‚°ä¿®æ­£
 			case PSN_SETACTIVE:
 				m_nPageNum = ID_PAGENUM_HELPER;
 				return TRUE;
@@ -184,7 +184,7 @@ INT_PTR CPropHelper::DispatchEvent(
 		break;	/* WM_NOTIFY */
 
 	case WM_DESTROY:
-		// ƒL[ƒ[ƒhƒwƒ‹ƒv ƒtƒHƒ“ƒg”jŠü	// 2013/4/24 Uchi
+		// ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ãƒ˜ãƒ«ãƒ— ãƒ•ã‚©ãƒ³ãƒˆç ´æ£„	// 2013/4/24 Uchi
 		if (m_hKeywordHelpFont != NULL) {
 			::DeleteObject( m_hKeywordHelpFont );
 			m_hKeywordHelpFont = NULL;
@@ -194,15 +194,15 @@ INT_PTR CPropHelper::DispatchEvent(
 	return FALSE;
 }
 
-/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìİ’è Helper */
+/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®è¨­å®š Helper */
 void CPropHelper::SetData( HWND hwndDlg )
 {
-	/* •âŠ®Œó•âŒˆ’èƒL[ */
-	::CheckDlgButton( hwndDlg, IDC_CHECK_m_bHokanKey_RETURN, m_Common.m_sHelper.m_bHokanKey_RETURN );	//VK_RETURN •âŠ®Œˆ’èƒL[‚ª—LŒø/–³Œø
-	::CheckDlgButton( hwndDlg, IDC_CHECK_m_bHokanKey_TAB, m_Common.m_sHelper.m_bHokanKey_TAB );		//VK_TAB    •âŠ®Œˆ’èƒL[‚ª—LŒø/–³Œø
-	::CheckDlgButton( hwndDlg, IDC_CHECK_m_bHokanKey_RIGHT, m_Common.m_sHelper.m_bHokanKey_RIGHT );	//VK_RIGHT  •âŠ®Œˆ’èƒL[‚ª—LŒø/–³Œø
+	/* è£œå®Œå€™è£œæ±ºå®šã‚­ãƒ¼ */
+	::CheckDlgButton( hwndDlg, IDC_CHECK_m_bHokanKey_RETURN, m_Common.m_sHelper.m_bHokanKey_RETURN );	//VK_RETURN è£œå®Œæ±ºå®šã‚­ãƒ¼ãŒæœ‰åŠ¹/ç„¡åŠ¹
+	::CheckDlgButton( hwndDlg, IDC_CHECK_m_bHokanKey_TAB, m_Common.m_sHelper.m_bHokanKey_TAB );		//VK_TAB    è£œå®Œæ±ºå®šã‚­ãƒ¼ãŒæœ‰åŠ¹/ç„¡åŠ¹
+	::CheckDlgButton( hwndDlg, IDC_CHECK_m_bHokanKey_RIGHT, m_Common.m_sHelper.m_bHokanKey_RIGHT );	//VK_RIGHT  è£œå®Œæ±ºå®šã‚­ãƒ¼ãŒæœ‰åŠ¹/ç„¡åŠ¹
 
-	// ƒL[ƒ[ƒhƒwƒ‹ƒv ƒtƒHƒ“ƒg	// 2013/4/24 Uchi
+	// ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ãƒ˜ãƒ«ãƒ— ãƒ•ã‚©ãƒ³ãƒˆ	// 2013/4/24 Uchi
 	m_hKeywordHelpFont = SetFontLabel( hwndDlg, IDC_STATIC_KEYWORDHELPFONT, m_Common.m_sHelper.m_lf, m_Common.m_sHelper.m_nPointSize);
 
 	//migemo dict
@@ -211,13 +211,13 @@ void CPropHelper::SetData( HWND hwndDlg )
 }
 
 
-/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìæ“¾ Helper */
+/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®å–å¾— Helper */
 int CPropHelper::GetData( HWND hwndDlg )
 {
-	/* •âŠ®Œó•âŒˆ’èƒL[ */
-	m_Common.m_sHelper.m_bHokanKey_RETURN = ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_m_bHokanKey_RETURN );//VK_RETURN •âŠ®Œˆ’èƒL[‚ª—LŒø/–³Œø
-	m_Common.m_sHelper.m_bHokanKey_TAB = ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_m_bHokanKey_TAB );		//VK_TAB    •âŠ®Œˆ’èƒL[‚ª—LŒø/–³Œø
-	m_Common.m_sHelper.m_bHokanKey_RIGHT = ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_m_bHokanKey_RIGHT );	//VK_RIGHT  •âŠ®Œˆ’èƒL[‚ª—LŒø/–³Œø
+	/* è£œå®Œå€™è£œæ±ºå®šã‚­ãƒ¼ */
+	m_Common.m_sHelper.m_bHokanKey_RETURN = ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_m_bHokanKey_RETURN );//VK_RETURN è£œå®Œæ±ºå®šã‚­ãƒ¼ãŒæœ‰åŠ¹/ç„¡åŠ¹
+	m_Common.m_sHelper.m_bHokanKey_TAB = ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_m_bHokanKey_TAB );		//VK_TAB    è£œå®Œæ±ºå®šã‚­ãƒ¼ãŒæœ‰åŠ¹/ç„¡åŠ¹
+	m_Common.m_sHelper.m_bHokanKey_RIGHT = ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_m_bHokanKey_RIGHT );	//VK_RIGHT  è£œå®Œæ±ºå®šã‚­ãƒ¼ãŒæœ‰åŠ¹/ç„¡åŠ¹
 
 	//migemo dict
 	::DlgItem_GetText( hwndDlg, IDC_EDIT_MIGEMO_DLL, m_Common.m_sHelper.m_szMigemoDll, _countof( m_Common.m_sHelper.m_szMigemoDll ));

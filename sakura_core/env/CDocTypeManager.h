@@ -1,5 +1,5 @@
 /*
-	2008.05.18 kobake CShareData ‚©‚ç•ª—£
+	2008.05.18 kobake CShareData ã‹ã‚‰åˆ†é›¢
 */
 /*
 	Copyright (C) 2008, kobake
@@ -29,15 +29,15 @@
 
 #include "DLLSHAREDATA.h"
 
-//! ƒhƒLƒ…ƒƒ“ƒgƒ^ƒCƒvŠÇ—
+//! ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆã‚¿ã‚¤ãƒ—ç®¡ç†
 class CDocTypeManager{
 public:
 	CDocTypeManager()
 	{
 		m_pShareData = &GetDllShareData();
 	}
-	CTypeConfig GetDocumentTypeOfPath( const TCHAR* pszFilePath );	/* ƒtƒ@ƒCƒ‹ƒpƒX‚ğ“n‚µ‚ÄAƒhƒLƒ…ƒƒ“ƒgƒ^ƒCƒvi”’lj‚ğæ“¾‚·‚é */
-	CTypeConfig GetDocumentTypeOfExt( const TCHAR* pszExt );		/* Šg’£q‚ğ“n‚µ‚ÄAƒhƒLƒ…ƒƒ“ƒgƒ^ƒCƒvi”’lj‚ğæ“¾‚·‚é */
+	CTypeConfig GetDocumentTypeOfPath( const TCHAR* pszFilePath );	/* ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã‚’æ¸¡ã—ã¦ã€ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆã‚¿ã‚¤ãƒ—ï¼ˆæ•°å€¤ï¼‰ã‚’å–å¾—ã™ã‚‹ */
+	CTypeConfig GetDocumentTypeOfExt( const TCHAR* pszExt );		/* æ‹¡å¼µå­ã‚’æ¸¡ã—ã¦ã€ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆã‚¿ã‚¤ãƒ—ï¼ˆæ•°å€¤ï¼‰ã‚’å–å¾—ã™ã‚‹ */
 
 	STypeConfig& GetTypeSetting(CTypeConfig cDocumentType)
 	{

@@ -24,19 +24,19 @@
 #ifndef SAKURA_MODULE_4F382EF5_EF52_47E1_A774_5CDFB545AB25_H_
 #define SAKURA_MODULE_4F382EF5_EF52_47E1_A774_5CDFB545AB25_H_
 
-void GetAppVersionInfo( HINSTANCE, int, DWORD*, DWORD* );	/* ƒŠƒ\[ƒX‚©‚ç»•iƒo[ƒWƒ‡ƒ“‚ÌŽæ“¾ */
+void GetAppVersionInfo( HINSTANCE, int, DWORD*, DWORD* );	/* ãƒªã‚½ãƒ¼ã‚¹ã‹ã‚‰è£½å“ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã®å–å¾— */
 
 HICON GetAppIcon( HINSTANCE hInst, int nResource, const TCHAR* szFile, bool bSmall = false);
 
-DWORD GetDllVersion( LPCTSTR lpszDllName );	// ƒVƒFƒ‹‚âƒRƒ‚ƒ“ƒRƒ“ƒgƒ[ƒ‹ DLL ‚Ìƒo[ƒWƒ‡ƒ“”Ô†‚ðŽæ“¾	// 2006.06.17 ryoji
+DWORD GetDllVersion( LPCTSTR lpszDllName );	// ã‚·ã‚§ãƒ«ã‚„ã‚³ãƒ¢ãƒ³ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ« DLL ã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³ç•ªå·ã‚’å–å¾—	// 2006.06.17 ryoji
 
 void ChangeCurrentDirectoryToExeDir();
 
-//! ƒJƒŒƒ“ƒgƒfƒBƒŒƒNƒgƒŠˆÚ“®‹@”\•tLoadLibrary
+//! ã‚«ãƒ¬ãƒ³ãƒˆãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªç§»å‹•æ©Ÿèƒ½ä»˜LoadLibrary
 HMODULE LoadLibraryExedir( LPCTSTR pszDll);
 
 
-//¦ƒTƒNƒ‰ˆË‘¶
+//â€»ã‚µã‚¯ãƒ©ä¾å­˜
 void GetExedir( LPTSTR pDir, LPCTSTR szFile = NULL );
 void GetInidir( LPTSTR pDir, LPCTSTR szFile = NULL ); // 2007.05.19 ryoji
 void GetInidirOrExedir( LPTSTR pDir, LPCTSTR szFile = NULL, BOOL bRetExedirIfFileEmpty = FALSE ); // 2007.05.22 ryoji

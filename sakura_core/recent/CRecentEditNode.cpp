@@ -5,7 +5,7 @@
 
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                           ����                              //
+//                           生成                              //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
 CRecentEditNode::CRecentEditNode()
@@ -20,17 +20,17 @@ CRecentEditNode::CRecentEditNode()
 }
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                      �I�[�o�[���C�h                         //
+//                      オーバーライド                         //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
 /*
-	�A�C�e���̔�r�v�f���擾����B
+	アイテムの比較要素を取得する。
 
-	@note	�擾��̃|�C���^�̓��[�U�Ǘ��̍\���̂ɃL���X�g���ĎQ�Ƃ��Ă��������B
+	@note	取得後のポインタはユーザ管理の構造体にキャストして参照してください。
 */
 const TCHAR* CRecentEditNode::GetItemText( int nIndex ) const
 {
-	return _T("WIN"); //���e�L�X�g���͖��� (GetWindowText���Ă����Ă��ǂ����ǁA���̊֐��͎��s����Ȃ��̂ŁA�Ӗ��͖���)
+	return _T("WIN"); //※テキスト情報は無い (GetWindowTextしてあげても良いけど、この関数は実行されないので、意味は無い)
 }
 
 bool CRecentEditNode::DataToReceiveType( const EditNode** dst, const EditNode* src ) const
@@ -55,7 +55,7 @@ void CRecentEditNode::CopyItem( EditNode* dst, const EditNode* src ) const
 }
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                   �ŗL�C���^�[�t�F�[�X                      //
+//                   固有インターフェース                      //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
 int CRecentEditNode::FindItemByHwnd(HWND hwnd) const
@@ -74,6 +74,6 @@ void CRecentEditNode::DeleteItemByHwnd(HWND hwnd)
 		DeleteItem(n);
 	}
 	else{
-		DEBUG_TRACE( _T("DeleteItemByHwnd���s\n") );
+		DEBUG_TRACE( _T("DeleteItemByHwnd失敗\n") );
 	}
 }

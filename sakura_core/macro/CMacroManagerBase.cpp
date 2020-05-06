@@ -1,5 +1,5 @@
 /*!	@file
-	@brief ƒ}ƒNƒƒGƒ“ƒWƒ“
+	@brief ãƒžã‚¯ãƒ­ã‚¨ãƒ³ã‚¸ãƒ³
 
 	@author genta
 	@date 2002.4.29
@@ -30,7 +30,7 @@
 #include "StdAfx.h"
 #include "CMacroManagerBase.h"
 
-//	ƒfƒtƒHƒ‹ƒg‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^EƒfƒXƒgƒ‰ƒNƒ^
+//	ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ãƒ»ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 
 CMacroManagerBase::CMacroManagerBase()
  : m_nReady( false )

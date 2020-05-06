@@ -9,7 +9,7 @@ void CModifyManager::OnAfterSave(const SSaveInfo& sSaveInfo)
 {
 	CEditDoc* pcDoc = GetListeningDoc();
 
-	// �s�ύX��Ԃ����ׂă��Z�b�g
+	// 行変更状態をすべてリセット
 	CModifyVisitor().ResetAllModifyFlag(&pcDoc->m_cDocLineMgr);
 }
 
@@ -24,19 +24,19 @@ void CModifyVisitor::SetLineModified(CDocLine* pcDocLine, bool bModified)
 	pcDocLine->m_sMark.m_cModified = bModified;
 }
 
-/* �s�ύX��Ԃ����ׂă��Z�b�g */
+/* 行変更状態をすべてリセット */
 /*
-  �E�ύX�t���OCDocLine�I�u�W�F�N�g�쐬���ɂ�TRUE�ł���
-  �E�ύX�񐔂�CDocLine�I�u�W�F�N�g�쐬���ɂ�1�ł���
+  ・変更フラグCDocLineオブジェクト作成時にはTRUEである
+  ・変更回数はCDocLineオブジェクト作成時には1である
 
-  �t�@�C����ǂݍ��񂾂Ƃ��͕ύX�t���O�� FALSE�ɂ���
-  �t�@�C����ǂݍ��񂾂Ƃ��͕ύX�񐔂� 0�ɂ���
+  ファイルを読み込んだときは変更フラグを FALSEにする
+  ファイルを読み込んだときは変更回数を 0にする
 
-  �t�@�C�����㏑���������͕ύX�t���O�� FALSE�ɂ���
-  �t�@�C�����㏑���������͕ύX�񐔂͕ς��Ȃ�
+  ファイルを上書きした時は変更フラグを FALSEにする
+  ファイルを上書きした時は変更回数は変えない
 
-  �ύX�񐔂�Undo�����Ƃ���-1�����
-  �ύX�񐔂�0�ɂȂ����ꍇ�͕ύX�t���O��FALSE�ɂ���
+  変更回数はUndoしたときに-1される
+  変更回数が0になった場合は変更フラグをFALSEにする
 */
 void CModifyVisitor::ResetAllModifyFlag(CDocLineMgr* pcDocLineMgr)
 {

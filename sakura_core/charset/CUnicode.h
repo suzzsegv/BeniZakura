@@ -24,27 +24,27 @@
 #ifndef SAKURA_CUNICODE_95AC7095_F71E_458B_80B3_1AA4036E25109_H_
 #define SAKURA_CUNICODE_95AC7095_F71E_458B_80B3_1AA4036E25109_H_
 
-// IsUtf16SurrogHi()AIsUtf16SurrogLow() ŠÖ”‚ğcharset/codechecker.h ‚ÉˆÚ“®
+// IsUtf16SurrogHi()ã€IsUtf16SurrogLow() é–¢æ•°ã‚’charset/codechecker.h ã«ç§»å‹•
 
 #include "CCodeBase.h"
 
 class CUnicode : public CCodeBase{
 public:
-	EConvertResult CodeToUnicode(const CMemory& cSrc, CNativeW* pDst){	//!< “Á’èƒR[ƒh ¨ UNICODE    •ÏŠ·
+	EConvertResult CodeToUnicode(const CMemory& cSrc, CNativeW* pDst){	//!< ç‰¹å®šã‚³ãƒ¼ãƒ‰ â†’ UNICODE    å¤‰æ›
 		*pDst->_GetMemory() = cSrc;
 		return UnicodeToUnicode_in(pDst->_GetMemory());
 	}
-	EConvertResult UnicodeToCode(const CNativeW& cSrc, CMemory* pDst){	//!< UNICODE    ¨ “Á’èƒR[ƒh •ÏŠ·
+	EConvertResult UnicodeToCode(const CNativeW& cSrc, CMemory* pDst){	//!< UNICODE    â†’ ç‰¹å®šã‚³ãƒ¼ãƒ‰ å¤‰æ›
 		*pDst=*cSrc._GetMemory();
 		return UnicodeToUnicode_out(pDst);
 	}
-	void GetBom(CMemory* pcmemBom);	//!< BOMƒf[ƒ^æ“¾
-	void GetEol(CMemory* pcmemEol, EEolType eEolType);	//!< ‰üsƒf[ƒ^æ“¾
+	void GetBom(CMemory* pcmemBom);	//!< BOMãƒ‡ãƒ¼ã‚¿å–å¾—
+	void GetEol(CMemory* pcmemEol, EEolType eEolType);	//!< æ”¹è¡Œãƒ‡ãƒ¼ã‚¿å–å¾—
 
 public:
-	//À‘•
-	static EConvertResult _UnicodeToUnicode_in(CMemory* pMem, const bool bBigEndian);		// Unicode   ¨ Unicode (“ü—Í‘¤)
-	static EConvertResult _UnicodeToUnicode_out(CMemory* pMem, const bool bBigEndian);	// Unicode   ¨ Unicode (o—Í‘¤)
+	//å®Ÿè£…
+	static EConvertResult _UnicodeToUnicode_in(CMemory* pMem, const bool bBigEndian);		// Unicode   â†’ Unicode (å…¥åŠ›å´)
+	static EConvertResult _UnicodeToUnicode_out(CMemory* pMem, const bool bBigEndian);	// Unicode   â†’ Unicode (å‡ºåŠ›å´)
 	inline static EConvertResult UnicodeToUnicode_in(CMemory* pMem){ return _UnicodeToUnicode_in(pMem,false); }
 	inline static EConvertResult UnicodeToUnicode_out(CMemory* pMem){ return _UnicodeToUnicode_out(pMem,false); }
 

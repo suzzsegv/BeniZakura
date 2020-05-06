@@ -18,17 +18,17 @@ bool CFigure_HanSpace::Match(const wchar_t* pText) const
 
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                         •`‰æŽÀ‘•                            //
+//                         æç”»å®Ÿè£…                            //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
-//! ”¼ŠpƒXƒy[ƒX•`‰æ
+//! åŠè§’ã‚¹ãƒšãƒ¼ã‚¹æç”»
 void CFigure_HanSpace::DispSpace(CGraphics& gr, DispPos* pDispPos, CEditView* pcView, bool bTrans) const
 {
-	//ƒNƒŠƒbƒsƒ“ƒO‹éŒ`‚ðŒvŽZB‰æ–ÊŠO‚È‚ç•`‰æ‚µ‚È‚¢
+	//ã‚¯ãƒªãƒƒãƒ”ãƒ³ã‚°çŸ©å½¢ã‚’è¨ˆç®—ã€‚ç”»é¢å¤–ãªã‚‰æç”»ã—ãªã„
 	CMyRect rcClip;
 	if(pcView->GetTextArea().GenerateClipRect(&rcClip,*pDispPos,1))
 	{
-		//¬•¶Žš"o"‚Ì‰º”¼•ª‚ðo—Í
+		//å°æ–‡å­—"o"ã®ä¸‹åŠåˆ†ã‚’å‡ºåŠ›
 		CMyRect rcClipBottom=rcClip;
 		rcClipBottom.top=rcClip.top+pcView->GetTextMetrics().GetHankakuHeight()/2;
 		::ExtTextOutW_AnyBuild(
@@ -42,7 +42,7 @@ void CFigure_HanSpace::DispSpace(CGraphics& gr, DispPos* pDispPos, CEditView* pc
 			pcView->GetTextMetrics().GetDxArray_AllHankaku()
 		);
 		
-		//ã”¼•ª‚Í•’Ê‚Ì‹ó”’‚Åo—Íi"o"‚Ìã”¼•ª‚ðÁ‚·j
+		//ä¸ŠåŠåˆ†ã¯æ™®é€šã®ç©ºç™½ã§å‡ºåŠ›ï¼ˆ"o"ã®ä¸ŠåŠåˆ†ã‚’æ¶ˆã™ï¼‰
 		CMyRect rcClipTop=rcClip;
 		rcClipTop.bottom=rcClip.top+pcView->GetTextMetrics().GetHankakuHeight()/2;
 		::ExtTextOutW_AnyBuild(
@@ -57,6 +57,6 @@ void CFigure_HanSpace::DispSpace(CGraphics& gr, DispPos* pDispPos, CEditView* pc
 		);
 	}
 
-	//ˆÊ’ui‚ß‚é
+	//ä½ç½®é€²ã‚ã‚‹
 	pDispPos->ForwardDrawCol(1);
 }

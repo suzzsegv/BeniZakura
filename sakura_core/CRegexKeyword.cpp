@@ -1,8 +1,8 @@
 /*!	@file
 	@brief CRegexKeyword Library
 
-	���K�\���L�[���[�h�������B
-	BREGEXP.DLL�𗘗p����B
+	正規表現キーワードを扱う。
+	BREGEXP.DLLを利用する。
 
 	@author MIK
 	@date Nov. 17, 2001
@@ -37,20 +37,20 @@
 #endif
 
 /*
- * �p�����[�^�錾
+ * パラメータ宣言
  */
-#define RK_EMPTY          0      //�������
-#define RK_CLOSE          1      //BREGEXP�N���[�Y
-#define RK_OPEN           2      //BREGEXP�I�[�v��
-#define RK_ACTIVE         3      //�R���p�C���ς�
-#define RK_ERROR          9      //�R���p�C���G���[
+#define RK_EMPTY          0      //初期状態
+#define RK_CLOSE          1      //BREGEXPクローズ
+#define RK_OPEN           2      //BREGEXPオープン
+#define RK_ACTIVE         3      //コンパイル済み
+#define RK_ERROR          9      //コンパイルエラー
 
-#define RK_MATCH          4      //�}�b�`����
-#define RK_NOMATCH        5      //���̍s�ł̓}�b�`���Ȃ�
+#define RK_MATCH          4      //マッチする
+#define RK_NOMATCH        5      //この行ではマッチしない
 
-#define RK_SIZE           100    //�ő�o�^�\��
+#define RK_SIZE           100    //最大登録可能数
 
-//#define RK_HEAD_CHAR      '^'    //�s�擪�̐��K�\��
+//#define RK_HEAD_CHAR      '^'    //行先頭の正規表現
 #define RK_HEAD_STR1      L"/^"   //BREGEXP
 #define RK_HEAD_STR1_LEN  2
 #define RK_HEAD_STR2      L"m#^"  //BREGEXP
@@ -70,17 +70,17 @@
 //#define RK_KAKOMI_4_END   "#k"
 
 
-//!	�R���X�g���N�^
-/*!	@brief �R���X�g���N�^
+//!	コンストラクタ
+/*!	@brief コンストラクタ
 
-	BREGEXP.DLL �������A���K�\���L�[���[�h���������s���B
+	BREGEXP.DLL 初期化、正規表現キーワード初期化を行う。
 
-	@date 2002.2.17 YAZAKI CShareData�̃C���X�^���X�́ACProcess�ɂЂƂ���̂݁B
-	@date 2007.08.12 genta ���K�\��DLL�w��̂��߈����ǉ�
+	@date 2002.2.17 YAZAKI CShareDataのインスタンスは、CProcessにひとつあるのみ。
+	@date 2007.08.12 genta 正規表現DLL指定のため引数追加
 */
 CRegexKeyword::CRegexKeyword(LPCTSTR regexp_dll )
 {
-	InitDll( regexp_dll );	// 2007.08.12 genta �����ǉ�
+	InitDll( regexp_dll );	// 2007.08.12 genta 引数追加
 	MYDBGMSG("CRegexKeyword")
 
 	m_pTypes    = NULL;
@@ -89,17 +89,17 @@ CRegexKeyword::CRegexKeyword(LPCTSTR regexp_dll )
 	RegexKeyInit();
 }
 
-//!	�f�X�g���N�^
-/*!	@brief �f�X�g���N�^
+//!	デストラクタ
+/*!	@brief デストラクタ
 
-	�R���p�C���ς݃f�[�^�̔j�����s���B
+	コンパイル済みデータの破棄を行う。
 */
 CRegexKeyword::~CRegexKeyword()
 {
 	int	i;
 
 	MYDBGMSG("~CRegexKeyword")
-	//�R���p�C���ς݂̃o�b�t�@���������B
+	//コンパイル済みのバッファを解放する。
 	for(i = 0; i < MAX_REGEX_KEYWORD; i++)
 	{
 		if( m_sInfo[i].pBregexp && IsAvailable() )
@@ -113,12 +113,12 @@ CRegexKeyword::~CRegexKeyword()
 	m_pTypes     = NULL;
 }
 
-//!	���K�\���L�[���[�h����������
-/*!	@brief ���K�\���L�[���[�h������
+//!	正規表現キーワード初期化処理
+/*!	@brief 正規表現キーワード初期化
 
-	 ���K�\���L�[���[�h�Ɋւ���ϐ��ނ�����������B
+	 正規表現キーワードに関する変数類を初期化する。
 
-	@retval TRUE ����
+	@retval TRUE 成功
 */
 BOOL CRegexKeyword::RegexKeyInit( void )
 {
@@ -145,17 +145,17 @@ BOOL CRegexKeyword::RegexKeyInit( void )
 	return TRUE;
 }
 
-//!	���݃^�C�v�ݒ菈��
-/*!	@brief ���݃^�C�v�ݒ�
+//!	現在タイプ設定処理
+/*!	@brief 現在タイプ設定
 
-	���݂̃^�C�v�ݒ��ݒ肷��B
+	現在のタイプ設定を設定する。
 
-	@param pTypesPtr [in] �^�C�v�ݒ�\���̂ւ̃|�C���^
+	@param pTypesPtr [in] タイプ設定構造体へのポインタ
 
-	@retval TRUE ����
-	@retval FALSE ���s
+	@retval TRUE 成功
+	@retval FALSE 失敗
 
-	@note �^�C�v�ݒ肪�ς������ă��[�h���R���p�C������B
+	@note タイプ設定が変わったら再ロードしコンパイルする。
 */
 BOOL CRegexKeyword::RegexKeySetTypes( const STypeConfig *pTypesPtr )
 {
@@ -169,7 +169,7 @@ BOOL CRegexKeyword::RegexKeySetTypes( const STypeConfig *pTypesPtr )
 
 	if( !pTypesPtr->m_bUseRegexKeyword )
 	{
-		//OFF�ɂȂ����̂ɂ܂�ON�Ȃ�OFF�ɂ���B
+		//OFFになったのにまだONならOFFにする。
 		if( m_bUseRegexKeyword )
 		{
 			m_pTypes = NULL;
@@ -192,17 +192,17 @@ BOOL CRegexKeyword::RegexKeySetTypes( const STypeConfig *pTypesPtr )
 	return TRUE;
 }
 
-//!	���K�\���L�[���[�h�R���p�C������
-/*!	@brief ���K�\���L�[���[�h�R���p�C��
+//!	正規表現キーワードコンパイル処理
+/*!	@brief 正規表現キーワードコンパイル
 
-	���K�\���L�[���[�h���R���p�C������B
+	正規表現キーワードをコンパイルする。
 
-	@retval TRUE ����
-	@retval FALSE ���s
+	@retval TRUE 成功
+	@retval FALSE 失敗
 
-	@note ���łɃR���p�C���ς݂̏ꍇ�͂����j������B
-	�L�[���[�h�̓R���p�C���f�[�^�Ƃ��ē����ϐ��ɃR�s�[����B
-	�擪�w��A�F�w�葤�̎g�p�E���g�p���`�F�b�N����B
+	@note すでにコンパイル済みの場合はそれを破棄する。
+	キーワードはコンパイルデータとして内部変数にコピーする。
+	先頭指定、色指定側の使用・未使用をチェックする。
 */
 BOOL CRegexKeyword::RegexKeyCompile( void )
 {
@@ -212,7 +212,7 @@ BOOL CRegexKeyword::RegexKeyCompile( void )
 	const struct RegexKeywordInfo	*rp;
 
 	MYDBGMSG("RegexKeyCompile")
-	//�R���p�C���ς݂̃o�b�t�@���������B
+	//コンパイル済みのバッファを解放する。
 	for(i = 0; i < MAX_REGEX_KEYWORD; i++)
 	{
 		if( m_sInfo[i].pBregexp && IsAvailable() )
@@ -220,7 +220,7 @@ BOOL CRegexKeyword::RegexKeyCompile( void )
 		m_sInfo[i].pBregexp = NULL;
 	}
 
-	//�R���p�C���p�^�[��������ϐ��Ɉڂ��B
+	//コンパイルパターンを内部変数に移す。
 	m_nRegexKeyCount = 0;
 	const wchar_t * pKeyword = &m_pTypes->m_RegexKeywordList[0];
 #ifdef USE_PARENT
@@ -255,7 +255,7 @@ BOOL CRegexKeyword::RegexKeyCompile( void )
 #else
 	pKeyword = &m_keywordList[0];
 #endif
-	//�p�^�[�����R���p�C������B
+	//パターンをコンパイルする。
 	for(i = 0; i < m_nRegexKeyCount; i++)
 	{
 #ifdef USE_PARENT
@@ -269,9 +269,9 @@ BOOL CRegexKeyword::RegexKeyCompile( void )
 			m_szMsg[0] = '\0';
 			matched = BMatch(pKeyword, dummy, dummy+1, &m_sInfo[i].pBregexp, m_szMsg);
 
-			if( m_szMsg[0] == '\0' )	//�G���[���Ȃ����`�F�b�N����
+			if( m_szMsg[0] == '\0' )	//エラーがないかチェックする
 			{
-				//�擪�ȊO�͌������Ȃ��Ă悢
+				//先頭以外は検索しなくてよい
 				if( wcsncmp( RK_HEAD_STR1, pKeyword, RK_HEAD_STR1_LEN ) == 0
 				 || wcsncmp( RK_HEAD_STR2, pKeyword, RK_HEAD_STR2_LEN ) == 0
 				 || wcsncmp( RK_HEAD_STR3, pKeyword, RK_HEAD_STR3_LEN ) == 0
@@ -287,33 +287,33 @@ BOOL CRegexKeyword::RegexKeyCompile( void )
 				if( COLORIDX_REGEX1  <= rp->m_nColorIndex
 				 && COLORIDX_REGEX10 >= rp->m_nColorIndex )
 				{
-					//�F�w��Ń`�F�b�N�������ĂȂ���Ό������Ȃ��Ă��悢
+					//色指定でチェックが入ってなければ検索しなくてもよい
 					if( m_pTypes->m_ColorInfoArr[rp->m_nColorIndex].m_bDisp )
 					{
 						m_sInfo[i].nFlag = RK_EMPTY;
 					}
 					else
 					{
-						//���K�\���ł͐F�w��̃`�F�b�N������B
+						//正規表現では色指定のチェックを見る。
 						m_sInfo[i].nFlag = RK_NOMATCH;
 					}
 				}
 				else
 				{
-					//���K�\���ȊO�ł́A�F�w��`�F�b�N�͌��Ȃ��B
-					//�Ⴆ�΁A���p���l�͐��K�\�����g���A��{�@�\���g��Ȃ��Ƃ����w������蓾�邽��
+					//正規表現以外では、色指定チェックは見ない。
+					//例えば、半角数値は正規表現を使い、基本機能を使わないという指定もあり得るため
 					m_sInfo[i].nFlag = RK_EMPTY;
 				}
 			}
 			else
 			{
-				//�R���p�C���G���[�Ȃ̂Ō����Ώۂ���͂���
+				//コンパイルエラーなので検索対象からはずす
 				m_sInfo[i].nFlag = RK_NOMATCH;
 			}
 		}
 		else
 		{
-			//�����G���[�Ȃ̂Ō����Ώۂ���͂���
+			//書式エラーなので検索対象からはずす
 			m_sInfo[i].nFlag = RK_NOMATCH;
 		}
 		for(; *pKeyword != '\0'; pKeyword++ ){}
@@ -325,16 +325,16 @@ BOOL CRegexKeyword::RegexKeyCompile( void )
 	return TRUE;
 }
 
-//!	�s�����J�n����
-/*!	@brief �s�����J�n
+//!	行検索開始処理
+/*!	@brief 行検索開始
 
-	�s�������J�n����B
+	行検索を開始する。
 
-	@retval TRUE ����
-	@retval FALSE ���s�܂��͌������Ȃ��w�肠��
+	@retval TRUE 成功
+	@retval FALSE 失敗または検索しない指定あり
 
-	@note ���ꂼ��̍s�����̍ŏ��Ɏ��s����B
-	�^�C�v�ݒ蓙���ύX����Ă���ꍇ�̓����[�h����B
+	@note それぞれの行検索の最初に実行する。
+	タイプ設定等が変更されている場合はリロードする。
 */
 BOOL CRegexKeyword::RegexKeyLineStart( void )
 {
@@ -342,14 +342,14 @@ BOOL CRegexKeyword::RegexKeyLineStart( void )
 
 	MYDBGMSG("RegexKeyLineStart")
 
-	//����ɕK�v�ȃ`�F�b�N������B
+	//動作に必要なチェックをする。
 	if( !m_bUseRegexKeyword || !IsAvailable() || m_pTypes==NULL )
 	{
 		return FALSE;
 	}
 
-#if 0	//RegexKeySetTypes�Őݒ肳��Ă���͂��Ȃ̂Ŕp�~
-	//���s��v�Ȃ�}�X�^����擾���ăR���p�C������B
+#if 0	//RegexKeySetTypesで設定されているはずなので廃止
+	//情報不一致ならマスタから取得してコンパイルする。
 	if( m_nCompiledMagicNumber != m_pTypes->m_nRegexKeyMagicNumber
 	 || m_nTypeIndex           != m_pTypes->m_nIdx )
 	{
@@ -357,7 +357,7 @@ BOOL CRegexKeyword::RegexKeyLineStart( void )
 	}
 #endif
 
-	//�����J�n�̂��߂ɃI�t�Z�b�g��񓙂��N���A����B
+	//検索開始のためにオフセット情報等をクリアする。
 	for(i = 0; i < m_nRegexKeyCount; i++)
 	{
 		m_sInfo[i].nOffset = -1;
@@ -369,30 +369,30 @@ BOOL CRegexKeyword::RegexKeyLineStart( void )
 	return TRUE;
 }
 
-//!	���K�\����������
-/*!	@brief ���K�\������
+//!	正規表現検索処理
+/*!	@brief 正規表現検索
 
-	���K�\���L�[���[�h����������B
+	正規表現キーワードを検索する。
 
-	@retval TRUE ��v
-	@retval FALSE �s��v
+	@retval TRUE 一致
+	@retval FALSE 不一致
 
-	@note RegexKeyLineStart�֐��ɂ���ď���������Ă��邱�ƁB
+	@note RegexKeyLineStart関数によって初期化されていること。
 */
 BOOL CRegexKeyword::RegexIsKeyword(
-	const CStringRef&	cStr,		//!< [in] �����Ώە�����
-//	const wchar_t*		pLine,		//!< [in] �P�s�̃f�[�^
-	int					nPos,		//!< [in] �����J�n�I�t�Z�b�g
-//	int					nLineLen,	//!< [in] �P�s�̒���
-	int*				nMatchLen,	//!< [out] �}�b�`��������
-	int*				nMatchColor	//!< [out] �}�b�`�����F�ԍ�
+	const CStringRef&	cStr,		//!< [in] 検索対象文字列
+//	const wchar_t*		pLine,		//!< [in] １行のデータ
+	int					nPos,		//!< [in] 検索開始オフセット
+//	int					nLineLen,	//!< [in] １行の長さ
+	int*				nMatchLen,	//!< [out] マッチした長さ
+	int*				nMatchColor	//!< [out] マッチした色番号
 )
 {
 	int	i, matched;
 
 	MYDBGMSG("RegexIsKeyword")
 
-	//����ɕK�v�ȃ`�F�b�N������B
+	//動作に必要なチェックをする。
 	if( !m_bUseRegexKeyword || !IsAvailable()
 #ifdef USE_PARENT
 	 || m_pTypes == NULL
@@ -404,9 +404,9 @@ BOOL CRegexKeyword::RegexIsKeyword(
 
 	for(i = 0; i < m_nRegexKeyCount; i++)
 	{
-		if( m_sInfo[i].nMatch != RK_NOMATCH )  /* ���̍s�ɃL�[���[�h���Ȃ��ƕ������Ă��Ȃ� */
+		if( m_sInfo[i].nMatch != RK_NOMATCH )  /* この行にキーワードがないと分かっていない */
 		{
-			if( m_sInfo[i].nOffset == nPos )  /* �ȑO�����������ʂɈ�v���� */
+			if( m_sInfo[i].nOffset == nPos )  /* 以前検索した結果に一致する */
 			{
 				*nMatchLen   = m_sInfo[i].nLength;
 #ifdef USE_PARENT
@@ -414,10 +414,10 @@ BOOL CRegexKeyword::RegexIsKeyword(
 #else
 				*nMatchColor = m_sInfo[i].sRegexKey.m_nColorIndex;
 #endif
-				return TRUE;  /* �}�b�`���� */
+				return TRUE;  /* マッチした */
 			}
 
-			/* �ȑO�̌��ʂ͂����Â��̂ōČ������� */
+			/* 以前の結果はもう古いので再検索する */
 			if( m_sInfo[i].nOffset < nPos )
 			{
 #ifdef USE_PARENT
@@ -435,7 +435,7 @@ BOOL CRegexKeyword::RegexIsKeyword(
 					m_sInfo[i].nLength = m_sInfo[i].pBregexp->endp[0] - m_sInfo[i].pBregexp->startp[0];
 					m_sInfo[i].nMatch  = RK_MATCH;
 				
-					/* �w��̊J�n�ʒu�Ń}�b�`���� */
+					/* 指定の開始位置でマッチした */
 					if( m_sInfo[i].nOffset == nPos )
 					{
 						if( m_sInfo[i].nHead != 1 || nPos == 0 )
@@ -446,11 +446,11 @@ BOOL CRegexKeyword::RegexIsKeyword(
 #else
 							*nMatchColor = m_sInfo[i].sRegexKey.m_nColorIndex;
 #endif
-							return TRUE;  /* �}�b�`���� */
+							return TRUE;  /* マッチした */
 						}
 					}
 
-					/* �s�擪��v�����鐳�K�\���ł͎��񂩂疳������ */
+					/* 行先頭を要求する正規表現では次回から無視する */
 					if( m_sInfo[i].nHead == 1 )
 					{
 						m_sInfo[i].nMatch = RK_NOMATCH;
@@ -458,7 +458,7 @@ BOOL CRegexKeyword::RegexIsKeyword(
 				}
 				else
 				{
-					/* ���̍s�ɂ��̃L�[���[�h�͂Ȃ� */
+					/* この行にこのキーワードはない */
 					m_sInfo[i].nMatch = RK_NOMATCH;
 				}
 			}
@@ -486,17 +486,17 @@ BOOL CRegexKeyword::RegexKeyCheckSyntax(const wchar_t *s)
 
 	for(i = 0; kakomi[i] != NULL; i += 2)
 	{
-		//���������m���߂�
+		//文字長を確かめる
 		if( length > (int)wcslen(kakomi[i]) + (int)wcslen(kakomi[i+1]) )
 		{
-			//�n�܂���m���߂�
+			//始まりを確かめる
 			if( wcsncmp(kakomi[i], s, wcslen(kakomi[i])) == 0 )
 			{
-				//�I�����m���߂�
+				//終わりを確かめる
 				p = &s[length - wcslen(kakomi[i+1])];
 				if( wcscmp(p, kakomi[i+1]) == 0 )
 				{
-					//����
+					//正常
 					return TRUE;
 				}
 			}

@@ -25,17 +25,17 @@
 #include "StdAfx.h"
 #include "CViewFont.h"
 
-/*! ƒtƒHƒ“ƒgì¬
+/*! ãƒ•ã‚©ãƒ³ãƒˆä½œæˆ
 */
 void CViewFont::CreateFont(const LOGFONT *plf)
 {
 	LOGFONT	lf;
 
-	/* ƒtƒHƒ“ƒgì¬ */
+	/* ãƒ•ã‚©ãƒ³ãƒˆä½œæˆ */
 	lf = *plf;
 	m_hFont_HAN = CreateFontIndirect( &lf );
 
-	/* ‘¾šƒtƒHƒ“ƒgì¬ */
+	/* å¤ªå­—ãƒ•ã‚©ãƒ³ãƒˆä½œæˆ */
 	lf = *plf;
 	lf.lfWeight += 300;
 	if( 1000 < lf.lfWeight ){
@@ -43,12 +43,12 @@ void CViewFont::CreateFont(const LOGFONT *plf)
 	}
 	m_hFont_HAN_BOLD = CreateFontIndirect( &lf );
 
-	/* ‰ºüƒtƒHƒ“ƒgì¬ */
+	/* ä¸‹ç·šãƒ•ã‚©ãƒ³ãƒˆä½œæˆ */
 	lf = *plf;
 	lf.lfUnderline = TRUE;
 	m_hFont_HAN_UL = CreateFontIndirect( &lf );
 
-	/* ‘¾š‰ºüƒtƒHƒ“ƒgì¬ */
+	/* å¤ªå­—ä¸‹ç·šãƒ•ã‚©ãƒ³ãƒˆä½œæˆ */
 	lf = *plf;
 	lf.lfUnderline = TRUE;
 	lf.lfWeight += 300;
@@ -58,7 +58,7 @@ void CViewFont::CreateFont(const LOGFONT *plf)
 	m_hFont_HAN_BOLD_UL = CreateFontIndirect( &lf );
 }
 
-/*! ƒtƒHƒ“ƒgíœ
+/*! ãƒ•ã‚©ãƒ³ãƒˆå‰Šé™¤
 */
 void CViewFont::DeleteFont()
 {
@@ -68,20 +68,20 @@ void CViewFont::DeleteFont()
 	DeleteObject( m_hFont_HAN_BOLD_UL );
 }
 
-/*! ƒtƒHƒ“ƒg‚ğ‘I‚Ô
-	@param bBold true‚Å‘¾š
-	@param bUnderLine true‚Å‰ºü
+/*! ãƒ•ã‚©ãƒ³ãƒˆã‚’é¸ã¶
+	@param bBold trueã§å¤ªå­—
+	@param bUnderLine trueã§ä¸‹ç·š
 */
 HFONT CViewFont::ChooseFontHandle( bool bBold, bool bUnderLine ) const
 {
-	if( bBold ){	/* ‘¾š‚© */
-		if( bUnderLine ){	/* ‰ºü‚© */
+	if( bBold ){	/* å¤ªå­—ã‹ */
+		if( bUnderLine ){	/* ä¸‹ç·šã‹ */
 			return m_hFont_HAN_BOLD_UL;
 		}else{
 			return m_hFont_HAN_BOLD;
 		}
 	}else{
-		if( bUnderLine ){	/* ‰ºü‚© */
+		if( bUnderLine ){	/* ä¸‹ç·šã‹ */
 			return m_hFont_HAN_UL;
 		}else{
 			return m_hFont_HAN;

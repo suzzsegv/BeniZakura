@@ -1,5 +1,5 @@
 /*!	@file
-	@brief ‹@”\•ª—Þ’è‹`
+	@brief æ©Ÿèƒ½åˆ†é¡žå®šç¾©
 
 	@author Norio Nakatani
 */
@@ -38,10 +38,10 @@
 */
 
 //	Sept. 14, 2000 Jepro note: functions & commands list
-//	ƒL[ƒ[ƒhFƒRƒ}ƒ“ƒhˆê——‡˜
-//	‚±‚±‚É“o˜^‚³‚ê‚Ä‚¢‚éƒRƒ}ƒ“ƒh‚ª‹¤’ÊÝ’è‚Ì‹@”\Ží•Ê‚É•\Ž¦‚³‚êAƒL[Š„‚è“–‚Ä‚É‚àÝ’è‚Å‚«‚é‚æ‚¤‚É‚È‚é
-//	‚±‚Ìƒtƒ@ƒCƒ‹‚ÍuƒRƒ}ƒ“ƒhˆê——v‚Ìƒƒjƒ…[‚Ì‡”Ô‚â•\Ž¦‚É‚àŽg‚í‚ê‚Ä‚¢‚é
-//	sakura_rc.rcƒtƒ@ƒCƒ‹‚Ì‰º‚Ì‚Ù‚¤‚É‚ ‚éString Table‚àŽQÆ‚Ì‚±‚Æ
+//	ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ï¼šã‚³ãƒžãƒ³ãƒ‰ä¸€è¦§é †åº
+//	ã“ã“ã«ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ã‚³ãƒžãƒ³ãƒ‰ãŒå…±é€šè¨­å®šã®æ©Ÿèƒ½ç¨®åˆ¥ã«è¡¨ç¤ºã•ã‚Œã€ã‚­ãƒ¼å‰²ã‚Šå½“ã¦ã«ã‚‚è¨­å®šã§ãã‚‹ã‚ˆã†ã«ãªã‚‹
+//	ã“ã®ãƒ•ã‚¡ã‚¤ãƒ«ã¯ã€Œã‚³ãƒžãƒ³ãƒ‰ä¸€è¦§ã€ã®ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®é †ç•ªã‚„è¡¨ç¤ºã«ã‚‚ä½¿ã‚ã‚Œã¦ã„ã‚‹
+//	sakura_rc.rcãƒ•ã‚¡ã‚¤ãƒ«ã®ä¸‹ã®ã»ã†ã«ã‚ã‚‹String Tableã‚‚å‚ç…§ã®ã“ã¨
 
 #include "StdAfx.h"
 #include "func/Funccode.h"
@@ -60,513 +60,513 @@
 //using namespace nsFuncCode;
 
 const TCHAR* nsFuncCode::ppszFuncKind[] = {
-//	"--–¢’è‹`--",	//Oct. 14, 2000 JEPRO u--–¢’è‹`--v‚ð•\Ž¦‚³‚¹‚È‚¢‚æ‚¤‚É•ÏX
-//	Oct. 16, 2000 JEPRO •\Ž¦‚Ì‡”Ô‚ðƒƒjƒ…[ƒo[‚Ì‚»‚ê‚É‡‚í‚¹‚é‚æ‚¤‚É­‚µ“ü‚ê‘Ö‚¦‚½(‰º‚ÌŒÂ•Ê‚Ì‚à‚Ì‚à‘S•”)
-	_T("ƒtƒ@ƒCƒ‹‘€ìŒn"),
-	_T("•ÒWŒn"),
-	_T("ƒJ[ƒ\ƒ‹ˆÚ“®Œn"),
-	_T("‘I‘ðŒn"),		//Oct. 15, 2000 JEPRO uƒJ[ƒ\ƒ‹ˆÚ“®Œnv‚ª‘½‚­‚È‚Á‚½‚Ì‚Åu‘I‘ðŒnv‚Æ‚µ‚Ä“Æ—§‰»(ƒTƒuƒƒjƒ…[‰»‚Í\‘¢ã‚Å‚«‚È‚¢‚Ì‚Å)
-	_T("‹éŒ`‘I‘ðŒn"),	//Oct. 17, 2000 JEPRO u‘I‘ðŒnv‚Éˆê‚É‚·‚é‚Æ‘½‚­‚È‚è‚·‚¬‚é‚Ì‚Åu‹éŒ`‘I‘ðŒnv‚à“Æ—§‚³‚¹‚½
-	_T("ƒNƒŠƒbƒvƒ{[ƒhŒn"),
-	_T("‘}“üŒn"),
-	_T("•ÏŠ·Œn"),
-	_T("ŒŸõŒn"),
-	_T("ƒ‚[ƒhØ‚è‘Ö‚¦Œn"),
-	_T("Ý’èŒn"),
-	_T("ƒ}ƒNƒŒn"),
-	//	Oct. 15, 2001 genta ƒJƒXƒ^ƒ€ƒƒjƒ…[‚Ì•¶Žš—ñ‚ð‚Í“®“I‚É•ÏX‰Â”\‚É‚·‚é‚½‚ß‚±‚±‚©‚ç‚ÍŠO‚·D
-//	_T("ƒJƒXƒ^ƒ€ƒƒjƒ…["),	//Oct. 21, 2000 JEPRO u‚»‚Ì‘¼v‚©‚ç“Æ—§•ª—£‰»
-	_T("ƒEƒBƒ“ƒhƒEŒn"),
-	_T("Žx‰‡"),
-	_T("‚»‚Ì‘¼")
+//	"--æœªå®šç¾©--",	//Oct. 14, 2000 JEPRO ã€Œ--æœªå®šç¾©--ã€ã‚’è¡¨ç¤ºã•ã›ãªã„ã‚ˆã†ã«å¤‰æ›´
+//	Oct. 16, 2000 JEPRO è¡¨ç¤ºã®é †ç•ªã‚’ãƒ¡ãƒ‹ãƒ¥ãƒ¼ãƒãƒ¼ã®ãã‚Œã«åˆã‚ã›ã‚‹ã‚ˆã†ã«å°‘ã—å…¥ã‚Œæ›¿ãˆãŸ(ä¸‹ã®å€‹åˆ¥ã®ã‚‚ã®ã‚‚å…¨éƒ¨)
+	_T("ãƒ•ã‚¡ã‚¤ãƒ«æ“ä½œç³»"),
+	_T("ç·¨é›†ç³»"),
+	_T("ã‚«ãƒ¼ã‚½ãƒ«ç§»å‹•ç³»"),
+	_T("é¸æŠžç³»"),		//Oct. 15, 2000 JEPRO ã€Œã‚«ãƒ¼ã‚½ãƒ«ç§»å‹•ç³»ã€ãŒå¤šããªã£ãŸã®ã§ã€Œé¸æŠžç³»ã€ã¨ã—ã¦ç‹¬ç«‹åŒ–(ã‚µãƒ–ãƒ¡ãƒ‹ãƒ¥ãƒ¼åŒ–ã¯æ§‹é€ ä¸Šã§ããªã„ã®ã§)
+	_T("çŸ©å½¢é¸æŠžç³»"),	//Oct. 17, 2000 JEPRO ã€Œé¸æŠžç³»ã€ã«ä¸€ç·’ã«ã™ã‚‹ã¨å¤šããªã‚Šã™ãŽã‚‹ã®ã§ã€ŒçŸ©å½¢é¸æŠžç³»ã€ã‚‚ç‹¬ç«‹ã•ã›ãŸ
+	_T("ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ç³»"),
+	_T("æŒ¿å…¥ç³»"),
+	_T("å¤‰æ›ç³»"),
+	_T("æ¤œç´¢ç³»"),
+	_T("ãƒ¢ãƒ¼ãƒ‰åˆ‡ã‚Šæ›¿ãˆç³»"),
+	_T("è¨­å®šç³»"),
+	_T("ãƒžã‚¯ãƒ­ç³»"),
+	//	Oct. 15, 2001 genta ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®æ–‡å­—åˆ—ã‚’ã¯å‹•çš„ã«å¤‰æ›´å¯èƒ½ã«ã™ã‚‹ãŸã‚ã“ã“ã‹ã‚‰ã¯å¤–ã™ï¼Ž
+//	_T("ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼"),	//Oct. 21, 2000 JEPRO ã€Œãã®ä»–ã€ã‹ã‚‰ç‹¬ç«‹åˆ†é›¢åŒ–
+	_T("ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ç³»"),
+	_T("æ”¯æ´"),
+	_T("ãã®ä»–")
 };
 const int nsFuncCode::nFuncKindNum = _countof(nsFuncCode::ppszFuncKind);
 
 
-/* ƒtƒ@ƒCƒ‹‘€ìŒn */
-const EFunctionCode pnFuncList_File[] = {	//Oct. 16, 2000 JEPRO •Ï”–¼•ÏX(List5¨List_File)
-	F_FILENEW			,	//V‹Kì¬
-	F_FILENEW_NEWWINDOW	,	//V‹KƒEƒCƒ“ƒhƒE‚ðŠJ‚­
-	F_FILEOPEN			,	//ŠJ‚­
-	F_FILEOPEN_DROPDOWN	,	//ŠJ‚­(ƒhƒƒbƒvƒ_ƒEƒ“)
-	F_FILESAVE			,	//ã‘‚«•Û‘¶
-	F_FILESAVEAS_DIALOG	,	//–¼‘O‚ð•t‚¯‚Ä•Û‘¶
-	F_FILESAVEALL		,	//‘S‚Äã‘‚«•Û‘¶	// Jan. 24, 2005 genta
-	F_FILECLOSE			,	//•Â‚¶‚Ä(–³‘è)	//Oct. 17, 2000 jepro uƒtƒ@ƒCƒ‹‚ð•Â‚¶‚év‚Æ‚¢‚¤ƒLƒƒƒvƒVƒ‡ƒ“‚ð•ÏX
-	F_FILECLOSE_OPEN	,	//•Â‚¶‚ÄŠJ‚­
-	F_WINCLOSE			,	//ƒEƒBƒ“ƒhƒE‚ð•Â‚¶‚é	//Oct.17,2000 ƒRƒ}ƒ“ƒh–{‰Æ‚ÍuƒEƒBƒ“ƒhƒEŒnv	//Feb. 18, 2001	JEPRO ‰º‚©‚çˆÚ“®‚µ‚½
-	F_FILESAVECLOSE		,	//•Û‘¶‚µ‚Ä•Â‚¶‚é Feb. 28, 2004 genta
-	F_FILE_REOPEN		,	//ŠJ‚«’¼‚·	//Dec. 4, 2002 genta
-	F_FILE_REOPEN_SJIS		,//SJIS‚ÅŠJ‚«’¼‚·
-	F_FILE_REOPEN_JIS		,//JIS‚ÅŠJ‚«’¼‚·
-	F_FILE_REOPEN_EUC		,//EUC‚ÅŠJ‚«’¼‚·
-	F_FILE_REOPEN_LATIN1	,//Latin1‚ÅŠJ‚«’¼‚·	// 2010/3/20 Uchi
-	F_FILE_REOPEN_UNICODE	,//Unicode‚ÅŠJ‚«’¼‚·
-	F_FILE_REOPEN_UNICODEBE	,//UnicodeBE‚ÅŠJ‚«’¼‚·
-	F_FILE_REOPEN_UTF8		,//UTF-8‚ÅŠJ‚«’¼‚·
-	F_FILE_REOPEN_CESU8		,//CESU-8‚ÅŠJ‚«’¼‚·
-	F_FILE_REOPEN_UTF7		,//UTF-7‚ÅŠJ‚«’¼‚·
+/* ãƒ•ã‚¡ã‚¤ãƒ«æ“ä½œç³» */
+const EFunctionCode pnFuncList_File[] = {	//Oct. 16, 2000 JEPRO å¤‰æ•°åå¤‰æ›´(List5â†’List_File)
+	F_FILENEW			,	//æ–°è¦ä½œæˆ
+	F_FILENEW_NEWWINDOW	,	//æ–°è¦ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚’é–‹ã
+	F_FILEOPEN			,	//é–‹ã
+	F_FILEOPEN_DROPDOWN	,	//é–‹ã(ãƒ‰ãƒ­ãƒƒãƒ—ãƒ€ã‚¦ãƒ³)
+	F_FILESAVE			,	//ä¸Šæ›¸ãä¿å­˜
+	F_FILESAVEAS_DIALOG	,	//åå‰ã‚’ä»˜ã‘ã¦ä¿å­˜
+	F_FILESAVEALL		,	//å…¨ã¦ä¸Šæ›¸ãä¿å­˜	// Jan. 24, 2005 genta
+	F_FILECLOSE			,	//é–‰ã˜ã¦(ç„¡é¡Œ)	//Oct. 17, 2000 jepro ã€Œãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‰ã˜ã‚‹ã€ã¨ã„ã†ã‚­ãƒ£ãƒ—ã‚·ãƒ§ãƒ³ã‚’å¤‰æ›´
+	F_FILECLOSE_OPEN	,	//é–‰ã˜ã¦é–‹ã
+	F_WINCLOSE			,	//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’é–‰ã˜ã‚‹	//Oct.17,2000 ã‚³ãƒžãƒ³ãƒ‰æœ¬å®¶ã¯ã€Œã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ç³»ã€	//Feb. 18, 2001	JEPRO ä¸‹ã‹ã‚‰ç§»å‹•ã—ãŸ
+	F_FILESAVECLOSE		,	//ä¿å­˜ã—ã¦é–‰ã˜ã‚‹ Feb. 28, 2004 genta
+	F_FILE_REOPEN		,	//é–‹ãç›´ã™	//Dec. 4, 2002 genta
+	F_FILE_REOPEN_SJIS		,//SJISã§é–‹ãç›´ã™
+	F_FILE_REOPEN_JIS		,//JISã§é–‹ãç›´ã™
+	F_FILE_REOPEN_EUC		,//EUCã§é–‹ãç›´ã™
+	F_FILE_REOPEN_LATIN1	,//Latin1ã§é–‹ãç›´ã™	// 2010/3/20 Uchi
+	F_FILE_REOPEN_UNICODE	,//Unicodeã§é–‹ãç›´ã™
+	F_FILE_REOPEN_UNICODEBE	,//UnicodeBEã§é–‹ãç›´ã™
+	F_FILE_REOPEN_UTF8		,//UTF-8ã§é–‹ãç›´ã™
+	F_FILE_REOPEN_CESU8		,//CESU-8ã§é–‹ãç›´ã™
+	F_FILE_REOPEN_UTF7		,//UTF-7ã§é–‹ãç›´ã™
 	F_FILE_EXCLUSIVE_LOCK,
 	F_FILE_SHARE_LOCK,
 	F_FILE_UNLOCK,
-	F_PRINT				,	//ˆóü
-	F_PRINT_PREVIEW		,	//ˆóüƒvƒŒƒrƒ…[
-	F_PRINT_PAGESETUP	,	//ˆóüƒy[ƒWÝ’è	//Sept. 14, 2000 jepro uˆóü‚Ìƒy[ƒWƒŒƒCƒAƒEƒg‚ÌÝ’èv‚©‚ç•ÏX
-	F_OPEN_HfromtoC		,	//“¯–¼‚ÌC/C++ƒwƒbƒ_(ƒ\[ƒX)‚ðŠJ‚­	//Feb. 7, 2001 JEPRO ’Ç‰Á
-//	F_OPEN_HHPP			,	//“¯–¼‚ÌC/C++ƒwƒbƒ_ƒtƒ@ƒCƒ‹‚ðŠJ‚­	//Feb. 9, 2001 jeprou.c‚Ü‚½‚Í.cpp‚Æ“¯–¼‚Ì.h‚ðŠJ‚­v‚©‚ç•ÏX		del 2008/6/23 Uchi
-//	F_OPEN_CCPP			,	//“¯–¼‚ÌC/C++ƒ\[ƒXƒtƒ@ƒCƒ‹‚ðŠJ‚­	//Feb. 9, 2001 jeprou.h‚Æ“¯–¼‚Ì.c(‚È‚¯‚ê‚Î.cpp)‚ðŠJ‚­v‚©‚ç•ÏX	del 2008/6/23 Uchi
-	F_ACTIVATE_SQLPLUS			,	/* Oracle SQL*Plus‚ðƒAƒNƒeƒBƒu•\Ž¦ */	//Sept. 20, 2000 uƒRƒ“ƒpƒCƒ‹vJEPRO ƒAƒNƒeƒBƒu•\Ž¦‚ðã‚ÉˆÚ“®‚µ‚½
-	F_PLSQL_COMPILE_ON_SQLPLUS	,	/* Oracle SQL*Plus‚ÅŽÀs */	//Sept. 20, 2000 jepro à–¾‚ÌuƒRƒ“ƒpƒCƒ‹v‚ðuŽÀsv‚É“ˆê
-	F_BROWSE			,	//ƒuƒ‰ƒEƒY
-	F_VIEWMODE			,	//ƒrƒ…[ƒ‚[ƒh
-	F_PROPERTY_FILE		,	/* ƒtƒ@ƒCƒ‹‚ÌƒvƒƒpƒeƒB */
-	F_EXITALLEDITORS	,	//•ÒW‚Ì‘SI—¹	// 2007.02.13 ryoji F_WIN_CLOSEALL¨F_EXITALLEDITORS
-	F_EXITALL				//ƒTƒNƒ‰ƒGƒfƒBƒ^‚Ì‘SI—¹	//Dec. 27, 2000 JEPRO ’Ç‰Á
+	F_PRINT				,	//å°åˆ·
+	F_PRINT_PREVIEW		,	//å°åˆ·ãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼
+	F_PRINT_PAGESETUP	,	//å°åˆ·ãƒšãƒ¼ã‚¸è¨­å®š	//Sept. 14, 2000 jepro ã€Œå°åˆ·ã®ãƒšãƒ¼ã‚¸ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆã®è¨­å®šã€ã‹ã‚‰å¤‰æ›´
+	F_OPEN_HfromtoC		,	//åŒåã®C/C++ãƒ˜ãƒƒãƒ€(ã‚½ãƒ¼ã‚¹)ã‚’é–‹ã	//Feb. 7, 2001 JEPRO è¿½åŠ 
+//	F_OPEN_HHPP			,	//åŒåã®C/C++ãƒ˜ãƒƒãƒ€ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã	//Feb. 9, 2001 jeproã€Œ.cã¾ãŸã¯.cppã¨åŒåã®.hã‚’é–‹ãã€ã‹ã‚‰å¤‰æ›´		del 2008/6/23 Uchi
+//	F_OPEN_CCPP			,	//åŒåã®C/C++ã‚½ãƒ¼ã‚¹ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã	//Feb. 9, 2001 jeproã€Œ.hã¨åŒåã®.c(ãªã‘ã‚Œã°.cpp)ã‚’é–‹ãã€ã‹ã‚‰å¤‰æ›´	del 2008/6/23 Uchi
+	F_ACTIVATE_SQLPLUS			,	/* Oracle SQL*Plusã‚’ã‚¢ã‚¯ãƒ†ã‚£ãƒ–è¡¨ç¤º */	//Sept. 20, 2000 ã€Œã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã€JEPRO ã‚¢ã‚¯ãƒ†ã‚£ãƒ–è¡¨ç¤ºã‚’ä¸Šã«ç§»å‹•ã—ãŸ
+	F_PLSQL_COMPILE_ON_SQLPLUS	,	/* Oracle SQL*Plusã§å®Ÿè¡Œ */	//Sept. 20, 2000 jepro èª¬æ˜Žã®ã€Œã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã€ã‚’ã€Œå®Ÿè¡Œã€ã«çµ±ä¸€
+	F_BROWSE			,	//ãƒ–ãƒ©ã‚¦ã‚º
+	F_VIEWMODE			,	//ãƒ“ãƒ¥ãƒ¼ãƒ¢ãƒ¼ãƒ‰
+	F_PROPERTY_FILE		,	/* ãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ */
+	F_EXITALLEDITORS	,	//ç·¨é›†ã®å…¨çµ‚äº†	// 2007.02.13 ryoji F_WIN_CLOSEALLâ†’F_EXITALLEDITORS
+	F_EXITALL				//ã‚µã‚¯ãƒ©ã‚¨ãƒ‡ã‚£ã‚¿ã®å…¨çµ‚äº†	//Dec. 27, 2000 JEPRO è¿½åŠ 
 };
-const int nFincList_File_Num = _countof( pnFuncList_File );	//Oct. 16, 2000 JEPRO ”z—ñ–¼•ÏX(FuncList5¨FuncList_File)
+const int nFincList_File_Num = _countof( pnFuncList_File );	//Oct. 16, 2000 JEPRO é…åˆ—åå¤‰æ›´(FuncList5â†’FuncList_File)
 
 
-/* •ÒWŒn */
-const EFunctionCode pnFuncList_Edit[] = {	//Oct. 16, 2000 JEPRO •Ï”–¼•ÏX(List3¨List_Edit)
-	F_UNDO				,	//Œ³‚É–ß‚·(Undo)
-	F_REDO				,	//‚â‚è’¼‚µ(Redo)
-	F_DELETE			,	//íœ
-	F_DELETE_BACK		,	//ƒJ[ƒ\ƒ‹‘O‚ðíœ
-	F_WordDeleteToStart	,	//’PŒê‚Ì¶’[‚Ü‚Åíœ
-	F_WordDeleteToEnd	,	//’PŒê‚Ì‰E’[‚Ü‚Åíœ
-	F_WordCopy			,	//’PŒêƒRƒs[
-	F_WordCut			,	//’PŒêØ‚èŽæ‚è
-	F_WordDelete		,	//’PŒêíœ
-	F_LineCutToStart	,	//s“ª‚Ü‚ÅØ‚èŽæ‚è(‰üs’PˆÊ)
-	F_LineCutToEnd		,	//s––‚Ü‚ÅØ‚èŽæ‚è(‰üs’PˆÊ)
-	F_LineDeleteToStart	,	//s“ª‚Ü‚Åíœ(‰üs’PˆÊ)
-	F_LineDeleteToEnd	,	//s––‚Ü‚Åíœ(‰üs’PˆÊ)
-	F_CUT_LINE			,	//sØ‚èŽæ‚è(Ü‚è•Ô‚µ’PˆÊ)
-	F_DELETE_LINE		,	//síœ(Ü‚è•Ô‚µ’PˆÊ)
-	F_DUPLICATELINE		,	//s‚Ì“ñd‰»(Ü‚è•Ô‚µ’PˆÊ)
-	F_INDENT_TAB		,	//TABƒCƒ“ƒfƒ“ƒg
-	F_UNINDENT_TAB		,	//‹tTABƒCƒ“ƒfƒ“ƒg
-	F_INDENT_SPACE		,	//SPACEƒCƒ“ƒfƒ“ƒg
-	F_UNINDENT_SPACE	,	//‹tSPACEƒCƒ“ƒfƒ“ƒg
-	F_LTRIM				,	//¶(æ“ª)‚Ì‹ó”’‚ðíœ	2001.12.03 hor
-	F_RTRIM				,	//‰E(––”ö)‚Ì‹ó”’‚ðíœ	2001.12.03 hor
-	F_SORT_ASC			,	//‘I‘ðs‚Ì¸‡ƒ\[ƒg	2001.12.06 hor
-	F_SORT_DESC			,	//‘I‘ðs‚Ì~‡ƒ\[ƒg	2001.12.06 hor
-	F_MERGE				,	//‘I‘ðs‚Ìƒ}[ƒW		2001.12.06 hor
-	F_RECONVERT			,	//Ä•ÏŠ· 				2002.04.09 minfu
-	F_INSERT_NEWLINE		//‰üs
-//		F_WORDSREFERENCE		//’PŒêƒŠƒtƒ@ƒŒƒ“ƒX
+/* ç·¨é›†ç³» */
+const EFunctionCode pnFuncList_Edit[] = {	//Oct. 16, 2000 JEPRO å¤‰æ•°åå¤‰æ›´(List3â†’List_Edit)
+	F_UNDO				,	//å…ƒã«æˆ»ã™(Undo)
+	F_REDO				,	//ã‚„ã‚Šç›´ã—(Redo)
+	F_DELETE			,	//å‰Šé™¤
+	F_DELETE_BACK		,	//ã‚«ãƒ¼ã‚½ãƒ«å‰ã‚’å‰Šé™¤
+	F_WordDeleteToStart	,	//å˜èªžã®å·¦ç«¯ã¾ã§å‰Šé™¤
+	F_WordDeleteToEnd	,	//å˜èªžã®å³ç«¯ã¾ã§å‰Šé™¤
+	F_WordCopy			,	//å˜èªžã‚³ãƒ”ãƒ¼
+	F_WordCut			,	//å˜èªžåˆ‡ã‚Šå–ã‚Š
+	F_WordDelete		,	//å˜èªžå‰Šé™¤
+	F_LineCutToStart	,	//è¡Œé ­ã¾ã§åˆ‡ã‚Šå–ã‚Š(æ”¹è¡Œå˜ä½)
+	F_LineCutToEnd		,	//è¡Œæœ«ã¾ã§åˆ‡ã‚Šå–ã‚Š(æ”¹è¡Œå˜ä½)
+	F_LineDeleteToStart	,	//è¡Œé ­ã¾ã§å‰Šé™¤(æ”¹è¡Œå˜ä½)
+	F_LineDeleteToEnd	,	//è¡Œæœ«ã¾ã§å‰Šé™¤(æ”¹è¡Œå˜ä½)
+	F_CUT_LINE			,	//è¡Œåˆ‡ã‚Šå–ã‚Š(æŠ˜ã‚Šè¿”ã—å˜ä½)
+	F_DELETE_LINE		,	//è¡Œå‰Šé™¤(æŠ˜ã‚Šè¿”ã—å˜ä½)
+	F_DUPLICATELINE		,	//è¡Œã®äºŒé‡åŒ–(æŠ˜ã‚Šè¿”ã—å˜ä½)
+	F_INDENT_TAB		,	//TABã‚¤ãƒ³ãƒ‡ãƒ³ãƒˆ
+	F_UNINDENT_TAB		,	//é€†TABã‚¤ãƒ³ãƒ‡ãƒ³ãƒˆ
+	F_INDENT_SPACE		,	//SPACEã‚¤ãƒ³ãƒ‡ãƒ³ãƒˆ
+	F_UNINDENT_SPACE	,	//é€†SPACEã‚¤ãƒ³ãƒ‡ãƒ³ãƒˆ
+	F_LTRIM				,	//å·¦(å…ˆé ­)ã®ç©ºç™½ã‚’å‰Šé™¤	2001.12.03 hor
+	F_RTRIM				,	//å³(æœ«å°¾)ã®ç©ºç™½ã‚’å‰Šé™¤	2001.12.03 hor
+	F_SORT_ASC			,	//é¸æŠžè¡Œã®æ˜‡é †ã‚½ãƒ¼ãƒˆ	2001.12.06 hor
+	F_SORT_DESC			,	//é¸æŠžè¡Œã®é™é †ã‚½ãƒ¼ãƒˆ	2001.12.06 hor
+	F_MERGE				,	//é¸æŠžè¡Œã®ãƒžãƒ¼ã‚¸		2001.12.06 hor
+	F_RECONVERT			,	//å†å¤‰æ› 				2002.04.09 minfu
+	F_INSERT_NEWLINE		//æ”¹è¡Œ
+//		F_WORDSREFERENCE		//å˜èªžãƒªãƒ•ã‚¡ãƒ¬ãƒ³ã‚¹
 };
-const int nFincList_Edit_Num = _countof( pnFuncList_Edit );	//Oct. 16, 2000 JEPRO •Ï”–¼•ÏX(List3¨List_Edit)
+const int nFincList_Edit_Num = _countof( pnFuncList_Edit );	//Oct. 16, 2000 JEPRO å¤‰æ•°åå¤‰æ›´(List3â†’List_Edit)
 
 
-/* ƒJ[ƒ\ƒ‹ˆÚ“®Œn */
-const EFunctionCode pnFuncList_Move[] = {	//Oct. 16, 2000 JEPRO •Ï”–¼•ÏX(List1¨List_Move)
-	F_UP				,	//ƒJ[ƒ\ƒ‹ãˆÚ“®
-	F_DOWN				,	//ƒJ[ƒ\ƒ‹‰ºˆÚ“®
-	F_LEFT				,	//ƒJ[ƒ\ƒ‹¶ˆÚ“®
-	F_RIGHT				,	//ƒJ[ƒ\ƒ‹‰EˆÚ“®
+/* ã‚«ãƒ¼ã‚½ãƒ«ç§»å‹•ç³» */
+const EFunctionCode pnFuncList_Move[] = {	//Oct. 16, 2000 JEPRO å¤‰æ•°åå¤‰æ›´(List1â†’List_Move)
+	F_UP				,	//ã‚«ãƒ¼ã‚½ãƒ«ä¸Šç§»å‹•
+	F_DOWN				,	//ã‚«ãƒ¼ã‚½ãƒ«ä¸‹ç§»å‹•
+	F_LEFT				,	//ã‚«ãƒ¼ã‚½ãƒ«å·¦ç§»å‹•
+	F_RIGHT				,	//ã‚«ãƒ¼ã‚½ãƒ«å³ç§»å‹•
 	F_UP2				,
 	F_DOWN2				,
-	F_WORDLEFT			,	//’PŒê‚Ì¶’[‚ÉˆÚ“®
-	F_WORDRIGHT			,	//’PŒê‚Ì‰E’[‚ÉˆÚ“®
-	F_GOLINETOP			,	//s“ª‚ÉˆÚ“®(Ü‚è•Ô‚µ’PˆÊ)
-	F_GOLINEEND			,	//s––‚ÉˆÚ“®(Ü‚è•Ô‚µ’PˆÊ)
-//	F_ROLLDOWN			,	//ƒXƒNƒ[ƒ‹ƒ_ƒEƒ“
-//	F_ROLLUP			,	//ƒXƒNƒ[ƒ‹ƒAƒbƒv
-	F_HalfPageUp		,	//”¼ƒy[ƒWƒAƒbƒv	//Oct. 6, 2000 JEPRO –¼Ì‚ðPC-ATŒÝŠ·‹@Œn‚É•ÏX(ROLL¨PAGE) //Oct. 10, 2000 JEPRO –¼Ì•ÏX
-	F_HalfPageDown		,	//”¼ƒy[ƒWƒ_ƒEƒ“	//Oct. 6, 2000 JEPRO –¼Ì‚ðPC-ATŒÝŠ·‹@Œn‚É•ÏX(ROLL¨PAGE) //Oct. 10, 2000 JEPRO –¼Ì•ÏX
-	F_1PageUp			,	//‚Pƒy[ƒWƒAƒbƒv	//Oct. 10, 2000 JEPRO ]—ˆ‚Ìƒy[ƒWƒAƒbƒv‚ð”¼ƒy[ƒWƒAƒbƒv‚Æ–¼Ì•ÏX‚µ‚Pƒy[ƒWƒAƒbƒv‚ð’Ç‰Á
-	F_1PageDown			,	//‚Pƒy[ƒWƒ_ƒEƒ“	//Oct. 10, 2000 JEPRO ]—ˆ‚Ìƒy[ƒWƒ_ƒEƒ“‚ð”¼ƒy[ƒWƒ_ƒEƒ“‚Æ–¼Ì•ÏX‚µ‚Pƒy[ƒWƒ_ƒEƒ“‚ð’Ç‰Á
-	F_GOFILETOP			,	//ƒtƒ@ƒCƒ‹‚Ìæ“ª‚ÉˆÚ“®
-	F_GOFILEEND			,	//ƒtƒ@ƒCƒ‹‚ÌÅŒã‚ÉˆÚ“®
-	F_CURLINECENTER		,	//ƒJ[ƒ\ƒ‹s‚ðƒEƒBƒ“ƒhƒE’†‰›‚Ö
-	F_JUMP_DIALOG		,	//Žw’èsƒwƒWƒƒƒ“ƒv	//Sept. 17, 2000 JEPRO ƒRƒ}ƒ“ƒh–{‰Æ‚ÍuŒŸõŒnv
-	F_JUMP_SRCHSTARTPOS	,	//ŒŸõŠJŽnˆÊ’u‚Ö–ß‚é	// 02/06/26 ai ƒRƒ}ƒ“ƒh–{‰Æ‚Í¢ŒŸõŒn£
-	F_JUMPHIST_PREV		,	//ˆÚ“®—š—ð: ‘O‚Ö
-	F_JUMPHIST_NEXT		,	//ˆÚ“®—š—ð: ŽŸ‚Ö
-	F_JUMPHIST_SET		,	//Œ»ÝˆÊ’u‚ðˆÚ“®—š—ð‚É“o˜^
-	F_WndScrollDown		,	//ƒeƒLƒXƒg‚ð‚Ps‰º‚ÖƒXƒNƒ[ƒ‹	// 2001/06/20 asa-o
-	F_WndScrollUp		,	//ƒeƒLƒXƒg‚ð‚Psã‚ÖƒXƒNƒ[ƒ‹	// 2001/06/20 asa-o
-	F_GONEXTPARAGRAPH	,	//ŽŸ‚Ì’i—Ž‚Ö
-	F_GOPREVPARAGRAPH	,	//‘O‚Ì’i—Ž‚Ö
-	F_AUTOSCROLL		,	//ƒI[ƒgƒXƒNƒ[ƒ‹
+	F_WORDLEFT			,	//å˜èªžã®å·¦ç«¯ã«ç§»å‹•
+	F_WORDRIGHT			,	//å˜èªžã®å³ç«¯ã«ç§»å‹•
+	F_GOLINETOP			,	//è¡Œé ­ã«ç§»å‹•(æŠ˜ã‚Šè¿”ã—å˜ä½)
+	F_GOLINEEND			,	//è¡Œæœ«ã«ç§»å‹•(æŠ˜ã‚Šè¿”ã—å˜ä½)
+//	F_ROLLDOWN			,	//ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ãƒ€ã‚¦ãƒ³
+//	F_ROLLUP			,	//ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ã‚¢ãƒƒãƒ—
+	F_HalfPageUp		,	//åŠãƒšãƒ¼ã‚¸ã‚¢ãƒƒãƒ—	//Oct. 6, 2000 JEPRO åç§°ã‚’PC-ATäº’æ›æ©Ÿç³»ã«å¤‰æ›´(ROLLâ†’PAGE) //Oct. 10, 2000 JEPRO åç§°å¤‰æ›´
+	F_HalfPageDown		,	//åŠãƒšãƒ¼ã‚¸ãƒ€ã‚¦ãƒ³	//Oct. 6, 2000 JEPRO åç§°ã‚’PC-ATäº’æ›æ©Ÿç³»ã«å¤‰æ›´(ROLLâ†’PAGE) //Oct. 10, 2000 JEPRO åç§°å¤‰æ›´
+	F_1PageUp			,	//ï¼‘ãƒšãƒ¼ã‚¸ã‚¢ãƒƒãƒ—	//Oct. 10, 2000 JEPRO å¾“æ¥ã®ãƒšãƒ¼ã‚¸ã‚¢ãƒƒãƒ—ã‚’åŠãƒšãƒ¼ã‚¸ã‚¢ãƒƒãƒ—ã¨åç§°å¤‰æ›´ã—ï¼‘ãƒšãƒ¼ã‚¸ã‚¢ãƒƒãƒ—ã‚’è¿½åŠ 
+	F_1PageDown			,	//ï¼‘ãƒšãƒ¼ã‚¸ãƒ€ã‚¦ãƒ³	//Oct. 10, 2000 JEPRO å¾“æ¥ã®ãƒšãƒ¼ã‚¸ãƒ€ã‚¦ãƒ³ã‚’åŠãƒšãƒ¼ã‚¸ãƒ€ã‚¦ãƒ³ã¨åç§°å¤‰æ›´ã—ï¼‘ãƒšãƒ¼ã‚¸ãƒ€ã‚¦ãƒ³ã‚’è¿½åŠ 
+	F_GOFILETOP			,	//ãƒ•ã‚¡ã‚¤ãƒ«ã®å…ˆé ­ã«ç§»å‹•
+	F_GOFILEEND			,	//ãƒ•ã‚¡ã‚¤ãƒ«ã®æœ€å¾Œã«ç§»å‹•
+	F_CURLINECENTER		,	//ã‚«ãƒ¼ã‚½ãƒ«è¡Œã‚’ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ä¸­å¤®ã¸
+	F_JUMP_DIALOG		,	//æŒ‡å®šè¡Œãƒ˜ã‚¸ãƒ£ãƒ³ãƒ—	//Sept. 17, 2000 JEPRO ã‚³ãƒžãƒ³ãƒ‰æœ¬å®¶ã¯ã€Œæ¤œç´¢ç³»ã€
+	F_JUMP_SRCHSTARTPOS	,	//æ¤œç´¢é–‹å§‹ä½ç½®ã¸æˆ»ã‚‹	// 02/06/26 ai ã‚³ãƒžãƒ³ãƒ‰æœ¬å®¶ã¯ã€Œæ¤œç´¢ç³»ã€
+	F_JUMPHIST_PREV		,	//ç§»å‹•å±¥æ­´: å‰ã¸
+	F_JUMPHIST_NEXT		,	//ç§»å‹•å±¥æ­´: æ¬¡ã¸
+	F_JUMPHIST_SET		,	//ç¾åœ¨ä½ç½®ã‚’ç§»å‹•å±¥æ­´ã«ç™»éŒ²
+	F_WndScrollDown		,	//ãƒ†ã‚­ã‚¹ãƒˆã‚’ï¼‘è¡Œä¸‹ã¸ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«	// 2001/06/20 asa-o
+	F_WndScrollUp		,	//ãƒ†ã‚­ã‚¹ãƒˆã‚’ï¼‘è¡Œä¸Šã¸ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«	// 2001/06/20 asa-o
+	F_GONEXTPARAGRAPH	,	//æ¬¡ã®æ®µè½ã¸
+	F_GOPREVPARAGRAPH	,	//å‰ã®æ®µè½ã¸
+	F_AUTOSCROLL		,	//ã‚ªãƒ¼ãƒˆã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«
 };
-const int nFincList_Move_Num = _countof( pnFuncList_Move );	//Oct. 16, 2000 JEPRO •Ï”–¼•ÏX(List1¨List_Move)
+const int nFincList_Move_Num = _countof( pnFuncList_Move );	//Oct. 16, 2000 JEPRO å¤‰æ•°åå¤‰æ›´(List1â†’List_Move)
 
 
-/* ‘I‘ðŒn */	//Oct. 15, 2000 JEPRO uƒJ[ƒ\ƒ‹ˆÚ“®Œnv‚©‚ç(‘I‘ð)‚ðˆÚ“®
+/* é¸æŠžç³» */	//Oct. 15, 2000 JEPRO ã€Œã‚«ãƒ¼ã‚½ãƒ«ç§»å‹•ç³»ã€ã‹ã‚‰(é¸æŠž)ã‚’ç§»å‹•
 const EFunctionCode pnFuncList_Select[] = {
-	F_SELECTWORD			,	//Œ»ÝˆÊ’u‚Ì’PŒê‘I‘ð
-	F_SELECTALL				,	//‚·‚×‚Ä‘I‘ð
-	F_SELECTLINE			,	//1s‘I‘ð	// 2007.10.06 nasukoji
-	F_BEGIN_SEL				,	//”ÍˆÍ‘I‘ðŠJŽn
-	F_UP_SEL				,	//(”ÍˆÍ‘I‘ð)ƒJ[ƒ\ƒ‹ãˆÚ“®
-	F_DOWN_SEL				,	//(”ÍˆÍ‘I‘ð)ƒJ[ƒ\ƒ‹‰ºˆÚ“®
-	F_LEFT_SEL				,	//(”ÍˆÍ‘I‘ð)ƒJ[ƒ\ƒ‹¶ˆÚ“®
-	F_RIGHT_SEL				,	//(”ÍˆÍ‘I‘ð)ƒJ[ƒ\ƒ‹‰EˆÚ“®
+	F_SELECTWORD			,	//ç¾åœ¨ä½ç½®ã®å˜èªžé¸æŠž
+	F_SELECTALL				,	//ã™ã¹ã¦é¸æŠž
+	F_SELECTLINE			,	//1è¡Œé¸æŠž	// 2007.10.06 nasukoji
+	F_BEGIN_SEL				,	//ç¯„å›²é¸æŠžé–‹å§‹
+	F_UP_SEL				,	//(ç¯„å›²é¸æŠž)ã‚«ãƒ¼ã‚½ãƒ«ä¸Šç§»å‹•
+	F_DOWN_SEL				,	//(ç¯„å›²é¸æŠž)ã‚«ãƒ¼ã‚½ãƒ«ä¸‹ç§»å‹•
+	F_LEFT_SEL				,	//(ç¯„å›²é¸æŠž)ã‚«ãƒ¼ã‚½ãƒ«å·¦ç§»å‹•
+	F_RIGHT_SEL				,	//(ç¯„å›²é¸æŠž)ã‚«ãƒ¼ã‚½ãƒ«å³ç§»å‹•
 	F_UP2_SEL				,
 	F_DOWN2_SEL				,
-	F_WORDLEFT_SEL			,	//(”ÍˆÍ‘I‘ð)’PŒê‚Ì¶’[‚ÉˆÚ“®
-	F_WORDRIGHT_SEL			,	//(”ÍˆÍ‘I‘ð)’PŒê‚Ì‰E’[‚ÉˆÚ“®
-	F_GOLINETOP_SEL			,	//(”ÍˆÍ‘I‘ð)s“ª‚ÉˆÚ“®(Ü‚è•Ô‚µ’PˆÊ)
-	F_GOLINEEND_SEL			,	//(”ÍˆÍ‘I‘ð)s––‚ÉˆÚ“®(Ü‚è•Ô‚µ’PˆÊ)
-//	F_ROLLDOWN_SEL			,	//(”ÍˆÍ‘I‘ð)ƒXƒNƒ[ƒ‹ƒ_ƒEƒ“
-//	F_ROLLUP_SEL			,	//(”ÍˆÍ‘I‘ð)ƒXƒNƒ[ƒ‹ƒAƒbƒv
-	F_HalfPageUp_Sel		,	//(”ÍˆÍ‘I‘ð)”¼ƒy[ƒWƒAƒbƒv	//Oct. 6, 2000 JEPRO –¼Ì‚ðPC-ATŒÝŠ·‹@Œn‚É•ÏX(ROLL¨PAGE) //Oct. 10, 2000 JEPRO –¼Ì•ÏX
-	F_HalfPageDown_Sel		,	//(”ÍˆÍ‘I‘ð)”¼ƒy[ƒWƒ_ƒEƒ“	//Oct. 6, 2000 JEPRO –¼Ì‚ðPC-ATŒÝŠ·‹@Œn‚É•ÏX(ROLL¨PAGE) //Oct. 10, 2000 JEPRO –¼Ì•ÏX
-	F_1PageUp_Sel			,	//(”ÍˆÍ‘I‘ð)‚Pƒy[ƒWƒAƒbƒv	//Oct. 10, 2000 JEPRO ]—ˆ‚Ìƒy[ƒWƒAƒbƒv‚ð”¼ƒy[ƒWƒAƒbƒv‚Æ–¼Ì•ÏX‚µ‚Pƒy[ƒWƒAƒbƒv‚ð’Ç‰Á
-	F_1PageDown_Sel			,	//(”ÍˆÍ‘I‘ð)‚Pƒy[ƒWƒ_ƒEƒ“	//Oct. 10, 2000 JEPRO ]—ˆ‚Ìƒy[ƒWƒ_ƒEƒ“‚ð”¼ƒy[ƒWƒ_ƒEƒ“‚Æ–¼Ì•ÏX‚µ‚Pƒy[ƒWƒ_ƒEƒ“‚ð’Ç‰Á
-	F_GOFILETOP_SEL			,	//(”ÍˆÍ‘I‘ð)ƒtƒ@ƒCƒ‹‚Ìæ“ª‚ÉˆÚ“®
-	F_GOFILEEND_SEL			,	//(”ÍˆÍ‘I‘ð)ƒtƒ@ƒCƒ‹‚ÌÅŒã‚ÉˆÚ“®
-	F_GONEXTPARAGRAPH_SEL	,	//(”ÍˆÍ‘I‘ð)ŽŸ‚Ì’i—Ž‚Ö
-	F_GOPREVPARAGRAPH_SEL		//(”ÍˆÍ‘I‘ð)‘O‚Ì’i—Ž‚Ö
+	F_WORDLEFT_SEL			,	//(ç¯„å›²é¸æŠž)å˜èªžã®å·¦ç«¯ã«ç§»å‹•
+	F_WORDRIGHT_SEL			,	//(ç¯„å›²é¸æŠž)å˜èªžã®å³ç«¯ã«ç§»å‹•
+	F_GOLINETOP_SEL			,	//(ç¯„å›²é¸æŠž)è¡Œé ­ã«ç§»å‹•(æŠ˜ã‚Šè¿”ã—å˜ä½)
+	F_GOLINEEND_SEL			,	//(ç¯„å›²é¸æŠž)è¡Œæœ«ã«ç§»å‹•(æŠ˜ã‚Šè¿”ã—å˜ä½)
+//	F_ROLLDOWN_SEL			,	//(ç¯„å›²é¸æŠž)ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ãƒ€ã‚¦ãƒ³
+//	F_ROLLUP_SEL			,	//(ç¯„å›²é¸æŠž)ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ã‚¢ãƒƒãƒ—
+	F_HalfPageUp_Sel		,	//(ç¯„å›²é¸æŠž)åŠãƒšãƒ¼ã‚¸ã‚¢ãƒƒãƒ—	//Oct. 6, 2000 JEPRO åç§°ã‚’PC-ATäº’æ›æ©Ÿç³»ã«å¤‰æ›´(ROLLâ†’PAGE) //Oct. 10, 2000 JEPRO åç§°å¤‰æ›´
+	F_HalfPageDown_Sel		,	//(ç¯„å›²é¸æŠž)åŠãƒšãƒ¼ã‚¸ãƒ€ã‚¦ãƒ³	//Oct. 6, 2000 JEPRO åç§°ã‚’PC-ATäº’æ›æ©Ÿç³»ã«å¤‰æ›´(ROLLâ†’PAGE) //Oct. 10, 2000 JEPRO åç§°å¤‰æ›´
+	F_1PageUp_Sel			,	//(ç¯„å›²é¸æŠž)ï¼‘ãƒšãƒ¼ã‚¸ã‚¢ãƒƒãƒ—	//Oct. 10, 2000 JEPRO å¾“æ¥ã®ãƒšãƒ¼ã‚¸ã‚¢ãƒƒãƒ—ã‚’åŠãƒšãƒ¼ã‚¸ã‚¢ãƒƒãƒ—ã¨åç§°å¤‰æ›´ã—ï¼‘ãƒšãƒ¼ã‚¸ã‚¢ãƒƒãƒ—ã‚’è¿½åŠ 
+	F_1PageDown_Sel			,	//(ç¯„å›²é¸æŠž)ï¼‘ãƒšãƒ¼ã‚¸ãƒ€ã‚¦ãƒ³	//Oct. 10, 2000 JEPRO å¾“æ¥ã®ãƒšãƒ¼ã‚¸ãƒ€ã‚¦ãƒ³ã‚’åŠãƒšãƒ¼ã‚¸ãƒ€ã‚¦ãƒ³ã¨åç§°å¤‰æ›´ã—ï¼‘ãƒšãƒ¼ã‚¸ãƒ€ã‚¦ãƒ³ã‚’è¿½åŠ 
+	F_GOFILETOP_SEL			,	//(ç¯„å›²é¸æŠž)ãƒ•ã‚¡ã‚¤ãƒ«ã®å…ˆé ­ã«ç§»å‹•
+	F_GOFILEEND_SEL			,	//(ç¯„å›²é¸æŠž)ãƒ•ã‚¡ã‚¤ãƒ«ã®æœ€å¾Œã«ç§»å‹•
+	F_GONEXTPARAGRAPH_SEL	,	//(ç¯„å›²é¸æŠž)æ¬¡ã®æ®µè½ã¸
+	F_GOPREVPARAGRAPH_SEL		//(ç¯„å›²é¸æŠž)å‰ã®æ®µè½ã¸
 };
 const int nFincList_Select_Num = _countof( pnFuncList_Select );
 
 
-/* ‹éŒ`‘I‘ðŒn */	//Oct. 17, 2000 JEPRO (‹éŒ`‘I‘ð)‚ªVÝ‚³‚êŽŸ‘æ‚±‚±‚É‚¨‚­
+/* çŸ©å½¢é¸æŠžç³» */	//Oct. 17, 2000 JEPRO (çŸ©å½¢é¸æŠž)ãŒæ–°è¨­ã•ã‚Œæ¬¡ç¬¬ã“ã“ã«ãŠã
 const EFunctionCode pnFuncList_Box[] = {
-//	F_BOXSELALL			,	//‹éŒ`‚Å‚·‚×‚Ä‘I‘ð
-	F_BEGIN_BOX			,	//‹éŒ`”ÍˆÍ‘I‘ðŠJŽn
-	F_UP_BOX			,	//(‹éŒ`‘I‘ð)ƒJ[ƒ\ƒ‹ãˆÚ“®
-	F_DOWN_BOX			,	//(‹éŒ`‘I‘ð)ƒJ[ƒ\ƒ‹‰ºˆÚ“®
-	F_LEFT_BOX			,	//(‹éŒ`‘I‘ð)ƒJ[ƒ\ƒ‹¶ˆÚ“®
-	F_RIGHT_BOX			,	//(‹éŒ`‘I‘ð)ƒJ[ƒ\ƒ‹‰EˆÚ“®
+//	F_BOXSELALL			,	//çŸ©å½¢ã§ã™ã¹ã¦é¸æŠž
+	F_BEGIN_BOX			,	//çŸ©å½¢ç¯„å›²é¸æŠžé–‹å§‹
+	F_UP_BOX			,	//(çŸ©å½¢é¸æŠž)ã‚«ãƒ¼ã‚½ãƒ«ä¸Šç§»å‹•
+	F_DOWN_BOX			,	//(çŸ©å½¢é¸æŠž)ã‚«ãƒ¼ã‚½ãƒ«ä¸‹ç§»å‹•
+	F_LEFT_BOX			,	//(çŸ©å½¢é¸æŠž)ã‚«ãƒ¼ã‚½ãƒ«å·¦ç§»å‹•
+	F_RIGHT_BOX			,	//(çŸ©å½¢é¸æŠž)ã‚«ãƒ¼ã‚½ãƒ«å³ç§»å‹•
 	F_UP2_BOX			,
 	F_DOWN2_BOX			,
-	F_WORDLEFT_BOX		,	//(‹éŒ`‘I‘ð)’PŒê‚Ì¶’[‚ÉˆÚ“®
-	F_WORDRIGHT_BOX		,	//(‹éŒ`‘I‘ð)’PŒê‚Ì‰E’[‚ÉˆÚ“®
-	F_GOLOGICALLINETOP_BOX	,	//(‹éŒ`‘I‘ð)s“ª‚ÉˆÚ“®(‰üs’PˆÊ)
-	F_GOLINETOP_BOX		,	//(‹éŒ`‘I‘ð)s“ª‚ÉˆÚ“®(Ü‚è•Ô‚µ’PˆÊ)
-	F_GOLINEEND_BOX		,	//(‹éŒ`‘I‘ð)s––‚ÉˆÚ“®(Ü‚è•Ô‚µ’PˆÊ)
-	F_HalfPageUp_BOX	,	//(‹éŒ`‘I‘ð)”¼ƒy[ƒWƒAƒbƒv
-	F_HalfPageDown_BOX	,	//(‹éŒ`‘I‘ð)”¼ƒy[ƒWƒ_ƒEƒ“
-	F_1PageUp_BOX		,	//(‹éŒ`‘I‘ð)‚Pƒy[ƒWƒAƒbƒv
-	F_1PageDown_BOX		,	//(‹éŒ`‘I‘ð)‚Pƒy[ƒWƒ_ƒEƒ“
-	F_GOFILETOP_BOX		,	//(‹éŒ`‘I‘ð)ƒtƒ@ƒCƒ‹‚Ìæ“ª‚ÉˆÚ“®
-	F_GOFILEEND_BOX			//(‹éŒ`‘I‘ð)ƒtƒ@ƒCƒ‹‚ÌÅŒã‚ÉˆÚ“®
+	F_WORDLEFT_BOX		,	//(çŸ©å½¢é¸æŠž)å˜èªžã®å·¦ç«¯ã«ç§»å‹•
+	F_WORDRIGHT_BOX		,	//(çŸ©å½¢é¸æŠž)å˜èªžã®å³ç«¯ã«ç§»å‹•
+	F_GOLOGICALLINETOP_BOX	,	//(çŸ©å½¢é¸æŠž)è¡Œé ­ã«ç§»å‹•(æ”¹è¡Œå˜ä½)
+	F_GOLINETOP_BOX		,	//(çŸ©å½¢é¸æŠž)è¡Œé ­ã«ç§»å‹•(æŠ˜ã‚Šè¿”ã—å˜ä½)
+	F_GOLINEEND_BOX		,	//(çŸ©å½¢é¸æŠž)è¡Œæœ«ã«ç§»å‹•(æŠ˜ã‚Šè¿”ã—å˜ä½)
+	F_HalfPageUp_BOX	,	//(çŸ©å½¢é¸æŠž)åŠãƒšãƒ¼ã‚¸ã‚¢ãƒƒãƒ—
+	F_HalfPageDown_BOX	,	//(çŸ©å½¢é¸æŠž)åŠãƒšãƒ¼ã‚¸ãƒ€ã‚¦ãƒ³
+	F_1PageUp_BOX		,	//(çŸ©å½¢é¸æŠž)ï¼‘ãƒšãƒ¼ã‚¸ã‚¢ãƒƒãƒ—
+	F_1PageDown_BOX		,	//(çŸ©å½¢é¸æŠž)ï¼‘ãƒšãƒ¼ã‚¸ãƒ€ã‚¦ãƒ³
+	F_GOFILETOP_BOX		,	//(çŸ©å½¢é¸æŠž)ãƒ•ã‚¡ã‚¤ãƒ«ã®å…ˆé ­ã«ç§»å‹•
+	F_GOFILEEND_BOX			//(çŸ©å½¢é¸æŠž)ãƒ•ã‚¡ã‚¤ãƒ«ã®æœ€å¾Œã«ç§»å‹•
 };
 const int nFincList_Box_Num = _countof( pnFuncList_Box );
 
 
-/* ƒNƒŠƒbƒvƒ{[ƒhŒn */
-const EFunctionCode pnFuncList_Clip[] = {	//Oct. 16, 2000 JEPRO •Ï”–¼•ÏX(List2¨List_Clip)
-	F_CUT						,	//Ø‚èŽæ‚è(‘I‘ð”ÍˆÍ‚ðƒNƒŠƒbƒvƒ{[ƒh‚ÉƒRƒs[‚µ‚Äíœ)
-	F_COPY						,	//ƒRƒs[(‘I‘ð”ÍˆÍ‚ðƒNƒŠƒbƒvƒ{[ƒh‚ÉƒRƒs[)
-	F_COPY_ADDCRLF				,	//Ü‚è•Ô‚µˆÊ’u‚É‰üs‚ð‚Â‚¯‚ÄƒRƒs[(‘I‘ð”ÍˆÍ‚ðƒNƒŠƒbƒvƒ{[ƒh‚ÉƒRƒs[)
-	F_COPY_CRLF					,	//CRLF‰üs‚ÅƒRƒs[
-	F_PASTE						,	//“\‚è•t‚¯(ƒNƒŠƒbƒvƒ{[ƒh‚©‚ç“\‚è•t‚¯)
-	F_PASTEBOX					,	//‹éŒ`“\‚è•t‚¯(ƒNƒŠƒbƒvƒ{[ƒh‚©‚ç‹éŒ`“\‚è•t‚¯)
-//	F_INSTEXT_W					,	//ƒeƒLƒXƒg‚ð“\‚è•t‚¯		//Oct. 22, 2000 JEPRO ‚±‚±‚É’Ç‰Á‚µ‚½‚ª”ñŒöŽ®‹@”\‚È‚Ì‚©•s–¾‚È‚Ì‚ÅƒRƒƒ“ƒgƒAƒEƒg‚É‚µ‚Ä‚¨‚­
-//	F_ADDTAIL_W					,	//ÅŒã‚ÉƒeƒLƒXƒg‚ð’Ç‰Á		//Oct. 22, 2000 JEPRO ‚±‚±‚É’Ç‰Á‚µ‚½‚ª”ñŒöŽ®‹@”\‚È‚Ì‚©•s–¾‚È‚Ì‚ÅƒRƒƒ“ƒgƒAƒEƒg‚É‚µ‚Ä‚¨‚­
-	F_COPYLINES					,	//‘I‘ð”ÍˆÍ“à‘SsƒRƒs[
-	F_COPYLINESASPASSAGE		,	//‘I‘ð”ÍˆÍ“à‘Ssˆø—p•„•t‚«ƒRƒs[
-	F_COPYLINESWITHLINENUMBER	,	//‘I‘ð”ÍˆÍ“à‘Sss”Ô†•t‚«ƒRƒs[
-	F_COPY_COLOR_HTML			,	//‘I‘ð”ÍˆÍ“àF•t‚«HTMLƒRƒs[
-	F_COPY_COLOR_HTML_LINENUMBER,	//‘I‘ð”ÍˆÍ“às”Ô†F•t‚«HTMLƒRƒs[
-	F_COPYFNAME					,	//‚±‚Ìƒtƒ@ƒCƒ‹–¼‚ðƒNƒŠƒbƒvƒ{[ƒh‚ÉƒRƒs[ //2002/2/3 aroka
-	F_COPYPATH					,	//‚±‚Ìƒtƒ@ƒCƒ‹‚ÌƒpƒX–¼‚ðƒNƒŠƒbƒvƒ{[ƒh‚ÉƒRƒs[
-	F_COPYTAG					,	//‚±‚Ìƒtƒ@ƒCƒ‹‚ÌƒpƒX–¼‚ÆƒJ[ƒ\ƒ‹ˆÊ’u‚ðƒRƒs[	//Sept. 14, 2000 JEPRO ƒƒjƒ…[‚É‡‚í‚¹‚Ä‰º‚ÉˆÚ“®
-	F_CREATEKEYBINDLIST				//ƒL[Š„‚è“–‚Äˆê——‚ðƒRƒs[	//Sept. 15, 2000 JEPRO IDM_TEST‚Ì‚Ü‚Ü‚Å‚Í‚¤‚Ü‚­‚¢‚©‚È‚¢‚Ì‚ÅF‚É•Ï‚¦‚Ä“o˜^	//Dec. 25, 2000 •œŠˆ
+/* ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ç³» */
+const EFunctionCode pnFuncList_Clip[] = {	//Oct. 16, 2000 JEPRO å¤‰æ•°åå¤‰æ›´(List2â†’List_Clip)
+	F_CUT						,	//åˆ‡ã‚Šå–ã‚Š(é¸æŠžç¯„å›²ã‚’ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ã«ã‚³ãƒ”ãƒ¼ã—ã¦å‰Šé™¤)
+	F_COPY						,	//ã‚³ãƒ”ãƒ¼(é¸æŠžç¯„å›²ã‚’ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ã«ã‚³ãƒ”ãƒ¼)
+	F_COPY_ADDCRLF				,	//æŠ˜ã‚Šè¿”ã—ä½ç½®ã«æ”¹è¡Œã‚’ã¤ã‘ã¦ã‚³ãƒ”ãƒ¼(é¸æŠžç¯„å›²ã‚’ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ã«ã‚³ãƒ”ãƒ¼)
+	F_COPY_CRLF					,	//CRLFæ”¹è¡Œã§ã‚³ãƒ”ãƒ¼
+	F_PASTE						,	//è²¼ã‚Šä»˜ã‘(ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ã‹ã‚‰è²¼ã‚Šä»˜ã‘)
+	F_PASTEBOX					,	//çŸ©å½¢è²¼ã‚Šä»˜ã‘(ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ã‹ã‚‰çŸ©å½¢è²¼ã‚Šä»˜ã‘)
+//	F_INSTEXT_W					,	//ãƒ†ã‚­ã‚¹ãƒˆã‚’è²¼ã‚Šä»˜ã‘		//Oct. 22, 2000 JEPRO ã“ã“ã«è¿½åŠ ã—ãŸãŒéžå…¬å¼æ©Ÿèƒ½ãªã®ã‹ä¸æ˜Žãªã®ã§ã‚³ãƒ¡ãƒ³ãƒˆã‚¢ã‚¦ãƒˆã«ã—ã¦ãŠã
+//	F_ADDTAIL_W					,	//æœ€å¾Œã«ãƒ†ã‚­ã‚¹ãƒˆã‚’è¿½åŠ 		//Oct. 22, 2000 JEPRO ã“ã“ã«è¿½åŠ ã—ãŸãŒéžå…¬å¼æ©Ÿèƒ½ãªã®ã‹ä¸æ˜Žãªã®ã§ã‚³ãƒ¡ãƒ³ãƒˆã‚¢ã‚¦ãƒˆã«ã—ã¦ãŠã
+	F_COPYLINES					,	//é¸æŠžç¯„å›²å†…å…¨è¡Œã‚³ãƒ”ãƒ¼
+	F_COPYLINESASPASSAGE		,	//é¸æŠžç¯„å›²å†…å…¨è¡Œå¼•ç”¨ç¬¦ä»˜ãã‚³ãƒ”ãƒ¼
+	F_COPYLINESWITHLINENUMBER	,	//é¸æŠžç¯„å›²å†…å…¨è¡Œè¡Œç•ªå·ä»˜ãã‚³ãƒ”ãƒ¼
+	F_COPY_COLOR_HTML			,	//é¸æŠžç¯„å›²å†…è‰²ä»˜ãHTMLã‚³ãƒ”ãƒ¼
+	F_COPY_COLOR_HTML_LINENUMBER,	//é¸æŠžç¯„å›²å†…è¡Œç•ªå·è‰²ä»˜ãHTMLã‚³ãƒ”ãƒ¼
+	F_COPYFNAME					,	//ã“ã®ãƒ•ã‚¡ã‚¤ãƒ«åã‚’ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ã«ã‚³ãƒ”ãƒ¼ //2002/2/3 aroka
+	F_COPYPATH					,	//ã“ã®ãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ‘ã‚¹åã‚’ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ã«ã‚³ãƒ”ãƒ¼
+	F_COPYTAG					,	//ã“ã®ãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ‘ã‚¹åã¨ã‚«ãƒ¼ã‚½ãƒ«ä½ç½®ã‚’ã‚³ãƒ”ãƒ¼	//Sept. 14, 2000 JEPRO ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«åˆã‚ã›ã¦ä¸‹ã«ç§»å‹•
+	F_CREATEKEYBINDLIST				//ã‚­ãƒ¼å‰²ã‚Šå½“ã¦ä¸€è¦§ã‚’ã‚³ãƒ”ãƒ¼	//Sept. 15, 2000 JEPRO IDM_TESTã®ã¾ã¾ã§ã¯ã†ã¾ãã„ã‹ãªã„ã®ã§Fã«å¤‰ãˆã¦ç™»éŒ²	//Dec. 25, 2000 å¾©æ´»
 };
-const int nFincList_Clip_Num = _countof( pnFuncList_Clip );	//Oct. 16, 2000 JEPRO •Ï”–¼•ÏX(List1¨List_Move)
+const int nFincList_Clip_Num = _countof( pnFuncList_Clip );	//Oct. 16, 2000 JEPRO å¤‰æ•°åå¤‰æ›´(List1â†’List_Move)
 
 
-/* ‘}“üŒn */
+/* æŒ¿å…¥ç³» */
 const EFunctionCode pnFuncList_Insert[] = {
-	F_INS_DATE				,	// “ú•t‘}“ü
-	F_INS_TIME				,	// Žž‘}“ü
-	F_CTRL_CODE_DIALOG			//ƒRƒ“ƒgƒ[ƒ‹ƒR[ƒh‚Ì“ü—Í
+	F_INS_DATE				,	// æ—¥ä»˜æŒ¿å…¥
+	F_INS_TIME				,	// æ™‚åˆ»æŒ¿å…¥
+	F_CTRL_CODE_DIALOG			//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã‚³ãƒ¼ãƒ‰ã®å…¥åŠ›
 };
 const int nFincList_Insert_Num = _countof( pnFuncList_Insert );
 
 
-/* •ÏŠ·Œn */
-const EFunctionCode pnFuncList_Convert[] = {	//Oct. 16, 2000 JEPRO •Ï”–¼•ÏX(List6¨List_Convert)
-	F_TOLOWER				,	//¬•¶Žš
-	F_TOUPPER				,	//‘å•¶Žš
-	F_TOHANKAKU				,	/* ‘SŠp¨”¼Šp */
-	// From Here 2007.01.24 maru •À‚Ñ‡•ÏX
-	F_TOZENKAKUKATA			,	/* ”¼Šp{‘S‚Ð‚ç¨‘SŠpEƒJƒ^ƒJƒi */	//Sept. 17, 2000 jepro à–¾‚ðu”¼Šp¨‘SŠpƒJƒ^ƒJƒiv‚©‚ç•ÏX
-	F_TOZENKAKUHIRA			,	/* ”¼Šp{‘SƒJƒ^¨‘SŠpE‚Ð‚ç‚ª‚È */	//Sept. 17, 2000 jepro à–¾‚ðu”¼Šp¨‘SŠp‚Ð‚ç‚ª‚Èv‚©‚ç•ÏX
-	F_TOZENEI				,	/* ”¼Šp‰p”¨‘SŠp‰p” */			//July. 30, 2001 Misaka
-	F_TOHANEI				,	/* ‘SŠp‰p”¨”¼Šp‰p” */
-	F_TOHANKATA				,	/* ‘SŠpƒJƒ^ƒJƒi¨”¼ŠpƒJƒ^ƒJƒi */	//Aug. 29, 2002 ai
-	// To Here 2007.01.24 maru •À‚Ñ‡•ÏX
-	F_HANKATATOZENKATA		,	/* ”¼ŠpƒJƒ^ƒJƒi¨‘SŠpƒJƒ^ƒJƒi */
-	F_HANKATATOZENHIRA		,	/* ”¼ŠpƒJƒ^ƒJƒi¨‘SŠp‚Ð‚ç‚ª‚È */
-	F_TABTOSPACE			,	/* TAB¨‹ó”’ */
-	F_SPACETOTAB			,	/* ‹ó”’¨TAB */  //---- Stonee, 2001/05/27
-	F_CODECNV_AUTO2SJIS		,	/* Ž©“®”»•Ê¨SJISƒR[ƒh•ÏŠ· */
-	F_CODECNV_EMAIL			,	//E-Mail(JIS¨SJIS)ƒR[ƒh•ÏŠ·
-	F_CODECNV_EUC2SJIS		,	//EUC¨SJISƒR[ƒh•ÏŠ·
-	F_CODECNV_UNICODE2SJIS	,	//Unicode¨SJISƒR[ƒh•ÏŠ·
-	F_CODECNV_UNICODEBE2SJIS	,	//Unicode¨SJISƒR[ƒh•ÏŠ·
-	F_CODECNV_UTF82SJIS		,	/* UTF-8¨SJISƒR[ƒh•ÏŠ· */
-	F_CODECNV_UTF72SJIS		,	/* UTF-7¨SJISƒR[ƒh•ÏŠ· */
-	F_CODECNV_SJIS2JIS		,	/* SJIS¨JISƒR[ƒh•ÏŠ· */
-	F_CODECNV_SJIS2EUC		,	/* SJIS¨EUCƒR[ƒh•ÏŠ· */
-	F_CODECNV_SJIS2UTF8		,	/* SJIS¨UTF-8ƒR[ƒh•ÏŠ· */
-	F_CODECNV_SJIS2UTF7		,	/* SJIS¨UTF-7ƒR[ƒh•ÏŠ· */
-	F_BASE64DECODE			,	//Base64ƒfƒR[ƒh‚µ‚Ä•Û‘¶
-	F_UUDECODE					//uudecode‚µ‚Ä•Û‘¶
-	//Sept. 30, 2000JEPRO ƒRƒƒ“ƒgƒAƒEƒg‚³‚ê‚Ä‚ ‚Á‚½‚Ì‚ð•œŠˆ‚³‚¹‚½(“®ì‚µ‚È‚¢‚Ì‚©‚àH)
-	//Oct. 17, 2000 jepro à–¾‚ðu‘I‘ð•”•ª‚ðUUENCODEƒfƒR[ƒhv‚©‚ç•ÏX
+/* å¤‰æ›ç³» */
+const EFunctionCode pnFuncList_Convert[] = {	//Oct. 16, 2000 JEPRO å¤‰æ•°åå¤‰æ›´(List6â†’List_Convert)
+	F_TOLOWER				,	//å°æ–‡å­—
+	F_TOUPPER				,	//å¤§æ–‡å­—
+	F_TOHANKAKU				,	/* å…¨è§’â†’åŠè§’ */
+	// From Here 2007.01.24 maru ä¸¦ã³é †å¤‰æ›´
+	F_TOZENKAKUKATA			,	/* åŠè§’ï¼‹å…¨ã²ã‚‰â†’å…¨è§’ãƒ»ã‚«ã‚¿ã‚«ãƒŠ */	//Sept. 17, 2000 jepro èª¬æ˜Žã‚’ã€ŒåŠè§’â†’å…¨è§’ã‚«ã‚¿ã‚«ãƒŠã€ã‹ã‚‰å¤‰æ›´
+	F_TOZENKAKUHIRA			,	/* åŠè§’ï¼‹å…¨ã‚«ã‚¿â†’å…¨è§’ãƒ»ã²ã‚‰ãŒãª */	//Sept. 17, 2000 jepro èª¬æ˜Žã‚’ã€ŒåŠè§’â†’å…¨è§’ã²ã‚‰ãŒãªã€ã‹ã‚‰å¤‰æ›´
+	F_TOZENEI				,	/* åŠè§’è‹±æ•°â†’å…¨è§’è‹±æ•° */			//July. 30, 2001 Misaka
+	F_TOHANEI				,	/* å…¨è§’è‹±æ•°â†’åŠè§’è‹±æ•° */
+	F_TOHANKATA				,	/* å…¨è§’ã‚«ã‚¿ã‚«ãƒŠâ†’åŠè§’ã‚«ã‚¿ã‚«ãƒŠ */	//Aug. 29, 2002 ai
+	// To Here 2007.01.24 maru ä¸¦ã³é †å¤‰æ›´
+	F_HANKATATOZENKATA		,	/* åŠè§’ã‚«ã‚¿ã‚«ãƒŠâ†’å…¨è§’ã‚«ã‚¿ã‚«ãƒŠ */
+	F_HANKATATOZENHIRA		,	/* åŠè§’ã‚«ã‚¿ã‚«ãƒŠâ†’å…¨è§’ã²ã‚‰ãŒãª */
+	F_TABTOSPACE			,	/* TABâ†’ç©ºç™½ */
+	F_SPACETOTAB			,	/* ç©ºç™½â†’TAB */  //---- Stonee, 2001/05/27
+	F_CODECNV_AUTO2SJIS		,	/* è‡ªå‹•åˆ¤åˆ¥â†’SJISã‚³ãƒ¼ãƒ‰å¤‰æ› */
+	F_CODECNV_EMAIL			,	//E-Mail(JISâ†’SJIS)ã‚³ãƒ¼ãƒ‰å¤‰æ›
+	F_CODECNV_EUC2SJIS		,	//EUCâ†’SJISã‚³ãƒ¼ãƒ‰å¤‰æ›
+	F_CODECNV_UNICODE2SJIS	,	//Unicodeâ†’SJISã‚³ãƒ¼ãƒ‰å¤‰æ›
+	F_CODECNV_UNICODEBE2SJIS	,	//Unicodeâ†’SJISã‚³ãƒ¼ãƒ‰å¤‰æ›
+	F_CODECNV_UTF82SJIS		,	/* UTF-8â†’SJISã‚³ãƒ¼ãƒ‰å¤‰æ› */
+	F_CODECNV_UTF72SJIS		,	/* UTF-7â†’SJISã‚³ãƒ¼ãƒ‰å¤‰æ› */
+	F_CODECNV_SJIS2JIS		,	/* SJISâ†’JISã‚³ãƒ¼ãƒ‰å¤‰æ› */
+	F_CODECNV_SJIS2EUC		,	/* SJISâ†’EUCã‚³ãƒ¼ãƒ‰å¤‰æ› */
+	F_CODECNV_SJIS2UTF8		,	/* SJISâ†’UTF-8ã‚³ãƒ¼ãƒ‰å¤‰æ› */
+	F_CODECNV_SJIS2UTF7		,	/* SJISâ†’UTF-7ã‚³ãƒ¼ãƒ‰å¤‰æ› */
+	F_BASE64DECODE			,	//Base64ãƒ‡ã‚³ãƒ¼ãƒ‰ã—ã¦ä¿å­˜
+	F_UUDECODE					//uudecodeã—ã¦ä¿å­˜
+	//Sept. 30, 2000JEPRO ã‚³ãƒ¡ãƒ³ãƒˆã‚¢ã‚¦ãƒˆã•ã‚Œã¦ã‚ã£ãŸã®ã‚’å¾©æ´»ã•ã›ãŸ(å‹•ä½œã—ãªã„ã®ã‹ã‚‚ï¼Ÿ)
+	//Oct. 17, 2000 jepro èª¬æ˜Žã‚’ã€Œé¸æŠžéƒ¨åˆ†ã‚’UUENCODEãƒ‡ã‚³ãƒ¼ãƒ‰ã€ã‹ã‚‰å¤‰æ›´
 };
-const int nFincList_Convert_Num = _countof( pnFuncList_Convert );	//Oct. 16, 2000 JEPRO •Ï”–¼•ÏX(List6¨List_Convert)
+const int nFincList_Convert_Num = _countof( pnFuncList_Convert );	//Oct. 16, 2000 JEPRO å¤‰æ•°åå¤‰æ›´(List6â†’List_Convert)
 
 
-/* ŒŸõŒn */
-const EFunctionCode pnFuncList_Search[] = {	//Oct. 16, 2000 JEPRO •Ï”–¼•ÏX(List4¨List_Search)
-	F_SEARCH_WORD		,	//Œ»ÝˆÊ’u‚Ì’PŒê‚ÅŒŸõ
-	F_SEARCH_WORDEND	,	//Œ»ÝˆÊ’u‚©‚ç’PŒê––”ö‚Ü‚Å‚Ì•¶Žš—ñ‚ÅŒŸõ
-	F_SEARCH_DIALOG		,	//ŒŸõ(’PŒêŒŸõƒ_ƒCƒAƒƒO)
-	F_SEARCH_BOX		,	//ŒŸõ(ƒ{ƒbƒNƒX)
-	F_SEARCH_NEXT		,	//ŽŸ‚ðŒŸõ	//Sept. 16, 2000 JEPRO "ŽŸ"‚ð"‘O"‚Ì‘O‚ÉˆÚ“®
-	F_SEARCH_PREV		,	//‘O‚ðŒŸõ
-	F_REPLACE_DIALOG	,	//’uŠ·
-	F_SEARCH_CLEARMARK	,	//ŒŸõƒ}[ƒN‚ÌƒNƒŠƒA
-	F_JUMP_SRCHSTARTPOS	,	//ŒŸõŠJŽnˆÊ’u‚Ö–ß‚é	// 02/06/26 ai
+/* æ¤œç´¢ç³» */
+const EFunctionCode pnFuncList_Search[] = {	//Oct. 16, 2000 JEPRO å¤‰æ•°åå¤‰æ›´(List4â†’List_Search)
+	F_SEARCH_WORD		,	//ç¾åœ¨ä½ç½®ã®å˜èªžã§æ¤œç´¢
+	F_SEARCH_WORDEND	,	//ç¾åœ¨ä½ç½®ã‹ã‚‰å˜èªžæœ«å°¾ã¾ã§ã®æ–‡å­—åˆ—ã§æ¤œç´¢
+	F_SEARCH_DIALOG		,	//æ¤œç´¢(å˜èªžæ¤œç´¢ãƒ€ã‚¤ã‚¢ãƒ­ã‚°)
+	F_SEARCH_BOX		,	//æ¤œç´¢(ãƒœãƒƒã‚¯ã‚¹)
+	F_SEARCH_NEXT		,	//æ¬¡ã‚’æ¤œç´¢	//Sept. 16, 2000 JEPRO "æ¬¡"ã‚’"å‰"ã®å‰ã«ç§»å‹•
+	F_SEARCH_PREV		,	//å‰ã‚’æ¤œç´¢
+	F_REPLACE_DIALOG	,	//ç½®æ›
+	F_SEARCH_CLEARMARK	,	//æ¤œç´¢ãƒžãƒ¼ã‚¯ã®ã‚¯ãƒªã‚¢
+	F_JUMP_SRCHSTARTPOS	,	//æ¤œç´¢é–‹å§‹ä½ç½®ã¸æˆ»ã‚‹	// 02/06/26 ai
 	F_GREP_DIALOG		,	//Grep
-	F_JUMP_DIALOG		,	//Žw’èsƒwƒWƒƒƒ“ƒv
-	F_OUTLINE			,	//ƒAƒEƒgƒ‰ƒCƒ“‰ðÍ
-	F_OUTLINE_TOGGLE	,	//ƒAƒEƒgƒ‰ƒCƒ“‰ðÍ(toggle) // 20060201 aroka
-	F_TAGJUMP			,	//ƒ^ƒOƒWƒƒƒ“ƒv‹@”\
-	F_TAGJUMP_CLOSE		,	//•Â‚¶‚Äƒ^ƒOƒWƒƒƒ“ƒv(Œ³ƒEƒBƒ“ƒhƒE‚ð•Â‚¶‚é) // Apr. 03, 2003 genta
-	F_TAGJUMPBACK		,	//ƒ^ƒOƒWƒƒƒ“ƒvƒoƒbƒN‹@”\
-	F_TAGS_MAKE			,	//ƒ^ƒOƒtƒ@ƒCƒ‹‚Ìì¬	//@@@ 2003.04.13 MIK
-	F_DIRECT_TAGJUMP	,	//ƒ_ƒCƒŒƒNƒgƒ^ƒOƒWƒƒƒ“ƒv	//@@@ 2003.04.15 MIK
-	F_SYMBOL_SEARCH		,	//ƒVƒ“ƒ{ƒ‹ŒŸõ(ƒL[ƒ[ƒhŽw’èƒ^ƒOƒWƒƒƒ“ƒv)
-	F_COMPARE			,	//ƒtƒ@ƒCƒ‹“à—e”äŠr
-	F_DIFF_DIALOG		,	//DIFF·•ª•\Ž¦(ƒ_ƒCƒAƒƒO)
-	F_DIFF_NEXT			,	//ŽŸ‚Ì·•ª‚Ö
-	F_DIFF_PREV			,	//‘O‚Ì·•ª‚Ö
-	F_DIFF_RESET		,	//·•ª‚Ì‘S‰ðœ
-	F_BRACKETPAIR		,	//‘ÎŠ‡ŒÊ‚ÌŒŸõ
-	F_BOOKMARK_SET		,	//ƒuƒbƒNƒ}[ƒNÝ’èE‰ðœ
-	F_BOOKMARK_NEXT		,	//ŽŸ‚ÌƒuƒbƒNƒ}[ƒN‚Ö
-	F_BOOKMARK_PREV		,	//‘O‚ÌƒuƒbƒNƒ}[ƒN‚Ö
-	F_BOOKMARK_RESET	,	//ƒuƒbƒNƒ}[ƒN‚Ì‘S‰ðœ
-	F_BOOKMARK_VIEW		,	//ƒuƒbƒNƒ}[ƒN‚Ìˆê——
-	F_ISEARCH_NEXT	    ,   //‘O•ûƒCƒ“ƒNƒŠƒƒ“ƒ^ƒ‹ƒT[ƒ` //2004.10.13 isearch
-	F_ISEARCH_PREV		,	//Œã•ûƒCƒ“ƒNƒŠƒƒ“ƒ^ƒ‹ƒT[ƒ` //2004.10.13 isearch
-	F_ISEARCH_REGEXP_NEXT,	//‘O•û³‹K•\Œ»ƒCƒ“ƒNƒŠƒƒ“ƒ^ƒ‹ƒT[ƒ`  //2004.10.13 isearch
-	F_ISEARCH_REGEXP_PREV,	//Œã•û³‹K•\Œ»ƒCƒ“ƒNƒŠƒƒ“ƒ^ƒ‹ƒT[ƒ`  //2004.10.13 isearch
-	F_ISEARCH_MIGEMO_NEXT,	//‘O•ûMIGEMOƒCƒ“ƒNƒŠƒƒ“ƒ^ƒ‹ƒT[ƒ`    //2004.10.13 isearch
-	F_ISEARCH_MIGEMO_PREV	//Œã•ûMIGEMOƒCƒ“ƒNƒŠƒƒ“ƒ^ƒ‹ƒT[ƒ`    //2004.10.13 isearch
+	F_JUMP_DIALOG		,	//æŒ‡å®šè¡Œãƒ˜ã‚¸ãƒ£ãƒ³ãƒ—
+	F_OUTLINE			,	//ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³è§£æž
+	F_OUTLINE_TOGGLE	,	//ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³è§£æž(toggle) // 20060201 aroka
+	F_TAGJUMP			,	//ã‚¿ã‚°ã‚¸ãƒ£ãƒ³ãƒ—æ©Ÿèƒ½
+	F_TAGJUMP_CLOSE		,	//é–‰ã˜ã¦ã‚¿ã‚°ã‚¸ãƒ£ãƒ³ãƒ—(å…ƒã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’é–‰ã˜ã‚‹) // Apr. 03, 2003 genta
+	F_TAGJUMPBACK		,	//ã‚¿ã‚°ã‚¸ãƒ£ãƒ³ãƒ—ãƒãƒƒã‚¯æ©Ÿèƒ½
+	F_TAGS_MAKE			,	//ã‚¿ã‚°ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½œæˆ	//@@@ 2003.04.13 MIK
+	F_DIRECT_TAGJUMP	,	//ãƒ€ã‚¤ãƒ¬ã‚¯ãƒˆã‚¿ã‚°ã‚¸ãƒ£ãƒ³ãƒ—	//@@@ 2003.04.15 MIK
+	F_SYMBOL_SEARCH		,	//ã‚·ãƒ³ãƒœãƒ«æ¤œç´¢(ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰æŒ‡å®šã‚¿ã‚°ã‚¸ãƒ£ãƒ³ãƒ—)
+	F_COMPARE			,	//ãƒ•ã‚¡ã‚¤ãƒ«å†…å®¹æ¯”è¼ƒ
+	F_DIFF_DIALOG		,	//DIFFå·®åˆ†è¡¨ç¤º(ãƒ€ã‚¤ã‚¢ãƒ­ã‚°)
+	F_DIFF_NEXT			,	//æ¬¡ã®å·®åˆ†ã¸
+	F_DIFF_PREV			,	//å‰ã®å·®åˆ†ã¸
+	F_DIFF_RESET		,	//å·®åˆ†ã®å…¨è§£é™¤
+	F_BRACKETPAIR		,	//å¯¾æ‹¬å¼§ã®æ¤œç´¢
+	F_BOOKMARK_SET		,	//ãƒ–ãƒƒã‚¯ãƒžãƒ¼ã‚¯è¨­å®šãƒ»è§£é™¤
+	F_BOOKMARK_NEXT		,	//æ¬¡ã®ãƒ–ãƒƒã‚¯ãƒžãƒ¼ã‚¯ã¸
+	F_BOOKMARK_PREV		,	//å‰ã®ãƒ–ãƒƒã‚¯ãƒžãƒ¼ã‚¯ã¸
+	F_BOOKMARK_RESET	,	//ãƒ–ãƒƒã‚¯ãƒžãƒ¼ã‚¯ã®å…¨è§£é™¤
+	F_BOOKMARK_VIEW		,	//ãƒ–ãƒƒã‚¯ãƒžãƒ¼ã‚¯ã®ä¸€è¦§
+	F_ISEARCH_NEXT	    ,   //å‰æ–¹ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ã‚¿ãƒ«ã‚µãƒ¼ãƒ //2004.10.13 isearch
+	F_ISEARCH_PREV		,	//å¾Œæ–¹ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ã‚¿ãƒ«ã‚µãƒ¼ãƒ //2004.10.13 isearch
+	F_ISEARCH_REGEXP_NEXT,	//å‰æ–¹æ­£è¦è¡¨ç¾ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ã‚¿ãƒ«ã‚µãƒ¼ãƒ  //2004.10.13 isearch
+	F_ISEARCH_REGEXP_PREV,	//å¾Œæ–¹æ­£è¦è¡¨ç¾ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ã‚¿ãƒ«ã‚µãƒ¼ãƒ  //2004.10.13 isearch
+	F_ISEARCH_MIGEMO_NEXT,	//å‰æ–¹MIGEMOã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ã‚¿ãƒ«ã‚µãƒ¼ãƒ    //2004.10.13 isearch
+	F_ISEARCH_MIGEMO_PREV	//å¾Œæ–¹MIGEMOã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ã‚¿ãƒ«ã‚µãƒ¼ãƒ    //2004.10.13 isearch
 };
-const int nFincList_Search_Num = _countof( pnFuncList_Search );	//Oct. 16, 2000 JEPRO •Ï”–¼•ÏX(List4¨List_Search)
+const int nFincList_Search_Num = _countof( pnFuncList_Search );	//Oct. 16, 2000 JEPRO å¤‰æ•°åå¤‰æ›´(List4â†’List_Search)
 
 
-/* ƒ‚[ƒhØ‚è‘Ö‚¦Œn */	//Oct. 16, 2000 JEPRO •Ï”–¼•ÏX(List8¨List_Mode)
+/* ãƒ¢ãƒ¼ãƒ‰åˆ‡ã‚Šæ›¿ãˆç³» */	//Oct. 16, 2000 JEPRO å¤‰æ•°åå¤‰æ›´(List8â†’List_Mode)
 const EFunctionCode pnFuncList_Mode[] = {
-	F_CHGMOD_INS		,	//‘}“ü^ã‘‚«ƒ‚[ƒhØ‚è‘Ö‚¦
-	F_CHG_CHARSET		,	//•¶ŽšƒR[ƒhƒZƒbƒgŽw’è		2010/6/14 Uchi
-	F_CHGMOD_EOL_CRLF	,	//“ü—Í‰üsƒR[ƒhŽw’è(CRLF)	2003.06.23 Moca
-	F_CHGMOD_EOL_LF		,	//“ü—Í‰üsƒR[ƒhŽw’è(LF)	2003.06.23 Moca
-	F_CHGMOD_EOL_CR		,	//“ü—Í‰üsƒR[ƒhŽw’è(CR)	2003.06.23 Moca
-	F_CANCEL_MODE			//ŠeŽíƒ‚[ƒh‚ÌŽæ‚èÁ‚µ
+	F_CHGMOD_INS		,	//æŒ¿å…¥ï¼ä¸Šæ›¸ããƒ¢ãƒ¼ãƒ‰åˆ‡ã‚Šæ›¿ãˆ
+	F_CHG_CHARSET		,	//æ–‡å­—ã‚³ãƒ¼ãƒ‰ã‚»ãƒƒãƒˆæŒ‡å®š		2010/6/14 Uchi
+	F_CHGMOD_EOL_CRLF	,	//å…¥åŠ›æ”¹è¡Œã‚³ãƒ¼ãƒ‰æŒ‡å®š(CRLF)	2003.06.23 Moca
+	F_CHGMOD_EOL_LF		,	//å…¥åŠ›æ”¹è¡Œã‚³ãƒ¼ãƒ‰æŒ‡å®š(LF)	2003.06.23 Moca
+	F_CHGMOD_EOL_CR		,	//å…¥åŠ›æ”¹è¡Œã‚³ãƒ¼ãƒ‰æŒ‡å®š(CR)	2003.06.23 Moca
+	F_CANCEL_MODE			//å„ç¨®ãƒ¢ãƒ¼ãƒ‰ã®å–ã‚Šæ¶ˆã—
 };
-const int nFincList_Mode_Num = _countof( pnFuncList_Mode );	//Oct. 16, 2000 JEPRO •Ï”–¼•ÏX(List8¨List_Mode)
+const int nFincList_Mode_Num = _countof( pnFuncList_Mode );	//Oct. 16, 2000 JEPRO å¤‰æ•°åå¤‰æ›´(List8â†’List_Mode)
 
 
-/* Ý’èŒn */
-const EFunctionCode pnFuncList_Set[] = {	//Oct. 16, 2000 JEPRO •Ï”–¼•ÏX(List9¨List_Set)
-	F_SHOWTOOLBAR		,	/* ƒc[ƒ‹ƒo[‚Ì•\Ž¦ */
-	F_SHOWFUNCKEY		,	/* ƒtƒ@ƒ“ƒNƒVƒ‡ƒ“ƒL[‚Ì•\Ž¦ */	//Sept. 14, 2000 JEPRO ƒtƒ@ƒ“ƒNƒVƒ‡ƒ“ƒL[‚ÆƒXƒe[ƒ^ƒXƒo[‚ð“ü‚ê‘Ö‚¦
-	F_SHOWTAB			,	/* ƒ^ƒu‚Ì•\Ž¦ */	//@@@ 2003.06.10 MIK
-	F_SHOWSTATUSBAR		,	/* ƒXƒe[ƒ^ƒXƒo[‚Ì•\Ž¦ */
-	F_TYPE_LIST			,	/* ƒ^ƒCƒv•ÊÝ’èˆê—— */			//Sept. 17, 2000 JEPRO Ý’èŒn‚É“ü‚Á‚Ä‚È‚©‚Á‚½‚Ì‚Å’Ç‰Á
-	F_OPTION_TYPE		,	/* ƒ^ƒCƒv•ÊÝ’è */
-	F_OPTION			,	/* ‹¤’ÊÝ’è */
-	F_FONT				,	/* ƒtƒHƒ“ƒgÝ’è */
-	F_FONT_ZOOM_IN		,	/* ƒtƒHƒ“ƒg‚ÌŠg‘å */
-	F_FONT_ZOOM_OUT		,	/* ƒtƒHƒ“ƒg‚Ìk¬ */
-	F_FONT_ZOOM_RESET	,	/* ƒtƒHƒ“ƒgƒTƒCƒY‚ÌƒŠƒZƒbƒg */
-	F_FONT_MINIMIZE		,	/* ƒtƒHƒ“ƒgƒTƒCƒYÅ¬‰» */
-	F_SHOW_TAB_CHAR		,	/* TAB‹L†‚Ì•\Ž¦(ƒgƒOƒ‹) */
-	F_SHOW_EOL_CHAR		,	/* ‰üs‹L†‚Ì•\Ž¦(ƒgƒOƒ‹) */
-	F_TAB_WIDTH_2		,	/* TAB • 2 */
-	F_TAB_WIDTH_4		,	/* TAB • 4 */
-	F_TAB_WIDTH_8		,	/* TAB • 8 */
-	F_WRAPWINDOWWIDTH	,	/* Œ»Ý‚ÌƒEƒBƒ“ƒhƒE•‚ÅÜ‚è•Ô‚µ */	//Oct. 7, 2000 JEPRO WRAPWINDIWWIDTH ‚ð WRAPWINDOWWIDTH ‚É•ÏX
-	F_PRINT_PAGESETUP	,	//ˆóüƒy[ƒWÝ’è				//Sept. 14, 2000 JEPRO uˆóü‚Ìƒy[ƒWƒŒƒCƒAƒEƒg‚ÌÝ’èv‚ðuˆóüƒy[ƒWÝ’èv‚É•ÏX	//Oct. 17, 2000 ƒRƒ}ƒ“ƒh–{‰Æ‚Íuƒtƒ@ƒCƒ‹‘€ìŒnv
-	F_FAVORITE			,	//—š—ð‚ÌŠÇ—	//@@@ 2003.04.08 MIK
-	F_TMPWRAPNOWRAP		,	//Ü‚è•Ô‚³‚È‚¢iˆêŽžÝ’èj			// 2008.05.30 nasukoji
-	F_TMPWRAPSETTING	,	//Žw’èŒ…‚ÅÜ‚è•Ô‚·iˆêŽžÝ’èj		// 2008.05.30 nasukoji
-	F_TMPWRAPWINDOW		,	//‰E’[‚ÅÜ‚è•Ô‚·iˆêŽžÝ’èj		// 2008.05.30 nasukoji
-	F_SELECT_COUNT_MODE		//•¶ŽšƒJƒEƒ“ƒgÝ’è	// 2009.07.06 syat
+/* è¨­å®šç³» */
+const EFunctionCode pnFuncList_Set[] = {	//Oct. 16, 2000 JEPRO å¤‰æ•°åå¤‰æ›´(List9â†’List_Set)
+	F_SHOWTOOLBAR		,	/* ãƒ„ãƒ¼ãƒ«ãƒãƒ¼ã®è¡¨ç¤º */
+	F_SHOWFUNCKEY		,	/* ãƒ•ã‚¡ãƒ³ã‚¯ã‚·ãƒ§ãƒ³ã‚­ãƒ¼ã®è¡¨ç¤º */	//Sept. 14, 2000 JEPRO ãƒ•ã‚¡ãƒ³ã‚¯ã‚·ãƒ§ãƒ³ã‚­ãƒ¼ã¨ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ãƒãƒ¼ã‚’å…¥ã‚Œæ›¿ãˆ
+	F_SHOWTAB			,	/* ã‚¿ãƒ–ã®è¡¨ç¤º */	//@@@ 2003.06.10 MIK
+	F_SHOWSTATUSBAR		,	/* ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ãƒãƒ¼ã®è¡¨ç¤º */
+	F_TYPE_LIST			,	/* ã‚¿ã‚¤ãƒ—åˆ¥è¨­å®šä¸€è¦§ */			//Sept. 17, 2000 JEPRO è¨­å®šç³»ã«å…¥ã£ã¦ãªã‹ã£ãŸã®ã§è¿½åŠ 
+	F_OPTION_TYPE		,	/* ã‚¿ã‚¤ãƒ—åˆ¥è¨­å®š */
+	F_OPTION			,	/* å…±é€šè¨­å®š */
+	F_FONT				,	/* ãƒ•ã‚©ãƒ³ãƒˆè¨­å®š */
+	F_FONT_ZOOM_IN		,	/* ãƒ•ã‚©ãƒ³ãƒˆã®æ‹¡å¤§ */
+	F_FONT_ZOOM_OUT		,	/* ãƒ•ã‚©ãƒ³ãƒˆã®ç¸®å° */
+	F_FONT_ZOOM_RESET	,	/* ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚ºã®ãƒªã‚»ãƒƒãƒˆ */
+	F_FONT_MINIMIZE		,	/* ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚ºæœ€å°åŒ– */
+	F_SHOW_TAB_CHAR		,	/* TABè¨˜å·ã®è¡¨ç¤º(ãƒˆã‚°ãƒ«) */
+	F_SHOW_EOL_CHAR		,	/* æ”¹è¡Œè¨˜å·ã®è¡¨ç¤º(ãƒˆã‚°ãƒ«) */
+	F_TAB_WIDTH_2		,	/* TAB å¹… 2 */
+	F_TAB_WIDTH_4		,	/* TAB å¹… 4 */
+	F_TAB_WIDTH_8		,	/* TAB å¹… 8 */
+	F_WRAPWINDOWWIDTH	,	/* ç¾åœ¨ã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦å¹…ã§æŠ˜ã‚Šè¿”ã— */	//Oct. 7, 2000 JEPRO WRAPWINDIWWIDTH ã‚’ WRAPWINDOWWIDTH ã«å¤‰æ›´
+	F_PRINT_PAGESETUP	,	//å°åˆ·ãƒšãƒ¼ã‚¸è¨­å®š				//Sept. 14, 2000 JEPRO ã€Œå°åˆ·ã®ãƒšãƒ¼ã‚¸ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆã®è¨­å®šã€ã‚’ã€Œå°åˆ·ãƒšãƒ¼ã‚¸è¨­å®šã€ã«å¤‰æ›´	//Oct. 17, 2000 ã‚³ãƒžãƒ³ãƒ‰æœ¬å®¶ã¯ã€Œãƒ•ã‚¡ã‚¤ãƒ«æ“ä½œç³»ã€
+	F_FAVORITE			,	//å±¥æ­´ã®ç®¡ç†	//@@@ 2003.04.08 MIK
+	F_TMPWRAPNOWRAP		,	//æŠ˜ã‚Šè¿”ã•ãªã„ï¼ˆä¸€æ™‚è¨­å®šï¼‰			// 2008.05.30 nasukoji
+	F_TMPWRAPSETTING	,	//æŒ‡å®šæ¡ã§æŠ˜ã‚Šè¿”ã™ï¼ˆä¸€æ™‚è¨­å®šï¼‰		// 2008.05.30 nasukoji
+	F_TMPWRAPWINDOW		,	//å³ç«¯ã§æŠ˜ã‚Šè¿”ã™ï¼ˆä¸€æ™‚è¨­å®šï¼‰		// 2008.05.30 nasukoji
+	F_SELECT_COUNT_MODE		//æ–‡å­—ã‚«ã‚¦ãƒ³ãƒˆè¨­å®š	// 2009.07.06 syat
 };
-int		nFincList_Set_Num = _countof( pnFuncList_Set );	//Oct. 16, 2000 JEPRO •Ï”–¼•ÏX(List9¨List_Set)
+int		nFincList_Set_Num = _countof( pnFuncList_Set );	//Oct. 16, 2000 JEPRO å¤‰æ•°åå¤‰æ›´(List9â†’List_Set)
 
 
-/* ƒ}ƒNƒŒn */
-const EFunctionCode pnFuncList_Macro[] = {	//Oct. 16, 2000 JEPRO •Ï”–¼•ÏX(List10¨List_Macro)
-	F_RECKEYMACRO	,	/* ƒL[ƒ}ƒNƒ‚Ì‹L˜^ŠJŽn^I—¹ */
-	F_SAVEKEYMACRO	,	/* ƒL[ƒ}ƒNƒ‚Ì•Û‘¶ */
-	F_LOADKEYMACRO	,	/* ƒL[ƒ}ƒNƒ‚Ì“Ç‚Ýž‚Ý */
-	F_EXECKEYMACRO	,	/* ƒL[ƒ}ƒNƒ‚ÌŽÀs */
-	F_EXECEXTMACRO	,	/* –¼‘O‚ðŽw’è‚µ‚Äƒ}ƒNƒŽÀs */
-//	From Here Sept. 20, 2000 JEPRO –¼ÌCMMAND‚ðCOMMAND‚É•ÏX
-//	F_EXECCMMAND		/* ŠO•”ƒRƒ}ƒ“ƒhŽÀs */
-	F_EXECMD_DIALOG		/* ŠO•”ƒRƒ}ƒ“ƒhŽÀs */
+/* ãƒžã‚¯ãƒ­ç³» */
+const EFunctionCode pnFuncList_Macro[] = {	//Oct. 16, 2000 JEPRO å¤‰æ•°åå¤‰æ›´(List10â†’List_Macro)
+	F_RECKEYMACRO	,	/* ã‚­ãƒ¼ãƒžã‚¯ãƒ­ã®è¨˜éŒ²é–‹å§‹ï¼çµ‚äº† */
+	F_SAVEKEYMACRO	,	/* ã‚­ãƒ¼ãƒžã‚¯ãƒ­ã®ä¿å­˜ */
+	F_LOADKEYMACRO	,	/* ã‚­ãƒ¼ãƒžã‚¯ãƒ­ã®èª­ã¿è¾¼ã¿ */
+	F_EXECKEYMACRO	,	/* ã‚­ãƒ¼ãƒžã‚¯ãƒ­ã®å®Ÿè¡Œ */
+	F_EXECEXTMACRO	,	/* åå‰ã‚’æŒ‡å®šã—ã¦ãƒžã‚¯ãƒ­å®Ÿè¡Œ */
+//	From Here Sept. 20, 2000 JEPRO åç§°CMMANDã‚’COMMANDã«å¤‰æ›´
+//	F_EXECCMMAND		/* å¤–éƒ¨ã‚³ãƒžãƒ³ãƒ‰å®Ÿè¡Œ */
+	F_EXECMD_DIALOG		/* å¤–éƒ¨ã‚³ãƒžãƒ³ãƒ‰å®Ÿè¡Œ */
 //	To Here Sept. 20, 2000
 
 };
-const int nFincList_Macro_Num = _countof( pnFuncList_Macro);	//Oct. 16, 2000 JEPRO •Ï”–¼•ÏX(List10¨List_Macro)
+const int nFincList_Macro_Num = _countof( pnFuncList_Macro);	//Oct. 16, 2000 JEPRO å¤‰æ•°åå¤‰æ›´(List10â†’List_Macro)
 
 
-/* ƒJƒXƒ^ƒ€ƒƒjƒ…[ */	//Oct. 21, 2000 JEPRO u‚»‚Ì‘¼v‚©‚ç•ª—£“Æ—§‰»
+/* ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼ */	//Oct. 21, 2000 JEPRO ã€Œãã®ä»–ã€ã‹ã‚‰åˆ†é›¢ç‹¬ç«‹åŒ–
 #if 0
 //	From Here Oct. 15, 2001 genta
-//	ƒJƒXƒ^ƒ€ƒƒjƒ…[‚Ì•¶Žš—ñ‚ð“®“I‚É•ÏX‰Â”\‚É‚·‚é‚½‚ß‚±‚ê‚ÍíœD
+//	ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®æ–‡å­—åˆ—ã‚’å‹•çš„ã«å¤‰æ›´å¯èƒ½ã«ã™ã‚‹ãŸã‚ã“ã‚Œã¯å‰Šé™¤ï¼Ž
 const EFunctionCode pnFuncList_Menu[] = {
-	F_MENU_RBUTTON				,	/* ‰EƒNƒŠƒbƒNƒƒjƒ…[ */
-	F_CUSTMENU_1				,	/* ƒJƒXƒ^ƒ€ƒƒjƒ…[1 */
-	F_CUSTMENU_2				,	/* ƒJƒXƒ^ƒ€ƒƒjƒ…[2 */
-	F_CUSTMENU_3				,	/* ƒJƒXƒ^ƒ€ƒƒjƒ…[3 */
-	F_CUSTMENU_4				,	/* ƒJƒXƒ^ƒ€ƒƒjƒ…[4 */
-	F_CUSTMENU_5				,	/* ƒJƒXƒ^ƒ€ƒƒjƒ…[5 */
-	F_CUSTMENU_6				,	/* ƒJƒXƒ^ƒ€ƒƒjƒ…[6 */
-	F_CUSTMENU_7				,	/* ƒJƒXƒ^ƒ€ƒƒjƒ…[7 */
-	F_CUSTMENU_8				,	/* ƒJƒXƒ^ƒ€ƒƒjƒ…[8 */
-	F_CUSTMENU_9				,	/* ƒJƒXƒ^ƒ€ƒƒjƒ…[9 */
-	F_CUSTMENU_10				,	/* ƒJƒXƒ^ƒ€ƒƒjƒ…[10 */
-	F_CUSTMENU_11				,	/* ƒJƒXƒ^ƒ€ƒƒjƒ…[11 */
-	F_CUSTMENU_12				,	/* ƒJƒXƒ^ƒ€ƒƒjƒ…[12 */
-	F_CUSTMENU_13				,	/* ƒJƒXƒ^ƒ€ƒƒjƒ…[13 */
-	F_CUSTMENU_14				,	/* ƒJƒXƒ^ƒ€ƒƒjƒ…[14 */
-	F_CUSTMENU_15				,	/* ƒJƒXƒ^ƒ€ƒƒjƒ…[15 */
-	F_CUSTMENU_16				,	/* ƒJƒXƒ^ƒ€ƒƒjƒ…[16 */
-	F_CUSTMENU_17				,	/* ƒJƒXƒ^ƒ€ƒƒjƒ…[17 */
-	F_CUSTMENU_18				,	/* ƒJƒXƒ^ƒ€ƒƒjƒ…[18 */
-	F_CUSTMENU_19				,	/* ƒJƒXƒ^ƒ€ƒƒjƒ…[19 */
-	F_CUSTMENU_20				,	/* ƒJƒXƒ^ƒ€ƒƒjƒ…[20 */
-	F_CUSTMENU_21				,	/* ƒJƒXƒ^ƒ€ƒƒjƒ…[21 */
-	F_CUSTMENU_22				,	/* ƒJƒXƒ^ƒ€ƒƒjƒ…[22 */
-	F_CUSTMENU_23				,	/* ƒJƒXƒ^ƒ€ƒƒjƒ…[23 */
-	F_CUSTMENU_24				 	/* ƒJƒXƒ^ƒ€ƒƒjƒ…[24 */
+	F_MENU_RBUTTON				,	/* å³ã‚¯ãƒªãƒƒã‚¯ãƒ¡ãƒ‹ãƒ¥ãƒ¼ */
+	F_CUSTMENU_1				,	/* ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼1 */
+	F_CUSTMENU_2				,	/* ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼2 */
+	F_CUSTMENU_3				,	/* ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼3 */
+	F_CUSTMENU_4				,	/* ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼4 */
+	F_CUSTMENU_5				,	/* ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼5 */
+	F_CUSTMENU_6				,	/* ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼6 */
+	F_CUSTMENU_7				,	/* ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼7 */
+	F_CUSTMENU_8				,	/* ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼8 */
+	F_CUSTMENU_9				,	/* ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼9 */
+	F_CUSTMENU_10				,	/* ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼10 */
+	F_CUSTMENU_11				,	/* ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼11 */
+	F_CUSTMENU_12				,	/* ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼12 */
+	F_CUSTMENU_13				,	/* ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼13 */
+	F_CUSTMENU_14				,	/* ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼14 */
+	F_CUSTMENU_15				,	/* ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼15 */
+	F_CUSTMENU_16				,	/* ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼16 */
+	F_CUSTMENU_17				,	/* ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼17 */
+	F_CUSTMENU_18				,	/* ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼18 */
+	F_CUSTMENU_19				,	/* ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼19 */
+	F_CUSTMENU_20				,	/* ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼20 */
+	F_CUSTMENU_21				,	/* ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼21 */
+	F_CUSTMENU_22				,	/* ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼22 */
+	F_CUSTMENU_23				,	/* ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼23 */
+	F_CUSTMENU_24				 	/* ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼24 */
 };
-const int nFincList_Menu_Num = _countof( pnFuncList_Menu );	//Oct. 21, 2000 JEPRO u‚»‚Ì‘¼v‚©‚ç•ª—£“Æ—§‰»
+const int nFincList_Menu_Num = _countof( pnFuncList_Menu );	//Oct. 21, 2000 JEPRO ã€Œãã®ä»–ã€ã‹ã‚‰åˆ†é›¢ç‹¬ç«‹åŒ–
 #endif
 
-/* ƒEƒBƒ“ƒhƒEŒn */
-const EFunctionCode pnFuncList_Win[] = {	//Oct. 16, 2000 JEPRO •Ï”–¼•ÏX(List7¨List_Win)
-	F_SPLIT_V			,	//ã‰º‚É•ªŠ„	//Sept. 17, 2000 jepro à–¾‚Ìucv‚ðuã‰º‚Év‚É•ÏX
-	F_SPLIT_H			,	//¶‰E‚É•ªŠ„	//Sept. 17, 2000 jepro à–¾‚Ìu‰¡v‚ðu¶‰E‚Év‚É•ÏX
-	F_SPLIT_VH			,	//c‰¡‚É•ªŠ„	//Sept. 17, 2000 jepro à–¾‚Éu‚Év‚ð’Ç‰Á
-	F_WINCLOSE			,	//ƒEƒBƒ“ƒhƒE‚ð•Â‚¶‚é
-	F_WIN_CLOSEALL		,	//‚·‚×‚Ä‚ÌƒEƒBƒ“ƒhƒE‚ð•Â‚¶‚é	//Oct. 17, 2000 JEPRO –¼‘O‚ð•ÏX(F_FILECLOSEALL¨F_WIN_CLOSEALL)
-	F_GREP_WIN_ALL_CLOSE	,	// Grep ƒEƒBƒ“ƒhƒE‚ð‚·‚×‚Ä•Â‚¶‚é
-	F_TAB_CLOSEOTHER	,	//‚±‚Ìƒ^ƒuˆÈŠO‚ð•Â‚¶‚é	// 2008.11.22 syat
-	F_NEXTWINDOW		,	//ŽŸ‚ÌƒEƒBƒ“ƒhƒE
-	F_PREVWINDOW		,	//‘O‚ÌƒEƒBƒ“ƒhƒE
- 	F_WINLIST			,	//ŠJ‚¢‚Ä‚¢‚éƒEƒBƒ“ƒhƒEˆê——ƒ|ƒbƒvƒAƒbƒv•\Ž¦	// 2006.03.23 fon
-	F_CASCADE			,	//d‚Ë‚Ä•\Ž¦
-	F_TILE_V			,	//ã‰º‚É•À‚×‚Ä•\Ž¦
-	F_TILE_H			,	//¶‰E‚É•À‚×‚Ä•\Ž¦
-	F_TOPMOST			,	//í‚ÉŽè‘O‚É•\Ž¦
-	F_BIND_WINDOW		,	//Œ‹‡‚µ‚Ä•\Ž¦	// 2006.04.22 ryoji
-	F_GROUPCLOSE		,	//ƒOƒ‹[ƒv‚ð•Â‚¶‚é	// 2007.06.20 ryoji
-	F_NEXTGROUP			,	//ŽŸ‚ÌƒOƒ‹[ƒv	// 2007.06.20 ryoji
-	F_PREVGROUP			,	//‘O‚ÌƒOƒ‹[ƒv	// 2007.06.20 ryoji
-	F_TAB_MOVERIGHT		,	//ƒ^ƒu‚ð‰E‚ÉˆÚ“®	// 2007.06.20 ryoji
-	F_TAB_MOVELEFT		,	//ƒ^ƒu‚ð¶‚ÉˆÚ“®	// 2007.06.20 ryoji
-	F_TAB_SEPARATE		,	//V‹KƒOƒ‹[ƒv	// 2007.06.20 ryoji
-	F_TAB_JOINTNEXT		,	//ŽŸ‚ÌƒOƒ‹[ƒv‚ÉˆÚ“®	// 2007.06.20 ryoji
-	F_TAB_JOINTPREV		,	//‘O‚ÌƒOƒ‹[ƒv‚ÉˆÚ“®	// 2007.06.20 ryoji
-	F_TAB_CLOSELEFT 	,	//¶‚ð‚·‚×‚Ä•Â‚¶‚é		// 2008.11.22 syat
-	F_TAB_CLOSERIGHT	,	//‰E‚ð‚·‚×‚Ä•Â‚¶‚é		// 2008.11.22 syat
-	F_MAXIMIZE			,	//ƒEƒBƒ“ƒhƒE‚ðÅ‘å‰»
-	F_MAXIMIZE_V		,	//c•ûŒü‚ÉÅ‘å‰»
-	F_MAXIMIZE_H		,	//‰¡•ûŒü‚ÉÅ‘å‰» //2001.02.10 by MIK
-	F_MINIMIZE_ALL		,	//‚·‚×‚ÄÅ¬‰»	//Sept. 17, 2000 jepro à–¾‚Ìu‘S‚Äv‚ðu‚·‚×‚Äv‚É“ˆê
-	F_REDRAW			,	//Ä•`‰æ
-	F_WIN_OUTPUT		,	//ƒAƒEƒgƒvƒbƒgƒEƒBƒ“ƒhƒE•\Ž¦
+/* ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ç³» */
+const EFunctionCode pnFuncList_Win[] = {	//Oct. 16, 2000 JEPRO å¤‰æ•°åå¤‰æ›´(List7â†’List_Win)
+	F_SPLIT_V			,	//ä¸Šä¸‹ã«åˆ†å‰²	//Sept. 17, 2000 jepro èª¬æ˜Žã®ã€Œç¸¦ã€ã‚’ã€Œä¸Šä¸‹ã«ã€ã«å¤‰æ›´
+	F_SPLIT_H			,	//å·¦å³ã«åˆ†å‰²	//Sept. 17, 2000 jepro èª¬æ˜Žã®ã€Œæ¨ªã€ã‚’ã€Œå·¦å³ã«ã€ã«å¤‰æ›´
+	F_SPLIT_VH			,	//ç¸¦æ¨ªã«åˆ†å‰²	//Sept. 17, 2000 jepro èª¬æ˜Žã«ã€Œã«ã€ã‚’è¿½åŠ 
+	F_WINCLOSE			,	//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’é–‰ã˜ã‚‹
+	F_WIN_CLOSEALL		,	//ã™ã¹ã¦ã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’é–‰ã˜ã‚‹	//Oct. 17, 2000 JEPRO åå‰ã‚’å¤‰æ›´(F_FILECLOSEALLâ†’F_WIN_CLOSEALL)
+	F_GREP_WIN_ALL_CLOSE	,	// Grep ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’ã™ã¹ã¦é–‰ã˜ã‚‹
+	F_TAB_CLOSEOTHER	,	//ã“ã®ã‚¿ãƒ–ä»¥å¤–ã‚’é–‰ã˜ã‚‹	// 2008.11.22 syat
+	F_NEXTWINDOW		,	//æ¬¡ã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦
+	F_PREVWINDOW		,	//å‰ã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦
+ 	F_WINLIST			,	//é–‹ã„ã¦ã„ã‚‹ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ä¸€è¦§ãƒãƒƒãƒ—ã‚¢ãƒƒãƒ—è¡¨ç¤º	// 2006.03.23 fon
+	F_CASCADE			,	//é‡ã­ã¦è¡¨ç¤º
+	F_TILE_V			,	//ä¸Šä¸‹ã«ä¸¦ã¹ã¦è¡¨ç¤º
+	F_TILE_H			,	//å·¦å³ã«ä¸¦ã¹ã¦è¡¨ç¤º
+	F_TOPMOST			,	//å¸¸ã«æ‰‹å‰ã«è¡¨ç¤º
+	F_BIND_WINDOW		,	//çµåˆã—ã¦è¡¨ç¤º	// 2006.04.22 ryoji
+	F_GROUPCLOSE		,	//ã‚°ãƒ«ãƒ¼ãƒ—ã‚’é–‰ã˜ã‚‹	// 2007.06.20 ryoji
+	F_NEXTGROUP			,	//æ¬¡ã®ã‚°ãƒ«ãƒ¼ãƒ—	// 2007.06.20 ryoji
+	F_PREVGROUP			,	//å‰ã®ã‚°ãƒ«ãƒ¼ãƒ—	// 2007.06.20 ryoji
+	F_TAB_MOVERIGHT		,	//ã‚¿ãƒ–ã‚’å³ã«ç§»å‹•	// 2007.06.20 ryoji
+	F_TAB_MOVELEFT		,	//ã‚¿ãƒ–ã‚’å·¦ã«ç§»å‹•	// 2007.06.20 ryoji
+	F_TAB_SEPARATE		,	//æ–°è¦ã‚°ãƒ«ãƒ¼ãƒ—	// 2007.06.20 ryoji
+	F_TAB_JOINTNEXT		,	//æ¬¡ã®ã‚°ãƒ«ãƒ¼ãƒ—ã«ç§»å‹•	// 2007.06.20 ryoji
+	F_TAB_JOINTPREV		,	//å‰ã®ã‚°ãƒ«ãƒ¼ãƒ—ã«ç§»å‹•	// 2007.06.20 ryoji
+	F_TAB_CLOSELEFT 	,	//å·¦ã‚’ã™ã¹ã¦é–‰ã˜ã‚‹		// 2008.11.22 syat
+	F_TAB_CLOSERIGHT	,	//å³ã‚’ã™ã¹ã¦é–‰ã˜ã‚‹		// 2008.11.22 syat
+	F_MAXIMIZE			,	//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’æœ€å¤§åŒ–
+	F_MAXIMIZE_V		,	//ç¸¦æ–¹å‘ã«æœ€å¤§åŒ–
+	F_MAXIMIZE_H		,	//æ¨ªæ–¹å‘ã«æœ€å¤§åŒ– //2001.02.10 by MIK
+	F_MINIMIZE_ALL		,	//ã™ã¹ã¦æœ€å°åŒ–	//Sept. 17, 2000 jepro èª¬æ˜Žã®ã€Œå…¨ã¦ã€ã‚’ã€Œã™ã¹ã¦ã€ã«çµ±ä¸€
+	F_REDRAW			,	//å†æç”»
+	F_WIN_OUTPUT		,	//ã‚¢ã‚¦ãƒˆãƒ—ãƒƒãƒˆã‚¦ã‚£ãƒ³ãƒ‰ã‚¦è¡¨ç¤º
 };
-const int nFincList_Win_Num = _countof( pnFuncList_Win );	//Oct. 16, 2000 JEPRO •Ï”–¼•ÏX(List7¨List_Win)
+const int nFincList_Win_Num = _countof( pnFuncList_Win );	//Oct. 16, 2000 JEPRO å¤‰æ•°åå¤‰æ›´(List7â†’List_Win)
 
 
-/* Žx‰‡ */
-const EFunctionCode pnFuncList_Support[] = {	//Oct. 16, 2000 JEPRO •Ï”–¼•ÏX(List11¨List_Support)
-	F_HOKAN						,	/* “ü—Í•âŠ® */
-	F_TOGGLE_KEY_SEARCH			,	/* ƒLƒƒƒŒƒbƒgˆÊ’u‚Ì’PŒê‚ðŽ«‘ŒŸõ‚·‚é‹@”\ON/OFF */	// 2006.03.24 fon
-	F_MENU_ALLFUNC				,	/* ƒRƒ}ƒ“ƒhˆê—— */
-	F_ABOUT							/* ƒo[ƒWƒ‡ƒ“î•ñ */	//Dec. 24, 2000 JEPRO ’Ç‰Á
+/* æ”¯æ´ */
+const EFunctionCode pnFuncList_Support[] = {	//Oct. 16, 2000 JEPRO å¤‰æ•°åå¤‰æ›´(List11â†’List_Support)
+	F_HOKAN						,	/* å…¥åŠ›è£œå®Œ */
+	F_TOGGLE_KEY_SEARCH			,	/* ã‚­ãƒ£ãƒ¬ãƒƒãƒˆä½ç½®ã®å˜èªžã‚’è¾žæ›¸æ¤œç´¢ã™ã‚‹æ©Ÿèƒ½ON/OFF */	// 2006.03.24 fon
+	F_MENU_ALLFUNC				,	/* ã‚³ãƒžãƒ³ãƒ‰ä¸€è¦§ */
+	F_ABOUT							/* ãƒãƒ¼ã‚¸ãƒ§ãƒ³æƒ…å ± */	//Dec. 24, 2000 JEPRO è¿½åŠ 
 };
-const int nFincList_Support_Num = _countof( pnFuncList_Support );	//Oct. 16, 2000 JEPRO •Ï”–¼•ÏX(List11¨List_Support)
+const int nFincList_Support_Num = _countof( pnFuncList_Support );	//Oct. 16, 2000 JEPRO å¤‰æ•°åå¤‰æ›´(List11â†’List_Support)
 
 
-/* ‚»‚Ì‘¼ */	//Oct. 16, 2000 JEPRO •Ï”–¼•ÏX(List12¨List_Others)
+/* ãã®ä»– */	//Oct. 16, 2000 JEPRO å¤‰æ•°åå¤‰æ›´(List12â†’List_Others)
 const EFunctionCode pnFuncList_Others[] = {
 	F_EXEC_CALC,
 	F_EXEC_CMD_PROMPT,
 	F_EXEC_EXPLORER,
 	F_EXEC_THG_ANNOTATE
 };
-const int nFincList_Others_Num = _countof( pnFuncList_Others );	//Oct. 16, 2000 JEPRO •Ï”–¼•ÏX(List12¨List_Others)
+const int nFincList_Others_Num = _countof( pnFuncList_Others );	//Oct. 16, 2000 JEPRO å¤‰æ•°åå¤‰æ›´(List12â†’List_Others)
 
 
 
 
 
 const int nsFuncCode::pnFuncListNumArr[] = {
-//	nFincList_Undef_Num,	//Oct. 14, 2000 JEPRO u--–¢’è‹`--v‚ð•\Ž¦‚³‚¹‚È‚¢‚æ‚¤‚É•ÏX	//Oct. 16, 2000 JEPRO •Ï”–¼•ÏX(List0¨List_Undef)
-	nFincList_File_Num,		/* ƒtƒ@ƒCƒ‹‘€ìŒn */	//Oct. 16, 2000 JEPRO •Ï”–¼•ÏX(List5¨List_File)
-	nFincList_Edit_Num,		/* •ÒWŒn */			//Oct. 16, 2000 JEPRO •Ï”–¼•ÏX(List3¨List_Edit)
-	nFincList_Move_Num,		/* ƒJ[ƒ\ƒ‹ˆÚ“®Œn */	//Oct. 16, 2000 JEPRO •Ï”–¼•ÏX(List1¨List_Move)
-	nFincList_Select_Num,	/* ‘I‘ðŒn */			//Oct. 15, 2000 JEPRO uƒJ[ƒ\ƒ‹ˆÚ“®Œnv‚©‚ç(‘I‘ð)‚ðˆÚ“®
-	nFincList_Box_Num,		/* ‹éŒ`‘I‘ðŒn */		//Oct. 17, 2000 JEPRO (‹éŒ`‘I‘ð)‚ªVÝ‚³‚êŽŸ‘æ‚±‚±‚É‚¨‚­
-	nFincList_Clip_Num,		/* ƒNƒŠƒbƒvƒ{[ƒhŒn */	//Oct. 16, 2000 JEPRO •Ï”–¼•ÏX(List2¨List_Clip)
-	nFincList_Insert_Num,	/* ‘}“üŒn */
-	nFincList_Convert_Num,	/* •ÏŠ·Œn */			//Oct. 16, 2000 JEPRO •Ï”–¼•ÏX(List6¨List_Convert)
-	nFincList_Search_Num,	/* ŒŸõŒn */			//Oct. 16, 2000 JEPRO •Ï”–¼•ÏX(List4¨List_Search)
-	nFincList_Mode_Num,		/* ƒ‚[ƒhØ‚è‘Ö‚¦Œn */	//Oct. 16, 2000 JEPRO •Ï”–¼•ÏX(List8¨List_Mode)
-	nFincList_Set_Num,		/* Ý’èŒn */			//Oct. 16, 2000 JEPRO •Ï”–¼•ÏX(List9¨List_Set)
-	nFincList_Macro_Num,	/* ƒ}ƒNƒŒn */			//Oct. 16, 2000 JEPRO •Ï”–¼•ÏX(List10¨List_Macro)
-//	ƒJƒXƒ^ƒ€ƒƒjƒ…[‚Ì•¶Žš—ñ‚ð“®“I‚É•ÏX‰Â”\‚É‚·‚é‚½‚ß‚±‚ê‚Ííœ
-//	nFincList_Menu_Num,		/* ƒJƒXƒ^ƒ€ƒƒjƒ…[ */	//Oct. 21, 2000 JEPRO u‚»‚Ì‘¼v‚©‚ç•ª—£“Æ—§‰»
-	nFincList_Win_Num,		/* ƒEƒBƒ“ƒhƒEŒn */		//Oct. 16, 2000 JEPRO •Ï”–¼•ÏX(List7¨List_Win)
-	nFincList_Support_Num,	/* Žx‰‡ */				//Oct. 16, 2000 JEPRO •Ï”–¼•ÏX(List11¨List_Support)
-	nFincList_Others_Num	/* ‚»‚Ì‘¼ */			//Oct. 16, 2000 JEPRO •Ï”–¼•ÏX(List12¨List_Others)
+//	nFincList_Undef_Num,	//Oct. 14, 2000 JEPRO ã€Œ--æœªå®šç¾©--ã€ã‚’è¡¨ç¤ºã•ã›ãªã„ã‚ˆã†ã«å¤‰æ›´	//Oct. 16, 2000 JEPRO å¤‰æ•°åå¤‰æ›´(List0â†’List_Undef)
+	nFincList_File_Num,		/* ãƒ•ã‚¡ã‚¤ãƒ«æ“ä½œç³» */	//Oct. 16, 2000 JEPRO å¤‰æ•°åå¤‰æ›´(List5â†’List_File)
+	nFincList_Edit_Num,		/* ç·¨é›†ç³» */			//Oct. 16, 2000 JEPRO å¤‰æ•°åå¤‰æ›´(List3â†’List_Edit)
+	nFincList_Move_Num,		/* ã‚«ãƒ¼ã‚½ãƒ«ç§»å‹•ç³» */	//Oct. 16, 2000 JEPRO å¤‰æ•°åå¤‰æ›´(List1â†’List_Move)
+	nFincList_Select_Num,	/* é¸æŠžç³» */			//Oct. 15, 2000 JEPRO ã€Œã‚«ãƒ¼ã‚½ãƒ«ç§»å‹•ç³»ã€ã‹ã‚‰(é¸æŠž)ã‚’ç§»å‹•
+	nFincList_Box_Num,		/* çŸ©å½¢é¸æŠžç³» */		//Oct. 17, 2000 JEPRO (çŸ©å½¢é¸æŠž)ãŒæ–°è¨­ã•ã‚Œæ¬¡ç¬¬ã“ã“ã«ãŠã
+	nFincList_Clip_Num,		/* ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ç³» */	//Oct. 16, 2000 JEPRO å¤‰æ•°åå¤‰æ›´(List2â†’List_Clip)
+	nFincList_Insert_Num,	/* æŒ¿å…¥ç³» */
+	nFincList_Convert_Num,	/* å¤‰æ›ç³» */			//Oct. 16, 2000 JEPRO å¤‰æ•°åå¤‰æ›´(List6â†’List_Convert)
+	nFincList_Search_Num,	/* æ¤œç´¢ç³» */			//Oct. 16, 2000 JEPRO å¤‰æ•°åå¤‰æ›´(List4â†’List_Search)
+	nFincList_Mode_Num,		/* ãƒ¢ãƒ¼ãƒ‰åˆ‡ã‚Šæ›¿ãˆç³» */	//Oct. 16, 2000 JEPRO å¤‰æ•°åå¤‰æ›´(List8â†’List_Mode)
+	nFincList_Set_Num,		/* è¨­å®šç³» */			//Oct. 16, 2000 JEPRO å¤‰æ•°åå¤‰æ›´(List9â†’List_Set)
+	nFincList_Macro_Num,	/* ãƒžã‚¯ãƒ­ç³» */			//Oct. 16, 2000 JEPRO å¤‰æ•°åå¤‰æ›´(List10â†’List_Macro)
+//	ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®æ–‡å­—åˆ—ã‚’å‹•çš„ã«å¤‰æ›´å¯èƒ½ã«ã™ã‚‹ãŸã‚ã“ã‚Œã¯å‰Šé™¤
+//	nFincList_Menu_Num,		/* ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼ */	//Oct. 21, 2000 JEPRO ã€Œãã®ä»–ã€ã‹ã‚‰åˆ†é›¢ç‹¬ç«‹åŒ–
+	nFincList_Win_Num,		/* ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ç³» */		//Oct. 16, 2000 JEPRO å¤‰æ•°åå¤‰æ›´(List7â†’List_Win)
+	nFincList_Support_Num,	/* æ”¯æ´ */				//Oct. 16, 2000 JEPRO å¤‰æ•°åå¤‰æ›´(List11â†’List_Support)
+	nFincList_Others_Num	/* ãã®ä»– */			//Oct. 16, 2000 JEPRO å¤‰æ•°åå¤‰æ›´(List12â†’List_Others)
 };
 const EFunctionCode* nsFuncCode::ppnFuncListArr[] = {
-//	pnFuncList_Undef,	//Oct. 14, 2000 JEPRO u--–¢’è‹`--v‚ð•\Ž¦‚³‚¹‚È‚¢‚æ‚¤‚É•ÏX	//Oct. 16, 2000 JEPRO •Ï”–¼•ÏX(List0¨List_Undef)
-	pnFuncList_File,	/* ƒtƒ@ƒCƒ‹‘€ìŒn */	//Oct. 16, 2000 JEPRO •Ï”–¼•ÏX(List5¨List_File)
-	pnFuncList_Edit,	/* •ÒWŒn */			//Oct. 16, 2000 JEPRO •Ï”–¼•ÏX(List3¨List_Edit)
-	pnFuncList_Move,	/* ƒJ[ƒ\ƒ‹ˆÚ“®Œn */	//Oct. 16, 2000 JEPRO •Ï”–¼•ÏX(List1¨List_Move)
-	pnFuncList_Select,/* ‘I‘ðŒn */			//Oct. 15, 2000 JEPRO uƒJ[ƒ\ƒ‹ˆÚ“®Œnv‚©‚ç(‘I‘ð)‚ðˆÚ“®  (‹éŒ`‘I‘ð)‚ÍVÝ‚³‚êŽŸ‘æ‚±‚±‚É‚¨‚­
-	pnFuncList_Box,	/* ‹éŒ`‘I‘ðŒn */		//Oct. 17, 2000 JEPRO (‹éŒ`‘I‘ð)‚ªVÝ‚³‚êŽŸ‘æ‚±‚±‚É‚¨‚­
-	pnFuncList_Clip,	/* ƒNƒŠƒbƒvƒ{[ƒhŒn */	//Oct. 16, 2000 JEPRO •Ï”–¼•ÏX(List2¨List_Clip)
-	pnFuncList_Insert,/* ‘}“üŒn */
-	pnFuncList_Convert,/* •ÏŠ·Œn */			//Oct. 16, 2000 JEPRO •Ï”–¼•ÏX(List6¨List_Convert)
-	pnFuncList_Search,/* ŒŸõŒn */			//Oct. 16, 2000 JEPRO •Ï”–¼•ÏX(List4¨List_Search)
-	pnFuncList_Mode,	/* ƒ‚[ƒhØ‚è‘Ö‚¦Œn */	//Oct. 16, 2000 JEPRO •Ï”–¼•ÏX(List8¨List_Mode)
-	pnFuncList_Set,	/* Ý’èŒn */			//Oct. 16, 2000 JEPRO •Ï”–¼•ÏX(List9¨List_Set)
-	pnFuncList_Macro,	/* ƒ}ƒNƒŒn */			//Oct. 16, 2000 JEPRO •Ï”–¼•ÏX(List10¨List_Macro)
-//	ƒJƒXƒ^ƒ€ƒƒjƒ…[‚Ì•¶Žš—ñ‚ð“®“I‚É•ÏX‰Â”\‚É‚·‚é‚½‚ß‚±‚ê‚Ííœ
-//	pnFuncList_Menu,	/* ƒJƒXƒ^ƒ€ƒƒjƒ…[ */	//Oct. 21, 2000 JEPROu‚»‚Ì‘¼v‚©‚ç•ª—£“Æ—§‰»
-	pnFuncList_Win,	/* ƒEƒBƒ“ƒhƒEŒn */		//Oct. 16, 2000 JEPRO •Ï”–¼•ÏX(List7¨List_Win)
-	pnFuncList_Support,/* Žx‰‡ */				//Oct. 16, 2000 JEPRO •Ï”–¼•ÏX(List11¨List_Support)
-	pnFuncList_Others	/* ‚»‚Ì‘¼ */			//Oct. 16, 2000 JEPRO •Ï”–¼•ÏX(List12¨List_Others)
+//	pnFuncList_Undef,	//Oct. 14, 2000 JEPRO ã€Œ--æœªå®šç¾©--ã€ã‚’è¡¨ç¤ºã•ã›ãªã„ã‚ˆã†ã«å¤‰æ›´	//Oct. 16, 2000 JEPRO å¤‰æ•°åå¤‰æ›´(List0â†’List_Undef)
+	pnFuncList_File,	/* ãƒ•ã‚¡ã‚¤ãƒ«æ“ä½œç³» */	//Oct. 16, 2000 JEPRO å¤‰æ•°åå¤‰æ›´(List5â†’List_File)
+	pnFuncList_Edit,	/* ç·¨é›†ç³» */			//Oct. 16, 2000 JEPRO å¤‰æ•°åå¤‰æ›´(List3â†’List_Edit)
+	pnFuncList_Move,	/* ã‚«ãƒ¼ã‚½ãƒ«ç§»å‹•ç³» */	//Oct. 16, 2000 JEPRO å¤‰æ•°åå¤‰æ›´(List1â†’List_Move)
+	pnFuncList_Select,/* é¸æŠžç³» */			//Oct. 15, 2000 JEPRO ã€Œã‚«ãƒ¼ã‚½ãƒ«ç§»å‹•ç³»ã€ã‹ã‚‰(é¸æŠž)ã‚’ç§»å‹•  (çŸ©å½¢é¸æŠž)ã¯æ–°è¨­ã•ã‚Œæ¬¡ç¬¬ã“ã“ã«ãŠã
+	pnFuncList_Box,	/* çŸ©å½¢é¸æŠžç³» */		//Oct. 17, 2000 JEPRO (çŸ©å½¢é¸æŠž)ãŒæ–°è¨­ã•ã‚Œæ¬¡ç¬¬ã“ã“ã«ãŠã
+	pnFuncList_Clip,	/* ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ç³» */	//Oct. 16, 2000 JEPRO å¤‰æ•°åå¤‰æ›´(List2â†’List_Clip)
+	pnFuncList_Insert,/* æŒ¿å…¥ç³» */
+	pnFuncList_Convert,/* å¤‰æ›ç³» */			//Oct. 16, 2000 JEPRO å¤‰æ•°åå¤‰æ›´(List6â†’List_Convert)
+	pnFuncList_Search,/* æ¤œç´¢ç³» */			//Oct. 16, 2000 JEPRO å¤‰æ•°åå¤‰æ›´(List4â†’List_Search)
+	pnFuncList_Mode,	/* ãƒ¢ãƒ¼ãƒ‰åˆ‡ã‚Šæ›¿ãˆç³» */	//Oct. 16, 2000 JEPRO å¤‰æ•°åå¤‰æ›´(List8â†’List_Mode)
+	pnFuncList_Set,	/* è¨­å®šç³» */			//Oct. 16, 2000 JEPRO å¤‰æ•°åå¤‰æ›´(List9â†’List_Set)
+	pnFuncList_Macro,	/* ãƒžã‚¯ãƒ­ç³» */			//Oct. 16, 2000 JEPRO å¤‰æ•°åå¤‰æ›´(List10â†’List_Macro)
+//	ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®æ–‡å­—åˆ—ã‚’å‹•çš„ã«å¤‰æ›´å¯èƒ½ã«ã™ã‚‹ãŸã‚ã“ã‚Œã¯å‰Šé™¤
+//	pnFuncList_Menu,	/* ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼ */	//Oct. 21, 2000 JEPROã€Œãã®ä»–ã€ã‹ã‚‰åˆ†é›¢ç‹¬ç«‹åŒ–
+	pnFuncList_Win,	/* ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ç³» */		//Oct. 16, 2000 JEPRO å¤‰æ•°åå¤‰æ›´(List7â†’List_Win)
+	pnFuncList_Support,/* æ”¯æ´ */				//Oct. 16, 2000 JEPRO å¤‰æ•°åå¤‰æ›´(List11â†’List_Support)
+	pnFuncList_Others	/* ãã®ä»– */			//Oct. 16, 2000 JEPRO å¤‰æ•°åå¤‰æ›´(List12â†’List_Others)
 };
 const int nsFuncCode::nFincListNumArrNum = _countof( nsFuncCode::pnFuncListNumArr );
 
 
 
 
-/* ‹@”\‚ª—˜—p‰Â”\‚©’²‚×‚é */
+/* æ©Ÿèƒ½ãŒåˆ©ç”¨å¯èƒ½ã‹èª¿ã¹ã‚‹ */
 bool IsFuncEnable( CEditDoc* pcEditDoc, DLLSHAREDATA* pShareData, EFunctionCode nId )
 {
-	/* ‘‚«Š·‚¦‹ÖŽ~‚Ì‚Æ‚«‚ðˆêŠ‡ƒ`ƒFƒbƒN */
+	/* æ›¸ãæ›ãˆç¦æ­¢ã®ã¨ãã‚’ä¸€æ‹¬ãƒã‚§ãƒƒã‚¯ */
 	if( pcEditDoc->IsModificationForbidden( nId ) )
 		return false;
 
 	switch( nId ){
-	case F_RECKEYMACRO:	/* ƒL[ƒ}ƒNƒ‚Ì‹L˜^ŠJŽn^I—¹ */
-		if( pShareData->m_sFlags.m_bRecordingKeyMacro ){	/* ƒL[ƒ{[ƒhƒ}ƒNƒ‚Ì‹L˜^’† */
-			if( pShareData->m_sFlags.m_hwndRecordingKeyMacro == CEditWnd::getInstance()->GetHwnd() ){	/* ƒL[ƒ{[ƒhƒ}ƒNƒ‚ð‹L˜^’†‚ÌƒEƒBƒ“ƒhƒE */
+	case F_RECKEYMACRO:	/* ã‚­ãƒ¼ãƒžã‚¯ãƒ­ã®è¨˜éŒ²é–‹å§‹ï¼çµ‚äº† */
+		if( pShareData->m_sFlags.m_bRecordingKeyMacro ){	/* ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ãƒžã‚¯ãƒ­ã®è¨˜éŒ²ä¸­ */
+			if( pShareData->m_sFlags.m_hwndRecordingKeyMacro == CEditWnd::getInstance()->GetHwnd() ){	/* ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ãƒžã‚¯ãƒ­ã‚’è¨˜éŒ²ä¸­ã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ */
 				return true;
 			}else{
 				return false;
@@ -574,12 +574,12 @@ bool IsFuncEnable( CEditDoc* pcEditDoc, DLLSHAREDATA* pShareData, EFunctionCode 
 		}else{
 			return true;
 		}
-	case F_SAVEKEYMACRO:	/* ƒL[ƒ}ƒNƒ‚Ì•Û‘¶ */
+	case F_SAVEKEYMACRO:	/* ã‚­ãƒ¼ãƒžã‚¯ãƒ­ã®ä¿å­˜ */
 		//	Jun. 16, 2002 genta
-		//	ƒL[ƒ}ƒNƒƒGƒ“ƒWƒ“ˆÈŠO‚Ìƒ}ƒNƒ‚ð“Ç‚Ýž‚ñ‚Å‚¢‚é‚Æ‚«‚Í
-		//	ŽÀs‚Í‚Å‚«‚é‚ª•Û‘¶‚Í‚Å‚«‚È‚¢D
-		if( pShareData->m_sFlags.m_bRecordingKeyMacro ){	/* ƒL[ƒ{[ƒhƒ}ƒNƒ‚Ì‹L˜^’† */
-			if( pShareData->m_sFlags.m_hwndRecordingKeyMacro == CEditWnd::getInstance()->GetHwnd() ){	/* ƒL[ƒ{[ƒhƒ}ƒNƒ‚ð‹L˜^’†‚ÌƒEƒBƒ“ƒhƒE */
+		//	ã‚­ãƒ¼ãƒžã‚¯ãƒ­ã‚¨ãƒ³ã‚¸ãƒ³ä»¥å¤–ã®ãƒžã‚¯ãƒ­ã‚’èª­ã¿è¾¼ã‚“ã§ã„ã‚‹ã¨ãã¯
+		//	å®Ÿè¡Œã¯ã§ãã‚‹ãŒä¿å­˜ã¯ã§ããªã„ï¼Ž
+		if( pShareData->m_sFlags.m_bRecordingKeyMacro ){	/* ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ãƒžã‚¯ãƒ­ã®è¨˜éŒ²ä¸­ */
+			if( pShareData->m_sFlags.m_hwndRecordingKeyMacro == CEditWnd::getInstance()->GetHwnd() ){	/* ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ãƒžã‚¯ãƒ­ã‚’è¨˜éŒ²ä¸­ã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ */
 				return true;
 			}else{
 				return false;
@@ -587,24 +587,24 @@ bool IsFuncEnable( CEditDoc* pcEditDoc, DLLSHAREDATA* pShareData, EFunctionCode 
 		}else{
 			return CEditApp::getInstance()->m_pcSMacroMgr->IsSaveOk();
 		}
-	case F_EXECKEYMACRO:	/* ƒL[ƒ}ƒNƒ‚ÌŽÀs */
-		if( pShareData->m_sFlags.m_bRecordingKeyMacro ){	/* ƒL[ƒ{[ƒhƒ}ƒNƒ‚Ì‹L˜^’† */
-			if( pShareData->m_sFlags.m_hwndRecordingKeyMacro == CEditWnd::getInstance()->GetHwnd() ){	/* ƒL[ƒ{[ƒhƒ}ƒNƒ‚ð‹L˜^’†‚ÌƒEƒBƒ“ƒhƒE */
+	case F_EXECKEYMACRO:	/* ã‚­ãƒ¼ãƒžã‚¯ãƒ­ã®å®Ÿè¡Œ */
+		if( pShareData->m_sFlags.m_bRecordingKeyMacro ){	/* ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ãƒžã‚¯ãƒ­ã®è¨˜éŒ²ä¸­ */
+			if( pShareData->m_sFlags.m_hwndRecordingKeyMacro == CEditWnd::getInstance()->GetHwnd() ){	/* ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ãƒžã‚¯ãƒ­ã‚’è¨˜éŒ²ä¸­ã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ */
 				return true;
 			}else{
 				return false;
 			}
 		}else{
-			//@@@ 2002.1.24 YAZAKI m_szKeyMacroFileName‚Éƒtƒ@ƒCƒ‹–¼‚ªƒRƒs[‚³‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©B
+			//@@@ 2002.1.24 YAZAKI m_szKeyMacroFileNameã«ãƒ•ã‚¡ã‚¤ãƒ«åãŒã‚³ãƒ”ãƒ¼ã•ã‚Œã¦ã„ã‚‹ã‹ã©ã†ã‹ã€‚
 			if (pShareData->m_Common.m_sMacro.m_szKeyMacroFileName[0] ) {
 				return true;
 			}else{
 				return false;
 			}
 		}
-	case F_LOADKEYMACRO:	/* ƒL[ƒ}ƒNƒ‚Ì“Ç‚Ýž‚Ý */
-		if( pShareData->m_sFlags.m_bRecordingKeyMacro ){	/* ƒL[ƒ{[ƒhƒ}ƒNƒ‚Ì‹L˜^’† */
-			if( pShareData->m_sFlags.m_hwndRecordingKeyMacro == CEditWnd::getInstance()->GetHwnd() ){	/* ƒL[ƒ{[ƒhƒ}ƒNƒ‚ð‹L˜^’†‚ÌƒEƒBƒ“ƒhƒE */
+	case F_LOADKEYMACRO:	/* ã‚­ãƒ¼ãƒžã‚¯ãƒ­ã®èª­ã¿è¾¼ã¿ */
+		if( pShareData->m_sFlags.m_bRecordingKeyMacro ){	/* ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ãƒžã‚¯ãƒ­ã®è¨˜éŒ²ä¸­ */
+			if( pShareData->m_sFlags.m_hwndRecordingKeyMacro == CEditWnd::getInstance()->GetHwnd() ){	/* ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ãƒžã‚¯ãƒ­ã‚’è¨˜éŒ²ä¸­ã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ */
 				return true;
 			}else{
 				return false;
@@ -612,14 +612,14 @@ bool IsFuncEnable( CEditDoc* pcEditDoc, DLLSHAREDATA* pShareData, EFunctionCode 
 		}else{
 			return true;
 		}
-	case F_EXECEXTMACRO:	/* –¼‘O‚ðŽw’è‚µ‚Äƒ}ƒNƒŽÀs */
+	case F_EXECEXTMACRO:	/* åå‰ã‚’æŒ‡å®šã—ã¦ãƒžã‚¯ãƒ­å®Ÿè¡Œ */
 		return true;
 
-	case F_SEARCH_CLEARMARK:	//ŒŸõƒ}[ƒN‚ÌƒNƒŠƒA
+	case F_SEARCH_CLEARMARK:	//æ¤œç´¢ãƒžãƒ¼ã‚¯ã®ã‚¯ãƒªã‚¢
 		return true;
 
 	// 02/06/26 ai Start
-	case F_JUMP_SRCHSTARTPOS:	// ŒŸõŠJŽnˆÊ’u‚Ö–ß‚é
+	case F_JUMP_SRCHSTARTPOS:	// æ¤œç´¢é–‹å§‹ä½ç½®ã¸æˆ»ã‚‹
 		if( pcEditDoc->m_pcEditWnd->GetActiveView().m_ptSrchStartPos_PHY.BothNatural() ){
 			return true;
 		}else{
@@ -627,24 +627,24 @@ bool IsFuncEnable( CEditDoc* pcEditDoc, DLLSHAREDATA* pShareData, EFunctionCode 
 		}
 	// 02/06/26 ai End
 
-	case F_COMPARE:	/* ƒtƒ@ƒCƒ‹“à—e”äŠr */
+	case F_COMPARE:	/* ãƒ•ã‚¡ã‚¤ãƒ«å†…å®¹æ¯”è¼ƒ */
 		if( 2 <= pShareData->m_sNodes.m_nEditArrNum ){
 			return true;
 		}else{
 			return false;
 		}
 
-	case F_DIFF_NEXT:	/* ŽŸ‚Ì·•ª‚Ö */	//@@@ 2002.05.25 MIK
-	case F_DIFF_PREV:	/* ‘O‚Ì·•ª‚Ö */	//@@@ 2002.05.25 MIK
-	case F_DIFF_RESET:	/* ·•ª‚Ì‘S‰ðœ */	//@@@ 2002.05.25 MIK
+	case F_DIFF_NEXT:	/* æ¬¡ã®å·®åˆ†ã¸ */	//@@@ 2002.05.25 MIK
+	case F_DIFF_PREV:	/* å‰ã®å·®åˆ†ã¸ */	//@@@ 2002.05.25 MIK
+	case F_DIFF_RESET:	/* å·®åˆ†ã®å…¨è§£é™¤ */	//@@@ 2002.05.25 MIK
 		if( !CDiffManager::getInstance()->IsDiffUse() ) return false;
 		return true;
-	case F_DIFF_DIALOG:	/* DIFF·•ª•\Ž¦ */	//@@@ 2002.05.25 MIK
+	case F_DIFF_DIALOG:	/* DIFFå·®åˆ†è¡¨ç¤º */	//@@@ 2002.05.25 MIK
 		//if( pcEditDoc->IsModified() ) return false;
 		//if( ! pcEditDoc->m_cDocFile.GetFilePathClass().IsValidPath() ) return false;
 		return true;
 
-	case F_BEGIN_BOX:	//‹éŒ`”ÍˆÍ‘I‘ðŠJŽn
+	case F_BEGIN_BOX:	//çŸ©å½¢ç¯„å›²é¸æŠžé–‹å§‹
 	case F_UP_BOX:
 	case F_DOWN_BOX:
 	case F_LEFT_BOX:
@@ -662,45 +662,45 @@ bool IsFuncEnable( CEditDoc* pcEditDoc, DLLSHAREDATA* pShareData, EFunctionCode 
 	case F_1PageDown_BOX:
 	case F_GOFILETOP_BOX:
 	case F_GOFILEEND_BOX:
-		if( pShareData->m_Common.m_sView.m_bFontIs_FIXED_PITCH ){	/* Œ»Ý‚ÌƒtƒHƒ“ƒg‚ÍŒÅ’è•ƒtƒHƒ“ƒg‚Å‚ ‚é */
+		if( pShareData->m_Common.m_sView.m_bFontIs_FIXED_PITCH ){	/* ç¾åœ¨ã®ãƒ•ã‚©ãƒ³ãƒˆã¯å›ºå®šå¹…ãƒ•ã‚©ãƒ³ãƒˆã§ã‚ã‚‹ */
 			return true;
 		}else{
 			return false;
 		}
 	case F_PASTEBOX:
-		/* ƒNƒŠƒbƒvƒ{[ƒh‚©‚ç“\‚è•t‚¯‰Â”\‚©H */
+		/* ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ã‹ã‚‰è²¼ã‚Šä»˜ã‘å¯èƒ½ã‹ï¼Ÿ */
 		if( pcEditDoc->m_cDocEditor.IsEnablePaste() && pShareData->m_Common.m_sView.m_bFontIs_FIXED_PITCH ){
 			return true;
 		}else{
 			return false;
 		}
 	case F_PASTE:
-		/* ƒNƒŠƒbƒvƒ{[ƒh‚©‚ç“\‚è•t‚¯‰Â”\‚©H */
+		/* ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ã‹ã‚‰è²¼ã‚Šä»˜ã‘å¯èƒ½ã‹ï¼Ÿ */
 		if( pcEditDoc->m_cDocEditor.IsEnablePaste() ){
 			return true;
 		}else{
 			return false;
 		}
 
-	case F_FILENEW:	/* V‹Kì¬ */
+	case F_FILENEW:	/* æ–°è¦ä½œæˆ */
 	case F_GREP_DIALOG:	/* Grep */
-		/* •ÒWƒEƒBƒ“ƒhƒE‚ÌãŒÀƒ`ƒFƒbƒN */
-		if( pShareData->m_sNodes.m_nEditArrNum >= MAX_EDITWINDOWS ){	//Å‘å’lC³	//@@@ 2003.05.31 MIK
+		/* ç·¨é›†ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ä¸Šé™ãƒã‚§ãƒƒã‚¯ */
+		if( pShareData->m_sNodes.m_nEditArrNum >= MAX_EDITWINDOWS ){	//æœ€å¤§å€¤ä¿®æ­£	//@@@ 2003.05.31 MIK
 			return false;
 		}else{
 			return true;
 		}
 
-	case F_FILESAVE:	/* ã‘‚«•Û‘¶ */
-		if( !CAppMode::getInstance()->IsViewMode() ){	/* ƒrƒ…[ƒ‚[ƒh */
-			if( pcEditDoc->m_cDocEditor.IsModified() ){	/* •ÏXƒtƒ‰ƒO */
+	case F_FILESAVE:	/* ä¸Šæ›¸ãä¿å­˜ */
+		if( !CAppMode::getInstance()->IsViewMode() ){	/* ãƒ“ãƒ¥ãƒ¼ãƒ¢ãƒ¼ãƒ‰ */
+			if( pcEditDoc->m_cDocEditor.IsModified() ){	/* å¤‰æ›´ãƒ•ãƒ©ã‚° */
 				return true;
 			}
-			else if (pcEditDoc->m_cDocFile.IsChgCodeSet()) {	// •¶ŽšƒR[ƒh‚Ì•ÏX
+			else if (pcEditDoc->m_cDocFile.IsChgCodeSet()) {	// æ–‡å­—ã‚³ãƒ¼ãƒ‰ã®å¤‰æ›´
 				return true;
 			}
 			else {
-				/* –³•ÏX‚Å‚àã‘‚«‚·‚é‚© */
+				/* ç„¡å¤‰æ›´ã§ã‚‚ä¸Šæ›¸ãã™ã‚‹ã‹ */
 				if( !pShareData->m_Common.m_sFile.m_bEnableUnmodifiedOverwrite ){
 					return false;
 				}else{
@@ -710,79 +710,79 @@ bool IsFuncEnable( CEditDoc* pcEditDoc, DLLSHAREDATA* pShareData, EFunctionCode 
 		}else{
 			return false;
 		}
-	case F_COPYLINES:				//‘I‘ð”ÍˆÍ“à‘SsƒRƒs[
-	case F_COPYLINESASPASSAGE:		//‘I‘ð”ÍˆÍ“à‘Ssˆø—p•„•t‚«ƒRƒs[
-	case F_COPYLINESWITHLINENUMBER:	//‘I‘ð”ÍˆÍ“à‘Sss”Ô†•t‚«ƒRƒs[
-	case F_COPY_COLOR_HTML:				//‘I‘ð”ÍˆÍ“àF•t‚«HTMLƒRƒs[
-	case F_COPY_COLOR_HTML_LINENUMBER:	//‘I‘ð”ÍˆÍ“às”Ô†F•t‚«HTMLƒRƒs[
-		//ƒeƒLƒXƒg‚ª‘I‘ð‚³‚ê‚Ä‚¢‚ê‚Îtrue
+	case F_COPYLINES:				//é¸æŠžç¯„å›²å†…å…¨è¡Œã‚³ãƒ”ãƒ¼
+	case F_COPYLINESASPASSAGE:		//é¸æŠžç¯„å›²å†…å…¨è¡Œå¼•ç”¨ç¬¦ä»˜ãã‚³ãƒ”ãƒ¼
+	case F_COPYLINESWITHLINENUMBER:	//é¸æŠžç¯„å›²å†…å…¨è¡Œè¡Œç•ªå·ä»˜ãã‚³ãƒ”ãƒ¼
+	case F_COPY_COLOR_HTML:				//é¸æŠžç¯„å›²å†…è‰²ä»˜ãHTMLã‚³ãƒ”ãƒ¼
+	case F_COPY_COLOR_HTML_LINENUMBER:	//é¸æŠžç¯„å›²å†…è¡Œç•ªå·è‰²ä»˜ãHTMLã‚³ãƒ”ãƒ¼
+		//ãƒ†ã‚­ã‚¹ãƒˆãŒé¸æŠžã•ã‚Œã¦ã„ã‚Œã°true
 		return pcEditDoc->m_pcEditWnd->GetActiveView().GetSelectionInfo().IsTextSelected();
 
-	case F_TOLOWER:					/* ¬•¶Žš */
-	case F_TOUPPER:					/* ‘å•¶Žš */
-	case F_TOHANKAKU:				/* ‘SŠp¨”¼Šp */
-	case F_TOHANKATA:				/* ‘SŠpƒJƒ^ƒJƒi¨”¼ŠpƒJƒ^ƒJƒi */	//Aug. 29, 2002 ai
-	case F_TOZENEI:					/* ”¼Šp‰p”¨‘SŠp‰p” */			//July. 30, 2001 Misaka
-	case F_TOHANEI:					/* ‘SŠp‰p”¨”¼Šp‰p” */
-	case F_TOZENKAKUKATA:			/* ”¼Šp{‘S‚Ð‚ç¨‘SŠpEƒJƒ^ƒJƒi */	//Sept. 17, 2000 jepro à–¾‚ðu”¼Šp¨‘SŠpƒJƒ^ƒJƒiv‚©‚ç•ÏX
-	case F_TOZENKAKUHIRA:			/* ”¼Šp{‘SƒJƒ^¨‘SŠpE‚Ð‚ç‚ª‚È */	//Sept. 17, 2000 jepro à–¾‚ðu”¼Šp¨‘SŠp‚Ð‚ç‚ª‚Èv‚©‚ç•ÏX
-	case F_HANKATATOZENKATA:		/* ”¼ŠpƒJƒ^ƒJƒi¨‘SŠpƒJƒ^ƒJƒi */
-	case F_HANKATATOZENHIRA:		/* ”¼ŠpƒJƒ^ƒJƒi¨‘SŠp‚Ð‚ç‚ª‚È */
-	case F_TABTOSPACE:				/* TAB¨‹ó”’ */
-	case F_SPACETOTAB:				/* ‹ó”’¨TAB */  //---- Stonee, 2001/05/27
-	case F_CODECNV_AUTO2SJIS:		/* Ž©“®”»•Ê¨SJISƒR[ƒh•ÏŠ· */
-	case F_CODECNV_EMAIL:			/* E-Mail(JIS¨SJIS)ƒR[ƒh•ÏŠ· */
-	case F_CODECNV_EUC2SJIS:		/* EUC¨SJISƒR[ƒh•ÏŠ· */
-	case F_CODECNV_UNICODE2SJIS:	/* Unicode¨SJISƒR[ƒh•ÏŠ· */
-	case F_CODECNV_UNICODEBE2SJIS:	/* UnicodeBE¨SJISƒR[ƒh•ÏŠ· */
-	case F_CODECNV_UTF82SJIS:		/* UTF-8¨SJISƒR[ƒh•ÏŠ· */
-	case F_CODECNV_UTF72SJIS:		/* UTF-7¨SJISƒR[ƒh•ÏŠ· */
-	case F_CODECNV_SJIS2JIS:		/* SJIS¨JISƒR[ƒh•ÏŠ· */
-	case F_CODECNV_SJIS2EUC:		/* SJIS¨EUCƒR[ƒh•ÏŠ· */
-	case F_CODECNV_SJIS2UTF8:		/* SJIS¨UTF-8ƒR[ƒh•ÏŠ· */
-	case F_CODECNV_SJIS2UTF7:		/* SJIS¨UTF-7ƒR[ƒh•ÏŠ· */
-	case F_BASE64DECODE:			/* Base64ƒfƒR[ƒh‚µ‚Ä•Û‘¶ */
-	case F_UUDECODE:				//uudecode‚µ‚Ä•Û‘¶	//Oct. 17, 2000 jepro à–¾‚ðu‘I‘ð•”•ª‚ðUUENCODEƒfƒR[ƒhv‚©‚ç•ÏX
-		// ƒeƒLƒXƒg‚ª‘I‘ð‚³‚ê‚Ä‚¢‚ê‚Îtrue
+	case F_TOLOWER:					/* å°æ–‡å­— */
+	case F_TOUPPER:					/* å¤§æ–‡å­— */
+	case F_TOHANKAKU:				/* å…¨è§’â†’åŠè§’ */
+	case F_TOHANKATA:				/* å…¨è§’ã‚«ã‚¿ã‚«ãƒŠâ†’åŠè§’ã‚«ã‚¿ã‚«ãƒŠ */	//Aug. 29, 2002 ai
+	case F_TOZENEI:					/* åŠè§’è‹±æ•°â†’å…¨è§’è‹±æ•° */			//July. 30, 2001 Misaka
+	case F_TOHANEI:					/* å…¨è§’è‹±æ•°â†’åŠè§’è‹±æ•° */
+	case F_TOZENKAKUKATA:			/* åŠè§’ï¼‹å…¨ã²ã‚‰â†’å…¨è§’ãƒ»ã‚«ã‚¿ã‚«ãƒŠ */	//Sept. 17, 2000 jepro èª¬æ˜Žã‚’ã€ŒåŠè§’â†’å…¨è§’ã‚«ã‚¿ã‚«ãƒŠã€ã‹ã‚‰å¤‰æ›´
+	case F_TOZENKAKUHIRA:			/* åŠè§’ï¼‹å…¨ã‚«ã‚¿â†’å…¨è§’ãƒ»ã²ã‚‰ãŒãª */	//Sept. 17, 2000 jepro èª¬æ˜Žã‚’ã€ŒåŠè§’â†’å…¨è§’ã²ã‚‰ãŒãªã€ã‹ã‚‰å¤‰æ›´
+	case F_HANKATATOZENKATA:		/* åŠè§’ã‚«ã‚¿ã‚«ãƒŠâ†’å…¨è§’ã‚«ã‚¿ã‚«ãƒŠ */
+	case F_HANKATATOZENHIRA:		/* åŠè§’ã‚«ã‚¿ã‚«ãƒŠâ†’å…¨è§’ã²ã‚‰ãŒãª */
+	case F_TABTOSPACE:				/* TABâ†’ç©ºç™½ */
+	case F_SPACETOTAB:				/* ç©ºç™½â†’TAB */  //---- Stonee, 2001/05/27
+	case F_CODECNV_AUTO2SJIS:		/* è‡ªå‹•åˆ¤åˆ¥â†’SJISã‚³ãƒ¼ãƒ‰å¤‰æ› */
+	case F_CODECNV_EMAIL:			/* E-Mail(JISâ†’SJIS)ã‚³ãƒ¼ãƒ‰å¤‰æ› */
+	case F_CODECNV_EUC2SJIS:		/* EUCâ†’SJISã‚³ãƒ¼ãƒ‰å¤‰æ› */
+	case F_CODECNV_UNICODE2SJIS:	/* Unicodeâ†’SJISã‚³ãƒ¼ãƒ‰å¤‰æ› */
+	case F_CODECNV_UNICODEBE2SJIS:	/* UnicodeBEâ†’SJISã‚³ãƒ¼ãƒ‰å¤‰æ› */
+	case F_CODECNV_UTF82SJIS:		/* UTF-8â†’SJISã‚³ãƒ¼ãƒ‰å¤‰æ› */
+	case F_CODECNV_UTF72SJIS:		/* UTF-7â†’SJISã‚³ãƒ¼ãƒ‰å¤‰æ› */
+	case F_CODECNV_SJIS2JIS:		/* SJISâ†’JISã‚³ãƒ¼ãƒ‰å¤‰æ› */
+	case F_CODECNV_SJIS2EUC:		/* SJISâ†’EUCã‚³ãƒ¼ãƒ‰å¤‰æ› */
+	case F_CODECNV_SJIS2UTF8:		/* SJISâ†’UTF-8ã‚³ãƒ¼ãƒ‰å¤‰æ› */
+	case F_CODECNV_SJIS2UTF7:		/* SJISâ†’UTF-7ã‚³ãƒ¼ãƒ‰å¤‰æ› */
+	case F_BASE64DECODE:			/* Base64ãƒ‡ã‚³ãƒ¼ãƒ‰ã—ã¦ä¿å­˜ */
+	case F_UUDECODE:				//uudecodeã—ã¦ä¿å­˜	//Oct. 17, 2000 jepro èª¬æ˜Žã‚’ã€Œé¸æŠžéƒ¨åˆ†ã‚’UUENCODEãƒ‡ã‚³ãƒ¼ãƒ‰ã€ã‹ã‚‰å¤‰æ›´
+		// ãƒ†ã‚­ã‚¹ãƒˆãŒé¸æŠžã•ã‚Œã¦ã„ã‚Œã°true
 		return pcEditDoc->m_pcEditWnd->GetActiveView().GetSelectionInfo().IsTextSelected();
 
-	case F_CUT_LINE:	//sØ‚èŽæ‚è(Ü‚è•Ô‚µ’PˆÊ)
-	case F_DELETE_LINE:	//síœ(Ü‚è•Ô‚µ’PˆÊ)
-		// ƒeƒLƒXƒg‚ª‘I‘ð‚³‚ê‚Ä‚¢‚È‚¯‚ê‚Îtrue
+	case F_CUT_LINE:	//è¡Œåˆ‡ã‚Šå–ã‚Š(æŠ˜ã‚Šè¿”ã—å˜ä½)
+	case F_DELETE_LINE:	//è¡Œå‰Šé™¤(æŠ˜ã‚Šè¿”ã—å˜ä½)
+		// ãƒ†ã‚­ã‚¹ãƒˆãŒé¸æŠžã•ã‚Œã¦ã„ãªã‘ã‚Œã°true
 		return !pcEditDoc->m_pcEditWnd->GetActiveView().GetSelectionInfo().IsTextSelected();
 
-	case F_UNDO:		return pcEditDoc->m_cDocEditor.IsEnableUndo();	/* Undo(Œ³‚É–ß‚·)‰Â”\‚Èó‘Ô‚©H */
-	case F_REDO:		return pcEditDoc->m_cDocEditor.IsEnableRedo();	/* Redo(‚â‚è’¼‚µ)‰Â”\‚Èó‘Ô‚©H */
+	case F_UNDO:		return pcEditDoc->m_cDocEditor.IsEnableUndo();	/* Undo(å…ƒã«æˆ»ã™)å¯èƒ½ãªçŠ¶æ…‹ã‹ï¼Ÿ */
+	case F_REDO:		return pcEditDoc->m_cDocEditor.IsEnableRedo();	/* Redo(ã‚„ã‚Šç›´ã—)å¯èƒ½ãªçŠ¶æ…‹ã‹ï¼Ÿ */
 
 	case F_COPYPATH:
 	case F_COPYTAG:
 	case F_COPYFNAME:					// 2002/2/3 aroka
-	case F_OPEN_HfromtoC:				//“¯–¼‚ÌC/C++ƒwƒbƒ_(ƒ\[ƒX)‚ðŠJ‚­	//Feb. 7, 2001 JEPRO ’Ç‰Á
-//	case F_OPEN_HHPP:					//“¯–¼‚ÌC/C++ƒwƒbƒ_ƒtƒ@ƒCƒ‹‚ðŠJ‚­	//Feb. 9, 2001 jeprou.c‚Ü‚½‚Í.cpp‚Æ“¯–¼‚Ì.h‚ðŠJ‚­v‚©‚ç•ÏX		del 2008/6/23 Uchi
-//	case F_OPEN_CCPP:					//“¯–¼‚ÌC/C++ƒ\[ƒXƒtƒ@ƒCƒ‹‚ðŠJ‚­	//Feb. 9, 2001 jeprou.h‚Æ“¯–¼‚Ì.c(‚È‚¯‚ê‚Î.cpp)‚ðŠJ‚­v‚©‚ç•ÏX	del 2008/6/23 Uchi
-	case F_PLSQL_COMPILE_ON_SQLPLUS:	/* Oracle SQL*Plus‚ÅŽÀs */
-	case F_BROWSE:						//ƒuƒ‰ƒEƒY
-	//case F_VIEWMODE:					//ƒrƒ…[ƒ‚[ƒh	//	Sep. 10, 2002 genta í‚ÉŽg‚¦‚é‚æ‚¤‚É
-	//case F_PROPERTY_FILE:				//ƒtƒ@ƒCƒ‹‚ÌƒvƒƒpƒeƒB	// 2009.04.11 ryoji ƒRƒƒ“ƒgƒAƒEƒg
-		return pcEditDoc->m_cDocFile.GetFilePathClass().IsValidPath();	// Œ»Ý•ÒW’†‚Ìƒtƒ@ƒCƒ‹‚ÌƒpƒX–¼‚ðƒNƒŠƒbƒvƒ{[ƒh‚ÉƒRƒs[‚Å‚«‚é‚©
+	case F_OPEN_HfromtoC:				//åŒåã®C/C++ãƒ˜ãƒƒãƒ€(ã‚½ãƒ¼ã‚¹)ã‚’é–‹ã	//Feb. 7, 2001 JEPRO è¿½åŠ 
+//	case F_OPEN_HHPP:					//åŒåã®C/C++ãƒ˜ãƒƒãƒ€ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã	//Feb. 9, 2001 jeproã€Œ.cã¾ãŸã¯.cppã¨åŒåã®.hã‚’é–‹ãã€ã‹ã‚‰å¤‰æ›´		del 2008/6/23 Uchi
+//	case F_OPEN_CCPP:					//åŒåã®C/C++ã‚½ãƒ¼ã‚¹ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã	//Feb. 9, 2001 jeproã€Œ.hã¨åŒåã®.c(ãªã‘ã‚Œã°.cpp)ã‚’é–‹ãã€ã‹ã‚‰å¤‰æ›´	del 2008/6/23 Uchi
+	case F_PLSQL_COMPILE_ON_SQLPLUS:	/* Oracle SQL*Plusã§å®Ÿè¡Œ */
+	case F_BROWSE:						//ãƒ–ãƒ©ã‚¦ã‚º
+	//case F_VIEWMODE:					//ãƒ“ãƒ¥ãƒ¼ãƒ¢ãƒ¼ãƒ‰	//	Sep. 10, 2002 genta å¸¸ã«ä½¿ãˆã‚‹ã‚ˆã†ã«
+	//case F_PROPERTY_FILE:				//ãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£	// 2009.04.11 ryoji ã‚³ãƒ¡ãƒ³ãƒˆã‚¢ã‚¦ãƒˆ
+		return pcEditDoc->m_cDocFile.GetFilePathClass().IsValidPath();	// ç¾åœ¨ç·¨é›†ä¸­ã®ãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ‘ã‚¹åã‚’ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ã«ã‚³ãƒ”ãƒ¼ã§ãã‚‹ã‹
 
-	case F_JUMPHIST_PREV:	//	ˆÚ“®—š—ð: ‘O‚Ö
+	case F_JUMPHIST_PREV:	//	ç§»å‹•å±¥æ­´: å‰ã¸
 		if( pcEditDoc->m_pcEditWnd->GetActiveView().m_cHistory->CheckPrev() )
 			return true;
 		else
 			return false;
-	case F_JUMPHIST_NEXT:	//	ˆÚ“®—š—ð: ŽŸ‚Ö
+	case F_JUMPHIST_NEXT:	//	ç§»å‹•å±¥æ­´: æ¬¡ã¸
 		if( pcEditDoc->m_pcEditWnd->GetActiveView().m_cHistory->CheckNext() )
 			return true;
 		else
 			return false;
-	case F_JUMPHIST_SET:	//	Œ»ÝˆÊ’u‚ðˆÚ“®—š—ð‚É“o˜^
+	case F_JUMPHIST_SET:	//	ç¾åœ¨ä½ç½®ã‚’ç§»å‹•å±¥æ­´ã«ç™»éŒ²
 		return true;
-	// 20100402 Moca (–³‘è)‚àƒ_ƒCƒŒƒNƒgƒ^ƒOƒWƒƒƒ“ƒv‚Å‚«‚é‚æ‚¤‚É
-	case F_DIRECT_TAGJUMP:	//ƒ_ƒCƒŒƒNƒgƒ^ƒOƒWƒƒƒ“ƒv	//@@@ 2003.04.15 MIK
-	case F_SYMBOL_SEARCH:	//ƒVƒ“ƒ{ƒ‹ŒŸõ(ƒL[ƒ[ƒhŽw’èƒ^ƒOƒWƒƒƒ“ƒv)
-	//	2003.05.12 MIK ƒ^ƒOƒtƒ@ƒCƒ‹ì¬æ‚ð‘I‚×‚é‚æ‚¤‚É‚µ‚½‚Ì‚ÅAí‚Éì¬‰Â”\‚Æ‚·‚é
-//	case F_TAGS_MAKE:	//ƒ^ƒOƒtƒ@ƒCƒ‹‚Ìì¬	//@@@ 2003.04.13 MIK
+	// 20100402 Moca (ç„¡é¡Œ)ã‚‚ãƒ€ã‚¤ãƒ¬ã‚¯ãƒˆã‚¿ã‚°ã‚¸ãƒ£ãƒ³ãƒ—ã§ãã‚‹ã‚ˆã†ã«
+	case F_DIRECT_TAGJUMP:	//ãƒ€ã‚¤ãƒ¬ã‚¯ãƒˆã‚¿ã‚°ã‚¸ãƒ£ãƒ³ãƒ—	//@@@ 2003.04.15 MIK
+	case F_SYMBOL_SEARCH:	//ã‚·ãƒ³ãƒœãƒ«æ¤œç´¢(ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰æŒ‡å®šã‚¿ã‚°ã‚¸ãƒ£ãƒ³ãƒ—)
+	//	2003.05.12 MIK ã‚¿ã‚°ãƒ•ã‚¡ã‚¤ãƒ«ä½œæˆå…ˆã‚’é¸ã¹ã‚‹ã‚ˆã†ã«ã—ãŸã®ã§ã€å¸¸ã«ä½œæˆå¯èƒ½ã¨ã™ã‚‹
+//	case F_TAGS_MAKE:	//ã‚¿ã‚°ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½œæˆ	//@@@ 2003.04.13 MIK
 		if( false == CEditApp::getInstance()->m_pcGrepAgent->m_bGrepMode
 			&& pcEditDoc->m_cDocFile.GetFilePathClass().IsValidPath() ){
 			return true;
@@ -790,28 +790,28 @@ bool IsFuncEnable( CEditDoc* pcEditDoc, DLLSHAREDATA* pShareData, EFunctionCode 
 			return false;
 		}
 	
-	//ƒ^ƒuƒ‚[ƒhŽž‚ÍƒEƒCƒ“ƒhƒE•À‚×‘Ö‚¦‹ÖŽ~‚Å‚·B	@@@ 2003.06.12 MIK
+	//ã‚¿ãƒ–ãƒ¢ãƒ¼ãƒ‰æ™‚ã¯ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ä¸¦ã¹æ›¿ãˆç¦æ­¢ã§ã™ã€‚	@@@ 2003.06.12 MIK
 	case F_TILE_H:
 	case F_TILE_V:
 	case F_CASCADE:
-		//Start 2004.07.15 Kazika ƒ^ƒuƒEƒBƒ“ƒhŽž‚àŽÀs‰Â”\
+		//Start 2004.07.15 Kazika ã‚¿ãƒ–ã‚¦ã‚£ãƒ³ãƒ‰æ™‚ã‚‚å®Ÿè¡Œå¯èƒ½
 		return true;
 		//End 2004.07.15 Kazika
-	case F_BIND_WINDOW:	//2004.07.14 Kazika V‹K’Ç‰Á
-	case F_TAB_MOVERIGHT:	// 2007.06.20 ryoji ’Ç‰Á
-	case F_TAB_MOVELEFT:	// 2007.06.20 ryoji ’Ç‰Á
-	case F_TAB_CLOSELEFT:	// 2009.12.26 syat ’Ç‰Á
-	case F_TAB_CLOSERIGHT:	// 2009.12.26 syat ’Ç‰Á
-		//”ñƒ^ƒuƒ‚[ƒhŽž‚ÍƒEƒBƒ“ƒhƒE‚ðŒ‹‡‚µ‚Ä•\Ž¦‚Å‚«‚È‚¢
+	case F_BIND_WINDOW:	//2004.07.14 Kazika æ–°è¦è¿½åŠ 
+	case F_TAB_MOVERIGHT:	// 2007.06.20 ryoji è¿½åŠ 
+	case F_TAB_MOVELEFT:	// 2007.06.20 ryoji è¿½åŠ 
+	case F_TAB_CLOSELEFT:	// 2009.12.26 syat è¿½åŠ 
+	case F_TAB_CLOSERIGHT:	// 2009.12.26 syat è¿½åŠ 
+		//éžã‚¿ãƒ–ãƒ¢ãƒ¼ãƒ‰æ™‚ã¯ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’çµåˆã—ã¦è¡¨ç¤ºã§ããªã„
 		return pShareData->m_Common.m_sTabBar.m_bDispTabWnd != FALSE;
-	case F_GROUPCLOSE:		// 2007.06.20 ryoji ’Ç‰Á
-	case F_NEXTGROUP:		// 2007.06.20 ryoji ’Ç‰Á
-	case F_PREVGROUP:		// 2007.06.20 ryoji ’Ç‰Á
+	case F_GROUPCLOSE:		// 2007.06.20 ryoji è¿½åŠ 
+	case F_NEXTGROUP:		// 2007.06.20 ryoji è¿½åŠ 
+	case F_PREVGROUP:		// 2007.06.20 ryoji è¿½åŠ 
 		return ( pShareData->m_Common.m_sTabBar.m_bDispTabWnd && !pShareData->m_Common.m_sTabBar.m_bDispTabWndMultiWin );
-	case F_TAB_SEPARATE:	// 2007.06.20 ryoji ’Ç‰Á
-	case F_TAB_JOINTNEXT:	// 2007.06.20 ryoji ’Ç‰Á
-	case F_TAB_JOINTPREV:	// 2007.06.20 ryoji ’Ç‰Á
-	case F_FILENEW_NEWWINDOW:	// 2011.11.15 syat ’Ç‰Á
+	case F_TAB_SEPARATE:	// 2007.06.20 ryoji è¿½åŠ 
+	case F_TAB_JOINTNEXT:	// 2007.06.20 ryoji è¿½åŠ 
+	case F_TAB_JOINTPREV:	// 2007.06.20 ryoji è¿½åŠ 
+	case F_FILENEW_NEWWINDOW:	// 2011.11.15 syat è¿½åŠ 
 		return ( pShareData->m_Common.m_sTabBar.m_bDispTabWnd && !pShareData->m_Common.m_sTabBar.m_bDispTabWndMultiWin );
 	}
 	return true;
@@ -819,13 +819,13 @@ bool IsFuncEnable( CEditDoc* pcEditDoc, DLLSHAREDATA* pShareData, EFunctionCode 
 
 
 
-/* ‹@”\‚ªƒ`ƒFƒbƒNó‘Ô‚©’²‚×‚é */
+/* æ©Ÿèƒ½ãŒãƒã‚§ãƒƒã‚¯çŠ¶æ…‹ã‹èª¿ã¹ã‚‹ */
 bool IsFuncChecked( CEditDoc* pcEditDoc, DLLSHAREDATA*	pShareData, EFunctionCode nId )
 {
 	CEditWnd* pCEditWnd;
 	// Modified by KEITA for WIN64 2003.9.6
 	pCEditWnd = ( CEditWnd* )::GetWindowLongPtr( CEditWnd::getInstance()->GetHwnd(), GWLP_USERDATA );
-//@@@ 2002.01.14 YAZAKI ˆóüƒvƒŒƒrƒ…[‚ðCPrintPreview‚É“Æ—§‚³‚¹‚½‚±‚Æ‚É‚æ‚èAƒvƒŒƒrƒ…[”»’èíœ
+//@@@ 2002.01.14 YAZAKI å°åˆ·ãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼ã‚’CPrintPreviewã«ç‹¬ç«‹ã•ã›ãŸã“ã¨ã«ã‚ˆã‚Šã€ãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼åˆ¤å®šå‰Šé™¤
 	ECodeType eDocCode = pcEditDoc->GetDocumentEncoding();
 	switch( nId ){
 	case F_FILE_REOPEN_SJIS:		return CODE_SJIS == eDocCode;
@@ -837,9 +837,9 @@ bool IsFuncChecked( CEditDoc* pcEditDoc, DLLSHAREDATA*	pShareData, EFunctionCode
 	case F_FILE_REOPEN_UTF8:		return CODE_UTF8 == eDocCode;
 	case F_FILE_REOPEN_CESU8:		return CODE_CESU8 == eDocCode;
 	case F_FILE_REOPEN_UTF7:		return CODE_UTF7 == eDocCode;
-	case F_RECKEYMACRO:	/* ƒL[ƒ}ƒNƒ‚Ì‹L˜^ŠJŽn^I—¹ */
-		if( pShareData->m_sFlags.m_bRecordingKeyMacro ){	/* ƒL[ƒ{[ƒhƒ}ƒNƒ‚Ì‹L˜^’† */
-			if( pShareData->m_sFlags.m_hwndRecordingKeyMacro == CEditWnd::getInstance()->GetHwnd() ){	/* ƒL[ƒ{[ƒhƒ}ƒNƒ‚ð‹L˜^’†‚ÌƒEƒBƒ“ƒhƒE */
+	case F_RECKEYMACRO:	/* ã‚­ãƒ¼ãƒžã‚¯ãƒ­ã®è¨˜éŒ²é–‹å§‹ï¼çµ‚äº† */
+		if( pShareData->m_sFlags.m_bRecordingKeyMacro ){	/* ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ãƒžã‚¯ãƒ­ã®è¨˜éŒ²ä¸­ */
+			if( pShareData->m_sFlags.m_hwndRecordingKeyMacro == CEditWnd::getInstance()->GetHwnd() ){	/* ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ãƒžã‚¯ãƒ­ã‚’è¨˜éŒ²ä¸­ã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ */
 				return true;
 			}else{
 				return false;
@@ -851,27 +851,27 @@ bool IsFuncChecked( CEditDoc* pcEditDoc, DLLSHAREDATA*	pShareData, EFunctionCode
 	case F_SHOWFUNCKEY:			return pCEditWnd->m_CFuncKeyWnd.GetHwnd() != NULL;
 	case F_SHOWTAB:				return pCEditWnd->m_cTabWnd.GetHwnd() != NULL;	//@@@ 2003.06.10 MIK
 	case F_SHOWSTATUSBAR:		return pCEditWnd->m_cStatusBar.GetStatusHwnd() != NULL;
-	// 2008.05.30 nasukoji	ƒeƒLƒXƒg‚ÌÜ‚è•Ô‚µ•û–@
-	case F_TMPWRAPNOWRAP:		return ( pcEditDoc->m_nTextWrapMethodCur == WRAP_NO_TEXT_WRAP );		// Ü‚è•Ô‚³‚È‚¢
-	case F_TMPWRAPSETTING:		return ( pcEditDoc->m_nTextWrapMethodCur == WRAP_SETTING_WIDTH );		// Žw’èŒ…‚ÅÜ‚è•Ô‚·
-	case F_TMPWRAPWINDOW:		return ( pcEditDoc->m_nTextWrapMethodCur == WRAP_WINDOW_WIDTH );		// ‰E’[‚ÅÜ‚è•Ô‚·
-	// 2009.07.06 syat  •¶ŽšƒJƒEƒ“ƒg•û–@
+	// 2008.05.30 nasukoji	ãƒ†ã‚­ã‚¹ãƒˆã®æŠ˜ã‚Šè¿”ã—æ–¹æ³•
+	case F_TMPWRAPNOWRAP:		return ( pcEditDoc->m_nTextWrapMethodCur == WRAP_NO_TEXT_WRAP );		// æŠ˜ã‚Šè¿”ã•ãªã„
+	case F_TMPWRAPSETTING:		return ( pcEditDoc->m_nTextWrapMethodCur == WRAP_SETTING_WIDTH );		// æŒ‡å®šæ¡ã§æŠ˜ã‚Šè¿”ã™
+	case F_TMPWRAPWINDOW:		return ( pcEditDoc->m_nTextWrapMethodCur == WRAP_WINDOW_WIDTH );		// å³ç«¯ã§æŠ˜ã‚Šè¿”ã™
+	// 2009.07.06 syat  æ–‡å­—ã‚«ã‚¦ãƒ³ãƒˆæ–¹æ³•
 	case F_SELECT_COUNT_MODE:	return ( pCEditWnd->m_nSelectCountMode == SELECT_COUNT_TOGGLE ?
 											pShareData->m_Common.m_sStatusbar.m_bDispSelCountByByte == TRUE :
 											pCEditWnd->m_nSelectCountMode == SELECT_COUNT_BY_BYTE );
 	// Mar. 6, 2002 genta
-	case F_VIEWMODE:			return CAppMode::getInstance()->IsViewMode(); //ƒrƒ…[ƒ‚[ƒh
+	case F_VIEWMODE:			return CAppMode::getInstance()->IsViewMode(); //ãƒ“ãƒ¥ãƒ¼ãƒ¢ãƒ¼ãƒ‰
 	//	From Here 2003.06.23 Moca
 	case F_CHGMOD_EOL_CRLF:		return EOL_CRLF == pcEditDoc->m_cDocEditor.GetNewLineCode();
 	case F_CHGMOD_EOL_LF:		return EOL_LF == pcEditDoc->m_cDocEditor.GetNewLineCode();
 	case F_CHGMOD_EOL_CR:		return EOL_CR == pcEditDoc->m_cDocEditor.GetNewLineCode();
 	//	To Here 2003.06.23 Moca
 	//	2003.07.21 genta
-	case F_CHGMOD_INS:			return pcEditDoc->m_cDocEditor.IsInsMode();	//	Oct. 2, 2005 genta ‘}“üƒ‚[ƒh‚ÍƒhƒLƒ…ƒƒ“ƒg–ˆ‚É•âŠ®‚·‚é‚æ‚¤‚É•ÏX‚µ‚½
-	case F_TOGGLE_KEY_SEARCH:	return pShareData->m_Common.m_sSearch.m_bUseCaretKeyWord != FALSE;	//	2007.02.03 genta ƒL[ƒ[ƒhƒ|ƒbƒvƒAƒbƒv‚ÌON/OFFó‘Ô‚ð”½‰f‚·‚é
-	case F_BIND_WINDOW:			return ((pShareData->m_Common.m_sTabBar.m_bDispTabWnd) && !(pShareData->m_Common.m_sTabBar.m_bDispTabWndMultiWin));	//2004.07.14 Kazika ’Ç‰Á
+	case F_CHGMOD_INS:			return pcEditDoc->m_cDocEditor.IsInsMode();	//	Oct. 2, 2005 genta æŒ¿å…¥ãƒ¢ãƒ¼ãƒ‰ã¯ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆæ¯Žã«è£œå®Œã™ã‚‹ã‚ˆã†ã«å¤‰æ›´ã—ãŸ
+	case F_TOGGLE_KEY_SEARCH:	return pShareData->m_Common.m_sSearch.m_bUseCaretKeyWord != FALSE;	//	2007.02.03 genta ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ãƒãƒƒãƒ—ã‚¢ãƒƒãƒ—ã®ON/OFFçŠ¶æ…‹ã‚’åæ˜ ã™ã‚‹
+	case F_BIND_WINDOW:			return ((pShareData->m_Common.m_sTabBar.m_bDispTabWnd) && !(pShareData->m_Common.m_sTabBar.m_bDispTabWndMultiWin));	//2004.07.14 Kazika è¿½åŠ 
 	case F_TOPMOST:				return ((DWORD)::GetWindowLongPtr( pCEditWnd->GetHwnd(), GWL_EXSTYLE ) & WS_EX_TOPMOST) != 0;	// 2004.09.21 Moca
-	// Jan. 10, 2004 genta ƒCƒ“ƒNƒŠƒƒ“ƒ^ƒ‹ƒT[ƒ`
+	// Jan. 10, 2004 genta ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ã‚¿ãƒ«ã‚µãƒ¼ãƒ
 	case F_ISEARCH_NEXT:
 	case F_ISEARCH_PREV:
 	case F_ISEARCH_REGEXP_NEXT:
@@ -879,8 +879,8 @@ bool IsFuncChecked( CEditDoc* pcEditDoc, DLLSHAREDATA*	pShareData, EFunctionCode
 	case F_ISEARCH_MIGEMO_NEXT:
 	case F_ISEARCH_MIGEMO_PREV:
 		return pcEditDoc->m_pcEditWnd->GetActiveView().IsISearchEnabled( nId );
-	case F_OUTLINE_TOGGLE: // 20060201 aroka ƒAƒEƒgƒ‰ƒCƒ“ƒEƒBƒ“ƒhƒE
-		// ToDo:ƒuƒbƒNƒ}[ƒNƒŠƒXƒg‚ªo‚Ä‚¢‚é‚Æ‚«‚à‚Ö‚±‚ñ‚Å‚µ‚Ü‚¤B
+	case F_OUTLINE_TOGGLE: // 20060201 aroka ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦
+		// ToDo:ãƒ–ãƒƒã‚¯ãƒžãƒ¼ã‚¯ãƒªã‚¹ãƒˆãŒå‡ºã¦ã„ã‚‹ã¨ãã‚‚ã¸ã“ã‚“ã§ã—ã¾ã†ã€‚
 		return pcEditDoc->m_pcEditWnd->m_cDlgFuncList.GetHwnd() != NULL;
 	}
 	//End 2004.07.14 Kazika

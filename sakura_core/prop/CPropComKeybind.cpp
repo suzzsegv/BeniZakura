@@ -1,5 +1,5 @@
 /*!	@file
-	@brief ‹¤’Êİ’èƒ_ƒCƒAƒƒOƒ{ƒbƒNƒXAuƒL[ƒoƒCƒ“ƒhvƒy[ƒW
+	@brief å…±é€šè¨­å®šãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒœãƒƒã‚¯ã‚¹ã€ã€Œã‚­ãƒ¼ãƒã‚¤ãƒ³ãƒ‰ã€ãƒšãƒ¼ã‚¸
 
 	@author Norio Nakatani
 */
@@ -33,10 +33,10 @@
 
 //	From Here Jun. 2, 2001 genta
 /*!
-	@param hwndDlg ƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX‚ÌWindow Handle
-	@param uMsg ƒƒbƒZ[ƒW
-	@param wParam ƒpƒ‰ƒ[ƒ^1
-	@param lParam ƒpƒ‰ƒ[ƒ^2
+	@param hwndDlg ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒœãƒƒã‚¯ã‚¹ã®Window Handle
+	@param uMsg ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+	@param wParam ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿1
+	@param lParam ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿2
 */
 INT_PTR CALLBACK CPropKeybind::DlgProc_page(
 	HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam )
@@ -45,14 +45,14 @@ INT_PTR CALLBACK CPropKeybind::DlgProc_page(
 }
 //	To Here Jun. 2, 2001 genta
 
-/* From Here Oct. 13, 2000 Studio C‚ÅMr.ƒR[ƒq[‚É‹³‚í‚Á‚½‚â‚è•û‚Å‚·‚ª‚¤‚Ü‚­‚¢‚Á‚Ä‚Ü‚¹‚ñ */
-// ƒEƒBƒ“ƒhƒEƒvƒƒV[ƒWƒƒ‚Ì’†‚ÅEEE
+/* From Here Oct. 13, 2000 Studio Cã§Mr.ã‚³ãƒ¼ãƒ’ãƒ¼æ°ã«æ•™ã‚ã£ãŸã‚„ã‚Šæ–¹ã§ã™ãŒã†ã¾ãã„ã£ã¦ã¾ã›ã‚“ */
+// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£ã®ä¸­ã§ãƒ»ãƒ»ãƒ»
 LRESULT CALLBACK CPropComKeybindWndProc( HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam )
 {
 	switch( uMsg ) {
-	// WM_CTLCOLORSTATIC ƒƒbƒZ[ƒW‚É‘Î‚µ‚Ä
+	// WM_CTLCOLORSTATIC ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã«å¯¾ã—ã¦
 	case WM_CTLCOLORSTATIC:
-	// ”’F‚Ìƒuƒ‰ƒVƒnƒ“ƒhƒ‹‚ğ•Ô‚·
+	// ç™½è‰²ã®ãƒ–ãƒ©ã‚·ãƒãƒ³ãƒ‰ãƒ«ã‚’è¿”ã™
 		return (LRESULT)GetStockObject(WHITE_BRUSH);
 //	default:
 //		break;
@@ -67,7 +67,7 @@ LRESULT CALLBACK CPropComKeybindWndProc( HWND hwndDlg, UINT uMsg, WPARAM wParam,
 
 
 
-/* Keybind ƒƒbƒZ[ƒWˆ— */
+/* Keybind ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å‡¦ç† */
 INT_PTR CPropKeybind::DispatchEvent(
 	HWND	hwndDlg,	// handle to dialog box
 	UINT	uMsg,	// message
@@ -105,16 +105,16 @@ INT_PTR CPropKeybind::DispatchEvent(
 	case WM_INITDIALOG:
 		HWND	hwndWork;
 		hwndWork = ::GetDlgItem(hwndDlg, IDC_COMBO_KEY_BIND_PRESET);
-		Combo_AddString(hwndWork, L"g÷");
-		Combo_AddString(hwndWork, L"ƒTƒNƒ‰ƒGƒfƒBƒ^");
-		Combo_AddString(hwndWork, L"GŠÛƒGƒfƒBƒ^");
+		Combo_AddString(hwndWork, L"ç´…æ¡œ");
+		Combo_AddString(hwndWork, L"ã‚µã‚¯ãƒ©ã‚¨ãƒ‡ã‚£ã‚¿");
+		Combo_AddString(hwndWork, L"ç§€ä¸¸ã‚¨ãƒ‡ã‚£ã‚¿");
 
-		/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìİ’è Keybind */
+		/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®è¨­å®š Keybind */
 		SetData( hwndDlg );
 		// Modified by KEITA for WIN64 2003.9.6
 		::SetWindowLongPtr( hwndDlg, DWLP_USER, lParam );
 
-		/* ƒRƒ“ƒgƒ[ƒ‹‚Ìƒnƒ“ƒhƒ‹‚ğæ“¾ */
+		/* ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã®ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾— */
 		hwndCombo = ::GetDlgItem( hwndDlg, IDC_COMBO_FUNCKIND );
 		hwndFuncList = ::GetDlgItem( hwndDlg, IDC_LIST_FUNC );
 		hwndAssignedkeyList = ::GetDlgItem( hwndDlg, IDC_LIST_ASSIGNEDKEYS );
@@ -125,11 +125,11 @@ INT_PTR CPropKeybind::DispatchEvent(
 //		hwndLIST_KEYSFUNC = ::GetDlgItem( hwndDlg, IDC_LIST_KEYSFUNC );
 		hwndEDIT_KEYSFUNC = ::GetDlgItem( hwndDlg, IDC_EDIT_KEYSFUNC );
 
-		/* ƒL[‘I‘ğ‚Ìˆ— */
-//	From Here Oct. 14, 2000 JEPRO ‚í‚©‚è‚É‚­‚¢‚Ì‚Å‘I‘ğ‚µ‚È‚¢‚æ‚¤‚É•ÏX	//Oct. 17, 2000 JEPRO •œŠˆI
-//	/* ƒL[ƒŠƒXƒg‚Ìæ“ª‚Ì€–Ú‚ğ‘I‘ğiƒŠƒXƒgƒ{ƒbƒNƒXj*/
-		List_SetCurSel( hwndKeyList, 0 );	//Oct. 14, 2000 JEPRO ‚±‚±‚ğƒRƒƒ“ƒgƒAƒEƒg‚·‚é‚Ææ“ª€–Ú‚ª‘I‘ğ‚³‚ê‚È‚­‚È‚é
-		::SendMessageCmd( hwndDlg, WM_COMMAND, MAKELONG( IDC_LIST_KEY, LBN_SELCHANGE ), (LPARAM)hwndKeyList );	//Oct. 14, 2000 JEPRO ‚±‚±‚Í‚Ç‚Á‚¿‚Å‚à‚¢‚¢H(‚í‚©‚ç‚ñ)
+		/* ã‚­ãƒ¼é¸æŠæ™‚ã®å‡¦ç† */
+//	From Here Oct. 14, 2000 JEPRO ã‚ã‹ã‚Šã«ãã„ã®ã§é¸æŠã—ãªã„ã‚ˆã†ã«å¤‰æ›´	//Oct. 17, 2000 JEPRO å¾©æ´»ï¼
+//	/* ã‚­ãƒ¼ãƒªã‚¹ãƒˆã®å…ˆé ­ã®é …ç›®ã‚’é¸æŠï¼ˆãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ï¼‰*/
+		List_SetCurSel( hwndKeyList, 0 );	//Oct. 14, 2000 JEPRO ã“ã“ã‚’ã‚³ãƒ¡ãƒ³ãƒˆã‚¢ã‚¦ãƒˆã™ã‚‹ã¨å…ˆé ­é …ç›®ãŒé¸æŠã•ã‚Œãªããªã‚‹
+		::SendMessageCmd( hwndDlg, WM_COMMAND, MAKELONG( IDC_LIST_KEY, LBN_SELCHANGE ), (LPARAM)hwndKeyList );	//Oct. 14, 2000 JEPRO ã“ã“ã¯ã©ã£ã¡ã§ã‚‚ã„ã„ï¼Ÿ(ã‚ã‹ã‚‰ã‚“)
 //	To Here Oct. 14, 2000
 		::SendMessageCmd( hwndDlg, WM_COMMAND, MAKELONG( IDC_COMBO_FUNCKIND, CBN_SELCHANGE ), (LPARAM)hwndCombo );
 
@@ -144,14 +144,14 @@ INT_PTR CPropKeybind::DispatchEvent(
 		switch( pNMHDR->code ){
 		case PSN_KILLACTIVE:
 //			MYTRACE( _T("Keybind PSN_KILLACTIVE\n") );
-			/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìæ“¾ Keybind */
+			/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®å–å¾— Keybind */
 			GetData( hwndDlg );
 			return TRUE;
-//@@@ 2002.01.03 YAZAKI ÅŒã‚É•\¦‚µ‚Ä‚¢‚½ƒV[ƒg‚ğ³‚µ‚­Šo‚¦‚Ä‚¢‚È‚¢ƒoƒOC³
+//@@@ 2002.01.03 YAZAKI æœ€å¾Œã«è¡¨ç¤ºã—ã¦ã„ãŸã‚·ãƒ¼ãƒˆã‚’æ­£ã—ãè¦šãˆã¦ã„ãªã„ãƒã‚°ä¿®æ­£
 		case PSN_SETACTIVE:
 			m_nPageNum = ID_PAGENUM_KEYBOARD;
 
-			// •\¦‚ğXV‚·‚éiƒ}ƒNƒİ’è‰æ–Ê‚Å‚Ìƒ}ƒNƒ–¼•ÏX‚ğ”½‰fj	// 2007.11.02 ryoji
+			// è¡¨ç¤ºã‚’æ›´æ–°ã™ã‚‹ï¼ˆãƒã‚¯ãƒ­è¨­å®šç”»é¢ã§ã®ãƒã‚¯ãƒ­åå¤‰æ›´ã‚’åæ˜ ï¼‰	// 2007.11.02 ryoji
 			nIndex = List_GetCurSel( hwndKeyList );
 			nIndex2 = Combo_GetCurSel( hwndCombo );
 			nIndex3 = List_GetCurSel( hwndFuncList );
@@ -169,23 +169,23 @@ INT_PTR CPropKeybind::DispatchEvent(
 		break;
 
 	case WM_COMMAND:
-		wNotifyCode = HIWORD(wParam);	/* ’Ê’mƒR[ƒh */
-		wID = LOWORD(wParam);	/* €–ÚID¤ ƒRƒ“ƒgƒ[ƒ‹ID¤ ‚Ü‚½‚ÍƒAƒNƒZƒ‰ƒŒ[ƒ^ID */
-		hwndCtl = (HWND) lParam;	/* ƒRƒ“ƒgƒ[ƒ‹‚Ìƒnƒ“ƒhƒ‹ */
+		wNotifyCode = HIWORD(wParam);	/* é€šçŸ¥ã‚³ãƒ¼ãƒ‰ */
+		wID = LOWORD(wParam);	/* é …ç›®IDã€ ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«IDã€ ã¾ãŸã¯ã‚¢ã‚¯ã‚»ãƒ©ãƒ¬ãƒ¼ã‚¿ID */
+		hwndCtl = (HWND) lParam;	/* ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã®ãƒãƒ³ãƒ‰ãƒ« */
 
 		switch( wNotifyCode ){
-		/* ƒ{ƒ^ƒ“^ƒ`ƒFƒbƒNƒ{ƒbƒNƒX‚ªƒNƒŠƒbƒN‚³‚ê‚½ */
+		/* ãƒœã‚¿ãƒ³ï¼ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹ãŒã‚¯ãƒªãƒƒã‚¯ã•ã‚ŒãŸ */
 		case BN_CLICKED:
 			switch( wID ){
-			case IDC_BUTTON_IMPORT:	/* ƒCƒ“ƒ|[ƒg */
-				/* Keybind:ƒL[Š„‚è“–‚Äİ’è‚ğƒCƒ“ƒ|[ƒg‚·‚é */
+			case IDC_BUTTON_IMPORT:	/* ã‚¤ãƒ³ãƒãƒ¼ãƒˆ */
+				/* Keybind:ã‚­ãƒ¼å‰²ã‚Šå½“ã¦è¨­å®šã‚’ã‚¤ãƒ³ãƒãƒ¼ãƒˆã™ã‚‹ */
 				Import( hwndDlg );
 				return TRUE;
-			case IDC_BUTTON_EXPORT:	/* ƒGƒNƒXƒ|[ƒg */
-				/* Keybind:ƒL[Š„‚è“–‚Äİ’è‚ğƒGƒNƒXƒ|[ƒg‚·‚é */
+			case IDC_BUTTON_EXPORT:	/* ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆ */
+				/* Keybind:ã‚­ãƒ¼å‰²ã‚Šå½“ã¦è¨­å®šã‚’ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆã™ã‚‹ */
 				Export( hwndDlg );
 				return TRUE;
-			case IDC_BUTTON_ASSIGN:	/* Š„•t */
+			case IDC_BUTTON_ASSIGN:	/* å‰²ä»˜ */
 				nIndex = List_GetCurSel( hwndKeyList );
 				nIndex2 = Combo_GetCurSel( hwndCombo );
 				nIndex3 = List_GetCurSel( hwndFuncList );
@@ -207,7 +207,7 @@ INT_PTR CPropKeybind::DispatchEvent(
 				::SendMessageCmd( hwndDlg, WM_COMMAND, MAKELONG( IDC_LIST_KEY, LBN_SELCHANGE ), (LPARAM)hwndKeyList );
 				::SendMessageCmd( hwndDlg, WM_COMMAND, MAKELONG( IDC_LIST_FUNC, LBN_SELCHANGE ), (LPARAM)hwndFuncList );
 				return TRUE;
-			case IDC_BUTTON_RELEASE:	/* ‰ğœ */
+			case IDC_BUTTON_RELEASE:	/* è§£é™¤ */
 				nIndex = List_GetCurSel( hwndKeyList );
 				if( nIndex == LB_ERR ){
 					return TRUE;
@@ -257,9 +257,9 @@ INT_PTR CPropKeybind::DispatchEvent(
 				}
 				nFuncCode = m_Common.m_sKeyBind.m_pKeyNameArr[nIndex].m_nFuncCodeArr[i];
 				// Oct. 2, 2001 genta
-				// 2007.11.02 ryoji F_DISABLE‚È‚ç–¢Š„•t
+				// 2007.11.02 ryoji F_DISABLEãªã‚‰æœªå‰²ä»˜
 				if( nFuncCode == F_DISABLE ){
-					auto_strcpy( pszLabel, LTEXT("–¢Š„•t") );
+					auto_strcpy( pszLabel, LTEXT("æœªå‰²ä»˜") );
 				}else{
 					m_cLookup.Funccode2Name( nFuncCode, pszLabel, 255 );
 				}
@@ -274,18 +274,18 @@ INT_PTR CPropKeybind::DispatchEvent(
 				nIndex2 = Combo_GetCurSel( hwndCombo );
 				nIndex3 = List_GetCurSel( hwndFuncList );
 				nFuncCode = m_cLookup.Pos2FuncCode( nIndex2, nIndex3 );	// Oct. 2, 2001 genta
-				/* ‹@”\‚É‘Î‰‚·‚éƒL[–¼‚Ìæ“¾(•¡”) */
+				/* æ©Ÿèƒ½ã«å¯¾å¿œã™ã‚‹ã‚­ãƒ¼åã®å–å¾—(è¤‡æ•°) */
 				CNativeT**	ppcAssignedKeyList;
-				nAssignedKeyNum = CKeyBind::GetKeyStrList(	/* ‹@”\‚É‘Î‰‚·‚éƒL[–¼‚Ìæ“¾(•¡”) */
+				nAssignedKeyNum = CKeyBind::GetKeyStrList(	/* æ©Ÿèƒ½ã«å¯¾å¿œã™ã‚‹ã‚­ãƒ¼åã®å–å¾—(è¤‡æ•°) */
 					G_AppInstance(), m_Common.m_sKeyBind.m_nKeyNameArrNum, (KeyData*)m_Common.m_sKeyBind.m_pKeyNameArr,
 					&ppcAssignedKeyList, nFuncCode,
-					FALSE	// 2007.02.22 ryoji ƒfƒtƒHƒ‹ƒg‹@”\‚Íæ“¾‚µ‚È‚¢
+					FALSE	// 2007.02.22 ryoji ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆæ©Ÿèƒ½ã¯å–å¾—ã—ãªã„
 				);	
-				/* Š„‚è“–‚ÄƒL[ƒŠƒXƒg‚ğƒNƒŠƒA‚µ‚Ä’l‚Ìİ’è */
+				/* å‰²ã‚Šå½“ã¦ã‚­ãƒ¼ãƒªã‚¹ãƒˆã‚’ã‚¯ãƒªã‚¢ã—ã¦å€¤ã®è¨­å®š */
 				List_ResetContent( hwndAssignedkeyList );
 				if( 0 < nAssignedKeyNum){
 					for( j = 0; j < nAssignedKeyNum; ++j ){
-						/* ƒfƒoƒbƒOƒ‚ƒjƒ^‚Éo—Í */
+						/* ãƒ‡ãƒãƒƒã‚°ãƒ¢ãƒ‹ã‚¿ã«å‡ºåŠ› */
 						const TCHAR* cpszString = ppcAssignedKeyList[j]->GetStringPtr();
 						::List_AddString( hwndAssignedkeyList, cpszString );
 						delete ppcAssignedKeyList[j];
@@ -299,7 +299,7 @@ INT_PTR CPropKeybind::DispatchEvent(
 			switch( wNotifyCode ){
 			case CBN_SELCHANGE:
 				nIndex2 = Combo_GetCurSel( hwndCombo );
-				/* ‹@”\ˆê——‚É•¶š—ñ‚ğƒZƒbƒgiƒŠƒXƒgƒ{ƒbƒNƒXj*/
+				/* æ©Ÿèƒ½ä¸€è¦§ã«æ–‡å­—åˆ—ã‚’ã‚»ãƒƒãƒˆï¼ˆãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ï¼‰*/
 				m_cLookup.SetListItem( hwndFuncList, nIndex2 );	//	Oct. 2, 2001 genta
 				return TRUE;
 			}
@@ -341,15 +341,15 @@ INT_PTR CPropKeybind::DispatchEvent(
 							if( _tcscmp(m_Common.m_sKeyBind.m_pKeyNameArr[j].m_szKeyName, p) == 0 )
 							{
 								List_SetCurSel( hwndKeyList, j);
-								if( i & _SHIFT ) ::CheckDlgButton( hwndDlg, IDC_CHECK_SHIFT, BST_CHECKED );  //ƒ`ƒFƒbƒN
-								else             ::CheckDlgButton( hwndDlg, IDC_CHECK_SHIFT, BST_UNCHECKED );  //ƒ`ƒFƒbƒN‚ğ‚Í‚¸‚·
-								if( i & _CTRL )  ::CheckDlgButton( hwndDlg, IDC_CHECK_CTRL,  BST_CHECKED );  //ƒ`ƒFƒbƒN
-								else             ::CheckDlgButton( hwndDlg, IDC_CHECK_CTRL,  BST_UNCHECKED );  //ƒ`ƒFƒbƒN‚ğ‚Í‚¸‚·
-								if( i & _ALT )   ::CheckDlgButton( hwndDlg, IDC_CHECK_ALT,   BST_CHECKED );  //ƒ`ƒFƒbƒN
-								else             ::CheckDlgButton( hwndDlg, IDC_CHECK_ALT,   BST_UNCHECKED );  //ƒ`ƒFƒbƒN‚ğ‚Í‚¸‚·
+								if( i & _SHIFT ) ::CheckDlgButton( hwndDlg, IDC_CHECK_SHIFT, BST_CHECKED );  //ãƒã‚§ãƒƒã‚¯
+								else             ::CheckDlgButton( hwndDlg, IDC_CHECK_SHIFT, BST_UNCHECKED );  //ãƒã‚§ãƒƒã‚¯ã‚’ã¯ãšã™
+								if( i & _CTRL )  ::CheckDlgButton( hwndDlg, IDC_CHECK_CTRL,  BST_CHECKED );  //ãƒã‚§ãƒƒã‚¯
+								else             ::CheckDlgButton( hwndDlg, IDC_CHECK_CTRL,  BST_UNCHECKED );  //ãƒã‚§ãƒƒã‚¯ã‚’ã¯ãšã™
+								if( i & _ALT )   ::CheckDlgButton( hwndDlg, IDC_CHECK_ALT,   BST_CHECKED );  //ãƒã‚§ãƒƒã‚¯
+								else             ::CheckDlgButton( hwndDlg, IDC_CHECK_ALT,   BST_UNCHECKED );  //ãƒã‚§ãƒƒã‚¯ã‚’ã¯ãšã™
 								::SendMessageCmd( hwndDlg, WM_COMMAND, MAKELONG( IDC_LIST_KEY, LBN_SELCHANGE ), (LPARAM)hwndKeyList );
 
-								// ƒL[ˆê——‚Ì•¶š—ñ‚à•ÏX
+								// ã‚­ãƒ¼ä¸€è¦§ã®æ–‡å­—åˆ—ã‚‚å¤‰æ›´
 								ChangeKeyList( hwndDlg );
 								break;
 							}
@@ -389,7 +389,7 @@ INT_PTR CPropKeybind::DispatchEvent(
 		break;
 
 	case WM_TIMER:
-		// ƒ{ƒ^ƒ“‚Ì—LŒø^–³Œø‚ğØ‚è‘Ö‚¦‚é	// 2007.11.02 ryoji
+		// ãƒœã‚¿ãƒ³ã®æœ‰åŠ¹ï¼ç„¡åŠ¹ã‚’åˆ‡ã‚Šæ›¿ãˆã‚‹	// 2007.11.02 ryoji
 		nIndex = List_GetCurSel( hwndKeyList );
 		nIndex2 = Combo_GetCurSel( hwndCombo );
 		nIndex3 = List_GetCurSel( hwndFuncList );
@@ -411,27 +411,27 @@ INT_PTR CPropKeybind::DispatchEvent(
 
 
 
-/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìİ’è Keybind */
+/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®è¨­å®š Keybind */
 void CPropKeybind::SetData( HWND hwndDlg )
 {
 	HWND		hwndCombo;
 	HWND		hwndKeyList;
 	int			i;
 
-	/* ‹@”\í•Êˆê——‚É•¶š—ñ‚ğƒZƒbƒgiƒRƒ“ƒ{ƒ{ƒbƒNƒXj*/
+	/* æ©Ÿèƒ½ç¨®åˆ¥ä¸€è¦§ã«æ–‡å­—åˆ—ã‚’ã‚»ãƒƒãƒˆï¼ˆã‚³ãƒ³ãƒœãƒœãƒƒã‚¯ã‚¹ï¼‰*/
 	hwndCombo = ::GetDlgItem( hwndDlg, IDC_COMBO_FUNCKIND );
 	m_cLookup.SetCategory2Combo( hwndCombo );	//	Oct. 2, 2001 genta
 
-	/* í•Ê‚Ìæ“ª‚Ì€–Ú‚ğ‘I‘ğiƒRƒ“ƒ{ƒ{ƒbƒNƒXj*/
-	Combo_SetCurSel( hwndCombo, 0 );	//Oct. 14, 2000 JEPRO JEPRO u--–¢’è‹`--v‚ğ•\¦‚³‚¹‚È‚¢‚æ‚¤‚É‘åŒ³ Funcode.cpp ‚Å•ÏX‚µ‚Ä‚ ‚é
+	/* ç¨®åˆ¥ã®å…ˆé ­ã®é …ç›®ã‚’é¸æŠï¼ˆã‚³ãƒ³ãƒœãƒœãƒƒã‚¯ã‚¹ï¼‰*/
+	Combo_SetCurSel( hwndCombo, 0 );	//Oct. 14, 2000 JEPRO JEPRO ã€Œ--æœªå®šç¾©--ã€ã‚’è¡¨ç¤ºã•ã›ãªã„ã‚ˆã†ã«å¤§å…ƒ Funcode.cpp ã§å¤‰æ›´ã—ã¦ã‚ã‚‹
 
-	/* ƒL[ˆê——‚É•¶š—ñ‚ğƒZƒbƒgiƒŠƒXƒgƒ{ƒbƒNƒXj*/
+	/* ã‚­ãƒ¼ä¸€è¦§ã«æ–‡å­—åˆ—ã‚’ã‚»ãƒƒãƒˆï¼ˆãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ï¼‰*/
 	hwndKeyList = ::GetDlgItem( hwndDlg, IDC_LIST_KEY );
 	for( i = 0; i < m_Common.m_sKeyBind.m_nKeyNameArrNum; ++i ){
 		::List_AddString( hwndKeyList, m_Common.m_sKeyBind.m_pKeyNameArr[i].m_szKeyName );
 	}
 
-	// 2009.08.15 nasukoji	ƒEƒBƒ“ƒhƒE–ˆ‚ÉƒAƒNƒZƒ‰ƒŒ[ƒ^ƒe[ƒuƒ‹‚ğì¬‚·‚é(Wine—p)
+	// 2009.08.15 nasukoji	ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦æ¯ã«ã‚¢ã‚¯ã‚»ãƒ©ãƒ¬ãƒ¼ã‚¿ãƒ†ãƒ¼ãƒ–ãƒ«ã‚’ä½œæˆã™ã‚‹(Wineç”¨)
 	::CheckDlgButton( hwndDlg, IDC_CHECK_ACCELTBL_EACHWIN, m_Common.m_sKeyBind.m_bCreateAccelTblEachWin );
 
 	return;
@@ -439,18 +439,18 @@ void CPropKeybind::SetData( HWND hwndDlg )
 
 
 
-/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìæ“¾ Keybind */
+/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®å–å¾— Keybind */
 int CPropKeybind::GetData( HWND hwndDlg )
 {
-//@@@ 2002.01.03 YAZAKI ÅŒã‚É•\¦‚µ‚Ä‚¢‚½ƒV[ƒg‚ğ³‚µ‚­Šo‚¦‚Ä‚¢‚È‚¢ƒoƒOC³
+//@@@ 2002.01.03 YAZAKI æœ€å¾Œã«è¡¨ç¤ºã—ã¦ã„ãŸã‚·ãƒ¼ãƒˆã‚’æ­£ã—ãè¦šãˆã¦ã„ãªã„ãƒã‚°ä¿®æ­£
 //	m_nPageNum = ID_PAGENUM_KEYBOARD;
-	// 2009.08.15 nasukoji	ƒEƒBƒ“ƒhƒE–ˆ‚ÉƒAƒNƒZƒ‰ƒŒ[ƒ^ƒe[ƒuƒ‹‚ğì¬‚·‚é(Wine—p)
+	// 2009.08.15 nasukoji	ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦æ¯ã«ã‚¢ã‚¯ã‚»ãƒ©ãƒ¬ãƒ¼ã‚¿ãƒ†ãƒ¼ãƒ–ãƒ«ã‚’ä½œæˆã™ã‚‹(Wineç”¨)
 	m_Common.m_sKeyBind.m_bCreateAccelTblEachWin = ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_ACCELTBL_EACHWIN );
 
 	return TRUE;
 }
 	
-/*! Keybind: ƒL[ƒŠƒXƒg‚ğƒ`ƒFƒbƒNƒ{ƒbƒNƒX‚Ìó‘Ô‚É‡‚í‚¹‚ÄXV‚·‚é */
+/*! Keybind: ã‚­ãƒ¼ãƒªã‚¹ãƒˆã‚’ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹ã®çŠ¶æ…‹ã«åˆã‚ã›ã¦æ›´æ–°ã™ã‚‹ */
 void CPropKeybind::ChangeKeyList( HWND hwndDlg){
 	HWND	hwndKeyList;
 	int 	nIndex;
@@ -475,7 +475,7 @@ void CPropKeybind::ChangeKeyList( HWND hwndDlg){
 		i |= _ALT;
 		wcscat( szKeyState, L"Alt+" );
 	}
-	/* ƒL[ˆê——‚É•¶š—ñ‚ğƒZƒbƒgiƒŠƒXƒgƒ{ƒbƒNƒXj*/
+	/* ã‚­ãƒ¼ä¸€è¦§ã«æ–‡å­—åˆ—ã‚’ã‚»ãƒƒãƒˆï¼ˆãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ï¼‰*/
 	List_ResetContent( hwndKeyList );
 	for( i = 0; i < m_Common.m_sKeyBind.m_nKeyNameArrNum; ++i ){
 		TCHAR	pszLabel[256];
@@ -487,38 +487,38 @@ void CPropKeybind::ChangeKeyList( HWND hwndDlg){
 	::SendMessageCmd( hwndDlg, WM_COMMAND, MAKELONG( IDC_LIST_KEY, LBN_SELCHANGE ), (LPARAM)hwndKeyList );
 }
 
-/* Keybind:ƒL[Š„‚è“–‚Äİ’è‚ğƒCƒ“ƒ|[ƒg‚·‚é */
+/* Keybind:ã‚­ãƒ¼å‰²ã‚Šå½“ã¦è¨­å®šã‚’ã‚¤ãƒ³ãƒãƒ¼ãƒˆã™ã‚‹ */
 void CPropKeybind::Import( HWND hwndDlg )
 {
 	CImpExpKeybind	cImpExpKeybind( m_Common );
 
-	// ƒCƒ“ƒ|[ƒg
+	// ã‚¤ãƒ³ãƒãƒ¼ãƒˆ
 	if (!cImpExpKeybind.ImportUI( G_AppInstance(), hwndDlg )) {
-		// ƒCƒ“ƒ|[ƒg‚ğ‚µ‚Ä‚¢‚È‚¢
+		// ã‚¤ãƒ³ãƒãƒ¼ãƒˆã‚’ã—ã¦ã„ãªã„
 		return;
 	}
 
-	// ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìİ’è Keybind
-	// 2012.11.18 aroka ƒL[ˆê——‚ÌXV‚Í‘SƒAƒCƒeƒ€‚ğXV‚·‚éB
+	// ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®è¨­å®š Keybind
+	// 2012.11.18 aroka ã‚­ãƒ¼ä¸€è¦§ã®æ›´æ–°ã¯å…¨ã‚¢ã‚¤ãƒ†ãƒ ã‚’æ›´æ–°ã™ã‚‹ã€‚
 	ChangeKeyList( hwndDlg );
-	//@@@ 2001.11.07 modify start MIK: ‹@”\‚ÉŠ„‚è“–‚Ä‚ç‚ê‚Ä‚¢‚éƒL[‚ğXV‚·‚éB// 2012.11.18 aroka ƒRƒƒ“ƒgC³
+	//@@@ 2001.11.07 modify start MIK: æ©Ÿèƒ½ã«å‰²ã‚Šå½“ã¦ã‚‰ã‚Œã¦ã„ã‚‹ã‚­ãƒ¼ã‚’æ›´æ–°ã™ã‚‹ã€‚// 2012.11.18 aroka ã‚³ãƒ¡ãƒ³ãƒˆä¿®æ­£
 	HWND			hwndCtrl;
 	hwndCtrl = ::GetDlgItem( hwndDlg, IDC_LIST_FUNC );
 	::SendMessageCmd( hwndDlg, WM_COMMAND, MAKELONG( IDC_LIST_FUNC, LBN_SELCHANGE ), (LPARAM)hwndCtrl );
 	//@@@ 2001.11.07 modify end MIK
-	// 2012.11.25 aroka	İ’è‚ÌXViƒEƒBƒ“ƒhƒE–ˆ‚ÉƒAƒNƒZƒ‰ƒŒ[ƒ^ƒe[ƒuƒ‹‚ğì¬‚·‚é(Wine—p)j
+	// 2012.11.25 aroka	è¨­å®šã®æ›´æ–°ï¼ˆã‚¦ã‚£ãƒ³ãƒ‰ã‚¦æ¯ã«ã‚¢ã‚¯ã‚»ãƒ©ãƒ¬ãƒ¼ã‚¿ãƒ†ãƒ¼ãƒ–ãƒ«ã‚’ä½œæˆã™ã‚‹(Wineç”¨)ï¼‰
 	::CheckDlgButton( hwndDlg, IDC_CHECK_ACCELTBL_EACHWIN, m_Common.m_sKeyBind.m_bCreateAccelTblEachWin );
 }
 
 
-/* Keybind:ƒL[Š„‚è“–‚Äİ’è‚ğƒGƒNƒXƒ|[ƒg‚·‚é */
+/* Keybind:ã‚­ãƒ¼å‰²ã‚Šå½“ã¦è¨­å®šã‚’ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆã™ã‚‹ */
 void CPropKeybind::Export( HWND hwndDlg )
 {
 	CImpExpKeybind	cImpExpKeybind( m_Common );
 
-	// ƒGƒNƒXƒ|[ƒg
+	// ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆ
 	if (!cImpExpKeybind.ExportUI( G_AppInstance(), hwndDlg )) {
-		// ƒGƒNƒXƒ|[ƒg‚ğ‚µ‚Ä‚¢‚È‚¢
+		// ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆã‚’ã—ã¦ã„ãªã„
 		return;
 	}
 }

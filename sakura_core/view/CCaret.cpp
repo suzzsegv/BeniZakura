@@ -1,5 +1,5 @@
 /*!	@file
-	@brief �L�����b�g�̊Ǘ�
+	@brief キャレットの管理
 
 	@author	kobake
 */
@@ -56,7 +56,7 @@ using namespace std;
 #define SCROLLMARGIN_NOMOVE 4
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                         �O���ˑ�                            //
+//                         外部依存                            //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
 
@@ -80,17 +80,17 @@ inline int CCaret::GetHankakuDy() const
 //                      CCaretUnderLine                        //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
-/* �J�[�\���s�A���_�[���C����ON */
+/* カーソル行アンダーラインのON */
 void CCaretUnderLine::CaretUnderLineON( bool bDraw, bool bPaintDraw )
 {
-	if( m_nLockCounter ) return;	//	���b�N����Ă����牽���ł��Ȃ��B
+	if( m_nLockCounter ) return;	//	ロックされていたら何もできない。
 	m_pcEditView->CaretUnderLineON( bDraw, bPaintDraw, m_nUnderLineLockCounter != 0 );
 }
 
-/* �J�[�\���s�A���_�[���C����OFF */
+/* カーソル行アンダーラインのOFF */
 void CCaretUnderLine::CaretUnderLineOFF( bool bDraw, bool bDrawPaint, bool bResetFlag )
 {
-	if( m_nLockCounter ) return;	//	���b�N����Ă����牽���ł��Ȃ��B
+	if( m_nLockCounter ) return;	//	ロックされていたら何もできない。
 	m_pcEditView->CaretUnderLineOFF( bDraw, bDrawPaint, bResetFlag, m_nUnderLineLockCounter != 0 );
 }
 
@@ -98,71 +98,71 @@ void CCaretUnderLine::CaretUnderLineOFF( bool bDraw, bool bDrawPaint, bool bRese
 
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//               �R���X�g���N�^�E�f�X�g���N�^                  //
+//               コンストラクタ・デストラクタ                  //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
 CCaret::CCaret(CEditView* pEditView, const CEditDoc* pEditDoc)
 : m_pEditView(pEditView)
 , m_pEditDoc(pEditDoc)
 , m_ptCaretPos_Layout(0,0)
-, m_sizeCaret(0,0)				// �L�����b�g�̃T�C�Y
-, m_ptCaretPos_Logic(0,0)			// �J�[�\���ʒu (���s�P�ʍs�擪����̃o�C�g��(0�J�n), ���s�P�ʍs�̍s�ԍ�(0�J�n))
+, m_sizeCaret(0,0)				// キャレットのサイズ
+, m_ptCaretPos_Logic(0,0)			// カーソル位置 (改行単位行先頭からのバイト数(0開始), 改行単位行の行番号(0開始))
 , m_cUnderLine(pEditView)
 {
-	m_nCaretPosX_Prev = CLayoutInt(0);		/* �r���[���[����̃J�[�\�������O�̈ʒu(�O�I���W��) */
+	m_nCaretPosX_Prev = CLayoutInt(0);		/* ビュー左端からのカーソル桁直前の位置(０オリジン) */
 
-	m_crCaret = -1;				/* �L�����b�g�̐F */			// 2006.12.16 ryoji
-	m_hbmpCaret = NULL;			/* �L�����b�g�p�r�b�g�}�b�v */	// 2006.11.28 ryoji
+	m_crCaret = -1;				/* キャレットの色 */			// 2006.12.16 ryoji
+	m_hbmpCaret = NULL;			/* キャレット用ビットマップ */	// 2006.11.28 ryoji
 	m_bClearStatus = true;
 }
 
 CCaret::~CCaret()
 {
-	// �L�����b�g�p�r�b�g�}�b�v	// 2006.11.28 ryoji
+	// キャレット用ビットマップ	// 2006.11.28 ryoji
 	if( m_hbmpCaret != NULL )
 		DeleteObject( m_hbmpCaret );
 }
 
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                     �C���^�[�t�F�[�X                        //
+//                     インターフェース                        //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
-/*!	@brief �s���w��ɂ��J�[�\���ړ�
+/*!	@brief 行桁指定によるカーソル移動
 
-	�K�v�ɉ����ďc/���X�N���[��������D
-	�����X�N���[���������ꍇ�͂��̍s����Ԃ��i���^���j�D
+	必要に応じて縦/横スクロールもする．
+	垂直スクロールをした場合はその行数を返す（正／負）．
 	
-	@return �c�X�N���[���s��(��:��X�N���[��/��:���X�N���[��)
+	@return 縦スクロール行数(負:上スクロール/正:下スクロール)
 
-	@note �s���Ȉʒu���w�肳�ꂽ�ꍇ�ɂ͓K�؂ȍ��W�l��
-		�ړ����邽�߁C�����ŗ^�������W�ƈړ���̍��W��
-		�K��������v���Ȃ��D
+	@note 不正な位置が指定された場合には適切な座標値に
+		移動するため，引数で与えた座標と移動後の座標は
+		必ずしも一致しない．
 	
-	@note bScroll��false�̏ꍇ�ɂ̓J�[�\���ʒu�݈̂ړ�����D
-		true�̏ꍇ�ɂ̓X�N���[���ʒu�����킹�ĕύX�����
+	@note bScrollがfalseの場合にはカーソル位置のみ移動する．
+		trueの場合にはスクロール位置があわせて変更される
 
-	@note �����s�̍��E�ړ��̓A���_�[���C������x�����K�v�������̂�
-		bUnderlineDoNotOFF���w�肷��ƍ������ł���.
-		���l�ɓ������̏㉺�ړ���bVertLineDoNotOFF���w�肷���
-		�J�[�\���ʒu�c���̏������Ȃ��č������ł���.
+	@note 同じ行の左右移動はアンダーラインを一度消す必要が無いので
+		bUnderlineDoNotOFFを指定すると高速化できる.
+		同様に同じ桁の上下移動はbVertLineDoNotOFFを指定すると
+		カーソル位置縦線の消去を省いて高速化できる.
 
-	@date 2001.10.20 deleted by novice AdjustScrollBar()���ĂԈʒu��ύX
-	@date 2004.04.02 Moca �s�����L���ȍ��W�ɏC������̂������ɏ�������
-	@date 2004.09.11 genta bDraw�X�C�b�`�͓���Ɩ��̂���v���Ă��Ȃ��̂�
-		�ĕ`��X�C�b�`����ʈʒu�����X�C�b�`�Ɩ��̕ύX
-	@date 2009.08.28 nasukoji	�e�L�X�g�܂�Ԃ��́u�܂�Ԃ��Ȃ��v�Ή�
-	@date 2010.11.27 syat �A���_�[���C���A�c�����������Ȃ��t���O��ǉ�
+	@date 2001.10.20 deleted by novice AdjustScrollBar()を呼ぶ位置を変更
+	@date 2004.04.02 Moca 行だけ有効な座標に修正するのを厳密に処理する
+	@date 2004.09.11 genta bDrawスイッチは動作と名称が一致していないので
+		再描画スイッチ→画面位置調整スイッチと名称変更
+	@date 2009.08.28 nasukoji	テキスト折り返しの「折り返さない」対応
+	@date 2010.11.27 syat アンダーライン、縦線を消去しないフラグを追加
 */
 CLayoutInt CCaret::MoveCursor(
-	CLayoutPoint	ptWk_CaretPos,		//!< [in] �ړ��惌�C�A�E�g�ʒu
-	bool			bScroll,			//!< [in] true: ��ʈʒu�����L��  false: ��ʈʒu��������
-	int				nCaretMarginRate,	//!< [in] �c�X�N���[���J�n�ʒu�����߂�l
-	bool			bUnderLineDoNotOFF,	//!< [in] �A���_�[���C�����������Ȃ�
-	bool			bVertLineDoNotOFF	//!< [in] �J�[�\���ʒu�c�����������Ȃ�
+	CLayoutPoint	ptWk_CaretPos,		//!< [in] 移動先レイアウト位置
+	bool			bScroll,			//!< [in] true: 画面位置調整有り  false: 画面位置調整無し
+	int				nCaretMarginRate,	//!< [in] 縦スクロール開始位置を決める値
+	bool			bUnderLineDoNotOFF,	//!< [in] アンダーラインを消去しない
+	bool			bVertLineDoNotOFF	//!< [in] カーソル位置縦線を消去しない
 )
 {
-	// �X�N���[������
+	// スクロール処理
 	CLayoutInt	nScrollRowNum = CLayoutInt(0);
 	CLayoutInt	nScrollColNum = CLayoutInt(0);
 	int		nCaretMarginY;
@@ -173,7 +173,7 @@ CLayoutInt CCaret::MoveCursor(
 		return CLayoutInt(0);
 	}
 
-	if( m_pEditView->GetSelectionInfo().IsMouseSelecting() ){	// �͈͑I��
+	if( m_pEditView->GetSelectionInfo().IsMouseSelecting() ){	// 範囲選択中
 		nCaretMarginY = 0;
 	}
 	else{
@@ -183,22 +183,22 @@ CLayoutInt CCaret::MoveCursor(
 			nCaretMarginY = 1;
 		}
 	}
-	// 2004.04.02 Moca �s�����L���ȍ��W�ɏC������̂������ɏ�������
+	// 2004.04.02 Moca 行だけ有効な座標に修正するのを厳密に処理する
 	GetAdjustCursorPos( &ptWk_CaretPos );
 	
-	/* �L�����b�g�ړ� */
+	/* キャレット移動 */
 	SetCaretLayoutPos(ptWk_CaretPos);
 
-	/* �J�[�\���ʒu�ϊ�
-	||  ���C�A�E�g�ʒu(�s������̕\�����ʒu�A�܂�Ԃ�����s�ʒu)
-	||  �������ʒu(�s������̃o�C�g���A�܂�Ԃ������s�ʒu)
+	/* カーソル位置変換
+	||  レイアウト位置(行頭からの表示桁位置、折り返しあり行位置)
+	||  →物理位置(行頭からのバイト数、折り返し無し行位置)
 	*/
 	m_pEditDoc->m_cLayoutMgr.LayoutToLogic(
 		m_ptCaretPos_Layout,
-		&m_ptCaretPos_Logic	//�J�[�\���ʒu�B���W�b�N�P�ʁB
+		&m_ptCaretPos_Logic	//カーソル位置。ロジック単位。
 	);
 
-	// �J�[�\���s�A���_�[���C����OFF
+	// カーソル行アンダーラインのOFF
 	DEBUG_TRACE( _T("%d, %d\n"), (int)(Int)ptWk_CaretPos.GetY2(), (int)(Int)m_pEditView->m_nOldUnderLineYBg );
 	bool bDrawPaint = ptWk_CaretPos.GetY2() != m_pEditView->m_nOldUnderLineYBg;
 	m_cUnderLine.SetUnderLineDoNotOFF( bUnderLineDoNotOFF );
@@ -207,22 +207,22 @@ CLayoutInt CCaret::MoveCursor(
 	m_cUnderLine.SetUnderLineDoNotOFF( false );
 	m_cUnderLine.SetVertLineDoNotOFF( false );
 	
-	// �����X�N���[���ʁi�������j�̎Z�o
+	// 水平スクロール量（文字数）の算出
 	nScrollColNum = CLayoutInt(0);
 	nScrollMarginRight = CLayoutInt(SCROLLMARGIN_RIGHT);
 	nScrollMarginLeft = CLayoutInt(SCROLLMARGIN_LEFT);
 
-	// 2010.08.24 Moca ���������ꍇ�̃}�[�W���̒���
+	// 2010.08.24 Moca 幅が狭い場合のマージンの調整
 	{
-		// �J�[�\�����^�񒆂ɂ���Ƃ��ɍ��E�ɂԂ�Ȃ��悤��
+		// カーソルが真ん中にあるときに左右にぶれないように
 		int nNoMove = SCROLLMARGIN_NOMOVE;
 		CLayoutInt a = ((m_pEditView->GetTextArea().m_nViewColNum) - nNoMove) / 2;
-		CLayoutInt nMin = (2 <= a ? a : CLayoutInt(0)); // 1���ƑS�p�ړ��Ɏx�Ⴊ����̂�2�ȏ�
+		CLayoutInt nMin = (2 <= a ? a : CLayoutInt(0)); // 1だと全角移動に支障があるので2以上
 		nScrollMarginRight = t_min(nScrollMarginRight, nMin);
 		nScrollMarginLeft  = t_min(nScrollMarginLeft,  nMin);
 	}
 	
-	//	Aug. 14, 2005 genta �܂�Ԃ�����LayoutMgr����擾����悤��
+	//	Aug. 14, 2005 genta 折り返し幅をLayoutMgrから取得するように
 	if( m_pEditDoc->m_cLayoutMgr.GetMaxLineKetas() > m_pEditView->GetTextArea().m_nViewColNum &&
 		ptWk_CaretPos.GetX() > m_pEditView->GetTextArea().GetViewLeftCol() + m_pEditView->GetTextArea().m_nViewColNum - nScrollMarginRight ){
 		nScrollColNum =
@@ -240,50 +240,50 @@ CLayoutInt CCaret::MoveCursor(
 
 	m_pEditView->GetTextArea().SetViewLeftCol(m_pEditView->GetTextArea().GetViewLeftCol() - nScrollColNum);
 
-	//	From Here 2007.07.28 ���イ�� : �\���s����3�s�ȉ��̏ꍇ�̓�����P
-	/* �����X�N���[���ʁi�s���j�̎Z�o */
-										// ��ʂ��R�s�ȉ�
+	//	From Here 2007.07.28 じゅうじ : 表示行数が3行以下の場合の動作改善
+	/* 垂直スクロール量（行数）の算出 */
+										// 画面が３行以下
 	if( m_pEditView->GetTextArea().m_nViewRowNum <= 3 ){
-							// �ړ���́A��ʂ̃X�N���[�����C�����ォ�H�iup �L�[�j
+							// 移動先は、画面のスクロールラインより上か？（up キー）
 		if( ptWk_CaretPos.y - m_pEditView->GetTextArea().GetViewTopLine() < nCaretMarginY ){
-			if( ptWk_CaretPos.y < nCaretMarginY ){	//�P�s�ڂɈړ�
+			if( ptWk_CaretPos.y < nCaretMarginY ){	//１行目に移動
 				nScrollRowNum = m_pEditView->GetTextArea().GetViewTopLine();
 			}
-			else if( m_pEditView->GetTextArea().m_nViewRowNum <= 1 ){	// ��ʂ��P�s
+			else if( m_pEditView->GetTextArea().m_nViewRowNum <= 1 ){	// 画面が１行
 				nScrollRowNum = m_pEditView->GetTextArea().GetViewTopLine() - ptWk_CaretPos.y;
 			}
-#if !(0)	// COMMENT�ɂ���ƁA�㉺�̋󂫂����炵�Ȃ��ׁA�c�ړ���good�����A���ړ��̏ꍇ�㉺�ɂԂ��
-			else if( m_pEditView->GetTextArea().m_nViewRowNum <= 2 ){	// ��ʂ��Q�s
+#if !(0)	// COMMENTにすると、上下の空きを死守しない為、縦移動はgoodだが、横移動の場合上下にぶれる
+			else if( m_pEditView->GetTextArea().m_nViewRowNum <= 2 ){	// 画面が２行
 				nScrollRowNum = m_pEditView->GetTextArea().GetViewTopLine() - ptWk_CaretPos.y;
 			}
 #endif
 			else
-			{						// ��ʂ��R�s
+			{						// 画面が３行
 				nScrollRowNum = m_pEditView->GetTextArea().GetViewTopLine() - ptWk_CaretPos.y + 1;
 			}
 		}else
-							// �ړ���́A��ʂ̍ő�s���|�Q��艺���H�idown �L�[�j
+							// 移動先は、画面の最大行数−２より下か？（down キー）
 		if( ptWk_CaretPos.y - m_pEditView->GetTextArea().GetViewTopLine() >= (m_pEditView->GetTextArea().m_nViewRowNum - nCaretMarginY - 2) ){
 			CLayoutInt ii = m_pEditDoc->m_cLayoutMgr.GetLineCount();
 			if( ii - ptWk_CaretPos.y < nCaretMarginY + 1 &&
 				ii - m_pEditView->GetTextArea().GetViewTopLine() < m_pEditView->GetTextArea().m_nViewRowNum ) {
 			}
-			else if( m_pEditView->GetTextArea().m_nViewRowNum <= 2 ){	// ��ʂ��Q�s�A�P�s
+			else if( m_pEditView->GetTextArea().m_nViewRowNum <= 2 ){	// 画面が２行、１行
 				nScrollRowNum = m_pEditView->GetTextArea().GetViewTopLine() - ptWk_CaretPos.y;
-			}else{						// ��ʂ��R�s
+			}else{						// 画面が３行
 				nScrollRowNum = m_pEditView->GetTextArea().GetViewTopLine() - ptWk_CaretPos.y + 1;
 			}
 		}
 	}
-	// �ړ���́A��ʂ̃X�N���[�����C�����ォ�H�iup �L�[�j
+	// 移動先は、画面のスクロールラインより上か？（up キー）
 	else if( ptWk_CaretPos.y - m_pEditView->GetTextArea().GetViewTopLine() < nCaretMarginY ){
-		if( ptWk_CaretPos.y < nCaretMarginY ){	//�P�s�ڂɈړ�
+		if( ptWk_CaretPos.y < nCaretMarginY ){	//１行目に移動
 			nScrollRowNum = m_pEditView->GetTextArea().GetViewTopLine();
 		}else{
 			nScrollRowNum = -(ptWk_CaretPos.y - m_pEditView->GetTextArea().GetViewTopLine()) + nCaretMarginY;
 		}
 	}
-	// �ړ���́A��ʂ̍ő�s���|�Q��艺���H�idown �L�[�j
+	// 移動先は、画面の最大行数−２より下か？（down キー）
 	else if( ptWk_CaretPos.y - m_pEditView->GetTextArea().GetViewTopLine() >= m_pEditView->GetTextArea().m_nViewRowNum - nCaretMarginY - 2 ){
 		CLayoutInt ii = m_pEditDoc->m_cLayoutMgr.GetLineCount();
 		if( ii - ptWk_CaretPos.y < nCaretMarginY + 1 &&
@@ -294,9 +294,9 @@ CLayoutInt CCaret::MoveCursor(
 				-(ptWk_CaretPos.y - m_pEditView->GetTextArea().GetViewTopLine()) + (m_pEditView->GetTextArea().m_nViewRowNum - nCaretMarginY - 2);
 		}
 	}
-	//	To Here 2007.07.28 ���イ��
+	//	To Here 2007.07.28 じゅうじ
 	if( bScroll ){
-		/* �X�N���[�� */
+		/* スクロール */
 		if( t_abs( nScrollColNum ) >= m_pEditView->GetTextArea().m_nViewColNum ||
 			t_abs( nScrollRowNum ) >= m_pEditView->GetTextArea().m_nViewRowNum ){
 			m_pEditView->GetTextArea().OffsetViewTopLine(-nScrollRowNum);
@@ -334,55 +334,55 @@ CLayoutInt CCaret::MoveCursor(
 			}
 		}
 
-		/* �X�N���[���o�[�̏�Ԃ��X�V���� */
+		/* スクロールバーの状態を更新する */
 		m_pEditView->AdjustScrollBars(); // 2001/10/20 novice
 	}
 
-	// ���X�N���[��������������A���[���[�S�̂��ĕ`�� 2002.02.25 Add By KK
+	// 横スクロールが発生したら、ルーラー全体を再描画 2002.02.25 Add By KK
 	if (nScrollColNum != 0 ){
-		//����DispRuler�Ăяo�����ɍĕ`��B�ibDraw=false�̃P�[�X���l�������B�j
+		//次回DispRuler呼び出し時に再描画。（bDraw=falseのケースを考慮した。）
 		m_pEditView->GetRuler().SetRedrawFlag();
 	}
 
-	/* �J�[�\���s�A���_�[���C����ON */
-	//CaretUnderLineON( bDraw ); //2002.02.27 Del By KK �A���_�[���C���̂������ጸ
+	/* カーソル行アンダーラインのON */
+	//CaretUnderLineON( bDraw ); //2002.02.27 Del By KK アンダーラインのちらつきを低減
 	if( bScroll ){
-		/* �L�����b�g�̕\���E�X�V */
+		/* キャレットの表示・更新 */
 		ShowEditCaret();
 
-		/* ���[���̍ĕ`�� */
+		/* ルーラの再描画 */
 		HDC		hdc = m_pEditView->GetDC();
 		m_pEditView->GetRuler().DispRuler( hdc );
 		m_pEditView->ReleaseDC( hdc );
 
-		/* �A���_�[���C���̍ĕ`�� */
+		/* アンダーラインの再描画 */
 		m_cUnderLine.CaretUnderLineON(true, bDrawPaint);
 
-		/* �L�����b�g�̍s���ʒu��\������ */
+		/* キャレットの行桁位置を表示する */
 		ShowCaretPosInfo();
 
-		//	Sep. 11, 2004 genta �����X�N���[���̊֐���
-		//	bScroll == FALSE�̎��ɂ̓X�N���[�����Ȃ��̂ŁC���s���Ȃ�
-		m_pEditView->SyncScrollV( -nScrollRowNum );	//	�������t�Ȃ̂ŕ������]���K�v
-		m_pEditView->SyncScrollH( -nScrollColNum );	//	�������t�Ȃ̂ŕ������]���K�v
+		//	Sep. 11, 2004 genta 同期スクロールの関数化
+		//	bScroll == FALSEの時にはスクロールしないので，実行しない
+		m_pEditView->SyncScrollV( -nScrollRowNum );	//	方向が逆なので符号反転が必要
+		m_pEditView->SyncScrollH( -nScrollColNum );	//	方向が逆なので符号反転が必要
 
 	}
 
-// 02/09/18 �Ί��ʂ̋����\�� ai Start	03/02/18 ai mod S
+// 02/09/18 対括弧の強調表示 ai Start	03/02/18 ai mod S
 	m_pEditView->DrawBracketPair( false );
 	m_pEditView->SetBracketPairPos( true );
 	m_pEditView->DrawBracketPair( true );
-// 02/09/18 �Ί��ʂ̋����\�� ai End		03/02/18 ai mod E
+// 02/09/18 対括弧の強調表示 ai End		03/02/18 ai mod E
 
 	return nScrollRowNum;
 
 }
 
-/* �}�E�X���ɂ����W�w��ɂ��J�[�\���ړ�
-|| �K�v�ɉ����ďc/���X�N���[��������
-|| �����X�N���[���������ꍇ�͂��̍s����Ԃ�(���^��)
+/* マウス等による座標指定によるカーソル移動
+|| 必要に応じて縦/横スクロールもする
+|| 垂直スクロールをした場合はその行数を返す(正／負)
 */
-//2007.09.11 kobake �֐����ύX: MoveCursorToPoint��MoveCursorToClientPoint
+//2007.09.11 kobake 関数名変更: MoveCursorToPoint→MoveCursorToClientPoint
 CLayoutInt CCaret::MoveCursorToClientPoint( const POINT& ptClientPos, bool test, CLayoutPoint* pCaretPosNew )
 {
 	CLayoutInt		nScrollRowNum;
@@ -401,20 +401,20 @@ CLayoutInt CCaret::MoveCursorToClientPoint( const POINT& ptClientPos, bool test,
 
 
 
-/*! �������J�[�\���ʒu���Z�o����(EOF�ȍ~�̂�)
-	@param pnPosX [in/out] �J�[�\���̃��C�A�E�g���WX
-	@param pnPosY [in/out] �J�[�\���̃��C�A�E�g���WY
-	@retval	TRUE ���W���C������
-	@retval	FALSE ���W�͏C������Ȃ�����
-	@note	EOF�̒��O�����s�łȂ��ꍇ�́A���̍s�Ɍ���EOF�ȍ~�ɂ��ړ��\
-			EOF�����̍s�́A�擪�ʒu�̂ݐ������B
-	@date 2004.04.02 Moca �֐���
+/*! 正しいカーソル位置を算出する(EOF以降のみ)
+	@param pnPosX [in/out] カーソルのレイアウト座標X
+	@param pnPosY [in/out] カーソルのレイアウト座標Y
+	@retval	TRUE 座標を修正した
+	@retval	FALSE 座標は修正されなかった
+	@note	EOFの直前が改行でない場合は、その行に限りEOF以降にも移動可能
+			EOFだけの行は、先頭位置のみ正しい。
+	@date 2004.04.02 Moca 関数化
 */
 BOOL CCaret::GetAdjustCursorPos(
 	CLayoutPoint* pptPosXY
 )
 {
-	// 2004.03.28 Moca EOF�݂̂̃��C�A�E�g�s�́A0���ڂ̂ݗL��.EOF��艺�̍s�̂���ꍇ�́AEOF�ʒu�ɂ���
+	// 2004.03.28 Moca EOFのみのレイアウト行は、0桁目のみ有効.EOFより下の行のある場合は、EOF位置にする
 	CLayoutInt nLayoutLineCount = m_pEditDoc->m_cLayoutMgr.GetLineCount();
 
 	CLayoutPoint ptPosXY2 = *pptPosXY;
@@ -429,23 +429,23 @@ BOOL CCaret::GetAdjustCursorPos(
 			const CLayout* pcLayout = m_pEditDoc->m_cLayoutMgr.SearchLineByLayoutY( ptPosXY2.GetY2() );
 			if( pcLayout->GetLayoutEol() == EOL_NONE ){
 				ptPosXY2.x = m_pEditView->LineIndexToColumn( pcLayout, (CLogicInt)pcLayout->GetLengthWithEOL() );
-				// [EOF]�̂ݐ܂�Ԃ��̂͂�߂�	// 2009.02.17 ryoji
-				// ��������Ȃ� ptPosXY2.x �ɐ܂�Ԃ��s�C���f���g��K�p����̂��悢
+				// [EOF]のみ折り返すのはやめる	// 2009.02.17 ryoji
+				// 復活するなら ptPosXY2.x に折り返し行インデントを適用するのがよい
 
-				// EOF�����܂�Ԃ���Ă��邩
-				//	Aug. 14, 2005 genta �܂�Ԃ�����LayoutMgr����擾����悤��
+				// EOFだけ折り返されているか
+				//	Aug. 14, 2005 genta 折り返し幅をLayoutMgrから取得するように
 				//if( ptPosXY2.x >= m_pEditDoc->m_cLayoutMgr.GetMaxLineKetas() ){
 				//	ptPosXY2.y++;
 				//	ptPosXY2.x = CLayoutInt(0);
 				//}
 			}
 			else{
-				// EOF�����̍s
+				// EOFだけの行
 				ptPosXY2.y++;
 				ptPosXY2.x = CLayoutInt(0);
 			}
 		}else{
-			// ��̃t�@�C��
+			// 空のファイル
 			ptPosXY2.Set(CLayoutInt(0), CLayoutInt(0));
 		}
 		if( *pptPosXY != ptPosXY2 ){//*pnPosX != nPosX2 || *pnPosY != nPosY2 ){
@@ -458,10 +458,10 @@ BOOL CCaret::GetAdjustCursorPos(
 	return ret;
 }
 
-/* �L�����b�g�̕\���E�X�V */
+/* キャレットの表示・更新 */
 void CCaret::ShowEditCaret()
 {
-	//�K�v�ȃC���^�[�t�F�[�X
+	//必要なインターフェース
 	const CLayoutMgr* pLayoutMgr=&m_pEditDoc->m_cLayoutMgr;
 	CommonSetting* pCommon=&GetDllShareData().m_Common;
 	const STypeConfig* pTypes=&m_pEditDoc->m_cDocType.GetDocumentAttribute();
@@ -472,23 +472,23 @@ void CCaret::ShowEditCaret()
 	int				nIdxFrom;
 
 /*
-	�t�H�[�J�X�������Ƃ��ɓ����I�ɃL�����b�g�쐬����ƈÖٓI�ɃL�����b�g�j���i���j����Ă�
-	�L�����b�g������im_nCaretWidth != 0�j�Ƃ������ƂɂȂ��Ă��܂��A�t�H�[�J�X���擾���Ă�
-	�L�����b�g���o�Ă��Ȃ��Ȃ�ꍇ������
-	�t�H�[�J�X�������Ƃ��̓L�����b�g���쐬�^�\�����Ȃ��悤�ɂ���
+	フォーカスが無いときに内部的にキャレット作成すると暗黙的にキャレット破棄（※）されても
+	キャレットがある（m_nCaretWidth != 0）ということになってしまい、フォーカスを取得しても
+	キャレットが出てこなくなる場合がある
+	フォーカスが無いときはキャレットを作成／表示しないようにする
 
-	���L�����b�g�̓X���b�h�ɂЂƂ����Ȃ̂ŗႦ�΃G�f�B�b�g�{�b�N�X���t�H�[�J�X�擾�����
-	�@�ʌ`��̃L�����b�g�ɈÖٓI�ɍ����ւ����邵�t�H�[�J�X�������ΈÖٓI�ɔj�������
+	※キャレットはスレッドにひとつだけなので例えばエディットボックスがフォーカス取得すれば
+	　別形状のキャレットに暗黙的に差し替えられるしフォーカスを失えば暗黙的に破棄される
 
 	2007.12.11 ryoji
-	�h���b�O�A���h�h���b�v�ҏW���̓L�����b�g���K�v�ňÖٔj���̗v���������̂ŗ�O�I�ɕ\������
+	ドラッグアンドドロップ編集中はキャレットが必要で暗黙破棄の要因も無いので例外的に表示する
 */
 	if( ::GetFocus() != m_pEditView->GetHwnd() && !m_pEditView->m_bDragMode ){
 		m_sizeCaret.cx = 0;
 		return;
 	}
 
-	// CalcCaretDrawPos�̂��߂�Caret�T�C�Y�����ݒ�
+	// CalcCaretDrawPosのためにCaretサイズを仮設定
 	int				nCaretWidth = 0;
 	int				nCaretHeight = 0;
 	if( 0 == pCommon->m_sGeneral.GetCaretType() ){
@@ -511,20 +511,20 @@ void CCaret::ShowEditCaret()
 	CMySize caretSizeOld = GetCaretSize();
 	SetCaretSize(nCaretWidth,nCaretHeight);
 	POINT ptDrawPos=CalcCaretDrawPos(GetCaretLayoutPos());
-	SetCaretSize(caretSizeOld.cx, caretSizeOld.cy); // ��Ŕ�r����̂Ŗ߂�
+	SetCaretSize(caretSizeOld.cx, caretSizeOld.cy); // 後で比較するので戻す
 	bool bShowCaret = false;
 	if ( m_pEditView->GetTextArea().GetAreaLeft() <= ptDrawPos.x && m_pEditView->GetTextArea().GetAreaTop() <= ptDrawPos.y
 		&& ptDrawPos.x < m_pEditView->GetTextArea().GetAreaRight() && ptDrawPos.y < m_pEditView->GetTextArea().GetAreaBottom() ){
-		// �L�����b�g�̕\��
+		// キャレットの表示
 		bShowCaret = true;
 	}
-	/* �L�����b�g�̕��A���������� */
-	// �J�[�\���̃^�C�v = win
+	/* キャレットの幅、高さを決定 */
+	// カーソルのタイプ = win
 	if( 0 == pCommon->m_sGeneral.GetCaretType() ){
-		nCaretHeight = GetHankakuHeight();					/* �L�����b�g�̍��� */
+		nCaretHeight = GetHankakuHeight();					/* キャレットの高さ */
 		if( m_pEditView->IsInsMode() /* Oct. 2, 2005 genta */ ){
 			nCaretWidth = 2; //2px
-			// 2011.12.22 �V�X�e���̐ݒ�ɏ]��(����2px�ȏ�)
+			// 2011.12.22 システムの設定に従う(けど2px以上)
 			DWORD dwWidth;
 			if( ::SystemParametersInfo(SPI_GETCARETWIDTH, 0, &dwWidth, 0) && 2 < dwWidth){
 				nCaretWidth = t_min((int)dwWidth, GetHankakuDx());
@@ -537,12 +537,12 @@ void CCaret::ShowEditCaret()
 			CLogicInt		nLineLen = CLogicInt(0);
 			const CLayout*	pcLayout = NULL;
 			if( bShowCaret ){
-				// ��ʊO�̂Ƃ���GetLineStr���Ă΂Ȃ�
+				// 画面外のときはGetLineStrを呼ばない
 				pLine = pLayoutMgr->GetLineStr( GetCaretLayoutPos().GetY2(), &nLineLen, &pcLayout );
 			}
 
 			if( NULL != pLine ){
-				/* �w�肳�ꂽ���ɑΉ�����s�̃f�[�^���̈ʒu�𒲂ׂ� */
+				/* 指定された桁に対応する行のデータ内の位置を調べる */
 				nIdxFrom = GetCaretLogicPos().GetX() - pcLayout->GetLogicOffset();
 				if( nIdxFrom >= nLineLen ||
 					pLine[nIdxFrom] == CR || pLine[nIdxFrom] == LF ||
@@ -558,13 +558,13 @@ void CCaret::ShowEditCaret()
 			}
 		}
 	}
-	// �J�[�\���̃^�C�v = dos
+	// カーソルのタイプ = dos
 	else if( 1 == pCommon->m_sGeneral.GetCaretType() ){
 		if( m_pEditView->IsInsMode() /* Oct. 2, 2005 genta */ ){
-			nCaretHeight = ((GetHankakuHeight() * DOS_CARET_HEIGHT_PERCENTAGE) / 100);	/* �L�����b�g�̍��� */
+			nCaretHeight = ((GetHankakuHeight() * DOS_CARET_HEIGHT_PERCENTAGE) / 100);	/* キャレットの高さ */
 		}
 		else{
-			nCaretHeight = GetHankakuHeight();				/* �L�����b�g�̍��� */
+			nCaretHeight = GetHankakuHeight();				/* キャレットの高さ */
 		}
 		nCaretWidth = GetHankakuDx();
 
@@ -576,7 +576,7 @@ void CCaret::ShowEditCaret()
 		}
 
 		if( NULL != pLine ){
-			/* �w�肳�ꂽ���ɑΉ�����s�̃f�[�^���̈ʒu�𒲂ׂ� */
+			/* 指定された桁に対応する行のデータ内の位置を調べる */
 			nIdxFrom = m_pEditView->LineColumnToIndex( pcLayout, GetCaretLayoutPos().GetX2() );
 			if( nIdxFrom >= nLineLen ||
 				pLine[nIdxFrom] == CR || pLine[nIdxFrom] == LF ||
@@ -591,43 +591,43 @@ void CCaret::ShowEditCaret()
 		}
 	}
 
-	//	�L�����b�g�F�̎擾
+	//	キャレット色の取得
 	const ColorInfo* ColorInfoArr = pTypes->m_ColorInfoArr;
 	int nCaretColor = ( ColorInfoArr[COLORIDX_CARET_IME].m_bDisp && m_pEditView->IsImeON() )? COLORIDX_CARET_IME: COLORIDX_CARET;
 	COLORREF crCaret = ColorInfoArr[nCaretColor].m_colTEXT;
 	COLORREF crBack = ColorInfoArr[COLORIDX_TEXT].m_colBACK;
 
 	if( !ExistCaretFocus() ){
-		/* �L�����b�g���Ȃ������ꍇ */
-		/* �L�����b�g�̍쐬 */
+		/* キャレットがなかった場合 */
+		/* キャレットの作成 */
 		CreateEditCaret( crCaret, crBack, nCaretWidth, nCaretHeight );	// 2006.12.07 ryoji
 		m_bCaretShowFlag = false; // 2002/07/22 novice
 	}
 	else{
 		if( GetCaretSize() != CMySize(nCaretWidth,nCaretHeight) || m_crCaret != crCaret || m_pEditView->m_crBack2 != crBack ){
-			/* �L�����b�g�͂��邪�A�傫����F���ς�����ꍇ */
-			/* ���݂̃L�����b�g���폜 */
+			/* キャレットはあるが、大きさや色が変わった場合 */
+			/* 現在のキャレットを削除 */
 			::DestroyCaret();
 
-			/* �L�����b�g�̍쐬 */
+			/* キャレットの作成 */
 			CreateEditCaret( crCaret, crBack, nCaretWidth, nCaretHeight );	// 2006.12.07 ryoji
 			m_bCaretShowFlag = false; // 2002/07/22 novice
 		}
 		else{
-			/* �L�����b�g�͂��邵�A�傫�����ς���Ă��Ȃ��ꍇ */
-			/* �L�����b�g���B�� */
+			/* キャレットはあるし、大きさも変わっていない場合 */
+			/* キャレットを隠す */
 			HideCaret_( m_pEditView->GetHwnd() ); // 2002/07/22 novice
 		}
 	}
 
-	// �L�����b�g�T�C�Y
+	// キャレットサイズ
 	SetCaretSize(nCaretWidth,nCaretHeight);
 
-	/* �L�����b�g�̈ʒu�𒲐� */
-	//2007.08.26 kobake �L�����b�gX���W�̌v�Z��UNICODE�d�l�ɂ����B
+	/* キャレットの位置を調整 */
+	//2007.08.26 kobake キャレットX座標の計算をUNICODE仕様にした。
 	::SetCaretPos( ptDrawPos.x, ptDrawPos.y );
 	if ( bShowCaret ){
-		/* �L�����b�g�̕\�� */
+		/* キャレットの表示 */
 		ShowCaret_( m_pEditView->GetHwnd() ); // 2002/07/22 novice
 	}
 
@@ -639,18 +639,18 @@ void CCaret::ShowEditCaret()
 
 
 
-/*! �L�����b�g�̍s���ʒu����уX�e�[�^�X�o�[�̏�ԕ\���̍X�V
+/*! キャレットの行桁位置およびステータスバーの状態表示の更新
 
-	@note �X�e�[�^�X�o�[�̏�Ԃ̕��ѕ��̕ύX�̓��b�Z�[�W����M����
-		CEditWnd::DispatchEvent()��WM_NOTIFY�ɂ��e�������邱�Ƃɒ���
+	@note ステータスバーの状態の並び方の変更はメッセージを受信する
+		CEditWnd::DispatchEvent()のWM_NOTIFYにも影響があることに注意
 	
-	@note �X�e�[�^�X�o�[�̏o�͓��e�̕ύX��CEditWnd::OnSize()��
-		�J�������v�Z�ɉe�������邱�Ƃɒ���
+	@note ステータスバーの出力内容の変更はCEditWnd::OnSize()の
+		カラム幅計算に影響があることに注意
 */
-//2007.10.17 kobake �d������R�[�h�𐮗�
+//2007.10.17 kobake 重複するコードを整理
 void CCaret::ShowCaretPosInfo()
 {
-	//�K�v�ȃC���^�[�t�F�[�X
+	//必要なインターフェース
 	const CLayoutMgr* pLayoutMgr=&m_pEditDoc->m_cLayoutMgr;
 	const STypeConfig* pTypes=&m_pEditDoc->m_cDocType.GetDocumentAttribute();
 
@@ -659,45 +659,45 @@ void CCaret::ShowCaretPosInfo()
 		return;
 	}
 
-	// �X�e�[�^�X�o�[�n���h�����擾
+	// ステータスバーハンドルを取得
 	HWND hwndStatusBar = m_pEditDoc->m_pcEditWnd->m_cStatusBar.GetStatusHwnd();
 
 
-	// �J�[�\���ʒu�̕�������擾
+	// カーソル位置の文字列を取得
 	const CLayout*	pcLayout;
 	CLogicInt		nLineLen;
 	const wchar_t*	pLine = pLayoutMgr->GetLineStr( GetCaretLayoutPos().GetY2(), &nLineLen, &pcLayout );
 
 
-	// -- -- -- -- �����R�[�h��� -> pszCodeName -- -- -- -- //
+	// -- -- -- -- 文字コード情報 -> pszCodeName -- -- -- -- //
 	const TCHAR* pszCodeName;
 	CNativeT cmemCodeName;
 	if (hwndStatusBar) {
 		cmemCodeName.AppendString( CCodeTypeName(m_pEditDoc->GetDocumentEncoding()).Normal() );
 		if (m_pEditDoc->GetDocumentBomExist()) {
-			cmemCodeName.AppendString( _T(" BOM�t") );
+			cmemCodeName.AppendString( _T(" BOM付") );
 		}
 	}
 	else {
 		cmemCodeName.AppendString( CCodeTypeName(m_pEditDoc->GetDocumentEncoding()).Short() );
 		if (m_pEditDoc->GetDocumentBomExist()) {
-			cmemCodeName.AppendString( _T("#") );		// BOM�t(���j���[�o�[�Ȃ̂ŏ�����)	// 2013/4/17 Uchi
+			cmemCodeName.AppendString( _T("#") );		// BOM付(メニューバーなので小さく)	// 2013/4/17 Uchi
 		}
 	}
 	pszCodeName = (const TCHAR*)cmemCodeName._GetMemory()->GetRawPtr();
 
 
-	// -- -- -- -- ���s���[�h -> szEolMode -- -- -- -- //
+	// -- -- -- -- 改行モード -> szEolMode -- -- -- -- //
 	//	May 12, 2000 genta
-	//	���s�R�[�h�̕\����ǉ�
+	//	改行コードの表示を追加
 	CEol cNlType = m_pEditDoc->m_cDocEditor.GetNewLineCode();
 	const TCHAR* szEolMode = cNlType.GetName();
 
 
-	// -- -- -- -- �L�����b�g�ʒu -> ptCaret -- -- -- -- //
+	// -- -- -- -- キャレット位置 -> ptCaret -- -- -- -- //
 	//
 	CMyPoint ptCaret;
-	//�s�ԍ������W�b�N�P�ʂŕ\��
+	//行番号をロジック単位で表示
 	if(pTypes->m_bLineNumIsCRLF){
 		ptCaret.x = (Int)GetCaretLayoutPos().GetX();
 		ptCaret.y = (Int)GetCaretLogicPos().y;
@@ -706,32 +706,32 @@ void CCaret::ShowCaretPosInfo()
 			ptCaret.x += (Int)pcLayout->CalcLayoutOffset(*pLayoutMgr);
 		}
 	}
-	//�s�ԍ������C�A�E�g�P�ʂŕ\��
+	//行番号をレイアウト単位で表示
 	else {
 		ptCaret.x = (Int)GetCaretLayoutPos().GetX();
 		ptCaret.y = (Int)GetCaretLayoutPos().GetY();
 	}
-	//�\���l��1����n�܂�悤�ɕ␳
+	//表示値が1から始まるように補正
 	ptCaret.x++;
 	ptCaret.y++;
 
 
-	// -- -- -- -- �L�����b�g�ʒu�̕������ -> szCaretChar -- -- -- -- //
+	// -- -- -- -- キャレット位置の文字情報 -> szCaretChar -- -- -- -- //
 	//
 	TCHAR szCaretChar[32]=_T("");
 	if( pLine ){
-		// �w�肳�ꂽ���ɑΉ�����s�̃f�[�^���̈ʒu�𒲂ׂ�
+		// 指定された桁に対応する行のデータ内の位置を調べる
 		CLogicInt nIdx = GetCaretLogicPos().GetX2() - pcLayout->GetLogicOffset();
 		if( nIdx < nLineLen ){
 			if( nIdx < nLineLen - (pcLayout->GetLayoutEol().GetLen()?1:0) ){
 				//auto_sprintf( szCaretChar, _T("%04x"), );
-				//�C�ӂ̕����R�[�h����Unicode�֕ϊ�����		2008/6/9 Uchi
+				//任意の文字コードからUnicodeへ変換する		2008/6/9 Uchi
 				CCodeBase* pCode = CCodeFactory::CreateCodeBase(m_pEditDoc->GetDocumentEncoding(), false);
 				CommonSetting_Statusbar* psStatusbar = &GetDllShareData().m_Common.m_sStatusbar;
 				EConvertResult ret = pCode->UnicodeToHex(&pLine[nIdx], nLineLen - nIdx, szCaretChar, psStatusbar);
 				delete pCode;
 				if (ret != RESULT_COMPLETE) {
-					// ���܂��R�[�h�����Ȃ�����(Unicode�ŕ\��)
+					// うまくコードが取れなかった(Unicodeで表示)
 					pCode = CCodeFactory::CreateCodeBase(CODE_UNICODE, false);
 					/* EConvertResult ret = */ pCode->UnicodeToHex(&pLine[nIdx], nLineLen - nIdx, szCaretChar, psStatusbar);
 					delete pCode;
@@ -744,21 +744,21 @@ void CCaret::ShowCaretPosInfo()
 	}
 
 
-	// -- -- -- --  �X�e�[�^�X���������o�� -- -- -- -- //
+	// -- -- -- --  ステータス情報を書き出す -- -- -- -- //
 	//
-	// �E�B���h�E�E��ɏ����o��
+	// ウィンドウ右上に書き出す
 	if( !hwndStatusBar ){
 		TCHAR	szText[64];
 		TCHAR	szFormat[64];
 		TCHAR	szLeft[64];
 		TCHAR	szRight[64];
 		int		nLen;
-		{	// ���b�Z�[�W�̍���������i�u�s:��v���������\���j
+		{	// メッセージの左側文字列（「行:列」を除いた表示）
 			nLen = _tcslen(pszCodeName) + _tcslen(szEolMode) + _tcslen(szCaretChar);
-			// ����� %s(%s)%6s%s%s ���ɂȂ�B%6ts�\�L�͎g���Ȃ��̂Œ���
+			// これは %s(%s)%6s%s%s 等になる。%6ts表記は使えないので注意
 			auto_sprintf(
 				szFormat,
-				_T("%%s(%%s)%%%ds%%s%%s"),	// �u�L�����b�g�ʒu�̕������v���E�l�Ŕz�u�i����Ȃ��Ƃ��͍��l�ɂȂ��ĉE�ɐL�т�j
+				_T("%%s(%%s)%%%ds%%s%%s"),	// 「キャレット位置の文字情報」を右詰で配置（足りないときは左詰になって右に伸びる）
 				(nLen < 15)? 15 - nLen: 1
 			);
 			auto_sprintf(
@@ -766,24 +766,24 @@ void CCaret::ShowCaretPosInfo()
 				szFormat,
 				pszCodeName,
 				szEolMode,
-				szCaretChar[0]? _T("["): _T(" "),	// ������񖳂��Ȃ犇�ʂ��ȗ��iEOF��t���[�J�[�\���ʒu�j
+				szCaretChar[0]? _T("["): _T(" "),	// 文字情報無しなら括弧も省略（EOFやフリーカーソル位置）
 				szCaretChar,
-				szCaretChar[0]? _T("]"): _T(" ")	// ������񖳂��Ȃ犇�ʂ��ȗ��iEOF��t���[�J�[�\���ʒu�j
+				szCaretChar[0]? _T("]"): _T(" ")	// 文字情報無しなら括弧も省略（EOFやフリーカーソル位置）
 			);
 		}
 		szRight[0] = _T('\0');
-		nLen = MENUBAR_MESSAGE_MAX_LEN - _tcslen(szLeft);	// �E���Ɏc���Ă��镶����
-		if( nLen > 0 ){	// ���b�Z�[�W�̉E��������i�u�s:��v�\���j
+		nLen = MENUBAR_MESSAGE_MAX_LEN - _tcslen(szLeft);	// 右側に残っている文字長
+		if( nLen > 0 ){	// メッセージの右側文字列（「行:列」表示）
 			TCHAR szRowCol[32];
 			auto_sprintf(
 				szRowCol,
-				_T("%d:%-4d"),	// �u��v�͍ŏ������w�肵�č��񂹁i����Ȃ��Ƃ��͉E�ɐL�т�j
+				_T("%d:%-4d"),	// 「列」は最小幅を指定して左寄せ（足りないときは右に伸びる）
 				ptCaret.y,
 				ptCaret.x
 			);
 			auto_sprintf(
 				szFormat,
-				_T("%%%ds"),	// �u�s:��v���E�l�Ŕz�u�i����Ȃ��Ƃ��͍��l�ɂȂ��ĉE�ɐL�т�j
+				_T("%%%ds"),	// 「行:列」を右詰で配置（足りないときは左詰になって右に伸びる）
 				nLen
 			);
 			auto_sprintf(
@@ -800,23 +800,23 @@ void CCaret::ShowCaretPosInfo()
 		);
 		m_pEditDoc->m_pcEditWnd->PrintMenubarMessage( szText );
 	}
-	// �X�e�[�^�X�o�[�ɏ�Ԃ������o��
+	// ステータスバーに状態を書き出す
 	else{
 		TCHAR	szText_1[64];
-		auto_sprintf( szText_1, _T("%5d �s %4d ��"), ptCaret.y, ptCaret.x );	//Oct. 30, 2000 JEPRO �疜�s���v���
+		auto_sprintf( szText_1, _T("%5d 行 %4d 桁"), ptCaret.y, ptCaret.x );	//Oct. 30, 2000 JEPRO 千万行も要らん
 
 		TCHAR	szText_6[16];
 		if( m_pEditView->IsInsMode() /* Oct. 2, 2005 genta */ ){
-			_tcscpy( szText_6, _T("�}��") );
+			_tcscpy( szText_6, _T("挿入") );
 		}else{
-			_tcscpy( szText_6, _T("�㏑") );
+			_tcscpy( szText_6, _T("上書") );
 		}
 		if( m_bClearStatus ){
 			::StatusBar_SetText( hwndStatusBar, 0 | SBT_NOBORDERS, _T("") );
 		}
 		::StatusBar_SetText( hwndStatusBar, 1 | 0,             szText_1 );
 		//	May 12, 2000 genta
-		//	���s�R�[�h�̕\����ǉ��D���̔ԍ���1�����炷
+		//	改行コードの表示を追加．後ろの番号を1つずつずらす
 		//	From Here
 		::StatusBar_SetText( hwndStatusBar, 2 | 0,             szEolMode );
 		//	To Here
@@ -828,58 +828,58 @@ void CCaret::ShowCaretPosInfo()
 
 }
 
-/* �J�[�\���㉺�ړ����� */
+/* カーソル上下移動処理 */
 CLayoutInt CCaret::Cursor_UPDOWN( CLayoutInt nMoveLines, bool bSelect )
 {
-	//�K�v�ȃC���^�[�t�F�[�X
+	//必要なインターフェース
 	const CLayoutMgr* const pLayoutMgr = &m_pEditDoc->m_cLayoutMgr;
 	const CommonSetting* const pCommon = &GetDllShareData().m_Common;
 
 	const CLayoutPoint ptCaret = GetCaretLayoutPos();
 
-	bool	bVertLineDoNotOFF = true;	// �J�[�\���ʒu�c�����������Ȃ�
+	bool	bVertLineDoNotOFF = true;	// カーソル位置縦線を消去しない
 	if( bSelect ){
-		bVertLineDoNotOFF = false;		//�I����ԂȂ�J�[�\���ʒu�c���������s��
+		bVertLineDoNotOFF = false;		//選択状態ならカーソル位置縦線消去を行う
 	}
 
-	// ���݂̃L�����b�gY���W + nMoveLines�����������C�A�E�g�s�͈͓̔��Ɏ��܂�悤�� nMoveLines�𒲐�����B
-	if( nMoveLines > 0 ) { // ���ړ��B
+	// 現在のキャレットY座標 + nMoveLinesが正しいレイアウト行の範囲内に収まるように nMoveLinesを調整する。
+	if( nMoveLines > 0 ) { // 下移動。
 		const bool existsEOFOnlyLine = pLayoutMgr->GetBottomLayout() && pLayoutMgr->GetBottomLayout()->GetLayoutEol() != EOL_NONE
 			|| pLayoutMgr->GetLineCount() == 0;
 		const CLayoutInt maxLayoutLine = pLayoutMgr->GetLineCount() + (existsEOFOnlyLine ? 1 : 0 ) - 1;
-		// �ړ��悪 EOF�݂̂̍s���܂߂����C�A�E�g�s�������ɂȂ�悤�Ɉړ��ʂ��K������B
+		// 移動先が EOFのみの行を含めたレイアウト行数未満になるように移動量を規正する。
 		nMoveLines = t_min( nMoveLines,  maxLayoutLine - ptCaret.y );
-		if( ptCaret.y + nMoveLines == maxLayoutLine && existsEOFOnlyLine // �ړ��悪 EOF�݂̂̍s
-			&& m_pEditView->GetSelectionInfo().IsBoxSelecting() && 0 != ptCaret.x // ����`�I�𒆂Ȃ�A
+		if( ptCaret.y + nMoveLines == maxLayoutLine && existsEOFOnlyLine // 移動先が EOFのみの行
+			&& m_pEditView->GetSelectionInfo().IsBoxSelecting() && 0 != ptCaret.x // かつ矩形選択中なら、
 		) {
-			// EOF�݂̂̍s�ɂ͈ړ����Ȃ��B���ړ��ŃL�����b�g�� X���W�𓮂��������Ȃ��̂ŁB
-			nMoveLines = t_max( CLayoutInt(0), nMoveLines - 1 ); // ���������ړ����Ȃ��悤�� 0�ȏ�����B
+			// EOFのみの行には移動しない。下移動でキャレットの X座標を動かしたくないので。
+			nMoveLines = t_max( CLayoutInt(0), nMoveLines - 1 ); // うっかり上移動しないように 0以上を守る。
 		}
-	} else { // ��ړ��B
-		// �ړ��悪 0�s�ڂ�菬�����Ȃ�Ȃ��悤�Ɉړ��ʂ��K���B
+	} else { // 上移動。
+		// 移動先が 0行目より小さくならないように移動量を規制。
 		nMoveLines = t_max( nMoveLines, - GetCaretLayoutPos().GetY() );
 	}
 
 	if( bSelect && ! m_pEditView->GetSelectionInfo().IsTextSelected() ) {
-		/* ���݂̃J�[�\���ʒu����I�����J�n���� */
+		/* 現在のカーソル位置から選択を開始する */
 		m_pEditView->GetSelectionInfo().BeginSelectArea();
 	}
 	if( ! bSelect ){
 		if( m_pEditView->GetSelectionInfo().IsTextSelected() ) {
-			/* ���݂̑I��͈͂��I����Ԃɖ߂� */
+			/* 現在の選択範囲を非選択状態に戻す */
 			m_pEditView->GetSelectionInfo().DisableSelectArea(true);
 		}else if( m_pEditView->GetSelectionInfo().IsBoxSelecting() ){
 			m_pEditView->GetSelectionInfo().SetBoxSelect(false);
 		}
 	}
 
-	// (���ꂩ�狁�߂�)�L�����b�g�̈ړ���B
+	// (これから求める)キャレットの移動先。
 	CLayoutPoint ptTo( CLayoutInt(0), ptCaret.y + nMoveLines );
 
-	/* �ړ���̍s�̃f�[�^���擾 */
+	/* 移動先の行のデータを取得 */
 	const CLayout* const pLayout = pLayoutMgr->SearchLineByLayoutY( ptTo.y );
 	const CLogicInt nLineLen = pLayout ? pLayout->GetLengthWithEOL() : CLogicInt(0);
-	int i = 0; ///< ���H
+	int i = 0; ///< 何？
 	if( pLayout ) {
 		CMemoryIterator it( pLayout, pLayoutMgr->GetTabSpace() );
 		while( ! it.end() ){
@@ -900,7 +900,7 @@ CLayoutInt CCaret::Cursor_UPDOWN( CLayoutInt nMoveLines, bool bSelect )
 		}
 	}
 	if( i >= nLineLen ) {
-		/* �t���[�J�[�\�����[�h�Ƌ�`�I�𒆂́A�L�����b�g�̈ʒu�����s�� EOF�̑O�ɐ������Ȃ� */
+		/* フリーカーソルモードと矩形選択中は、キャレットの位置を改行や EOFの前に制限しない */
 		if( pCommon->m_sGeneral.m_bIsFreeCursorMode
 			|| m_pEditView->GetSelectionInfo().IsBoxSelecting()
 		) {
@@ -912,7 +912,7 @@ CLayoutInt CCaret::Cursor_UPDOWN( CLayoutInt nMoveLines, bool bSelect )
 	}
 	GetAdjustCursorPos( &ptTo );
 	if( bSelect ) {
-		/* ���݂̃J�[�\���ʒu�ɂ���đI��͈͂�ύX */
+		/* 現在のカーソル位置によって選択範囲を変更 */
 		m_pEditView->GetSelectionInfo().ChangeSelectAreaByCurrentCursor( ptTo );
 	}
 	const CLayoutInt nScrollLines = MoveCursor(	ptTo,
@@ -924,28 +924,28 @@ CLayoutInt CCaret::Cursor_UPDOWN( CLayoutInt nMoveLines, bool bSelect )
 }
 
 
-/*!	�L�����b�g�̍쐬
+/*!	キャレットの作成
 
-	@param nCaretColor [in]	�L�����b�g�̐F��� (0:�ʏ�, 1:IME ON)
-	@param nWidth [in]		�L�����b�g��
-	@param nHeight [in]		�L�����b�g��
+	@param nCaretColor [in]	キャレットの色種別 (0:通常, 1:IME ON)
+	@param nWidth [in]		キャレット幅
+	@param nHeight [in]		キャレット高
 
-	@date 2006.12.07 ryoji �V�K�쐬
+	@date 2006.12.07 ryoji 新規作成
 */
 void CCaret::CreateEditCaret( COLORREF crCaret, COLORREF crBack, int nWidth, int nHeight )
 {
 	//
-	// �L�����b�g�p�̃r�b�g�}�b�v���쐬����
+	// キャレット用のビットマップを作成する
 	//
-	// Note: �E�B���h�E�݊��̃����� DC ��� PatBlt ��p���ăL�����b�g�F�Ɣw�i�F�� XOR ����
-	//       ���邱�ƂŁC�ړI�̃r�b�g�}�b�v�𓾂�D
-	//       �� 256 �F���ł� RGB �l��P���ɒ��ډ��Z���Ă��L�����b�g�F���o�����߂̐�����
-	//          �r�b�g�}�b�v�F�͓����Ȃ��D
-	//       �Q�l: [HOWTO] �L�����b�g�̐F�𐧌䂷����@
+	// Note: ウィンドウ互換のメモリ DC 上で PatBlt を用いてキャレット色と背景色を XOR 結合
+	//       することで，目的のビットマップを得る．
+	//       ※ 256 色環境では RGB 値を単純に直接演算してもキャレット色を出すための正しい
+	//          ビットマップ色は得られない．
+	//       参考: [HOWTO] キャレットの色を制御する方法
 	//             http://support.microsoft.com/kb/84054/ja
 	//
 
-	HBITMAP hbmpCaret;	// �L�����b�g�p�̃r�b�g�}�b�v
+	HBITMAP hbmpCaret;	// キャレット用のビットマップ
 
 	HDC hdc = m_pEditView->GetDC();
 
@@ -966,12 +966,12 @@ void CCaret::CreateEditCaret( COLORREF crCaret, COLORREF crBack, int nWidth, int
 
 	m_pEditView->ReleaseDC( hdc );
 
-	// �ȑO�̃r�b�g�}�b�v��j������
+	// 以前のビットマップを破棄する
 	if( m_hbmpCaret != NULL )
 		::DeleteObject( m_hbmpCaret );
 	m_hbmpCaret = hbmpCaret;
 
-	// �L�����b�g���쐬����
+	// キャレットを作成する
 	m_pEditView->CreateCaret( hbmpCaret, nWidth, nHeight );
 	return;
 }
@@ -979,7 +979,7 @@ void CCaret::CreateEditCaret( COLORREF crCaret, COLORREF crBack, int nWidth, int
 
 // 2002/07/22 novice
 /*!
-	�L�����b�g�̕\��
+	キャレットの表示
 */
 void CCaret::ShowCaret_( HWND hwnd )
 {
@@ -991,7 +991,7 @@ void CCaret::ShowCaret_( HWND hwnd )
 
 
 /*!
-	�L�����b�g�̔�\��
+	キャレットの非表示
 */
 void CCaret::HideCaret_( HWND hwnd )
 {
@@ -1001,14 +1001,14 @@ void CCaret::HideCaret_( HWND hwnd )
 	}
 }
 
-//! �����̏�Ԃ𑼂�CCaret�ɃR�s�[
+//! 自分の状態を他のCCaretにコピー
 void CCaret::CopyCaretStatus(CCaret* pCaret) const
 {
 	pCaret->SetCaretLayoutPos(GetCaretLayoutPos());
 	pCaret->SetCaretLogicPos(GetCaretLogicPos());
-	pCaret->m_nCaretPosX_Prev = m_nCaretPosX_Prev;	/* �r���[���[����̃J�[�\�����ʒu�i�O�I���W���j*/
+	pCaret->m_nCaretPosX_Prev = m_nCaretPosX_Prev;	/* ビュー左端からのカーソル桁位置（０オリジン）*/
 
-	//�� �L�����b�g�̃T�C�Y�̓R�s�[���Ȃ��B2002/05/12 YAZAKI
+	//※ キャレットのサイズはコピーしない。2002/05/12 YAZAKI
 }
 
 
@@ -1026,7 +1026,7 @@ POINT CCaret::CalcCaretDrawPos(const CLayoutPoint& ptCaretPos) const
 	}else{
 		nPosY = m_pEditView->GetTextArea().GetAreaTop()
 			+ (Int)(nY) * m_pEditView->GetTextMetrics().GetHankakuDy()
-			+ m_pEditView->GetTextMetrics().GetHankakuHeight() - GetCaretSize().cy; //����
+			+ m_pEditView->GetTextMetrics().GetHankakuHeight() - GetCaretSize().cy; //下寄せ
 	}
 
 	return CMyPoint(nPosX,nPosY);
@@ -1036,24 +1036,24 @@ POINT CCaret::CalcCaretDrawPos(const CLayoutPoint& ptCaretPos) const
 
 
 /*!
-	�s���w��ɂ��J�[�\���ړ��i���W�����t���j
+	行桁指定によるカーソル移動（座標調整付き）
 
-	@return �c�X�N���[���s��(��:��X�N���[��/��:���X�N���[��)
+	@return 縦スクロール行数(負:上スクロール/正:下スクロール)
 
-	@note �}�E�X���ɂ��ړ��ŕs�K�؂Ȉʒu�ɍs���Ȃ��悤���W�������ăJ�[�\���ړ�����
+	@note マウス等による移動で不適切な位置に行かないよう座標調整してカーソル移動する
 
-	@date 2007.08.23 ryoji �֐����iMoveCursorToPoint()���珈���𔲂��o���j
-	@date 2007.09.26 ryoji ���p�����ł������ō��E�ɃJ�[�\����U�蕪����
-	@date 2007.10.23 kobake ���������̌����C�� ([in/out]��[in])
-	@date 2009.02.17 ryoji ���C�A�E�g�s���Ȍ�̃J�����ʒu�w��Ȃ疖�������̑O�ł͂Ȃ����������̌�Ɉړ�����
+	@date 2007.08.23 ryoji 関数化（MoveCursorToPoint()から処理を抜き出し）
+	@date 2007.09.26 ryoji 半角文字でも中央で左右にカーソルを振り分ける
+	@date 2007.10.23 kobake 引数説明の誤りを修正 ([in/out]→[in])
+	@date 2009.02.17 ryoji レイアウト行末以後のカラム位置指定なら末尾文字の前ではなく末尾文字の後に移動する
 */
 CLayoutInt CCaret::MoveCursorProperly(
-	CLayoutPoint	ptNewXY,			//!< [in] �J�[�\���̃��C�A�E�g���WX
-	bool			bScroll,			//!< [in] TRUE: ��ʈʒu�����L��/ FALSE: ��ʈʒu�����L�薳��
-	bool			test,				//!< [in] true: �J�[�\���ړ��͂��Ȃ�
-	CLayoutPoint*	ptNewXYNew,			//!< [out] �V�������C�A�E�g���W
-	int				nCaretMarginRate,	//!< [in] �c�X�N���[���J�n�ʒu�����߂�l
-	int				dx					//!< [in] nNewX�ƃ}�E�X�J�[�\���ʒu�Ƃ̌덷(�J�����������̃h�b�g��)
+	CLayoutPoint	ptNewXY,			//!< [in] カーソルのレイアウト座標X
+	bool			bScroll,			//!< [in] TRUE: 画面位置調整有り/ FALSE: 画面位置調整有り無し
+	bool			test,				//!< [in] true: カーソル移動はしない
+	CLayoutPoint*	ptNewXYNew,			//!< [out] 新しいレイアウト座標
+	int				nCaretMarginRate,	//!< [in] 縦スクロール開始位置を決める値
+	int				dx					//!< [in] nNewXとマウスカーソル位置との誤差(カラム幅未満のドット数)
 )
 {
 	const wchar_t*		pLine;
@@ -1064,27 +1064,27 @@ CLayoutInt CCaret::MoveCursorProperly(
 		ptNewXY.y = CLayoutInt(0);
 	}
 	
-	// 2011.12.26 EOF�ȉ��̍s�������ꍇ�ŋ�`�̂Ƃ��́A�ŏI���C�A�E�g�s�ֈړ�����
+	// 2011.12.26 EOF以下の行だった場合で矩形のときは、最終レイアウト行へ移動する
 	if( ptNewXY.y >= m_pEditDoc->m_cLayoutMgr.GetLineCount()
 	 && (m_pEditView->GetSelectionInfo().IsMouseSelecting() && m_pEditView->GetSelectionInfo().IsBoxSelecting()) ){
 		const CLayout* layoutEnd = m_pEditDoc->m_cLayoutMgr.GetBottomLayout();
 		bool bEofOnly = (layoutEnd && layoutEnd->GetLayoutEol() != EOL_NONE) || NULL == layoutEnd;
-	 	// 2012.01.09 �҂�����[EOF]�ʒu�ɂ���ꍇ�͈ʒu���ێ�(1��̍s�ɂ��Ȃ�)
+	 	// 2012.01.09 ぴったり[EOF]位置にある場合は位置を維持(1つ上の行にしない)
 	 	if( bEofOnly && ptNewXY.y == m_pEditDoc->m_cLayoutMgr.GetLineCount() && ptNewXY.x == 0 ){
 	 	}else{
 			ptNewXY.y = t_max(CLayoutInt(0), m_pEditDoc->m_cLayoutMgr.GetLineCount() - 1);
 		}
 	}
-	/* �J�[�\�����e�L�X�g�ŉ��[�s�ɂ��邩 */
+	/* カーソルがテキスト最下端行にあるか */
 	if( ptNewXY.y >= m_pEditDoc->m_cLayoutMgr.GetLineCount() ){
-		// 2004.04.03 Moca EOF�����̍��W�����́AMoveCursor���ł���Ă��炤�̂ŁA�폜
+		// 2004.04.03 Moca EOFより後ろの座標調整は、MoveCursor内でやってもらうので、削除
 	}
-	/* �J�[�\�����e�L�X�g�ŏ�[�s�ɂ��邩 */
+	/* カーソルがテキスト最上端行にあるか */
 	else if( ptNewXY.y < 0 ){
 		ptNewXY.Set(CLayoutInt(0), CLayoutInt(0));
 	}
 	else{
-		/* �ړ���̍s�̃f�[�^���擾 */
+		/* 移動先の行のデータを取得 */
 		pLine = m_pEditDoc->m_cLayoutMgr.GetLineStr( ptNewXY.GetY2(), &nLineLen, &pcLayout );
 
 		int nColWidth = m_pEditView->GetTextMetrics().GetHankakuDx();
@@ -1110,18 +1110,18 @@ CLayoutInt CCaret::MoveCursorProperly(
 		nPosX += it.getColumn();
 		if ( it.end() ){
 			i = it.getIndex();
-			//nPosX -= it.getColumnDelta();	// 2009.02.17 ryoji �R�����g�A�E�g�i���������̌�Ɉړ�����j
+			//nPosX -= it.getColumnDelta();	// 2009.02.17 ryoji コメントアウト（末尾文字の後に移動する）
 		}
 
 		if( i >= nLineLen ){
-			// 2011.12.26 �t���[�J�[�\��/��`�Ńf�[�^�t��EOF�̉E���ֈړ��ł���悤��
-			/* �t���[�J�[�\�����[�h�� */
+			// 2011.12.26 フリーカーソル/矩形でデータ付きEOFの右側へ移動できるように
+			/* フリーカーソルモードか */
 			if( GetDllShareData().m_Common.m_sGeneral.m_bIsFreeCursorMode
-			  || ( m_pEditView->GetSelectionInfo().IsMouseSelecting() && m_pEditView->GetSelectionInfo().IsBoxSelecting() )	/* �}�E�X�͈͑I�� && ��`�͈͑I�� */
-			  || ( m_pEditView->m_bDragMode && m_pEditView->m_bDragBoxData ) /* OLE DropTarget && ��`�f�[�^ */
+			  || ( m_pEditView->GetSelectionInfo().IsMouseSelecting() && m_pEditView->GetSelectionInfo().IsBoxSelecting() )	/* マウス範囲選択中 && 矩形範囲選択中 */
+			  || ( m_pEditView->m_bDragMode && m_pEditView->m_bDragBoxData ) /* OLE DropTarget && 矩形データ */
 			){
-				// �܂�Ԃ����ƃ��C�A�E�g�s�����i�Ԃ牺�����܂ށj�̂ǂ��炩�傫���ق��܂ŃJ�[�\���ړ��\
-				//	Aug. 14, 2005 genta �܂�Ԃ�����LayoutMgr����擾����悤��
+				// 折り返し幅とレイアウト行桁数（ぶら下げを含む）のどちらか大きいほうまでカーソル移動可能
+				//	Aug. 14, 2005 genta 折り返し幅をLayoutMgrから取得するように
 				CLayoutInt nMaxX = t_max(nPosX, m_pEditDoc->m_cLayoutMgr.GetMaxLineKetas());
 				nPosX = ptNewXY.GetX2();
 				if( nPosX < CLayoutInt(0) ){

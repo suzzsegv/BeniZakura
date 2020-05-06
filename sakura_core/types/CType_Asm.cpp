@@ -7,7 +7,7 @@
 #include "view/Colors/EColorIndexType.h"
 
 /*!
- *	GNU Assembler ƒL[ƒ[ƒh
+ *	GNU Assembler ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰
  */
 static const wchar_t* g_defaultKeywordSetGas[] = {
 	L".abort",
@@ -104,7 +104,7 @@ static const wchar_t* g_defaultKeywordSetGas[] = {
 };
 
 /*!
- *	GNU Assembler ƒvƒŠƒvƒƒZƒbƒT ƒL[ƒ[ƒh
+ *	GNU Assembler ãƒ—ãƒªãƒ—ãƒ­ã‚»ãƒƒã‚µ ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰
  */
 static const wchar_t* g_defaultKeywordSetGasPreprocessor[] = {
 	L"#define",
@@ -122,23 +122,23 @@ static const wchar_t* g_defaultKeywordSetGasPreprocessor[] = {
 };
 
 /*!
- *	ƒAƒZƒ“ƒuƒ‰ ƒ^ƒCƒv•Êİ’è‚ÌƒfƒtƒHƒ‹ƒg’l‚ğİ’è‚·‚é
+ *	ã‚¢ã‚»ãƒ³ãƒ–ãƒ© ã‚¿ã‚¤ãƒ—åˆ¥è¨­å®šã®ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆå€¤ã‚’è¨­å®šã™ã‚‹
  *
- *	@return ‚È‚µ
+ *	@return ãªã—
  */
 void CType_Asm::InitTypeConfigImp(STypeConfig* pType)
 {
-	//–¼‘O‚ÆŠg’£q
-	_tcscpy( pType->m_szTypeName, _T("ƒAƒZƒ“ƒuƒ‰") );
+	//åå‰ã¨æ‹¡å¼µå­
+	_tcscpy( pType->m_szTypeName, _T("ã‚¢ã‚»ãƒ³ãƒ–ãƒ©") );
 	_tcscpy( pType->m_szTypeExts, _T("asm,s") );
 
-	//İ’è
-	pType->m_cLineComment.CopyTo( 0, L";", -1 );							/* sƒRƒƒ“ƒgƒfƒŠƒ~ƒ^ */
-	pType->m_cBlockComments[0].SetBlockCommentRule( L"/*", L"*/" );			/* ƒuƒƒbƒNƒRƒƒ“ƒgƒfƒŠƒ~ƒ^ */
-	pType->m_eDefaultOutline = OUTLINE_ASM;									/* ƒAƒEƒgƒ‰ƒCƒ“‰ğÍ•û–@ */
-	pType->m_eSmartIndent = SMARTINDENT_NONE;								/* ƒXƒ}[ƒgƒCƒ“ƒfƒ“ƒgí•Ê */
-	pType->m_ColorInfoArr[COLORIDX_DIGIT].m_bDisp = true;					/* ”¼Šp”’l‚ğF•ª‚¯•\¦ */
-	pType->m_ColorInfoArr[COLORIDX_COMMENT2].m_bDisp = true;				/* C/C++ ƒvƒŠƒvƒƒZƒbƒT‚É‚æ‚éƒRƒƒ“ƒgƒAƒEƒgƒuƒƒbƒN */
+	//è¨­å®š
+	pType->m_cLineComment.CopyTo( 0, L";", -1 );							/* è¡Œã‚³ãƒ¡ãƒ³ãƒˆãƒ‡ãƒªãƒŸã‚¿ */
+	pType->m_cBlockComments[0].SetBlockCommentRule( L"/*", L"*/" );			/* ãƒ–ãƒ­ãƒƒã‚¯ã‚³ãƒ¡ãƒ³ãƒˆãƒ‡ãƒªãƒŸã‚¿ */
+	pType->m_eDefaultOutline = OUTLINE_ASM;									/* ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³è§£ææ–¹æ³• */
+	pType->m_eSmartIndent = SMARTINDENT_NONE;								/* ã‚¹ãƒãƒ¼ãƒˆã‚¤ãƒ³ãƒ‡ãƒ³ãƒˆç¨®åˆ¥ */
+	pType->m_ColorInfoArr[COLORIDX_DIGIT].m_bDisp = true;					/* åŠè§’æ•°å€¤ã‚’è‰²åˆ†ã‘è¡¨ç¤º */
+	pType->m_ColorInfoArr[COLORIDX_COMMENT2].m_bDisp = true;				/* C/C++ ãƒ—ãƒªãƒ—ãƒ­ã‚»ãƒƒã‚µã«ã‚ˆã‚‹ã‚³ãƒ¡ãƒ³ãƒˆã‚¢ã‚¦ãƒˆãƒ–ãƒ­ãƒƒã‚¯ */
 
 	pType->m_nKeyWordSetIdx[0] = AddDefaultKeywordSet(
 										L"Assembler",
@@ -157,10 +157,10 @@ void CType_Asm::InitTypeConfigImp(STypeConfig* pType)
 
 
 
-/*! ƒAƒZƒ“ƒuƒ‰ ƒAƒEƒgƒ‰ƒCƒ“‰ğÍ
+/*! ã‚¢ã‚»ãƒ³ãƒ–ãƒ© ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³è§£æ
 
 	@author MIK
-	@date 2004.04.12 ì‚è’¼‚µ
+	@date 2004.04.12 ä½œã‚Šç›´ã—
 */
 void CDocOutline::MakeTopicList_asm( CFuncInfoArr* pcFuncInfoArr )
 {
@@ -179,30 +179,30 @@ void CDocOutline::MakeTopicList_asm( CFuncInfoArr* pcFuncInfoArr )
 		int j;
 		WCHAR* p;
 
-		//1sæ“¾‚·‚éB
+		//1è¡Œå–å¾—ã™ã‚‹ã€‚
 		pLine = m_pcDocRef->m_cDocLineMgr.GetLine(nLineCount)->GetDocLineStrWithEOL(&nLineLen);
 		if( pLine == NULL ) break;
 
-		//ì‹Æ—p‚ÉƒRƒs[‚ğì¬‚·‚éBƒoƒCƒiƒŠ‚ª‚ ‚Á‚½‚ç‚»‚ÌŒã‚ë‚Í’m‚ç‚È‚¢B
+		//ä½œæ¥­ç”¨ã«ã‚³ãƒ”ãƒ¼ã‚’ä½œæˆã™ã‚‹ã€‚ãƒã‚¤ãƒŠãƒªãŒã‚ã£ãŸã‚‰ãã®å¾Œã‚ã¯çŸ¥ã‚‰ãªã„ã€‚
 		pTmpLine = wcsdup( pLine );
 		if( pTmpLine == NULL ) break;
-		if( wcslen( pTmpLine ) >= (unsigned int)nLineLen ){	//ƒoƒCƒiƒŠ‚ğŠÜ‚ñ‚Å‚¢‚½‚ç’Z‚­‚È‚é‚Ì‚Å...
-			pTmpLine[ nLineLen ] = L'\0';	//w’è’·‚ÅØ‚è‹l‚ß
+		if( wcslen( pTmpLine ) >= (unsigned int)nLineLen ){	//ãƒã‚¤ãƒŠãƒªã‚’å«ã‚“ã§ã„ãŸã‚‰çŸ­ããªã‚‹ã®ã§...
+			pTmpLine[ nLineLen ] = L'\0';	//æŒ‡å®šé•·ã§åˆ‡ã‚Šè©°ã‚
 		}
 
-		//sƒRƒƒ“ƒgíœ
+		//è¡Œã‚³ãƒ¡ãƒ³ãƒˆå‰Šé™¤
 		p = wcsstr( pTmpLine, L";" );
 		if( p ) *p = L'\0';
 
 		length = wcslen( pTmpLine );
 		offset = 0;
 
-		//ƒg[ƒNƒ“‚É•ªŠ„
+		//ãƒˆãƒ¼ã‚¯ãƒ³ã«åˆ†å‰²
 		for( j = 0; j < MAX_ASM_TOKEN; j++ ) token[ j ] = NULL;
 		for( j = 0; j < MAX_ASM_TOKEN; j++ ){
 			token[ j ] = my_strtok<WCHAR>( pTmpLine, length, &offset, L" \t\r\n" );
 			if( token[ j ] == NULL ) break;
-			//ƒg[ƒNƒ“‚ÉŠÜ‚Ü‚ê‚é‚×‚«•¶š‚Å‚È‚¢‚©H
+			//ãƒˆãƒ¼ã‚¯ãƒ³ã«å«ã¾ã‚Œã‚‹ã¹ãæ–‡å­—ã§ãªã„ã‹ï¼Ÿ
 			if( wcsstr( token[ j ], L"\"") != NULL
 			 || wcsstr( token[ j ], L"\\") != NULL
 			 || wcsstr( token[ j ], L"'" ) != NULL ){
@@ -211,31 +211,31 @@ void CDocOutline::MakeTopicList_asm( CFuncInfoArr* pcFuncInfoArr )
 			}
 		}
 
-		if( token[ 0 ] != NULL ){	//ƒg[ƒNƒ“‚ª1ŒÂˆÈã‚ ‚é
+		if( token[ 0 ] != NULL ){	//ãƒˆãƒ¼ã‚¯ãƒ³ãŒ1å€‹ä»¥ä¸Šã‚ã‚‹
 			int nFuncId = -1;
 			WCHAR* entry_token = NULL;
 
 			length = wcslen( token[ 0 ] );
 			if( length >= 2
-			 && token[ 0 ][ length - 1 ] == L':' ){	//ƒ‰ƒxƒ‹
+			 && token[ 0 ][ length - 1 ] == L':' ){	//ãƒ©ãƒ™ãƒ«
 				token[ 0 ][ length - 1 ] = L'\0';
 				nFuncId = 51;
 				entry_token = token[ 0 ];
 			}
-			else if( token[ 1 ] != NULL ){	//ƒg[ƒNƒ“‚ª2ŒÂˆÈã‚ ‚é
-				if( wcsicmp( token[ 1 ], L"proc" ) == 0 ){	//ŠÖ”
+			else if( token[ 1 ] != NULL ){	//ãƒˆãƒ¼ã‚¯ãƒ³ãŒ2å€‹ä»¥ä¸Šã‚ã‚‹
+				if( wcsicmp( token[ 1 ], L"proc" ) == 0 ){	//é–¢æ•°
 					nFuncId = 50;
 					entry_token = token[ 0 ];
 				}else
-				if( wcsicmp( token[ 1 ], L"endp" ) == 0 ){	//ŠÖ”I—¹
+				if( wcsicmp( token[ 1 ], L"endp" ) == 0 ){	//é–¢æ•°çµ‚äº†
 					nFuncId = 52;
 					entry_token = token[ 0 ];
 				//}else
-				//if( my_stricmp( token[ 1 ], _T("macro") ) == 0 ){	//ƒ}ƒNƒ
+				//if( my_stricmp( token[ 1 ], _T("macro") ) == 0 ){	//ãƒã‚¯ãƒ­
 				//	nFuncId = -1;
 				//	entry_token = token[ 0 ];
 				//}else
-				//if( my_stricmp( token[ 1 ], _T("struc") ) == 0 ){	//\‘¢‘Ì
+				//if( my_stricmp( token[ 1 ], _T("struc") ) == 0 ){	//æ§‹é€ ä½“
 				//	nFuncId = -1;
 				//	entry_token = token[ 0 ];
 				}
@@ -243,10 +243,10 @@ void CDocOutline::MakeTopicList_asm( CFuncInfoArr* pcFuncInfoArr )
 
 			if( nFuncId >= 0 ){
 				/*
-				  ƒJ[ƒ\ƒ‹ˆÊ’u•ÏŠ·
-				  •¨—ˆÊ’u(s“ª‚©‚ç‚ÌƒoƒCƒg”AÜ‚è•Ô‚µ–³‚µsˆÊ’u)
-				  ¨
-				  ƒŒƒCƒAƒEƒgˆÊ’u(s“ª‚©‚ç‚Ì•\¦Œ…ˆÊ’uAÜ‚è•Ô‚µ‚ ‚èsˆÊ’u)
+				  ã‚«ãƒ¼ã‚½ãƒ«ä½ç½®å¤‰æ›
+				  ç‰©ç†ä½ç½®(è¡Œé ­ã‹ã‚‰ã®ãƒã‚¤ãƒˆæ•°ã€æŠ˜ã‚Šè¿”ã—ç„¡ã—è¡Œä½ç½®)
+				  â†’
+				  ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆä½ç½®(è¡Œé ­ã‹ã‚‰ã®è¡¨ç¤ºæ¡ä½ç½®ã€æŠ˜ã‚Šè¿”ã—ã‚ã‚Šè¡Œä½ç½®)
 				*/
 				CLayoutPoint ptPos;
 				m_pcDocRef->m_cLayoutMgr.LogicToLayout(

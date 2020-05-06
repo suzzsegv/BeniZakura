@@ -1,11 +1,11 @@
 /*!	@file
-	@brief ƒvƒƒZƒXŠî’êƒNƒ‰ƒXƒwƒbƒ_ƒtƒ@ƒCƒ‹
+	@brief ãƒ—ãƒ­ã‚»ã‚¹åŸºåº•ã‚¯ãƒ©ã‚¹ãƒ˜ãƒƒãƒ€ãƒ•ã‚¡ã‚¤ãƒ«
 
 	@author aroka
-	@date	2002/01/08 ì¬
+	@date	2002/01/08 ä½œæˆ
 */
 /*
-	Copyright (C) 2002, aroka V‹Kì¬
+	Copyright (C) 2002, aroka æ–°è¦ä½œæˆ
 	Copyright (C) 2009, ryoji
 
 	This source code is designed for sakura editor.
@@ -20,10 +20,10 @@
 #include "env/DLLSHAREDATA.h"
 
 /*-----------------------------------------------------------------------
-ƒNƒ‰ƒX‚ÌéŒ¾
+ã‚¯ãƒ©ã‚¹ã®å®£è¨€
 -----------------------------------------------------------------------*/
 /*!
-	@brief ƒvƒƒZƒXŠî’êƒNƒ‰ƒX
+	@brief ãƒ—ãƒ­ã‚»ã‚¹åŸºåº•ã‚¯ãƒ©ã‚¹
 */
 class CProcess : public TSingleInstance<CProcess> {
 public:
@@ -62,7 +62,7 @@ private:
 		);
 #endif
 	
-	//	—Bˆê‚ÌCShareDate‚Æ‚·‚éBiCProcess‚ªÓ”C‚ğ‚Á‚Änew/delete‚·‚éj
+	//	å”¯ä¸€ã®CShareDateã¨ã™ã‚‹ã€‚ï¼ˆCProcessãŒè²¬ä»»ã‚’æŒã£ã¦new/deleteã™ã‚‹ï¼‰
 	CShareData		m_cShareData;
 
 private:

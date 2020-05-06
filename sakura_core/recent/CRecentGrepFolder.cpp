@@ -5,7 +5,7 @@
 
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                           ����                              //
+//                           生成                              //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
 CRecentGrepFolder::CRecentGrepFolder()
@@ -20,13 +20,13 @@ CRecentGrepFolder::CRecentGrepFolder()
 }
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                      �I�[�o�[���C�h                         //
+//                      オーバーライド                         //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
 /*
-	�A�C�e���̔�r�v�f���擾����B
+	アイテムの比較要素を取得する。
 
-	@note	�擾��̃|�C���^�̓��[�U�Ǘ��̍\���̂ɃL���X�g���ĎQ�Ƃ��Ă��������B
+	@note	取得後のポインタはユーザ管理の構造体にキャストして参照してください。
 */
 const TCHAR* CRecentGrepFolder::GetItemText( int nIndex ) const
 {

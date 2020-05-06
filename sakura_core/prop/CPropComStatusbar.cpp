@@ -1,5 +1,5 @@
 /*!	@file
-	@brief ‹¤’Êİ’èƒ_ƒCƒAƒƒOƒ{ƒbƒNƒXAuƒXƒe[ƒ^ƒXƒo[vƒy[ƒW
+	@brief å…±é€šè¨­å®šãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒœãƒƒã‚¯ã‚¹ã€ã€Œã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ãƒãƒ¼ã€ãƒšãƒ¼ã‚¸
 
 	@author Uchi
 */
@@ -24,10 +24,10 @@
 
 
 /*!
-	@param hwndDlg ƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX‚ÌWindow Handle
-	@param uMsg ƒƒbƒZ[ƒW
-	@param wParam ƒpƒ‰ƒ[ƒ^1
-	@param lParam ƒpƒ‰ƒ[ƒ^2
+	@param hwndDlg ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒœãƒƒã‚¯ã‚¹ã®Window Handle
+	@param uMsg ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+	@param wParam ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿1
+	@param lParam ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿2
 */
 INT_PTR CALLBACK CPropStatusbar::DlgProc_page(
 	HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam )
@@ -35,7 +35,7 @@ INT_PTR CALLBACK CPropStatusbar::DlgProc_page(
 	return DlgProc( reinterpret_cast<pDispatchPage>(&CPropStatusbar::DispatchEvent), hwndDlg, uMsg, wParam, lParam );
 }
 
-/* ƒƒbƒZ[ƒWˆ— */
+/* ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å‡¦ç† */
 INT_PTR CPropStatusbar::DispatchEvent(
     HWND		hwndDlg,	// handle to dialog box
     UINT		uMsg,		// message
@@ -50,7 +50,7 @@ INT_PTR CPropStatusbar::DispatchEvent(
 	switch( uMsg ){
 
 	case WM_INITDIALOG:
-		/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìİ’è */
+		/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®è¨­å®š */
 		SetData( hwndDlg );
 		// Modified by KEITA for WIN64 2003.9.6
 		::SetWindowLongPtr( hwndDlg, DWLP_USER, lParam );
@@ -67,11 +67,11 @@ INT_PTR CPropStatusbar::DispatchEvent(
 		case PSN_KILLACTIVE:
 			DEBUG_TRACE( _T("statusbar PSN_KILLACTIVE\n") );
 
-			/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìæ“¾ */
+			/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®å–å¾— */
 			GetData( hwndDlg );
 			return TRUE;
 
-		case PSN_SETACTIVE: //@@@ 2002.01.03 YAZAKI ÅŒã‚É•\¦‚µ‚Ä‚¢‚½ƒV[ƒg‚ğ³‚µ‚­Šo‚¦‚Ä‚¢‚È‚¢ƒoƒOC³
+		case PSN_SETACTIVE: //@@@ 2002.01.03 YAZAKI æœ€å¾Œã«è¡¨ç¤ºã—ã¦ã„ãŸã‚·ãƒ¼ãƒˆã‚’æ­£ã—ãè¦šãˆã¦ã„ãªã„ãƒã‚°ä¿®æ­£
 			m_nPageNum = ID_PAGENUM_STATUSBAR;
 			return TRUE;
 		}
@@ -82,41 +82,41 @@ INT_PTR CPropStatusbar::DispatchEvent(
 }
 
 
-/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìİ’è */
+/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®è¨­å®š */
 void CPropStatusbar::SetData( HWND hwndDlg )
 {
-	// ¦•¶šƒR[ƒh‚Ìw’è
-	// SJIS‚Å•¶šƒR[ƒh’l‚ğUnicode‚Åo—Í‚·‚é
+	// ç¤ºæ–‡å­—ã‚³ãƒ¼ãƒ‰ã®æŒ‡å®š
+	// SJISã§æ–‡å­—ã‚³ãƒ¼ãƒ‰å€¤ã‚’Unicodeã§å‡ºåŠ›ã™ã‚‹
 	::CheckDlgButton( hwndDlg, IDC_CHECK_DISP_UNICODE_IN_SJIS, m_Common.m_sStatusbar.m_bDispUniInSjis );
-	// JIS‚Å•¶šƒR[ƒh’l‚ğUnicode‚Åo—Í‚·‚é
+	// JISã§æ–‡å­—ã‚³ãƒ¼ãƒ‰å€¤ã‚’Unicodeã§å‡ºåŠ›ã™ã‚‹
 	::CheckDlgButton( hwndDlg, IDC_CHECK_DISP_UNICODE_IN_JIS,  m_Common.m_sStatusbar.m_bDispUniInJis );
-	// EUC‚Å•¶šƒR[ƒh’l‚ğUnicode‚Åo—Í‚·‚é
+	// EUCã§æ–‡å­—ã‚³ãƒ¼ãƒ‰å€¤ã‚’Unicodeã§å‡ºåŠ›ã™ã‚‹
 	::CheckDlgButton( hwndDlg, IDC_CHECK_DISP_UNICODE_IN_EUC,  m_Common.m_sStatusbar.m_bDispUniInEuc );
-	// UTF-8‚Å•\¦‚ğƒoƒCƒgƒR[ƒh‚Ås‚¤
+	// UTF-8ã§è¡¨ç¤ºã‚’ãƒã‚¤ãƒˆã‚³ãƒ¼ãƒ‰ã§è¡Œã†
 	::CheckDlgButton( hwndDlg, IDC_CHECK_DISP_UTF8_CODEPOINT,  m_Common.m_sStatusbar.m_bDispUtf8Codepoint );
-	// ƒTƒƒQ[ƒgƒyƒA‚ğƒR[ƒhƒ|ƒCƒ“ƒg‚Å•\¦
+	// ã‚µãƒ­ã‚²ãƒ¼ãƒˆãƒšã‚¢ã‚’ã‚³ãƒ¼ãƒ‰ãƒã‚¤ãƒ³ãƒˆã§è¡¨ç¤º
 	::CheckDlgButton( hwndDlg, IDC_CHECK_DISP_SP_CODEPOINT,    m_Common.m_sStatusbar.m_bDispSPCodepoint );
-	// ‘I‘ğ•¶š”‚ğ•¶š’PˆÊ‚Å‚Í‚È‚­ƒoƒCƒg’PˆÊ‚Å•\¦‚·‚é
+	// é¸æŠæ–‡å­—æ•°ã‚’æ–‡å­—å˜ä½ã§ã¯ãªããƒã‚¤ãƒˆå˜ä½ã§è¡¨ç¤ºã™ã‚‹
 	::CheckDlgButton( hwndDlg, IDC_CHECK_DISP_SELCOUNT_BY_BYTE,m_Common.m_sStatusbar.m_bDispSelCountByByte );
 	return;
 }
 
 
-/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìæ“¾ */
+/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®å–å¾— */
 int CPropStatusbar::GetData( HWND hwndDlg )
 {
-	// ¦•¶šƒR[ƒh‚Ìw’è
-	// SJIS‚Å•¶šƒR[ƒh’l‚ğUnicode‚Åo—Í‚·‚é
+	// ç¤ºæ–‡å­—ã‚³ãƒ¼ãƒ‰ã®æŒ‡å®š
+	// SJISã§æ–‡å­—ã‚³ãƒ¼ãƒ‰å€¤ã‚’Unicodeã§å‡ºåŠ›ã™ã‚‹
 	m_Common.m_sStatusbar.m_bDispUniInSjis		= ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_DISP_UNICODE_IN_SJIS );
-	// JIS‚Å•¶šƒR[ƒh’l‚ğUnicode‚Åo—Í‚·‚é
+	// JISã§æ–‡å­—ã‚³ãƒ¼ãƒ‰å€¤ã‚’Unicodeã§å‡ºåŠ›ã™ã‚‹
 	m_Common.m_sStatusbar.m_bDispUniInJis		= ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_DISP_UNICODE_IN_JIS );
-	// EUC‚Å•¶šƒR[ƒh’l‚ğUnicode‚Åo—Í‚·‚é
+	// EUCã§æ–‡å­—ã‚³ãƒ¼ãƒ‰å€¤ã‚’Unicodeã§å‡ºåŠ›ã™ã‚‹
 	m_Common.m_sStatusbar.m_bDispUniInEuc		= ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_DISP_UNICODE_IN_EUC );
-	// UTF-8‚Å•\¦‚ğƒoƒCƒgƒR[ƒh‚Ås‚¤
+	// UTF-8ã§è¡¨ç¤ºã‚’ãƒã‚¤ãƒˆã‚³ãƒ¼ãƒ‰ã§è¡Œã†
 	m_Common.m_sStatusbar.m_bDispUtf8Codepoint	= ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_DISP_UTF8_CODEPOINT );
-	// ƒTƒƒQ[ƒgƒyƒA‚ğƒR[ƒhƒ|ƒCƒ“ƒg‚Å•\¦
+	// ã‚µãƒ­ã‚²ãƒ¼ãƒˆãƒšã‚¢ã‚’ã‚³ãƒ¼ãƒ‰ãƒã‚¤ãƒ³ãƒˆã§è¡¨ç¤º
 	m_Common.m_sStatusbar.m_bDispSPCodepoint	= ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_DISP_SP_CODEPOINT );
-	// ‘I‘ğ•¶š”‚ğ•¶š’PˆÊ‚Å‚Í‚È‚­ƒoƒCƒg’PˆÊ‚Å•\¦‚·‚é
+	// é¸æŠæ–‡å­—æ•°ã‚’æ–‡å­—å˜ä½ã§ã¯ãªããƒã‚¤ãƒˆå˜ä½ã§è¡¨ç¤ºã™ã‚‹
 	m_Common.m_sStatusbar.m_bDispSelCountByByte	= ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_DISP_SELCOUNT_BY_BYTE );
 
 	return TRUE;

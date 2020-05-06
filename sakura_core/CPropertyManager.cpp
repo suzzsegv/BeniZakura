@@ -7,47 +7,47 @@
 
 CPropertyManager::CPropertyManager( HWND hwndOwner, CImageListMgr* pImageList, CMenuDrawer* menu )
 {
-	/* Ý’èƒvƒƒpƒeƒBƒV[ƒg‚Ì‰Šú‰»‚P */
+	/* è¨­å®šãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚·ãƒ¼ãƒˆã®åˆæœŸåŒ–ï¼‘ */
 	m_cPropCommon.Create( hwndOwner, pImageList, menu );
 	m_cPropTypes.Create( G_AppInstance(), hwndOwner );
 }
 
-/*! ‹¤’ÊÝ’è ƒvƒƒpƒeƒBƒV[ƒg */
+/*! å…±é€šè¨­å®š ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚·ãƒ¼ãƒˆ */
 BOOL CPropertyManager::OpenPropertySheet( int nPageNum )
 {
-	// 2002.12.11 Moca ‚±‚Ì•”•ª‚Ås‚í‚ê‚Ä‚¢‚½ƒf[ƒ^‚ÌƒRƒs[‚ðCPropCommon‚ÉˆÚ“®EŠÖ”‰»
-	// ‹¤’ÊÝ’è‚ÌˆêŽžÝ’è—Ìˆæ‚ÉSharaData‚ðƒRƒs[‚·‚é
+	// 2002.12.11 Moca ã“ã®éƒ¨åˆ†ã§è¡Œã‚ã‚Œã¦ã„ãŸãƒ‡ãƒ¼ã‚¿ã®ã‚³ãƒ”ãƒ¼ã‚’CPropCommonã«ç§»å‹•ãƒ»é–¢æ•°åŒ–
+	// å…±é€šè¨­å®šã®ä¸€æ™‚è¨­å®šé ˜åŸŸã«SharaDataã‚’ã‚³ãƒ”ãƒ¼ã™ã‚‹
 	m_cPropCommon.InitData();
 	
-	/* ƒvƒƒpƒeƒBƒV[ƒg‚Ìì¬ */
+	/* ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚·ãƒ¼ãƒˆã®ä½œæˆ */
 	if( m_cPropCommon.DoPropertySheet( nPageNum ) ){
 
-		// 2002.12.11 Moca ‚±‚Ì•”•ª‚Ås‚í‚ê‚Ä‚¢‚½ƒf[ƒ^‚ÌƒRƒs[‚ðCPropCommon‚ÉˆÚ“®EŠÖ”‰»
-		// ShareData ‚É Ý’è‚ð“K—pEƒRƒs[‚·‚é
-		// 2007.06.20 ryoji ƒOƒ‹[ƒv‰»‚É•ÏX‚ª‚ ‚Á‚½‚Æ‚«‚ÍƒOƒ‹[ƒvID‚ðƒŠƒZƒbƒg‚·‚é
+		// 2002.12.11 Moca ã“ã®éƒ¨åˆ†ã§è¡Œã‚ã‚Œã¦ã„ãŸãƒ‡ãƒ¼ã‚¿ã®ã‚³ãƒ”ãƒ¼ã‚’CPropCommonã«ç§»å‹•ãƒ»é–¢æ•°åŒ–
+		// ShareData ã« è¨­å®šã‚’é©ç”¨ãƒ»ã‚³ãƒ”ãƒ¼ã™ã‚‹
+		// 2007.06.20 ryoji ã‚°ãƒ«ãƒ¼ãƒ—åŒ–ã«å¤‰æ›´ãŒã‚ã£ãŸã¨ãã¯ã‚°ãƒ«ãƒ¼ãƒ—IDã‚’ãƒªã‚»ãƒƒãƒˆã™ã‚‹
 		BOOL bGroup = (GetDllShareData().m_Common.m_sTabBar.m_bDispTabWnd && !GetDllShareData().m_Common.m_sTabBar.m_bDispTabWndMultiWin);
 		m_cPropCommon.ApplyData();
-		// note: Šî–{“I‚É‚±‚±‚Å“K—p‚µ‚È‚¢‚ÅAMYWM_CHANGESETTING‚©‚ç‚½‚Ç‚Á‚Ä“K—p‚µ‚Ä‚­‚¾‚³‚¢B
-		// Ž©ƒEƒBƒ“ƒhƒE‚É‚ÍÅŒã‚É’Ê’m‚³‚ê‚Ü‚·B‘å’ï‚ÍAOnChangeSetting ‚É‚ ‚è‚Ü‚·B
-		// ‚±‚±‚Å‚µ‚©“K—p‚µ‚È‚¢‚ÆA‚Ù‚©‚ÌƒEƒBƒ“ƒhƒE‚ª•ÏX‚³‚ê‚Ü‚¹‚ñB
+		// note: åŸºæœ¬çš„ã«ã“ã“ã§é©ç”¨ã—ãªã„ã§ã€MYWM_CHANGESETTINGã‹ã‚‰ãŸã©ã£ã¦é©ç”¨ã—ã¦ãã ã•ã„ã€‚
+		// è‡ªã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã«ã¯æœ€å¾Œã«é€šçŸ¥ã•ã‚Œã¾ã™ã€‚å¤§æŠµã¯ã€OnChangeSetting ã«ã‚ã‚Šã¾ã™ã€‚
+		// ã“ã“ã§ã—ã‹é©ç”¨ã—ãªã„ã¨ã€ã»ã‹ã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãŒå¤‰æ›´ã•ã‚Œã¾ã›ã‚“ã€‚
 		
 		if( CEditApp::getInstance() ){
-			CEditApp::getInstance()->m_pcSMacroMgr->UnloadAll();	// 2007.10.19 genta ƒ}ƒNƒ“o˜^•ÏX‚ð”½‰f‚·‚é‚½‚ßC“Ç‚Ýž‚ÝÏ‚Ý‚Ìƒ}ƒNƒ‚ð”jŠü‚·‚é
+			CEditApp::getInstance()->m_pcSMacroMgr->UnloadAll();	// 2007.10.19 genta ãƒžã‚¯ãƒ­ç™»éŒ²å¤‰æ›´ã‚’åæ˜ ã™ã‚‹ãŸã‚ï¼Œèª­ã¿è¾¼ã¿æ¸ˆã¿ã®ãƒžã‚¯ãƒ­ã‚’ç ´æ£„ã™ã‚‹
 		}
 		if( bGroup != (GetDllShareData().m_Common.m_sTabBar.m_bDispTabWnd && !GetDllShareData().m_Common.m_sTabBar.m_bDispTabWndMultiWin ) ){
 			CAppNodeManager::getInstance()->ResetGroupId();
 		}
 
-		/* ƒAƒNƒZƒ‰ƒŒ[ƒ^ƒe[ƒuƒ‹‚ÌÄì¬ */
+		/* ã‚¢ã‚¯ã‚»ãƒ©ãƒ¬ãƒ¼ã‚¿ãƒ†ãƒ¼ãƒ–ãƒ«ã®å†ä½œæˆ */
 		::SendMessageAny( GetDllShareData().m_sHandles.m_hwndTray, MYWM_CHANGESETTING,  (WPARAM)0, (LPARAM)PM_CHANGESETTING_ALL );
 
 
-		/* Ý’è•ÏX‚ð”½‰f‚³‚¹‚é */
+		/* è¨­å®šå¤‰æ›´ã‚’åæ˜ ã•ã›ã‚‹ */
 		HWND hWnd = NULL;
 		if( CEditWnd::getInstance() ){
 			hWnd = CEditWnd::getInstance()->GetHwnd();
 		}
-		/* ‘S•ÒWƒEƒBƒ“ƒhƒE‚ÖƒƒbƒZ[ƒW‚ðƒ|ƒXƒg‚·‚é */
+		/* å…¨ç·¨é›†ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã¸ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’ãƒã‚¹ãƒˆã™ã‚‹ */
 		CAppNodeGroupHandle(0).SendMessageToAllEditors(
 			MYWM_CHANGESETTING,
 			(WPARAM)0,
@@ -63,37 +63,37 @@ BOOL CPropertyManager::OpenPropertySheet( int nPageNum )
 
 
 
-/*! ƒ^ƒCƒv•ÊÝ’è ƒvƒƒpƒeƒBƒV[ƒg */
+/*! ã‚¿ã‚¤ãƒ—åˆ¥è¨­å®š ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚·ãƒ¼ãƒˆ */
 BOOL CPropertyManager::OpenPropertySheetTypes( int nPageNum, CTypeConfig nSettingType )
 {
 	STypeConfig& types = CDocTypeManager().GetTypeSetting(nSettingType);
 	m_cPropTypes.SetTypeData( types );
-	// Mar. 31, 2003 genta ƒƒ‚ƒŠíŒ¸‚Ì‚½‚ßƒ|ƒCƒ“ƒ^‚É•ÏX‚µProperySheet“à‚ÅŽæ“¾‚·‚é‚æ‚¤‚É
+	// Mar. 31, 2003 genta ãƒ¡ãƒ¢ãƒªå‰Šæ¸›ã®ãŸã‚ãƒã‚¤ãƒ³ã‚¿ã«å¤‰æ›´ã—ProperySheetå†…ã§å–å¾—ã™ã‚‹ã‚ˆã†ã«
 	//m_cPropTypes.m_CKeyWordSetMgr = GetDllShareData().m_Common.m_sSpecialKeyword.m_CKeyWordSetMgr;
 
-	/* ƒvƒƒpƒeƒBƒV[ƒg‚Ìì¬ */
+	/* ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚·ãƒ¼ãƒˆã®ä½œæˆ */
 	if( m_cPropTypes.DoPropertySheet( nPageNum ) ){
-		/* •ÏX‚³‚ê‚½Ý’è’l‚ÌƒRƒs[ */
+		/* å¤‰æ›´ã•ã‚ŒãŸè¨­å®šå€¤ã®ã‚³ãƒ”ãƒ¼ */
 		int nTextWrapMethodOld = -1;
 		if( CEditWnd::getInstance() ){
 			nTextWrapMethodOld = CEditWnd::getInstance()->GetDocument().m_cDocType.GetDocumentAttribute().m_nTextWrapMethod;
 		}
 		m_cPropTypes.GetTypeData( types );
 
-		// 2008.06.01 nasukoji	ƒeƒLƒXƒg‚ÌÜ‚è•Ô‚µˆÊ’u•ÏX‘Î‰ž
-		// ƒ^ƒCƒv•ÊÝ’è‚ðŒÄ‚Ño‚µ‚½ƒEƒBƒ“ƒhƒE‚É‚Â‚¢‚Ä‚ÍAƒ^ƒCƒv•ÊÝ’è‚ª•ÏX‚³‚ê‚½‚ç
-		// Ü‚è•Ô‚µ•û–@‚ÌˆêŽžÝ’è“K—p’†‚ð‰ðœ‚µ‚Äƒ^ƒCƒv•ÊÝ’è‚ð—LŒø‚Æ‚·‚éB
+		// 2008.06.01 nasukoji	ãƒ†ã‚­ã‚¹ãƒˆã®æŠ˜ã‚Šè¿”ã—ä½ç½®å¤‰æ›´å¯¾å¿œ
+		// ã‚¿ã‚¤ãƒ—åˆ¥è¨­å®šã‚’å‘¼ã³å‡ºã—ãŸã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã«ã¤ã„ã¦ã¯ã€ã‚¿ã‚¤ãƒ—åˆ¥è¨­å®šãŒå¤‰æ›´ã•ã‚ŒãŸã‚‰
+		// æŠ˜ã‚Šè¿”ã—æ–¹æ³•ã®ä¸€æ™‚è¨­å®šé©ç”¨ä¸­ã‚’è§£é™¤ã—ã¦ã‚¿ã‚¤ãƒ—åˆ¥è¨­å®šã‚’æœ‰åŠ¹ã¨ã™ã‚‹ã€‚
 		if( CEditWnd::getInstance() ){
-			if( nTextWrapMethodOld != CEditWnd::getInstance()->GetDocument().m_cDocType.GetDocumentAttribute().m_nTextWrapMethod ){		// Ý’è‚ª•ÏX‚³‚ê‚½
-				CEditWnd::getInstance()->GetDocument().m_bTextWrapMethodCurTemp = false;	// ˆêŽžÝ’è“K—p’†‚ð‰ðœ
+			if( nTextWrapMethodOld != CEditWnd::getInstance()->GetDocument().m_cDocType.GetDocumentAttribute().m_nTextWrapMethod ){		// è¨­å®šãŒå¤‰æ›´ã•ã‚ŒãŸ
+				CEditWnd::getInstance()->GetDocument().m_bTextWrapMethodCurTemp = false;	// ä¸€æ™‚è¨­å®šé©ç”¨ä¸­ã‚’è§£é™¤
 			}
 		}
 
-		/* ƒAƒNƒZƒ‰ƒŒ[ƒ^ƒe[ƒuƒ‹‚ÌÄì¬ */
+		/* ã‚¢ã‚¯ã‚»ãƒ©ãƒ¬ãƒ¼ã‚¿ãƒ†ãƒ¼ãƒ–ãƒ«ã®å†ä½œæˆ */
 		::SendMessageAny( GetDllShareData().m_sHandles.m_hwndTray, MYWM_CHANGESETTING,  (WPARAM)0, (LPARAM)PM_CHANGESETTING_ALL );
 
-		/* Ý’è•ÏX‚ð”½‰f‚³‚¹‚é */
-		/* ‘S•ÒWƒEƒBƒ“ƒhƒE‚ÖƒƒbƒZ[ƒW‚ðƒ|ƒXƒg‚·‚é */
+		/* è¨­å®šå¤‰æ›´ã‚’åæ˜ ã•ã›ã‚‹ */
+		/* å…¨ç·¨é›†ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã¸ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’ãƒã‚¹ãƒˆã™ã‚‹ */
 		HWND hWnd = NULL;
 		if( CEditWnd::getInstance() ){
 			hWnd = CEditWnd::getInstance()->GetHwnd();

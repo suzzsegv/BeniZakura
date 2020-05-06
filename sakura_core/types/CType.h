@@ -34,7 +34,7 @@
 #include "CKeyWordSetMgr.h"
 
 
-/* ƒAƒEƒgƒ‰ƒCƒ“‰ðÍ‚ÌŽí—Þ */
+/* ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³è§£æžã®ç¨®é¡ž */
 enum EOutlineType{
 	OUTLINE_C,
 	OUTLINE_CPP,
@@ -45,25 +45,25 @@ enum EOutlineType{
 	OUTLINE_ASM,
 	OUTLINE_PERL,		//	Sep. 8, 2000 genta
 	OUTLINE_VB,			//	June 23, 2001 N.Nakatani
-	OUTLINE_WZTXT,		// 2003.05.20 zenryaku ŠK‘w•tƒeƒLƒXƒgƒAƒEƒgƒ‰ƒCƒ“‰ðÍ
-	OUTLINE_HTML,		// 2003.05.20 zenryaku HTMLƒAƒEƒgƒ‰ƒCƒ“‰ðÍ
-	OUTLINE_TEX,		// 2003.07.20 naoh TeXƒAƒEƒgƒ‰ƒCƒ“‰ðÍ
-	OUTLINE_FILE,		//	2002.04.01 YAZAKI ƒ‹[ƒ‹ƒtƒ@ƒCƒ‹—p
-	OUTLINE_PYTHON,		//	2007.02.08 genta PythonƒAƒEƒgƒ‰ƒCƒ“‰ðÍ
-	OUTLINE_ERLANG,		//	2009.08.10 genta ErlangƒAƒEƒgƒ‰ƒCƒ“‰ðÍ
-	//	V‚µ‚¢ƒAƒEƒgƒ‰ƒCƒ“‰ðÍ‚Í•K‚¸‚±‚Ì’¼‘O‚Ö‘}“ü
+	OUTLINE_WZTXT,		// 2003.05.20 zenryaku éšŽå±¤ä»˜ãƒ†ã‚­ã‚¹ãƒˆã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³è§£æž
+	OUTLINE_HTML,		// 2003.05.20 zenryaku HTMLã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³è§£æž
+	OUTLINE_TEX,		// 2003.07.20 naoh TeXã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³è§£æž
+	OUTLINE_FILE,		//	2002.04.01 YAZAKI ãƒ«ãƒ¼ãƒ«ãƒ•ã‚¡ã‚¤ãƒ«ç”¨
+	OUTLINE_PYTHON,		//	2007.02.08 genta Pythonã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³è§£æž
+	OUTLINE_ERLANG,		//	2009.08.10 genta Erlangã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³è§£æž
+	//	æ–°ã—ã„ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³è§£æžã¯å¿…ãšã“ã®ç›´å‰ã¸æŒ¿å…¥
 	OUTLINE_CODEMAX,
 	OUTLINE_BOOKMARK,	//	2001.12.03 hor
-	OUTLINE_PLUGIN,		//	2009.10.29 syat ƒvƒ‰ƒOƒCƒ“‚É‚æ‚éƒAƒEƒgƒ‰ƒCƒ“‰ðÍ
+	OUTLINE_PLUGIN,		//	2009.10.29 syat ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ã«ã‚ˆã‚‹ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³è§£æž
 	OUTLINE_DEFAULT =-1,//	2001.12.03 hor
 	OUTLINE_UNKNOWN	= 99,
-	OUTLINE_TREE = 100,		// ”Ä—pƒcƒŠ[ 2010.03.28 syat
-	OUTLINE_TREE_TAGJUMP = 101,	// ”Ä—pƒcƒŠ[(ƒ^ƒOƒWƒƒƒ“ƒv•t‚«) 2013.05.01 Moca
-	OUTLINE_CLSTREE = 200,	// ”Ä—pƒcƒŠ[(ƒNƒ‰ƒX) 2010.03.28 syat
-	OUTLINE_LIST = 300,		// ”Ä—pƒŠƒXƒg 2010.03.28 syat
+	OUTLINE_TREE = 100,		// æ±Žç”¨ãƒ„ãƒªãƒ¼ 2010.03.28 syat
+	OUTLINE_TREE_TAGJUMP = 101,	// æ±Žç”¨ãƒ„ãƒªãƒ¼(ã‚¿ã‚°ã‚¸ãƒ£ãƒ³ãƒ—ä»˜ã) 2013.05.01 Moca
+	OUTLINE_CLSTREE = 200,	// æ±Žç”¨ãƒ„ãƒªãƒ¼(ã‚¯ãƒ©ã‚¹) 2010.03.28 syat
+	OUTLINE_LIST = 300,		// æ±Žç”¨ãƒªã‚¹ãƒˆ 2010.03.28 syat
 };
 
-/* ƒXƒ}[ƒgƒCƒ“ƒfƒ“ƒgŽí•Ê */
+/* ã‚¹ãƒžãƒ¼ãƒˆã‚¤ãƒ³ãƒ‡ãƒ³ãƒˆç¨®åˆ¥ */
 enum ESmartIndentType {
 	SMARTINDENT_NONE,
 	SMARTINDENT_CPP
@@ -82,43 +82,43 @@ enum EBackgroundImagePos {
 };
 
 struct SEncodingConfig{
-	bool				m_bPriorCesu8;					// Ž©“®”»•ÊŽž‚É CESU-8 ‚ð—Dæ‚·‚é‚©‚Ç‚¤‚©
-	ECodeType			m_eDefaultCodetype;				/* ƒfƒtƒHƒ‹ƒg•¶ŽšƒR[ƒh */
-	EEolType			m_eDefaultEoltype;				/* ƒfƒtƒHƒ‹ƒg‰üsƒR[ƒh */	// 2011.01.24 ryoji
-	bool				m_bDefaultBom;					// ƒfƒtƒHƒ‹ƒgBOM			// 2011.01.24 ryoji
+	bool				m_bPriorCesu8;					// è‡ªå‹•åˆ¤åˆ¥æ™‚ã« CESU-8 ã‚’å„ªå…ˆã™ã‚‹ã‹ã©ã†ã‹
+	ECodeType			m_eDefaultCodetype;				/* ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆæ–‡å­—ã‚³ãƒ¼ãƒ‰ */
+	EEolType			m_eDefaultEoltype;				/* ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆæ”¹è¡Œã‚³ãƒ¼ãƒ‰ */	// 2011.01.24 ryoji
+	bool				m_bDefaultBom;					// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆBOM			// 2011.01.24 ryoji
 };
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                       ƒ^ƒCƒv•ÊÝ’è                          //
+//                       ã‚¿ã‚¤ãƒ—åˆ¥è¨­å®š                          //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
-//! ƒ^ƒCƒv•ÊÝ’è
+//! ã‚¿ã‚¤ãƒ—åˆ¥è¨­å®š
 struct STypeConfig{
-	//2007.09.07 •Ï”–¼•ÏX: m_nMaxLineSize¨m_nMaxLineKetas
+	//2007.09.07 å¤‰æ•°åå¤‰æ›´: m_nMaxLineSizeâ†’m_nMaxLineKetas
 	int					m_nIdx;
-	TCHAR				m_szTypeName[64];				/*!< ƒ^ƒCƒv‘®«F–¼Ì */
-	TCHAR				m_szTypeExts[MAX_TYPES_EXTS];	/*!< ƒ^ƒCƒv‘®«FŠg’£ŽqƒŠƒXƒg */
-	int					m_nTextWrapMethod;				/*!< ƒeƒLƒXƒg‚ÌÜ‚è•Ô‚µ•û–@ */		// 2008.05.30 nasukoji
-	CLayoutInt			m_nMaxLineKetas;				/*!< Ü‚è•Ô‚µŒ…” */
-	int					m_nColumnSpace;					/*!< •¶Žš‚Æ•¶Žš‚ÌŒ„ŠÔ */
-	int					m_nLineSpace;					/*!< sŠÔ‚Ì‚·‚«‚Ü */
-	CLayoutInt			m_nTabSpace;					/*!< TAB‚Ì•¶Žš” */
-	bool				m_bTabArrow;					//!< ƒ^ƒu–îˆó•\Ž¦		//@@@ 2003.03.26 MIK
-	EDIT_CHAR			m_szTabViewString[8+1];			/*!< TAB•\Ž¦•¶Žš—ñ */	// 2003.1.26 aroka ƒTƒCƒYŠg’£	// 2009.02.11 ryoji ƒTƒCƒY–ß‚µ(17->8+1)
-	int					m_bInsSpace;					/* ƒXƒy[ƒX‚Ì‘}“ü */	// 2001.12.03 hor
-	// 2005.01.13 MIK ”z—ñ‰»
-	int					m_nKeyWordSetIdx[MAX_KEYWORDSET_PER_TYPE];	/*!< ƒL[ƒ[ƒhƒZƒbƒg */
+	TCHAR				m_szTypeName[64];				/*!< ã‚¿ã‚¤ãƒ—å±žæ€§ï¼šåç§° */
+	TCHAR				m_szTypeExts[MAX_TYPES_EXTS];	/*!< ã‚¿ã‚¤ãƒ—å±žæ€§ï¼šæ‹¡å¼µå­ãƒªã‚¹ãƒˆ */
+	int					m_nTextWrapMethod;				/*!< ãƒ†ã‚­ã‚¹ãƒˆã®æŠ˜ã‚Šè¿”ã—æ–¹æ³• */		// 2008.05.30 nasukoji
+	CLayoutInt			m_nMaxLineKetas;				/*!< æŠ˜ã‚Šè¿”ã—æ¡æ•° */
+	int					m_nColumnSpace;					/*!< æ–‡å­—ã¨æ–‡å­—ã®éš™é–“ */
+	int					m_nLineSpace;					/*!< è¡Œé–“ã®ã™ãã¾ */
+	CLayoutInt			m_nTabSpace;					/*!< TABã®æ–‡å­—æ•° */
+	bool				m_bTabArrow;					//!< ã‚¿ãƒ–çŸ¢å°è¡¨ç¤º		//@@@ 2003.03.26 MIK
+	EDIT_CHAR			m_szTabViewString[8+1];			/*!< TABè¡¨ç¤ºæ–‡å­—åˆ— */	// 2003.1.26 aroka ã‚µã‚¤ã‚ºæ‹¡å¼µ	// 2009.02.11 ryoji ã‚µã‚¤ã‚ºæˆ»ã—(17->8+1)
+	int					m_bInsSpace;					/* ã‚¹ãƒšãƒ¼ã‚¹ã®æŒ¿å…¥ */	// 2001.12.03 hor
+	// 2005.01.13 MIK é…åˆ—åŒ–
+	int					m_nKeyWordSetIdx[MAX_KEYWORDSET_PER_TYPE];	/*!< ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ã‚»ãƒƒãƒˆ */
 
-	CLineComment		m_cLineComment;					/*!< sƒRƒƒ“ƒgƒfƒŠƒ~ƒ^ */			//@@@ 2002.09.22 YAZAKI
-	CBlockComment		m_cBlockComments[2];			/*!< ƒuƒƒbƒNƒRƒƒ“ƒgƒfƒŠƒ~ƒ^ */	//@@@ 2002.09.22 YAZAKI
+	CLineComment		m_cLineComment;					/*!< è¡Œã‚³ãƒ¡ãƒ³ãƒˆãƒ‡ãƒªãƒŸã‚¿ */			//@@@ 2002.09.22 YAZAKI
+	CBlockComment		m_cBlockComments[2];			/*!< ãƒ–ãƒ­ãƒƒã‚¯ã‚³ãƒ¡ãƒ³ãƒˆãƒ‡ãƒªãƒŸã‚¿ */	//@@@ 2002.09.22 YAZAKI
 
-	int					m_nStringType;					/*!< •¶Žš—ñ‹æØ‚è‹L†ƒGƒXƒP[ƒv•û–@  0=[\"][\'] 1=[""][''] */
-	wchar_t				m_szIndentChars[64];			/*!< ‚»‚Ì‘¼‚ÌƒCƒ“ƒfƒ“ƒg‘ÎÛ•¶Žš */
+	int					m_nStringType;					/*!< æ–‡å­—åˆ—åŒºåˆ‡ã‚Šè¨˜å·ã‚¨ã‚¹ã‚±ãƒ¼ãƒ—æ–¹æ³•  0=[\"][\'] 1=[""][''] */
+	wchar_t				m_szIndentChars[64];			/*!< ãã®ä»–ã®ã‚¤ãƒ³ãƒ‡ãƒ³ãƒˆå¯¾è±¡æ–‡å­— */
 
-	int					m_nColorInfoArrNum;				/*!< FÝ’è”z—ñ‚Ì—LŒø” */
-	ColorInfo			m_ColorInfoArr[64];				/*!< FÝ’è”z—ñ */
+	int					m_nColorInfoArrNum;				/*!< è‰²è¨­å®šé…åˆ—ã®æœ‰åŠ¹æ•° */
+	ColorInfo			m_ColorInfoArr[64];				/*!< è‰²è¨­å®šé…åˆ— */
 
-	SFilePath			m_szBackImgPath;				//!< ”wŒi‰æ‘œ
+	SFilePath			m_szBackImgPath;				//!< èƒŒæ™¯ç”»åƒ
 	EBackgroundImagePos m_backImgPos;					
 	bool				m_backImgRepeatX;				
 	bool				m_backImgRepeatY;				
@@ -126,81 +126,81 @@ struct STypeConfig{
 	bool				m_backImgScrollY;				
 	POINT				m_backImgPosOffset;				
 
-	bool				m_bLineNumIsCRLF;				/*!< s”Ô†‚Ì•\Ž¦ FALSE=Ü‚è•Ô‚µ’PˆÊ^TRUE=‰üs’PˆÊ */
-	int					m_nLineTermType;				/*!< s”Ô†‹æØ‚è  0=‚È‚µ 1=cü 2=”CˆÓ */
-	wchar_t				m_cLineTermChar;				/*!< s”Ô†‹æØ‚è•¶Žš */
-	CLayoutInt			m_nVertLineIdx[MAX_VERTLINES];	/*!< Žw’èŒ…cü */
+	bool				m_bLineNumIsCRLF;				/*!< è¡Œç•ªå·ã®è¡¨ç¤º FALSE=æŠ˜ã‚Šè¿”ã—å˜ä½ï¼TRUE=æ”¹è¡Œå˜ä½ */
+	int					m_nLineTermType;				/*!< è¡Œç•ªå·åŒºåˆ‡ã‚Š  0=ãªã— 1=ç¸¦ç·š 2=ä»»æ„ */
+	wchar_t				m_cLineTermChar;				/*!< è¡Œç•ªå·åŒºåˆ‡ã‚Šæ–‡å­— */
+	CLayoutInt			m_nVertLineIdx[MAX_VERTLINES];	/*!< æŒ‡å®šæ¡ç¸¦ç·š */
 
-	bool				m_bWordWrap;					//!< ‰p•¶ƒ[ƒhƒ‰ƒbƒv‚ð‚·‚é
-	bool				m_bKinsokuHead;					//!< s“ª‹Ö‘¥‚ð‚·‚é		//@@@ 2002.04.08 MIK
-	bool				m_bKinsokuTail;					//!< s––‹Ö‘¥‚ð‚·‚é		//@@@ 2002.04.08 MIK
-	bool				m_bKinsokuRet;					//!< ‰üs•¶Žš‚Ì‚Ô‚ç‰º‚°	//@@@ 2002.04.13 MIK
-	bool				m_bKinsokuKuto;					//!< ‹å“Ç“_‚Ì‚Ô‚ç‚³‚°	//@@@ 2002.04.17 MIK
-	bool				m_bKinsokuHide;					//!< ‚Ô‚ç‰º‚°‚ð‰B‚·		// 2011/11/30 Uchi
-	wchar_t				m_szKinsokuHead[200];			/*!< s“ª‹Ö‘¥•¶Žš */	//@@@ 2002.04.08 MIK
-	wchar_t				m_szKinsokuTail[200];			/*!< s“ª‹Ö‘¥•¶Žš */	//@@@ 2002.04.08 MIK
-	wchar_t				m_szKinsokuKuto[200];			/*!< ‹å“Ç“_‚Ô‚ç‚³‚°•¶Žš */	// 2009.08.07 ryoji
+	bool				m_bWordWrap;					//!< è‹±æ–‡ãƒ¯ãƒ¼ãƒ‰ãƒ©ãƒƒãƒ—ã‚’ã™ã‚‹
+	bool				m_bKinsokuHead;					//!< è¡Œé ­ç¦å‰‡ã‚’ã™ã‚‹		//@@@ 2002.04.08 MIK
+	bool				m_bKinsokuTail;					//!< è¡Œæœ«ç¦å‰‡ã‚’ã™ã‚‹		//@@@ 2002.04.08 MIK
+	bool				m_bKinsokuRet;					//!< æ”¹è¡Œæ–‡å­—ã®ã¶ã‚‰ä¸‹ã’	//@@@ 2002.04.13 MIK
+	bool				m_bKinsokuKuto;					//!< å¥èª­ç‚¹ã®ã¶ã‚‰ã•ã’	//@@@ 2002.04.17 MIK
+	bool				m_bKinsokuHide;					//!< ã¶ã‚‰ä¸‹ã’ã‚’éš ã™		// 2011/11/30 Uchi
+	wchar_t				m_szKinsokuHead[200];			/*!< è¡Œé ­ç¦å‰‡æ–‡å­— */	//@@@ 2002.04.08 MIK
+	wchar_t				m_szKinsokuTail[200];			/*!< è¡Œé ­ç¦å‰‡æ–‡å­— */	//@@@ 2002.04.08 MIK
+	wchar_t				m_szKinsokuKuto[200];			/*!< å¥èª­ç‚¹ã¶ã‚‰ã•ã’æ–‡å­— */	// 2009.08.07 ryoji
 
-	int					m_nCurrentPrintSetting;			/*!< Œ»Ý‘I‘ð‚µ‚Ä‚¢‚éˆóüÝ’è */
+	int					m_nCurrentPrintSetting;			/*!< ç¾åœ¨é¸æŠžã—ã¦ã„ã‚‹å°åˆ·è¨­å®š */
 
-	BOOL				m_bOutlineDockDisp;				/*!< ƒAƒEƒgƒ‰ƒCƒ“‰ðÍ•\Ž¦‚Ì—L–³ */
-	EDockSide			m_eOutlineDockSide;				/*!< ƒAƒEƒgƒ‰ƒCƒ“‰ðÍƒhƒbƒLƒ“ƒO”z’u */
-	int					m_cxOutlineDockLeft;			/*!< ƒAƒEƒgƒ‰ƒCƒ“‚Ì¶ƒhƒbƒLƒ“ƒO• */
-	int					m_cyOutlineDockTop;				/*!< ƒAƒEƒgƒ‰ƒCƒ“‚ÌãƒhƒbƒLƒ“ƒO‚ */
-	int					m_cxOutlineDockRight;			/*!< ƒAƒEƒgƒ‰ƒCƒ“‚Ì‰EƒhƒbƒLƒ“ƒO• */
-	int					m_cyOutlineDockBottom;			/*!< ƒAƒEƒgƒ‰ƒCƒ“‚Ì‰ºƒhƒbƒLƒ“ƒO‚ */
-	EOutlineType		m_eDefaultOutline;				/*!< ƒAƒEƒgƒ‰ƒCƒ“‰ðÍ•û–@ */
-	SFilePath			m_szOutlineRuleFilename;		/*!< ƒAƒEƒgƒ‰ƒCƒ“‰ðÍƒ‹[ƒ‹ƒtƒ@ƒCƒ‹ */
-	int					m_nOutlineSortCol;				/*!< ƒAƒEƒgƒ‰ƒCƒ“‰ðÍƒ\[ƒg—ñ”Ô† */
-	bool				m_bOutlineSortDesc;				/*!< ƒAƒEƒgƒ‰ƒCƒ“‰ðÍƒ\[ƒg~‡ */
-	int					m_nOutlineSortType;				/*!< ƒAƒEƒgƒ‰ƒCƒ“‰ðÍƒ\[ƒgŠî€ */
+	BOOL				m_bOutlineDockDisp;				/*!< ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³è§£æžè¡¨ç¤ºã®æœ‰ç„¡ */
+	EDockSide			m_eOutlineDockSide;				/*!< ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³è§£æžãƒ‰ãƒƒã‚­ãƒ³ã‚°é…ç½® */
+	int					m_cxOutlineDockLeft;			/*!< ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³ã®å·¦ãƒ‰ãƒƒã‚­ãƒ³ã‚°å¹… */
+	int					m_cyOutlineDockTop;				/*!< ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³ã®ä¸Šãƒ‰ãƒƒã‚­ãƒ³ã‚°é«˜ */
+	int					m_cxOutlineDockRight;			/*!< ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³ã®å³ãƒ‰ãƒƒã‚­ãƒ³ã‚°å¹… */
+	int					m_cyOutlineDockBottom;			/*!< ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³ã®ä¸‹ãƒ‰ãƒƒã‚­ãƒ³ã‚°é«˜ */
+	EOutlineType		m_eDefaultOutline;				/*!< ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³è§£æžæ–¹æ³• */
+	SFilePath			m_szOutlineRuleFilename;		/*!< ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³è§£æžãƒ«ãƒ¼ãƒ«ãƒ•ã‚¡ã‚¤ãƒ« */
+	int					m_nOutlineSortCol;				/*!< ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³è§£æžã‚½ãƒ¼ãƒˆåˆ—ç•ªå· */
+	bool				m_bOutlineSortDesc;				/*!< ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³è§£æžã‚½ãƒ¼ãƒˆé™é † */
+	int					m_nOutlineSortType;				/*!< ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³è§£æžã‚½ãƒ¼ãƒˆåŸºæº– */
 
-	ESmartIndentType	m_eSmartIndent;					/*!< ƒXƒ}[ƒgƒCƒ“ƒfƒ“ƒgŽí•Ê */
-	int					m_nImeState;					//!< ‰ŠúIMEó‘Ô	Nov. 20, 2000 genta
+	ESmartIndentType	m_eSmartIndent;					/*!< ã‚¹ãƒžãƒ¼ãƒˆã‚¤ãƒ³ãƒ‡ãƒ³ãƒˆç¨®åˆ¥ */
+	int					m_nImeState;					//!< åˆæœŸIMEçŠ¶æ…‹	Nov. 20, 2000 genta
 
-	//	2001/06/14 asa-o •âŠ®‚Ìƒ^ƒCƒv•ÊÝ’è
-	SFilePath			m_szHokanFile;					/*!< “ü—Í•âŠ® ’PŒêƒtƒ@ƒCƒ‹ */
-	int					m_nHokanType;					/*!< “ü—Í•âŠ® Ží•Ê(ƒvƒ‰ƒOƒCƒ“) */
-	//	2003.06.23 Moca ƒtƒ@ƒCƒ‹“à‚©‚ç‚Ì“ü—Í•âŠ®‹@”\
-	bool				m_bUseHokanByFile;				//!< “ü—Í•âŠ® ŠJ‚¢‚Ä‚¢‚éƒtƒ@ƒCƒ‹“à‚©‚çŒó•â‚ð’T‚·
-	bool				m_bUseHokanByKeyword;			// ‹­’²ƒL[ƒ[ƒh‚©‚ç“ü—Í•âŠ®
+	//	2001/06/14 asa-o è£œå®Œã®ã‚¿ã‚¤ãƒ—åˆ¥è¨­å®š
+	SFilePath			m_szHokanFile;					/*!< å…¥åŠ›è£œå®Œ å˜èªžãƒ•ã‚¡ã‚¤ãƒ« */
+	int					m_nHokanType;					/*!< å…¥åŠ›è£œå®Œ ç¨®åˆ¥(ãƒ—ãƒ©ã‚°ã‚¤ãƒ³) */
+	//	2003.06.23 Moca ãƒ•ã‚¡ã‚¤ãƒ«å†…ã‹ã‚‰ã®å…¥åŠ›è£œå®Œæ©Ÿèƒ½
+	bool				m_bUseHokanByFile;				//!< å…¥åŠ›è£œå®Œ é–‹ã„ã¦ã„ã‚‹ãƒ•ã‚¡ã‚¤ãƒ«å†…ã‹ã‚‰å€™è£œã‚’æŽ¢ã™
+	bool				m_bUseHokanByKeyword;			// å¼·èª¿ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ã‹ã‚‰å…¥åŠ›è£œå®Œ
 	
 	//	2001/06/19 asa-o
-	bool				m_bHokanLoHiCase;				//!< “ü—Í•âŠ®‹@”\F‰p‘å•¶Žš¬•¶Žš‚ð“¯ˆêŽ‹‚·‚é
+	bool				m_bHokanLoHiCase;				//!< å…¥åŠ›è£œå®Œæ©Ÿèƒ½ï¼šè‹±å¤§æ–‡å­—å°æ–‡å­—ã‚’åŒä¸€è¦–ã™ã‚‹
 
-	bool				m_bChkEnterAtEnd;				//!< I—¹ŽžA‰üs‚Ìˆê’v‚ðŒŸ¸‚·‚é	2013/4/14 Uchi
+	bool				m_bChkEnterAtEnd;				//!< çµ‚äº†æ™‚ã€æ”¹è¡Œã®ä¸€è‡´ã‚’æ¤œæŸ»ã™ã‚‹	2013/4/14 Uchi
 
-	SEncodingConfig		m_encoding;						//!< ƒGƒ“ƒR[ƒhƒIƒvƒVƒ‡ƒ“
+	SEncodingConfig		m_encoding;						//!< ã‚¨ãƒ³ã‚³ãƒ¼ãƒ‰ã‚ªãƒ—ã‚·ãƒ§ãƒ³
 
 
 //@@@ 2001.11.17 add start MIK
-	bool				m_bUseRegexKeyword;						/* ³‹K•\Œ»ƒL[ƒ[ƒh‚ðŽg‚¤‚©*/
-	int					m_nRegexKeyMagicNumber;					/* ³‹K•\Œ»ƒL[ƒ[ƒhXVƒ}ƒWƒbƒNƒiƒ“ƒo[ */
-	RegexKeywordInfo	m_RegexKeywordArr[MAX_REGEX_KEYWORD];	/* ³‹K•\Œ»ƒL[ƒ[ƒh */
-	wchar_t				m_RegexKeywordList[MAX_REGEX_KEYWORDLISTLEN];	// ³‹K•\Œ»ƒL[ƒ[ƒh
+	bool				m_bUseRegexKeyword;						/* æ­£è¦è¡¨ç¾ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ã‚’ä½¿ã†ã‹*/
+	int					m_nRegexKeyMagicNumber;					/* æ­£è¦è¡¨ç¾ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰æ›´æ–°ãƒžã‚¸ãƒƒã‚¯ãƒŠãƒ³ãƒãƒ¼ */
+	RegexKeywordInfo	m_RegexKeywordArr[MAX_REGEX_KEYWORD];	/* æ­£è¦è¡¨ç¾ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ */
+	wchar_t				m_RegexKeywordList[MAX_REGEX_KEYWORDLISTLEN];	// æ­£è¦è¡¨ç¾ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰
 //@@@ 2001.11.17 add end MIK
 
 //@@@ 2006.04.10 fon ADD-start
-	bool				m_bUseKeyWordHelp;				// ƒL[ƒ[ƒhŽ«‘ƒZƒŒƒNƒg‹@”\‚ðŽg‚¤‚©
-	int					m_nKeyHelpNum;					/* ƒL[ƒ[ƒhŽ«‘‚Ìû” */
-	KeyHelpInfo			m_KeyHelpArr[MAX_KEYHELP_FILE];	/* ƒL[ƒ[ƒhŽ«‘ƒtƒ@ƒCƒ‹ */
-	bool				m_bUseKeyHelpAllSearch;			// ƒqƒbƒg‚µ‚½ŽŸ‚ÌŽ«‘‚àŒŸõ(&A)
-	bool				m_bUseKeyHelpKeyDisp;			// 1s–Ú‚ÉƒL[ƒ[ƒh‚à•\Ž¦‚·‚é(&W)
-	bool				m_bUseKeyHelpPrefix;			// ‘I‘ð”ÍˆÍ‚Å‘O•ûˆê’vŒŸõ(&P)
+	bool				m_bUseKeyWordHelp;				// ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰è¾žæ›¸ã‚»ãƒ¬ã‚¯ãƒˆæ©Ÿèƒ½ã‚’ä½¿ã†ã‹
+	int					m_nKeyHelpNum;					/* ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰è¾žæ›¸ã®å†Šæ•° */
+	KeyHelpInfo			m_KeyHelpArr[MAX_KEYHELP_FILE];	/* ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰è¾žæ›¸ãƒ•ã‚¡ã‚¤ãƒ« */
+	bool				m_bUseKeyHelpAllSearch;			// ãƒ’ãƒƒãƒˆã—ãŸæ¬¡ã®è¾žæ›¸ã‚‚æ¤œç´¢(&A)
+	bool				m_bUseKeyHelpKeyDisp;			// 1è¡Œç›®ã«ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ã‚‚è¡¨ç¤ºã™ã‚‹(&W)
+	bool				m_bUseKeyHelpPrefix;			// é¸æŠžç¯„å›²ã§å‰æ–¹ä¸€è‡´æ¤œç´¢(&P)
 //@@@ 2006.04.10 fon ADD-end
 
-	//	2002/04/30 YAZAKI Common‚©‚çˆÚ“®B
-	bool				m_bAutoIndent;					/* ƒI[ƒgƒCƒ“ƒfƒ“ƒg */
-	bool				m_bAutoIndent_ZENSPACE;			/* “ú–{Œê‹ó”’‚àƒCƒ“ƒfƒ“ƒg */
-	bool				m_bRTrimPrevLine;				// 2005.10.11 ryoji ‰üsŽž‚É––”ö‚Ì‹ó”’‚ðíœ
-	int					m_nIndentLayout;				/* Ü‚è•Ô‚µ‚Í2s–ÚˆÈ~‚ðŽš‰º‚°•\Ž¦ */
+	//	2002/04/30 YAZAKI Commonã‹ã‚‰ç§»å‹•ã€‚
+	bool				m_bAutoIndent;					/* ã‚ªãƒ¼ãƒˆã‚¤ãƒ³ãƒ‡ãƒ³ãƒˆ */
+	bool				m_bAutoIndent_ZENSPACE;			/* æ—¥æœ¬èªžç©ºç™½ã‚‚ã‚¤ãƒ³ãƒ‡ãƒ³ãƒˆ */
+	bool				m_bRTrimPrevLine;				// 2005.10.11 ryoji æ”¹è¡Œæ™‚ã«æœ«å°¾ã®ç©ºç™½ã‚’å‰Šé™¤
+	int					m_nIndentLayout;				/* æŠ˜ã‚Šè¿”ã—ã¯2è¡Œç›®ä»¥é™ã‚’å­—ä¸‹ã’è¡¨ç¤º */
 
 	//	Sep. 10, 2002 genta
-	int					m_bUseDocumentIcon;	/*!< ƒtƒ@ƒCƒ‹‚ÉŠÖ˜A‚Ã‚¯‚ç‚ê‚½ƒAƒCƒRƒ“‚ðŽg‚¤ */
+	int					m_bUseDocumentIcon;	/*!< ãƒ•ã‚¡ã‚¤ãƒ«ã«é–¢é€£ã¥ã‘ã‚‰ã‚ŒãŸã‚¢ã‚¤ã‚³ãƒ³ã‚’ä½¿ã† */
 
 
 	STypeConfig()
-	: m_nMaxLineKetas(10) //	‰æ–ÊÜ‚è•Ô‚µ•‚ªTAB•ˆÈ‰º‚É‚È‚ç‚È‚¢‚±‚Æ‚ð‰Šú’l‚Å‚à•ÛØ‚·‚é	//	2004.04.03 Moca
+	: m_nMaxLineKetas(10) //	ç”»é¢æŠ˜ã‚Šè¿”ã—å¹…ãŒTABå¹…ä»¥ä¸‹ã«ãªã‚‰ãªã„ã“ã¨ã‚’åˆæœŸå€¤ã§ã‚‚ä¿è¨¼ã™ã‚‹	//	2004.04.03 Moca
 	{
 	}
 
@@ -209,19 +209,19 @@ struct STypeConfig{
 
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                   ƒ^ƒCƒv•ÊÝ’èƒAƒNƒZƒT                      //
+//                   ã‚¿ã‚¤ãƒ—åˆ¥è¨­å®šã‚¢ã‚¯ã‚»ã‚µ                      //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//!ƒhƒLƒ…ƒƒ“ƒgŽí—ÞB‹¤—Lƒf[ƒ^“à STypeConfig ‚Ö‚ÌƒAƒNƒZƒT‚àŒ“‚Ë‚éB
-//2007.12.13 kobake ì¬
+//!ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆç¨®é¡žã€‚å…±æœ‰ãƒ‡ãƒ¼ã‚¿å†… STypeConfig ã¸ã®ã‚¢ã‚¯ã‚»ã‚µã‚‚å…¼ã­ã‚‹ã€‚
+//2007.12.13 kobake ä½œæˆ
 class CTypeConfig{
 public:
 	CTypeConfig()
 	{
 #ifdef _DEBUG
-		//Œ³‚ªint‚¾‚Á‚½‚Ì‚ÅA–¢‰Šú‰»‚ÅŽg‚¤‚Æ–â‘è‚ª”­¶‚·‚é‚æ‚¤‚ÉA‚ ‚¦‚ÄA•Ï‚È’l‚ð“ü‚ê‚Ä‚¨‚­B
+		//å…ƒãŒintã ã£ãŸã®ã§ã€æœªåˆæœŸåŒ–ã§ä½¿ã†ã¨å•é¡ŒãŒç™ºç”Ÿã™ã‚‹ã‚ˆã†ã«ã€ã‚ãˆã¦ã€å¤‰ãªå€¤ã‚’å…¥ã‚Œã¦ãŠãã€‚
 		m_nType = 1234;
 #else
-		//ƒŠƒŠ[ƒXŽž‚ÍA–¢‰Šú‰»‚Å‚à–â‘è‚ª‹N‚±‚è‚É‚­‚¢‚æ‚¤‚ÉAƒ[ƒƒNƒŠƒA‚µ‚Ä‚¨‚­
+		//ãƒªãƒªãƒ¼ã‚¹æ™‚ã¯ã€æœªåˆæœŸåŒ–ã§ã‚‚å•é¡ŒãŒèµ·ã“ã‚Šã«ãã„ã‚ˆã†ã«ã€ã‚¼ãƒ­ã‚¯ãƒªã‚¢ã—ã¦ãŠã
 		m_nType = 0;
 #endif
 	}
@@ -232,7 +232,7 @@ public:
 	bool IsValid() const{ return m_nType>=0 && m_nType<MAX_TYPES; }
 	int GetIndex() const{ /*assert(IsValid());*/ return m_nType; }
 
-	//‹¤—Lƒf[ƒ^‚Ö‚ÌŠÈˆÕƒAƒNƒZƒT
+	//å…±æœ‰ãƒ‡ãƒ¼ã‚¿ã¸ã®ç°¡æ˜“ã‚¢ã‚¯ã‚»ã‚µ
 	STypeConfig* operator->(){ return GetTypeConfig(); }
 	STypeConfig* GetTypeConfig();
 private:
@@ -242,7 +242,7 @@ private:
 
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                        ƒ^ƒCƒvÝ’è                           //
+//                        ã‚¿ã‚¤ãƒ—è¨­å®š                           //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
 class CType{
@@ -251,11 +251,11 @@ public:
 	void InitTypeConfig(int nIdx);
 protected:
 	virtual void InitTypeConfigImp(STypeConfig* pType) = 0;
-	virtual int		AddDefaultKeywordSet(					//!< ƒL[ƒ[ƒhƒZƒbƒg‚ÌƒfƒtƒHƒ‹ƒg’l‚ð’Ç‰Á‚·‚é
-						const wchar_t*	pSetName,			//!< [in] ƒZƒbƒg–¼
-						bool			bCaseSensitive,		//!< [in] ‘å•¶Žš¬•¶Žš‚Ì‹æ•ÊDtrue:‚ ‚è, false:–³‚µ
-						int				numOfKeyWords,		//!< [in] ƒL[ƒ[ƒh”
-						const wchar_t*	pKeyWords[]			//!< [in] ƒL[ƒ[ƒh‚Ì”z—ñ(d•¡E’·‚³§ŒÀ“™Al—¶Ï‚Ý‚Å‚ ‚é‚±‚Æ)
+	virtual int		AddDefaultKeywordSet(					//!< ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ã‚»ãƒƒãƒˆã®ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆå€¤ã‚’è¿½åŠ ã™ã‚‹
+						const wchar_t*	pSetName,			//!< [in] ã‚»ãƒƒãƒˆå
+						bool			bCaseSensitive,		//!< [in] å¤§æ–‡å­—å°æ–‡å­—ã®åŒºåˆ¥ï¼Žtrue:ã‚ã‚Š, false:ç„¡ã—
+						int				numOfKeyWords,		//!< [in] ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰æ•°
+						const wchar_t*	pKeyWords[]			//!< [in] ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ã®é…åˆ—(é‡è¤‡ãƒ»é•·ã•åˆ¶é™ç­‰ã€è€ƒæ…®æ¸ˆã¿ã§ã‚ã‚‹ã“ã¨)
 					);
 };
 
@@ -277,11 +277,11 @@ GEN_CTYPE(CType_Markdown)
 
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                         ŽÀ‘••â•                            //
+//                         å®Ÿè£…è£œåŠ©                            //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
 /*!
-	ƒXƒy[ƒX‚Ì”»’è
+	ã‚¹ãƒšãƒ¼ã‚¹ã®åˆ¤å®š
 */
 inline bool C_IsSpace( wchar_t c )
 {

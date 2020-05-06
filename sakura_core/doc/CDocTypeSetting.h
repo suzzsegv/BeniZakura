@@ -25,7 +25,7 @@
 #define SAKURA_CDOCTYPESETTING_28058D99_2101_4488_A634_832BD50A2F3C9_H_
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                          êFê›íË                             //
+//                          Ëâ≤Ë®≠ÂÆö                             //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 enum ColorTheme {
 	COLOR_THEME_BENIZAKURA = 0,
@@ -38,37 +38,37 @@ enum ColorTheme {
 	COLOR_THEME_MAX
 };
 
-//! êFê›íË
+//! Ëâ≤Ë®≠ÂÆö
 struct ColorInfoBase{
-	bool		m_bDisp;			//!< ï\é¶
-	bool		m_bBoldFont;		//!< ëæéö
-	bool		m_bUnderLine;		//!< â∫ê¸
-	COLORREF	m_colTEXT;			//!< ï∂éöêF
-	COLORREF	m_colBACK;			//!< îwåiêF
+	bool		m_bDisp;			//!< Ë°®Á§∫
+	bool		m_bBoldFont;		//!< Â§™Â≠ó
+	bool		m_bUnderLine;		//!< ‰∏ãÁ∑ö
+	COLORREF	m_colTEXT;			//!< ÊñáÂ≠óËâ≤
+	COLORREF	m_colBACK;			//!< ËÉåÊôØËâ≤
 };
 
-//! ñºëOÇ∆ÉCÉìÉfÉbÉNÉXïtÇ´êFê›íË
+//! ÂêçÂâç„Å®„Ç§„É≥„Éá„ÉÉ„ÇØ„Çπ‰ªò„ÅçËâ≤Ë®≠ÂÆö
 struct ColorInfo : public ColorInfoBase{
-	int			m_nColorIdx;		//!< ÉCÉìÉfÉbÉNÉX
-	TCHAR		m_szName[64];		//!< ñºëO
+	int			m_nColorIdx;		//!< „Ç§„É≥„Éá„ÉÉ„ÇØ„Çπ
+	TCHAR		m_szName[64];		//!< ÂêçÂâç
 };
 
 
-//ÉfÉtÉHÉãÉgêFê›íË
+//„Éá„Éï„Ç©„É´„ÉàËâ≤Ë®≠ÂÆö
 void SetDefaultColorInfo(ColorInfo* pColorInfo, ColorTheme nIndex);
 void SetColorTheme(ColorInfo* pColorInfo, ColorTheme presetNum);
 
 
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                           é´èë                              //
+//                           ËæûÊõ∏                              //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 //@@@ 2006.04.10 fon ADD-start
-const int DICT_ABOUT_LEN = 50; /*!< é´èëÇÃê‡ñæÇÃç≈ëÂí∑ -1 */
+const int DICT_ABOUT_LEN = 50; /*!< ËæûÊõ∏„ÅÆË™¨Êòé„ÅÆÊúÄÂ§ßÈï∑ -1 */
 struct KeyHelpInfo {
-	bool		m_bUse;						//!< é´èëÇ égópÇ∑ÇÈ/ÇµÇ»Ç¢
-	TCHAR		m_szAbout[DICT_ABOUT_LEN];	//!< é´èëÇÃê‡ñæ(é´èëÉtÉ@ÉCÉãÇÃ1çsñ⁄Ç©ÇÁê∂ê¨)
-	SFilePath	m_szPath;					//!< ÉtÉ@ÉCÉãÉpÉX
+	bool		m_bUse;						//!< ËæûÊõ∏„Çí ‰ΩøÁî®„Åô„Çã/„Åó„Å™„ÅÑ
+	TCHAR		m_szAbout[DICT_ABOUT_LEN];	//!< ËæûÊõ∏„ÅÆË™¨Êòé(ËæûÊõ∏„Éï„Ç°„Ç§„É´„ÅÆ1Ë°åÁõÆ„Åã„ÇâÁîüÊàê)
+	SFilePath	m_szPath;					//!< „Éï„Ç°„Ç§„É´„Éë„Çπ
 };
 //@@@ 2006.04.10 fon ADD-end
 

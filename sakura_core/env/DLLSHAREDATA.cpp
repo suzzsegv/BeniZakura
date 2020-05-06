@@ -25,17 +25,17 @@
 #include "StdAfx.h"
 #include "DLLSHAREDATA.h"
 
-//GetDllShareData�p�O���[�o���ϐ�
+//GetDllShareData用グローバル変数
 DLLSHAREDATA* g_theDLLSHAREDATA = NULL;
 
-//DLLSHAREDATA�ւ̊ȈՃA�N�Z�T
+//DLLSHAREDATAへの簡易アクセサ
 DLLSHAREDATA& GetDllShareData()
 {
 	assert(g_theDLLSHAREDATA);
 	return *g_theDLLSHAREDATA;
 }
 
-//DLLSHAREDATA���m�ۂ�����A�܂�������ĂԁB
+//DLLSHAREDATAを確保したら、まずこれを呼ぶ。
 void DLLSHAREDATA::OnInit()
 {
 	g_theDLLSHAREDATA = this;

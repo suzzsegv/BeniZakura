@@ -1,13 +1,13 @@
 /*! @file
-	@brief ƒ^ƒCƒv•Êİ’è - ƒXƒNƒŠ[ƒ“
+	@brief ã‚¿ã‚¤ãƒ—åˆ¥è¨­å®š - ã‚¹ã‚¯ãƒªãƒ¼ãƒ³
 
-	@date 2008.04.12 kobake CPropTypes.cpp‚©‚ç•ª—£
+	@date 2008.04.12 kobake CPropTypes.cppã‹ã‚‰åˆ†é›¢
 */
 /*
 	Copyright (C) 1998-2002, Norio Nakatani
 	Copyright (C) 2000, jepro, genta
 	Copyright (C) 2001, jepro, genta, MIK, hor, Stonee, asa-o
-	Copyright (C) 2002, YAZAKI, aroka, MIK, genta, ‚±‚¨‚è, Moca
+	Copyright (C) 2002, YAZAKI, aroka, MIK, genta, ã“ãŠã‚Š, Moca
 	Copyright (C) 2003, MIK, zenryaku, Moca, naoh, KEITA, genta
 	Copyright (C) 2005, MIK, genta, Moca, ryoji
 	Copyright (C) 2006, ryoji, fon, novice
@@ -29,7 +29,7 @@
 #include "sakura_rc.h"
 
 
-//ƒAƒEƒgƒ‰ƒCƒ“‰ğÍ•û–@E•W€ƒ‹[ƒ‹
+//ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³è§£ææ–¹æ³•ãƒ»æ¨™æº–ãƒ«ãƒ¼ãƒ«
 TYPE_NAME<EOutlineType> OlmArr[] = {
 //	{ OUTLINE_C,		_T("C") },
 	{ OUTLINE_CPP,		_T("C/C++") },
@@ -37,56 +37,56 @@ TYPE_NAME<EOutlineType> OlmArr[] = {
 	{ OUTLINE_JAVA,		_T("Java") },
 	{ OUTLINE_COBOL,	_T("COBOL") },
 	{ OUTLINE_PERL,		_T("Perl") },				//Sep. 8, 2000 genta
-	{ OUTLINE_ASM,		_T("ƒAƒZƒ“ƒuƒ‰") },
+	{ OUTLINE_ASM,		_T("ã‚¢ã‚»ãƒ³ãƒ–ãƒ©") },
 	{ OUTLINE_VB,		_T("Visual Basic") },		// 2001/06/23 N.Nakatani
 	{ OUTLINE_PYTHON,	_T("Python") },				//	2007.02.08 genta
 	{ OUTLINE_ERLANG,	_T("Erlang") },				//	2009.08.10 genta
-	{ OUTLINE_WZTXT,	_T("WZŠK‘w•tƒeƒLƒXƒg") },	// 2003.05.20 zenryaku, 2003.06.23 Moca –¼Ì•ÏX
+	{ OUTLINE_WZTXT,	_T("WZéšå±¤ä»˜ãƒ†ã‚­ã‚¹ãƒˆ") },	// 2003.05.20 zenryaku, 2003.06.23 Moca åç§°å¤‰æ›´
 	{ OUTLINE_HTML,		_T("HTML") },				// 2003.05.20 zenryaku
 	{ OUTLINE_TEX,		_T("TeX") },				// 2003.07.20 naoh
-	{ OUTLINE_TEXT,		_T("ƒeƒLƒXƒg") }			//Jul. 08, 2001 JEPRO í‚ÉÅŒã”ö‚É‚¨‚­
+	{ OUTLINE_TEXT,		_T("ãƒ†ã‚­ã‚¹ãƒˆ") }			//Jul. 08, 2001 JEPRO å¸¸ã«æœ€å¾Œå°¾ã«ãŠã
 };
 
 TYPE_NAME<ESmartIndentType> SmartIndentArr[] = {
-	{ SMARTINDENT_NONE,	_T("‚È‚µ") },
+	{ SMARTINDENT_NONE,	_T("ãªã—") },
 	{ SMARTINDENT_CPP,	_T("C/C++") }
 };
 
-/*!	2s–ÚˆÈ~‚ÌƒCƒ“ƒfƒ“ƒg•û–@
+/*!	2è¡Œç›®ä»¥é™ã®ã‚¤ãƒ³ãƒ‡ãƒ³ãƒˆæ–¹æ³•
 
 	@sa CLayoutMgr::SetLayoutInfo()
 	@date Oct. 1, 2002 genta 
 */
 TYPE_NAME<int> IndentTypeArr[] = {
-	{ 0, _T("‚È‚µ") },
+	{ 0, _T("ãªã—") },
 	{ 1, _T("tx2x") },
-	{ 2, _T("˜_—sæ“ª") },
+	{ 2, _T("è«–ç†è¡Œå…ˆé ­") },
 };
 
-// 2008.05.30 nasukoji	ƒeƒLƒXƒg‚ÌÜ‚è•Ô‚µ•û–@
+// 2008.05.30 nasukoji	ãƒ†ã‚­ã‚¹ãƒˆã®æŠ˜ã‚Šè¿”ã—æ–¹æ³•
 TYPE_NAME<int> WrapMethodArr[] = {
-	{ WRAP_NO_TEXT_WRAP,	_T("Ü‚è•Ô‚³‚È‚¢") },
-	{ WRAP_SETTING_WIDTH,	_T("w’èŒ…‚ÅÜ‚è•Ô‚·") },
-	{ WRAP_WINDOW_WIDTH,	_T("‰E’[‚ÅÜ‚è•Ô‚·") },
+	{ WRAP_NO_TEXT_WRAP,	_T("æŠ˜ã‚Šè¿”ã•ãªã„") },
+	{ WRAP_SETTING_WIDTH,	_T("æŒ‡å®šæ¡ã§æŠ˜ã‚Šè¿”ã™") },
+	{ WRAP_WINDOW_WIDTH,	_T("å³ç«¯ã§æŠ˜ã‚Šè¿”ã™") },
 };
 
-//Ã“Iƒƒ“ƒo
-std::vector<TYPE_NAME<EOutlineType> > CPropTypes::m_OlmArr;	//!<ƒAƒEƒgƒ‰ƒCƒ“‰ğÍƒ‹[ƒ‹”z—ñ
-std::vector<TYPE_NAME<ESmartIndentType> > CPropTypes::m_SIndentArr;	//!<ƒXƒ}[ƒgƒCƒ“ƒfƒ“ƒgƒ‹[ƒ‹”z—ñ
+//é™çš„ãƒ¡ãƒ³ãƒ
+std::vector<TYPE_NAME<EOutlineType> > CPropTypes::m_OlmArr;	//!<ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³è§£æãƒ«ãƒ¼ãƒ«é…åˆ—
+std::vector<TYPE_NAME<ESmartIndentType> > CPropTypes::m_SIndentArr;	//!<ã‚¹ãƒãƒ¼ãƒˆã‚¤ãƒ³ãƒ‡ãƒ³ãƒˆãƒ«ãƒ¼ãƒ«é…åˆ—
 
-//ƒXƒNƒŠ[ƒ“ƒ^ƒu‚Ì‰Šú‰»
+//ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã‚¿ãƒ–ã®åˆæœŸåŒ–
 void CPropTypesScreen::CPropTypes_Screen()
 {
-	//ƒvƒ‰ƒOƒCƒ“–³Œø‚Ìê‡A‚±‚±‚ÅÃ“Iƒƒ“ƒo‚ğ‰Šú‰»‚·‚éBƒvƒ‰ƒOƒCƒ“—LŒø‚Ìê‡‚ÍAddXXXMethod“à‚Å‰Šú‰»‚·‚éB
+	//ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ç„¡åŠ¹ã®å ´åˆã€ã“ã“ã§é™çš„ãƒ¡ãƒ³ãƒã‚’åˆæœŸåŒ–ã™ã‚‹ã€‚ãƒ—ãƒ©ã‚°ã‚¤ãƒ³æœ‰åŠ¹ã®å ´åˆã¯AddXXXMethodå†…ã§åˆæœŸåŒ–ã™ã‚‹ã€‚
 	if( m_OlmArr.empty() ){
-		m_OlmArr.insert(m_OlmArr.end(), OlmArr, &OlmArr[_countof(OlmArr)]);	//ƒAƒEƒgƒ‰ƒCƒ“‰ğÍƒ‹[ƒ‹
+		m_OlmArr.insert(m_OlmArr.end(), OlmArr, &OlmArr[_countof(OlmArr)]);	//ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³è§£æãƒ«ãƒ¼ãƒ«
 	}
 	if( m_SIndentArr.empty() ){
-		m_SIndentArr.insert(m_SIndentArr.end(), SmartIndentArr, &SmartIndentArr[_countof(SmartIndentArr)]);	//ƒXƒ}[ƒgƒCƒ“ƒfƒ“ƒgƒ‹[ƒ‹
+		m_SIndentArr.insert(m_SIndentArr.end(), SmartIndentArr, &SmartIndentArr[_countof(SmartIndentArr)]);	//ã‚¹ãƒãƒ¼ãƒˆã‚¤ãƒ³ãƒ‡ãƒ³ãƒˆãƒ«ãƒ¼ãƒ«
 	}
 }
 
-/* Screen ƒƒbƒZ[ƒWˆ— */
+/* Screen ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å‡¦ç† */
 INT_PTR CPropTypesScreen::DispatchEvent(
 	HWND		hwndDlg,	// handle to dialog box
 	UINT		uMsg,		// message
@@ -105,36 +105,36 @@ INT_PTR CPropTypesScreen::DispatchEvent(
 
 	case WM_INITDIALOG:
 		m_hwndThis = hwndDlg;
-		/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìİ’è Screen */
+		/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®è¨­å®š Screen */
 		SetData( hwndDlg );
 		// Modified by KEITA for WIN64 2003.9.6
 		::SetWindowLongPtr( hwndDlg, DWLP_USER, lParam );
 
-		// ƒGƒfƒBƒbƒgƒRƒ“ƒgƒ[ƒ‹‚Ì“ü—Í•¶š”§ŒÀ
+		// ã‚¨ãƒ‡ã‚£ãƒƒãƒˆã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã®å…¥åŠ›æ–‡å­—æ•°åˆ¶é™
 		EditCtl_LimitText( GetDlgItem( hwndDlg, IDC_EDIT_TYPENAME        ), _countof( m_Types.m_szTypeName      ) - 1 );
 		EditCtl_LimitText( GetDlgItem( hwndDlg, IDC_EDIT_TYPEEXTS        ), _countof( m_Types.m_szTypeExts      ) - 1 );
 		EditCtl_LimitText( GetDlgItem( hwndDlg, IDC_EDIT_INDENTCHARS     ), _countof( m_Types.m_szIndentChars   ) - 1 );
 		EditCtl_LimitText( GetDlgItem( hwndDlg, IDC_EDIT_TABVIEWSTRING   ), _countof( m_Types.m_szTabViewString ) - 1 );
-		EditCtl_LimitText( GetDlgItem( hwndDlg, IDC_EDIT_OUTLINERULEFILE ), _countof2( m_Types.m_szOutlineRuleFilename ) - 1 );	//	Oct. 5, 2002 genta ‰æ–Êã‚Å‚à“ü—Í§ŒÀ
+		EditCtl_LimitText( GetDlgItem( hwndDlg, IDC_EDIT_OUTLINERULEFILE ), _countof2( m_Types.m_szOutlineRuleFilename ) - 1 );	//	Oct. 5, 2002 genta ç”»é¢ä¸Šã§ã‚‚å…¥åŠ›åˆ¶é™
 
 		if( 0 == m_Types.m_nIdx ){
-			::EnableWindow( ::GetDlgItem( hwndDlg, IDC_EDIT_TYPENAME ), FALSE );	//İ’è‚Ì–¼‘O
-			::EnableWindow( ::GetDlgItem( hwndDlg, IDC_EDIT_TYPEEXTS ), FALSE );	//ƒtƒ@ƒCƒ‹Šg’£q
+			::EnableWindow( ::GetDlgItem( hwndDlg, IDC_EDIT_TYPENAME ), FALSE );	//è¨­å®šã®åå‰
+			::EnableWindow( ::GetDlgItem( hwndDlg, IDC_EDIT_TYPEEXTS ), FALSE );	//ãƒ•ã‚¡ã‚¤ãƒ«æ‹¡å¼µå­
 		}
 
 		return TRUE;
 	case WM_COMMAND:
-		wNotifyCode	= HIWORD(wParam);	/* ’Ê’mƒR[ƒh */
-		wID			= LOWORD(wParam);	/* €–ÚID¤ ƒRƒ“ƒgƒ[ƒ‹ID¤ ‚Ü‚½‚ÍƒAƒNƒZƒ‰ƒŒ[ƒ^ID */
-//		hwndCtl		= (HWND) lParam;	/* ƒRƒ“ƒgƒ[ƒ‹‚Ìƒnƒ“ƒhƒ‹ */
+		wNotifyCode	= HIWORD(wParam);	/* é€šçŸ¥ã‚³ãƒ¼ãƒ‰ */
+		wID			= LOWORD(wParam);	/* é …ç›®IDã€ ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«IDã€ ã¾ãŸã¯ã‚¢ã‚¯ã‚»ãƒ©ãƒ¬ãƒ¼ã‚¿ID */
+//		hwndCtl		= (HWND) lParam;	/* ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã®ãƒãƒ³ãƒ‰ãƒ« */
 		switch( wNotifyCode ){
-		/* ƒ{ƒ^ƒ“^ƒ`ƒFƒbƒNƒ{ƒbƒNƒX‚ªƒNƒŠƒbƒN‚³‚ê‚½ */
+		/* ãƒœã‚¿ãƒ³ï¼ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹ãŒã‚¯ãƒªãƒƒã‚¯ã•ã‚ŒãŸ */
 		case BN_CLICKED:
 			switch( wID ){
-			/*	2002.04.01 YAZAKI ƒI[ƒgƒCƒ“ƒfƒ“ƒg‚ğíœi‚à‚Æ‚à‚Æ•s—vj
-				ƒAƒEƒgƒ‰ƒCƒ“‰ğÍ‚Éƒ‹[ƒ‹ƒtƒ@ƒCƒ‹ŠÖ˜A‚ğ’Ç‰Á
+			/*	2002.04.01 YAZAKI ã‚ªãƒ¼ãƒˆã‚¤ãƒ³ãƒ‡ãƒ³ãƒˆã‚’å‰Šé™¤ï¼ˆã‚‚ã¨ã‚‚ã¨ä¸è¦ï¼‰
+				ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³è§£æã«ãƒ«ãƒ¼ãƒ«ãƒ•ã‚¡ã‚¤ãƒ«é–¢é€£ã‚’è¿½åŠ 
 			*/
-			case IDC_RADIO_OUTLINEDEFAULT:	/* ƒAƒEƒgƒ‰ƒCƒ“‰ğÍ¨•W€ƒ‹[ƒ‹ */
+			case IDC_RADIO_OUTLINEDEFAULT:	/* ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³è§£æâ†’æ¨™æº–ãƒ«ãƒ¼ãƒ« */
 				::EnableWindow( ::GetDlgItem( hwndDlg, IDC_COMBO_OUTLINES ), TRUE );
 				::EnableWindow( ::GetDlgItem( hwndDlg, IDC_EDIT_OUTLINERULEFILE ), FALSE );
 				::EnableWindow( ::GetDlgItem( hwndDlg, IDC_BUTTON_RULEFILE_REF ), FALSE );
@@ -142,24 +142,24 @@ INT_PTR CPropTypesScreen::DispatchEvent(
 				Combo_SetCurSel( ::GetDlgItem( hwndDlg, IDC_COMBO_OUTLINES ), 0 );
 
 				return TRUE;
-			case IDC_RADIO_OUTLINERULEFILE:	/* ƒAƒEƒgƒ‰ƒCƒ“‰ğÍ¨ƒ‹[ƒ‹ƒtƒ@ƒCƒ‹ */
+			case IDC_RADIO_OUTLINERULEFILE:	/* ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³è§£æâ†’ãƒ«ãƒ¼ãƒ«ãƒ•ã‚¡ã‚¤ãƒ« */
 				::EnableWindow( ::GetDlgItem( hwndDlg, IDC_COMBO_OUTLINES ), FALSE );
 				::EnableWindow( ::GetDlgItem( hwndDlg, IDC_EDIT_OUTLINERULEFILE ), TRUE );
 				::EnableWindow( ::GetDlgItem( hwndDlg, IDC_BUTTON_RULEFILE_REF ), TRUE );
 				return TRUE;
 
-			case IDC_BUTTON_RULEFILE_REF:	/* ƒAƒEƒgƒ‰ƒCƒ“‰ğÍ¨ƒ‹[ƒ‹ƒtƒ@ƒCƒ‹‚ÌuQÆ...vƒ{ƒ^ƒ“ */
+			case IDC_BUTTON_RULEFILE_REF:	/* ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³è§£æâ†’ãƒ«ãƒ¼ãƒ«ãƒ•ã‚¡ã‚¤ãƒ«ã®ã€Œå‚ç…§...ã€ãƒœã‚¿ãƒ³ */
 				{
 					CDlgOpenFile	cDlgOpenFile;
 					TCHAR			szPath[_MAX_PATH + 1];
-					// 2003.06.23 Moca ‘Š‘ÎƒpƒX‚ÍÀsƒtƒ@ƒCƒ‹‚©‚ç‚ÌƒpƒX‚Æ‚µ‚ÄŠJ‚­
-					// 2007.05.19 ryoji ‘Š‘ÎƒpƒX‚Íİ’èƒtƒ@ƒCƒ‹‚©‚ç‚ÌƒpƒX‚ğ—Dæ
+					// 2003.06.23 Moca ç›¸å¯¾ãƒ‘ã‚¹ã¯å®Ÿè¡Œãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ã®ãƒ‘ã‚¹ã¨ã—ã¦é–‹ã
+					// 2007.05.19 ryoji ç›¸å¯¾ãƒ‘ã‚¹ã¯è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ã®ãƒ‘ã‚¹ã‚’å„ªå…ˆ
 					if( _IS_REL_PATH( m_Types.m_szOutlineRuleFilename ) ){
 						GetInidirOrExedir( szPath, m_Types.m_szOutlineRuleFilename );
 					}else{
 						_tcscpy( szPath, m_Types.m_szOutlineRuleFilename );
 					}
-					/* ƒtƒ@ƒCƒ‹ƒI[ƒvƒ“ƒ_ƒCƒAƒƒO‚Ì‰Šú‰» */
+					/* ãƒ•ã‚¡ã‚¤ãƒ«ã‚ªãƒ¼ãƒ—ãƒ³ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®åˆæœŸåŒ– */
 					cDlgOpenFile.Create(
 						m_hInstance,
 						hwndDlg,
@@ -174,7 +174,7 @@ INT_PTR CPropTypesScreen::DispatchEvent(
 				return TRUE;
 
 			case IDC_CHECK_TAB_ARROW:
-				// Mar. 31, 2003 genta –îˆó•\¦‚ÌON/OFF‚ğTAB•¶š—ñİ’è‚É˜A“®‚³‚¹‚é
+				// Mar. 31, 2003 genta çŸ¢å°è¡¨ç¤ºã®ON/OFFã‚’TABæ–‡å­—åˆ—è¨­å®šã«é€£å‹•ã•ã›ã‚‹
 				if( ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_TAB_ARROW ) ){
 					::EnableWindow( ::GetDlgItem( hwndDlg, IDC_EDIT_TABVIEWSTRING ), FALSE );
 				}
@@ -183,9 +183,9 @@ INT_PTR CPropTypesScreen::DispatchEvent(
 				}
 				return TRUE;
 
-			case IDC_CHECK_KINSOKURET:		//‰üs•¶š‚ğ‚Ô‚ç‰º‚°‚é
-			case IDC_CHECK_KINSOKUKUTO:		//‹å“Ç“_‚ğ‚Ô‚ç‰º‚°‚é
-				// ‚Ô‚ç‰º‚°‚ğ‰B‚·‚Ì—LŒø‰»	2012/11/30 Uchi
+			case IDC_CHECK_KINSOKURET:		//æ”¹è¡Œæ–‡å­—ã‚’ã¶ã‚‰ä¸‹ã’ã‚‹
+			case IDC_CHECK_KINSOKUKUTO:		//å¥èª­ç‚¹ã‚’ã¶ã‚‰ä¸‹ã’ã‚‹
+				// ã¶ã‚‰ä¸‹ã’ã‚’éš ã™ã®æœ‰åŠ¹åŒ–	2012/11/30 Uchi
 				::EnableWindow( ::GetDlgItem( hwndDlg, IDC_CHECK_KINSOKUHIDE ), 
 					::IsDlgButtonChecked( hwndDlg, IDC_CHECK_KINSOKURET ) 
 				 || ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_KINSOKUKUTO ) );
@@ -199,7 +199,7 @@ INT_PTR CPropTypesScreen::DispatchEvent(
 		pMNUD  = (NM_UPDOWN*)lParam;
 		switch( idCtrl ){
 		case IDC_SPIN_MAXLINELEN:
-			/* Ü‚è•Ô‚µŒ…” */
+			/* æŠ˜ã‚Šè¿”ã—æ¡æ•° */
 			nVal = ::GetDlgItemInt( hwndDlg, IDC_EDIT_MAXLINELEN, NULL, FALSE );
 			if( pMNUD->iDelta < 0 ){
 				++nVal;
@@ -216,7 +216,7 @@ INT_PTR CPropTypesScreen::DispatchEvent(
 			::SetDlgItemInt( hwndDlg, IDC_EDIT_MAXLINELEN, nVal, FALSE );
 			return TRUE;
 		case IDC_SPIN_CHARSPACE:
-			/* •¶š‚ÌŒ„ŠÔ */
+			/* æ–‡å­—ã®éš™é–“ */
 //			MYTRACE( _T("IDC_SPIN_CHARSPACE\n") );
 			nVal = ::GetDlgItemInt( hwndDlg, IDC_EDIT_CHARSPACE, NULL, FALSE );
 			if( pMNUD->iDelta < 0 ){
@@ -228,13 +228,13 @@ INT_PTR CPropTypesScreen::DispatchEvent(
 			if( nVal < 0 ){
 				nVal = 0;
 			}
-			if( nVal > COLUMNSPACE_MAX ){ // Feb. 18, 2003 genta Å‘å’l‚Ì’è”‰»
+			if( nVal > COLUMNSPACE_MAX ){ // Feb. 18, 2003 genta æœ€å¤§å€¤ã®å®šæ•°åŒ–
 				nVal = COLUMNSPACE_MAX;
 			}
 			::SetDlgItemInt( hwndDlg, IDC_EDIT_CHARSPACE, nVal, FALSE );
 			return TRUE;
 		case IDC_SPIN_LINESPACE:
-			/* s‚ÌŒ„ŠÔ */
+			/* è¡Œã®éš™é–“ */
 //			MYTRACE( _T("IDC_SPIN_LINESPACE\n") );
 			nVal = ::GetDlgItemInt( hwndDlg, IDC_EDIT_LINESPACE, NULL, FALSE );
 			if( pMNUD->iDelta < 0 ){
@@ -243,7 +243,7 @@ INT_PTR CPropTypesScreen::DispatchEvent(
 			if( pMNUD->iDelta > 0 ){
 				--nVal;
 			}
-//	From Here Oct. 8, 2000 JEPRO sŠÔ‚àÅ¬0‚Ü‚Åİ’è‚Å‚«‚é‚æ‚¤‚É•ÏX(Ì‚É–ß‚Á‚½‚¾‚¯?)
+//	From Here Oct. 8, 2000 JEPRO è¡Œé–“ã‚‚æœ€å°0ã¾ã§è¨­å®šã§ãã‚‹ã‚ˆã†ã«å¤‰æ›´(æ˜”ã«æˆ»ã£ãŸã ã‘?)
 //			if( nVal < 1 ){
 //				nVal = 1;
 //			}
@@ -251,14 +251,14 @@ INT_PTR CPropTypesScreen::DispatchEvent(
 				nVal = 0;
 			}
 //	To Here  Oct. 8, 2000
-			if( nVal > LINESPACE_MAX ){ // Feb. 18, 2003 genta Å‘å’l‚Ì’è”‰»
+			if( nVal > LINESPACE_MAX ){ // Feb. 18, 2003 genta æœ€å¤§å€¤ã®å®šæ•°åŒ–
 				nVal = LINESPACE_MAX;
 			}
 			::SetDlgItemInt( hwndDlg, IDC_EDIT_LINESPACE, nVal, FALSE );
 			return TRUE;
 		case IDC_SPIN_TABSPACE:
 			//	Sep. 22, 2002 genta
-			/* TAB• */
+			/* TABå¹… */
 //			MYTRACE( _T("IDC_SPIN_CHARSPACE\n") );
 			nVal = ::GetDlgItemInt( hwndDlg, IDC_EDIT_TABSPACE, NULL, FALSE );
 			if( pMNUD->iDelta < 0 ){
@@ -279,11 +279,11 @@ INT_PTR CPropTypesScreen::DispatchEvent(
 		default:
 			switch( pNMHDR->code ){
 			case PSN_KILLACTIVE:
-				/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìæ“¾ Screen */
+				/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®å–å¾— Screen */
 				GetData( hwndDlg );
 
 				return TRUE;
-//@@@ 2002.01.03 YAZAKI ÅŒã‚É•\¦‚µ‚Ä‚¢‚½ƒV[ƒg‚ğ³‚µ‚­Šo‚¦‚Ä‚¢‚È‚¢ƒoƒOC³
+//@@@ 2002.01.03 YAZAKI æœ€å¾Œã«è¡¨ç¤ºã—ã¦ã„ãŸã‚·ãƒ¼ãƒˆã‚’æ­£ã—ãè¦šãˆã¦ã„ãªã„ãƒã‚°ä¿®æ­£
 			case PSN_SETACTIVE:
 				m_nPageNum = 0;
 				return TRUE;
@@ -304,96 +304,96 @@ INT_PTR CPropTypesScreen::DispatchEvent(
 
 
 
-/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìİ’è Screen */
+/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®è¨­å®š Screen */
 void CPropTypesScreen::SetData( HWND hwndDlg )
 {
-	::DlgItem_SetText( hwndDlg, IDC_EDIT_TYPENAME, m_Types.m_szTypeName );	//İ’è‚Ì–¼‘O
-	::DlgItem_SetText( hwndDlg, IDC_EDIT_TYPEEXTS, m_Types.m_szTypeExts );	//ƒtƒ@ƒCƒ‹Šg’£q
+	::DlgItem_SetText( hwndDlg, IDC_EDIT_TYPENAME, m_Types.m_szTypeName );	//è¨­å®šã®åå‰
+	::DlgItem_SetText( hwndDlg, IDC_EDIT_TYPEEXTS, m_Types.m_szTypeExts );	//ãƒ•ã‚¡ã‚¤ãƒ«æ‹¡å¼µå­
 
-	//ƒŒƒCƒAƒEƒg
+	//ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆ
 	{
-		// 2008.05.30 nasukoji	ƒeƒLƒXƒg‚ÌÜ‚è•Ô‚µ•û–@
+		// 2008.05.30 nasukoji	ãƒ†ã‚­ã‚¹ãƒˆã®æŠ˜ã‚Šè¿”ã—æ–¹æ³•
 		HWND	hwndCombo = ::GetDlgItem( hwndDlg, IDC_COMBO_WRAPMETHOD );
 		Combo_ResetContent( hwndCombo );
 		int		nSelPos = 0;
 		for( int i = 0; i < _countof( WrapMethodArr ); ++i ){
 			Combo_InsertString( hwndCombo, i, WrapMethodArr[i].pszName );
-			if( WrapMethodArr[i].nMethod == m_Types.m_nTextWrapMethod ){		// ƒeƒLƒXƒg‚ÌÜ‚è•Ô‚µ•û–@
+			if( WrapMethodArr[i].nMethod == m_Types.m_nTextWrapMethod ){		// ãƒ†ã‚­ã‚¹ãƒˆã®æŠ˜ã‚Šè¿”ã—æ–¹æ³•
 				nSelPos = i;
 			}
 		}
 		Combo_SetCurSel( hwndCombo, nSelPos );
 
-		::SetDlgItemInt( hwndDlg, IDC_EDIT_MAXLINELEN, (Int)m_Types.m_nMaxLineKetas, FALSE );	// Ü‚è•Ô‚µ•¶š”
-		::SetDlgItemInt( hwndDlg, IDC_EDIT_CHARSPACE, m_Types.m_nColumnSpace, FALSE );			// •¶š‚ÌŠÔŠu
-		::SetDlgItemInt( hwndDlg, IDC_EDIT_LINESPACE, m_Types.m_nLineSpace, FALSE );			// s‚ÌŠÔŠu
-		::SetDlgItemInt( hwndDlg, IDC_EDIT_TABSPACE, (Int)m_Types.m_nTabSpace, FALSE );			// TAB•	//	Sep. 22, 2002 genta
-		::DlgItem_SetText( hwndDlg, IDC_EDIT_TABVIEWSTRING, m_Types.m_szTabViewString );		// TAB•\¦(8•¶š)
-		::EnableWindow( ::GetDlgItem( hwndDlg, IDC_EDIT_TABVIEWSTRING ), !m_Types.m_bTabArrow );	// Mar. 31, 2003 genta –îˆó•\¦‚ÌON/OFF‚ğTAB•¶š—ñİ’è‚É˜A“®‚³‚¹‚é
-		::CheckDlgButton( hwndDlg, IDC_CHECK_TAB_ARROW, m_Types.m_bTabArrow );					// –îˆó•\¦ [ƒ`ƒFƒbƒNƒ{ƒbƒNƒX]	//@@@ 2003.03.26 MIK
-		::CheckDlgButton( hwndDlg, IDC_CHECK_INS_SPACE, m_Types.m_bInsSpace );					// SPACE‚Ì‘}“ü [ƒ`ƒFƒbƒNƒ{ƒbƒNƒX]	// From Here 2001.12.03 hor
+		::SetDlgItemInt( hwndDlg, IDC_EDIT_MAXLINELEN, (Int)m_Types.m_nMaxLineKetas, FALSE );	// æŠ˜ã‚Šè¿”ã—æ–‡å­—æ•°
+		::SetDlgItemInt( hwndDlg, IDC_EDIT_CHARSPACE, m_Types.m_nColumnSpace, FALSE );			// æ–‡å­—ã®é–“éš”
+		::SetDlgItemInt( hwndDlg, IDC_EDIT_LINESPACE, m_Types.m_nLineSpace, FALSE );			// è¡Œã®é–“éš”
+		::SetDlgItemInt( hwndDlg, IDC_EDIT_TABSPACE, (Int)m_Types.m_nTabSpace, FALSE );			// TABå¹…	//	Sep. 22, 2002 genta
+		::DlgItem_SetText( hwndDlg, IDC_EDIT_TABVIEWSTRING, m_Types.m_szTabViewString );		// TABè¡¨ç¤º(8æ–‡å­—)
+		::EnableWindow( ::GetDlgItem( hwndDlg, IDC_EDIT_TABVIEWSTRING ), !m_Types.m_bTabArrow );	// Mar. 31, 2003 genta çŸ¢å°è¡¨ç¤ºã®ON/OFFã‚’TABæ–‡å­—åˆ—è¨­å®šã«é€£å‹•ã•ã›ã‚‹
+		::CheckDlgButton( hwndDlg, IDC_CHECK_TAB_ARROW, m_Types.m_bTabArrow );					// çŸ¢å°è¡¨ç¤º [ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹]	//@@@ 2003.03.26 MIK
+		::CheckDlgButton( hwndDlg, IDC_CHECK_INS_SPACE, m_Types.m_bInsSpace );					// SPACEã®æŒ¿å…¥ [ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹]	// From Here 2001.12.03 hor
 	}
 
-	//ƒCƒ“ƒfƒ“ƒg
+	//ã‚¤ãƒ³ãƒ‡ãƒ³ãƒˆ
 	{
-		/* ©“®ƒCƒ“ƒfƒ“ƒg */
+		/* è‡ªå‹•ã‚¤ãƒ³ãƒ‡ãƒ³ãƒˆ */
 		::CheckDlgButtonBool( hwndDlg, IDC_CHECK_INDENT, m_Types.m_bAutoIndent );
 
-		/* “ú–{Œê‹ó”’‚àƒCƒ“ƒfƒ“ƒg */
+		/* æ—¥æœ¬èªç©ºç™½ã‚‚ã‚¤ãƒ³ãƒ‡ãƒ³ãƒˆ */
 		::CheckDlgButtonBool( hwndDlg, IDC_CHECK_INDENT_WSPACE, m_Types.m_bAutoIndent_ZENSPACE );
 
-		/* ƒXƒ}[ƒgƒCƒ“ƒfƒ“ƒgí•Ê */
+		/* ã‚¹ãƒãƒ¼ãƒˆã‚¤ãƒ³ãƒ‡ãƒ³ãƒˆç¨®åˆ¥ */
 		HWND	hwndCombo = ::GetDlgItem( hwndDlg, IDC_COMBO_SMARTINDENT );
 		Combo_ResetContent( hwndCombo );
 		int		nSelPos = 0;
 		int nSize = (int)m_SIndentArr.size();
 		for( int i = 0; i < nSize; ++i ){
 			Combo_InsertString( hwndCombo, i, m_SIndentArr[i].pszName );
-			if( m_SIndentArr[i].nMethod == m_Types.m_eSmartIndent ){	/* ƒXƒ}[ƒgƒCƒ“ƒfƒ“ƒgí•Ê */
+			if( m_SIndentArr[i].nMethod == m_Types.m_eSmartIndent ){	/* ã‚¹ãƒãƒ¼ãƒˆã‚¤ãƒ³ãƒ‡ãƒ³ãƒˆç¨®åˆ¥ */
 				nSelPos = i;
 			}
 		}
 		Combo_SetCurSel( hwndCombo, nSelPos );
 
-		// ‚»‚Ì‘¼‚ÌƒCƒ“ƒfƒ“ƒg‘ÎÛ•¶š
+		// ãã®ä»–ã®ã‚¤ãƒ³ãƒ‡ãƒ³ãƒˆå¯¾è±¡æ–‡å­—
 		::DlgItem_SetText( hwndDlg, IDC_EDIT_INDENTCHARS, m_Types.m_szIndentChars );
 
-		//Ü‚è•Ô‚µsƒCƒ“ƒfƒ“ƒg	//	Oct. 1, 2002 genta ƒRƒ“ƒ{ƒ{ƒbƒNƒX‚É•ÏX
+		//æŠ˜ã‚Šè¿”ã—è¡Œã‚¤ãƒ³ãƒ‡ãƒ³ãƒˆ	//	Oct. 1, 2002 genta ã‚³ãƒ³ãƒœãƒœãƒƒã‚¯ã‚¹ã«å¤‰æ›´
 		hwndCombo = ::GetDlgItem( hwndDlg, IDC_COMBO_INDENTLAYOUT );
 		Combo_ResetContent( hwndCombo );
 		nSelPos = 0;
 		for( int i = 0; i < _countof( IndentTypeArr ); ++i ){
 			Combo_InsertString( hwndCombo, i, IndentTypeArr[i].pszName );
-			if( IndentTypeArr[i].nMethod == m_Types.m_nIndentLayout ){	/* Ü‚è•Ô‚µƒCƒ“ƒfƒ“ƒgí•Ê */
+			if( IndentTypeArr[i].nMethod == m_Types.m_nIndentLayout ){	/* æŠ˜ã‚Šè¿”ã—ã‚¤ãƒ³ãƒ‡ãƒ³ãƒˆç¨®åˆ¥ */
 				nSelPos = i;
 			}
 		}
 		Combo_SetCurSel( hwndCombo, nSelPos );
 
-		// ‰üs‚É––”ö‚Ì‹ó”’‚ğíœ	//2005.10.11 ryoji
+		// æ”¹è¡Œæ™‚ã«æœ«å°¾ã®ç©ºç™½ã‚’å‰Šé™¤	//2005.10.11 ryoji
 		::CheckDlgButton( hwndDlg, IDC_CHECK_RTRIM_PREVLINE, m_Types.m_bRTrimPrevLine );
 	}
 
-	//ƒAƒEƒgƒ‰ƒCƒ“‰ğÍ•û–@
-	//2002.04.01 YAZAKI ƒ‹[ƒ‹ƒtƒ@ƒCƒ‹ŠÖ˜A’Ç‰Á
+	//ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³è§£ææ–¹æ³•
+	//2002.04.01 YAZAKI ãƒ«ãƒ¼ãƒ«ãƒ•ã‚¡ã‚¤ãƒ«é–¢é€£è¿½åŠ 
 	{
-		//•W€ƒ‹[ƒ‹‚ÌƒRƒ“ƒ{ƒ{ƒbƒNƒX‰Šú‰»
+		//æ¨™æº–ãƒ«ãƒ¼ãƒ«ã®ã‚³ãƒ³ãƒœãƒœãƒƒã‚¯ã‚¹åˆæœŸåŒ–
 		HWND	hwndCombo = ::GetDlgItem( hwndDlg, IDC_COMBO_OUTLINES );
 		Combo_ResetContent( hwndCombo );
 		int		nSelPos = 0;
 		int nSize = (int)m_OlmArr.size();
 		for( int i = 0; i < nSize; ++i ){
 			Combo_InsertString( hwndCombo, i, m_OlmArr[i].pszName );
-			if( m_OlmArr[i].nMethod == m_Types.m_eDefaultOutline ){	/* ƒAƒEƒgƒ‰ƒCƒ“‰ğÍ•û–@ */
+			if( m_OlmArr[i].nMethod == m_Types.m_eDefaultOutline ){	/* ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³è§£ææ–¹æ³• */
 				nSelPos = i;
 			}
 		}
 
-		//ƒ‹[ƒ‹ƒtƒ@ƒCƒ‹	// 2003.06.23 Moca ƒ‹[ƒ‹ƒtƒ@ƒCƒ‹–¼‚Íg‚í‚È‚­‚Ä‚àƒZƒbƒg‚µ‚Ä‚¨‚­
+		//ãƒ«ãƒ¼ãƒ«ãƒ•ã‚¡ã‚¤ãƒ«	// 2003.06.23 Moca ãƒ«ãƒ¼ãƒ«ãƒ•ã‚¡ã‚¤ãƒ«åã¯ä½¿ã‚ãªãã¦ã‚‚ã‚»ãƒƒãƒˆã—ã¦ãŠã
 		::EnableWindow( ::GetDlgItem( hwndDlg, IDC_EDIT_OUTLINERULEFILE ), TRUE );
 		::DlgItem_SetText( hwndDlg, IDC_EDIT_OUTLINERULEFILE, m_Types.m_szOutlineRuleFilename );
 
-		//•W€ƒ‹[ƒ‹
+		//æ¨™æº–ãƒ«ãƒ¼ãƒ«
 		if( m_Types.m_eDefaultOutline != OUTLINE_FILE ){
 			::CheckDlgButton( hwndDlg, IDC_RADIO_OUTLINEDEFAULT, TRUE );
 			::CheckDlgButton( hwndDlg, IDC_RADIO_OUTLINERULEFILE, FALSE );
@@ -404,7 +404,7 @@ void CPropTypesScreen::SetData( HWND hwndDlg )
 
 			Combo_SetCurSel( hwndCombo, nSelPos );
 		}
-		//ƒ‹[ƒ‹ƒtƒ@ƒCƒ‹
+		//ãƒ«ãƒ¼ãƒ«ãƒ•ã‚¡ã‚¤ãƒ«
 		else{
 			::CheckDlgButton( hwndDlg, IDC_RADIO_OUTLINEDEFAULT, FALSE );
 			::CheckDlgButton( hwndDlg, IDC_RADIO_OUTLINERULEFILE, TRUE );
@@ -414,51 +414,51 @@ void CPropTypesScreen::SetData( HWND hwndDlg )
 		}
 	}
 
-	//‚»‚Ì‘¼
+	//ãã®ä»–
 	{
-		/* ‰p•¶ƒ[ƒhƒ‰ƒbƒv‚ğ‚·‚é */
+		/* è‹±æ–‡ãƒ¯ãƒ¼ãƒ‰ãƒ©ãƒƒãƒ—ã‚’ã™ã‚‹ */
 		::CheckDlgButton( hwndDlg, IDC_CHECK_WORDWRAP, m_Types.m_bWordWrap ? TRUE : FALSE );
 		
-		/* ‹Ö‘¥ˆ— */
+		/* ç¦å‰‡å‡¦ç† */
 		{	//@@@ 2002.04.08 MIK start
 			::CheckDlgButton( hwndDlg, IDC_CHECK_KINSOKUHEAD, m_Types.m_bKinsokuHead ? TRUE : FALSE );
 			::CheckDlgButton( hwndDlg, IDC_CHECK_KINSOKUTAIL, m_Types.m_bKinsokuTail ? TRUE : FALSE );
-			::CheckDlgButton( hwndDlg, IDC_CHECK_KINSOKURET,  m_Types.m_bKinsokuRet  ? TRUE : FALSE );	/* ‰üs•¶š‚ğ‚Ô‚ç‰º‚°‚é */	//@@@ 2002.04.13 MIK
-			::CheckDlgButton( hwndDlg, IDC_CHECK_KINSOKUKUTO, m_Types.m_bKinsokuKuto ? TRUE : FALSE );	/* ‹å“Ç“_‚ğ‚Ô‚ç‰º‚°‚é */	//@@@ 2002.04.17 MIK
-			::CheckDlgButton( hwndDlg, IDC_CHECK_KINSOKUHIDE, m_Types.m_bKinsokuHide ? TRUE : FALSE );	// ‚Ô‚ç‰º‚°‚ğ‰B‚·			// 2011/11/30 Uchi
+			::CheckDlgButton( hwndDlg, IDC_CHECK_KINSOKURET,  m_Types.m_bKinsokuRet  ? TRUE : FALSE );	/* æ”¹è¡Œæ–‡å­—ã‚’ã¶ã‚‰ä¸‹ã’ã‚‹ */	//@@@ 2002.04.13 MIK
+			::CheckDlgButton( hwndDlg, IDC_CHECK_KINSOKUKUTO, m_Types.m_bKinsokuKuto ? TRUE : FALSE );	/* å¥èª­ç‚¹ã‚’ã¶ã‚‰ä¸‹ã’ã‚‹ */	//@@@ 2002.04.17 MIK
+			::CheckDlgButton( hwndDlg, IDC_CHECK_KINSOKUHIDE, m_Types.m_bKinsokuHide ? TRUE : FALSE );	// ã¶ã‚‰ä¸‹ã’ã‚’éš ã™			// 2011/11/30 Uchi
 			EditCtl_LimitText( ::GetDlgItem( hwndDlg, IDC_EDIT_KINSOKUHEAD ), _countof(m_Types.m_szKinsokuHead) - 1 );
 			EditCtl_LimitText( ::GetDlgItem( hwndDlg, IDC_EDIT_KINSOKUTAIL ), _countof(m_Types.m_szKinsokuTail) - 1 );
 			EditCtl_LimitText( ::GetDlgItem( hwndDlg, IDC_EDIT_KINSOKUKUTO ), _countof(m_Types.m_szKinsokuKuto) - 1 );	// 2009.08.07 ryoji
 			::DlgItem_SetText( hwndDlg, IDC_EDIT_KINSOKUHEAD, m_Types.m_szKinsokuHead );
 			::DlgItem_SetText( hwndDlg, IDC_EDIT_KINSOKUTAIL, m_Types.m_szKinsokuTail );
 			::DlgItem_SetText( hwndDlg, IDC_EDIT_KINSOKUKUTO, m_Types.m_szKinsokuKuto );	// 2009.08.07 ryoji
-			::EnableWindow( ::GetDlgItem( hwndDlg, IDC_CHECK_KINSOKUHIDE ), ( m_Types.m_bKinsokuRet || m_Types.m_bKinsokuKuto ) ? TRUE : FALSE );	// ‚Ô‚ç‰º‚°‚ğ‰B‚·‚Ì—LŒø‰»	2012/11/30 Uchi
+			::EnableWindow( ::GetDlgItem( hwndDlg, IDC_CHECK_KINSOKUHIDE ), ( m_Types.m_bKinsokuRet || m_Types.m_bKinsokuKuto ) ? TRUE : FALSE );	// ã¶ã‚‰ä¸‹ã’ã‚’éš ã™ã®æœ‰åŠ¹åŒ–	2012/11/30 Uchi
 		}	//@@@ 2002.04.08 MIK end
 		
-		// •¶‘ƒAƒCƒRƒ“‚ğg‚¤	//Sep. 10, 2002 genta
+		// æ–‡æ›¸ã‚¢ã‚¤ã‚³ãƒ³ã‚’ä½¿ã†	//Sep. 10, 2002 genta
 		::CheckDlgButton( hwndDlg, IDC_CHECK_DOCICON, m_Types.m_bUseDocumentIcon  ? TRUE : FALSE );
 	}
 }
 
 
 
-/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìæ“¾ Screen */
+/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®å–å¾— Screen */
 int CPropTypesScreen::GetData( HWND hwndDlg )
 {
-//@@@ 2002.01.03 YAZAKI ÅŒã‚É•\¦‚µ‚Ä‚¢‚½ƒV[ƒg‚ğ³‚µ‚­Šo‚¦‚Ä‚¢‚È‚¢ƒoƒOC³
+//@@@ 2002.01.03 YAZAKI æœ€å¾Œã«è¡¨ç¤ºã—ã¦ã„ãŸã‚·ãƒ¼ãƒˆã‚’æ­£ã—ãè¦šãˆã¦ã„ãªã„ãƒã‚°ä¿®æ­£
 //	m_nPageNum = 0;
 
-	::DlgItem_GetText( hwndDlg, IDC_EDIT_TYPENAME, m_Types.m_szTypeName, _countof( m_Types.m_szTypeName ) );	// İ’è‚Ì–¼‘O
-	::DlgItem_GetText( hwndDlg, IDC_EDIT_TYPEEXTS, m_Types.m_szTypeExts, _countof( m_Types.m_szTypeExts ) );	// ƒtƒ@ƒCƒ‹Šg’£q
+	::DlgItem_GetText( hwndDlg, IDC_EDIT_TYPENAME, m_Types.m_szTypeName, _countof( m_Types.m_szTypeName ) );	// è¨­å®šã®åå‰
+	::DlgItem_GetText( hwndDlg, IDC_EDIT_TYPEEXTS, m_Types.m_szTypeExts, _countof( m_Types.m_szTypeExts ) );	// ãƒ•ã‚¡ã‚¤ãƒ«æ‹¡å¼µå­
 
-	//ƒŒƒCƒAƒEƒg
+	//ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆ
 	{
-		// 2008.05.30 nasukoji	ƒeƒLƒXƒg‚ÌÜ‚è•Ô‚µ•û–@
+		// 2008.05.30 nasukoji	ãƒ†ã‚­ã‚¹ãƒˆã®æŠ˜ã‚Šè¿”ã—æ–¹æ³•
 		HWND	hwndCombo = ::GetDlgItem( hwndDlg, IDC_COMBO_WRAPMETHOD );
 		int		nSelPos = Combo_GetCurSel( hwndCombo );
-		m_Types.m_nTextWrapMethod = WrapMethodArr[nSelPos].nMethod;		// ƒeƒLƒXƒg‚ÌÜ‚è•Ô‚µ•û–@
+		m_Types.m_nTextWrapMethod = WrapMethodArr[nSelPos].nMethod;		// ãƒ†ã‚­ã‚¹ãƒˆã®æŠ˜ã‚Šè¿”ã—æ–¹æ³•
 
-		/* Ü‚è•Ô‚µŒ…” */
+		/* æŠ˜ã‚Šè¿”ã—æ¡æ•° */
 		m_Types.m_nMaxLineKetas = CLayoutInt(::GetDlgItemInt( hwndDlg, IDC_EDIT_MAXLINELEN, NULL, FALSE ));
 		if( m_Types.m_nMaxLineKetas < CLayoutInt(MINLINEKETAS) ){
 			m_Types.m_nMaxLineKetas = CLayoutInt(MINLINEKETAS);
@@ -467,25 +467,25 @@ int CPropTypesScreen::GetData( HWND hwndDlg )
 			m_Types.m_nMaxLineKetas = CLayoutInt(MAXLINEKETAS);
 		}
 
-		/* •¶š‚ÌŠÔŠu */
+		/* æ–‡å­—ã®é–“éš” */
 		m_Types.m_nColumnSpace = ::GetDlgItemInt( hwndDlg, IDC_EDIT_CHARSPACE, NULL, FALSE );
 		if( m_Types.m_nColumnSpace < 0 ){
 			m_Types.m_nColumnSpace = 0;
 		}
-		if( m_Types.m_nColumnSpace > COLUMNSPACE_MAX ){ // Feb. 18, 2003 genta Å‘å’l‚Ì’è”‰»
+		if( m_Types.m_nColumnSpace > COLUMNSPACE_MAX ){ // Feb. 18, 2003 genta æœ€å¤§å€¤ã®å®šæ•°åŒ–
 			m_Types.m_nColumnSpace = COLUMNSPACE_MAX;
 		}
 
-		/* s‚ÌŠÔŠu */
+		/* è¡Œã®é–“éš” */
 		m_Types.m_nLineSpace = ::GetDlgItemInt( hwndDlg, IDC_EDIT_LINESPACE, NULL, FALSE );
 		if( m_Types.m_nLineSpace < 0 ){
 			m_Types.m_nLineSpace = 0;
 		}
-		if( m_Types.m_nLineSpace > LINESPACE_MAX ){	// Feb. 18, 2003 genta Å‘å’l‚Ì’è”‰»
+		if( m_Types.m_nLineSpace > LINESPACE_MAX ){	// Feb. 18, 2003 genta æœ€å¤§å€¤ã®å®šæ•°åŒ–
 			m_Types.m_nLineSpace = LINESPACE_MAX;
 		}
 
-		/* TAB• */
+		/* TABå¹… */
 		m_Types.m_nTabSpace = CLayoutInt(::GetDlgItemInt( hwndDlg, IDC_EDIT_TABSPACE, NULL, FALSE ));
 		if( m_Types.m_nTabSpace < CLayoutInt(1) ){
 			m_Types.m_nTabSpace = CLayoutInt(1);
@@ -494,7 +494,7 @@ int CPropTypesScreen::GetData( HWND hwndDlg )
 			m_Types.m_nTabSpace = CLayoutInt(64);
 		}
 
-		/* TAB•\¦•¶š—ñ */
+		/* TABè¡¨ç¤ºæ–‡å­—åˆ— */
 		WIN_CHAR szTab[8+1]; /* +1. happy */
 		::DlgItem_GetText( hwndDlg, IDC_EDIT_TABVIEWSTRING, szTab, _countof( szTab ) );
 		wcscpy( m_Types.m_szTabViewString, L"o......." );
@@ -503,72 +503,72 @@ int CPropTypesScreen::GetData( HWND hwndDlg )
 			m_Types.m_szTabViewString[i] = szTab[i];
 		}
 
-		// ƒ^ƒu–îˆó•\¦	//@@@ 2003.03.26 MIK
+		// ã‚¿ãƒ–çŸ¢å°è¡¨ç¤º	//@@@ 2003.03.26 MIK
 		m_Types.m_bTabArrow = (0 != ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_TAB_ARROW ));
 
-		// SPACE‚Ì‘}“ü
+		// SPACEã®æŒ¿å…¥
 		m_Types.m_bInsSpace = ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_INS_SPACE );
 	}
 
-	//ƒCƒ“ƒfƒ“ƒg
+	//ã‚¤ãƒ³ãƒ‡ãƒ³ãƒˆ
 	{
-		/* ©“®ƒCƒ“ƒfƒ“ƒg */
+		/* è‡ªå‹•ã‚¤ãƒ³ãƒ‡ãƒ³ãƒˆ */
 		m_Types.m_bAutoIndent = ::IsDlgButtonCheckedBool( hwndDlg, IDC_CHECK_INDENT );
 
-		/* “ú–{Œê‹ó”’‚àƒCƒ“ƒfƒ“ƒg */
+		/* æ—¥æœ¬èªç©ºç™½ã‚‚ã‚¤ãƒ³ãƒ‡ãƒ³ãƒˆ */
 		m_Types.m_bAutoIndent_ZENSPACE = ::IsDlgButtonCheckedBool( hwndDlg, IDC_CHECK_INDENT_WSPACE );
 
-		/* ƒXƒ}[ƒgƒCƒ“ƒfƒ“ƒgí•Ê */
+		/* ã‚¹ãƒãƒ¼ãƒˆã‚¤ãƒ³ãƒ‡ãƒ³ãƒˆç¨®åˆ¥ */
 		HWND	hwndCombo = ::GetDlgItem( hwndDlg, IDC_COMBO_SMARTINDENT );
 		int		nSelPos = Combo_GetCurSel( hwndCombo );
 		if( nSelPos >= 0 ){
-			m_Types.m_eSmartIndent = m_SIndentArr[nSelPos].nMethod;	/* ƒXƒ}[ƒgƒCƒ“ƒfƒ“ƒgí•Ê */
+			m_Types.m_eSmartIndent = m_SIndentArr[nSelPos].nMethod;	/* ã‚¹ãƒãƒ¼ãƒˆã‚¤ãƒ³ãƒ‡ãƒ³ãƒˆç¨®åˆ¥ */
 		}
 
-		/* ‚»‚Ì‘¼‚ÌƒCƒ“ƒfƒ“ƒg‘ÎÛ•¶š */
+		/* ãã®ä»–ã®ã‚¤ãƒ³ãƒ‡ãƒ³ãƒˆå¯¾è±¡æ–‡å­— */
 		::DlgItem_GetText( hwndDlg, IDC_EDIT_INDENTCHARS, m_Types.m_szIndentChars, _countof( m_Types.m_szIndentChars ) );
 
-		// Ü‚è•Ô‚µsƒCƒ“ƒfƒ“ƒg	//	Oct. 1, 2002 genta ƒRƒ“ƒ{ƒ{ƒbƒNƒX‚É•ÏX
+		// æŠ˜ã‚Šè¿”ã—è¡Œã‚¤ãƒ³ãƒ‡ãƒ³ãƒˆ	//	Oct. 1, 2002 genta ã‚³ãƒ³ãƒœãƒœãƒƒã‚¯ã‚¹ã«å¤‰æ›´
 		hwndCombo = ::GetDlgItem( hwndDlg, IDC_COMBO_INDENTLAYOUT );
 		nSelPos = Combo_GetCurSel( hwndCombo );
-		m_Types.m_nIndentLayout = IndentTypeArr[nSelPos].nMethod;	/* Ü‚è•Ô‚µ•”ƒCƒ“ƒfƒ“ƒgí•Ê */
+		m_Types.m_nIndentLayout = IndentTypeArr[nSelPos].nMethod;	/* æŠ˜ã‚Šè¿”ã—éƒ¨ã‚¤ãƒ³ãƒ‡ãƒ³ãƒˆç¨®åˆ¥ */
 
-		// ‰üs‚É––”ö‚Ì‹ó”’‚ğíœ	//2005.10.11 ryoji
+		// æ”¹è¡Œæ™‚ã«æœ«å°¾ã®ç©ºç™½ã‚’å‰Šé™¤	//2005.10.11 ryoji
 		m_Types.m_bRTrimPrevLine = ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_RTRIM_PREVLINE ) ? TRUE : FALSE;
 	}
 
-	//ƒAƒEƒgƒ‰ƒCƒ“‰ğÍ•û–@
-	//2002.04.01 YAZAKI ƒ‹[ƒ‹ƒtƒ@ƒCƒ‹ŠÖ˜A’Ç‰Á
+	//ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³è§£ææ–¹æ³•
+	//2002.04.01 YAZAKI ãƒ«ãƒ¼ãƒ«ãƒ•ã‚¡ã‚¤ãƒ«é–¢é€£è¿½åŠ 
 	{
-		//•W€ƒ‹[ƒ‹
+		//æ¨™æº–ãƒ«ãƒ¼ãƒ«
 		if ( !::IsDlgButtonChecked( hwndDlg, IDC_RADIO_OUTLINERULEFILE) ){
 			HWND	hwndCombo = ::GetDlgItem( hwndDlg, IDC_COMBO_OUTLINES );
 			int		nSelPos = Combo_GetCurSel( hwndCombo );
 			if( nSelPos >= 0 ){
-				m_Types.m_eDefaultOutline = m_OlmArr[nSelPos].nMethod;	/* ƒAƒEƒgƒ‰ƒCƒ“‰ğÍ•û–@ */
+				m_Types.m_eDefaultOutline = m_OlmArr[nSelPos].nMethod;	/* ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³è§£ææ–¹æ³• */
 			}
 		}
-		//ƒ‹[ƒ‹ƒtƒ@ƒCƒ‹
+		//ãƒ«ãƒ¼ãƒ«ãƒ•ã‚¡ã‚¤ãƒ«
 		else {
 			m_Types.m_eDefaultOutline = OUTLINE_FILE;
 		}
 
-		//ƒ‹[ƒ‹ƒtƒ@ƒCƒ‹	//2003.06.23 Moca ƒ‹[ƒ‹‚ğg‚Á‚Ä‚¢‚È‚­‚Ä‚àƒtƒ@ƒCƒ‹–¼‚ğ•Û
+		//ãƒ«ãƒ¼ãƒ«ãƒ•ã‚¡ã‚¤ãƒ«	//2003.06.23 Moca ãƒ«ãƒ¼ãƒ«ã‚’ä½¿ã£ã¦ã„ãªãã¦ã‚‚ãƒ•ã‚¡ã‚¤ãƒ«åã‚’ä¿æŒ
 		::DlgItem_GetText( hwndDlg, IDC_EDIT_OUTLINERULEFILE, m_Types.m_szOutlineRuleFilename, _countof2( m_Types.m_szOutlineRuleFilename ));
 	}
 
-	//‚»‚Ì‘¼
+	//ãã®ä»–
 	{
-		/* ‰p•¶ƒ[ƒhƒ‰ƒbƒv‚ğ‚·‚é */
+		/* è‹±æ–‡ãƒ¯ãƒ¼ãƒ‰ãƒ©ãƒƒãƒ—ã‚’ã™ã‚‹ */
 		m_Types.m_bWordWrap = ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_WORDWRAP ) ? true : false;
 
-		/* ‹Ö‘¥ˆ— */
+		/* ç¦å‰‡å‡¦ç† */
 		{	//@@@ 2002.04.08 MIK start
 			m_Types.m_bKinsokuHead = ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_KINSOKUHEAD ) ? true : false;
 			m_Types.m_bKinsokuTail = ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_KINSOKUTAIL ) ? true : false;
-			m_Types.m_bKinsokuRet  = ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_KINSOKURET  ) ? true : false;	// ‰üs•¶š‚ğ‚Ô‚ç‰º‚°‚é	//@@@ 2002.04.13 MIK
-			m_Types.m_bKinsokuKuto = ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_KINSOKUKUTO ) ? true : false;	// ‹å“Ç“_‚ğ‚Ô‚ç‰º‚°‚é	//@@@ 2002.04.17 MIK
-			m_Types.m_bKinsokuHide = ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_KINSOKUHIDE ) ? true : false;	// ‚Ô‚ç‰º‚°‚ğ‰B‚·		// 2011/11/30 Uchi
+			m_Types.m_bKinsokuRet  = ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_KINSOKURET  ) ? true : false;	// æ”¹è¡Œæ–‡å­—ã‚’ã¶ã‚‰ä¸‹ã’ã‚‹	//@@@ 2002.04.13 MIK
+			m_Types.m_bKinsokuKuto = ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_KINSOKUKUTO ) ? true : false;	// å¥èª­ç‚¹ã‚’ã¶ã‚‰ä¸‹ã’ã‚‹	//@@@ 2002.04.17 MIK
+			m_Types.m_bKinsokuHide = ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_KINSOKUHIDE ) ? true : false;	// ã¶ã‚‰ä¸‹ã’ã‚’éš ã™		// 2011/11/30 Uchi
 			::DlgItem_GetText( hwndDlg, IDC_EDIT_KINSOKUHEAD, m_Types.m_szKinsokuHead, _countof( m_Types.m_szKinsokuHead ) );
 			::DlgItem_GetText( hwndDlg, IDC_EDIT_KINSOKUTAIL, m_Types.m_szKinsokuTail, _countof( m_Types.m_szKinsokuTail ) );
 			::DlgItem_GetText( hwndDlg, IDC_EDIT_KINSOKUKUTO, m_Types.m_szKinsokuKuto, _countof( m_Types.m_szKinsokuKuto ) );	// 2009.08.07 ryoji
@@ -579,11 +579,11 @@ int CPropTypesScreen::GetData( HWND hwndDlg )
 	return TRUE;
 }
 
-//ƒAƒEƒgƒ‰ƒCƒ“‰ğÍƒ‹[ƒ‹‚Ì’Ç‰Á
+//ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³è§£æãƒ«ãƒ¼ãƒ«ã®è¿½åŠ 
 void CPropTypesScreen::AddOutlineMethod(int nMethod, const WCHAR* szName)
 {
 	if( m_OlmArr.empty() ){
-		m_OlmArr.insert(m_OlmArr.end(), OlmArr, &OlmArr[_countof(OlmArr)]);	//ƒAƒEƒgƒ‰ƒCƒ“‰ğÍƒ‹[ƒ‹
+		m_OlmArr.insert(m_OlmArr.end(), OlmArr, &OlmArr[_countof(OlmArr)]);	//ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³è§£æãƒ«ãƒ¼ãƒ«
 	}
 	TYPE_NAME<EOutlineType> method;
 	method.nMethod = (EOutlineType)nMethod;
@@ -606,11 +606,11 @@ void CPropTypesScreen::RemoveOutlineMethod(int nMethod, const WCHAR* szName)
 	}
 }
 
-//ƒXƒ}[ƒgƒCƒ“ƒfƒ“ƒgƒ‹[ƒ‹‚Ì’Ç‰Á
+//ã‚¹ãƒãƒ¼ãƒˆã‚¤ãƒ³ãƒ‡ãƒ³ãƒˆãƒ«ãƒ¼ãƒ«ã®è¿½åŠ 
 void CPropTypesScreen::AddSIndentMethod(int nMethod, const WCHAR* szName)
 {
 	if( m_SIndentArr.empty() ){
-		m_SIndentArr.insert(m_SIndentArr.end(), SmartIndentArr, &SmartIndentArr[_countof(SmartIndentArr)]);	//ƒXƒ}[ƒgƒCƒ“ƒfƒ“ƒgƒ‹[ƒ‹
+		m_SIndentArr.insert(m_SIndentArr.end(), SmartIndentArr, &SmartIndentArr[_countof(SmartIndentArr)]);	//ã‚¹ãƒãƒ¼ãƒˆã‚¤ãƒ³ãƒ‡ãƒ³ãƒˆãƒ«ãƒ¼ãƒ«
 	}
 	TYPE_NAME<ESmartIndentType> method;
 	method.nMethod = (ESmartIndentType)nMethod;

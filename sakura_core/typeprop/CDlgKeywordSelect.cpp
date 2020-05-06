@@ -1,8 +1,8 @@
 /*! @file
-	@brief ‹­’²ƒL[ƒ[ƒh‘I‘ğƒ_ƒCƒAƒƒO
+	@brief å¼·èª¿ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰é¸æŠãƒ€ã‚¤ã‚¢ãƒ­ã‚°
 
 	@author MIK
-	@date 2005/01/13 ì¬
+	@date 2005/01/13 ä½œæˆ
 */
 /*
 	Copyright (C) 2005, MIK
@@ -63,7 +63,7 @@ CDlgKeywordSelect::~CDlgKeywordSelect()
 }
 
 
-/* !ƒ‚[ƒ_ƒ‹ƒ_ƒCƒAƒƒO‚Ì•\¦
+/* !ãƒ¢ãƒ¼ãƒ€ãƒ«ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®è¡¨ç¤º
 */
 int CDlgKeywordSelect::DoModal( HINSTANCE hInstance, HWND hwndParent, int* pnSet )
 {
@@ -82,7 +82,7 @@ int CDlgKeywordSelect::DoModal( HINSTANCE hInstance, HWND hwndParent, int* pnSet
 	return TRUE;
 }
 
-/*! ‰Šú‰»ˆ—
+/*! åˆæœŸåŒ–å‡¦ç†
 */
 BOOL CDlgKeywordSelect::OnInitDialog( HWND hwndDlg, WPARAM wParam, LPARAM lParam )
 {
@@ -104,7 +104,7 @@ BOOL CDlgKeywordSelect::OnBnClicked( int wID )
 	return CDialog::OnBnClicked( wID );
 }
 
-/*! ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìİ’è
+/*! ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®è¨­å®š
 */
 void CDlgKeywordSelect::SetData( void )
 {
@@ -116,10 +116,10 @@ void CDlgKeywordSelect::SetData( void )
 	{
 		hwndCombo = ::GetDlgItem( GetHwnd(), keyword_select_target_combo[ index ] );
 
-		/* ƒRƒ“ƒ{ƒ{ƒbƒNƒX‚ğ‹ó‚É‚·‚é */
+		/* ã‚³ãƒ³ãƒœãƒœãƒƒã‚¯ã‚¹ã‚’ç©ºã«ã™ã‚‹ */
 		Combo_ResetContent( hwndCombo );
 		
-		/* ˆês–Ú‚Í‹ó”’ */
+		/* ä¸€è¡Œç›®ã¯ç©ºç™½ */
 		Combo_AddString( hwndCombo, L" " );
 
 		if( m_pCKeyWordSetMgr->m_nKeyWordSetNum > 0 )
@@ -131,12 +131,12 @@ void CDlgKeywordSelect::SetData( void )
 
 			if( -1 == m_nSet[ index ] )
 			{
-				/* ƒZƒbƒg–¼ƒRƒ“ƒ{ƒ{ƒbƒNƒX‚ÌƒfƒtƒHƒ‹ƒg‘I‘ğ */
+				/* ã‚»ãƒƒãƒˆåã‚³ãƒ³ãƒœãƒœãƒƒã‚¯ã‚¹ã®ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆé¸æŠ */
 				Combo_SetCurSel( hwndCombo, 0 );
 			}
 			else
 			{
-				/* ƒZƒbƒg–¼ƒRƒ“ƒ{ƒ{ƒbƒNƒX‚ÌƒfƒtƒHƒ‹ƒg‘I‘ğ */
+				/* ã‚»ãƒƒãƒˆåã‚³ãƒ³ãƒœãƒœãƒƒã‚¯ã‚¹ã®ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆé¸æŠ */
 				Combo_SetCurSel( hwndCombo, m_nSet[ index ] + 1 );
 			}
 		}
@@ -144,7 +144,7 @@ void CDlgKeywordSelect::SetData( void )
 }
 
 
-/*! ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìİ’è
+/*! ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®è¨­å®š
 */
 int CDlgKeywordSelect::GetData( void )
 {

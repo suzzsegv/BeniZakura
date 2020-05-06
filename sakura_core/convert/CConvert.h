@@ -24,13 +24,13 @@
 #ifndef SAKURA_CCONVERT_BF272748_9EF0_4F5A_952C_8BED216658F9_H_
 #define SAKURA_CCONVERT_BF272748_9EF0_4F5A_952C_8BED216658F9_H_
 
-//2007.10.02 kobake CEditView���番��
+//2007.10.02 kobake CEditViewから分離
 
 #include "Funccode_enum.h"	// EFunctionCode
 
 class CConvertMediator{
 public:
-	//! �@�\��ʂɂ��o�b�t�@�̕ϊ�
+	//! 機能種別によるバッファの変換
 	static void ConvMemory( CNativeW* pCMemory, EFunctionCode nFuncCode, int nTabWidth, int nStartColumn );
 
 protected:
@@ -41,16 +41,16 @@ class CConvert{
 public:
 	virtual ~CConvert(){}
 
-	//�C���^�[�t�F�[�X
+	//インターフェース
 	void CallConvert( CNativeW* pcData )
 	{
 		bool bRet=DoConvert(pcData);
 		if(!bRet){
-			ErrorMessage(NULL,_T("�ϊ��ŃG���[���������܂���"));
+			ErrorMessage(NULL,_T("変換でエラーが発生しました"));
 		}
 	}
 
-	//����
+	//実装
 	virtual bool DoConvert( CNativeW* pcData )=0;
 };
 

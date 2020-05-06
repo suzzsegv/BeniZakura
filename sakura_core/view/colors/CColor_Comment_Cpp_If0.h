@@ -1,5 +1,5 @@
 /*!	@file	CColor_Comment_Cpp.h
-	@brief	C++ #if 0 ` #else ` #endif ƒRƒƒ“ƒg”»’èƒNƒ‰ƒX
+	@brief	C++ #if 0 ã€œ #else ã€œ #endif ã‚³ãƒ¡ãƒ³ãƒˆåˆ¤å®šã‚¯ãƒ©ã‚¹
 
 	@author	Suzuki Satoshi
 */

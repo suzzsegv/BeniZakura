@@ -1,8 +1,8 @@
 /*!	@file
-	@brief w’ès‚Ö‚ÌƒWƒƒƒ“ƒvƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX
+	@brief æŒ‡å®šè¡Œã¸ã®ã‚¸ãƒ£ãƒ³ãƒ—ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒœãƒƒã‚¯ã‚¹
 
 	@author Norio Nakatani
-	@date	1998/05/31 ì¬
+	@date	1998/05/31 ä½œæˆ
 */
 /*
 	Copyright (C) 1998-2001, Norio Nakatani
@@ -28,14 +28,14 @@
 
 CDlgJump::CDlgJump()
 {
-	m_nLineNum = 0;			/* s”Ô† */
+	m_nLineNum = 0;			/* è¡Œç•ªå· */
 
 	return;
 }
 
 
 
-/* ƒ‚[ƒ_ƒ‹ƒ_ƒCƒAƒƒO‚Ì•\¦ */
+/* ãƒ¢ãƒ¼ãƒ€ãƒ«ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®è¡¨ç¤º */
 int CDlgJump::DoModal(
 	HINSTANCE	hInstance,
 	HWND		hwndParent,
@@ -55,10 +55,10 @@ BOOL CDlgJump::OnNotify( WPARAM wParam, LPARAM lParam )
 
 	idCtrl = (int)wParam;
 	pMNUD  = (NM_UPDOWN*)lParam;
-	/* ƒXƒsƒ“ƒRƒ“ƒgƒ[ƒ‹‚Ìˆ— */
+	/* ã‚¹ãƒ”ãƒ³ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã®å‡¦ç† */
 	switch( idCtrl ){
 		case IDC_SPIN_LINENUM:
-			/* ƒWƒƒƒ“ƒv‚µ‚½‚¢s”Ô†‚Ìw’è */
+			/* ã‚¸ãƒ£ãƒ³ãƒ—ã—ãŸã„è¡Œç•ªå·ã®æŒ‡å®š */
 			nData = ::GetDlgItemInt( GetHwnd(), IDC_EDIT_LINENUM, NULL, FALSE );
 			if( pMNUD->iDelta < 0 ){
 				++nData;
@@ -87,16 +87,16 @@ BOOL CDlgJump::OnNotify( WPARAM wParam, LPARAM lParam )
 BOOL CDlgJump::OnBnClicked( int wID )
 {
 	switch( wID ){
-		case IDC_BUTTON_JUMP:			/* w’ès‚ÖƒWƒƒƒ“ƒv */
+		case IDC_BUTTON_JUMP:			/* æŒ‡å®šè¡Œã¸ã‚¸ãƒ£ãƒ³ãƒ— */
 			if( 0 < GetData() ){
 				CloseDialog( 1 );
 			}else{
-				OkMessage( GetHwnd(), _T("³‚µ‚­s”Ô†‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢B") );
+				OkMessage( GetHwnd(), _T("æ­£ã—ãè¡Œç•ªå·ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚") );
 				return TRUE;
 			}
 			{
 				CEditDoc*		pCEditDoc = (CEditDoc*)m_lParam;
-				pCEditDoc->m_pcEditWnd->GetActiveView().GetCommander().HandleCommand(F_JUMP, true, 0, 0, 0, 0);	//	ƒWƒƒƒ“ƒvƒRƒ}ƒ“ƒh”­s
+				pCEditDoc->m_pcEditWnd->GetActiveView().GetCommander().HandleCommand(F_JUMP, true, 0, 0, 0, 0);	//	ã‚¸ãƒ£ãƒ³ãƒ—ã‚³ãƒãƒ³ãƒ‰ç™ºè¡Œ
 			}
 			return TRUE;
 
@@ -106,25 +106,25 @@ BOOL CDlgJump::OnBnClicked( int wID )
 			return TRUE;
 	}
 
-	/* Šî’êƒNƒ‰ƒXƒƒ“ƒo */
+	/* åŸºåº•ã‚¯ãƒ©ã‚¹ãƒ¡ãƒ³ãƒ */
 	return CDialog::OnBnClicked( wID );
 }
 
 
 
-/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìİ’è */
+/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®è¨­å®š */
 void CDlgJump::SetData( void )
 {
 	if( 0 == m_nLineNum ){
-		::DlgItem_SetText( GetHwnd(), IDC_EDIT_LINENUM, _T("") );	/* s”Ô† */
+		::DlgItem_SetText( GetHwnd(), IDC_EDIT_LINENUM, _T("") );	/* è¡Œç•ªå· */
 	}else{
-		::SetDlgItemInt( GetHwnd(), IDC_EDIT_LINENUM, m_nLineNum, FALSE );	/* ‘O‰ñ‚Ìs”Ô† */
+		::SetDlgItemInt( GetHwnd(), IDC_EDIT_LINENUM, m_nLineNum, FALSE );	/* å‰å›ã®è¡Œç•ªå· */
 	}
 
 	::EnableWindow( ::GetDlgItem( GetHwnd(), IDC_RADIO_LINENUM_LAYOUT ), TRUE );
 	::EnableWindow( ::GetDlgItem( GetHwnd(), IDC_RADIO_LINENUM_CRLF ), TRUE );
 
-	/* s”Ô†‚Ì•\¦ FALSE=Ü‚è•Ô‚µ’PˆÊ^TRUE=‰üs’PˆÊ */
+	/* è¡Œç•ªå·ã®è¡¨ç¤º FALSE=æŠ˜ã‚Šè¿”ã—å˜ä½ï¼TRUE=æ”¹è¡Œå˜ä½ */
 	if( m_pShareData->m_bLineNumIsCRLF_ForJump ){
 		::CheckDlgButton( GetHwnd(), IDC_RADIO_LINENUM_LAYOUT, FALSE );
 		::CheckDlgButton( GetHwnd(), IDC_RADIO_LINENUM_CRLF, TRUE );
@@ -138,20 +138,20 @@ void CDlgJump::SetData( void )
 
 
 
-/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìæ“¾ */
-/*   TRUE==³í   FALSE==“ü—ÍƒGƒ‰[  */
+/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®å–å¾— */
+/*   TRUE==æ­£å¸¸   FALSE==å…¥åŠ›ã‚¨ãƒ©ãƒ¼  */
 int CDlgJump::GetData( void )
 {
 	BOOL	pTranslated;
 
-	/* s”Ô†‚Ì•\¦ FALSE=Ü‚è•Ô‚µ’PˆÊ^TRUE=‰üs’PˆÊ */
+	/* è¡Œç•ªå·ã®è¡¨ç¤º FALSE=æŠ˜ã‚Šè¿”ã—å˜ä½ï¼TRUE=æ”¹è¡Œå˜ä½ */
 	if( ::IsDlgButtonChecked( GetHwnd(), IDC_RADIO_LINENUM_LAYOUT ) ){
 		m_pShareData->m_bLineNumIsCRLF_ForJump = false;
 	}else{
 		m_pShareData->m_bLineNumIsCRLF_ForJump = true;
 	}
 
-	/* s”Ô† */
+	/* è¡Œç•ªå· */
 	m_nLineNum = ::GetDlgItemInt( GetHwnd(), IDC_EDIT_LINENUM, &pTranslated, FALSE );
 	if( m_nLineNum == 0 || !pTranslated ){
 		return FALSE;

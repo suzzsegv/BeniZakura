@@ -1,9 +1,9 @@
 /*!	@file
-	@brief ƒL[Š„‚è“–‚Ä‚ÉŠÖ‚·‚éƒNƒ‰ƒX
+	@brief ã‚­ãƒ¼å‰²ã‚Šå½“ã¦ã«é–¢ã™ã‚‹ã‚¯ãƒ©ã‚¹
 
 	@author Norio Nakatani
-	@date 1998/03/25 V‹Kì¬
-	@date 1998/05/16 ƒNƒ‰ƒX“à‚Éƒf[ƒ^‚ğ‚½‚È‚¢‚æ‚¤‚É•ÏX
+	@date 1998/03/25 æ–°è¦ä½œæˆ
+	@date 1998/05/16 ã‚¯ãƒ©ã‚¹å†…ã«ãƒ‡ãƒ¼ã‚¿ã‚’æŒãŸãªã„ã‚ˆã†ã«å¤‰æ›´
 */
 /*
 	Copyright (C) 1998-2001, Norio Nakatani
@@ -36,8 +36,8 @@ CKeyBind::~CKeyBind()
 
 
 
-/*! Windows ƒAƒNƒZƒ‰ƒŒ[ƒ^‚Ìì¬
-	@date 2007.02.22 ryoji ƒfƒtƒHƒ‹ƒg‹@”\Š„‚è“–‚Ä‚ÉŠÖ‚·‚éˆ—‚ğ’Ç‰Á
+/*! Windows ã‚¢ã‚¯ã‚»ãƒ©ãƒ¬ãƒ¼ã‚¿ã®ä½œæˆ
+	@date 2007.02.22 ryoji ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆæ©Ÿèƒ½å‰²ã‚Šå½“ã¦ã«é–¢ã™ã‚‹å‡¦ç†ã‚’è¿½åŠ 
 */
 HACCEL CKeyBind::CreateAccerelator(
 		int			nKeyNameArrNum,
@@ -48,7 +48,7 @@ HACCEL CKeyBind::CreateAccerelator(
 	HACCEL	hAccel;
 	int		j, k;
 
-	// ‹@”\‚ªŠ„‚è“–‚Ä‚ç‚ê‚Ä‚¢‚éƒL[‚Ì”‚ğƒJƒEƒ“ƒg -> nAccelArrNum
+	// æ©Ÿèƒ½ãŒå‰²ã‚Šå½“ã¦ã‚‰ã‚Œã¦ã„ã‚‹ã‚­ãƒ¼ã®æ•°ã‚’ã‚«ã‚¦ãƒ³ãƒˆ -> nAccelArrNum
 	int nAccelArrNum = 0;
 	for( int i = 0; i < nKeyNameArrNum; ++i ){
 		if( 0 != pKeyNameArr[i].m_nKeyCode ){
@@ -62,7 +62,7 @@ HACCEL CKeyBind::CreateAccerelator(
 
 
 	if( nAccelArrNum <= 0 ){
-		/* ‹@”\Š„‚è“–‚Ä‚ªƒ[ƒ */
+		/* æ©Ÿèƒ½å‰²ã‚Šå½“ã¦ãŒã‚¼ãƒ­ */
 		return NULL;
 	}
 	pAccelArr = new ACCEL[nAccelArrNum];
@@ -94,10 +94,10 @@ HACCEL CKeyBind::CreateAccerelator(
 
 
 
-/*! ƒAƒNƒ‰ƒZƒŒ[ƒ^¯•Êq‚É‘Î‰‚·‚éƒRƒ}ƒ“ƒh¯•Êq‚ğ•Ô‚·D
-	‘Î‰‚·‚éƒAƒNƒ‰ƒZƒŒ[ƒ^¯•Êq‚ª‚È‚¢ê‡‚Ü‚½‚Í‹@”\–¢Š„‚è“–‚Ä‚Ìê‡‚Í0‚ğ•Ô‚·D
+/*! ã‚¢ã‚¯ãƒ©ã‚»ãƒ¬ãƒ¼ã‚¿è­˜åˆ¥å­ã«å¯¾å¿œã™ã‚‹ã‚³ãƒãƒ³ãƒ‰è­˜åˆ¥å­ã‚’è¿”ã™ï¼
+	å¯¾å¿œã™ã‚‹ã‚¢ã‚¯ãƒ©ã‚»ãƒ¬ãƒ¼ã‚¿è­˜åˆ¥å­ãŒãªã„å ´åˆã¾ãŸã¯æ©Ÿèƒ½æœªå‰²ã‚Šå½“ã¦ã®å ´åˆã¯0ã‚’è¿”ã™ï¼
 
-	@date 2007.02.22 ryoji ƒfƒtƒHƒ‹ƒg‹@”\Š„‚è“–‚Ä‚ÉŠÖ‚·‚éˆ—‚ğ’Ç‰Á
+	@date 2007.02.22 ryoji ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆæ©Ÿèƒ½å‰²ã‚Šå½“ã¦ã«é–¢ã™ã‚‹å‡¦ç†ã‚’è¿½åŠ 
 */
 EFunctionCode CKeyBind::GetFuncCode(
 		WORD		nAccelCmd,
@@ -122,18 +122,18 @@ EFunctionCode CKeyBind::GetFuncCode(
 
 
 /*!
-	@return ‹@”\‚ªŠ„‚è“–‚Ä‚ç‚ê‚Ä‚¢‚éƒL[ƒXƒgƒ[ƒN‚Ì”
+	@return æ©Ÿèƒ½ãŒå‰²ã‚Šå½“ã¦ã‚‰ã‚Œã¦ã„ã‚‹ã‚­ãƒ¼ã‚¹ãƒˆãƒ­ãƒ¼ã‚¯ã®æ•°
 	
-	@date Oct. 31, 2001 genta “®“I‚È‹@”\–¼‚É‘Î‰‚·‚é‚½‚ßˆø”’Ç‰Á
-	@date 2007.02.22 ryoji ƒfƒtƒHƒ‹ƒg‹@”\Š„‚è“–‚Ä‚ÉŠÖ‚·‚éˆ—‚ğ’Ç‰Á
+	@date Oct. 31, 2001 genta å‹•çš„ãªæ©Ÿèƒ½åã«å¯¾å¿œã™ã‚‹ãŸã‚å¼•æ•°è¿½åŠ 
+	@date 2007.02.22 ryoji ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆæ©Ÿèƒ½å‰²ã‚Šå½“ã¦ã«é–¢ã™ã‚‹å‡¦ç†ã‚’è¿½åŠ 
 */
 int CKeyBind::CreateKeyBindList(
-	HINSTANCE		hInstance,		//!< [in] ƒCƒ“ƒXƒ^ƒ“ƒXƒnƒ“ƒhƒ‹
+	HINSTANCE		hInstance,		//!< [in] ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ãƒãƒ³ãƒ‰ãƒ«
 	int				nKeyNameArrNum,	//!< [in]
 	KeyData*		pKeyNameArr,	//!< [out]
 	CNativeW&		cMemList,		//!<
-	CFuncLookup*	pcFuncLookup,	//!< [in] ‹@”\”Ô†¨–¼‘O‚Ì‘Î‰‚ğæ‚é
-	BOOL			bGetDefFuncCode //!< [in] ON:ƒfƒtƒHƒ‹ƒg‹@”\Š„‚è“–‚Ä‚ğg‚¤/OFF:g‚í‚È‚¢ ƒfƒtƒHƒ‹ƒg:TRUE
+	CFuncLookup*	pcFuncLookup,	//!< [in] æ©Ÿèƒ½ç•ªå·â†’åå‰ã®å¯¾å¿œã‚’å–ã‚‹
+	BOOL			bGetDefFuncCode //!< [in] ON:ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆæ©Ÿèƒ½å‰²ã‚Šå½“ã¦ã‚’ä½¿ã†/OFF:ä½¿ã‚ãªã„ ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ:TRUE
 )
 {
 	int		i;
@@ -149,10 +149,10 @@ int CKeyBind::CreateKeyBindList(
 	const WCHAR*	pszCTRL  = LTEXT("Ctrl+");
 	const WCHAR*	pszALT   = LTEXT("Alt+");
 	const WCHAR*	pszTAB   = LTEXT("\t");
-	const WCHAR*	pszCR    = LTEXT("\r\n");	//\r=0x0d=CR‚ğ’Ç‰Á
+	const WCHAR*	pszCR    = LTEXT("\r\n");	//\r=0x0d=CRã‚’è¿½åŠ 
 
 
-	cMemList.AppendString( LTEXT("ƒL[\t‹@”\–¼\tŠÖ”–¼\t‹@”\”Ô†\tƒL[ƒ}ƒNƒ‹L˜^‰Â/•s‰Â") );
+	cMemList.AppendString( LTEXT("ã‚­ãƒ¼\tæ©Ÿèƒ½å\té–¢æ•°å\tæ©Ÿèƒ½ç•ªå·\tã‚­ãƒ¼ãƒã‚¯ãƒ­è¨˜éŒ²å¯/ä¸å¯") );
 	cMemList.AppendString( pszCR );
 	cMemList.AppendString( LTEXT("-----\t-----\t-----\t-----\t-----") );
 	cMemList.AppendString( pszCR );
@@ -177,11 +177,11 @@ int CKeyBind::CreateKeyBindList(
 				if( !pcFuncLookup->Funccode2Name(
 					iFunc,
 					szFuncNameJapanese, 255 )){
-					auto_strcpy( szFuncNameJapanese, LTEXT("---–¼‘O‚ª’è‹`‚³‚ê‚Ä‚¢‚È‚¢-----") );
+					auto_strcpy( szFuncNameJapanese, LTEXT("---åå‰ãŒå®šç¾©ã•ã‚Œã¦ã„ãªã„-----") );
 				}
 				auto_strcpy( szFuncName, LTEXT("")/*"---unknown()--"*/ );
 
-//				/* ‹@”\–¼“ú–{Œê */
+//				/* æ©Ÿèƒ½åæ—¥æœ¬èª */
 //				::LoadString(
 //					hInstance,
 //					pKeyNameArr[i].m_nFuncCodeArr[j],
@@ -190,8 +190,8 @@ int CKeyBind::CreateKeyBindList(
 				cMemList.AppendString( pszTAB );
 				cMemList.AppendString( szFuncNameJapanese );
 
-				/* ‹@”\ID¨ŠÖ”–¼C‹@”\–¼“ú–{Œê */
-				//@@@ 2002.2.2 YAZAKI ƒ}ƒNƒ‚ğCSMacroMgr‚É“ˆê
+				/* æ©Ÿèƒ½IDâ†’é–¢æ•°åï¼Œæ©Ÿèƒ½åæ—¥æœ¬èª */
+				//@@@ 2002.2.2 YAZAKI ãƒã‚¯ãƒ­ã‚’CSMacroMgrã«çµ±ä¸€
 				CSMacroMgr::GetFuncInfoByID(
 					hInstance,
 					iFunc,
@@ -199,22 +199,22 @@ int CKeyBind::CreateKeyBindList(
 					szFuncNameJapanese
 				);
 
-				/* ŠÖ”–¼ */
+				/* é–¢æ•°å */
 				cMemList.AppendString( pszTAB );
 				cMemList.AppendString( szFuncName );
 
-				/* ‹@”\”Ô† */
+				/* æ©Ÿèƒ½ç•ªå· */
 				cMemList.AppendString( pszTAB );
 				auto_sprintf( pszStr, LTEXT("%d"), iFunc );
 				cMemList.AppendString( pszStr );
 
-				/* ƒL[ƒ}ƒNƒ‚É‹L˜^‰Â”\‚È‹@”\‚©‚Ç‚¤‚©‚ğ’²‚×‚é */
+				/* ã‚­ãƒ¼ãƒã‚¯ãƒ­ã«è¨˜éŒ²å¯èƒ½ãªæ©Ÿèƒ½ã‹ã©ã†ã‹ã‚’èª¿ã¹ã‚‹ */
 				cMemList.AppendString( pszTAB );
-				//@@@ 2002.2.2 YAZAKI ƒ}ƒNƒ‚ğCSMacroMgr‚É“ˆê
+				//@@@ 2002.2.2 YAZAKI ãƒã‚¯ãƒ­ã‚’CSMacroMgrã«çµ±ä¸€
 				if( CSMacroMgr::CanFuncIsKeyMacro( iFunc ) ){
-					cMemList.AppendString( LTEXT("›") );
+					cMemList.AppendString( LTEXT("â—‹") );
 				}else{
-					cMemList.AppendString( LTEXT("~") );
+					cMemList.AppendString( LTEXT("Ã—") );
 				}
 
 
@@ -226,22 +226,22 @@ int CKeyBind::CreateKeyBindList(
 	return nValidKeys;
 }
 
-/** ‹@”\‚É‘Î‰‚·‚éƒL[–¼‚ÌƒT[ƒ`(•â•ŠÖ”)
+/** æ©Ÿèƒ½ã«å¯¾å¿œã™ã‚‹ã‚­ãƒ¼åã®ã‚µãƒ¼ãƒ(è£œåŠ©é–¢æ•°)
 
-	—^‚¦‚ç‚ê‚½ƒVƒtƒgó‘Ô‚É‘Î‚µ‚ÄCw’è‚³‚ê‚½”ÍˆÍ‚ÌƒL[ƒGƒŠƒA‚©‚ç
-	“–ŠY‹@”\‚É‘Î‰‚·‚éƒL[‚ª‚ ‚é‚©‚ğ’²‚×CŒ©‚Â‚©‚Á‚½‚ç
-	‘Î‰‚·‚éƒL[•¶š—ñ‚ğƒZƒbƒg‚·‚éD
+	ä¸ãˆã‚‰ã‚ŒãŸã‚·ãƒ•ãƒˆçŠ¶æ…‹ã«å¯¾ã—ã¦ï¼ŒæŒ‡å®šã•ã‚ŒãŸç¯„å›²ã®ã‚­ãƒ¼ã‚¨ãƒªã‚¢ã‹ã‚‰
+	å½“è©²æ©Ÿèƒ½ã«å¯¾å¿œã™ã‚‹ã‚­ãƒ¼ãŒã‚ã‚‹ã‹ã‚’èª¿ã¹ï¼Œè¦‹ã¤ã‹ã£ãŸã‚‰
+	å¯¾å¿œã™ã‚‹ã‚­ãƒ¼æ–‡å­—åˆ—ã‚’ã‚»ãƒƒãƒˆã™ã‚‹ï¼
 	
-	ŠÖ”‚©‚ço‚é‚Æ‚«‚É‚ÍŒŸõŠJnˆÊ’u(nKeyNameArrBegin)‚É
-	Ÿ‚Éˆ—‚·‚éindex‚ğİ’è‚·‚éD
+	é–¢æ•°ã‹ã‚‰å‡ºã‚‹ã¨ãã«ã¯æ¤œç´¢é–‹å§‹ä½ç½®(nKeyNameArrBegin)ã«
+	æ¬¡ã«å‡¦ç†ã™ã‚‹indexã‚’è¨­å®šã™ã‚‹ï¼
 
-	@param[in,out] nKeyNameArrBegin ’²¸ŠJnINDEX (I—¹‚É‚ÍŸ‰ñ‚ÌŠJnINDEX‚É‘‚«Š·‚¦‚ç‚ê‚é)
-	@param[in] nKeyNameArrBegin ’²¸I—¹INDEX + 1
-	@param[in] pKeyNameArr ƒL[”z—ñ
-	@param[in] nShiftState ƒVƒtƒgó‘Ô
-	@param[out] cMemList ƒL[•¶š—ñİ’èæ
-	@param[in]	nFuncId ŒŸõ‘ÎÛ‹@”\ID
-	@param[in]	bGetDefFuncCode •W€‹@”\‚ğæ“¾‚·‚é‚©‚Ç‚¤‚©
+	@param[in,out] nKeyNameArrBegin èª¿æŸ»é–‹å§‹INDEX (çµ‚äº†æ™‚ã«ã¯æ¬¡å›ã®é–‹å§‹INDEXã«æ›¸ãæ›ãˆã‚‰ã‚Œã‚‹)
+	@param[in] nKeyNameArrBegin èª¿æŸ»çµ‚äº†INDEX + 1
+	@param[in] pKeyNameArr ã‚­ãƒ¼é…åˆ—
+	@param[in] nShiftState ã‚·ãƒ•ãƒˆçŠ¶æ…‹
+	@param[out] cMemList ã‚­ãƒ¼æ–‡å­—åˆ—è¨­å®šå…ˆ
+	@param[in]	nFuncId æ¤œç´¢å¯¾è±¡æ©Ÿèƒ½ID
+	@param[in]	bGetDefFuncCode æ¨™æº–æ©Ÿèƒ½ã‚’å–å¾—ã™ã‚‹ã‹ã©ã†ã‹
 */
 bool CKeyBind::GetKeyStrSub(
 		int&		nKeyNameArrBegin,
@@ -279,10 +279,10 @@ bool CKeyBind::GetKeyStrSub(
 }
 
 
-/** ‹@”\‚É‘Î‰‚·‚éƒL[–¼‚Ìæ“¾
-	@date 2007.02.22 ryoji ƒfƒtƒHƒ‹ƒg‹@”\Š„‚è“–‚Ä‚ÉŠÖ‚·‚éˆ—‚ğ’Ç‰Á
-	@date 2007.11.04 genta ƒ}ƒEƒXƒNƒŠƒbƒN‚æ‚èƒL[Š„‚è“–‚Ä‚Ì—Dæ“x‚ğã‚°‚é
-	@date 2007.11.04 genta ‹¤’Ê‹@”\‚ÌƒTƒuƒ‹[ƒ`ƒ“‰»
+/** æ©Ÿèƒ½ã«å¯¾å¿œã™ã‚‹ã‚­ãƒ¼åã®å–å¾—
+	@date 2007.02.22 ryoji ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆæ©Ÿèƒ½å‰²ã‚Šå½“ã¦ã«é–¢ã™ã‚‹å‡¦ç†ã‚’è¿½åŠ 
+	@date 2007.11.04 genta ãƒã‚¦ã‚¹ã‚¯ãƒªãƒƒã‚¯ã‚ˆã‚Šã‚­ãƒ¼å‰²ã‚Šå½“ã¦ã®å„ªå…ˆåº¦ã‚’ä¸Šã’ã‚‹
+	@date 2007.11.04 genta å…±é€šæ©Ÿèƒ½ã®ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³åŒ–
 */
 int CKeyBind::GetKeyStr(
 		HINSTANCE	hInstance,
@@ -297,18 +297,18 @@ int CKeyBind::GetKeyStr(
 	int		j;
 	cMemList.SetString(_T(""));
 
-	//	æ‚ÉƒL[•”•ª‚ğ’²¸‚·‚é
+	//	å…ˆã«ã‚­ãƒ¼éƒ¨åˆ†ã‚’èª¿æŸ»ã™ã‚‹
 	for( j = 0; j < 8; ++j ){
-		for( i = MOUSEFUNCTION_KEYBEGIN; i < nKeyNameArrNum; /* 1‚ğ‰Á‚¦‚Ä‚Í‚¢‚¯‚È‚¢ */ ){
+		for( i = MOUSEFUNCTION_KEYBEGIN; i < nKeyNameArrNum; /* 1ã‚’åŠ ãˆã¦ã¯ã„ã‘ãªã„ */ ){
 			if( GetKeyStrSub( i, nKeyNameArrNum, pKeyNameArr, j, cMemList, nFuncId, bGetDefFuncCode )){
 				return 1;
 			}
 		}
 	}
 
-	//	Œã‚Éƒ}ƒEƒX•”•ª‚ğ’²¸‚·‚é
+	//	å¾Œã«ãƒã‚¦ã‚¹éƒ¨åˆ†ã‚’èª¿æŸ»ã™ã‚‹
 	for( j = 0; j < 8; ++j ){
-		for( i = 0; i < MOUSEFUNCTION_KEYBEGIN; /* 1‚ğ‰Á‚¦‚Ä‚Í‚¢‚¯‚È‚¢ */ ){
+		for( i = 0; i < MOUSEFUNCTION_KEYBEGIN; /* 1ã‚’åŠ ãˆã¦ã¯ã„ã‘ãªã„ */ ){
 			if( GetKeyStrSub( i, nKeyNameArrNum, pKeyNameArr, j, cMemList, nFuncId, bGetDefFuncCode )){
 				return 1;
 			}
@@ -318,9 +318,9 @@ int CKeyBind::GetKeyStr(
 }
 
 
-/** ‹@”\‚É‘Î‰‚·‚éƒL[–¼‚Ìæ“¾(•¡”)
-	@date 2007.02.22 ryoji ƒfƒtƒHƒ‹ƒg‹@”\Š„‚è“–‚Ä‚ÉŠÖ‚·‚éˆ—‚ğ’Ç‰Á
-	@date 2007.11.04 genta ‹¤’Ê‹@”\‚ÌƒTƒuƒ‹[ƒ`ƒ“‰»
+/** æ©Ÿèƒ½ã«å¯¾å¿œã™ã‚‹ã‚­ãƒ¼åã®å–å¾—(è¤‡æ•°)
+	@date 2007.02.22 ryoji ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆæ©Ÿèƒ½å‰²ã‚Šå½“ã¦ã«é–¢ã™ã‚‹å‡¦ç†ã‚’è¿½åŠ 
+	@date 2007.11.04 genta å…±é€šæ©Ÿèƒ½ã®ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³åŒ–
 */
 int CKeyBind::GetKeyStrList(
 	HINSTANCE	hInstance,
@@ -358,8 +358,8 @@ int CKeyBind::GetKeyStrList(
 
 	nAssignedKeysNum = 0;
 	for( j = 0; j < 8; ++j ){
-		for( i = 0; i < nKeyNameArrNum; /* 1‚ğ‰Á‚¦‚Ä‚Í‚¢‚¯‚È‚¢ */ ){
-			//	2007.11.04 genta ‹¤’Ê‹@”\‚ÌƒTƒuƒ‹[ƒ`ƒ“‰»
+		for( i = 0; i < nKeyNameArrNum; /* 1ã‚’åŠ ãˆã¦ã¯ã„ã‘ãªã„ */ ){
+			//	2007.11.04 genta å…±é€šæ©Ÿèƒ½ã®ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³åŒ–
 			if( GetKeyStrSub( i, nKeyNameArrNum, pKeyNameArr, j,
 					*((*pppcMemList)[nAssignedKeysNum]), nFuncId, bGetDefFuncCode )){
 				nAssignedKeysNum++;
@@ -372,7 +372,7 @@ int CKeyBind::GetKeyStrList(
 
 
 
-// ƒAƒNƒZƒXƒL[•t‚«‚Ì•¶š—ñ‚Ìì¬
+// ã‚¢ã‚¯ã‚»ã‚¹ã‚­ãƒ¼ä»˜ãã®æ–‡å­—åˆ—ã®ä½œæˆ
 TCHAR*	CKeyBind::MakeMenuLabel(const TCHAR* sName, const TCHAR* sKey)
 {
 	static	TCHAR	sLabel[300];
@@ -384,22 +384,22 @@ TCHAR*	CKeyBind::MakeMenuLabel(const TCHAR* sName, const TCHAR* sKey)
 	else {
 		if (!CShareData::getInstance()->GetShareData()->m_Common.m_sMainMenu.m_bMainMenuKeyParentheses
 			  && (p = auto_strchr( sName, sKey[0] )) != NULL) {
-			// ‰¢•¶•—Ag—p‚µ‚Ä‚¢‚é•¶š‚ğƒAƒNƒZƒXƒL[‚É
+			// æ¬§æ–‡é¢¨ã€ä½¿ç”¨ã—ã¦ã„ã‚‹æ–‡å­—ã‚’ã‚¢ã‚¯ã‚»ã‚¹ã‚­ãƒ¼ã«
 			auto_strcpy_s( sLabel, _countof(sLabel), sName );
 			sLabel[p-sName] = _T('&');
 			auto_strcpy_s( sLabel + (p-sName) + 1, _countof(sLabel), p );
 		}
 		else if( (p = auto_strchr( sName, _T('(') )) != NULL
 			  && (p = auto_strchr( p, sKey[0] )) != NULL) {
-			// (•t‚»‚ÌŒã‚ÉƒAƒNƒZƒXƒL[
+			// (ä»˜ãã®å¾Œã«ã‚¢ã‚¯ã‚»ã‚¹ã‚­ãƒ¼
 			auto_strcpy_s( sLabel, _countof(sLabel), sName );
 			sLabel[p-sName] = _T('&');
 			auto_strcpy_s( sLabel + (p-sName) + 1, _countof(sLabel), p );
 		}
 		else if (_tcscmp( sName + _tcslen(sName) - 3, _T("...") ) == 0) {
-			// ––”ö...
+			// æœ«å°¾...
 			auto_strcpy_s( sLabel, _countof(sLabel), sName );
-			sLabel[_tcslen(sName) - 3] = '\0';						// ––”ö‚Ì...‚ğæ‚é
+			sLabel[_tcslen(sName) - 3] = '\0';						// æœ«å°¾ã®...ã‚’å–ã‚‹
 			auto_strcat_s( sLabel, _countof(sLabel), _T("(&") );
 			auto_strcat_s( sLabel, _countof(sLabel), sKey );
 			auto_strcat_s( sLabel, _countof(sLabel), _T(")...") );
@@ -412,16 +412,16 @@ TCHAR*	CKeyBind::MakeMenuLabel(const TCHAR* sName, const TCHAR* sKey)
 	}
 }
 
-/*! ƒƒjƒ…[ƒ‰ƒxƒ‹‚Ìì¬
-	@date 2007.02.22 ryoji ƒfƒtƒHƒ‹ƒg‹@”\Š„‚è“–‚Ä‚ÉŠÖ‚·‚éˆ—‚ğ’Ç‰Á
-	2010/5/17	ƒAƒNƒZƒXƒL[‚Ì’Ç‰Á
+/*! ãƒ¡ãƒ‹ãƒ¥ãƒ¼ãƒ©ãƒ™ãƒ«ã®ä½œæˆ
+	@date 2007.02.22 ryoji ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆæ©Ÿèƒ½å‰²ã‚Šå½“ã¦ã«é–¢ã™ã‚‹å‡¦ç†ã‚’è¿½åŠ 
+	2010/5/17	ã‚¢ã‚¯ã‚»ã‚¹ã‚­ãƒ¼ã®è¿½åŠ 
 */
 TCHAR* CKeyBind::GetMenuLabel(
 		HINSTANCE	hInstance,
 		int			nKeyNameArrNum,
 		KeyData*	pKeyNameArr,
 		int			nFuncId,
-		TCHAR*      pszLabel,   //!< [in,out] ƒoƒbƒtƒ@‚Í256ˆÈã‚Æ‰¼’è
+		TCHAR*      pszLabel,   //!< [in,out] ãƒãƒƒãƒ•ã‚¡ã¯256ä»¥ä¸Šã¨ä»®å®š
 		const TCHAR*	pszKey,
 		BOOL		bKeyStr,
 		BOOL		bGetDefFuncCode /* = TRUE */
@@ -435,17 +435,17 @@ TCHAR* CKeyBind::GetMenuLabel(
 	if( _T('\0') == pszLabel[0] ){
 		_tcscpy( pszLabel, _T("-- undefined name --") );
 	}
-	// ƒAƒNƒZƒXƒL[‚Ì’Ç‰Á	2010/5/17 Uchi
+	// ã‚¢ã‚¯ã‚»ã‚¹ã‚­ãƒ¼ã®è¿½åŠ 	2010/5/17 Uchi
 	_tcsncpy_s( pszLabel, LABEL_MAX, MakeMenuLabel( pszLabel, pszKey ), _TRUNCATE );
 
-	/* ‹@”\‚É‘Î‰‚·‚éƒL[–¼‚ğ’Ç‰Á‚·‚é‚© */
+	/* æ©Ÿèƒ½ã«å¯¾å¿œã™ã‚‹ã‚­ãƒ¼åã‚’è¿½åŠ ã™ã‚‹ã‹ */
 	if( bKeyStr ){
 		CNativeT    cMemAccessKey;
-		// 2010.07.11 Moca ƒƒjƒ…[ƒ‰ƒxƒ‹‚Ìu\tv‚Ì•t‰ÁğŒ•ÏX
-		// [ƒtƒ@ƒCƒ‹/ƒtƒHƒ‹ƒ_/ƒEƒBƒ“ƒhƒEˆê——ˆÈŠO]‚©‚ç[ƒAƒNƒZƒXƒL[‚ª‚ ‚é‚Æ‚«‚Ì‚İ]‚É•t‰Á‚·‚é‚æ‚¤‚É•ÏX
-		/* ‹@”\‚É‘Î‰‚·‚éƒL[–¼‚Ìæ“¾ */
+		// 2010.07.11 Moca ãƒ¡ãƒ‹ãƒ¥ãƒ¼ãƒ©ãƒ™ãƒ«ã®ã€Œ\tã€ã®ä»˜åŠ æ¡ä»¶å¤‰æ›´
+		// [ãƒ•ã‚¡ã‚¤ãƒ«/ãƒ•ã‚©ãƒ«ãƒ€/ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ä¸€è¦§ä»¥å¤–]ã‹ã‚‰[ã‚¢ã‚¯ã‚»ã‚¹ã‚­ãƒ¼ãŒã‚ã‚‹ã¨ãã®ã¿]ã«ä»˜åŠ ã™ã‚‹ã‚ˆã†ã«å¤‰æ›´
+		/* æ©Ÿèƒ½ã«å¯¾å¿œã™ã‚‹ã‚­ãƒ¼åã®å–å¾— */
 		if( GetKeyStr( hInstance, nKeyNameArrNum, pKeyNameArr, cMemAccessKey, nFuncId, bGetDefFuncCode ) ){
-			// ƒoƒbƒtƒ@‚ª‘«‚è‚È‚¢‚Æ‚«‚Í“ü‚ê‚È‚¢
+			// ãƒãƒƒãƒ•ã‚¡ãŒè¶³ã‚Šãªã„ã¨ãã¯å…¥ã‚Œãªã„
 			if( _tcslen( pszLabel ) + (Int)cMemAccessKey.GetStringLength() + 1 < LABEL_MAX ){
 				_tcscat( pszLabel, _T("\t") );
 				_tcscat( pszLabel, cMemAccessKey.GetStringPtr() );
@@ -456,14 +456,14 @@ TCHAR* CKeyBind::GetMenuLabel(
 }
 
 
-/*! ƒL[‚ÌƒfƒtƒHƒ‹ƒg‹@”\‚ğæ“¾‚·‚é
+/*! ã‚­ãƒ¼ã®ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆæ©Ÿèƒ½ã‚’å–å¾—ã™ã‚‹
 
-	@param nKeyCode [in] ƒL[ƒR[ƒh
-	@param nState [in] Shift,Ctrl,AltƒL[ó‘Ô
+	@param nKeyCode [in] ã‚­ãƒ¼ã‚³ãƒ¼ãƒ‰
+	@param nState [in] Shift,Ctrl,Altã‚­ãƒ¼çŠ¶æ…‹
 
-	@return ‹@”\”Ô†
+	@return æ©Ÿèƒ½ç•ªå·
 
-	@date 2007.02.22 ryoji V‹Kì¬
+	@date 2007.02.22 ryoji æ–°è¦ä½œæˆ
 */
 EFunctionCode CKeyBind::GetDefFuncCode( int nKeyCode, int nState )
 {
@@ -474,16 +474,16 @@ EFunctionCode CKeyBind::GetDefFuncCode( int nKeyCode, int nState )
 	EFunctionCode nDefFuncCode = F_DEFAULT;
 	if( nKeyCode == VK_F4 ){
 		if( nState == _CTRL ){
-			nDefFuncCode = F_FILECLOSE;	// •Â‚¶‚Ä(–³‘è)
+			nDefFuncCode = F_FILECLOSE;	// é–‰ã˜ã¦(ç„¡é¡Œ)
 			if( pShareData->m_Common.m_sTabBar.m_bDispTabWnd && !pShareData->m_Common.m_sTabBar.m_bDispTabWndMultiWin ){
-				nDefFuncCode = F_WINCLOSE;	// •Â‚¶‚é
+				nDefFuncCode = F_WINCLOSE;	// é–‰ã˜ã‚‹
 			}
 		}
 		else if( nState == _ALT ){
-			nDefFuncCode = F_WINCLOSE;	// •Â‚¶‚é
+			nDefFuncCode = F_WINCLOSE;	// é–‰ã˜ã‚‹
 			if( pShareData->m_Common.m_sTabBar.m_bDispTabWnd && !pShareData->m_Common.m_sTabBar.m_bDispTabWndMultiWin ){
 				if( !pShareData->m_Common.m_sTabBar.m_bTab_CloseOneWin ){
-					nDefFuncCode = F_GROUPCLOSE;	// ƒOƒ‹[ƒv‚ğ•Â‚¶‚é	// 2007.06.20 ryoji
+					nDefFuncCode = F_GROUPCLOSE;	// ã‚°ãƒ«ãƒ¼ãƒ—ã‚’é–‰ã˜ã‚‹	// 2007.06.20 ryoji
 				}
 			}
 		}
@@ -492,15 +492,15 @@ EFunctionCode CKeyBind::GetDefFuncCode( int nKeyCode, int nState )
 }
 
 
-/*! “Á’è‚ÌƒL[î•ñ‚©‚ç‹@”\ƒR[ƒh‚ğæ“¾‚·‚é
+/*! ç‰¹å®šã®ã‚­ãƒ¼æƒ…å ±ã‹ã‚‰æ©Ÿèƒ½ã‚³ãƒ¼ãƒ‰ã‚’å–å¾—ã™ã‚‹
 
-	@param KeyData [in] ƒL[î•ñ
-	@param nState [in] Shift,Ctrl,AltƒL[ó‘Ô
-	@param bGetDefFuncCode [in] ƒfƒtƒHƒ‹ƒg‹@”\‚ğæ“¾‚·‚é‚©‚Ç‚¤‚©
+	@param KeyData [in] ã‚­ãƒ¼æƒ…å ±
+	@param nState [in] Shift,Ctrl,Altã‚­ãƒ¼çŠ¶æ…‹
+	@param bGetDefFuncCode [in] ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆæ©Ÿèƒ½ã‚’å–å¾—ã™ã‚‹ã‹ã©ã†ã‹
 
-	@return ‹@”\”Ô†
+	@return æ©Ÿèƒ½ç•ªå·
 
-	@date 2007.03.07 ryoji ƒCƒ“ƒ‰ƒCƒ“ŠÖ”‚©‚ç’Êí‚ÌŠÖ”‚É•ÏXiBCC‚ÌÅ“K‰»ƒoƒO‘Îôj
+	@date 2007.03.07 ryoji ã‚¤ãƒ³ãƒ©ã‚¤ãƒ³é–¢æ•°ã‹ã‚‰é€šå¸¸ã®é–¢æ•°ã«å¤‰æ›´ï¼ˆBCCã®æœ€é©åŒ–ãƒã‚°å¯¾ç­–ï¼‰
 */
 EFunctionCode CKeyBind::GetFuncCodeAt( KeyData& rKeyData, int nState, BOOL bGetDefFuncCode )
 {
@@ -516,21 +516,21 @@ EFunctionCode CKeyBind::GetFuncCodeAt( KeyData& rKeyData, int nState, BOOL bGetD
 const KeyData BenizakuraDefaultKeyBindTable[] = {
 
 	// key binding
-	// ‡”Ô‚Í2i‚Å‰ºˆÊ3ƒrƒbƒg[Alt][Ctrl][Shift]‚Ì‘g‡‚¹‚Ì‡(‚»‚ê‚É2‚ğ‰Á‚¦‚½’l)
+	// é †ç•ªã¯2é€²ã§ä¸‹ä½3ãƒ“ãƒƒãƒˆ[Alt][Ctrl][Shift]ã®çµ„åˆã›ã®é †(ãã‚Œã«2ã‚’åŠ ãˆãŸå€¤)
 	// 0,		1,		 			2(000),				3(001),				4(010),						5(011),				6(100),					7(101),				8(110),					9(111)			
 
-	/* ƒ}ƒEƒXƒ{ƒ^ƒ“ */
-	//keycode,	keyname,			‚È‚µ,				Shitf+,				Ctrl+,						Shift+Ctrl+,		Alt+,					Shit+Alt+,			Ctrl+Alt+,				Shift+Ctrl+Alt+
-	{ 0,_T("ƒ_ƒuƒ‹ƒNƒŠƒbƒN"),		F_SEARCH_WORD,		F_SELECTWORD,		F_SELECTWORD,				F_0,				F_0,					F_0,				F_0,					F_0				},
-	{ 0,_T("‰EƒNƒŠƒbƒN"),			F_MENU_RBUTTON,		F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
-	{ 0,_T("’†ƒNƒŠƒbƒN"),			F_AUTOSCROLL,		F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
-	{ 0,_T("¶ƒTƒCƒhƒNƒŠƒbƒN"),		F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
-	{ 0,_T("‰EƒTƒCƒhƒNƒŠƒbƒN"),		F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
-	{ 0,_T("ƒgƒŠƒvƒ‹ƒNƒŠƒbƒN"),		F_SELECTLINE,		F_SELECTLINE,		F_SELECTLINE,				F_0,				F_0,					F_0,				F_0,					F_0				},
-	{ 0,_T("ƒNƒAƒhƒ‰ƒvƒ‹ƒNƒŠƒbƒN"),	F_SELECTALL,		F_SELECTALL,		F_SELECTALL,				F_0,				F_0,					F_0,				F_0,					F_0				},
+	/* ãƒã‚¦ã‚¹ãƒœã‚¿ãƒ³ */
+	//keycode,	keyname,			ãªã—,				Shitf+,				Ctrl+,						Shift+Ctrl+,		Alt+,					Shit+Alt+,			Ctrl+Alt+,				Shift+Ctrl+Alt+
+	{ 0,_T("ãƒ€ãƒ–ãƒ«ã‚¯ãƒªãƒƒã‚¯"),		F_SEARCH_WORD,		F_SELECTWORD,		F_SELECTWORD,				F_0,				F_0,					F_0,				F_0,					F_0				},
+	{ 0,_T("å³ã‚¯ãƒªãƒƒã‚¯"),			F_MENU_RBUTTON,		F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
+	{ 0,_T("ä¸­ã‚¯ãƒªãƒƒã‚¯"),			F_AUTOSCROLL,		F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
+	{ 0,_T("å·¦ã‚µã‚¤ãƒ‰ã‚¯ãƒªãƒƒã‚¯"),		F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
+	{ 0,_T("å³ã‚µã‚¤ãƒ‰ã‚¯ãƒªãƒƒã‚¯"),		F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
+	{ 0,_T("ãƒˆãƒªãƒ—ãƒ«ã‚¯ãƒªãƒƒã‚¯"),		F_SELECTLINE,		F_SELECTLINE,		F_SELECTLINE,				F_0,				F_0,					F_0,				F_0,					F_0				},
+	{ 0,_T("ã‚¯ã‚¢ãƒ‰ãƒ©ãƒ—ãƒ«ã‚¯ãƒªãƒƒã‚¯"),	F_SELECTALL,		F_SELECTALL,		F_SELECTALL,				F_0,				F_0,					F_0,				F_0,					F_0				},
 
-	/* ƒtƒ@ƒ“ƒNƒVƒ‡ƒ“ƒL[ */
-	//keycode,	keyname,			‚È‚µ,				Shitf+,				Ctrl+,						Shift+Ctrl+,		Alt+,					Shit+Alt+,			Ctrl+Alt+,				Shift+Ctrl+Alt+
+	/* ãƒ•ã‚¡ãƒ³ã‚¯ã‚·ãƒ§ãƒ³ã‚­ãƒ¼ */
+	//keycode,	keyname,			ãªã—,				Shitf+,				Ctrl+,						Shift+Ctrl+,		Alt+,					Shit+Alt+,			Ctrl+Alt+,				Shift+Ctrl+Alt+
 	{ VK_F1,	_T("F1" ),			F_CUSTMENU_1,		F_RECKEYMACRO,		F_EXECMD_DIALOG,			F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ VK_F2,	_T("F2" ),			F_CUSTMENU_2,		F_EXECKEYMACRO,		F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ VK_F3,	_T("F3" ),			F_CUSTMENU_3,		F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
@@ -556,8 +556,8 @@ const KeyData BenizakuraDefaultKeyBindTable[] = {
 	{ VK_F23,	_T("F23"),			F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ VK_F24,	_T("F24"),			F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
 
-	/* “ÁêƒL[ */
-	//keycode,	keyname,			‚È‚µ,				Shitf+,				Ctrl+,						Shift+Ctrl+,		Alt+,					Shit+Alt+,			Ctrl+Alt+,				Shift+Ctrl+Alt+
+	/* ç‰¹æ®Šã‚­ãƒ¼ */
+	//keycode,	keyname,			ãªã—,				Shitf+,				Ctrl+,						Shift+Ctrl+,		Alt+,					Shit+Alt+,			Ctrl+Alt+,				Shift+Ctrl+Alt+
 	{ VK_TAB,	_T("Tab"),			F_INDENT_TAB,		F_UNINDENT_TAB,		F_NEXTWINDOW,				F_PREVWINDOW,		F_0,					F_0,				F_0,					F_0				},
 	{ VK_RETURN,_T("Enter"),		F_0,				F_0,				F_0,						F_0,				F_MAXIMIZE,				F_0,				F_0,					F_0				},
 	{ VK_ESCAPE,_T("Esc"),			F_CANCEL_MODE,		F_UNDO,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
@@ -567,16 +567,16 @@ const KeyData BenizakuraDefaultKeyBindTable[] = {
 	{ VK_HOME,	_T("Home"),			F_NEXTWINDOW,		F_PREVWINDOW,		F_PREVWINDOW,				F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ VK_END,	_T("End(Help)"),	F_PREVWINDOW,		F_NEXTWINDOW,		F_NEXTWINDOW,				F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ VK_PAUSE,	_T("Pause"),		F_NEXTWINDOW,		F_PREVWINDOW,		F_PREVWINDOW,				F_0,				F_0,					F_0,				F_0,					F_0				},
-	{ VK_LEFT,	_T("©"),			F_LEFT,				F_GOLINETOP,		F_WORDLEFT,					F_WORDLEFT_SEL,		F_LEFT_BOX,				F_0,				F_0,					F_0				},
-	{ VK_UP,	_T("ª"),			F_UP,				F_UP_SEL,			F_UP2,						F_UP2_SEL,			F_UP_BOX,				F_0,				F_0,					F_0				},
-	{ VK_RIGHT,	_T("¨"),			F_RIGHT,			F_GOLINEEND,		F_WORDRIGHT,				F_WORDRIGHT_SEL,	F_RIGHT_BOX,			F_0,				F_0,					F_0				},
-	{ VK_DOWN,	_T("«"),			F_DOWN,				F_DOWN_SEL,			F_DOWN2,					F_DOWN2_SEL,		F_DOWN_BOX,				F_0,				F_0,					F_0				},
+	{ VK_LEFT,	_T("â†"),			F_LEFT,				F_GOLINETOP,		F_WORDLEFT,					F_WORDLEFT_SEL,		F_LEFT_BOX,				F_0,				F_0,					F_0				},
+	{ VK_UP,	_T("â†‘"),			F_UP,				F_UP_SEL,			F_UP2,						F_UP2_SEL,			F_UP_BOX,				F_0,				F_0,					F_0				},
+	{ VK_RIGHT,	_T("â†’"),			F_RIGHT,			F_GOLINEEND,		F_WORDRIGHT,				F_WORDRIGHT_SEL,	F_RIGHT_BOX,			F_0,				F_0,					F_0				},
+	{ VK_DOWN,	_T("â†“"),			F_DOWN,				F_DOWN_SEL,			F_DOWN2,					F_DOWN2_SEL,		F_DOWN_BOX,				F_0,				F_0,					F_0				},
 	{ VK_NEXT,	_T("PgDn(RollUp)"),	F_HalfPageDown,		F_1PageDown,		F_NEXTWINDOW,				F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ VK_PRIOR,	_T("PgUp(RollDn)"),	F_HalfPageUp,		F_1PageUp,			F_PREVWINDOW,				F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ VK_SPACE,	_T("Space"),		F_INDENT_SPACE,		F_UNINDENT_SPACE,	F_HOKAN,					F_0,				F_0,					F_0,				F_0,					F_0				},
 
-	/* ”š */
-	//keycode,	keyname,			‚È‚µ,				Shitf+,				Ctrl+,						Shift+Ctrl+,		Alt+,					Shit+Alt+,			Ctrl+Alt+,				Shift+Ctrl+Alt+
+	/* æ•°å­— */
+	//keycode,	keyname,			ãªã—,				Shitf+,				Ctrl+,						Shift+Ctrl+,		Alt+,					Shit+Alt+,			Ctrl+Alt+,				Shift+Ctrl+Alt+
 	{ '0',		_T("0"),			F_0,				F_0,				F_FONT_ZOOM_RESET,			F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ '1',		_T("1"),			F_0,				F_0,				F_FONT_MINIMIZE,			F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ '2',		_T("2"),			F_0,				F_0,				F_TAB_WIDTH_2,				F_0,				F_0,					F_0,				F_0,					F_0				},
@@ -588,8 +588,8 @@ const KeyData BenizakuraDefaultKeyBindTable[] = {
 	{ '8',		_T("8"),			F_0,				F_0,				F_TAB_WIDTH_8,				F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ '9',		_T("9"),			F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
 
-	/* ƒAƒ‹ƒtƒ@ƒxƒbƒg */
-	//keycode,	keyname,			‚È‚µ,				Shitf+,				Ctrl+,						Shift+Ctrl+,		Alt+,					Shit+Alt+,			Ctrl+Alt+,				Shift+Ctrl+Alt+
+	/* ã‚¢ãƒ«ãƒ•ã‚¡ãƒ™ãƒƒãƒˆ */
+	//keycode,	keyname,			ãªã—,				Shitf+,				Ctrl+,						Shift+Ctrl+,		Alt+,					Shit+Alt+,			Ctrl+Alt+,				Shift+Ctrl+Alt+
 	{ 'A',		_T("A"),			F_0,				F_0,				F_SELECTALL,				F_EXEC_THG_ANNOTATE,F_0,					F_0,				F_0,					F_0				},
 	{ 'B',		_T("B"),			F_0,				F_0,				F_DUPLICATELINE,			F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ 'C',		_T("C"),			F_0,				F_0,				F_COPY,						F_GOFILEEND,		F_0,					F_0,				F_0,					F_0				},
@@ -617,12 +617,12 @@ const KeyData BenizakuraDefaultKeyBindTable[] = {
 	{ 'Y',		_T("Y"),			F_0,				F_0,				F_CUT_LINE,					F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ 'Z',		_T("Z"),			F_0,				F_0,				F_UNDO,						F_REDO,				F_REDO,					F_0,				F_0,					F_0				},
 
-	/* ‹L† */
-	//keycode,	keyname,			‚È‚µ,				Shitf+,				Ctrl+,						Shift+Ctrl+,		Alt+,					Shit+Alt+,			Ctrl+Alt+,				Shift+Ctrl+Alt+
+	/* è¨˜å· */
+	//keycode,	keyname,			ãªã—,				Shitf+,				Ctrl+,						Shift+Ctrl+,		Alt+,					Shit+Alt+,			Ctrl+Alt+,				Shift+Ctrl+Alt+
 	{ 0x00bd,	_T("-"),			F_0,				F_0,				F_FONT_ZOOM_OUT,			F_0,				F_0,					F_0,				F_0,					F_0				},
-	{ 0x00de,	_T("^(‰pŒê')"),		F_0,				F_0,				F_COPYTAG,					F_0,				F_0,					F_0,				F_0,					F_0				},
+	{ 0x00de,	_T("^(è‹±èª')"),		F_0,				F_0,				F_COPYTAG,					F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ 0x00dc,	_T("\\"),			F_0,				F_0,				F_COPYPATH,					F_0,				F_0,					F_0,				F_0,					F_0				},
-	{ 0x00c0,	_T("@(‰pŒê`)"),		F_0,				F_0,				F_COPYLINES,				F_0,				F_0,					F_0,				F_0,					F_0				},
+	{ 0x00c0,	_T("@(è‹±èª`)"),		F_0,				F_0,				F_COPYLINES,				F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ 0x00db,	_T("["),			F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ 0x00bb,	_T(";"),			F_0,				F_0,				F_FONT_ZOOM_IN,				F_FONT_ZOOM_IN,		F_0,					F_0,				F_0,					F_0				},
 	{ 0x00ba,	_T(":"),			F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
@@ -632,9 +632,9 @@ const KeyData BenizakuraDefaultKeyBindTable[] = {
 	{ 0x00bf,	_T("/"),			F_0,				F_0,				F_HOKAN,					F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ 0x00e2,	_T("_"),			F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ 0x00df,	_T("_(PC-98)"),		F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
-	{ VK_APPS,	_T("ƒAƒvƒŠƒL["),	F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
+	{ VK_APPS,	_T("ã‚¢ãƒ—ãƒªã‚­ãƒ¼"),	F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
 
-	/* I’[ƒ}[ƒN */
+	/* çµ‚ç«¯ãƒãƒ¼ã‚¯ */
 	{ -1,		_T(""),				F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				}
 };
 
@@ -644,21 +644,21 @@ const KeyData BenizakuraDefaultKeyBindTable[] = {
 const KeyData SakuraDefaultKeyBindTable[] = {
 
 	// key binding
-	// ‡”Ô‚Í2i‚Å‰ºˆÊ3ƒrƒbƒg[Alt][Ctrl][Shift]‚Ì‘g‡‚¹‚Ì‡(‚»‚ê‚É2‚ğ‰Á‚¦‚½’l)
+	// é †ç•ªã¯2é€²ã§ä¸‹ä½3ãƒ“ãƒƒãƒˆ[Alt][Ctrl][Shift]ã®çµ„åˆã›ã®é †(ãã‚Œã«2ã‚’åŠ ãˆãŸå€¤)
 	// 0,		1,		 			2(000),				3(001),				4(010),						5(011),				6(100),					7(101),				8(110),					9(111)			
 
-	/* ƒ}ƒEƒXƒ{ƒ^ƒ“ */
-	//keycode,	keyname,			‚È‚µ,				Shitf+,				Ctrl+,						Shift+Ctrl+,		Alt+,					Shit+Alt+,			Ctrl+Alt+,				Shift+Ctrl+Alt+
-	{ 0,_T("ƒ_ƒuƒ‹ƒNƒŠƒbƒN"),		F_SELECTWORD,		F_SELECTWORD,		F_SELECTWORD,				F_SELECTWORD,		F_SELECTWORD,			F_SELECTWORD,		F_SELECTWORD,			F_SELECTWORD	},
-	{ 0,_T("‰EƒNƒŠƒbƒN"),			F_MENU_RBUTTON,		F_MENU_RBUTTON,		F_MENU_RBUTTON,				F_MENU_RBUTTON,		F_0,					F_0,				F_0,					F_0				},
-	{ 0,_T("’†ƒNƒŠƒbƒN"),			F_AUTOSCROLL,		F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
-	{ 0,_T("¶ƒTƒCƒhƒNƒŠƒbƒN"),		F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
-	{ 0,_T("‰EƒTƒCƒhƒNƒŠƒbƒN"),		F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
-	{ 0,_T("ƒgƒŠƒvƒ‹ƒNƒŠƒbƒN"),		F_SELECTLINE,		F_SELECTLINE,		F_SELECTLINE,				F_SELECTLINE,		F_SELECTLINE,			F_SELECTLINE,		F_SELECTLINE,			F_SELECTLINE	},
-	{ 0,_T("ƒNƒAƒhƒ‰ƒvƒ‹ƒNƒŠƒbƒN"),	F_SELECTALL,		F_SELECTALL,		F_SELECTALL,				F_SELECTALL,		F_SELECTALL,			F_SELECTALL,		F_SELECTALL,			F_SELECTALL		},
+	/* ãƒã‚¦ã‚¹ãƒœã‚¿ãƒ³ */
+	//keycode,	keyname,			ãªã—,				Shitf+,				Ctrl+,						Shift+Ctrl+,		Alt+,					Shit+Alt+,			Ctrl+Alt+,				Shift+Ctrl+Alt+
+	{ 0,_T("ãƒ€ãƒ–ãƒ«ã‚¯ãƒªãƒƒã‚¯"),		F_SELECTWORD,		F_SELECTWORD,		F_SELECTWORD,				F_SELECTWORD,		F_SELECTWORD,			F_SELECTWORD,		F_SELECTWORD,			F_SELECTWORD	},
+	{ 0,_T("å³ã‚¯ãƒªãƒƒã‚¯"),			F_MENU_RBUTTON,		F_MENU_RBUTTON,		F_MENU_RBUTTON,				F_MENU_RBUTTON,		F_0,					F_0,				F_0,					F_0				},
+	{ 0,_T("ä¸­ã‚¯ãƒªãƒƒã‚¯"),			F_AUTOSCROLL,		F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
+	{ 0,_T("å·¦ã‚µã‚¤ãƒ‰ã‚¯ãƒªãƒƒã‚¯"),		F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
+	{ 0,_T("å³ã‚µã‚¤ãƒ‰ã‚¯ãƒªãƒƒã‚¯"),		F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
+	{ 0,_T("ãƒˆãƒªãƒ—ãƒ«ã‚¯ãƒªãƒƒã‚¯"),		F_SELECTLINE,		F_SELECTLINE,		F_SELECTLINE,				F_SELECTLINE,		F_SELECTLINE,			F_SELECTLINE,		F_SELECTLINE,			F_SELECTLINE	},
+	{ 0,_T("ã‚¯ã‚¢ãƒ‰ãƒ©ãƒ—ãƒ«ã‚¯ãƒªãƒƒã‚¯"),	F_SELECTALL,		F_SELECTALL,		F_SELECTALL,				F_SELECTALL,		F_SELECTALL,			F_SELECTALL,		F_SELECTALL,			F_SELECTALL		},
 
-	/* ƒtƒ@ƒ“ƒNƒVƒ‡ƒ“ƒL[ */
-	//keycode,	keyname,			‚È‚µ,				Shitf+,				Ctrl+,						Shift+Ctrl+,		Alt+,					Shit+Alt+,			Ctrl+Alt+,				Shift+Ctrl+Alt+
+	/* ãƒ•ã‚¡ãƒ³ã‚¯ã‚·ãƒ§ãƒ³ã‚­ãƒ¼ */
+	//keycode,	keyname,			ãªã—,				Shitf+,				Ctrl+,						Shift+Ctrl+,		Alt+,					Shit+Alt+,			Ctrl+Alt+,				Shift+Ctrl+Alt+
 	{ VK_F1,	_T("F1" ),			F_0,				F_MENU_ALLFUNC,		F_0,						F_ABOUT,			F_0,					F_0,				F_0,					F_0				},
 	{ VK_F2,	_T("F2" ),			F_BOOKMARK_NEXT,	F_BOOKMARK_PREV,	F_BOOKMARK_SET,				F_BOOKMARK_RESET,	F_BOOKMARK_VIEW,		F_0,				F_0,					F_0				},
 	{ VK_F3,	_T("F3" ),			F_SEARCH_NEXT,		F_SEARCH_PREV,		F_SEARCH_CLEARMARK,			F_JUMP_SRCHSTARTPOS,F_0,					F_0,				F_0,					F_0				},
@@ -684,8 +684,8 @@ const KeyData SakuraDefaultKeyBindTable[] = {
 	{ VK_F23,	_T("F23"),			F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ VK_F24,	_T("F24"),			F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
 
-	/* “ÁêƒL[ */
-	//keycode,	keyname,			‚È‚µ,				Shitf+,				Ctrl+,						Shift+Ctrl+,		Alt+,					Shit+Alt+,			Ctrl+Alt+,				Shift+Ctrl+Alt+
+	/* ç‰¹æ®Šã‚­ãƒ¼ */
+	//keycode,	keyname,			ãªã—,				Shitf+,				Ctrl+,						Shift+Ctrl+,		Alt+,					Shit+Alt+,			Ctrl+Alt+,				Shift+Ctrl+Alt+
 	{ VK_TAB,	_T("Tab"),			F_INDENT_TAB,		F_UNINDENT_TAB,		F_NEXTWINDOW,				F_PREVWINDOW,		F_0,					F_0,				F_0,					F_0				},
 	{ VK_RETURN,_T("Enter"),		F_0,				F_0,				F_COMPARE,					F_0,				F_PROPERTY_FILE,		F_0,				F_0,					F_0				},
 	{ VK_ESCAPE,_T("Esc"),			F_CANCEL_MODE,		F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
@@ -695,16 +695,16 @@ const KeyData SakuraDefaultKeyBindTable[] = {
 	{ VK_HOME,	_T("Home"),			F_GOLINETOP,		F_GOLINETOP_SEL,	F_GOFILETOP,				F_GOFILETOP_SEL,	F_GOLINETOP_BOX,		F_0,				F_GOFILETOP_BOX,		F_0				},
 	{ VK_END,	_T("End(Help)"),	F_GOLINEEND,		F_GOLINEEND_SEL,	F_GOFILEEND,				F_GOFILEEND_SEL,	F_GOLINEEND_BOX,		F_0,				F_GOFILEEND_BOX,		F_0				},
 	{ VK_PAUSE,	_T("Pause"),		F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
-	{ VK_LEFT,	_T("©"),			F_LEFT,				F_LEFT_SEL,			F_WORDLEFT,					F_WORDLEFT_SEL,		F_LEFT_BOX,				F_0,				F_WORDLEFT_BOX,			F_0				},
-	{ VK_UP,	_T("ª"),			F_UP,				F_UP_SEL,			F_WndScrollDown,			F_UP2_SEL,			F_UP_BOX,				F_0,				F_UP2_BOX,				F_MAXIMIZE_V	},
-	{ VK_RIGHT,	_T("¨"),			F_RIGHT,			F_RIGHT_SEL,		F_WORDRIGHT,				F_WORDRIGHT_SEL,	F_RIGHT_BOX,			F_0,				F_WORDRIGHT_BOX,		F_MAXIMIZE_H	},
-	{ VK_DOWN,	_T("«"),			F_DOWN,				F_DOWN_SEL,			F_WndScrollUp,				F_DOWN2_SEL,		F_DOWN_BOX,				F_0,				F_DOWN2_BOX,			F_MINIMIZE_ALL	},
+	{ VK_LEFT,	_T("â†"),			F_LEFT,				F_LEFT_SEL,			F_WORDLEFT,					F_WORDLEFT_SEL,		F_LEFT_BOX,				F_0,				F_WORDLEFT_BOX,			F_0				},
+	{ VK_UP,	_T("â†‘"),			F_UP,				F_UP_SEL,			F_WndScrollDown,			F_UP2_SEL,			F_UP_BOX,				F_0,				F_UP2_BOX,				F_MAXIMIZE_V	},
+	{ VK_RIGHT,	_T("â†’"),			F_RIGHT,			F_RIGHT_SEL,		F_WORDRIGHT,				F_WORDRIGHT_SEL,	F_RIGHT_BOX,			F_0,				F_WORDRIGHT_BOX,		F_MAXIMIZE_H	},
+	{ VK_DOWN,	_T("â†“"),			F_DOWN,				F_DOWN_SEL,			F_WndScrollUp,				F_DOWN2_SEL,		F_DOWN_BOX,				F_0,				F_DOWN2_BOX,			F_MINIMIZE_ALL	},
 	{ VK_NEXT,	_T("PgDn(RollUp)"),	F_1PageDown,		F_1PageDown_Sel,	F_HalfPageDown,				F_HalfPageDown_Sel,	F_1PageDown_BOX,		F_0,				F_HalfPageDown_BOX,		F_0				},
 	{ VK_PRIOR,	_T("PgUp(RollDn)"),	F_1PageUp,			F_1PageUp_Sel,		F_HalfPageUp,				F_HalfPageUp_Sel,	F_1PageUp_BOX,			F_0,				F_HalfPageUp_BOX,		F_0				},
 	{ VK_SPACE,	_T("Space"),		F_INDENT_SPACE,		F_UNINDENT_SPACE,	F_HOKAN,					F_0,				F_0,					F_0,				F_0,					F_0				},
 
-	/* ”š */
-	//keycode,	keyname,			‚È‚µ,				Shitf+,				Ctrl+,						Shift+Ctrl+,		Alt+,					Shit+Alt+,			Ctrl+Alt+,				Shift+Ctrl+Alt+
+	/* æ•°å­— */
+	//keycode,	keyname,			ãªã—,				Shitf+,				Ctrl+,						Shift+Ctrl+,		Alt+,					Shit+Alt+,			Ctrl+Alt+,				Shift+Ctrl+Alt+
 	{ '0',		_T("0"),			F_0,				F_0,				F_0,						F_0,				F_CUSTMENU_10,			F_CUSTMENU_20,		F_0,					F_0				},
 	{ '1',		_T("1"),			F_0,				F_0,				F_SHOWTOOLBAR,				F_CUSTMENU_21,		F_CUSTMENU_1,			F_CUSTMENU_11,		F_0,					F_0				},
 	{ '2',		_T("2"),			F_0,				F_0,				F_SHOWFUNCKEY,				F_CUSTMENU_22,		F_CUSTMENU_2,			F_CUSTMENU_12,		F_0,					F_0				},
@@ -716,8 +716,8 @@ const KeyData SakuraDefaultKeyBindTable[] = {
 	{ '8',		_T("8"),			F_0,				F_0,				F_0,						F_0,				F_CUSTMENU_8,			F_CUSTMENU_18,		F_0,					F_0				},
 	{ '9',		_T("9"),			F_0,				F_0,				F_0,						F_0,				F_CUSTMENU_9,			F_CUSTMENU_19,		F_0,					F_0				},
 
-	/* ƒAƒ‹ƒtƒ@ƒxƒbƒg */
-	//keycode,	keyname,			‚È‚µ,				Shitf+,				Ctrl+,						Shift+Ctrl+,		Alt+,					Shit+Alt+,			Ctrl+Alt+,				Shift+Ctrl+Alt+
+	/* ã‚¢ãƒ«ãƒ•ã‚¡ãƒ™ãƒƒãƒˆ */
+	//keycode,	keyname,			ãªã—,				Shitf+,				Ctrl+,						Shift+Ctrl+,		Alt+,					Shit+Alt+,			Ctrl+Alt+,				Shift+Ctrl+Alt+
 	{ 'A',		_T("A"),			F_0,				F_0,				F_SELECTALL,				F_0,				F_SORT_ASC,				F_0,				F_0,					F_0				},
 	{ 'B',		_T("B"),			F_0,				F_0,				F_BROWSE,					F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ 'C',		_T("C"),			F_0,				F_0,				F_COPY,						F_OPEN_HfromtoC,	F_0,					F_0,				F_0,					F_0				},
@@ -745,12 +745,12 @@ const KeyData SakuraDefaultKeyBindTable[] = {
 	{ 'Y',		_T("Y"),			F_0,				F_0,				F_REDO,						F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ 'Z',		_T("Z"),			F_0,				F_0,				F_UNDO,						F_0,				F_0,					F_0,				F_0,					F_0				},
 
-	/* ‹L† */
-	//keycode,	keyname,			‚È‚µ,				Shitf+,				Ctrl+,						Shift+Ctrl+,		Alt+,					Shit+Alt+,			Ctrl+Alt+,				Shift+Ctrl+Alt+
+	/* è¨˜å· */
+	//keycode,	keyname,			ãªã—,				Shitf+,				Ctrl+,						Shift+Ctrl+,		Alt+,					Shit+Alt+,			Ctrl+Alt+,				Shift+Ctrl+Alt+
 	{ 0x00bd,	_T("-"),			F_0,				F_0,				F_COPYFNAME,				F_SPLIT_V,			F_0,					F_0,				F_0,					F_0				},
-	{ 0x00de,	_T("^(‰pŒê')"),		F_0,				F_0,				F_COPYTAG,					F_0,				F_0,					F_0,				F_0,					F_0				},
+	{ 0x00de,	_T("^(è‹±èª')"),		F_0,				F_0,				F_COPYTAG,					F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ 0x00dc,	_T("\\"),			F_0,				F_0,				F_COPYPATH,					F_SPLIT_H,			F_0,					F_0,				F_0,					F_0				},
-	{ 0x00c0,	_T("@(‰pŒê`)"),		F_0,				F_0,				F_COPYLINES,				F_0,				F_0,					F_0,				F_0,					F_0				},
+	{ 0x00c0,	_T("@(è‹±èª`)"),		F_0,				F_0,				F_COPYLINES,				F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ 0x00db,	_T("["),			F_0,				F_0,				F_BRACKETPAIR,				F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ 0x00bb,	_T(";"),			F_0,				F_0,				F_0,						F_SPLIT_VH,			F_INS_DATE,				F_0,				F_0,					F_0				},
 	{ 0x00ba,	_T(":"),			F_0,				F_0,				_COPYWITHLINENUM,			F_0,				F_INS_TIME,				F_0,				F_0,					F_0				},
@@ -760,25 +760,25 @@ const KeyData SakuraDefaultKeyBindTable[] = {
 	{ 0x00bf,	_T("/"),			F_0,				F_0,				F_HOKAN,					F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ 0x00e2,	_T("_"),			F_0,				F_0,				F_UNDO,						F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ 0x00df,	_T("_(PC-98)"),		F_0,				F_0,				F_UNDO,						F_0,				F_0,					F_0,				F_0,					F_0				},
-	{ VK_APPS,	_T("ƒAƒvƒŠƒL["),	F_MENU_RBUTTON,		F_MENU_RBUTTON,		F_MENU_RBUTTON,				F_MENU_RBUTTON,		F_MENU_RBUTTON,			F_MENU_RBUTTON,		F_MENU_RBUTTON,			F_MENU_RBUTTON	},
+	{ VK_APPS,	_T("ã‚¢ãƒ—ãƒªã‚­ãƒ¼"),	F_MENU_RBUTTON,		F_MENU_RBUTTON,		F_MENU_RBUTTON,				F_MENU_RBUTTON,		F_MENU_RBUTTON,			F_MENU_RBUTTON,		F_MENU_RBUTTON,			F_MENU_RBUTTON	},
 
-	/* I’[ƒ}[ƒN */
+	/* çµ‚ç«¯ãƒãƒ¼ã‚¯ */
 	{ -1,		_T(""),				F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				}
 };
 
 const KeyData HidemaruDefaultKeyBindTable[] = {
-	/* ƒ}ƒEƒXƒ{ƒ^ƒ“ */
-	//keycode,	keyname,			‚È‚µ,				Shitf+,				Ctrl+,						Shift+Ctrl+,		Alt+,					Shit+Alt+,			Ctrl+Alt+,				Shift+Ctrl+Alt+
-	{ 0,_T("ƒ_ƒuƒ‹ƒNƒŠƒbƒN"),		F_SELECTWORD,		F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
-	{ 0,_T("‰EƒNƒŠƒbƒN"),			F_MENU_RBUTTON,		F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
-	{ 0,_T("’†ƒNƒŠƒbƒN"),			F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
-	{ 0,_T("¶ƒTƒCƒhƒNƒŠƒbƒN"),		F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
-	{ 0,_T("‰EƒTƒCƒhƒNƒŠƒbƒN"),		F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
-	{ 0,_T("ƒgƒŠƒvƒ‹ƒNƒŠƒbƒN"),		F_SELECTLINE,		F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
-	{ 0,_T("ƒNƒAƒhƒ‰ƒvƒ‹ƒNƒŠƒbƒN"),	F_SELECTALL,		F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
+	/* ãƒã‚¦ã‚¹ãƒœã‚¿ãƒ³ */
+	//keycode,	keyname,			ãªã—,				Shitf+,				Ctrl+,						Shift+Ctrl+,		Alt+,					Shit+Alt+,			Ctrl+Alt+,				Shift+Ctrl+Alt+
+	{ 0,_T("ãƒ€ãƒ–ãƒ«ã‚¯ãƒªãƒƒã‚¯"),		F_SELECTWORD,		F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
+	{ 0,_T("å³ã‚¯ãƒªãƒƒã‚¯"),			F_MENU_RBUTTON,		F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
+	{ 0,_T("ä¸­ã‚¯ãƒªãƒƒã‚¯"),			F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
+	{ 0,_T("å·¦ã‚µã‚¤ãƒ‰ã‚¯ãƒªãƒƒã‚¯"),		F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
+	{ 0,_T("å³ã‚µã‚¤ãƒ‰ã‚¯ãƒªãƒƒã‚¯"),		F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
+	{ 0,_T("ãƒˆãƒªãƒ—ãƒ«ã‚¯ãƒªãƒƒã‚¯"),		F_SELECTLINE,		F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
+	{ 0,_T("ã‚¯ã‚¢ãƒ‰ãƒ©ãƒ—ãƒ«ã‚¯ãƒªãƒƒã‚¯"),	F_SELECTALL,		F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
 
-	/* ƒtƒ@ƒ“ƒNƒVƒ‡ƒ“ƒL[ */
-	//keycode,	keyname,			‚È‚µ,				Shitf+,				Ctrl+,						Shift+Ctrl+,		Alt+,					Shit+Alt+,			Ctrl+Alt+,				Shift+Ctrl+Alt+
+	/* ãƒ•ã‚¡ãƒ³ã‚¯ã‚·ãƒ§ãƒ³ã‚­ãƒ¼ */
+	//keycode,	keyname,			ãªã—,				Shitf+,				Ctrl+,						Shift+Ctrl+,		Alt+,					Shit+Alt+,			Ctrl+Alt+,				Shift+Ctrl+Alt+
 	{ VK_F1,	_T("F1" ),			F_0,				F_RECKEYMACRO,		F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ VK_F2,	_T("F2" ),			F_0,				F_EXECKEYMACRO,		F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ VK_F3,	_T("F3" ),			F_SEARCH_NEXT,		F_SEARCH_PREV,		F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
@@ -804,8 +804,8 @@ const KeyData HidemaruDefaultKeyBindTable[] = {
 	{ VK_F23,	_T("F23"),			F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ VK_F24,	_T("F24"),			F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
 
-	/* “ÁêƒL[ */
-	//keycode,	keyname,			‚È‚µ,				Shitf+,				Ctrl+,						Shift+Ctrl+,		Alt+,					Shit+Alt+,			Ctrl+Alt+,				Shift+Ctrl+Alt+
+	/* ç‰¹æ®Šã‚­ãƒ¼ */
+	//keycode,	keyname,			ãªã—,				Shitf+,				Ctrl+,						Shift+Ctrl+,		Alt+,					Shit+Alt+,			Ctrl+Alt+,				Shift+Ctrl+Alt+
 	{ VK_TAB,	_T("Tab"),			F_INDENT_TAB,		F_UNINDENT_TAB,		F_NEXTWINDOW,				F_PREVWINDOW,		F_0,					F_0,				F_0,					F_0				},
 	{ VK_RETURN,_T("Enter"),		F_0,				/* N/A */ F_0,		F_DELETE_LINE,				F_0,				F_HOKAN,				F_0,				F_0,					F_0				},
 	{ VK_ESCAPE,_T("Esc"),			F_CANCEL_MODE,		F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
@@ -815,16 +815,16 @@ const KeyData HidemaruDefaultKeyBindTable[] = {
 	{ VK_HOME,	_T("Home"),			F_GOLINETOP,		F_GOLINETOP_SEL,	F_GOFILETOP,				F_GOFILETOP_SEL,	F_0,					F_0,				F_0,					F_0				},
 	{ VK_END,	_T("End(Help)"),	F_GOLINEEND,		F_GOLINEEND_SEL,	F_GOFILEEND,				F_GOFILEEND_SEL,	F_0,					F_0,				F_0,					F_0				},
 	{ VK_PAUSE,	_T("Pause"),		F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
-	{ VK_LEFT,	_T("©"),			F_LEFT,				F_LEFT_SEL,			F_WORDLEFT,					F_WORDLEFT_SEL,		/* N/A */ F_0,			F_0,				F_0,					F_0				},
-	{ VK_UP,	_T("ª"),			F_UP,				F_UP_SEL,			F_UP2,						F_UP2_SEL,			F_GOPREVPARAGRAPH,		F_0,				F_0,					F_0				},
-	{ VK_RIGHT,	_T("¨"),			F_RIGHT,			F_RIGHT_SEL,		F_WORDRIGHT,				F_WORDRIGHT_SEL,	/* N/A */ F_0,			F_0,				F_0,					F_0				},
-	{ VK_DOWN,	_T("«"),			F_DOWN,				F_DOWN_SEL,			F_DOWN2,					F_DOWN2_SEL,		F_GONEXTPARAGRAPH,		F_0,				F_0,					F_0				},
+	{ VK_LEFT,	_T("â†"),			F_LEFT,				F_LEFT_SEL,			F_WORDLEFT,					F_WORDLEFT_SEL,		/* N/A */ F_0,			F_0,				F_0,					F_0				},
+	{ VK_UP,	_T("â†‘"),			F_UP,				F_UP_SEL,			F_UP2,						F_UP2_SEL,			F_GOPREVPARAGRAPH,		F_0,				F_0,					F_0				},
+	{ VK_RIGHT,	_T("â†’"),			F_RIGHT,			F_RIGHT_SEL,		F_WORDRIGHT,				F_WORDRIGHT_SEL,	/* N/A */ F_0,			F_0,				F_0,					F_0				},
+	{ VK_DOWN,	_T("â†“"),			F_DOWN,				F_DOWN_SEL,			F_DOWN2,					F_DOWN2_SEL,		F_GONEXTPARAGRAPH,		F_0,				F_0,					F_0				},
 	{ VK_NEXT,	_T("PgDn(RollUp)"),	F_1PageDown,		F_1PageDown_Sel,	F_0,						F_1PageDown_Sel,	F_0,					F_0,				F_0,					F_0				},
 	{ VK_PRIOR,	_T("PgUp(RollDn)"),	F_1PageUp,			F_1PageUp_Sel,		F_0,						F_1PageUp_Sel,		F_0,					F_0,				F_0,					F_0				},
 	{ VK_SPACE,	_T("Space"),		F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
 
-	/* ”š */
-	//keycode,	keyname,			‚È‚µ,				Shitf+,				Ctrl+,						Shift+Ctrl+,		Alt+,					Shit+Alt+,			Ctrl+Alt+,				Shift+Ctrl+Alt+
+	/* æ•°å­— */
+	//keycode,	keyname,			ãªã—,				Shitf+,				Ctrl+,						Shift+Ctrl+,		Alt+,					Shit+Alt+,			Ctrl+Alt+,				Shift+Ctrl+Alt+
 	{ '0',		_T("0"),			F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ '1',		_T("1"),			F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ '2',		_T("2"),			F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
@@ -836,8 +836,8 @@ const KeyData HidemaruDefaultKeyBindTable[] = {
 	{ '8',		_T("8"),			F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ '9',		_T("9"),			F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
 
-	/* ƒAƒ‹ƒtƒ@ƒxƒbƒg */
-	//keycode,	keyname,			‚È‚µ,				Shitf+,				Ctrl+,						Shift+Ctrl+,		Alt+,					Shit+Alt+,			Ctrl+Alt+,				Shift+Ctrl+Alt+
+	/* ã‚¢ãƒ«ãƒ•ã‚¡ãƒ™ãƒƒãƒˆ */
+	//keycode,	keyname,			ãªã—,				Shitf+,				Ctrl+,						Shift+Ctrl+,		Alt+,					Shit+Alt+,			Ctrl+Alt+,				Shift+Ctrl+Alt+
 	{ 'A',		_T("A"),			F_0,				F_0,				F_SELECTALL,				F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ 'B',		_T("B"),			F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ 'C',		_T("C"),			F_0,				F_0,				F_COPY,						F_0,				F_0,					F_0,				F_0,					F_0				},
@@ -865,12 +865,12 @@ const KeyData HidemaruDefaultKeyBindTable[] = {
 	{ 'Y',		_T("Y"),			F_0,				F_0,				F_REDO,						F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ 'Z',		_T("Z"),			F_0,				F_0,				F_UNDO,						F_0,				F_0,					F_0,				F_0,					F_0				},
 
-	/* ‹L† */
-	//keycode,	keyname,			‚È‚µ,				Shitf+,				Ctrl+,						Shift+Ctrl+,		Alt+,					Shit+Alt+,			Ctrl+Alt+,				Shift+Ctrl+Alt+
+	/* è¨˜å· */
+	//keycode,	keyname,			ãªã—,				Shitf+,				Ctrl+,						Shift+Ctrl+,		Alt+,					Shit+Alt+,			Ctrl+Alt+,				Shift+Ctrl+Alt+
 	{ 0x00bd,	_T("-"),			F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
-	{ 0x00de,	_T("^(‰pŒê')"),		F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
+	{ 0x00de,	_T("^(è‹±èª')"),		F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ 0x00dc,	_T("\\"),			F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
-	{ 0x00c0,	_T("@(‰pŒê`)"),		F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
+	{ 0x00c0,	_T("@(è‹±èª`)"),		F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ 0x00db,	_T("["),			F_0,				F_0,				F_BRACKETPAIR,				F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ 0x00bb,	_T(";"), /* + */	F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ 0x00ba,	_T(":"), /* * */	F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
@@ -880,9 +880,9 @@ const KeyData HidemaruDefaultKeyBindTable[] = {
 	{ 0x00bf,	_T("/"),			F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ 0x00e2,	_T("_"),			F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
 	{ 0x00df,	_T("_(PC-98)"),		F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
-	{ VK_APPS,	_T("ƒAƒvƒŠƒL["),	F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
+	{ VK_APPS,	_T("ã‚¢ãƒ—ãƒªã‚­ãƒ¼"),	F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				},
 
-	/* I’[ƒ}[ƒN */
+	/* çµ‚ç«¯ãƒãƒ¼ã‚¯ */
 	{ -1,		_T(""),				F_0,				F_0,				F_0,						F_0,				F_0,					F_0,				F_0,					F_0				}
 };
 

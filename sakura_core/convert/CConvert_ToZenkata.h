@@ -27,7 +27,7 @@
 #include "CConvert.h"
 
 
-//!できる限り全角カタカナにする
+//!縺ｧ縺阪ｋ髯舌ｊ蜈ｨ隗偵き繧ｿ繧ｫ繝翫↓縺吶ｋ
 class CConvert_ToZenkata : public CConvert{
 public:
 	bool DoConvert(CNativeW* pcData);

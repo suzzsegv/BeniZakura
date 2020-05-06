@@ -1,11 +1,11 @@
 /*!	@file
-	@brief ƒeƒLƒXƒg‚ÌƒŒƒCƒAƒEƒgî•ñŠÇ—
+	@brief ãƒ†ã‚­ã‚¹ãƒˆã®ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆæƒ…å ±ç®¡ç†
 
 	@author Norio Nakatani
-	@date 1998/03/06 V‹Kì¬
-	@date 1998/04/14 ƒf[ƒ^‚Ìíœ‚ğÀ‘•
-	@date 1999/12/20 ƒf[ƒ^‚Ì’uŠ·‚ğÀ‘•
-	@date 2009/08/28 nasukoji	CalTextWidthArg’è‹`’Ç‰ÁADoLayout_Range()‚Ìˆø”•ÏX
+	@date 1998/03/06 æ–°è¦ä½œæˆ
+	@date 1998/04/14 ãƒ‡ãƒ¼ã‚¿ã®å‰Šé™¤ã‚’å®Ÿè£…
+	@date 1999/12/20 ãƒ‡ãƒ¼ã‚¿ã®ç½®æ›ã‚’å®Ÿè£…
+	@date 2009/08/28 nasukoji	CalTextWidthArgå®šç¾©è¿½åŠ ã€DoLayout_Range()ã®å¼•æ•°å¤‰æ›´
 */
 /*
 	Copyright (C) 1998-2001, Norio Nakatani
@@ -41,23 +41,23 @@ class CEditDoc;// 2003/07/20 genta
 class CColorStrategy;
 
 struct LayoutReplaceArg {
-	CLayoutRange	sDelRange;		//!< íœ”ÍˆÍBƒŒƒCƒAƒEƒg’PˆÊB
-	CNativeW*		pcmemDeleted;	//!< íœ‚³‚ê‚½ƒf[ƒ^
-	const wchar_t*	pInsData;		//!< ‘}“ü‚·‚éƒf[ƒ^
-	CLogicInt		nInsDataLen;	//!< ‘}“ü‚·‚éƒf[ƒ^‚Ì’·‚³
-	CLayoutInt		nAddLineNum;	//!< Ä•`‰æƒqƒ“ƒg ƒŒƒCƒAƒEƒgs‚Ì‘Œ¸
-	CLayoutInt		nModLineFrom;	//!< Ä•`‰æƒqƒ“ƒg •ÏX‚³‚ê‚½ƒŒƒCƒAƒEƒgsFrom(ƒŒƒCƒAƒEƒgs‚Ì‘Œ¸‚ª0‚Ì‚Æ‚«g‚¤)
-	CLayoutInt		nModLineTo;		//!< Ä•`‰æƒqƒ“ƒg •ÏX‚³‚ê‚½ƒŒƒCƒAƒEƒgsFrom(ƒŒƒCƒAƒEƒgs‚Ì‘Œ¸‚ª0‚Ì‚Æ‚«g‚¤)
-	CLayoutPoint	ptLayoutNew;	//!< ‘}“ü‚³‚ê‚½•”•ª‚ÌŸ‚ÌˆÊ’u‚ÌˆÊ’u(ƒŒƒCƒAƒEƒgŒ…ˆÊ’u, ƒŒƒCƒAƒEƒgs)
+	CLayoutRange	sDelRange;		//!< å‰Šé™¤ç¯„å›²ã€‚ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆå˜ä½ã€‚
+	CNativeW*		pcmemDeleted;	//!< å‰Šé™¤ã•ã‚ŒãŸãƒ‡ãƒ¼ã‚¿
+	const wchar_t*	pInsData;		//!< æŒ¿å…¥ã™ã‚‹ãƒ‡ãƒ¼ã‚¿
+	CLogicInt		nInsDataLen;	//!< æŒ¿å…¥ã™ã‚‹ãƒ‡ãƒ¼ã‚¿ã®é•·ã•
+	CLayoutInt		nAddLineNum;	//!< å†æç”»ãƒ’ãƒ³ãƒˆ ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆè¡Œã®å¢—æ¸›
+	CLayoutInt		nModLineFrom;	//!< å†æç”»ãƒ’ãƒ³ãƒˆ å¤‰æ›´ã•ã‚ŒãŸãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆè¡ŒFrom(ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆè¡Œã®å¢—æ¸›ãŒ0ã®ã¨ãä½¿ã†)
+	CLayoutInt		nModLineTo;		//!< å†æç”»ãƒ’ãƒ³ãƒˆ å¤‰æ›´ã•ã‚ŒãŸãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆè¡ŒFrom(ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆè¡Œã®å¢—æ¸›ãŒ0ã®ã¨ãä½¿ã†)
+	CLayoutPoint	ptLayoutNew;	//!< æŒ¿å…¥ã•ã‚ŒãŸéƒ¨åˆ†ã®æ¬¡ã®ä½ç½®ã®ä½ç½®(ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆæ¡ä½ç½®, ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆè¡Œ)
 };
 
-// •ÒW‚ÌƒeƒLƒXƒgÅ‘å•Zo—p		// 2009.08.28 nasukoji
+// ç·¨é›†æ™‚ã®ãƒ†ã‚­ã‚¹ãƒˆæœ€å¤§å¹…ç®—å‡ºç”¨		// 2009.08.28 nasukoji
 struct CalTextWidthArg {
-	CLayoutInt		nLineFrom;		//!< •ÒWŠJns
-	CLayoutInt		nColumnFrom;	//!< •ÒWŠJnŒ…
-	CLayoutInt		nDelLines;		//!< íœ‚ÉŠÖŒW‚·‚és” - 1i•‰”‚Ìíœ‚È‚µj
-	CLayoutInt		nAllLinesOld;	//!< •ÒW‘O‚ÌƒeƒLƒXƒgs”
-	BOOL			bInsData;		//!< ’Ç‰Á•¶š—ñ‚ ‚è
+	CLayoutInt		nLineFrom;		//!< ç·¨é›†é–‹å§‹è¡Œ
+	CLayoutInt		nColumnFrom;	//!< ç·¨é›†é–‹å§‹æ¡
+	CLayoutInt		nDelLines;		//!< å‰Šé™¤ã«é–¢ä¿‚ã™ã‚‹è¡Œæ•° - 1ï¼ˆè² æ•°ã®æ™‚å‰Šé™¤ãªã—ï¼‰
+	CLayoutInt		nAllLinesOld;	//!< ç·¨é›†å‰ã®ãƒ†ã‚­ã‚¹ãƒˆè¡Œæ•°
+	BOOL			bInsData;		//!< è¿½åŠ æ–‡å­—åˆ—ã‚ã‚Š
 };
 
 class CLogicPointEx: public CLogicPoint{
@@ -66,20 +66,20 @@ public:
 };
 
 /*-----------------------------------------------------------------------
-ƒNƒ‰ƒX‚ÌéŒ¾
+ã‚¯ãƒ©ã‚¹ã®å®£è¨€
 -----------------------------------------------------------------------*/
-/*!	@brief ƒeƒLƒXƒg‚ÌƒŒƒCƒAƒEƒgî•ñŠÇ—
+/*!	@brief ãƒ†ã‚­ã‚¹ãƒˆã®ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆæƒ…å ±ç®¡ç†
 
-	@date 2005.11.21 Moca F•ª‚¯î•ñ‚ğƒƒ“ƒo[‚ÖˆÚ“®D•s—v‚Æ‚È‚Á‚½ˆø”‚ğƒƒ“ƒoŠÖ”‚©‚çíœD
+	@date 2005.11.21 Moca è‰²åˆ†ã‘æƒ…å ±ã‚’ãƒ¡ãƒ³ãƒãƒ¼ã¸ç§»å‹•ï¼ä¸è¦ã¨ãªã£ãŸå¼•æ•°ã‚’ãƒ¡ãƒ³ãƒé–¢æ•°ã‹ã‚‰å‰Šé™¤ï¼
 */
-//2007.10.15 XYLogicalToLayout‚ğ”p~BLogicToLayout‚É“‡B
+//2007.10.15 XYLogicalToLayoutã‚’å»ƒæ­¢ã€‚LogicToLayoutã«çµ±åˆã€‚
 class CLayoutMgr : public CProgressSubject
 {
 private:
 	typedef CLayoutInt (CLayoutMgr::*CalcIndentProc)( CLayout* );
 
 public:
-	//¶¬‚Æ”jŠü
+	//ç”Ÿæˆã¨ç ´æ£„
 	CLayoutMgr();
 	~CLayoutMgr();
 	void Create( CEditDoc*, CDocLineMgr* );
@@ -88,74 +88,74 @@ public:
 
 
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-	//                        ƒRƒ“ƒtƒBƒO                           //
+	//                        ã‚³ãƒ³ãƒ•ã‚£ã‚°                           //
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 public:
-	//! ƒ^ƒu•‚Ìæ“¾
+	//! ã‚¿ãƒ–å¹…ã®å–å¾—
 	CLayoutInt GetTabSpace() const { return m_sTypeConfig.m_nTabSpace; }
 
 
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-	//                          QÆŒn                             //
+	//                          å‚ç…§ç³»                             //
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 public:
-	//2007.10.09 kobake ŠÖ”–¼•ÏX: Search ¨ SearchLineByLayoutY
-	CLayoutInt		GetLineCount() const{ return m_nLines; }	/* ‘S•¨—s”‚ğ•Ô‚· */
-	const wchar_t*	GetLineStr( CLayoutInt nLine, CLogicInt* pnLineLen ) const;	/* w’è‚³‚ê‚½•¨—s‚Ìƒf[ƒ^‚Ö‚Ìƒ|ƒCƒ“ƒ^‚Æ‚»‚Ì’·‚³‚ğ•Ô‚· */
-	const wchar_t*	GetLineStr( CLayoutInt nLine, CLogicInt* pnLineLen, const CLayout** ppcLayoutDes ) const;	/* w’è‚³‚ê‚½•¨—s‚Ìƒf[ƒ^‚Ö‚Ìƒ|ƒCƒ“ƒ^‚Æ‚»‚Ì’·‚³‚ğ•Ô‚· */
+	//2007.10.09 kobake é–¢æ•°åå¤‰æ›´: Search â†’ SearchLineByLayoutY
+	CLayoutInt		GetLineCount() const{ return m_nLines; }	/* å…¨ç‰©ç†è¡Œæ•°ã‚’è¿”ã™ */
+	const wchar_t*	GetLineStr( CLayoutInt nLine, CLogicInt* pnLineLen ) const;	/* æŒ‡å®šã•ã‚ŒãŸç‰©ç†è¡Œã®ãƒ‡ãƒ¼ã‚¿ã¸ã®ãƒã‚¤ãƒ³ã‚¿ã¨ãã®é•·ã•ã‚’è¿”ã™ */
+	const wchar_t*	GetLineStr( CLayoutInt nLine, CLogicInt* pnLineLen, const CLayout** ppcLayoutDes ) const;	/* æŒ‡å®šã•ã‚ŒãŸç‰©ç†è¡Œã®ãƒ‡ãƒ¼ã‚¿ã¸ã®ãƒã‚¤ãƒ³ã‚¿ã¨ãã®é•·ã•ã‚’è¿”ã™ */
 
-	//æ“ª‚Æ––”ö
+	//å…ˆé ­ã¨æœ«å°¾
 	CLayout*		GetTopLayout()		{ return m_pLayoutTop; }
 	CLayout*		GetBottomLayout()	{ return m_pLayoutBot; }
 	const CLayout*	GetTopLayout() const { return m_pLayoutTop; }
 	const CLayout*	GetBottomLayout() const { return m_pLayoutBot; }
 
-	//ƒŒƒCƒAƒEƒg‚ğ’T‚·
-	const CLayout*	SearchLineByLayoutY( CLayoutInt nLineLayout ) const;	/* w’è‚³‚ê‚½•¨—s‚ÌƒŒƒCƒAƒEƒgƒf[ƒ^(CLayout)‚Ö‚Ìƒ|ƒCƒ“ƒ^‚ğ•Ô‚· */
+	//ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆã‚’æ¢ã™
+	const CLayout*	SearchLineByLayoutY( CLayoutInt nLineLayout ) const;	/* æŒ‡å®šã•ã‚ŒãŸç‰©ç†è¡Œã®ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆãƒ‡ãƒ¼ã‚¿(CLayout)ã¸ã®ãƒã‚¤ãƒ³ã‚¿ã‚’è¿”ã™ */
 	CLayout*		SearchLineByLayoutY( CLayoutInt nLineLayout ){ return const_cast<CLayout*>(static_cast<const CLayoutMgr*>(this)->SearchLineByLayoutY(nLineLayout)); }
 
-	//ƒ[ƒh‚ğ’T‚·
-	bool			WhereCurrentWord( CLayoutInt , CLogicInt , CLayoutRange* pSelect, CNativeW*, CNativeW* );	/* Œ»İˆÊ’u‚Ì’PŒê‚Ì”ÍˆÍ‚ğ’²‚×‚é */
+	//ãƒ¯ãƒ¼ãƒ‰ã‚’æ¢ã™
+	bool			WhereCurrentWord( CLayoutInt , CLogicInt , CLayoutRange* pSelect, CNativeW*, CNativeW* );	/* ç¾åœ¨ä½ç½®ã®å˜èªã®ç¯„å›²ã‚’èª¿ã¹ã‚‹ */
 
-	//”»’è
-	bool			IsEndOfLine( const CLayoutPoint& ptLinePos );	/* w’èˆÊ’u‚ªs––(‰üs•¶š‚Ì’¼‘O)‚©’²‚×‚é */	//@@@ 2002.04.18 MIK
+	//åˆ¤å®š
+	bool			IsEndOfLine( const CLayoutPoint& ptLinePos );	/* æŒ‡å®šä½ç½®ãŒè¡Œæœ«(æ”¹è¡Œæ–‡å­—ã®ç›´å‰)ã‹èª¿ã¹ã‚‹ */	//@@@ 2002.04.18 MIK
 
-	/*! Ÿ‚ÌTABˆÊ’u‚Ü‚Å‚Ì•
-		@param pos [in] Œ»İ‚ÌˆÊ’u
-		@return Ÿ‚ÌTABˆÊ’u‚Ü‚Å‚Ì•¶š”D1`TAB•
+	/*! æ¬¡ã®TABä½ç½®ã¾ã§ã®å¹…
+		@param pos [in] ç¾åœ¨ã®ä½ç½®
+		@return æ¬¡ã®TABä½ç½®ã¾ã§ã®æ–‡å­—æ•°ï¼1ã€œTABå¹…
 	 */
 	CLayoutInt GetActualTabSpace(CLayoutInt pos) const { return m_sTypeConfig.m_nTabSpace - pos % m_sTypeConfig.m_nTabSpace; }
 
 	//	Aug. 14, 2005 genta
-	// Sep. 07, 2007 kobake ŠÖ”–¼•ÏX GetMaxLineSize¨GetMaxLineKetas
+	// Sep. 07, 2007 kobake é–¢æ•°åå¤‰æ›´ GetMaxLineSizeâ†’GetMaxLineKetas
 	CLayoutInt GetMaxLineKetas(void) const { return m_sTypeConfig.m_nMaxLineKetas; }
 
-	// 2005.11.21 Moca ˆø—p•„‚ÌF•ª‚¯î•ñ‚ğˆø”‚©‚çœ‹
+	// 2005.11.21 Moca å¼•ç”¨ç¬¦ã®è‰²åˆ†ã‘æƒ…å ±ã‚’å¼•æ•°ã‹ã‚‰é™¤å»
 	bool ChangeLayoutParam( CLayoutInt nTabSize, CLayoutInt nMaxLineKetas );
 
 	// Jul. 29, 2006 genta
 	void GetEndLayoutPos(CLayoutPoint* ptLayoutEnd);
 
-	CLayoutInt GetMaxTextWidth(void) const { return m_nTextWidth; }		// 2009.08.28 nasukoji	ƒeƒLƒXƒgÅ‘å•‚ğ•Ô‚·
+	CLayoutInt GetMaxTextWidth(void) const { return m_nTextWidth; }		// 2009.08.28 nasukoji	ãƒ†ã‚­ã‚¹ãƒˆæœ€å¤§å¹…ã‚’è¿”ã™
 
 
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-	//                           ŒŸõ                              //
+	//                           æ¤œç´¢                              //
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 protected:
-	int PrevOrNextWord( CLayoutInt, CLogicInt, CLayoutPoint* pptLayoutNew, BOOL, BOOL bStopsBothEnds );	/* Œ»İˆÊ’u‚Ì¶‰E‚Ì’PŒê‚Ìæ“ªˆÊ’u‚ğ’²‚×‚é */
+	int PrevOrNextWord( CLayoutInt, CLogicInt, CLayoutPoint* pptLayoutNew, BOOL, BOOL bStopsBothEnds );	/* ç¾åœ¨ä½ç½®ã®å·¦å³ã®å˜èªã®å…ˆé ­ä½ç½®ã‚’èª¿ã¹ã‚‹ */
 public:
-	int PrevWord( CLayoutInt nLineNum, CLogicInt nIdx, CLayoutPoint* pptLayoutNew, BOOL bStopsBothEnds ){ return PrevOrNextWord(nLineNum, nIdx, pptLayoutNew, TRUE, bStopsBothEnds); }	/* Œ»İˆÊ’u‚Ì¶‰E‚Ì’PŒê‚Ìæ“ªˆÊ’u‚ğ’²‚×‚é */
-	int NextWord( CLayoutInt nLineNum, CLogicInt nIdx, CLayoutPoint* pptLayoutNew, BOOL bStopsBothEnds ){ return PrevOrNextWord(nLineNum, nIdx, pptLayoutNew, FALSE, bStopsBothEnds); }	/* Œ»İˆÊ’u‚Ì¶‰E‚Ì’PŒê‚Ìæ“ªˆÊ’u‚ğ’²‚×‚é */
+	int PrevWord( CLayoutInt nLineNum, CLogicInt nIdx, CLayoutPoint* pptLayoutNew, BOOL bStopsBothEnds ){ return PrevOrNextWord(nLineNum, nIdx, pptLayoutNew, TRUE, bStopsBothEnds); }	/* ç¾åœ¨ä½ç½®ã®å·¦å³ã®å˜èªã®å…ˆé ­ä½ç½®ã‚’èª¿ã¹ã‚‹ */
+	int NextWord( CLayoutInt nLineNum, CLogicInt nIdx, CLayoutPoint* pptLayoutNew, BOOL bStopsBothEnds ){ return PrevOrNextWord(nLineNum, nIdx, pptLayoutNew, FALSE, bStopsBothEnds); }	/* ç¾åœ¨ä½ç½®ã®å·¦å³ã®å˜èªã®å…ˆé ­ä½ç½®ã‚’èª¿ã¹ã‚‹ */
 
-	int SearchWord( CLayoutInt nLine, CLogicInt nIdx, const wchar_t* , ESearchDirection eSearchDirection, const SSearchOption& sSearchOption, CLayoutRange* pMatchRange, CBregexp* );	/* ’PŒêŒŸõ */
+	int SearchWord( CLayoutInt nLine, CLogicInt nIdx, const wchar_t* , ESearchDirection eSearchDirection, const SSearchOption& sSearchOption, CLayoutRange* pMatchRange, CBregexp* );	/* å˜èªæ¤œç´¢ */
 
 
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-	//                        ’PˆÊ‚Ì•ÏŠ·                           //
+	//                        å˜ä½ã®å¤‰æ›                           //
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 public:
-	//!ƒƒWƒbƒN¨ƒŒƒCƒAƒEƒg
+	//!ãƒ­ã‚¸ãƒƒã‚¯â†’ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆ
 	void LogicToLayoutEx( const CLogicPointEx& ptLogicEx, CLayoutPoint* pptLayout, CLayoutInt nLineHint = CLayoutInt(0) )
 	{
 		LogicToLayout( ptLogicEx, pptLayout, nLineHint );
@@ -168,7 +168,7 @@ public:
 		LogicToLayout(rangeLogic.GetTo(), prangeLayout->GetToPointer());
 	}
 
-	//!ƒŒƒCƒAƒEƒg¨ƒƒWƒbƒN•ÏŠ·
+	//!ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆâ†’ãƒ­ã‚¸ãƒƒã‚¯å¤‰æ›
 	void LayoutToLogicEx( const CLayoutPoint& ptLayout, CLogicPointEx* pptLogicEx ) const;
 	void LayoutToLogic( const CLayoutPoint& ptLayout, CLogicPoint* pptLogic ) const;
 	void LayoutToLogic( const CLayoutRange& rangeLayout, CLogicRange* prangeLogic ) const
@@ -178,31 +178,31 @@ public:
 	}
 
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-	//                         ƒfƒoƒbƒO                            //
+	//                         ãƒ‡ãƒãƒƒã‚°                            //
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 public:
-	void DUMP();	/* ƒeƒXƒg—p‚ÉƒŒƒCƒAƒEƒgî•ñ‚ğƒ_ƒ“ƒv */
+	void DUMP();	/* ãƒ†ã‚¹ãƒˆç”¨ã«ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆæƒ…å ±ã‚’ãƒ€ãƒ³ãƒ— */
 
 
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-	//                         •ÒW‚Æ‚©                            //
+	//                         ç·¨é›†ã¨ã‹                            //
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 public:
 	/*
-	|| XVŒn
+	|| æ›´æ–°ç³»
 	*/
-	/* ƒŒƒCƒAƒEƒgî•ñ‚Ì•ÏX
-		@date Jun. 01, 2001 JEPRO char* (sƒRƒƒ“ƒgƒfƒŠƒ~ƒ^3—p)‚ğ1‚Â’Ç‰Á
-		@date 2002.04.13 MIK ‹Ö‘¥,‰üs•¶š‚ğ‚Ô‚ç‰º‚°‚é,‹å“Ç“_‚Ô‚ç‚³‚°‚ğ’Ç‰Á
-		@date 2002/04/27 YAZAKI STypeConfig‚ğ“n‚·‚æ‚¤‚É•ÏXB
+	/* ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆæƒ…å ±ã®å¤‰æ›´
+		@date Jun. 01, 2001 JEPRO char* (è¡Œã‚³ãƒ¡ãƒ³ãƒˆãƒ‡ãƒªãƒŸã‚¿3ç”¨)ã‚’1ã¤è¿½åŠ 
+		@date 2002.04.13 MIK ç¦å‰‡,æ”¹è¡Œæ–‡å­—ã‚’ã¶ã‚‰ä¸‹ã’ã‚‹,å¥èª­ç‚¹ã¶ã‚‰ã•ã’ã‚’è¿½åŠ 
+		@date 2002/04/27 YAZAKI STypeConfigã‚’æ¸¡ã™ã‚ˆã†ã«å¤‰æ›´ã€‚
 	*/
 	void SetLayoutInfo(
 		bool			bDoRayout,
 		const STypeConfig&	refType
 	);
 	
-	/* s“à•¶šíœ */
-	// 2005.11.21 Moca ˆø—p•„‚ÌF•ª‚¯î•ñ‚ğˆø”‚©‚çœ‹
+	/* è¡Œå†…æ–‡å­—å‰Šé™¤ */
+	// 2005.11.21 Moca å¼•ç”¨ç¬¦ã®è‰²åˆ†ã‘æƒ…å ±ã‚’å¼•æ•°ã‹ã‚‰é™¤å»
 	void DeleteData_CLayoutMgr(
 		CLayoutInt	nLineNum,
 		CLogicInt	nDelPos,
@@ -210,43 +210,43 @@ public:
 		CLayoutInt*	pnModifyLayoutLinesOld,
 		CLayoutInt*	pnModifyLayoutLinesNew,
 		CLayoutInt*	pnDeleteLayoutLines,
-		CNativeW*	cmemDeleted			/* íœ‚³‚ê‚½ƒf[ƒ^ */
+		CNativeW*	cmemDeleted			/* å‰Šé™¤ã•ã‚ŒãŸãƒ‡ãƒ¼ã‚¿ */
 	);
 
-	/* •¶š—ñ‘}“ü */
-	// 2005.11.21 Moca ˆø—p•„‚ÌF•ª‚¯î•ñ‚ğˆø”‚©‚çœ‹
+	/* æ–‡å­—åˆ—æŒ¿å…¥ */
+	// 2005.11.21 Moca å¼•ç”¨ç¬¦ã®è‰²åˆ†ã‘æƒ…å ±ã‚’å¼•æ•°ã‹ã‚‰é™¤å»
 	void InsertData_CLayoutMgr(
 		CLayoutInt		nLineNum,
 		CLogicInt		nInsPos,
 		const wchar_t*	pInsData,
 		CLogicInt		nInsDataLen,
 		CLayoutInt*		pnModifyLayoutLinesOld,
-		CLayoutInt*		pnInsLineNum,		/* ‘}“ü‚É‚æ‚Á‚Ä‘‚¦‚½ƒŒƒCƒAƒEƒgs‚Ì” */
-		CLayoutPoint*	pptNewLayout		// ‘}“ü‚³‚ê‚½•”•ª‚ÌŸ‚ÌˆÊ’u‚Ìƒf[ƒ^ˆÊ’u
+		CLayoutInt*		pnInsLineNum,		/* æŒ¿å…¥ã«ã‚ˆã£ã¦å¢—ãˆãŸãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆè¡Œã®æ•° */
+		CLayoutPoint*	pptNewLayout		// æŒ¿å…¥ã•ã‚ŒãŸéƒ¨åˆ†ã®æ¬¡ã®ä½ç½®ã®ãƒ‡ãƒ¼ã‚¿ä½ç½®
 	);
 
-	/* •¶š—ñ’uŠ· */
+	/* æ–‡å­—åˆ—ç½®æ› */
 	void ReplaceData_CLayoutMgr(
 		LayoutReplaceArg*	pArg
 	);
 
-	BOOL CalculateTextWidth( BOOL bCalLineLen = TRUE, CLayoutInt nStart = CLayoutInt(-1), CLayoutInt nEnd = CLayoutInt(-1) );	/* ƒeƒLƒXƒgÅ‘å•‚ğZo‚·‚é */		// 2009.08.28 nasukoji
-	void ClearLayoutLineWidth( void );				/* Šes‚ÌƒŒƒCƒAƒEƒgs’·‚Ì‹L‰¯‚ğƒNƒŠƒA‚·‚é */		// 2009.08.28 nasukoji
+	BOOL CalculateTextWidth( BOOL bCalLineLen = TRUE, CLayoutInt nStart = CLayoutInt(-1), CLayoutInt nEnd = CLayoutInt(-1) );	/* ãƒ†ã‚­ã‚¹ãƒˆæœ€å¤§å¹…ã‚’ç®—å‡ºã™ã‚‹ */		// 2009.08.28 nasukoji
+	void ClearLayoutLineWidth( void );				/* å„è¡Œã®ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆè¡Œé•·ã®è¨˜æ†¶ã‚’ã‚¯ãƒªã‚¢ã™ã‚‹ */		// 2009.08.28 nasukoji
 
 
 
 protected:
 	/*
-	||  QÆŒn
+	||  å‚ç…§ç³»
 	*/
-	const char* GetFirstLinrStr( int* );	/* ‡ƒAƒNƒZƒXƒ‚[ƒhFæ“ªs‚ğ“¾‚é */
-	const char* GetNextLinrStr( int* );	/* ‡ƒAƒNƒZƒXƒ‚[ƒhFŸ‚Ìs‚ğ“¾‚é */
+	const char* GetFirstLinrStr( int* );	/* é †ã‚¢ã‚¯ã‚»ã‚¹ãƒ¢ãƒ¼ãƒ‰ï¼šå…ˆé ­è¡Œã‚’å¾—ã‚‹ */
+	const char* GetNextLinrStr( int* );	/* é †ã‚¢ã‚¯ã‚»ã‚¹ãƒ¢ãƒ¼ãƒ‰ï¼šæ¬¡ã®è¡Œã‚’å¾—ã‚‹ */
 
 
 	/*
-	|| XVŒn
+	|| æ›´æ–°ç³»
 	*/
-	void _DoLayout();	/* Œ»İ‚ÌÜ‚è•Ô‚µ•¶š”‚É‡‚í‚¹‚Ä‘Sƒf[ƒ^‚ÌƒŒƒCƒAƒEƒgî•ñ‚ğÄ¶¬‚µ‚Ü‚· */
+	void _DoLayout();	/* ç¾åœ¨ã®æŠ˜ã‚Šè¿”ã—æ–‡å­—æ•°ã«åˆã‚ã›ã¦å…¨ãƒ‡ãƒ¼ã‚¿ã®ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆæƒ…å ±ã‚’å†ç”Ÿæˆã—ã¾ã™ */
 	CLayoutInt DoLayout_Range(
 		CLayout*				pLayoutPrev,
 		CLogicInt				nLineNum,
@@ -255,14 +255,14 @@ protected:
 		ColorStrategyState		colorStrategyStatePrev,
 		const CalTextWidthArg*	pctwArg,
 		CLayoutInt*				_pnExtInsLineNum
-	);	/* w’èƒŒƒCƒAƒEƒgs‚É‘Î‰‚·‚é˜_—s‚ÌŸ‚Ì˜_—s‚©‚çw’è˜_—s”‚¾‚¯ÄƒŒƒCƒAƒEƒg‚·‚é */
-	void CalculateTextWidth_Range( const CalTextWidthArg* pctwArg );	/* ƒeƒLƒXƒg‚ª•ÒW‚³‚ê‚½‚çÅ‘å•‚ğZo‚·‚é */	// 2009.08.28 nasukoji
-	CLayout* DeleteLayoutAsLogical( CLayout*, CLayoutInt, CLogicInt , CLogicInt, CLogicPoint, CLayoutInt* );	/* ˜_—s‚Ìw’è”ÍˆÍ‚ÉŠY“–‚·‚éƒŒƒCƒAƒEƒgî•ñ‚ğíœ */
-	void ShiftLogicalLineNum( CLayout* , CLogicInt );	/* w’ès‚æ‚èŒã‚Ìs‚ÌƒŒƒCƒAƒEƒgî•ñ‚É‚Â‚¢‚ÄA˜_—s”Ô†‚ğw’ès”‚¾‚¯ƒVƒtƒg‚·‚é */
+	);	/* æŒ‡å®šãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆè¡Œã«å¯¾å¿œã™ã‚‹è«–ç†è¡Œã®æ¬¡ã®è«–ç†è¡Œã‹ã‚‰æŒ‡å®šè«–ç†è¡Œæ•°ã ã‘å†ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆã™ã‚‹ */
+	void CalculateTextWidth_Range( const CalTextWidthArg* pctwArg );	/* ãƒ†ã‚­ã‚¹ãƒˆãŒç·¨é›†ã•ã‚ŒãŸã‚‰æœ€å¤§å¹…ã‚’ç®—å‡ºã™ã‚‹ */	// 2009.08.28 nasukoji
+	CLayout* DeleteLayoutAsLogical( CLayout*, CLayoutInt, CLogicInt , CLogicInt, CLogicPoint, CLayoutInt* );	/* è«–ç†è¡Œã®æŒ‡å®šç¯„å›²ã«è©²å½“ã™ã‚‹ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆæƒ…å ±ã‚’å‰Šé™¤ */
+	void ShiftLogicalLineNum( CLayout* , CLogicInt );	/* æŒ‡å®šè¡Œã‚ˆã‚Šå¾Œã®è¡Œã®ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆæƒ…å ±ã«ã¤ã„ã¦ã€è«–ç†è¡Œç•ªå·ã‚’æŒ‡å®šè¡Œæ•°ã ã‘ã‚·ãƒ•ãƒˆã™ã‚‹ */
 
-	//•”•i
+	//éƒ¨å“
 	struct SLayoutWork{
-		//–ˆƒ‹[ƒv‰Šú‰»
+		//æ¯ãƒ«ãƒ¼ãƒ—åˆæœŸåŒ–
 		int				nKinsokuType;
 		CLogicInt		nPos;
 		CLogicInt		nBgn;
@@ -273,7 +273,7 @@ protected:
 		CLayoutInt		nIndent;
 		CLayout*		pLayoutCalculated;
 
-		//ƒ‹[ƒvŠO
+		//ãƒ«ãƒ¼ãƒ—å¤–
 		CDocLine*		pcDocLine;
 		CLayout*		pLayout;
 		CColorStrategy*	pcColorStrategy;
@@ -282,23 +282,23 @@ protected:
 		ColorStrategyState colorStrategyStatePrev;
 		CLogicInt		nCurLine;
 
-		//ƒ‹[ƒvŠO (DoLayout‚Ì‚İ)
+		//ãƒ«ãƒ¼ãƒ—å¤– (DoLayoutã®ã¿)
 //		CLogicInt		nLineNum;
 
-		//ƒ‹[ƒvŠO (DoLayout_Range‚Ì‚İ)
+		//ãƒ«ãƒ¼ãƒ—å¤– (DoLayout_Rangeã®ã¿)
 		bool			bNeedChangeCOMMENTMODE;
 		CLayoutInt		nModifyLayoutLinesNew;
 		
-		//ƒ‹[ƒvŠO (DoLayout_Rangeˆø”)
+		//ãƒ«ãƒ¼ãƒ—å¤– (DoLayout_Rangeå¼•æ•°)
 		CLayoutInt*		pnExtInsLineNum;
 		CLogicPoint		ptDelLogicalFrom;
 
-		//ŠÖ”
+		//é–¢æ•°
 		CLayout* _CreateLayout(CLayoutMgr* mgr);
 	};
-	//ŠÖ”ƒ|ƒCƒ“ƒ^
+	//é–¢æ•°ãƒã‚¤ãƒ³ã‚¿
 	typedef void (CLayoutMgr::*PF_OnLine)(SLayoutWork*);
-	//DoLayout—p
+	//DoLayoutç”¨
 	bool _DoKinsokuSkip(SLayoutWork* pWork, PF_OnLine pfOnLine);
 	void _DoWordWrap(SLayoutWork* pWork, PF_OnLine pfOnLine);
 	void _DoKutoBurasage(SLayoutWork* pWork);
@@ -306,39 +306,39 @@ protected:
 	void _DoGyomatsuKinsoku(SLayoutWork* pWork, PF_OnLine pfOnLine);
 	bool _DoTab(SLayoutWork* pWork, PF_OnLine pfOnLine);
 	void _MakeOneLine(SLayoutWork* pWork, PF_OnLine pfOnLine);
-	//DoLayout—pƒRƒA
+	//DoLayoutç”¨ã‚³ã‚¢
 	void _OnLine1(SLayoutWork* pWork);
-	//DoLayout_Range—pƒRƒA
+	//DoLayout_Rangeç”¨ã‚³ã‚¢
 	void _OnLine2(SLayoutWork* pWork);
 
 
 private:
 	bool _ExistKinsokuKuto(wchar_t wc) const{ return m_pszKinsokuKuto_1.exist(wc); }
 	bool _ExistKinsokuHead(wchar_t wc) const{ return m_pszKinsokuHead_1.exist(wc); }
-	bool IsKinsokuHead( wchar_t wc );	/*!< s“ª‹Ö‘¥•¶š‚ğƒ`ƒFƒbƒN‚·‚é */	//@@@ 2002.04.08 MIK
-	bool IsKinsokuTail( wchar_t wc );	/*!< s––‹Ö‘¥•¶š‚ğƒ`ƒFƒbƒN‚·‚é */	//@@@ 2002.04.08 MIK
-	bool IsKinsokuKuto( wchar_t wc );	/*!< ‹å“Ç“_•¶š‚ğƒ`ƒFƒbƒN‚·‚é */	//@@@ 2002.04.17 MIK
-	//	2005-08-20 D.S.Koba ‹Ö‘¥ŠÖ˜Aˆ—‚ÌŠÖ”‰»
-	/*! ‹å“Ç“_‚Ô‚ç‰º‚°‚Ìˆ—ˆÊ’u‚©
+	bool IsKinsokuHead( wchar_t wc );	/*!< è¡Œé ­ç¦å‰‡æ–‡å­—ã‚’ãƒã‚§ãƒƒã‚¯ã™ã‚‹ */	//@@@ 2002.04.08 MIK
+	bool IsKinsokuTail( wchar_t wc );	/*!< è¡Œæœ«ç¦å‰‡æ–‡å­—ã‚’ãƒã‚§ãƒƒã‚¯ã™ã‚‹ */	//@@@ 2002.04.08 MIK
+	bool IsKinsokuKuto( wchar_t wc );	/*!< å¥èª­ç‚¹æ–‡å­—ã‚’ãƒã‚§ãƒƒã‚¯ã™ã‚‹ */	//@@@ 2002.04.17 MIK
+	//	2005-08-20 D.S.Koba ç¦å‰‡é–¢é€£å‡¦ç†ã®é–¢æ•°åŒ–
+	/*! å¥èª­ç‚¹ã¶ã‚‰ä¸‹ã’ã®å‡¦ç†ä½ç½®ã‹
 		@date 2005-08-20 D.S.Koba
-		@date Sep. 3, 2005 genta Å“K‰»
+		@date Sep. 3, 2005 genta æœ€é©åŒ–
 	*/
 	bool IsKinsokuPosKuto(CLayoutInt nRest, CLayoutInt nCharChars ) const {
 		return nRest < nCharChars;
 	}
-	bool IsKinsokuPosHead(CLayoutInt, CLayoutInt, CLayoutInt);	//!< s“ª‹Ö‘¥‚Ìˆ—ˆÊ’u‚©
-	bool IsKinsokuPosTail(CLayoutInt, CLayoutInt, CLayoutInt);	//!< s––‹Ö‘¥‚Ìˆ—ˆÊ’u‚©
+	bool IsKinsokuPosHead(CLayoutInt, CLayoutInt, CLayoutInt);	//!< è¡Œé ­ç¦å‰‡ã®å‡¦ç†ä½ç½®ã‹
+	bool IsKinsokuPosTail(CLayoutInt, CLayoutInt, CLayoutInt);	//!< è¡Œæœ«ç¦å‰‡ã®å‡¦ç†ä½ç½®ã‹
 public:
 	int Match_Quote( wchar_t wcQuote, int nPos, const CStringRef& cLineStr ) const;
 private:
-	//	Oct. 1, 2002 genta ƒCƒ“ƒfƒ“ƒg•ŒvZŠÖ”ŒQ
+	//	Oct. 1, 2002 genta ã‚¤ãƒ³ãƒ‡ãƒ³ãƒˆå¹…è¨ˆç®—é–¢æ•°ç¾¤
 	CLayoutInt getIndentOffset_Normal( CLayout* pLayoutPrev );
 	CLayoutInt getIndentOffset_Tx2x( CLayout* pLayoutPrev );
 	CLayoutInt getIndentOffset_LeftSpace( CLayout* pLayoutPrev );
 
 protected:
 	/*
-	|| À‘•ƒwƒ‹ƒpŒn
+	|| å®Ÿè£…ãƒ˜ãƒ«ãƒ‘ç³»
 	*/
 	CLayout* CreateLayout(
 		CDocLine* pCDocLine,
@@ -353,41 +353,41 @@ protected:
 	void AddLineBottom( CLayout* );
 
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-	//                        ƒƒ“ƒo•Ï”                           //
+	//                        ãƒ¡ãƒ³ãƒå¤‰æ•°                           //
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 public:
-	CDocLineMgr*			m_pcDocLineMgr;	/* sƒoƒbƒtƒ@ŠÇ—ƒ}ƒl[ƒWƒƒ */
+	CDocLineMgr*			m_pcDocLineMgr;	/* è¡Œãƒãƒƒãƒ•ã‚¡ç®¡ç†ãƒãƒãƒ¼ã‚¸ãƒ£ */
 
 protected:
-	//QÆ
+	//å‚ç…§
 	CEditDoc*		m_pcEditDoc;
 
-	//Àƒf[ƒ^
+	//å®Ÿãƒ‡ãƒ¼ã‚¿
 	CLayout*				m_pLayoutTop;
 	CLayout*				m_pLayoutBot;
 
-	//ƒ^ƒCƒv•Êİ’è
+	//ã‚¿ã‚¤ãƒ—åˆ¥è¨­å®š
 	STypeConfig				m_sTypeConfig;
-	vector_ex<wchar_t>		m_pszKinsokuHead_1;			// s“ª‹Ö‘¥•¶š	//@@@ 2002.04.08 MIK
-	vector_ex<wchar_t>		m_pszKinsokuTail_1;			// s––‹Ö‘¥•¶š	//@@@ 2002.04.08 MIK
-	vector_ex<wchar_t>		m_pszKinsokuKuto_1;			// ‹å“Ç“_‚Ô‚ç‚³‚°•¶š	//@@@ 2002.04.17 MIK
-	CalcIndentProc			m_getIndentOffset;			//	Oct. 1, 2002 genta ƒCƒ“ƒfƒ“ƒg•ŒvZŠÖ”‚ğ•Û
+	vector_ex<wchar_t>		m_pszKinsokuHead_1;			// è¡Œé ­ç¦å‰‡æ–‡å­—	//@@@ 2002.04.08 MIK
+	vector_ex<wchar_t>		m_pszKinsokuTail_1;			// è¡Œæœ«ç¦å‰‡æ–‡å­—	//@@@ 2002.04.08 MIK
+	vector_ex<wchar_t>		m_pszKinsokuKuto_1;			// å¥èª­ç‚¹ã¶ã‚‰ã•ã’æ–‡å­—	//@@@ 2002.04.17 MIK
+	CalcIndentProc			m_getIndentOffset;			//	Oct. 1, 2002 genta ã‚¤ãƒ³ãƒ‡ãƒ³ãƒˆå¹…è¨ˆç®—é–¢æ•°ã‚’ä¿æŒ
 
-	//ƒtƒ‰ƒO“™
-	EColorIndexType			m_colorIndexPrevAtEof;		// EOF ’¼‘O‚Ì•¶š‚ÌƒJƒ‰[ƒCƒ“ƒfƒbƒNƒX(ƒpƒŒƒbƒg)”Ô†
-	ColorStrategyState		colorStrategyStatePrevAtEof; // EOF ’¼‘O‚Ì•¶š‚ÌƒJƒ‰[ƒŠƒ“ƒOó‘Ô
-	CLayoutInt				m_nLines;					// ‘SƒŒƒCƒAƒEƒgs”
+	//ãƒ•ãƒ©ã‚°ç­‰
+	EColorIndexType			m_colorIndexPrevAtEof;		// EOF ç›´å‰ã®æ–‡å­—ã®ã‚«ãƒ©ãƒ¼ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹(ãƒ‘ãƒ¬ãƒƒãƒˆ)ç•ªå·
+	ColorStrategyState		colorStrategyStatePrevAtEof; // EOF ç›´å‰ã®æ–‡å­—ã®ã‚«ãƒ©ãƒ¼ãƒªãƒ³ã‚°çŠ¶æ…‹
+	CLayoutInt				m_nLines;					// å…¨ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆè¡Œæ•°
 
 	mutable CLayoutInt		m_nPrevReferLine;
 	mutable CLayout*		m_pLayoutPrevRefer;
 	
-	// EOFƒJ[ƒ\ƒ‹ˆÊ’u‚ğ‹L‰¯‚·‚é(_DoLayout/DoLayout_Range‚Å–³Œø‚É‚·‚é)	//2006.10.01 Moca
-	CLayoutInt				m_nEOFLine; //!< EOFs”
-	CLayoutInt				m_nEOFColumn; //!< EOF•ˆÊ’u
+	// EOFã‚«ãƒ¼ã‚½ãƒ«ä½ç½®ã‚’è¨˜æ†¶ã™ã‚‹(_DoLayout/DoLayout_Rangeã§ç„¡åŠ¹ã«ã™ã‚‹)	//2006.10.01 Moca
+	CLayoutInt				m_nEOFLine; //!< EOFè¡Œæ•°
+	CLayoutInt				m_nEOFColumn; //!< EOFå¹…ä½ç½®
 
-	// ƒeƒLƒXƒgÅ‘å•‚ğ‹L‰¯iÜ‚è•Ô‚µˆÊ’uZo‚Ég—pj	// 2009.08.28 nasukoji
-	CLayoutInt				m_nTextWidth;				// ƒeƒLƒXƒgÅ‘å•‚Ì‹L‰¯
-	CLayoutInt				m_nTextWidthMaxLine;		// Å‘å•‚ÌƒŒƒCƒAƒEƒgs
+	// ãƒ†ã‚­ã‚¹ãƒˆæœ€å¤§å¹…ã‚’è¨˜æ†¶ï¼ˆæŠ˜ã‚Šè¿”ã—ä½ç½®ç®—å‡ºã«ä½¿ç”¨ï¼‰	// 2009.08.28 nasukoji
+	CLayoutInt				m_nTextWidth;				// ãƒ†ã‚­ã‚¹ãƒˆæœ€å¤§å¹…ã®è¨˜æ†¶
+	CLayoutInt				m_nTextWidthMaxLine;		// æœ€å¤§å¹…ã®ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆè¡Œ
 };
 
 

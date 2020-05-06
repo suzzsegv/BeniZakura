@@ -1,5 +1,5 @@
 /*! @file
-	@brief ‹¤’Êİ’èƒ_ƒCƒAƒƒOƒ{ƒbƒNƒXAu‘®vƒy[ƒW
+	@brief å…±é€šè¨­å®šãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒœãƒƒã‚¯ã‚¹ã€ã€Œæ›¸å¼ã€ãƒšãƒ¼ã‚¸
 
 	@author Norio Nakatani
 */
@@ -23,17 +23,17 @@
 
 
 TYPE_NAME<EShareMode> ShareModeArr[] = {
-	{ SHAREMODE_NOT_EXCLUSIVE,	_T("‚µ‚È‚¢") },
-	{ SHAREMODE_DENY_WRITE,		_T("ã‘‚«‚ğ‹Ö~‚·‚é") },
-	{ SHAREMODE_DENY_READWRITE,	_T("“Ç‚İ‘‚«‚ğ‹Ö~‚·‚é") },
+	{ SHAREMODE_NOT_EXCLUSIVE,	_T("ã—ãªã„") },
+	{ SHAREMODE_DENY_WRITE,		_T("ä¸Šæ›¸ãã‚’ç¦æ­¢ã™ã‚‹") },
+	{ SHAREMODE_DENY_READWRITE,	_T("èª­ã¿æ›¸ãã‚’ç¦æ­¢ã™ã‚‹") },
 };
 
 //	From Here Jun. 2, 2001 genta
 /*!
-	@param hwndDlg ƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX‚ÌWindow Handle
-	@param uMsg ƒƒbƒZ[ƒW
-	@param wParam ƒpƒ‰ƒ[ƒ^1
-	@param lParam ƒpƒ‰ƒ[ƒ^2
+	@param hwndDlg ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒœãƒƒã‚¯ã‚¹ã®Window Handle
+	@param uMsg ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+	@param wParam ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿1
+	@param lParam ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿2
 */
 INT_PTR CALLBACK CPropFile::DlgProc_page(
 	HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam )
@@ -42,7 +42,7 @@ INT_PTR CALLBACK CPropFile::DlgProc_page(
 }
 //	To Here Jun. 2, 2001 genta
 
-/*! ƒtƒ@ƒCƒ‹ƒy[ƒW ƒƒbƒZ[ƒWˆ— */
+/*! ãƒ•ã‚¡ã‚¤ãƒ«ãƒšãƒ¼ã‚¸ ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å‡¦ç† */
 INT_PTR CPropFile::DispatchEvent(
 	HWND	hwndDlg,	//!< handle to dialog box
 	UINT	uMsg,	//!< message
@@ -57,17 +57,17 @@ INT_PTR CPropFile::DispatchEvent(
 	NM_UPDOWN*	pMNUD;
 	int			idCtrl;
 //	int			nVal;
-	int			nVal;	//Sept.21, 2000 JEPRO ƒXƒsƒ“—v‘f‚ğ‰Á‚¦‚½‚Ì‚Å•œŠˆ‚³‚¹‚½
+	int			nVal;	//Sept.21, 2000 JEPRO ã‚¹ãƒ”ãƒ³è¦ç´ ã‚’åŠ ãˆãŸã®ã§å¾©æ´»ã•ã›ãŸ
 //	char		szFolder[_MAX_PATH];
 
 	switch( uMsg ){
 	case WM_INITDIALOG:
-		/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìİ’è File */
+		/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®è¨­å®š File */
 		SetData( hwndDlg );
 		::SetWindowLongPtr( hwndDlg, DWLP_USER, lParam );
 
 		return TRUE;
-//****	From Here Sept. 21, 2000 JEPRO ƒ_ƒCƒAƒƒO—v‘f‚ÉƒXƒsƒ“‚ğ“ü‚ê‚é‚Ì‚ÅˆÈ‰º‚ÌWM_NOTIFY‚ğƒRƒƒ“ƒgƒAƒEƒg‚É‚µ‰º‚ÉC³‚ğ’u‚¢‚½
+//****	From Here Sept. 21, 2000 JEPRO ãƒ€ã‚¤ã‚¢ãƒ­ã‚°è¦ç´ ã«ã‚¹ãƒ”ãƒ³ã‚’å…¥ã‚Œã‚‹ã®ã§ä»¥ä¸‹ã®WM_NOTIFYã‚’ã‚³ãƒ¡ãƒ³ãƒˆã‚¢ã‚¦ãƒˆã«ã—ä¸‹ã«ä¿®æ­£ã‚’ç½®ã„ãŸ
 //	case WM_NOTIFY:
 //		idCtrl = (int)wParam;
 //		pNMHDR = (NMHDR*)lParam;
@@ -77,7 +77,7 @@ INT_PTR CPropFile::DispatchEvent(
 //			switch( pNMHDR->code ){
 //			case PSN_KILLACTIVE:
 ////				MYTRACE( _T("p2 PSN_KILLACTIVE\n") );
-//				/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìæ“¾ p2 */
+//				/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®å–å¾— p2 */
 //				GetData_p2( hwndDlg );
 //				return TRUE;
 //			}
@@ -93,17 +93,17 @@ INT_PTR CPropFile::DispatchEvent(
 			switch( pNMHDR->code ){
 			case PSN_KILLACTIVE:
 //				MYTRACE( _T("File PSN_KILLACTIVE\n") );
-				/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìæ“¾ File */
+				/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®å–å¾— File */
 				GetData( hwndDlg );
 				return TRUE;
-//@@@ 2002.01.03 YAZAKI ÅŒã‚É•\¦‚µ‚Ä‚¢‚½ƒV[ƒg‚ğ³‚µ‚­Šo‚¦‚Ä‚¢‚È‚¢ƒoƒOC³
+//@@@ 2002.01.03 YAZAKI æœ€å¾Œã«è¡¨ç¤ºã—ã¦ã„ãŸã‚·ãƒ¼ãƒˆã‚’æ­£ã—ãè¦šãˆã¦ã„ãªã„ãƒã‚°ä¿®æ­£
 			case PSN_SETACTIVE:
 				m_nPageNum = ID_PAGENUM_FILE;
 				return TRUE;
 			}
 			break;
 		case IDC_SPIN_AUTOLOAD_DELAY:
-			// ©“®“Ç’x‰„
+			// è‡ªå‹•èª­è¾¼æ™‚é…å»¶
 			nVal = ::GetDlgItemInt( hwndDlg, IDC_EDIT_AUTOLOAD_DELAY, NULL, FALSE );
 			if( pMNUD->iDelta < 0 ){
 				++nVal;
@@ -117,7 +117,7 @@ INT_PTR CPropFile::DispatchEvent(
 			::SetDlgItemInt( hwndDlg, IDC_EDIT_AUTOLOAD_DELAY, nVal, FALSE );
 			return TRUE;
 		case IDC_SPIN_nDropFileNumMax:
-			/* ˆê“x‚Éƒhƒƒbƒv‰Â”\‚Èƒtƒ@ƒCƒ‹” */
+			/* ä¸€åº¦ã«ãƒ‰ãƒ­ãƒƒãƒ—å¯èƒ½ãªãƒ•ã‚¡ã‚¤ãƒ«æ•° */
 			nVal = ::GetDlgItemInt( hwndDlg, IDC_EDIT_nDropFileNumMax, NULL, FALSE );
 			if( pMNUD->iDelta < 0 ){
 				++nVal;
@@ -137,7 +137,7 @@ INT_PTR CPropFile::DispatchEvent(
 			/*NOTREACHED*/
 //			break;
 		case IDC_SPIN_AUTOBACKUP_INTERVAL:
-			/* ƒoƒbƒNƒAƒbƒvŠÔŠu */
+			/* ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—é–“éš” */
 			nVal = ::GetDlgItemInt( hwndDlg, IDC_EDIT_AUTOBACKUP_INTERVAL, NULL, FALSE );
 			if( pMNUD->iDelta < 0 ){
 				++nVal;
@@ -154,7 +154,7 @@ INT_PTR CPropFile::DispatchEvent(
 			::SetDlgItemInt( hwndDlg, IDC_EDIT_AUTOBACKUP_INTERVAL, nVal, FALSE );
 			return TRUE;
 		case IDC_SPIN_ALERT_FILESIZE:
-			/* ƒtƒ@ƒCƒ‹‚ÌŒxƒTƒCƒY */
+			/* ãƒ•ã‚¡ã‚¤ãƒ«ã®è­¦å‘Šã‚µã‚¤ã‚º */
 			nVal = ::GetDlgItemInt( hwndDlg, IDC_EDIT_ALERT_FILESIZE, NULL, FALSE );
 			if( pMNUD->iDelta < 0 ){
 				++nVal;
@@ -166,7 +166,7 @@ INT_PTR CPropFile::DispatchEvent(
 				nVal = 1;
 			}
 			if( nVal > 2048 ){
-				nVal = 2048;  // Å‘å 2GB ‚Ü‚Å
+				nVal = 2048;  // æœ€å¤§ 2GB ã¾ã§
 			}
 			::SetDlgItemInt( hwndDlg, IDC_EDIT_ALERT_FILESIZE, nVal, FALSE );
 			return TRUE;
@@ -174,25 +174,25 @@ INT_PTR CPropFile::DispatchEvent(
 //			break;
 //@@@ 2001.03.21 End by MIK
 		}
-//****	To Here Sept. 21, 2000 JEPRO ƒ_ƒCƒAƒƒO—v‘f‚ÉƒXƒsƒ“‚ğ“ü‚ê‚é‚Ì‚ÅWM_NOTIFY‚ğƒRƒƒ“ƒgƒAƒEƒg‚É‚µ‚»‚Ì‰º‚ÉC³‚ğ’u‚¢‚½
+//****	To Here Sept. 21, 2000 JEPRO ãƒ€ã‚¤ã‚¢ãƒ­ã‚°è¦ç´ ã«ã‚¹ãƒ”ãƒ³ã‚’å…¥ã‚Œã‚‹ã®ã§WM_NOTIFYã‚’ã‚³ãƒ¡ãƒ³ãƒˆã‚¢ã‚¦ãƒˆã«ã—ãã®ä¸‹ã«ä¿®æ­£ã‚’ç½®ã„ãŸ
 		break;
 
 	case WM_COMMAND:
-		wNotifyCode	= HIWORD(wParam);	/* ’Ê’mƒR[ƒh */
-		wID			= LOWORD(wParam);	/* €–ÚID¤ ƒRƒ“ƒgƒ[ƒ‹ID¤ ‚Ü‚½‚ÍƒAƒNƒZƒ‰ƒŒ[ƒ^ID */
-		hwndCtl		= (HWND) lParam;	/* ƒRƒ“ƒgƒ[ƒ‹‚Ìƒnƒ“ƒhƒ‹ */
+		wNotifyCode	= HIWORD(wParam);	/* é€šçŸ¥ã‚³ãƒ¼ãƒ‰ */
+		wID			= LOWORD(wParam);	/* é …ç›®IDã€ ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«IDã€ ã¾ãŸã¯ã‚¢ã‚¯ã‚»ãƒ©ãƒ¬ãƒ¼ã‚¿ID */
+		hwndCtl		= (HWND) lParam;	/* ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã®ãƒãƒ³ãƒ‰ãƒ« */
 
-		if( wID == IDC_COMBO_FILESHAREMODE && wNotifyCode == CBN_SELCHANGE ){	// ƒRƒ“ƒ{ƒ{ƒbƒNƒX‚Ì‘I‘ğ•ÏX
+		if( wID == IDC_COMBO_FILESHAREMODE && wNotifyCode == CBN_SELCHANGE ){	// ã‚³ãƒ³ãƒœãƒœãƒƒã‚¯ã‚¹ã®é¸æŠå¤‰æ›´
 			EnableFilePropInput(hwndDlg);
 			break;
 		}
 
 		switch( wNotifyCode ){
-		/* ƒ{ƒ^ƒ“^ƒ`ƒFƒbƒNƒ{ƒbƒNƒX‚ªƒNƒŠƒbƒN‚³‚ê‚½ */
+		/* ãƒœã‚¿ãƒ³ï¼ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹ãŒã‚¯ãƒªãƒƒã‚¯ã•ã‚ŒãŸ */
 		case BN_CLICKED:
 			switch( wID ){
-			case IDC_CHECK_bCheckFileTimeStamp:	// XV‚ÌŠÄ‹
-			case IDC_CHECK_bDropFileAndClose:/* ƒtƒ@ƒCƒ‹‚ğƒhƒƒbƒv‚µ‚½‚Æ‚«‚Í•Â‚¶‚ÄŠJ‚­ */
+			case IDC_CHECK_bCheckFileTimeStamp:	// æ›´æ–°ã®ç›£è¦–
+			case IDC_CHECK_bDropFileAndClose:/* ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ãƒ‰ãƒ­ãƒƒãƒ—ã—ãŸã¨ãã¯é–‰ã˜ã¦é–‹ã */
 			case IDC_CHECK_AUTOSAVE:
 			case IDC_CHECK_ALERT_IF_LARGEFILE:
 				EnableFilePropInput(hwndDlg);
@@ -210,18 +210,18 @@ INT_PTR CPropFile::DispatchEvent(
 
 
 
-/*! ƒtƒ@ƒCƒ‹ƒy[ƒW: ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìİ’è
-	‹¤—Lƒƒ‚ƒŠ‚©‚çƒf[ƒ^‚ğ“Ç‚İo‚µ‚ÄŠeƒRƒ“ƒgƒ[ƒ‹‚É’l‚ğİ’è‚·‚éB
+/*! ãƒ•ã‚¡ã‚¤ãƒ«ãƒšãƒ¼ã‚¸: ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®è¨­å®š
+	å…±æœ‰ãƒ¡ãƒ¢ãƒªã‹ã‚‰ãƒ‡ãƒ¼ã‚¿ã‚’èª­ã¿å‡ºã—ã¦å„ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã«å€¤ã‚’è¨­å®šã™ã‚‹ã€‚
 
-	@par ƒoƒbƒNƒAƒbƒv¢‘ã”‚ª‘Ã“–‚È’l‚©‚Ç‚¤‚©‚Ìƒ`ƒFƒbƒN‚às‚¤B•s“KØ‚È’l‚Ì‚Í
-	Å‚à‹ß‚¢“KØ‚È’l‚ğİ’è‚·‚éB
+	@par ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ä¸–ä»£æ•°ãŒå¦¥å½“ãªå€¤ã‹ã©ã†ã‹ã®ãƒã‚§ãƒƒã‚¯ã‚‚è¡Œã†ã€‚ä¸é©åˆ‡ãªå€¤ã®æ™‚ã¯
+	æœ€ã‚‚è¿‘ã„é©åˆ‡ãªå€¤ã‚’è¨­å®šã™ã‚‹ã€‚
 
-	@param hwndDlg ƒvƒƒpƒeƒBƒy[ƒW‚ÌWindow Handle
+	@param hwndDlg ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ãƒšãƒ¼ã‚¸ã®Window Handle
 */
 void CPropFile::SetData( HWND hwndDlg )
 {
 	/*--- File ---*/
-	/* ƒtƒ@ƒCƒ‹‚Ì”r‘¼§Œäƒ‚[ƒh */
+	/* ãƒ•ã‚¡ã‚¤ãƒ«ã®æ’ä»–åˆ¶å¾¡ãƒ¢ãƒ¼ãƒ‰ */
 	HWND	hwndCombo = ::GetDlgItem( hwndDlg, IDC_COMBO_FILESHAREMODE );
 	Combo_ResetContent( hwndCombo );
 	int		nSelPos = 0;
@@ -233,25 +233,25 @@ void CPropFile::SetData( HWND hwndDlg )
 	}
 	Combo_SetCurSel( hwndCombo, nSelPos );
 
-	/* XV‚ÌŠÄ‹ */
+	/* æ›´æ–°ã®ç›£è¦– */
 	::CheckDlgButtonBool( hwndDlg, IDC_CHECK_bCheckFileTimeStamp, m_Common.m_sFile.m_bCheckFileTimeStamp );
 
-	// ©“®“Ç’x‰„
+	// è‡ªå‹•èª­è¾¼æ™‚é…å»¶
 	::SetDlgItemInt( hwndDlg, IDC_EDIT_AUTOLOAD_DELAY, m_Common.m_sFile.m_nAutoloadDelay, FALSE );
 
-	/* ã‘‚«‹Ö~ŒŸo‚Í•ÒW‹Ö~‚É‚·‚é */
+	/* ä¸Šæ›¸ãç¦æ­¢æ¤œå‡ºæ™‚ã¯ç·¨é›†ç¦æ­¢ã«ã™ã‚‹ */
 	::CheckDlgButtonBool( hwndDlg, IDC_CHECK_bUneditableIfUnwritable, m_Common.m_sFile.m_bUneditableIfUnwritable );
 
-	/* –³•ÏX‚Å‚àã‘‚«‚·‚é‚© */
+	/* ç„¡å¤‰æ›´ã§ã‚‚ä¸Šæ›¸ãã™ã‚‹ã‹ */
 	::CheckDlgButtonBool( hwndDlg, IDC_CHECK_ENABLEUNMODIFIEDOVERWRITE, m_Common.m_sFile.m_bEnableUnmodifiedOverwrite );
 
-	/* ƒtƒ@ƒCƒ‹‚ğƒhƒƒbƒv‚µ‚½‚Æ‚«‚Í•Â‚¶‚ÄŠJ‚­ */
+	/* ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ãƒ‰ãƒ­ãƒƒãƒ—ã—ãŸã¨ãã¯é–‰ã˜ã¦é–‹ã */
 	::CheckDlgButtonBool( hwndDlg, IDC_CHECK_bDropFileAndClose, m_Common.m_sFile.m_bDropFileAndClose );
-	/* ˆê“x‚Éƒhƒƒbƒv‰Â”\‚Èƒtƒ@ƒCƒ‹” */
+	/* ä¸€åº¦ã«ãƒ‰ãƒ­ãƒƒãƒ—å¯èƒ½ãªãƒ•ã‚¡ã‚¤ãƒ«æ•° */
 	::SetDlgItemInt( hwndDlg, IDC_EDIT_nDropFileNumMax, m_Common.m_sFile.m_nDropFileNumMax, FALSE );
 
 	//	From Here Aug. 21, 2000 genta
-	//	©“®•Û‘¶‚Ì—LŒøE–³Œø
+	//	è‡ªå‹•ä¿å­˜ã®æœ‰åŠ¹ãƒ»ç„¡åŠ¹
 	::CheckDlgButton( hwndDlg, IDC_CHECK_AUTOSAVE, m_Common.m_sBackup.IsAutoBackupEnabled() );
 
 	TCHAR buf[6];
@@ -265,75 +265,75 @@ void CPropFile::SetData( HWND hwndDlg )
 	::DlgItem_SetText( hwndDlg, IDC_EDIT_AUTOBACKUP_INTERVAL, buf );
 	//	To Here Aug. 21, 2000 genta
 
-	//	Oct. 27, 2000 genta	ƒJ[ƒ\ƒ‹ˆÊ’u•œŒ³ƒtƒ‰ƒO
+	//	Oct. 27, 2000 genta	ã‚«ãƒ¼ã‚½ãƒ«ä½ç½®å¾©å…ƒãƒ•ãƒ©ã‚°
 	::CheckDlgButton( hwndDlg, IDC_CHECK_RestoreCurPosition, m_Common.m_sFile.GetRestoreCurPosition() );
-	// 2002.01.16 hor ƒuƒbƒNƒ}[ƒN•œŒ³ƒtƒ‰ƒO
+	// 2002.01.16 hor ãƒ–ãƒƒã‚¯ãƒãƒ¼ã‚¯å¾©å…ƒãƒ•ãƒ©ã‚°
 	::CheckDlgButton( hwndDlg, IDC_CHECK_RestoreBookmarks, m_Common.m_sFile.GetRestoreBookmarks() );
-	//	Nov. 12, 2000 genta	MIME Decodeƒtƒ‰ƒO
+	//	Nov. 12, 2000 genta	MIME Decodeãƒ•ãƒ©ã‚°
 	::CheckDlgButton( hwndDlg, IDC_CHECK_AutoMIMEDecode, m_Common.m_sFile.GetAutoMIMEdecode() );
-	//	Oct. 03, 2004 genta ‘O‰ñ‚ÆˆÙ‚È‚é•¶šƒR[ƒh‚Ì‚Æ‚«‚É–â‚¢‡‚í‚¹‚ğs‚¤‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒO
+	//	Oct. 03, 2004 genta å‰å›ã¨ç•°ãªã‚‹æ–‡å­—ã‚³ãƒ¼ãƒ‰ã®ã¨ãã«å•ã„åˆã‚ã›ã‚’è¡Œã†ã‹ã©ã†ã‹ã®ãƒ•ãƒ©ã‚°
 	::CheckDlgButtonBool( hwndDlg, IDC_CHECK_QueryIfCodeChange, m_Common.m_sFile.GetQueryIfCodeChange() );
-	//	Oct. 09, 2004 genta ŠJ‚±‚¤‚Æ‚µ‚½ƒtƒ@ƒCƒ‹‚ª‘¶İ‚µ‚È‚¢‚Æ‚«Œx‚·‚é‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒO
+	//	Oct. 09, 2004 genta é–‹ã“ã†ã¨ã—ãŸãƒ•ã‚¡ã‚¤ãƒ«ãŒå­˜åœ¨ã—ãªã„ã¨ãè­¦å‘Šã™ã‚‹ã‹ã©ã†ã‹ã®ãƒ•ãƒ©ã‚°
 	::CheckDlgButton( hwndDlg, IDC_CHECK_AlertIfFileNotExist, m_Common.m_sFile.GetAlertIfFileNotExist() );
-	//	ƒtƒ@ƒCƒ‹ƒTƒCƒY‚ª‘å‚«‚¢ê‡‚ÉŒx‚ğo‚·
+	//	ãƒ•ã‚¡ã‚¤ãƒ«ã‚µã‚¤ã‚ºãŒå¤§ãã„å ´åˆã«è­¦å‘Šã‚’å‡ºã™
 	::CheckDlgButton( hwndDlg, IDC_CHECK_ALERT_IF_LARGEFILE, m_Common.m_sFile.m_bAlertIfLargeFile );
 	::SetDlgItemInt( hwndDlg, IDC_EDIT_ALERT_FILESIZE, m_Common.m_sFile.m_nAlertFileSize, FALSE );
 
-	// ƒtƒ@ƒCƒ‹•Û‘¶ƒ_ƒCƒAƒƒO‚ÌƒtƒBƒ‹ƒ^İ’è	// 2006.11.16 ryoji
-	::CheckDlgButtonBool( hwndDlg, IDC_CHECK_NoFilterSaveNew, m_Common.m_sFile.m_bNoFilterSaveNew );	// V‹K‚©‚ç•Û‘¶‚Í‘Sƒtƒ@ƒCƒ‹•\¦
-	::CheckDlgButtonBool( hwndDlg, IDC_CHECK_NoFilterSaveFile, m_Common.m_sFile.m_bNoFilterSaveFile );	// V‹KˆÈŠO‚©‚ç•Û‘¶‚Í‘Sƒtƒ@ƒCƒ‹•\¦
+	// ãƒ•ã‚¡ã‚¤ãƒ«ä¿å­˜ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®ãƒ•ã‚£ãƒ«ã‚¿è¨­å®š	// 2006.11.16 ryoji
+	::CheckDlgButtonBool( hwndDlg, IDC_CHECK_NoFilterSaveNew, m_Common.m_sFile.m_bNoFilterSaveNew );	// æ–°è¦ã‹ã‚‰ä¿å­˜æ™‚ã¯å…¨ãƒ•ã‚¡ã‚¤ãƒ«è¡¨ç¤º
+	::CheckDlgButtonBool( hwndDlg, IDC_CHECK_NoFilterSaveFile, m_Common.m_sFile.m_bNoFilterSaveFile );	// æ–°è¦ä»¥å¤–ã‹ã‚‰ä¿å­˜æ™‚ã¯å…¨ãƒ•ã‚¡ã‚¤ãƒ«è¡¨ç¤º
 
 	EnableFilePropInput(hwndDlg);
 	return;
 }
 
-/*! ƒtƒ@ƒCƒ‹ƒy[ƒW ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìæ“¾
-	ƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX‚Éİ’è‚³‚ê‚½ƒf[ƒ^‚ğ‹¤—Lƒƒ‚ƒŠ‚É”½‰f‚³‚¹‚é
+/*! ãƒ•ã‚¡ã‚¤ãƒ«ãƒšãƒ¼ã‚¸ ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®å–å¾—
+	ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒœãƒƒã‚¯ã‚¹ã«è¨­å®šã•ã‚ŒãŸãƒ‡ãƒ¼ã‚¿ã‚’å…±æœ‰ãƒ¡ãƒ¢ãƒªã«åæ˜ ã•ã›ã‚‹
 
-	@par ƒoƒbƒNƒAƒbƒv¢‘ã”‚ª‘Ã“–‚È’l‚©‚Ç‚¤‚©‚Ìƒ`ƒFƒbƒN‚às‚¤B•s“KØ‚È’l‚Ì‚Í
-	Å‚à‹ß‚¢“KØ‚È’l‚ğİ’è‚·‚éB
+	@par ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ä¸–ä»£æ•°ãŒå¦¥å½“ãªå€¤ã‹ã©ã†ã‹ã®ãƒã‚§ãƒƒã‚¯ã‚‚è¡Œã†ã€‚ä¸é©åˆ‡ãªå€¤ã®æ™‚ã¯
+	æœ€ã‚‚è¿‘ã„é©åˆ‡ãªå€¤ã‚’è¨­å®šã™ã‚‹ã€‚
 
-	@param hwndDlg ƒvƒƒpƒeƒBƒy[ƒW‚ÌWindow Handle
-	@return í‚ÉTRUE
+	@param hwndDlg ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ãƒšãƒ¼ã‚¸ã®Window Handle
+	@return å¸¸ã«TRUE
 */
 int CPropFile::GetData( HWND hwndDlg )
 {
-//@@@ 2002.01.03 YAZAKI ÅŒã‚É•\¦‚µ‚Ä‚¢‚½ƒV[ƒg‚ğ³‚µ‚­Šo‚¦‚Ä‚¢‚È‚¢ƒoƒOC³
+//@@@ 2002.01.03 YAZAKI æœ€å¾Œã«è¡¨ç¤ºã—ã¦ã„ãŸã‚·ãƒ¼ãƒˆã‚’æ­£ã—ãè¦šãˆã¦ã„ãªã„ãƒã‚°ä¿®æ­£
 //	m_nPageNum = ID_PAGENUM_FILE;
 
-	/* ƒtƒ@ƒCƒ‹‚Ì”r‘¼§Œäƒ‚[ƒh */
+	/* ãƒ•ã‚¡ã‚¤ãƒ«ã®æ’ä»–åˆ¶å¾¡ãƒ¢ãƒ¼ãƒ‰ */
 	HWND	hwndCombo = ::GetDlgItem( hwndDlg, IDC_COMBO_FILESHAREMODE );
 	int		nSelPos = Combo_GetCurSel( hwndCombo );
 	m_Common.m_sFile.m_nFileShareMode = ShareModeArr[nSelPos].nMethod;
 
-	/* XV‚ÌŠÄ‹ */
+	/* æ›´æ–°ã®ç›£è¦– */
 	m_Common.m_sFile.m_bCheckFileTimeStamp = ::IsDlgButtonCheckedBool( hwndDlg, IDC_CHECK_bCheckFileTimeStamp );
 
-	// ©“®“Ç’x‰„
+	// è‡ªå‹•èª­è¾¼æ™‚é…å»¶
 	m_Common.m_sFile.m_nAutoloadDelay = ::GetDlgItemInt( hwndDlg, IDC_EDIT_AUTOLOAD_DELAY, NULL, FALSE );
 
-	/* ã‘‚«‹Ö~ŒŸo‚Í•ÒW‹Ö~‚É‚·‚é */
+	/* ä¸Šæ›¸ãç¦æ­¢æ¤œå‡ºæ™‚ã¯ç·¨é›†ç¦æ­¢ã«ã™ã‚‹ */
 	m_Common.m_sFile.m_bUneditableIfUnwritable = ::IsDlgButtonCheckedBool( hwndDlg, IDC_CHECK_bUneditableIfUnwritable );
 
-	/* –³•ÏX‚Å‚àã‘‚«‚·‚é‚© */
+	/* ç„¡å¤‰æ›´ã§ã‚‚ä¸Šæ›¸ãã™ã‚‹ã‹ */
 	m_Common.m_sFile.m_bEnableUnmodifiedOverwrite = ::IsDlgButtonCheckedBool( hwndDlg, IDC_CHECK_ENABLEUNMODIFIEDOVERWRITE );
 
-	/* ƒtƒ@ƒCƒ‹‚ğƒhƒƒbƒv‚µ‚½‚Æ‚«‚Í•Â‚¶‚ÄŠJ‚­ */
+	/* ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ãƒ‰ãƒ­ãƒƒãƒ—ã—ãŸã¨ãã¯é–‰ã˜ã¦é–‹ã */
 	m_Common.m_sFile.m_bDropFileAndClose = ::IsDlgButtonCheckedBool( hwndDlg, IDC_CHECK_bDropFileAndClose );
-	/* ˆê“x‚Éƒhƒƒbƒv‰Â”\‚Èƒtƒ@ƒCƒ‹” */
+	/* ä¸€åº¦ã«ãƒ‰ãƒ­ãƒƒãƒ—å¯èƒ½ãªãƒ•ã‚¡ã‚¤ãƒ«æ•° */
 	m_Common.m_sFile.m_nDropFileNumMax = ::GetDlgItemInt( hwndDlg, IDC_EDIT_nDropFileNumMax, NULL, FALSE );
 	if( 1 > m_Common.m_sFile.m_nDropFileNumMax ){
 		m_Common.m_sFile.m_nDropFileNumMax = 1;
 	}
-	if( 99 < m_Common.m_sFile.m_nDropFileNumMax ){	//Sept. 21, 2000, JEPRO 16‚æ‚è‘å‚«‚¢‚Æ‚«‚É99‚Æ§ŒÀ‚³‚ê‚Ä‚¢‚½‚Ì‚ğC³(16¨99‚Æ•ÏX)
+	if( 99 < m_Common.m_sFile.m_nDropFileNumMax ){	//Sept. 21, 2000, JEPRO 16ã‚ˆã‚Šå¤§ãã„ã¨ãã«99ã¨åˆ¶é™ã•ã‚Œã¦ã„ãŸã®ã‚’ä¿®æ­£(16â†’99ã¨å¤‰æ›´)
 		m_Common.m_sFile.m_nDropFileNumMax = 99;
 	}
 
 	//	From Here Aug. 16, 2000 genta
-	//	©“®•Û‘¶‚ğs‚¤‚©‚Ç‚¤‚©
+	//	è‡ªå‹•ä¿å­˜ã‚’è¡Œã†ã‹ã©ã†ã‹
 	m_Common.m_sBackup.EnableAutoBackup( ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_AUTOSAVE ) == TRUE );
 
-	//	©“®•Û‘¶ŠÔŠu‚Ìæ“¾
+	//	è‡ªå‹•ä¿å­˜é–“éš”ã®å–å¾—
 	TCHAR szNumBuf[/*6*/ 7];	//@@@ 2001.03.21 by MIK
 	int	 nN;
 	TCHAR *pDigit;
@@ -353,17 +353,17 @@ int CPropFile::GetData( HWND hwndDlg )
 
 	//	To Here Aug. 16, 2000 genta
 
-	//	Oct. 27, 2000 genta	ƒJ[ƒ\ƒ‹ˆÊ’u•œŒ³ƒtƒ‰ƒO
+	//	Oct. 27, 2000 genta	ã‚«ãƒ¼ã‚½ãƒ«ä½ç½®å¾©å…ƒãƒ•ãƒ©ã‚°
 	m_Common.m_sFile.SetRestoreCurPosition( ::IsDlgButtonCheckedBool( hwndDlg, IDC_CHECK_RestoreCurPosition ) );
-	// 2002.01.16 hor ƒuƒbƒNƒ}[ƒN•œŒ³ƒtƒ‰ƒO
+	// 2002.01.16 hor ãƒ–ãƒƒã‚¯ãƒãƒ¼ã‚¯å¾©å…ƒãƒ•ãƒ©ã‚°
 	m_Common.m_sFile.SetRestoreBookmarks( ::IsDlgButtonCheckedBool( hwndDlg, IDC_CHECK_RestoreBookmarks ) );
-	//	Nov. 12, 2000 genta	MIME Decodeƒtƒ‰ƒO
+	//	Nov. 12, 2000 genta	MIME Decodeãƒ•ãƒ©ã‚°
 	m_Common.m_sFile.SetAutoMIMEdecode( ::IsDlgButtonCheckedBool( hwndDlg, IDC_CHECK_AutoMIMEDecode ) );
-	//	Oct. 03, 2004 genta ‘O‰ñ‚ÆˆÙ‚È‚é•¶šƒR[ƒh‚Ì‚Æ‚«‚É–â‚¢‡‚í‚¹‚ğs‚¤‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒO
+	//	Oct. 03, 2004 genta å‰å›ã¨ç•°ãªã‚‹æ–‡å­—ã‚³ãƒ¼ãƒ‰ã®ã¨ãã«å•ã„åˆã‚ã›ã‚’è¡Œã†ã‹ã©ã†ã‹ã®ãƒ•ãƒ©ã‚°
 	m_Common.m_sFile.SetQueryIfCodeChange( ::IsDlgButtonCheckedBool( hwndDlg, IDC_CHECK_QueryIfCodeChange ) );
-	//	Oct. 03, 2004 genta ‘O‰ñ‚ÆˆÙ‚È‚é•¶šƒR[ƒh‚Ì‚Æ‚«‚É–â‚¢‡‚í‚¹‚ğs‚¤‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒO
+	//	Oct. 03, 2004 genta å‰å›ã¨ç•°ãªã‚‹æ–‡å­—ã‚³ãƒ¼ãƒ‰ã®ã¨ãã«å•ã„åˆã‚ã›ã‚’è¡Œã†ã‹ã©ã†ã‹ã®ãƒ•ãƒ©ã‚°
 	m_Common.m_sFile.SetAlertIfFileNotExist( ::IsDlgButtonCheckedBool( hwndDlg, IDC_CHECK_AlertIfFileNotExist ) );
-	// ŠJ‚±‚¤‚Æ‚µ‚½ƒtƒ@ƒCƒ‹‚ª‘å‚«‚¢ê‡‚ÉŒx‚·‚é
+	// é–‹ã“ã†ã¨ã—ãŸãƒ•ã‚¡ã‚¤ãƒ«ãŒå¤§ãã„å ´åˆã«è­¦å‘Šã™ã‚‹
 	m_Common.m_sFile.m_bAlertIfLargeFile = ::IsDlgButtonCheckedBool( hwndDlg, IDC_CHECK_ALERT_IF_LARGEFILE );
 	m_Common.m_sFile.m_nAlertFileSize = ::GetDlgItemInt( hwndDlg, IDC_EDIT_ALERT_FILESIZE, NULL, FALSE );
 	if( m_Common.m_sFile.m_nAlertFileSize < 1 ){
@@ -373,36 +373,36 @@ int CPropFile::GetData( HWND hwndDlg )
 		m_Common.m_sFile.m_nAlertFileSize = 2048;
 	}
 
-	// ƒtƒ@ƒCƒ‹•Û‘¶ƒ_ƒCƒAƒƒO‚ÌƒtƒBƒ‹ƒ^İ’è	// 2006.11.16 ryoji
-	m_Common.m_sFile.m_bNoFilterSaveNew = ::IsDlgButtonCheckedBool( hwndDlg, IDC_CHECK_NoFilterSaveNew );	// V‹K‚©‚ç•Û‘¶‚Í‘Sƒtƒ@ƒCƒ‹•\¦
-	m_Common.m_sFile.m_bNoFilterSaveFile = ::IsDlgButtonCheckedBool( hwndDlg, IDC_CHECK_NoFilterSaveFile );	// V‹KˆÈŠO‚©‚ç•Û‘¶‚Í‘Sƒtƒ@ƒCƒ‹•\¦
+	// ãƒ•ã‚¡ã‚¤ãƒ«ä¿å­˜ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®ãƒ•ã‚£ãƒ«ã‚¿è¨­å®š	// 2006.11.16 ryoji
+	m_Common.m_sFile.m_bNoFilterSaveNew = ::IsDlgButtonCheckedBool( hwndDlg, IDC_CHECK_NoFilterSaveNew );	// æ–°è¦ã‹ã‚‰ä¿å­˜æ™‚ã¯å…¨ãƒ•ã‚¡ã‚¤ãƒ«è¡¨ç¤º
+	m_Common.m_sFile.m_bNoFilterSaveFile = ::IsDlgButtonCheckedBool( hwndDlg, IDC_CHECK_NoFilterSaveFile );	// æ–°è¦ä»¥å¤–ã‹ã‚‰ä¿å­˜æ™‚ã¯å…¨ãƒ•ã‚¡ã‚¤ãƒ«è¡¨ç¤º
 
 	return TRUE;
 }
 
 //	From Here Aug. 21, 2000 genta
-/*!	ƒ`ƒFƒbƒNó‘Ô‚É‰‚¶‚Äƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX—v‘f‚ÌEnable/Disable‚ğ
-	“KØ‚Éİ’è‚·‚é
+/*!	ãƒã‚§ãƒƒã‚¯çŠ¶æ…‹ã«å¿œã˜ã¦ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒœãƒƒã‚¯ã‚¹è¦ç´ ã®Enable/Disableã‚’
+	é©åˆ‡ã«è¨­å®šã™ã‚‹
 
-	@param hwndDlg ƒvƒƒpƒeƒBƒV[ƒg‚ÌWindow Handle
+	@param hwndDlg ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚·ãƒ¼ãƒˆã®Window Handle
 */
 void CPropFile::EnableFilePropInput(HWND hwndDlg)
 {
 
-	//	Drop‚Ì“®ì
+	//	Dropæ™‚ã®å‹•ä½œ
 	if( ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_bDropFileAndClose ) ){
-		::EnableWindow( ::GetDlgItem( hwndDlg, IDC_LABEL_AUTOSAVE3 ), FALSE );	// added Sept. 6, JEPRO ©“®•Û‘¶‚É‚µ‚½‚Æ‚«‚¾‚¯Enable‚É‚È‚é‚æ‚¤‚É•ÏX
-		::EnableWindow( ::GetDlgItem( hwndDlg, IDC_LABEL_AUTOSAVE4 ), FALSE );	// added Sept. 6, JEPRO	“¯ã
+		::EnableWindow( ::GetDlgItem( hwndDlg, IDC_LABEL_AUTOSAVE3 ), FALSE );	// added Sept. 6, JEPRO è‡ªå‹•ä¿å­˜ã«ã—ãŸã¨ãã ã‘Enableã«ãªã‚‹ã‚ˆã†ã«å¤‰æ›´
+		::EnableWindow( ::GetDlgItem( hwndDlg, IDC_LABEL_AUTOSAVE4 ), FALSE );	// added Sept. 6, JEPRO	åŒä¸Š
 		::EnableWindow( ::GetDlgItem( hwndDlg, IDC_EDIT_nDropFileNumMax ), FALSE );
-		::EnableWindow( ::GetDlgItem( hwndDlg, IDC_SPIN_nDropFileNumMax ), FALSE );// added Oct. 6, JEPRO ƒtƒ@ƒCƒ‹ƒI[ƒvƒ“‚ğu•Â‚¶‚ÄŠJ‚­v‚É‚µ‚½‚Æ‚«‚ÍDisable‚É‚È‚é‚æ‚¤‚É•ÏX
+		::EnableWindow( ::GetDlgItem( hwndDlg, IDC_SPIN_nDropFileNumMax ), FALSE );// added Oct. 6, JEPRO ãƒ•ã‚¡ã‚¤ãƒ«ã‚ªãƒ¼ãƒ—ãƒ³ã‚’ã€Œé–‰ã˜ã¦é–‹ãã€ã«ã—ãŸã¨ãã¯Disableã«ãªã‚‹ã‚ˆã†ã«å¤‰æ›´
 	}else{
-		::EnableWindow( ::GetDlgItem( hwndDlg, IDC_LABEL_AUTOSAVE3 ), TRUE );	// added Sept. 6, JEPRO	“¯ã
-		::EnableWindow( ::GetDlgItem( hwndDlg, IDC_LABEL_AUTOSAVE4 ), TRUE );	// added Sept. 6, JEPRO	“¯ã
+		::EnableWindow( ::GetDlgItem( hwndDlg, IDC_LABEL_AUTOSAVE3 ), TRUE );	// added Sept. 6, JEPRO	åŒä¸Š
+		::EnableWindow( ::GetDlgItem( hwndDlg, IDC_LABEL_AUTOSAVE4 ), TRUE );	// added Sept. 6, JEPRO	åŒä¸Š
 		::EnableWindow( ::GetDlgItem( hwndDlg, IDC_EDIT_nDropFileNumMax ), TRUE );
-		::EnableWindow( ::GetDlgItem( hwndDlg, IDC_SPIN_nDropFileNumMax ), TRUE );// added Oct. 6, JEPRO ƒtƒ@ƒCƒ‹ƒI[ƒvƒ“‚ğu•¡”ƒtƒ@ƒCƒ‹ƒhƒƒbƒvv‚É‚µ‚½‚Æ‚«‚¾‚¯Enable‚É‚È‚é‚æ‚¤‚É•ÏX
+		::EnableWindow( ::GetDlgItem( hwndDlg, IDC_SPIN_nDropFileNumMax ), TRUE );// added Oct. 6, JEPRO ãƒ•ã‚¡ã‚¤ãƒ«ã‚ªãƒ¼ãƒ—ãƒ³ã‚’ã€Œè¤‡æ•°ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‰ãƒ­ãƒƒãƒ—ã€ã«ã—ãŸã¨ãã ã‘Enableã«ãªã‚‹ã‚ˆã†ã«å¤‰æ›´
 	}
 
-	//	”r‘¼‚·‚é‚©‚Ç‚¤‚©
+	//	æ’ä»–ã™ã‚‹ã‹ã©ã†ã‹
 	int nSelPos = Combo_GetCurSel( ::GetDlgItem( hwndDlg, IDC_COMBO_FILESHAREMODE ) );
 	if( ShareModeArr[nSelPos].nMethod == SHAREMODE_NOT_EXCLUSIVE ){
 		::EnableWindow( ::GetDlgItem( hwndDlg, IDC_CHECK_bCheckFileTimeStamp ), TRUE );
@@ -423,20 +423,20 @@ void CPropFile::EnableFilePropInput(HWND hwndDlg)
 		::EnableWindow( ::GetDlgItem( hwndDlg, IDC_SPIN_AUTOLOAD_DELAY ),  FALSE );
 	}
 
-	//	©“®•Û‘¶
+	//	è‡ªå‹•ä¿å­˜
 	if( ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_AUTOSAVE ) ){
 		::EnableWindow( ::GetDlgItem( hwndDlg, IDC_EDIT_AUTOBACKUP_INTERVAL ), TRUE );
 		::EnableWindow( ::GetDlgItem( hwndDlg, IDC_LABEL_AUTOSAVE ), TRUE );
-		::EnableWindow( ::GetDlgItem( hwndDlg, IDC_LABEL_AUTOSAVE2 ), TRUE );	//Sept. 6, 2000 JEPRO ©“®•Û‘¶‚É‚µ‚½‚Æ‚«‚¾‚¯Enable‚É‚È‚é‚æ‚¤‚É•ÏX
+		::EnableWindow( ::GetDlgItem( hwndDlg, IDC_LABEL_AUTOSAVE2 ), TRUE );	//Sept. 6, 2000 JEPRO è‡ªå‹•ä¿å­˜ã«ã—ãŸã¨ãã ã‘Enableã«ãªã‚‹ã‚ˆã†ã«å¤‰æ›´
 		::EnableWindow( ::GetDlgItem( hwndDlg, IDC_SPIN_AUTOBACKUP_INTERVAL ), TRUE );	//@@@ 2001.03.21 by MIK
 	}else{
 		::EnableWindow( ::GetDlgItem( hwndDlg, IDC_EDIT_AUTOBACKUP_INTERVAL ), FALSE );
 		::EnableWindow( ::GetDlgItem( hwndDlg, IDC_LABEL_AUTOSAVE ), FALSE );
-		::EnableWindow( ::GetDlgItem( hwndDlg, IDC_LABEL_AUTOSAVE2 ), FALSE );	//Sept. 6, 2000 JEPRO “¯ã
+		::EnableWindow( ::GetDlgItem( hwndDlg, IDC_LABEL_AUTOSAVE2 ), FALSE );	//Sept. 6, 2000 JEPRO åŒä¸Š
 		::EnableWindow( ::GetDlgItem( hwndDlg, IDC_SPIN_AUTOBACKUP_INTERVAL ), FALSE );	//@@@ 2001.03.21 by MIK
 	}
 
-	// uŠJ‚±‚¤‚Æ‚µ‚½ƒtƒ@ƒCƒ‹‚ª‘å‚«‚¢ê‡‚ÉŒx‚ğo‚·v
+	// ã€Œé–‹ã“ã†ã¨ã—ãŸãƒ•ã‚¡ã‚¤ãƒ«ãŒå¤§ãã„å ´åˆã«è­¦å‘Šã‚’å‡ºã™ã€
 	if( ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_ALERT_IF_LARGEFILE ) ){
 		::EnableWindow( ::GetDlgItem( hwndDlg, IDC_EDIT_ALERT_FILESIZE ), TRUE );
 		::EnableWindow( ::GetDlgItem( hwndDlg, IDC_SPIN_ALERT_FILESIZE ), TRUE );

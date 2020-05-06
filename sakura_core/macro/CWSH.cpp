@@ -1,11 +1,11 @@
 /*!	@file
 	@brief WSH Handler
 
-	@author ‹S
-	@date 2002”N4Œ28“ú
+	@author é¬¼
+	@date 2002å¹´4æœˆ28æ—¥
 */
 /*
-	Copyright (C) 2002, ‹S, genta
+	Copyright (C) 2002, é¬¼, genta
 	Copyright (C) 2003, FILE
 	Copyright (C) 2004, genta
 	Copyright (C) 2005, FILE, zenryaku
@@ -49,17 +49,17 @@
 #include "dlg/CDlgCancel.h"
 #include "sakura_rc.h"
 #ifndef SCRIPT_E_REPORTED
-#define	SCRIPT_E_REPORTED	0x80020101L	// ActivScp.h(VS2012)‚Æ“¯‚¶—l‚ÈŒ`‚É•ÏX
+#define	SCRIPT_E_REPORTED	0x80020101L	// ActivScp.h(VS2012)ã¨åŒã˜æ§˜ãªå½¢ã«å¤‰æ›´
 #endif
 
-/* 2009.10.29 syat ƒCƒ“ƒ^ƒtƒF[ƒXƒIƒuƒWƒFƒNƒg•”•ª‚ğCWSHIfObj.h‚É•ª—£
+/* 2009.10.29 syat ã‚¤ãƒ³ã‚¿ãƒ•ã‚§ãƒ¼ã‚¹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆéƒ¨åˆ†ã‚’CWSHIfObj.hã«åˆ†é›¢
 class CInterfaceObjectTypeInfo: public ImplementsIUnknown<ITypeInfo>
  */
 
 //IActiveScriptSite, IActiveScriptSiteWindow
 /*!
-	@date Sep. 15, 2005 FILE IActiveScriptSiteWindowÀ‘•D
-		ƒ}ƒNƒ‚ÅMsgBox‚ğg—p‰Â”\‚É‚·‚éD
+	@date Sep. 15, 2005 FILE IActiveScriptSiteWindowå®Ÿè£…ï¼
+		ãƒã‚¯ãƒ­ã§MsgBoxã‚’ä½¿ç”¨å¯èƒ½ã«ã™ã‚‹ï¼
 */
 class CWSHSite: public IActiveScriptSite, public IActiveScriptSiteWindow
 {
@@ -106,7 +106,7 @@ public:
 #ifdef TEST
 		cout << "GetLCID" << endl;
 #endif
-		return E_NOTIMPL; //ƒVƒXƒeƒ€ƒfƒtƒHƒ‹ƒg‚ğg—p
+		return E_NOTIMPL; //ã‚·ã‚¹ãƒ†ãƒ ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚’ä½¿ç”¨
 	}
 
 	virtual HRESULT STDMETHODCALLTYPE GetItemInfo( 
@@ -118,11 +118,11 @@ public:
 #ifdef TEST
 		wcout << L"GetItemInfo:" << pstrName << endl;
 #endif
-		//w’è‚³‚ê‚½–¼‘O‚ÌƒCƒ“ƒ^ƒtƒF[ƒXƒIƒuƒWƒFƒNƒg‚ğŒŸõ
+		//æŒ‡å®šã•ã‚ŒãŸåå‰ã®ã‚¤ãƒ³ã‚¿ãƒ•ã‚§ãƒ¼ã‚¹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’æ¤œç´¢
 		const CWSHClient::List& objects = m_Client->GetInterfaceObjects();
 		for( CWSHClient::ListIter it = objects.begin(); it != objects.end(); it++ )
 		{
-			//	Nov. 10, 2003 FILE Win9X‚Å‚ÍA[lstrcmpiW]‚ª–³Œø‚Ì‚½‚ßA[_wcsicmp]‚ÉC³
+			//	Nov. 10, 2003 FILE Win9Xã§ã¯ã€[lstrcmpiW]ãŒç„¡åŠ¹ã®ãŸã‚ã€[_wcsicmp]ã«ä¿®æ­£
 			if( _wcsicmp( pstrName, (*it)->m_sName.c_str() ) == 0 )
 			{
 				if(dwReturnMask & SCRIPTINFO_IUNKNOWN)
@@ -168,8 +168,8 @@ public:
 		return S_OK; 
 	}
 
-	//	Nov. 3, 2002 ‹S
-	//	ƒGƒ‰[s”Ô†•\¦‘Î‰
+	//	Nov. 3, 2002 é¬¼
+	//	ã‚¨ãƒ©ãƒ¼è¡Œç•ªå·è¡¨ç¤ºå¯¾å¿œ
 	virtual HRESULT STDMETHODCALLTYPE OnScriptError(
 	  /* [in] */ IActiveScriptError *pscripterror)
 	{ 
@@ -180,12 +180,12 @@ public:
 			ULONG Line;
 			LONG Pos;
 			if(Info.bstrDescription == NULL) {
-				Info.bstrDescription = SysAllocString(L"ƒ}ƒNƒ‚ÌÀs‚ğ’†’f‚µ‚Ü‚µ‚½B");
+				Info.bstrDescription = SysAllocString(L"ãƒã‚¯ãƒ­ã®å®Ÿè¡Œã‚’ä¸­æ–­ã—ã¾ã—ãŸã€‚");
 			}
 			if(pscripterror->GetSourcePosition(&Context, &Line, &Pos) == S_OK)
 			{
 				wchar_t *Message = new wchar_t[SysStringLen(Info.bstrDescription) + 128];
-				//	Nov. 10, 2003 FILE Win9X‚Å‚ÍA[wsprintfW]‚ª–³Œø‚Ì‚½‚ßA[auto_sprintf]‚ÉC³
+				//	Nov. 10, 2003 FILE Win9Xã§ã¯ã€[wsprintfW]ãŒç„¡åŠ¹ã®ãŸã‚ã€[auto_sprintf]ã«ä¿®æ­£
 				const wchar_t* szDesc=Info.bstrDescription;
 				auto_sprintf(Message, L"[Line %d] %ls", Line + 1, szDesc);
 				SysReAllocString(&Info.bstrDescription, Message);
@@ -213,7 +213,7 @@ public:
 		return S_OK; 
 	}
 
-	//	Sep. 15, 2005 FILE IActiveScriptSiteWindowÀ‘•
+	//	Sep. 15, 2005 FILE IActiveScriptSiteWindowå®Ÿè£…
 	virtual HRESULT __stdcall GetWindow(
 	    /* [out] */ HWND *phwnd)
 	{
@@ -221,7 +221,7 @@ public:
 		return S_OK;
 	}
 
-	//	Sep. 15, 2005 FILE IActiveScriptSiteWindowÀ‘•
+	//	Sep. 15, 2005 FILE IActiveScriptSiteWindowå®Ÿè£…
 	virtual HRESULT __stdcall EnableModeless(
 	    /* [in] */ BOOL fEnable)
 	{
@@ -234,24 +234,24 @@ public:
 CWSHClient::CWSHClient(wchar_t const *AEngine, ScriptErrorHandler AErrorHandler, void *AData): 
 				m_Engine(NULL), m_Data(AData), m_OnError(AErrorHandler), m_Valid(false)
 { 
-	// 2010.08.28 DLL ƒCƒ“ƒWƒFƒNƒVƒ‡ƒ“‘Îô‚Æ‚µ‚ÄEXE‚ÌƒtƒHƒ‹ƒ_‚ÉˆÚ“®‚·‚é
+	// 2010.08.28 DLL ã‚¤ãƒ³ã‚¸ã‚§ã‚¯ã‚·ãƒ§ãƒ³å¯¾ç­–ã¨ã—ã¦EXEã®ãƒ•ã‚©ãƒ«ãƒ€ã«ç§»å‹•ã™ã‚‹
 	CCurrentDirectoryBackupPoint dirBack;
 	ChangeCurrentDirectoryToExeDir();
 	
 	CLSID ClassID;
 	if(CLSIDFromProgID(AEngine, &ClassID) != S_OK)
-		Error(L"w–¼‚ÌƒXƒNƒŠƒvƒgƒGƒ“ƒWƒ“‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ");
+		Error(L"æŒ‡åã®ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚¨ãƒ³ã‚¸ãƒ³ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“");
 	else
 	{
 		if(CoCreateInstance(ClassID, 0, CLSCTX_INPROC_SERVER, IID_IActiveScript, reinterpret_cast<void **>(&m_Engine)) != S_OK)
-			Error(L"w–¼‚ÌƒXƒNƒŠƒvƒgƒGƒ“ƒWƒ“‚ªì¬‚Å‚«‚Ü‚¹‚ñ");
+			Error(L"æŒ‡åã®ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚¨ãƒ³ã‚¸ãƒ³ãŒä½œæˆã§ãã¾ã›ã‚“");
 		else
 		{
 			IActiveScriptSite *Site = new CWSHSite(this);
 			if(m_Engine->SetScriptSite(Site) != S_OK)
 			{
 				delete Site;
-				Error(L"ƒTƒCƒg‚ğ“o˜^‚Å‚«‚Ü‚¹‚ñ");
+				Error(L"ã‚µã‚¤ãƒˆã‚’ç™»éŒ²ã§ãã¾ã›ã‚“");
 			}
 			else
 			{
@@ -263,7 +263,7 @@ CWSHClient::CWSHClient(wchar_t const *AEngine, ScriptErrorHandler AErrorHandler,
 
 CWSHClient::~CWSHClient()
 {
-	//ƒCƒ“ƒ^ƒtƒF[ƒXƒIƒuƒWƒFƒNƒg‚ğ‰ğ•ú
+	//ã‚¤ãƒ³ã‚¿ãƒ•ã‚§ãƒ¼ã‚¹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è§£æ”¾
 	for( ListIter it = m_IfObjArr.begin(); it != m_IfObjArr.end(); it++ ){
 		(*it)->Release();
 	}
@@ -272,7 +272,7 @@ CWSHClient::~CWSHClient()
 		m_Engine->Release();
 }
 
-// AbortMacroProc‚Ìƒpƒ‰ƒ[ƒ^\‘¢‘Ì
+// AbortMacroProcã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æ§‹é€ ä½“
 typedef struct {
 	HANDLE hEvent;
 	IActiveScript *pEngine;				//ActiveScript
@@ -280,20 +280,20 @@ typedef struct {
 	CEditView *view;
 } SAbortMacroParam;
 
-// WSHƒ}ƒNƒÀs‚ğ’†~‚·‚éƒXƒŒƒbƒh
+// WSHãƒã‚¯ãƒ­å®Ÿè¡Œã‚’ä¸­æ­¢ã™ã‚‹ã‚¹ãƒ¬ãƒƒãƒ‰
 static unsigned __stdcall AbortMacroProc( LPVOID lpParameter )
 {
 	SAbortMacroParam* pParam = (SAbortMacroParam*) lpParameter;
 
-	//’â~ƒ_ƒCƒAƒƒO•\¦‘O‚É”•b‘Ò‚Â
+	//åœæ­¢ãƒ€ã‚¤ã‚¢ãƒ­ã‚°è¡¨ç¤ºå‰ã«æ•°ç§’å¾…ã¤
 	if(::WaitForSingleObject(pParam->hEvent, pParam->nCancelTimer * 1000) == WAIT_TIMEOUT){
-		//’â~ƒ_ƒCƒAƒƒO•\¦
+		//åœæ­¢ãƒ€ã‚¤ã‚¢ãƒ­ã‚°è¡¨ç¤º
 		DEBUG_TRACE(_T("AbortMacro: Show Dialog\n"));
 
 		MSG msg;
 		CDlgCancel cDlgCancel;
-		HWND hwndDlg = cDlgCancel.DoModeless(G_AppInstance(), NULL, IDD_MACRORUNNING);	// ƒGƒfƒBƒ^ƒrƒW[‚Å‚à•\¦‚Å‚«‚é‚æ‚¤Ae‚ğw’è‚µ‚È‚¢
-		// ƒ_ƒCƒAƒƒOƒ^ƒCƒgƒ‹‚Æƒtƒ@ƒCƒ‹–¼‚ğİ’è
+		HWND hwndDlg = cDlgCancel.DoModeless(G_AppInstance(), NULL, IDD_MACRORUNNING);	// ã‚¨ãƒ‡ã‚£ã‚¿ãƒ“ã‚¸ãƒ¼ã§ã‚‚è¡¨ç¤ºã§ãã‚‹ã‚ˆã†ã€è¦ªã‚’æŒ‡å®šã—ãªã„
+		// ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚¿ã‚¤ãƒˆãƒ«ã¨ãƒ•ã‚¡ã‚¤ãƒ«åã‚’è¨­å®š
 		::SendMessage(hwndDlg, WM_SETTEXT, 0, (LPARAM)GSTR_APPNAME);
 		::SendMessage(GetDlgItem(hwndDlg, IDC_STATIC_CMD),
 			WM_SETTEXT, 0, (LPARAM)pParam->view->GetDocument()->m_cDocFile.GetFilePath());
@@ -312,7 +312,7 @@ static unsigned __stdcall AbortMacroProc( LPVOID lpParameter )
 					}
 				}
 			}else{
-				//MsgWaitForMultipleObjects‚É—^‚¦‚½ƒnƒ“ƒhƒ‹‚ÌƒGƒ‰[
+				//MsgWaitForMultipleObjectsã«ä¸ãˆãŸãƒãƒ³ãƒ‰ãƒ«ã®ã‚¨ãƒ©ãƒ¼
 				break;
 			}
 			if(!bCanceled && cDlgCancel.IsCanceled()){
@@ -340,11 +340,11 @@ void CWSHClient::Execute(wchar_t const *AScript)
 {
 	IActiveScriptParse *Parser;
 	if(m_Engine->QueryInterface(IID_IActiveScriptParse, reinterpret_cast<void **>(&Parser)) != S_OK)
-		Error(L"ƒp[ƒT‚ğæ“¾‚Å‚«‚Ü‚¹‚ñ");
+		Error(L"ãƒ‘ãƒ¼ã‚µã‚’å–å¾—ã§ãã¾ã›ã‚“");
 	else 
 	{
 		if(Parser->InitNew() != S_OK)
-			Error(L"‰Šú‰»‚Å‚«‚Ü‚¹‚ñ");
+			Error(L"åˆæœŸåŒ–ã§ãã¾ã›ã‚“");
 		else
 		{
 			bool bAddNamedItemError = false;
@@ -358,13 +358,13 @@ void CWSHClient::Execute(wchar_t const *AScript)
 				if(m_Engine->AddNamedItem( (*it)->Name(), dwFlag ) != S_OK)
 				{
 					bAddNamedItemError = true;
-					Error(L"ƒIƒuƒWƒFƒNƒg‚ğ“n‚¹‚È‚©‚Á‚½");
+					Error(L"ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’æ¸¡ã›ãªã‹ã£ãŸ");
 					break;
 				}
 			}
 			if( !bAddNamedItemError )
 			{
-				//ƒ}ƒNƒ’â~ƒXƒŒƒbƒh‚Ì‹N“®
+				//ãƒã‚¯ãƒ­åœæ­¢ã‚¹ãƒ¬ãƒƒãƒ‰ã®èµ·å‹•
 				SAbortMacroParam sThreadParam;
 				sThreadParam.pEngine = m_Engine;
 				sThreadParam.nCancelTimer = GetDllShareData().m_Common.m_sMacro.m_nMacroCancelTimer;
@@ -378,26 +378,26 @@ void CWSHClient::Execute(wchar_t const *AScript)
 					DEBUG_TRACE(_T("Start AbortMacroProc 0x%08x\n"), nThreadId);
 				}
 
-				//ƒ}ƒNƒÀs
+				//ãƒã‚¯ãƒ­å®Ÿè¡Œ
 				if(m_Engine->SetScriptState(SCRIPTSTATE_STARTED) != S_OK)
-					Error(L"ó‘Ô•ÏXƒGƒ‰[");
+					Error(L"çŠ¶æ…‹å¤‰æ›´ã‚¨ãƒ©ãƒ¼");
 				else
 				{
 					HRESULT hr = Parser->ParseScriptText(AScript, 0, 0, 0, 0, 0, SCRIPTTEXT_ISVISIBLE, 0, 0);
 					if (hr == SCRIPT_E_REPORTED) {
 					/*
-						IActiveScriptSite->OnScriptError‚É’Ê’mÏ‚İB
-						’†’fƒƒbƒZ[ƒW‚ªŠù‚É•\¦‚³‚ê‚Ä‚é‚Í‚¸B
+						IActiveScriptSite->OnScriptErrorã«é€šçŸ¥æ¸ˆã¿ã€‚
+						ä¸­æ–­ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãŒæ—¢ã«è¡¨ç¤ºã•ã‚Œã¦ã‚‹ã¯ãšã€‚
 					*/
 					} else if(hr != S_OK) {
-						Error(L"Às‚É¸”s‚µ‚Ü‚µ‚½");
+						Error(L"å®Ÿè¡Œã«å¤±æ•—ã—ã¾ã—ãŸ");
 					}
 				}
 
 				if( 0 < sThreadParam.nCancelTimer ){
 					::SetEvent(sThreadParam.hEvent);
 
-					//ƒ}ƒNƒ’â~ƒXƒŒƒbƒh‚ÌI—¹‘Ò‚¿
+					//ãƒã‚¯ãƒ­åœæ­¢ã‚¹ãƒ¬ãƒƒãƒ‰ã®çµ‚äº†å¾…ã¡
 					DEBUG_TRACE(_T("Waiting for AbortMacroProc to finish\n"));
 					::WaitForSingleObject(hThread, INFINITE); 
 					::CloseHandle(hThread);
@@ -425,7 +425,7 @@ void CWSHClient::Error(wchar_t* Description)
 	SysFreeString(D);
 }
 
-//ƒCƒ“ƒ^ƒtƒF[ƒXƒIƒuƒWƒFƒNƒg‚Ì’Ç‰Á
+//ã‚¤ãƒ³ã‚¿ãƒ•ã‚§ãƒ¼ã‚¹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®è¿½åŠ 
 void CWSHClient::AddInterfaceObject( CIfObj* obj )
 {
 	if( !obj ) return;
@@ -437,8 +437,8 @@ void CWSHClient::AddInterfaceObject( CIfObj* obj )
 
 /////////////////////////////////////////////
 /*!
-	MacroCommand¨CWSHIfObj.cpp‚ÖˆÚ“®
-	CWSHMacroManager ¨@CWSHManager.cpp‚ÖˆÚ“®
+	MacroCommandâ†’CWSHIfObj.cppã¸ç§»å‹•
+	CWSHMacroManager â†’ã€€CWSHManager.cppã¸ç§»å‹•
 
 */
 

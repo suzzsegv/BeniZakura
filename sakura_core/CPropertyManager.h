@@ -35,10 +35,10 @@ public:
 	CPropertyManager( HWND, CImageListMgr*, CMenuDrawer* );
 
 	/*
-	|| ‚»‚Ì‘¼
+	|| ãã®ä»–
 	*/
-	BOOL OpenPropertySheet( int nPageNum );	/* ‹¤’Êİ’è */
-	BOOL OpenPropertySheetTypes( int nPageNum, CTypeConfig nSettingType );	/* ƒ^ƒCƒv•Êİ’è */
+	BOOL OpenPropertySheet( int nPageNum );	/* å…±é€šè¨­å®š */
+	BOOL OpenPropertySheetTypes( int nPageNum, CTypeConfig nSettingType );	/* ã‚¿ã‚¤ãƒ—åˆ¥è¨­å®š */
 
 public:
 	CPropCommon			m_cPropCommon;

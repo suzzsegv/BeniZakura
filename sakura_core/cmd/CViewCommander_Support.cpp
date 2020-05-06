@@ -1,7 +1,7 @@
 /*!	@file
-@brief CViewCommander�N���X�̃R�}���h(�x��)�֐��Q
+@brief CViewCommanderクラスのコマンド(支援)関数群
 
-	2012/12/16	CViewCommander_Hokan.cpp��cppCViewCommander.cpp����x���֘A�𕪗���CViewCommander_Support.cpp�ɖ��̕ύX
+	2012/12/16	CViewCommander_Hokan.cppにcppCViewCommander.cppから支援関連を分離しCViewCommander_Support.cppに名称変更
 */
 /*
 	Copyright (C) 1998-2001, Norio Nakatani
@@ -26,22 +26,22 @@
 
 #include "CPropertyManager.h"
 #include "CEditApp.h"
-#include "dlg/CDlgAbout.h"	//Dec. 24, 2000 JEPRO �ǉ�
+#include "dlg/CDlgAbout.h"	//Dec. 24, 2000 JEPRO 追加
 #include "env/CHelpManager.h"
 #include "util/module.h"
 #include "util/shell.h"
 
-/*!	���͕⊮
-	Ctrl+Space�ł����ɓ����B
-	CEditView::m_bHokan�F ���ݕ⊮�E�B���h�E���\������Ă��邩��\���t���O�B
-	m_Common.m_sHelper.m_bUseHokan�F���ݕ⊮�E�B���h�E���\������Ă���ׂ����ۂ�������킷�t���O�B
+/*!	入力補完
+	Ctrl+Spaceでここに到着。
+	CEditView::m_bHokan： 現在補完ウィンドウが表示されているかを表すフラグ。
+	m_Common.m_sHelper.m_bUseHokan：現在補完ウィンドウが表示されているべきか否かをあらわすフラグ。
 
-    @date 2001/06/19 asa-o �p�啶���������𓯈ꎋ����
-                     ��₪1�̂Ƃ��͂���Ɋm�肷��
-	@date 2001/06/14 asa-o �Q�ƃf�[�^�ύX
-	                 �J���v���p�e�B�V�[�g���^�C�v�ʂɕύXy
-	@date 2000/09/15 JEPRO [Esc]�L�[��[x]�{�^���ł����~�ł���悤�ɕύX
-	@date 2005/01/10 genta CEditView_Command����ړ�
+    @date 2001/06/19 asa-o 英大文字小文字を同一視する
+                     候補が1つのときはそれに確定する
+	@date 2001/06/14 asa-o 参照データ変更
+	                 開くプロパティシートをタイプ別に変更y
+	@date 2000/09/15 JEPRO [Esc]キーと[x]ボタンでも中止できるように変更
+	@date 2005/01/10 genta CEditView_Commandから移動
 */
 void CViewCommander::Command_HOKAN( void )
 {
@@ -49,19 +49,19 @@ void CViewCommander::Command_HOKAN( void )
 		GetDllShareData().m_Common.m_sHelper.m_bUseHokan = TRUE;
 	}
 #if 0
-// 2011.06.24 Moca Plugin�����ɏ]�����ݒ�̊m�F����߂�
+// 2011.06.24 Moca Plugin導入に従い未設定の確認をやめる
 retry:;
-	/* �⊮���ꗗ�t�@�C�����ݒ肳��Ă��Ȃ��Ƃ��́A�ݒ肷��悤�ɑ����B */
-	// 2003.06.22 Moca �t�@�C�������猟������ꍇ�ɂ͕⊮�t�@�C���̐ݒ�͕K�{�ł͂Ȃ�
+	/* 補完候補一覧ファイルが設定されていないときは、設定するように促す。 */
+	// 2003.06.22 Moca ファイル内から検索する場合には補完ファイルの設定は必須ではない
 	if( GetDocument()->m_cDocType.GetDocumentAttribute().m_bUseHokanByFile == FALSE &&
 		GetDocument()->m_cDocType.GetDocumentAttribute().m_bUseHokanByKeyword == false &&
 		_T('\0') == GetDocument()->m_cDocType.GetDocumentAttribute().m_szHokanFile[0]
 	){
 		ConfirmBeep();
 		if( IDYES == ::ConfirmMessage( GetMainWindow(),
-			_T("�⊮���ꗗ�t�@�C�����ݒ肳��Ă��܂���B\n�������ݒ肵�܂���?")
+			_T("補完候補一覧ファイルが設定されていません。\n今すぐ設定しますか?")
 		) ){
-			/* �^�C�v�ʐݒ� �v���p�e�B�V�[�g */
+			/* タイプ別設定 プロパティシート */
 			if( !CEditApp::getInstance()->m_pcPropertyManager->OpenPropertySheetTypes( 2, GetDocument()->m_cDocType.GetDocumentType() ) ){
 				return;
 			}
@@ -70,25 +70,25 @@ retry:;
 	}
 #endif
 	CNativeW	cmemData;
-	/* �J�[�\�����O�̒P����擾 */
+	/* カーソル直前の単語を取得 */
 	if( 0 < m_pCommanderView->GetParser().GetLeftWord( &cmemData, 100 ) ){
 		m_pCommanderView->ShowHokanMgr( cmemData, TRUE );
 	}else{
-		InfoBeep(); //2010.04.03 Error��Info
-		m_pCommanderView->SendStatusMessage(_T("�⊮�Ώۂ�����܂���")); // 2010.05.29 �X�e�[�^�X�ŕ\��
-		GetDllShareData().m_Common.m_sHelper.m_bUseHokan = FALSE;	//	���͕⊮�I���̂��m�点
+		InfoBeep(); //2010.04.03 Error→Info
+		m_pCommanderView->SendStatusMessage(_T("補完対象がありません")); // 2010.05.29 ステータスで表示
+		GetDllShareData().m_Common.m_sHelper.m_bUseHokan = FALSE;	//	入力補完終了のお知らせ
 	}
 	return;
 }
 
 
 
-/*! �L�����b�g�ʒu�̒P�����������ON-OFF
+/*! キャレット位置の単語を辞書検索ON-OFF
 
-	@date 2006.03.24 fon �V�K�쐬
+	@date 2006.03.24 fon 新規作成
 */
 void CViewCommander::Command_ToggleKeySearch( void )
-{	/* ���ʐݒ�_�C�A���O�̐ݒ���L�[���蓖�Ăł��؂�ւ�����悤�� */
+{	/* 共通設定ダイアログの設定をキー割り当てでも切り替えられるように */
 	if( GetDllShareData().m_Common.m_sSearch.m_bUseCaretKeyWord ){
 		GetDllShareData().m_Common.m_sSearch.m_bUseCaretKeyWord = FALSE;
 	}else{
@@ -98,7 +98,7 @@ void CViewCommander::Command_ToggleKeySearch( void )
 
 
 
-/* �R�}���h�ꗗ */
+/* コマンド一覧 */
 void CViewCommander::Command_MENU_ALLFUNC( void )
 {
 
@@ -112,12 +112,12 @@ void CViewCommander::Command_MENU_ALLFUNC( void )
 	int		nId;
 
 //	From Here Sept. 15, 2000 JEPRO
-//	�T�u���j���[�A���Ɂu���̑��v�̃R�}���h�ɑ΂��ăX�e�[�^�X�o�[�ɕ\�������L�[�A�T�C�����
-//	���j���[�ŉB��Ȃ��悤�ɉE�ɂ��炵��
-//	(�{���͂��́u�R�}���h�ꗗ�v���j���[���_�C�A���O�ɕύX���o�[���܂�Ŏ��R�Ɉړ��ł���悤�ɂ�����)
+//	サブメニュー、特に「その他」のコマンドに対してステータスバーに表示されるキーアサイン情報が
+//	メニューで隠れないように右にずらした
+//	(本当はこの「コマンド一覧」メニューをダイアログに変更しバーをつまんで自由に移動できるようにしたい)
 //	po.x = 0;
 	po.x = 540;
-//	To Here Sept. 15, 2000 (Oct. 7, 2000 300��500; Nov. 3, 2000 500��540)
+//	To Here Sept. 15, 2000 (Oct. 7, 2000 300→500; Nov. 3, 2000 500→540)
 	po.y = 0;
 
 	CEditWnd*	pCEditWnd = GetDocument()->m_pcEditWnd;	//	Sep. 10, 2002 genta
@@ -133,13 +133,13 @@ void CViewCommander::Command_MENU_ALLFUNC( void )
 	CFuncLookup& FuncLookup = GetDocument()->m_cFuncLookup;
 
 	hMenu = ::CreatePopupMenu();
-//Oct. 14, 2000 JEPRO �u--����`--�v��\�������Ȃ��悤�ɕύX�������Ƃ�1��(�J�[�\���ړ��n)���O�ɃV�t�g���ꂽ(���̕ύX�ɂ���� i=1��i=0 �ƕύX)
+//Oct. 14, 2000 JEPRO 「--未定義--」を表示させないように変更したことで1番(カーソル移動系)が前にシフトされた(この変更によって i=1→i=0 と変更)
 	//	Oct. 3, 2001 genta
 	for( i = 0; i < FuncLookup.GetCategoryCount(); i++ ){
 		hMenuPopUp = ::CreatePopupMenu();
 		for( j = 0; j < FuncLookup.GetItemCount(i); j++ ){
 			//	Oct. 3, 2001 genta
-			int code = FuncLookup.Pos2FuncCode( i, j, false );	// 2007.11.02 ryoji ���o�^�}�N����\���𖾎��w��
+			int code = FuncLookup.Pos2FuncCode( i, j, false );	// 2007.11.02 ryoji 未登録マクロ非表示を明示指定
 			if( code != 0 ){
 				WCHAR	szLabel[300];
 				FuncLookup.Pos2FuncName( i, j, szLabel, 256 );
@@ -168,7 +168,7 @@ void CViewCommander::Command_MENU_ALLFUNC( void )
 	);
 	::DestroyMenu( hMenu );
 	if( 0 != nId ){
-		/* �R�}���h�R�[�h�ɂ�鏈���U�蕪�� */
+		/* コマンドコードによる処理振り分け */
 //		HandleCommand( nFuncID, true, 0, 0, 0, 0 );
 		::PostMessageCmd( GetMainWindow(), WM_COMMAND, MAKELONG( nId, 0 ), (LPARAM)NULL );
 	}
@@ -177,7 +177,7 @@ void CViewCommander::Command_MENU_ALLFUNC( void )
 
 
 
-/* �o�[�W������� */
+/* バージョン情報 */
 void CViewCommander::Command_ABOUT( void )
 {
 	CDlgAbout cDlgAbout;

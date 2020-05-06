@@ -30,14 +30,14 @@
 class CDocLine;
 class CDocLineMgr;
 
-//! ModifiedŠÇ—
+//! Modifiedç®¡ç†
 class CModifyManager : public TSingleton<CModifyManager>, public CDocListenerEx{
 public:
 	void OnAfterSave(const SSaveInfo& sSaveInfo);
 
 };
 
-//! s‚É•t‰Á‚·‚éModifiedî•ñ
+//! è¡Œã«ä»˜åŠ ã™ã‚‹Modifiedæƒ…å ±
 class CLineModified{
 public:
 	CLineModified() : m_bModified(true) { }
@@ -51,15 +51,15 @@ private:
 	bool m_bModified;
 };
 
-//! s‘S‘Ì‚ÌModifiedî•ñƒAƒNƒZƒT
+//! è¡Œå…¨ä½“ã®Modifiedæƒ…å ±ã‚¢ã‚¯ã‚»ã‚µ
 class CModifyVisitor{
 public:
-	//ó‘Ô
+	//çŠ¶æ…‹
 	bool IsLineModified(const CDocLine* pcDocLine) const;
 	void SetLineModified(CDocLine* pcDocLine, bool bModified);
 
-	//ˆêŠ‡‘€ì
-	void ResetAllModifyFlag(CDocLineMgr* pcDocLineMgr);	// s•ÏXó‘Ô‚ğ‚·‚×‚ÄƒŠƒZƒbƒg
+	//ä¸€æ‹¬æ“ä½œ
+	void ResetAllModifyFlag(CDocLineMgr* pcDocLineMgr);	// è¡Œå¤‰æ›´çŠ¶æ…‹ã‚’ã™ã¹ã¦ãƒªã‚»ãƒƒãƒˆ
 };
 
 #endif /* SAKURA_CMODIFYMANAGER_5129DDF8_A336_4B65_914B_22E626B7B520_H_ */

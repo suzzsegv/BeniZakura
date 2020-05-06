@@ -1,5 +1,5 @@
 /*!	@file
-	@brief Dialog Box�̊��N���X
+	@brief Dialog Boxの基底クラス
 
 	@author Norio Nakatani
 */
@@ -27,7 +27,7 @@
 #include "util/shell.h"
 #include "util/module.h"
 
-/* �_�C�A���O�v���V�[�W�� */
+/* ダイアログプロシージャ */
 INT_PTR CALLBACK MyDialogProc(
 	HWND hwndDlg,	// handle to dialog box
 	UINT uMsg,		// message
@@ -56,19 +56,19 @@ INT_PTR CALLBACK MyDialogProc(
 }
 
 
-/*!	�R���X�g���N�^
+/*!	コンストラクタ
 
-	@date 2002.2.17 YAZAKI CShareData�̃C���X�^���X�́ACProcess�ɂЂƂ���̂݁B
+	@date 2002.2.17 YAZAKI CShareDataのインスタンスは、CProcessにひとつあるのみ。
 */
 CDialog::CDialog()
 {
 //	MYTRACE( _T("CDialog::CDialog()\n") );
-	/* ���L�f�[�^�\���̂̃A�h���X��Ԃ� */
+	/* 共有データ構造体のアドレスを返す */
 	m_pShareData = CShareData::getInstance()->GetShareData();
 
-	m_hInstance = NULL;		/* �A�v���P�[�V�����C���X�^���X�̃n���h�� */
-	m_hwndParent = NULL;	/* �I�[�i�[�E�B���h�E�̃n���h�� */
-	m_hWnd  = NULL;			/* ���̃_�C�A���O�̃n���h�� */
+	m_hInstance = NULL;		/* アプリケーションインスタンスのハンドル */
+	m_hwndParent = NULL;	/* オーナーウィンドウのハンドル */
+	m_hWnd  = NULL;			/* このダイアログのハンドル */
 	m_hwndSizeBox = NULL;
 	m_lParam = NULL;
 	m_nShowCmd = SW_SHOW;
@@ -87,17 +87,17 @@ CDialog::~CDialog()
 	return;
 }
 
-//! ���[�_���_�C�A���O�̕\��
+//! モーダルダイアログの表示
 /*!
-	@param hInstance [in] �A�v���P�[�V�����C���X�^���X�̃n���h��
-	@param hwndParent [in] �I�[�i�[�E�B���h�E�̃n���h��
+	@param hInstance [in] アプリケーションインスタンスのハンドル
+	@param hwndParent [in] オーナーウィンドウのハンドル
 */
 INT_PTR CDialog::DoModal( HINSTANCE hInstance, HWND hwndParent, int nDlgTemplete, LPARAM lParam )
 {
 	m_bInited = FALSE;
 	m_bModal = TRUE;
-	m_hInstance = hInstance;	/* �A�v���P�[�V�����C���X�^���X�̃n���h�� */
-	m_hwndParent = hwndParent;	/* �I�[�i�[�E�B���h�E�̃n���h�� */
+	m_hInstance = hInstance;	/* アプリケーションインスタンスのハンドル */
+	m_hwndParent = hwndParent;	/* オーナーウィンドウのハンドル */
 	m_lParam = lParam;
 	return ::DialogBoxParam(
 		m_hInstance,
@@ -108,17 +108,17 @@ INT_PTR CDialog::DoModal( HINSTANCE hInstance, HWND hwndParent, int nDlgTemplete
 	);
 }
 
-//! ���[�h���X�_�C�A���O�̕\��
+//! モードレスダイアログの表示
 /*!
-	@param hInstance [in] �A�v���P�[�V�����C���X�^���X�̃n���h��
-	@param hwndParent [in] �I�[�i�[�E�B���h�E�̃n���h��
+	@param hInstance [in] アプリケーションインスタンスのハンドル
+	@param hwndParent [in] オーナーウィンドウのハンドル
 */
 HWND CDialog::DoModeless( HINSTANCE hInstance, HWND hwndParent, int nDlgTemplete, LPARAM lParam, int nCmdShow )
 {
 	m_bInited = FALSE;
 	m_bModal = FALSE;
-	m_hInstance = hInstance;	/* �A�v���P�[�V�����C���X�^���X�̃n���h�� */
-	m_hwndParent = hwndParent;	/* �I�[�i�[�E�B���h�E�̃n���h�� */
+	m_hInstance = hInstance;	/* アプリケーションインスタンスのハンドル */
+	m_hwndParent = hwndParent;	/* オーナーウィンドウのハンドル */
 	m_lParam = lParam;
 	m_hWnd = ::CreateDialogParam(
 		m_hInstance,
@@ -137,8 +137,8 @@ HWND CDialog::DoModeless( HINSTANCE hInstance, HWND hwndParent, LPCDLGTEMPLATE l
 {
 	m_bInited = FALSE;
 	m_bModal = FALSE;
-	m_hInstance = hInstance;	/* �A�v���P�[�V�����C���X�^���X�̃n���h�� */
-	m_hwndParent = hwndParent;	/* �I�[�i�[�E�B���h�E�̃n���h�� */
+	m_hInstance = hInstance;	/* アプリケーションインスタンスのハンドル */
+	m_hwndParent = hwndParent;	/* オーナーウィンドウのハンドル */
 	m_lParam = lParam;
 	m_hWnd = ::CreateDialogIndirectParam(
 		m_hInstance,
@@ -174,7 +174,7 @@ BOOL CDialog::OnInitDialog( HWND hwndDlg, WPARAM wParam, LPARAM lParam )
 	// Modified by KEITA for WIN64 2003.9.6
 	::SetWindowLongPtr( m_hWnd, DWLP_USER, lParam );
 
-	/* �_�C�A���O�f�[�^�̐ݒ� */
+	/* ダイアログデータの設定 */
 	SetData();
 
 	SetDialogPosSize();
@@ -186,7 +186,7 @@ BOOL CDialog::OnInitDialog( HWND hwndDlg, WPARAM wParam, LPARAM lParam )
 void CDialog::SetDialogPosSize()
 {
 #if 0
-	/* �_�C�A���O�̃T�C�Y�A�ʒu�̍Č� */
+	/* ダイアログのサイズ、位置の再現 */
 	if( -1 != m_xPos && -1 != m_yPos ){
 		::SetWindowPos( m_hWnd, NULL, m_xPos, m_yPos, 0, 0, SWP_NOSIZE | SWP_NOOWNERZORDER | SWP_NOZORDER );
 		DEBUG_TRACE( _T("CDialog::OnInitDialog() m_xPos=%d m_yPos=%d\n"), m_xPos, m_yPos );
@@ -197,16 +197,16 @@ void CDialog::SetDialogPosSize()
 #endif
 
 	if( -1 != m_xPos && -1 != m_yPos ){
-		/* �E�B���h�E�ʒu�E�T�C�Y���Č� */
+		/* ウィンドウ位置・サイズを再現 */
 
 		if( !(::GetWindowLongPtr( m_hWnd, GWL_STYLE ) & WS_CHILD) ){
 			// 2006.06.09 ryoji
-			// ���j�^�̃��[�N�̈�������E�㉺�ɂP�h�b�g�������̈���ɑS�̂����܂�悤�Ɉʒu��������
+			// モニタのワーク領域よりも左右上下に１ドット小さい領域内に全体が収まるように位置調整する
 			//
-			// note: �_�C�A���O�����[�N�̈拫�E�ɂ҂����荇�킹�悤�Ƃ���ƁA
-			//       �����I�ɐe�̒����Ɉړ��������Ă��܂��Ƃ�������
-			//      �i�}���`���j�^���Őe����v���C�}�����j�^�ɂ���ꍇ�����H�j
-			//       �󋵂ɍ��킹�ď�����ς���͖̂��Ȃ̂ŁA�ꗥ�A�P�h�b�g�̋󂫂�����
+			// note: ダイアログをワーク領域境界にぴったり合わせようとすると、
+			//       強制的に親の中央に移動させられてしまうときがある
+			//      （マルチモニタ環境で親が非プライマリモニタにある場合だけ？）
+			//       状況に合わせて処理を変えるのは厄介なので、一律、１ドットの空きを入れる
 
 			RECT rc;
 			RECT rcWork;
@@ -243,7 +243,7 @@ void CDialog::SetDialogPosSize()
 
 		WINDOWPLACEMENT cWindowPlacement;
 		cWindowPlacement.length = sizeof( cWindowPlacement );
-		cWindowPlacement.showCmd = m_nShowCmd;	//	�ő剻�E�ŏ���
+		cWindowPlacement.showCmd = m_nShowCmd;	//	最大化・最小化
 		cWindowPlacement.rcNormalPosition.left = m_xPos;
 		cWindowPlacement.rcNormalPosition.top = m_yPos;
 		cWindowPlacement.rcNormalPosition.right = m_nWidth + m_xPos;
@@ -254,17 +254,17 @@ void CDialog::SetDialogPosSize()
 
 BOOL CDialog::OnDestroy( void )
 {
-	/* �E�B���h�E�ʒu�E�T�C�Y���L�� */
+	/* ウィンドウ位置・サイズを記憶 */
 	WINDOWPLACEMENT cWindowPlacement;
 	cWindowPlacement.length = sizeof( cWindowPlacement );
 	if (::GetWindowPlacement( m_hWnd, &cWindowPlacement )){
-		m_nShowCmd = cWindowPlacement.showCmd;	//	�ő剻�E�ŏ���
+		m_nShowCmd = cWindowPlacement.showCmd;	//	最大化・最小化
 		m_xPos = cWindowPlacement.rcNormalPosition.left;
 		m_yPos = cWindowPlacement.rcNormalPosition.top;
 		m_nWidth = cWindowPlacement.rcNormalPosition.right - cWindowPlacement.rcNormalPosition.left;
 		m_nHeight = cWindowPlacement.rcNormalPosition.bottom - cWindowPlacement.rcNormalPosition.top;
 	}
-	/* �j�� */
+	/* 破棄 */
 	if( NULL != m_hwndSizeBox ){
 		::DestroyWindow( m_hwndSizeBox );
 		m_hwndSizeBox = NULL;
@@ -295,27 +295,27 @@ BOOL CDialog::OnSize( WPARAM wParam, LPARAM lParam )
 	RECT	rc;
 	::GetWindowRect( m_hWnd, &rc );
 
-	/* �_�C�A���O�̃T�C�Y�̋L�� */
+	/* ダイアログのサイズの記憶 */
 	m_xPos = rc.left;
 	m_yPos = rc.top;
 	m_nWidth = rc.right - rc.left;
 	m_nHeight = rc.bottom - rc.top;
 
-	/* �T�C�Y�{�b�N�X�̈ړ� */
+	/* サイズボックスの移動 */
 	if( NULL != m_hwndSizeBox ){
 		::GetClientRect( m_hWnd, &rc );
 //		::SetWindowPos( m_hwndSizeBox, NULL,
-//	Sept. 17, 2000 JEPRO_16thdot �A�C�R����16dot�ڂ��\�������悤�Ɏ��s��ύX����K�v����H
-//	Jan. 12, 2001 JEPRO (directed by stonee) 15��16�ɕύX����ƃA�E�g���C����͂̃_�C�A���O�̉E���ɂ���
-//	�O���b�v�T�C�Y��`�V��'���ł��Ă��܂�(�ړ�����I)�A�_�C�A���O��傫���ł��Ȃ��Ƃ�����Q����������̂�
-//	�ύX���Ȃ����Ƃɂ���(�v����Ɍ���łɖ߂�������)
+//	Sept. 17, 2000 JEPRO_16thdot アイコンの16dot目が表示されるように次行を変更する必要ある？
+//	Jan. 12, 2001 JEPRO (directed by stonee) 15を16に変更するとアウトライン解析のダイアログの右下にある
+//	グリップサイズに`遊び'ができてしまい(移動する！)、ダイアログを大きくできないという障害が発生するので
+//	変更しないことにした(要するに原作版に戻しただけ)
 //			rc.right - rc.left - 15, rc.bottom - rc.top - 15,
 //			13, 13,
 //			SWP_NOOWNERZORDER | SWP_NOZORDER
 //		);
 
 //	Jan. 12, 2001 Stonee (suggested by genta)
-//		"13"�Ƃ����Œ�l�ł͂Ȃ��V�X�e������擾�����X�N���[���o�[�T�C�Y���g���悤�ɏC��
+//		"13"という固定値ではなくシステムから取得したスクロールバーサイズを使うように修正
 		::SetWindowPos( m_hwndSizeBox, NULL,
 		rc.right - rc.left - GetSystemMetrics(SM_CXVSCROLL), //<-- stonee
 		rc.bottom - rc.top - GetSystemMetrics(SM_CYHSCROLL), //<-- stonee
@@ -324,7 +324,7 @@ BOOL CDialog::OnSize( WPARAM wParam, LPARAM lParam )
 		SWP_NOOWNERZORDER | SWP_NOZORDER
 		);
 
-		//	SizeBox���e�X�g
+		//	SizeBox問題テスト
 		if( wParam == SIZE_MAXIMIZED ){
 			::ShowWindow( m_hwndSizeBox, SW_HIDE );
 		}else{
@@ -339,14 +339,14 @@ BOOL CDialog::OnSize( WPARAM wParam, LPARAM lParam )
 BOOL CDialog::OnMove( WPARAM wParam, LPARAM lParam )
 {
 
-	/* �_�C�A���O�̈ʒu�̋L�� */
+	/* ダイアログの位置の記憶 */
 	if( !m_bInited ){
 		return TRUE;
 	}
 	RECT	rc;
 	::GetWindowRect( m_hWnd, &rc );
 
-	/* �_�C�A���O�̃T�C�Y�̋L�� */
+	/* ダイアログのサイズの記憶 */
 	m_xPos = rc.left;
 	m_yPos = rc.top;
 	m_nWidth = rc.right - rc.left;
@@ -360,7 +360,7 @@ BOOL CDialog::OnMove( WPARAM wParam, LPARAM lParam )
 
 void CDialog::CreateSizeBox( void )
 {
-	/* �T�C�Y�{�b�N�X */
+	/* サイズボックス */
 	m_hwndSizeBox = ::CreateWindowEx(
 		WS_EX_CONTROLPARENT,								/* no extended styles */
 		_T("SCROLLBAR"),									/* scroll bar control class */
@@ -384,7 +384,7 @@ void CDialog::CreateSizeBox( void )
 
 
 
-/* �_�C�A���O�̃��b�Z�[�W���� */
+/* ダイアログのメッセージ処理 */
 INT_PTR CDialog::DispatchEvent( HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam )
 {
 //	DEBUG_TRACE( _T("CDialog::DispatchEvent() uMsg == %xh\n"), uMsg );
@@ -415,23 +415,23 @@ BOOL CDialog::OnCommand( WPARAM wParam, LPARAM lParam )
 	WORD	wNotifyCode;
 	WORD	wID;
 	HWND	hwndCtl;
-	wNotifyCode = HIWORD(wParam);	/* �ʒm�R�[�h */
-	wID			= LOWORD(wParam);	/* ����ID� �R���g���[��ID� �܂��̓A�N�Z�����[�^ID */
-	hwndCtl		= (HWND) lParam;	/* �R���g���[���̃n���h�� */
+	wNotifyCode = HIWORD(wParam);	/* 通知コード */
+	wID			= LOWORD(wParam);	/* 項目ID、 コントロールID、 またはアクセラレータID */
+	hwndCtl		= (HWND) lParam;	/* コントロールのハンドル */
 	TCHAR	szClass[32];
 
-	// IDOK �� IDCANCEL �̓{�^������łȂ��Ă���������
+	// IDOK と IDCANCEL はボタンからでなくても同じ扱い
 	// MSDN [Windows Management] "Dialog Box Programming Considerations"
 	if( wID == IDOK || wID == IDCANCEL ){
 		return OnBnClicked( wID );
 	}
 
-	// �ʒm�����R���g���[���������ꍇ�̏���
+	// 通知元がコントロールだった場合の処理
 	if( hwndCtl ){
 		::GetClassName(hwndCtl, szClass, _countof(szClass));
 		if( ::lstrcmpi(szClass, _T("Button")) == 0 ){
 			switch( wNotifyCode ){
-			/* �{�^���^�`�F�b�N�{�b�N�X���N���b�N���ꂽ */
+			/* ボタン／チェックボックスがクリックされた */
 			case BN_CLICKED:	return OnBnClicked( wID );
 			}
 		}else if( ::lstrcmpi(szClass, _T("Static")) == 0 ){
@@ -450,9 +450,9 @@ BOOL CDialog::OnCommand( WPARAM wParam, LPARAM lParam )
 			}
 		}else if( ::lstrcmpi(szClass, _T("ComboBox")) == 0 ){
 			switch( wNotifyCode ){
-			/* �R���{�{�b�N�X�p���b�Z�[�W */
+			/* コンボボックス用メッセージ */
 			case CBN_SELCHANGE:	return OnCbnSelChange( hwndCtl, wID );
-			// @@2005.03.31 MIK �^�O�W�����vDialog�Ŏg���̂Œǉ�
+			// @@2005.03.31 MIK タグジャンプDialogで使うので追加
 			case CBN_EDITCHANGE:	return OnCbnEditChange( hwndCtl, wID );
 			case CBN_DROPDOWN:	return OnCbnDropDown( hwndCtl, wID );
 		//	case CBN_CLOSEUP:	return OnCbnCloseUp( hwndCtl, wID );
@@ -466,26 +466,26 @@ BOOL CDialog::OnCommand( WPARAM wParam, LPARAM lParam )
 
 BOOL CDialog::OnCbnSelEndOk( HWND hwndCtl, int wID )
 {
-	//�R���{�{�b�N�X�̃��X�g��\�������܂ܕ������ҏW���AEnter�L�[��
-	//�����ƕ����񂪏����錻�ۂ̑΍�B
-	//Enter�L�[�������Ă��̊֐��ɓ�������A���X�g���\���ɂ��Ă��܂��B
+	//コンボボックスのリストを表示したまま文字列を編集し、Enterキーを
+	//押すと文字列が消える現象の対策。
+	//Enterキーを押してこの関数に入ったら、リストを非表示にしてしまう。
 
-	//���X�g���\���ɂ���ƑO����v���镶�����I��ł��܂��̂ŁA
-	//���O�ɕ������ޔ����A���X�g��\����ɕ�������B
+	//リストを非表示にすると前方一致する文字列を選んでしまうので、
+	//事前に文字列を退避し、リスト非表示後に復元する。
 
 	int nLength;
 	LPTSTR sBuf;
 
-	//�������ޔ�
+	//文字列を退避
 	nLength = ::GetWindowTextLength( hwndCtl );
 	sBuf = new TCHAR[nLength + 1];
 	::GetWindowText( hwndCtl, sBuf, nLength+1 );
 	sBuf[nLength] = _T('\0');
 
-	//���X�g���\���ɂ���
+	//リストを非表示にする
 	Combo_ShowDropdown( hwndCtl, FALSE );
 
-	//������𕜌��E�S�I��
+	//文字列を復元・全選択
 	::SetWindowText( hwndCtl, sBuf );
 	Combo_SetEditSel( hwndCtl, 0, -1 );
 	delete[] sBuf;
@@ -493,13 +493,13 @@ BOOL CDialog::OnCbnSelEndOk( HWND hwndCtl, int wID )
 	return TRUE;
 }
 
-/** �R���{�{�b�N�X�̃h���b�v�_�E��������
+/** コンボボックスのドロップダウン時処理
 
-	�R���{�{�b�N�X���h���b�v�_�E������鎞��
-	�h���b�v�_�E�����X�g�̕����A�C�e��������̍ő�\�����ɍ��킹��
+	コンボボックスがドロップダウンされる時に
+	ドロップダウンリストの幅をアイテム文字列の最大表示幅に合わせる
 
-	@param hwndCtl [in]		�R���{�{�b�N�X�̃E�B���h�E�n���h��
-	@param wID [in]			�R���{�{�b�N�X��ID
+	@param hwndCtl [in]		コンボボックスのウィンドウハンドル
+	@param wID [in]			コンボボックスのID
 
 	@author ryoji
 	@date 2009.03.29
@@ -548,14 +548,14 @@ BOOL CDialog::SelectFile(HWND parent, HWND hwndCtl, const TCHAR* filter, bool re
 	TCHAR			szFilePath[_MAX_PATH + 1];
 	TCHAR			szPath[_MAX_PATH + 1];
 	GetWindowText(hwndCtl, szFilePath, _countof(szFilePath));
-	// 2003.06.23 Moca ���΃p�X�͎��s�t�@�C������̃p�X�Ƃ��ĊJ��
-	// 2007.05.19 ryoji ���΃p�X�͐ݒ�t�@�C������̃p�X��D��
+	// 2003.06.23 Moca 相対パスは実行ファイルからのパスとして開く
+	// 2007.05.19 ryoji 相対パスは設定ファイルからのパスを優先
 	if( resolvePath && _IS_REL_PATH( szFilePath ) ){
 		GetInidirOrExedir(szPath, szFilePath);
 	}else{
 		auto_strcpy(szPath, szFilePath);
 	}
-	/* �t�@�C���I�[�v���_�C�A���O�̏����� */
+	/* ファイルオープンダイアログの初期化 */
 	cDlgOpenFile.Create(
 		GetModuleHandle(NULL),
 		parent,
@@ -583,7 +583,7 @@ BOOL CDialog::SelectFile(HWND parent, HWND hwndCtl, const TCHAR* filter, bool re
 	return FALSE;
 }
 
-// �R���g���[���ɉ�ʂ̃t�H���g��ݒ�	2012/11/27 Uchi
+// コントロールに画面のフォントを設定	2012/11/27 Uchi
 HFONT CDialog::SetMainFont( HWND hTarget )
 {
 	if (hTarget == NULL)	return NULL;
@@ -591,12 +591,12 @@ HFONT CDialog::SetMainFont( HWND hTarget )
 	HFONT	hFont;
 	LOGFONT	lf;
 
-	// �ݒ肷��t�H���g�̍������擾
+	// 設定するフォントの高さを取得
 	hFont = (HFONT)::SendMessage(hTarget, WM_GETFONT, 0, 0);
 	GetObject(hFont, sizeof(lf), &lf);
 	LONG nfHeight = lf.lfHeight;
 
-	// LOGFONT�̍쐬
+	// LOGFONTの作成
 	lf = m_pShareData->m_Common.m_sView.m_lf;
 	lf.lfHeight			= nfHeight;
 	lf.lfWidth			= 0;
@@ -607,22 +607,22 @@ HFONT CDialog::SetMainFont( HWND hTarget )
 	lf.lfUnderline		= FALSE;
 	lf.lfStrikeOut		= FALSE;
 	//lf.lfCharSet		= lf.lfCharSet;
-	lf.lfOutPrecision	= OUT_TT_ONLY_PRECIS;		// Raster Font ���g��Ȃ��悤��
+	lf.lfOutPrecision	= OUT_TT_ONLY_PRECIS;		// Raster Font を使わないように
 	//lf.lfClipPrecision	= lf.lfClipPrecision;
 	//lf.lfQuality		= lf.lfQuality;
 	//lf.lfPitchAndFamily	= lf.lfPitchAndFamily;
-	//_tcsncpy( lf.lfFaceName, lf.lfFaceName, _countof(lf.lfFaceName));	// ��ʂ̃t�H���g�ɐݒ�	2012/11/27 Uchi
+	//_tcsncpy( lf.lfFaceName, lf.lfFaceName, _countof(lf.lfFaceName));	// 画面のフォントに設定	2012/11/27 Uchi
 
-	// �t�H���g���쐬
+	// フォントを作成
 	hFont = ::CreateFontIndirect(&lf);
 	if (hFont) {
-		// �t�H���g�̐ݒ�
+		// フォントの設定
 		::SendMessage(hTarget, WM_SETFONT, (WPARAM)hFont, MAKELPARAM(FALSE, 0));
 	}
 	return hFont;
 }
 
-// �R���g���[���ɉ�ʂ̃t�H���g�ƃT�C�Y��ݒ�
+// コントロールに画面のフォントとサイズを設定
 HFONT CDialog::SetMainFontAndFontSize( HWND hTarget )
 {
 	if (hTarget == NULL)	return NULL;
@@ -630,7 +630,7 @@ HFONT CDialog::SetMainFontAndFontSize( HWND hTarget )
 	HFONT	hFont;
 	LOGFONT	lf;
 
-	// LOGFONT�̍쐬
+	// LOGFONTの作成
 	lf = m_pShareData->m_Common.m_sView.m_lf;
 	lf.lfEscapement		= 0;
 	lf.lfOrientation	= 0;
@@ -638,12 +638,12 @@ HFONT CDialog::SetMainFontAndFontSize( HWND hTarget )
 	lf.lfItalic			= FALSE;
 	lf.lfUnderline		= FALSE;
 	lf.lfStrikeOut		= FALSE;
-	lf.lfOutPrecision	= OUT_TT_ONLY_PRECIS;		// Raster Font ���g��Ȃ��悤��
+	lf.lfOutPrecision	= OUT_TT_ONLY_PRECIS;		// Raster Font を使わないように
 
-	// �t�H���g���쐬
+	// フォントを作成
 	hFont = ::CreateFontIndirect(&lf);
 	if (hFont) {
-		// �t�H���g�̐ݒ�
+		// フォントの設定
 		::SendMessage(hTarget, WM_SETFONT, (WPARAM)hFont, MAKELPARAM(FALSE, 0));
 	}
 	return hFont;
@@ -658,7 +658,7 @@ void CDialog::ResizeItem( HWND hTarget, const POINT& ptDlgDefault, const POINT& 
 	width = rcItemDefault.right - rcItemDefault.left;
 	height = rcItemDefault.bottom - rcItemDefault.top;
 	if( (anchor & (ANCHOR_LEFT | ANCHOR_RIGHT)) == ANCHOR_LEFT ){
-		// �Ȃ�
+		// なし
 	}
 	else if( (anchor & (ANCHOR_LEFT | ANCHOR_RIGHT)) == ANCHOR_RIGHT ){
 		/*
@@ -679,7 +679,7 @@ void CDialog::ResizeItem( HWND hTarget, const POINT& ptDlgDefault, const POINT& 
 	}
 	
 	if( (anchor & (ANCHOR_TOP | ANCHOR_BOTTOM) ) == ANCHOR_TOP ){
-		// �Ȃ�
+		// なし
 	}
 	else if( (anchor & (ANCHOR_TOP | ANCHOR_BOTTOM) ) == ANCHOR_BOTTOM ){
 		pt.y = rcItemDefault.top + (ptDlgNew.y - ptDlgDefault.y);

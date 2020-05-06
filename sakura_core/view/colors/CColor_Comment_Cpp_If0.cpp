@@ -1,5 +1,5 @@
 /*!	@file	CColor_Comment_Cpp.cpp
-	@brief	C++ #if 0 ` #else ` #endif ƒRƒƒ“ƒg”»’èƒNƒ‰ƒX
+	@brief	C++ #if 0 ã€œ #else ã€œ #endif ã‚³ãƒ¡ãƒ³ãƒˆåˆ¤å®šã‚¯ãƒ©ã‚¹
 
 	@author	Suzuki Satoshi
 */
@@ -32,10 +32,10 @@
 #include "CColor_Comment_Cpp_If0.h"
 
 /*!
-	C++ ƒvƒŠƒvƒƒZƒbƒT "#if 0" ŠJn”»’è
+	C++ ãƒ—ãƒªãƒ—ãƒ­ã‚»ãƒƒã‚µ "#if 0" é–‹å§‹åˆ¤å®š
 
-	@retval true: "#if 0" ‚ğŒŸo‚µ‚½
-	@retval false: ŒŸo‚µ‚È‚©‚Á‚½
+	@retval true: "#if 0" ã‚’æ¤œå‡ºã—ãŸ
+	@retval false: æ¤œå‡ºã—ãªã‹ã£ãŸ
  */
 bool CColor_Comment_Cpp_If0::BeginColor( const CStringRef& rStr, int pos, ColorStrategyState& rColorStrategyState )
 {
@@ -59,10 +59,10 @@ bool CColor_Comment_Cpp_If0::BeginColor( const CStringRef& rStr, int pos, ColorS
 	return false;
 }
 /*!
-	C++ ƒvƒŠƒvƒƒZƒbƒT‚É‚æ‚éƒRƒƒ“ƒgƒAƒEƒg‚ÌI—¹”»’è
+	C++ ãƒ—ãƒªãƒ—ãƒ­ã‚»ãƒƒã‚µã«ã‚ˆã‚‹ã‚³ãƒ¡ãƒ³ãƒˆã‚¢ã‚¦ãƒˆã®çµ‚äº†åˆ¤å®š
 
-	@retval true: ƒRƒƒ“ƒgƒAƒEƒgI—¹‚ğŒŸo‚µ‚½
-	@retval false: ŒŸo‚µ‚È‚©‚Á‚½
+	@retval true: ã‚³ãƒ¡ãƒ³ãƒˆã‚¢ã‚¦ãƒˆçµ‚äº†ã‚’æ¤œå‡ºã—ãŸ
+	@retval false: æ¤œå‡ºã—ãªã‹ã£ãŸ
  */
 bool CColor_Comment_Cpp_If0::EndColor( const CStringRef& rStr, int pos, ColorStrategyState& rColorStrategyState )
 {
@@ -76,16 +76,16 @@ bool CColor_Comment_Cpp_If0::EndColor( const CStringRef& rStr, int pos, ColorStr
 }
 
 /*!
-	"#if 0" ƒvƒŠƒvƒƒZƒbƒT ƒRƒƒ“ƒgŠJn”»’è—p‚Ì•¶š—ñ”äŠrˆ—
+	"#if 0" ãƒ—ãƒªãƒ—ãƒ­ã‚»ãƒƒã‚µ ã‚³ãƒ¡ãƒ³ãƒˆé–‹å§‹åˆ¤å®šç”¨ã®æ–‡å­—åˆ—æ¯”è¼ƒå‡¦ç†
 
-	@retval true: "#if 0" ‚ğŒŸo‚µ‚½
-	@retval false: ŒŸo‚µ‚È‚©‚Á‚½
+	@retval true: "#if 0" ã‚’æ¤œå‡ºã—ãŸ
+	@retval false: æ¤œå‡ºã—ãªã‹ã£ãŸ
 */
 bool CColor_Comment_Cpp_If0::Match_CommentFrom
 	(
-		int pos,								//!< [in] ’TõŠJnˆÊ’u
-		const CStringRef& rStr,					//!< [in] ’Tõ‘ÎÛ•¶š—ñ ¦’TõŠJnˆÊ’u‚Ìƒ|ƒCƒ“ƒ^‚Å‚Í‚È‚¢‚±‚Æ‚É’ˆÓ
-		ColorStrategyState& rColorStrategyState //!< [in, out] ó‘Ô( #if 0 ƒlƒXƒgƒŒƒxƒ‹)
+		int pos,								//!< [in] æ¢ç´¢é–‹å§‹ä½ç½®
+		const CStringRef& rStr,					//!< [in] æ¢ç´¢å¯¾è±¡æ–‡å­—åˆ— â€»æ¢ç´¢é–‹å§‹ä½ç½®ã®ãƒã‚¤ãƒ³ã‚¿ã§ã¯ãªã„ã“ã¨ã«æ³¨æ„
+		ColorStrategyState& rColorStrategyState //!< [in, out] çŠ¶æ…‹( #if 0 ãƒã‚¹ãƒˆãƒ¬ãƒ™ãƒ«)
 	)
 {
 	int len;
@@ -103,15 +103,15 @@ bool CColor_Comment_Cpp_If0::Match_CommentFrom
 
 
 /*!
-	"#if 0" ƒvƒŠƒvƒƒZƒbƒT ƒRƒƒ“ƒgI—¹”»’è—p‚Ì•¶š—ñ”äŠrˆ—
+	"#if 0" ãƒ—ãƒªãƒ—ãƒ­ã‚»ãƒƒã‚µ ã‚³ãƒ¡ãƒ³ãƒˆçµ‚äº†åˆ¤å®šç”¨ã®æ–‡å­—åˆ—æ¯”è¼ƒå‡¦ç†
 
-	@return ƒRƒƒ“ƒgƒAƒEƒgI—¹ˆÊ’u‚ğ•Ô‚·BI—¹•¶š‚ªŒŸo‚³‚ê‚È‚©‚Á‚½ê‡‚É‚ÍAnLineLen ‚ğ‚»‚Ì‚Ü‚Ü•Ô‚·B
+	@return ã‚³ãƒ¡ãƒ³ãƒˆã‚¢ã‚¦ãƒˆçµ‚äº†ä½ç½®ã‚’è¿”ã™ã€‚çµ‚äº†æ–‡å­—ãŒæ¤œå‡ºã•ã‚Œãªã‹ã£ãŸå ´åˆã«ã¯ã€nLineLen ã‚’ãã®ã¾ã¾è¿”ã™ã€‚
 */
 int CColor_Comment_Cpp_If0::Match_CommentTo
 	(
-		int pos,								//!< [in] ’TõŠJnˆÊ’u
-		const CStringRef& rStr,					//!< [in] ’Tõ‘ÎÛ•¶š—ñ ¦’TõŠJnˆÊ’u‚Ìƒ|ƒCƒ“ƒ^‚Å‚Í‚È‚¢‚±‚Æ‚É’ˆÓ
-		ColorStrategyState& rColorStrategyState	//!< [in, out] ó‘Ô( #if 0 ƒlƒXƒgƒŒƒxƒ‹)
+		int pos,								//!< [in] æ¢ç´¢é–‹å§‹ä½ç½®
+		const CStringRef& rStr,					//!< [in] æ¢ç´¢å¯¾è±¡æ–‡å­—åˆ— â€»æ¢ç´¢é–‹å§‹ä½ç½®ã®ãƒã‚¤ãƒ³ã‚¿ã§ã¯ãªã„ã“ã¨ã«æ³¨æ„
+		ColorStrategyState& rColorStrategyState	//!< [in, out] çŠ¶æ…‹( #if 0 ãƒã‚¹ãƒˆãƒ¬ãƒ™ãƒ«)
 	)
 {
 	int i;

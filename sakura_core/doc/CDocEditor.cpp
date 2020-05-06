@@ -37,25 +37,25 @@ CDocEditor::CDocEditor(CEditDoc* pcDoc)
 : m_pcDocRef(pcDoc)
 , m_bInsMode( true )	// Oct. 2, 2005 genta
 , m_cNewLineCode( EOL_CRLF )		//	New Line Type
-, m_bIsDocModified( false )	/* �ύX�t���O */ // Jan. 22, 2002 genta �^�ύX
+, m_bIsDocModified( false )	/* 変更フラグ */ // Jan. 22, 2002 genta 型変更
 , m_pcOpeBlk( NULL )
 {
-	//	Oct. 2, 2005 genta �}�����[�h
+	//	Oct. 2, 2005 genta 挿入モード
 	this->SetInsMode( GetDllShareData().m_Common.m_sGeneral.m_bIsINSMode );
 }
 
 
-/*! �ύX�t���O�̐ݒ�
+/*! 変更フラグの設定
 
-	@param flag [in] �ݒ肷��l�Dtrue: �ύX�L�� / false: �ύX����
-	@param redraw [in] true: �^�C�g���̍ĕ`����s�� / false: �s��Ȃ�
+	@param flag [in] 設定する値．true: 変更有り / false: 変更無し
+	@param redraw [in] true: タイトルの再描画を行う / false: 行わない
 	
 	@author genta
-	@date 2002.01.22 �V�K�쐬
+	@date 2002.01.22 新規作成
 */
 void CDocEditor::SetModified( bool flag, bool redraw)
 {
-	if( m_bIsDocModified == flag )	//	�ύX���Ȃ���Ή������Ȃ�
+	if( m_bIsDocModified == flag )	//	変更がなければ何もしない
 		return;
 
 	m_bIsDocModified = flag;
@@ -65,7 +65,7 @@ void CDocEditor::SetModified( bool flag, bool redraw)
 
 void CDocEditor::OnBeforeLoad(SLoadInfo* sLoadInfo)
 {
-	//�r���[�̃e�L�X�g�I������
+	//ビューのテキスト選択解除
 	GetListeningDoc()->m_pcEditWnd->Views_DisableSelectArea(true);
 }
 
@@ -74,11 +74,11 @@ void CDocEditor::OnAfterLoad(const SLoadInfo& sLoadInfo)
 	CEditDoc* pcDoc = GetListeningDoc();
 
 	//	May 12, 2000 genta
-	//	�ҏW�p���s�R�[�h�̐ݒ�
+	//	編集用改行コードの設定
 	{
 		const STypeConfig& type = pcDoc->m_cDocType.GetDocumentAttribute();
 		if ( pcDoc->m_cDocFile.GetCodeSet() == type.m_encoding.m_eDefaultCodetype ){
-			SetNewLineCode( type.m_encoding.m_eDefaultEoltype );	// 2011.01.24 ryoji �f�t�H���gEOL
+			SetNewLineCode( type.m_encoding.m_eDefaultEoltype );	// 2011.01.24 ryoji デフォルトEOL
 		}
 		else{
 			SetNewLineCode( EOL_CRLF );
@@ -93,34 +93,34 @@ void CDocEditor::OnAfterLoad(const SLoadInfo& sLoadInfo)
 	}
 
 	//	Nov. 20, 2000 genta
-	//	IME��Ԃ̐ݒ�
+	//	IME状態の設定
 	this->SetImeMode( pcDoc->m_cDocType.GetDocumentAttribute().m_nImeState );
 
-	// �J�����g�f�B���N�g���̕ύX
+	// カレントディレクトリの変更
 	::SetCurrentDirectory( pcDoc->m_cDocFile.GetFilePathClass().GetDirPath().c_str() );
 
-	CAppMode::getInstance()->SetViewMode(sLoadInfo.bViewMode);		// �r���[���[�h	##�������A�A������
+	CAppMode::getInstance()->SetViewMode(sLoadInfo.bViewMode);		// ビューモード	##ここも、アリかな
 }
 
 void CDocEditor::OnAfterSave(const SSaveInfo& sSaveInfo)
 {
 	CEditDoc* pcDoc = GetListeningDoc();
 
-	this->SetModified(false,false);	//	Jan. 22, 2002 genta �֐��� �X�V�t���O�̃N���A
+	this->SetModified(false,false);	//	Jan. 22, 2002 genta 関数化 更新フラグのクリア
 
-	/* ���݈ʒu�Ŗ��ύX�ȏ�ԂɂȂ������Ƃ�ʒm */
+	/* 現在位置で無変更な状態になったことを通知 */
 	this->m_cOpeBuf.SetNoModified();
 
-	// �J�����g�f�B���N�g���̕ύX
+	// カレントディレクトリの変更
 	::SetCurrentDirectory( pcDoc->m_cDocFile.GetFilePathClass().GetDirPath().c_str() );
 }
 
 
 
 //	From Here Nov. 20, 2000 genta
-/*!	IME��Ԃ̐ݒ�
+/*!	IME状態の設定
 	
-	@param mode [in] IME�̃��[�h
+	@param mode [in] IMEのモード
 	
 	@date Nov 20, 2000 genta
 */
@@ -129,9 +129,9 @@ void CDocEditor::SetImeMode( int mode )
 	DWORD	conv, sent;
 	HIMC	hIme;
 
-	hIme = ImmGetContext( CEditWnd::getInstance()->GetHwnd() ); //######���v�H
+	hIme = ImmGetContext( CEditWnd::getInstance()->GetHwnd() ); //######大丈夫？
 
-	//	�ŉ��ʃr�b�g��IME���g��On/Off����
+	//	最下位ビットはIME自身のOn/Off制御
 	if( ( mode & 3 ) == 2 ){
 		ImmSetOpenStatus( hIme, FALSE );
 	}
@@ -160,7 +160,7 @@ void CDocEditor::SetImeMode( int mode )
 	if( ( mode & 3 ) == 1 ){
 		ImmSetOpenStatus( hIme, TRUE );
 	}
-	ImmReleaseContext( CEditWnd::getInstance()->GetHwnd(), hIme ); //######���v�H
+	ImmReleaseContext( CEditWnd::getInstance()->GetHwnd(), hIme ); //######大丈夫？
 }
 //	To Here Nov. 20, 2000 genta
 
@@ -174,44 +174,44 @@ void CDocEditor::SetImeMode( int mode )
 
 
 /*!
-	�����ɍs��ǉ�
+	末尾に行を追加
 
 	@version 1.5
 
-	@param pData    [in] �ǉ����镶����ւ̃|�C���^
-	@param nDataLen [in] ������̒����B�����P�ʁB
-	@param cEol     [in] �s���R�[�h
+	@param pData    [in] 追加する文字列へのポインタ
+	@param nDataLen [in] 文字列の長さ。文字単位。
+	@param cEol     [in] 行末コード
 
 */
 void CDocEditAgent::AddLineStrX( const wchar_t* pData, int nDataLen )
 {
-	//�`�F�[���K�p
+	//チェーン適用
 	CDocLine* pDocLine = m_pcDocLineMgr->AddNewLine();
 
-	//�C���X�^���X�ݒ�
+	//インスタンス設定
 	pDocLine->SetDocLineString(pData, nDataLen);
 }
 
 
 
 
-/* �f�[�^�̍폜 */
+/* データの削除 */
 /*
-|| �w��s���̕��������폜�ł��܂���
-|| �f�[�^�ύX�ɂ���ĉe���̂������A�ύX�O�ƕύX��̍s�͈̔͂�Ԃ��܂�
-|| ���̏������ƂɁA���C�A�E�g���Ȃǂ��X�V���Ă��������B
+|| 指定行内の文字しか削除できません
+|| データ変更によって影響のあった、変更前と変更後の行の範囲を返します
+|| この情報をもとに、レイアウト情報などを更新してください。
 ||
-	@date 2002/03/24 YAZAKI bUndo�폜
+	@date 2002/03/24 YAZAKI bUndo削除
 */
 void CDocEditAgent::DeleteData_CDocLineMgr(
 	CLogicInt	nLine,
 	CLogicInt	nDelPos,
 	CLogicInt	nDelLen,
-	CLogicInt*	pnModLineOldFrom,	//!< �e���̂������ύX�O�̍s(from)
-	CLogicInt*	pnModLineOldTo,		//!< �e���̂������ύX�O�̍s(to)
-	CLogicInt*	pnDelLineOldFrom,	//!< �폜���ꂽ�ύX�O�_���s(from)
-	CLogicInt*	pnDelLineOldNum,	//!< �폜���ꂽ�s��
-	CNativeW*	cmemDeleted			//!< [out] �폜���ꂽ�f�[�^
+	CLogicInt*	pnModLineOldFrom,	//!< 影響のあった変更前の行(from)
+	CLogicInt*	pnModLineOldTo,		//!< 影響のあった変更前の行(to)
+	CLogicInt*	pnDelLineOldFrom,	//!< 削除された変更前論理行(from)
+	CLogicInt*	pnDelLineOldNum,	//!< 削除された行数
+	CNativeW*	cmemDeleted			//!< [out] 削除されたデータ
 )
 {
 #ifdef _DEBUG
@@ -225,10 +225,10 @@ void CDocEditAgent::DeleteData_CDocLineMgr(
 	const wchar_t*	pLine2;
 	CLogicInt		nLineLen2;
 
-	*pnModLineOldFrom = nLine;	/* �e���̂������ύX�O�̍s(from) */
-	*pnModLineOldTo = nLine;	/* �e���̂������ύX�O�̍s(to) */
-	*pnDelLineOldFrom = CLogicInt(0);		/* �폜���ꂽ�ύX�O�_���s(from) */
-	*pnDelLineOldNum = CLogicInt(0);		/* �폜���ꂽ�s�� */
+	*pnModLineOldFrom = nLine;	/* 影響のあった変更前の行(from) */
+	*pnModLineOldTo = nLine;	/* 影響のあった変更前の行(to) */
+	*pnDelLineOldFrom = CLogicInt(0);		/* 削除された変更前論理行(from) */
+	*pnDelLineOldNum = CLogicInt(0);		/* 削除された行数 */
 //	cmemDeleted.SetData( "", lstrlen( "" ) );
 	cmemDeleted->Clear();
 
@@ -237,27 +237,27 @@ void CDocEditAgent::DeleteData_CDocLineMgr(
 		return;
 	}
 
-	CModifyVisitor().SetLineModified(pDocLine,true);		/* �ύX�t���O */
+	CModifyVisitor().SetLineModified(pDocLine,true);		/* 変更フラグ */
 
 	pLine = pDocLine->GetDocLineStrWithEOL( &nLineLen );
 
 	if( nDelPos >= nLineLen ){
 		return;
 	}
-	/* �u���s�v���폜����ꍇ�́A���̍s�ƘA������ */
+	/* 「改行」を削除する場合は、次の行と連結する */
 //	if( ( nDelPos == nLineLen -1 && ( pLine[nDelPos] == CR || pLine[nDelPos] == LF ) )
 //	 || nDelPos + nDelLen >= nLineLen
 	if( ( EOL_NONE != pDocLine->GetEol() && nDelPos == nLineLen - pDocLine->GetEol().GetLen() )
 	 || ( EOL_NONE != pDocLine->GetEol() && nDelPos + nDelLen >  nLineLen - pDocLine->GetEol().GetLen() )
 	 || ( EOL_NONE == pDocLine->GetEol() && nDelPos + nDelLen >= nLineLen - pDocLine->GetEol().GetLen() )
 	){
-		/* ���ۂɍ폜����o�C�g�� */
+		/* 実際に削除するバイト数 */
 		nDeleteLength = nLineLen - nDelPos;
 
-		/* �폜�����f�[�^ */
+		/* 削除されるデータ */
 		cmemDeleted->SetString( &pLine[nDelPos], nDeleteLength );
 
-		/* ���̍s�̏�� */
+		/* 次の行の情報 */
 		pDocLine2 = pDocLine->GetNextLine();
 		if( !pDocLine2 ){
 			wchar_t*	pData = new wchar_t[nLineLen + 1];
@@ -276,17 +276,17 @@ void CDocEditAgent::DeleteData_CDocLineMgr(
 			if( 0 < nLineLen - nDeleteLength ){
 				pDocLine->SetDocLineString( pData, nLineLen - nDeleteLength );
 			}else{
-				// �s�̍폜
-				// 2004.03.18 Moca �֐����g��
+				// 行の削除
+				// 2004.03.18 Moca 関数を使う
 				m_pcDocLineMgr->DeleteLine( pDocLine );
 				pDocLine = NULL;
-				*pnDelLineOldFrom = nLine;	/* �폜���ꂽ�ύX�O�_���s(from) */
-				*pnDelLineOldNum = CLogicInt(1);		/* �폜���ꂽ�s�� */
+				*pnDelLineOldFrom = nLine;	/* 削除された変更前論理行(from) */
+				*pnDelLineOldNum = CLogicInt(1);		/* 削除された行数 */
 			}
 			delete [] pData;
 		}
 		else{
-			*pnModLineOldTo = nLine + CLogicInt(1);	/* �e���̂������ύX�O�̍s(to) */
+			*pnModLineOldTo = nLine + CLogicInt(1);	/* 影響のあった変更前の行(to) */
 			pLine2 = pDocLine2->GetDocLineStrWithEOL( &nLineLen2 );
 			wchar_t*	pData = new wchar_t[nLineLen + nLineLen2 + 1];
 			if( nDelPos > 0 ){
@@ -299,25 +299,25 @@ void CDocEditAgent::DeleteData_CDocLineMgr(
 					nLineLen - ( nDelPos + nDeleteLength )
 				);
 			}
-			/* ���̍s�̃f�[�^��A�� */
+			/* 次の行のデータを連結 */
 			wmemcpy( pData + (nLineLen - nDeleteLength), pLine2, nLineLen2 );
 			pData[ nLineLen - nDeleteLength + nLineLen2 ] = L'\0';
 			pDocLine->SetDocLineString( pData, nLineLen - nDeleteLength + nLineLen2 );
 
-			/* ���̍s���폜 && �����s�Ƃ̃��X�g�̘A��*/
-			// 2004.03.18 Moca DeleteLine ���g��
+			/* 次の行を削除 && 次次行とのリストの連結*/
+			// 2004.03.18 Moca DeleteLine を使う
 			m_pcDocLineMgr->DeleteLine( pDocLine2 );
 			pDocLine2 = NULL;
-			*pnDelLineOldFrom = nLine + CLogicInt(1);	/* �폜���ꂽ�ύX�O�_���s(from) */
-			*pnDelLineOldNum = CLogicInt(1);			/* �폜���ꂽ�s�� */
+			*pnDelLineOldFrom = nLine + CLogicInt(1);	/* 削除された変更前論理行(from) */
+			*pnDelLineOldNum = CLogicInt(1);			/* 削除された行数 */
 			delete [] pData;
 		}
 	}
 	else{
-		/* ���ۂɍ폜����o�C�g�� */
+		/* 実際に削除するバイト数 */
 		nDeleteLength = nDelLen;
 
-		/* �폜�����f�[�^ */
+		/* 削除されるデータ */
 		cmemDeleted->SetString( &pLine[nDelPos], nDeleteLength );
 
 		wchar_t*	pData = new wchar_t[nLineLen + 1];
@@ -343,44 +343,44 @@ void CDocEditAgent::DeleteData_CDocLineMgr(
 
 
 
-/*!	�f�[�^�̑}��
+/*!	データの挿入
 
-	@date 2002/03/24 YAZAKI bUndo�폜
+	@date 2002/03/24 YAZAKI bUndo削除
 */
 void CDocEditAgent::InsertData_CDocLineMgr(
 	CLogicInt		nLine,
 	CLogicInt		nInsPos,
 	const wchar_t*	pInsData,
 	CLogicInt		nInsDataLen,
-	CLogicInt*		pnInsLineNum,	// �}���ɂ���đ������s�̐�
-	CLogicPoint*	pptNewPos		// �}�����ꂽ�����̎��̈ʒu
+	CLogicInt*		pnInsLineNum,	// 挿入によって増えた行の数
+	CLogicPoint*	pptNewPos		// 挿入された部分の次の位置
 )
 {
 	CNativeW	cmemPrevLine;
 	CNativeW	cmemNextLine;
 	CLogicInt	nAllLinesOld = m_pcDocLineMgr->GetLineCount();
 
-	bool		bBookMarkNext;	// 2001.12.03 hor �}���ɂ��}�[�N�s�̐���
+	bool		bBookMarkNext;	// 2001.12.03 hor 挿入によるマーク行の制御
 
-	pptNewPos->y = nLine;	/* �}�����ꂽ�����̎��̈ʒu�̍s */
+	pptNewPos->y = nLine;	/* 挿入された部分の次の位置の行 */
 
 	//	Jan. 25, 2004 genta
-	//	�}�������񒷂�0�̏ꍇ�ɍŌ�܂�pnNewPos���ݒ肳��Ȃ��̂�
-	//	�����l�Ƃ���0�ł͂Ȃ��J�n�ʒu�Ɠ����l�����Ă����D
-	pptNewPos->x  = nInsPos;		/* �}�����ꂽ�����̎��̈ʒu�̃f�[�^�ʒu */
+	//	挿入文字列長が0の場合に最後までpnNewPosが設定されないので
+	//	初期値として0ではなく開始位置と同じ値を入れておく．
+	pptNewPos->x  = nInsPos;		/* 挿入された部分の次の位置のデータ位置 */
 
-	/* �}���f�[�^���s�I�[�ŋ�؂����s���J�E���^ */
+	/* 挿入データを行終端で区切った行数カウンタ */
 	*pnInsLineNum = CLogicInt(0);
 	CDocLine*	pDocLine = m_pcDocLineMgr->GetLine( nLine );
 	if( !pDocLine ){
-		/* ������NULL���A���Ă���Ƃ������Ƃ́A*/
-		/* �S�e�L�X�g�̍Ō�̎��̍s��ǉ����悤�Ƃ��Ă��邱�Ƃ����� */
+		/* ここでNULLが帰ってくるということは、*/
+		/* 全テキストの最後の次の行を追加しようとしていることを示す */
 		cmemPrevLine.SetString(L"");
 		cmemNextLine.SetString(L"");
 		bBookMarkNext=false;	// 2001.12.03 hor
 	}
 	else{
-		CModifyVisitor().SetLineModified(pDocLine,true);		/* �ύX�t���O */
+		CModifyVisitor().SetLineModified(pDocLine,true);		/* 変更フラグ */
 
 		CLogicInt		nLineLen;
 		const wchar_t*	pLine = pDocLine->GetDocLineStrWithEOL( &nLineLen );
@@ -395,11 +395,11 @@ void CDocEditAgent::InsertData_CDocLineMgr(
 	CLogicInt	nPos   = CLogicInt(0);
 	for( nPos = CLogicInt(0); nPos < nInsDataLen; ){
 		if( WCODE::IsLineDelimiter(pInsData[nPos]) ){
-			/* �s�I�[�q�̎�ނ𒲂ׂ� */
+			/* 行終端子の種類を調べる */
 			CEol 	cEOLType;
 			cEOLType.SetTypeByString( &pInsData[nPos], nInsDataLen - nPos );
 
-			/* �s�I�[�q���܂߂ăe�L�X�g���o�b�t�@�Ɋi�[ */
+			/* 行終端子も含めてテキストをバッファに格納 */
 			CNativeW	cmemCurLine;
 			cmemCurLine.SetString( &pInsData[nBgn], nPos - nBgn + cEOLType.GetLen() );
 			nBgn = nPos + CLogicInt(cEOLType.GetLen());
@@ -407,7 +407,7 @@ void CDocEditAgent::InsertData_CDocLineMgr(
 			if( NULL == pDocLine ){
 				CDocLine* pDocLineNew = m_pcDocLineMgr->AddNewLine();
 
-				/* �}���f�[�^���s�I�[�ŋ�؂����s���J�E���^ */
+				/* 挿入データを行終端で区切った行数カウンタ */
 				if( 0 == nCount ){
 					pDocLineNew->SetDocLineString(cmemPrevLine + cmemCurLine);
 				}
@@ -417,13 +417,13 @@ void CDocEditAgent::InsertData_CDocLineMgr(
 				pDocLine = NULL;
 			}
 			else{
-				/* �}���f�[�^���s�I�[�ŋ�؂����s���J�E���^ */
+				/* 挿入データを行終端で区切った行数カウンタ */
 				if( 0 == nCount ){
 					pDocLine->SetDocLineString( cmemPrevLine + cmemCurLine );
 
 					// 2001.12.13 hor
-					// �s���ŉ��s�����猳�̍s�̃}�[�N��V�����s�Ɉړ�����
-					// ����ȊO�Ȃ猳�̍s�̃}�[�N���ێ����ĐV�����s�ɂ̓}�[�N��t���Ȃ�
+					// 行頭で改行したら元の行のマークを新しい行に移動する
+					// それ以外なら元の行のマークを維持して新しい行にはマークを付けない
 					if(nInsPos==CLogicInt(0)){
 						CBookmarkSetter(pDocLine).SetBookmark(false);
 					}
@@ -434,15 +434,15 @@ void CDocEditAgent::InsertData_CDocLineMgr(
 					pDocLine = pDocLine->GetNextLine();
 				}
 				else{
-					CDocLine* pDocLineNew = m_pcDocLineMgr->InsertNewLine(pDocLine); //pDocLine�̒��O�ɑ}��
+					CDocLine* pDocLineNew = m_pcDocLineMgr->InsertNewLine(pDocLine); //pDocLineの直前に挿入
 					
 					pDocLineNew->SetDocLineString( cmemCurLine );
 				}
 			}
 
-			/* �}���f�[�^���s�I�[�ŋ�؂����s���J�E���^ */
+			/* 挿入データを行終端で区切った行数カウンタ */
 			++nCount;
-			++pptNewPos->y;	/* �}�����ꂽ�����̎��̈ʒu�̍s */
+			++pptNewPos->y;	/* 挿入された部分の次の位置の行 */
 		}
 		else{
 			++nPos;
@@ -455,7 +455,7 @@ void CDocEditAgent::InsertData_CDocLineMgr(
 		cmemCurLine += cmemNextLine;
 		if( NULL == pDocLine ){
 			CDocLine* pDocLineNew = m_pcDocLineMgr->AddNewLine();
-			/* �}���f�[�^���s�I�[�ŋ�؂����s���J�E���^ */
+			/* 挿入データを行終端で区切った行数カウンタ */
 			if( 0 == nCount ){
 				pDocLineNew->SetDocLineString( cmemPrevLine + cmemCurLine );
 			}
@@ -463,23 +463,23 @@ void CDocEditAgent::InsertData_CDocLineMgr(
 				pDocLineNew->SetDocLineString( cmemCurLine );
 			}
 			pDocLine = NULL;
-			pptNewPos->x = nPos - nBgn;	/* �}�����ꂽ�����̎��̈ʒu�̃f�[�^�ʒu */
+			pptNewPos->x = nPos - nBgn;	/* 挿入された部分の次の位置のデータ位置 */
 		}
 		else{
-			/* �}���f�[�^���s�I�[�ŋ�؂����s���J�E���^ */
+			/* 挿入データを行終端で区切った行数カウンタ */
 			if( 0 == nCount ){
 				pDocLine->SetDocLineString( cmemPrevLine + cmemCurLine );
 				pDocLine = pDocLine->GetNextLine();
-				pptNewPos->x = CLogicInt(cmemPrevLine.GetStringLength()) + nPos - nBgn;		/* �}�����ꂽ�����̎��̈ʒu�̃f�[�^�ʒu */
+				pptNewPos->x = CLogicInt(cmemPrevLine.GetStringLength()) + nPos - nBgn;		/* 挿入された部分の次の位置のデータ位置 */
 			}
 			else{
-				CDocLine* pDocLineNew = m_pcDocLineMgr->InsertNewLine(pDocLine); //pDocLine�̒��O�ɑ}��
+				CDocLine* pDocLineNew = m_pcDocLineMgr->InsertNewLine(pDocLine); //pDocLineの直前に挿入
 
 				pDocLineNew->SetDocLineString( cmemCurLine );
 
-				CBookmarkSetter(pDocLineNew).SetBookmark(bBookMarkNext);	// 2001.12.03 hor �u�b�N�}�[�N�𕜌�
+				CBookmarkSetter(pDocLineNew).SetBookmark(bBookMarkNext);	// 2001.12.03 hor ブックマークを復元
 
-				pptNewPos->x = nPos - nBgn;	/* �}�����ꂽ�����̎��̈ʒu�̃f�[�^�ʒu */
+				pptNewPos->x = nPos - nBgn;	/* 挿入された部分の次の位置のデータ位置 */
 			}
 		}
 	}

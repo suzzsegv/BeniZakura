@@ -33,13 +33,13 @@ CMyString::~CMyString()
 /*
 CFilePath::CFilePath(const char* rhs)
 {
-	//Œ»“_‚Å‚ÍNULL‚ğó‚¯•t‚¯‚È‚¢
+	//ç¾æ™‚ç‚¹ã§ã¯NULLã‚’å—ã‘ä»˜ã‘ãªã„
 	assert(rhs);
 	_mbstotcs(m_tszPath, _countof(m_tszPath), rhs);
 }
 CFilePath::CFilePath(const wchar_t* rhs)
 {
-	//Œ»“_‚Å‚ÍNULL‚ğó‚¯•t‚¯‚È‚¢
+	//ç¾æ™‚ç‚¹ã§ã¯NULLã‚’å—ã‘ä»˜ã‘ãªã„
 	assert(rhs);
 	_wcstotcs(m_tszPath, _countof(m_tszPath), rhs);
 }

@@ -1,8 +1,8 @@
 /*!	@file
-	@brief ƒc[ƒ‹ƒ`ƒbƒv
+	@brief ãƒ„ãƒ¼ãƒ«ãƒãƒƒãƒ—
 
 	@author Norio Nakatani
-	@date 1998/10/30 V‹Kì¬
+	@date 1998/10/30 æ–°è¦ä½œæˆ
 */
 /*
 	Copyright (C) 1998-2001, Norio Nakatani
@@ -21,19 +21,19 @@
 #include "env/DLLSHAREDATA.h"
 
 
-/* CTipWndƒNƒ‰ƒX ƒfƒXƒgƒ‰ƒNƒ^ */
+/* CTipWndã‚¯ãƒ©ã‚¹ ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
 CTipWnd::CTipWnd()
 : CWnd(_T("::CTipWnd"))
 {
 	m_pszClassName = _T("CTipWnd");
 	m_hFont = NULL;
-	m_KeyWasHit = FALSE;	/* ƒL[‚ªƒqƒbƒg‚µ‚½‚© */
+	m_KeyWasHit = FALSE;	/* ã‚­ãƒ¼ãŒãƒ’ãƒƒãƒˆã—ãŸã‹ */
 	return;
 }
 
 
 
-/* CTipWndƒNƒ‰ƒX ƒfƒXƒgƒ‰ƒNƒ^ */
+/* CTipWndã‚¯ãƒ©ã‚¹ ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
 CTipWnd::~CTipWnd()
 {
 	if( NULL != m_hFont ){
@@ -45,14 +45,14 @@ CTipWnd::~CTipWnd()
 
 
 
-/* ‰Šú‰» */
+/* åˆæœŸåŒ– */
 void CTipWnd::Create( HINSTANCE hInstance, HWND hwndParent )
 {
-	/* ƒEƒBƒ“ƒhƒEƒNƒ‰ƒXì¬ */
+	/* ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ä½œæˆ */
 	ATOM atWork;
 	atWork = RegisterWC(
 		hInstance,
-		/* WNDCLASS—p */
+		/* WNDCLASSç”¨ */
 		NULL,// Handle to the class icon.
 		NULL,	//Handle to a small icon
 		::LoadCursor( NULL, IDC_ARROW ),// Handle to the class cursor.
@@ -61,9 +61,9 @@ void CTipWnd::Create( HINSTANCE hInstance, HWND hwndParent )
 		m_pszClassName// Pointer to a null-terminated string or is an atom.
 	);
 
-	/* Šî’êƒNƒ‰ƒXƒƒ“ƒoŒÄ‚Ño‚µ */
-	// 2006.01.09 ryoji ‰Šúó‘Ô‚ğ•s‰Â‹‚É‚·‚é
-	//	À¿“I‚É‚ÍŒ©‚¦‚È‚¢CTipWnd‚ªÅ‘O–Ê‚É‚ ‚é‚Æ”»’f‚³‚ê‚Ä‚µ‚Ü‚¤ê‡‚ª‚ ‚é‚½‚ß
+	/* åŸºåº•ã‚¯ãƒ©ã‚¹ãƒ¡ãƒ³ãƒå‘¼ã³å‡ºã— */
+	// 2006.01.09 ryoji åˆæœŸçŠ¶æ…‹ã‚’ä¸å¯è¦–ã«ã™ã‚‹
+	//	å®Ÿè³ªçš„ã«ã¯è¦‹ãˆãªã„CTipWndãŒæœ€å‰é¢ã«ã‚ã‚‹ã¨åˆ¤æ–­ã•ã‚Œã¦ã—ã¾ã†å ´åˆãŒã‚ã‚‹ãŸã‚
 	CWnd::Create(
 		hwndParent,
 		WS_EX_TOOLWINDOW, // extended window style	// 2002/2/3 GAE
@@ -86,18 +86,18 @@ void CTipWnd::Create( HINSTANCE hInstance, HWND hwndParent )
 	return;
 }
 
-/*!	CreateWindow‚ÌŒã
+/*!	CreateWindowã®å¾Œ
 
-	CWnd::AfterCreateWindow‚ÅƒEƒBƒ“ƒhƒE‚ğ•\¦‚·‚é‚æ‚¤‚É‚È‚Á‚Ä‚¢‚é‚Ì‚ğ
-	“®‚©‚È‚­‚·‚é‚½‚ß‚Ì‹óŠÖ”
+	CWnd::AfterCreateWindowã§ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’è¡¨ç¤ºã™ã‚‹ã‚ˆã†ã«ãªã£ã¦ã„ã‚‹ã®ã‚’
+	å‹•ã‹ãªãã™ã‚‹ãŸã‚ã®ç©ºé–¢æ•°
 
-	@date 2006.01.09 genta V‹Kì¬
+	@date 2006.01.09 genta æ–°è¦ä½œæˆ
 */
 void CTipWnd::AfterCreateWindow( void )
 {
 }
 
-/* Tip‚ğ•\¦ */
+/* Tipã‚’è¡¨ç¤º */
 void CTipWnd::Show( int nX, int nY, const TCHAR* szText, RECT* pRect )
 {
 	HDC		hdc;
@@ -110,14 +110,14 @@ void CTipWnd::Show( int nX, int nY, const TCHAR* szText, RECT* pRect )
 
 	hdc = ::GetDC( GetHwnd() );
 
-	// ƒTƒCƒY‚ğŒvZÏ‚İ	2001/06/19 asa-o
+	// ã‚µã‚¤ã‚ºã‚’è¨ˆç®—æ¸ˆã¿	2001/06/19 asa-o
 	if(pRect != NULL)
 	{
 		rc = *pRect;
 	}
 	else
 	{
-		/* ƒEƒBƒ“ƒhƒE‚ÌƒTƒCƒY‚ğŒˆ‚ß‚é */
+		/* ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ã‚µã‚¤ã‚ºã‚’æ±ºã‚ã‚‹ */
 		ComputeWindowSize( hdc, m_hFont, pszInfo, &rc );
 	}
 
@@ -129,7 +129,7 @@ void CTipWnd::Show( int nX, int nY, const TCHAR* szText, RECT* pRect )
 
 }
 
-/* ƒEƒBƒ“ƒhƒE‚ÌƒTƒCƒY‚ğŒˆ‚ß‚é */
+/* ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ã‚µã‚¤ã‚ºã‚’æ±ºã‚ã‚‹ */
 void CTipWnd::ComputeWindowSize(
 	HDC				hdc,
 	HFONT			hFont,
@@ -199,7 +199,7 @@ void CTipWnd::ComputeWindowSize(
 }
 
 
-/* ƒEƒBƒ“ƒhƒE‚ÌƒeƒLƒXƒg‚ğ•\¦ */
+/* ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ãƒ†ã‚­ã‚¹ãƒˆã‚’è¡¨ç¤º */
 void CTipWnd::DrawTipText(
 	HDC				hdc,
 	HFONT			hFont,
@@ -276,7 +276,7 @@ void CTipWnd::DrawTipText(
 
 
 
-/* Tip‚ğÁ‚· */
+/* Tipã‚’æ¶ˆã™ */
 void CTipWnd::Hide( void )
 {
 	::ShowWindow( GetHwnd(), SW_HIDE );
@@ -287,7 +287,7 @@ void CTipWnd::Hide( void )
 
 
 
-/* •`‰æˆ— */
+/* æç”»å‡¦ç† */
 LRESULT CTipWnd::OnPaint( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l_Param )
 {
 	PAINTSTRUCT	ps;
@@ -295,7 +295,7 @@ LRESULT CTipWnd::OnPaint( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l_Param )
 	HDC			hdc = ::BeginPaint(	hwnd, &ps );
 	::GetClientRect( hwnd, &rc );
 
-	/* ƒEƒBƒ“ƒhƒE‚ÌƒeƒLƒXƒg‚ğ•\¦ */
+	/* ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ãƒ†ã‚­ã‚¹ãƒˆã‚’è¡¨ç¤º */
 	DrawTipText( hdc, m_hFont, m_cInfo.GetStringPtr() );
 
 	::EndPaint(	hwnd, &ps );
@@ -303,7 +303,7 @@ LRESULT CTipWnd::OnPaint( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l_Param )
 }
 
 
-// 2001/06/19 Start by asa-o: ƒEƒBƒ“ƒhƒE‚ÌƒTƒCƒY‚ğ“¾‚é
+// 2001/06/19 Start by asa-o: ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ã‚µã‚¤ã‚ºã‚’å¾—ã‚‹
 void CTipWnd::GetWindowSize(LPRECT pRect)
 {
 	const TCHAR*	pszText;
@@ -312,10 +312,10 @@ void CTipWnd::GetWindowSize(LPRECT pRect)
 
 	pszText = m_cInfo.GetStringPtr();
 
-	// ƒEƒBƒ“ƒhƒE‚ÌƒTƒCƒY‚ğ“¾‚é
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ã‚µã‚¤ã‚ºã‚’å¾—ã‚‹
 	ComputeWindowSize( hdc, m_hFont, pszText , pRect );
 
-	ReleaseDC(GetHwnd(), hdc); //2007.10.10 kobake ReleaseDC‚ª”²‚¯‚Ä‚¢‚½‚Ì‚ğC³
+	ReleaseDC(GetHwnd(), hdc); //2007.10.10 kobake ReleaseDCãŒæŠœã‘ã¦ã„ãŸã®ã‚’ä¿®æ­£
 }
 
 // 2001/06/19 End

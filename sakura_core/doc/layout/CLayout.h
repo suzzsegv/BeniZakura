@@ -1,8 +1,8 @@
 /*!	@file
-	@brief ƒeƒLƒXƒg‚ÌƒŒƒCƒAƒEƒgî•ñ
+	@brief ãƒ†ã‚­ã‚¹ãƒˆã®ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆæƒ…å ±
 
 	@author Norio Nakatani
-	@date 1998/3/11 V‹Kì¬
+	@date 1998/3/11 æ–°è¦ä½œæˆ
 */
 /*
 	Copyright (C) 1998-2001, Norio Nakatani
@@ -28,21 +28,21 @@ class CLayoutMgr;
 #include "view/colors/ColorStrategyState.h"
 
 /*-----------------------------------------------------------------------
-ƒNƒ‰ƒX‚ÌéŒ¾
+ã‚¯ãƒ©ã‚¹ã®å®£è¨€
 -----------------------------------------------------------------------*/
 class CLayout
 {
 protected:
-	friend class CLayoutMgr; //####‰¼
+	friend class CLayoutMgr; //####ä»®
 public:
 	/*
 	||  Constructors
 	*/
-	//2007.08.23 kobake ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚Åƒƒ“ƒo•Ï”‚ğ‰Šú‰»‚·‚é‚æ‚¤‚É‚µ‚½
+	//2007.08.23 kobake ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã§ãƒ¡ãƒ³ãƒå¤‰æ•°ã‚’åˆæœŸåŒ–ã™ã‚‹ã‚ˆã†ã«ã—ãŸ
 	CLayout(
-		const CDocLine*	pcDocLine,		//!< Àƒf[ƒ^‚Ö‚ÌQÆ
-		CLogicPoint		ptLogicPos,		//!< Àƒf[ƒ^QÆˆÊ’u
-		CLogicInt		nLength,		//!< Àƒf[ƒ^“àƒf[ƒ^’·
+		const CDocLine*	pcDocLine,		//!< å®Ÿãƒ‡ãƒ¼ã‚¿ã¸ã®å‚ç…§
+		CLogicPoint		ptLogicPos,		//!< å®Ÿãƒ‡ãƒ¼ã‚¿å‚ç…§ä½ç½®
+		CLogicInt		nLength,		//!< å®Ÿãƒ‡ãƒ¼ã‚¿å†…ãƒ‡ãƒ¼ã‚¿é•·
 		EColorIndexType	colorIndexPrev,
 		ColorStrategyState colorStrategyStatePrev,
 		CLayoutInt		nTypeIndent
@@ -51,31 +51,31 @@ public:
 		m_pPrev				= NULL;
 		m_pNext				= NULL;
 		m_pCDocLine			= pcDocLine;
-		m_ptLogicPos		= ptLogicPos;		// Àƒf[ƒ^QÆˆÊ’u
-		m_nLength			= nLength;			// Àƒf[ƒ^“àƒf[ƒ^’·
-		m_colorIndexPrev	= colorIndexPrev;	// ‘OsÅI•¶š‚ÌƒJƒ‰[ƒCƒ“ƒfƒbƒNƒX(ƒpƒŒƒbƒg)”Ô†
-		colorStrategyState	= colorStrategyStatePrev;	// ‘OsÅI•¶š‚ÌƒJƒ‰[ƒŠƒ“ƒOó‘Ô
-		m_nIndent			= nTypeIndent;		// ‚±‚ÌƒŒƒCƒAƒEƒgs‚ÌƒCƒ“ƒfƒ“ƒg”
+		m_ptLogicPos		= ptLogicPos;		// å®Ÿãƒ‡ãƒ¼ã‚¿å‚ç…§ä½ç½®
+		m_nLength			= nLength;			// å®Ÿãƒ‡ãƒ¼ã‚¿å†…ãƒ‡ãƒ¼ã‚¿é•·
+		m_colorIndexPrev	= colorIndexPrev;	// å‰è¡Œæœ€çµ‚æ–‡å­—ã®ã‚«ãƒ©ãƒ¼ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹(ãƒ‘ãƒ¬ãƒƒãƒˆ)ç•ªå·
+		colorStrategyState	= colorStrategyStatePrev;	// å‰è¡Œæœ€çµ‚æ–‡å­—ã®ã‚«ãƒ©ãƒ¼ãƒªãƒ³ã‚°çŠ¶æ…‹
+		m_nIndent			= nTypeIndent;		// ã“ã®ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆè¡Œã®ã‚¤ãƒ³ãƒ‡ãƒ³ãƒˆæ•°
 	}
 	~CLayout();
 	void DUMP( void );
 	
-	// m_ptLogicPos.x‚Å•â³‚µ‚½‚ ‚Æ‚Ì•¶š—ñ‚ğ“¾‚é
+	// m_ptLogicPos.xã§è£œæ­£ã—ãŸã‚ã¨ã®æ–‡å­—åˆ—ã‚’å¾—ã‚‹
 	const wchar_t* GetPtr() const   { return m_pCDocLine->GetPtr() + m_ptLogicPos.x; }
-	CLogicInt GetLengthWithEOL() const    { return m_nLength;	}	//	‚½‚¾‚µEOL‚Íí‚É1•¶š‚ÆƒJƒEƒ“ƒgHH
+	CLogicInt GetLengthWithEOL() const    { return m_nLength;	}	//	ãŸã ã—EOLã¯å¸¸ã«1æ–‡å­—ã¨ã‚«ã‚¦ãƒ³ãƒˆï¼Ÿï¼Ÿ
 	CLogicInt GetLengthWithoutEOL() const { return m_nLength - (m_cEol.GetLen() ? 1 : 0);	}
-	//CLogicInt GetLength() const {	return m_nLength;	}	//	CMemoryIterator—piEOLŠÜ‚Şj
-	CLayoutInt GetIndent() const {	return m_nIndent;	}	//!< ‚±‚ÌƒŒƒCƒAƒEƒgs‚ÌƒCƒ“ƒfƒ“ƒgƒTƒCƒY‚ğæ“¾B’PˆÊ‚Í”¼Šp•¶šB	CMemoryIterator—p
+	//CLogicInt GetLength() const {	return m_nLength;	}	//	CMemoryIteratorç”¨ï¼ˆEOLå«ã‚€ï¼‰
+	CLayoutInt GetIndent() const {	return m_nIndent;	}	//!< ã“ã®ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆè¡Œã®ã‚¤ãƒ³ãƒ‡ãƒ³ãƒˆã‚µã‚¤ã‚ºã‚’å–å¾—ã€‚å˜ä½ã¯åŠè§’æ–‡å­—ã€‚	CMemoryIteratorç”¨
 
-	//æ“¾ƒCƒ“ƒ^[ƒtƒF[ƒX
-	CLogicInt GetLogicLineNo() const{ if(this)return m_ptLogicPos.GetY2(); else return CLogicInt(-1); } //$$$‚‘¬‰»
+	//å–å¾—ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹
+	CLogicInt GetLogicLineNo() const{ if(this)return m_ptLogicPos.GetY2(); else return CLogicInt(-1); } //$$$é«˜é€ŸåŒ–
 	CLogicInt GetLogicOffset() const{ return m_ptLogicPos.GetX2(); }
 	CLogicPoint GetLogicPos() const{ return m_ptLogicPos; }
 	EColorIndexType GetColorTypePrev() const{ return m_colorIndexPrev; }
 	ColorStrategyState GetColorStrategyStatePrev() const{ return colorStrategyState; }
-	CLayoutInt GetLayoutWidth() const{ return m_nLayoutWidth; }		// 2009.08.28 nasukoji	‚±‚ÌƒŒƒCƒAƒEƒgs‚Ì‰üs‚ğŠÜ‚ŞƒŒƒCƒAƒEƒg’·‚ğ•Ô‚·
+	CLayoutInt GetLayoutWidth() const{ return m_nLayoutWidth; }		// 2009.08.28 nasukoji	ã“ã®ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆè¡Œã®æ”¹è¡Œã‚’å«ã‚€ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆé•·ã‚’è¿”ã™
 
-	//•ÏXƒCƒ“ƒ^[ƒtƒF[ƒX
+	//å¤‰æ›´ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹
 	void OffsetLogicLineNo(CLogicInt n){ m_ptLogicPos.y+=n; }
 	void SetColorTypePrev(EColorIndexType colorIndexPrev)
 	{
@@ -87,16 +87,16 @@ public:
 	}
 	void SetLayoutWidth(CLayoutInt nWidth){ m_nLayoutWidth = nWidth; }
 
-	//!ƒŒƒCƒAƒEƒg•‚ğŒvZBƒCƒ“ƒfƒ“ƒg‚à‰üs‚àŠÜ‚Ü‚È‚¢B2007.10.11 kobake
+	//!ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆå¹…ã‚’è¨ˆç®—ã€‚ã‚¤ãƒ³ãƒ‡ãƒ³ãƒˆã‚‚æ”¹è¡Œã‚‚å«ã¾ãªã„ã€‚2007.10.11 kobake
 	CLayoutInt CalcLayoutWidth(const CLayoutMgr& cLayoutMgr) const;
 
-	//! ƒIƒtƒZƒbƒg’l‚ğƒŒƒCƒAƒEƒg’PˆÊ‚É•ÏŠ·‚µ‚Äæ“¾B2007.10.17 kobake
+	//! ã‚ªãƒ•ã‚»ãƒƒãƒˆå€¤ã‚’ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆå˜ä½ã«å¤‰æ›ã—ã¦å–å¾—ã€‚2007.10.17 kobake
 	CLayoutInt CalcLayoutOffset(const CLayoutMgr& cLayoutMgr) const;
 
-	//! •¶š—ñQÆ‚ğæ“¾
+	//! æ–‡å­—åˆ—å‚ç…§ã‚’å–å¾—
 	CStringRef GetStringRef() const{ return CStringRef(GetPtr(), GetLengthWithEOL()); }
 
-	//ƒ`ƒF[ƒ“‘®«
+	//ãƒã‚§ãƒ¼ãƒ³å±æ€§
 	CLayout* GetPrevLayout(){ return m_pPrev; }
 	const CLayout* GetPrevLayout() const{ return m_pPrev; }
 	CLayout* GetNextLayout(){ return m_pNext; }
@@ -104,27 +104,27 @@ public:
 	void _SetPrevLayout(CLayout* pcLayout){ m_pPrev = pcLayout; }
 	void _SetNextLayout(CLayout* pcLayout){ m_pNext = pcLayout; }
 
-	//Àƒf[ƒ^QÆ
-	const CDocLine* GetDocLineRef() const{ if(this)return m_pCDocLine; else return NULL; } //$$note:‚‘¬‰»
+	//å®Ÿãƒ‡ãƒ¼ã‚¿å‚ç…§
+	const CDocLine* GetDocLineRef() const{ if(this)return m_pCDocLine; else return NULL; } //$$note:é«˜é€ŸåŒ–
 
-	//‚»‚Ì‘¼‘®«QÆ
+	//ãã®ä»–å±æ€§å‚ç…§
 	const CEol& GetLayoutEol() const{ return m_cEol; }
 
 private:
 	CLayout*			m_pPrev;
 	CLayout*			m_pNext;
 
-	//ƒf[ƒ^QÆ”ÍˆÍ
-	const CDocLine*		m_pCDocLine;		//!< Àƒf[ƒ^‚Ö‚ÌQÆ
-	CLogicPoint			m_ptLogicPos;		//!< ‘Î‰‚·‚éƒƒWƒbƒNQÆˆÊ’u
-	CLogicInt			m_nLength;			//!< ‚±‚ÌƒŒƒCƒAƒEƒgs‚Ì’·‚³B•¶š’PˆÊB
+	//ãƒ‡ãƒ¼ã‚¿å‚ç…§ç¯„å›²
+	const CDocLine*		m_pCDocLine;		//!< å®Ÿãƒ‡ãƒ¼ã‚¿ã¸ã®å‚ç…§
+	CLogicPoint			m_ptLogicPos;		//!< å¯¾å¿œã™ã‚‹ãƒ­ã‚¸ãƒƒã‚¯å‚ç…§ä½ç½®
+	CLogicInt			m_nLength;			//!< ã“ã®ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆè¡Œã®é•·ã•ã€‚æ–‡å­—å˜ä½ã€‚
 	
-	//‚»‚Ì‘¼‘®«
-	EColorIndexType		m_colorIndexPrev;	//!< ‘OsÅI•¶š‚ÌƒJƒ‰[ƒCƒ“ƒfƒbƒNƒX(ƒpƒŒƒbƒg)”Ô†
-	ColorStrategyState	colorStrategyState;	//!< ‘OsÅI•¶š‚ÌƒJƒ‰[ƒŠƒ“ƒOó‘Ô
-	CLayoutInt			m_nIndent;			//!< ‚±‚ÌƒŒƒCƒAƒEƒgs‚ÌƒCƒ“ƒfƒ“ƒg” @@@ 2002.09.23 YAZAKI
+	//ãã®ä»–å±æ€§
+	EColorIndexType		m_colorIndexPrev;	//!< å‰è¡Œæœ€çµ‚æ–‡å­—ã®ã‚«ãƒ©ãƒ¼ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹(ãƒ‘ãƒ¬ãƒƒãƒˆ)ç•ªå·
+	ColorStrategyState	colorStrategyState;	//!< å‰è¡Œæœ€çµ‚æ–‡å­—ã®ã‚«ãƒ©ãƒ¼ãƒªãƒ³ã‚°çŠ¶æ…‹
+	CLayoutInt			m_nIndent;			//!< ã“ã®ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆè¡Œã®ã‚¤ãƒ³ãƒ‡ãƒ³ãƒˆæ•° @@@ 2002.09.23 YAZAKI
 	CEol				m_cEol;
-	CLayoutInt			m_nLayoutWidth;		//!< ‚±‚ÌƒŒƒCƒAƒEƒgs‚Ì‰üs‚ğŠÜ‚ŞƒŒƒCƒAƒEƒg’·iuÜ‚è•Ô‚³‚È‚¢v‘I‘ğ‚Ì‚İj	// 2009.08.28 nasukoji
+	CLayoutInt			m_nLayoutWidth;		//!< ã“ã®ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆè¡Œã®æ”¹è¡Œã‚’å«ã‚€ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆé•·ï¼ˆã€ŒæŠ˜ã‚Šè¿”ã•ãªã„ã€é¸æŠæ™‚ã®ã¿ï¼‰	// 2009.08.28 nasukoji
 };
 
 

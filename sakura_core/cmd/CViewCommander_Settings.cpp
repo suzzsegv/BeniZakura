@@ -1,7 +1,7 @@
 /*!	@file
-@brief CViewCommanderƒNƒ‰ƒX‚ÌƒRƒ}ƒ“ƒh(İ’èŒn)ŠÖ”ŒQ
+@brief CViewCommanderã‚¯ãƒ©ã‚¹ã®ã‚³ãƒãƒ³ãƒ‰(è¨­å®šç³»)é–¢æ•°ç¾¤
 
-	2012/12/15	CViewCommander.cpp,CViewCommander_New.cpp‚©‚ç•ª—£
+	2012/12/15	CViewCommander.cpp,CViewCommander_New.cppã‹ã‚‰åˆ†é›¢
 */
 /*
 	Copyright (C) 1998-2001, Norio Nakatani
@@ -23,26 +23,26 @@
 #include "CViewCommander_inline.h"
 
 #include "typeprop/CDlgTypeList.h"
-#include "dlg/CDlgFavorite.h"	//—š—ğ‚ÌŠÇ—	//@@@ 2003.04.08 MIK
+#include "dlg/CDlgFavorite.h"	//å±¥æ­´ã®ç®¡ç†	//@@@ 2003.04.08 MIK
 #include "CEditApp.h"
 #include "util/shell.h"
 #include "CPropertyManager.h"
 #include "util/window.h"
 
 
-/*! ƒc[ƒ‹ƒo[‚Ì•\¦/”ñ•\¦
+/*! ãƒ„ãƒ¼ãƒ«ãƒãƒ¼ã®è¡¨ç¤º/éè¡¨ç¤º
 
-	@date 2006.12.19 ryoji •\¦Ø‘Ö‚Í CEditWnd::LayoutToolBar(), CEditWnd::EndLayoutBars() ‚Ås‚¤‚æ‚¤‚É•ÏX
+	@date 2006.12.19 ryoji è¡¨ç¤ºåˆ‡æ›¿ã¯ CEditWnd::LayoutToolBar(), CEditWnd::EndLayoutBars() ã§è¡Œã†ã‚ˆã†ã«å¤‰æ›´
 */
 void CViewCommander::Command_SHOWTOOLBAR( void )
 {
 	CEditWnd*	pCEditWnd = GetDocument()->m_pcEditWnd;	//	Sep. 10, 2002 genta
 
-	GetDllShareData().m_Common.m_sWindow.m_bDispTOOLBAR = ((NULL == pCEditWnd->m_cToolbar.GetToolbarHwnd())? TRUE: FALSE);	/* ƒc[ƒ‹ƒo[•\¦ */
+	GetDllShareData().m_Common.m_sWindow.m_bDispTOOLBAR = ((NULL == pCEditWnd->m_cToolbar.GetToolbarHwnd())? TRUE: FALSE);	/* ãƒ„ãƒ¼ãƒ«ãƒãƒ¼è¡¨ç¤º */
 	pCEditWnd->LayoutToolBar();
 	pCEditWnd->EndLayoutBars();
 
-	//‘SƒEƒCƒ“ƒhƒE‚É•ÏX‚ğ’Ê’m‚·‚éB
+	//å…¨ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã«å¤‰æ›´ã‚’é€šçŸ¥ã™ã‚‹ã€‚
 	CAppNodeGroupHandle(0).PostMessageToAllEditors(
 		MYWM_BAR_CHANGE_NOTIFY,
 		(WPARAM)MYBCN_TOOLBAR,
@@ -53,19 +53,19 @@ void CViewCommander::Command_SHOWTOOLBAR( void )
 
 
 
-/*! ƒtƒ@ƒ“ƒNƒVƒ‡ƒ“ƒL[‚Ì•\¦/”ñ•\¦
+/*! ãƒ•ã‚¡ãƒ³ã‚¯ã‚·ãƒ§ãƒ³ã‚­ãƒ¼ã®è¡¨ç¤º/éè¡¨ç¤º
 
-	@date 2006.12.19 ryoji •\¦Ø‘Ö‚Í CEditWnd::LayoutFuncKey(), CEditWnd::EndLayoutBars() ‚Ås‚¤‚æ‚¤‚É•ÏX
+	@date 2006.12.19 ryoji è¡¨ç¤ºåˆ‡æ›¿ã¯ CEditWnd::LayoutFuncKey(), CEditWnd::EndLayoutBars() ã§è¡Œã†ã‚ˆã†ã«å¤‰æ›´
 */
 void CViewCommander::Command_SHOWFUNCKEY( void )
 {
 	CEditWnd*	pCEditWnd = GetDocument()->m_pcEditWnd;	//	Sep. 10, 2002 genta
 
-	GetDllShareData().m_Common.m_sWindow.m_bDispFUNCKEYWND = ((NULL == pCEditWnd->m_CFuncKeyWnd.GetHwnd())? TRUE: FALSE);	/* ƒtƒ@ƒ“ƒNƒVƒ‡ƒ“ƒL[•\¦ */
+	GetDllShareData().m_Common.m_sWindow.m_bDispFUNCKEYWND = ((NULL == pCEditWnd->m_CFuncKeyWnd.GetHwnd())? TRUE: FALSE);	/* ãƒ•ã‚¡ãƒ³ã‚¯ã‚·ãƒ§ãƒ³ã‚­ãƒ¼è¡¨ç¤º */
 	pCEditWnd->LayoutFuncKey();
 	pCEditWnd->EndLayoutBars();
 
-	//‘SƒEƒCƒ“ƒhƒE‚É•ÏX‚ğ’Ê’m‚·‚éB
+	//å…¨ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã«å¤‰æ›´ã‚’é€šçŸ¥ã™ã‚‹ã€‚
 	CAppNodeGroupHandle(0).PostMessageToAllEditors(
 		MYWM_BAR_CHANGE_NOTIFY,
 		(WPARAM)MYBCN_FUNCKEY,
@@ -76,22 +76,22 @@ void CViewCommander::Command_SHOWFUNCKEY( void )
 
 
 
-/*! ƒ^ƒu(ƒEƒCƒ“ƒhƒE)‚Ì•\¦/”ñ•\¦
+/*! ã‚¿ãƒ–(ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦)ã®è¡¨ç¤º/éè¡¨ç¤º
 
 	@author MIK
-	@date 2003.06.10 V‹Kì¬
-	@date 2006.12.19 ryoji •\¦Ø‘Ö‚Í CEditWnd::LayoutTabBar(), CEditWnd::EndLayoutBars() ‚Ås‚¤‚æ‚¤‚É•ÏX
-	@date 2007.06.20 ryoji ƒOƒ‹[ƒvIDƒŠƒZƒbƒg
+	@date 2003.06.10 æ–°è¦ä½œæˆ
+	@date 2006.12.19 ryoji è¡¨ç¤ºåˆ‡æ›¿ã¯ CEditWnd::LayoutTabBar(), CEditWnd::EndLayoutBars() ã§è¡Œã†ã‚ˆã†ã«å¤‰æ›´
+	@date 2007.06.20 ryoji ã‚°ãƒ«ãƒ¼ãƒ—IDãƒªã‚»ãƒƒãƒˆ
  */
 void CViewCommander::Command_SHOWTAB( void )
 {
 	CEditWnd*	pCEditWnd = GetDocument()->m_pcEditWnd;	//	Sep. 10, 2002 genta
 
-	GetDllShareData().m_Common.m_sTabBar.m_bDispTabWnd = ((NULL == pCEditWnd->m_cTabWnd.GetHwnd())? TRUE: FALSE);	/* ƒ^ƒuƒo[•\¦ */
+	GetDllShareData().m_Common.m_sTabBar.m_bDispTabWnd = ((NULL == pCEditWnd->m_cTabWnd.GetHwnd())? TRUE: FALSE);	/* ã‚¿ãƒ–ãƒãƒ¼è¡¨ç¤º */
 	pCEditWnd->LayoutTabBar();
 	pCEditWnd->EndLayoutBars();
 
-	// ‚Ü‚Æ‚ß‚é‚Æ‚«‚Í WS_EX_TOPMOST ó‘Ô‚ğ“¯Šú‚·‚é	// 2007.05.18 ryoji
+	// ã¾ã¨ã‚ã‚‹ã¨ãã¯ WS_EX_TOPMOST çŠ¶æ…‹ã‚’åŒæœŸã™ã‚‹	// 2007.05.18 ryoji
 	if( GetDllShareData().m_Common.m_sTabBar.m_bDispTabWnd && !GetDllShareData().m_Common.m_sTabBar.m_bDispTabWndMultiWin )
 	{
 		GetDocument()->m_pcEditWnd->WindowTopMost(
@@ -99,7 +99,7 @@ void CViewCommander::Command_SHOWTAB( void )
 		);
 	}
 
-	//‘SƒEƒCƒ“ƒhƒE‚É•ÏX‚ğ’Ê’m‚·‚éB
+	//å…¨ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã«å¤‰æ›´ã‚’é€šçŸ¥ã™ã‚‹ã€‚
 	CAppNodeManager::getInstance()->ResetGroupId();
 	CAppNodeGroupHandle(0).PostMessageToAllEditors(
 		MYWM_BAR_CHANGE_NOTIFY,
@@ -111,19 +111,19 @@ void CViewCommander::Command_SHOWTAB( void )
 
 
 
-/*! ƒXƒe[ƒ^ƒXƒo[‚Ì•\¦/”ñ•\¦
+/*! ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ãƒãƒ¼ã®è¡¨ç¤º/éè¡¨ç¤º
 
-	@date 2006.12.19 ryoji •\¦Ø‘Ö‚Í CEditWnd::LayoutStatusBar(), CEditWnd::EndLayoutBars() ‚Ås‚¤‚æ‚¤‚É•ÏX
+	@date 2006.12.19 ryoji è¡¨ç¤ºåˆ‡æ›¿ã¯ CEditWnd::LayoutStatusBar(), CEditWnd::EndLayoutBars() ã§è¡Œã†ã‚ˆã†ã«å¤‰æ›´
 */
 void CViewCommander::Command_SHOWSTATUSBAR( void )
 {
 	CEditWnd*	pCEditWnd = GetDocument()->m_pcEditWnd;	//	Sep. 10, 2002 genta
 
-	GetDllShareData().m_Common.m_sWindow.m_bDispSTATUSBAR = ((NULL == pCEditWnd->m_cStatusBar.GetStatusHwnd())? TRUE: FALSE);	/* ƒXƒe[ƒ^ƒXƒo[•\¦ */
+	GetDllShareData().m_Common.m_sWindow.m_bDispSTATUSBAR = ((NULL == pCEditWnd->m_cStatusBar.GetStatusHwnd())? TRUE: FALSE);	/* ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ãƒãƒ¼è¡¨ç¤º */
 	pCEditWnd->LayoutStatusBar();
 	pCEditWnd->EndLayoutBars();
 
-	//‘SƒEƒCƒ“ƒhƒE‚É•ÏX‚ğ’Ê’m‚·‚éB
+	//å…¨ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã«å¤‰æ›´ã‚’é€šçŸ¥ã™ã‚‹ã€‚
 	CAppNodeGroupHandle(0).PostMessageToAllEditors(
 		MYWM_BAR_CHANGE_NOTIFY,
 		(WPARAM)MYBCN_STATUSBAR,
@@ -134,7 +134,7 @@ void CViewCommander::Command_SHOWSTATUSBAR( void )
 
 
 
-/* ƒ^ƒCƒv•Êİ’èˆê—— */
+/* ã‚¿ã‚¤ãƒ—åˆ¥è¨­å®šä¸€è¦§ */
 void CViewCommander::Command_TYPE_LIST( void )
 {
 	CDlgTypeList			cDlgTypeList;
@@ -143,14 +143,14 @@ void CViewCommander::Command_TYPE_LIST( void )
 	sResult.bTempChange = true;
 	if( cDlgTypeList.DoModal( G_AppInstance(), m_pCommanderView->GetHwnd(), &sResult ) ){
 		//	Nov. 29, 2000 genta
-		//	ˆê“I‚Èİ’è“K—p‹@”\‚ğ–³—–î—’Ç‰Á
+		//	ä¸€æ™‚çš„ãªè¨­å®šé©ç”¨æ©Ÿèƒ½ã‚’ç„¡ç†çŸ¢ç†è¿½åŠ 
 		if( sResult.bTempChange ){
 			GetDocument()->m_cDocType.SetDocumentType( sResult.cDocumentType, true );
 			GetDocument()->m_cDocType.LockDocumentType();
 			GetDocument()->OnChangeType();
 		}
 		else{
-			/* ƒ^ƒCƒv•Êİ’è */
+			/* ã‚¿ã‚¤ãƒ—åˆ¥è¨­å®š */
 			CEditApp::getInstance()->m_pcPropertyManager->OpenPropertySheetTypes( -1, sResult.cDocumentType );
 		}
 	}
@@ -159,7 +159,7 @@ void CViewCommander::Command_TYPE_LIST( void )
 
 
 
-/* ƒ^ƒCƒv•Êİ’è */
+/* ã‚¿ã‚¤ãƒ—åˆ¥è¨­å®š */
 void CViewCommander::Command_OPTION_TYPE( void )
 {
 	CEditApp::getInstance()->m_pcPropertyManager->OpenPropertySheetTypes( -1, GetDocument()->m_cDocType.GetDocumentType() );
@@ -167,22 +167,22 @@ void CViewCommander::Command_OPTION_TYPE( void )
 
 
 
-/* ‹¤’Êİ’è */
+/* å…±é€šè¨­å®š */
 void CViewCommander::Command_OPTION( void )
 {
-	/* İ’èƒvƒƒpƒeƒBƒV[ƒg ƒeƒXƒg—p */
+	/* è¨­å®šãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚·ãƒ¼ãƒˆ ãƒ†ã‚¹ãƒˆç”¨ */
 	CEditApp::getInstance()->m_pcPropertyManager->OpenPropertySheet( -1/*, -1*/ );
 }
 
 
 
-/* ƒtƒHƒ“ƒgİ’è */
+/* ãƒ•ã‚©ãƒ³ãƒˆè¨­å®š */
 void CViewCommander::Command_FONT( void )
 {
 	HWND	hwndFrame;
 	hwndFrame = GetMainWindow();
 
-	/* ƒtƒHƒ“ƒgİ’èƒ_ƒCƒAƒƒO */
+	/* ãƒ•ã‚©ãƒ³ãƒˆè¨­å®šãƒ€ã‚¤ã‚¢ãƒ­ã‚° */
 	LOGFONT lf = GetDllShareData().m_Common.m_sView.m_lf;
 	INT nPointSize;
 #ifdef USE_UNFIXED_FONT
@@ -195,23 +195,23 @@ void CViewCommander::Command_FONT( void )
 		GetDllShareData().m_Common.m_sView.m_nPointSize = nPointSize;
 
 		if( GetDllShareData().m_Common.m_sView.m_lf.lfPitchAndFamily & FIXED_PITCH  ){
-			GetDllShareData().m_Common.m_sView.m_bFontIs_FIXED_PITCH = TRUE;	/* Œ»İ‚ÌƒtƒHƒ“ƒg‚ÍŒÅ’è•ƒtƒHƒ“ƒg‚Å‚ ‚é */
+			GetDllShareData().m_Common.m_sView.m_bFontIs_FIXED_PITCH = TRUE;	/* ç¾åœ¨ã®ãƒ•ã‚©ãƒ³ãƒˆã¯å›ºå®šå¹…ãƒ•ã‚©ãƒ³ãƒˆã§ã‚ã‚‹ */
 		}else{
-			GetDllShareData().m_Common.m_sView.m_bFontIs_FIXED_PITCH = FALSE;	/* Œ»İ‚ÌƒtƒHƒ“ƒg‚ÍŒÅ’è•ƒtƒHƒ“ƒg‚Å‚ ‚é */
+			GetDllShareData().m_Common.m_sView.m_bFontIs_FIXED_PITCH = FALSE;	/* ç¾åœ¨ã®ãƒ•ã‚©ãƒ³ãƒˆã¯å›ºå®šå¹…ãƒ•ã‚©ãƒ³ãƒˆã§ã‚ã‚‹ */
 		}
-		/* İ’è•ÏX‚ğ”½‰f‚³‚¹‚é */
-		/* ‘S•ÒWƒEƒBƒ“ƒhƒE‚ÖƒƒbƒZ[ƒW‚ğƒ|ƒXƒg‚·‚é */
+		/* è¨­å®šå¤‰æ›´ã‚’åæ˜ ã•ã›ã‚‹ */
+		/* å…¨ç·¨é›†ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã¸ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’ãƒã‚¹ãƒˆã™ã‚‹ */
 		CAppNodeGroupHandle(0).PostMessageToAllEditors(
 			MYWM_CHANGESETTING,
 			(WPARAM)0, (LPARAM)PM_CHANGESETTING_FONT, hwndFrame
 		);
 
-		/* ƒLƒƒƒŒƒbƒg‚Ì•\¦ */
+		/* ã‚­ãƒ£ãƒ¬ãƒƒãƒˆã®è¡¨ç¤º */
 //		::HideCaret( GetHwnd() );
 //		::ShowCaret( GetHwnd() );
 
-//		/* ƒAƒNƒeƒBƒu‚É‚·‚é */
-//		/* ƒAƒNƒeƒBƒu‚É‚·‚é */
+//		/* ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã«ã™ã‚‹ */
+//		/* ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã«ã™ã‚‹ */
 //		ActivateFrameWindow( hwndFrame );
 	}
 	return;
@@ -219,38 +219,38 @@ void CViewCommander::Command_FONT( void )
 
 
 
-/*! ƒtƒHƒ“ƒgƒTƒCƒYİ’è
-	@param fontSize ƒtƒHƒ“ƒgƒTƒCƒYi1/10ƒ|ƒCƒ“ƒg’PˆÊj
-	@param shift ƒtƒHƒ“ƒgƒTƒCƒY‚ğŠg‘åork¬‚·‚é‚½‚ß‚Ì•ÏX—Ê(fontSize=0‚Ì‚Æ‚«—LŒø)
+/*! ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚ºè¨­å®š
+	@param fontSize ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚ºï¼ˆ1/10ãƒã‚¤ãƒ³ãƒˆå˜ä½ï¼‰
+	@param shift ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚ºã‚’æ‹¡å¤§orç¸®å°ã™ã‚‹ãŸã‚ã®å¤‰æ›´é‡(fontSize=0ã®ã¨ãæœ‰åŠ¹)
 
-	@note TrueType‚Ì‚İƒTƒ|[ƒg
+	@note TrueTypeã®ã¿ã‚µãƒãƒ¼ãƒˆ
 
-	@date 2013.04.10 novice V‹Kì¬
+	@date 2013.04.10 novice æ–°è¦ä½œæˆ
 */
 void CViewCommander::Command_SETFONTSIZE( int fontSize, int shift )
 {
-	// The point sizes recommended by "The Windows Interface: An Application Design Guide", 1/10ƒ|ƒCƒ“ƒg’PˆÊ
+	// The point sizes recommended by "The Windows Interface: An Application Design Guide", 1/10ãƒã‚¤ãƒ³ãƒˆå˜ä½
 	static const INT sizeTable[] = { 4*10, 6*10, 8*10, 10*10, 12*10, 14*10, 16*10, 18*10, 20*10, 22*10, 24*10, 26*10, 28*10, 36*10, 48*10, 72*10 };
 	LOGFONT& lf = GetDllShareData().m_Common.m_sView.m_lf;
 	INT nPointSize;
 
-	// TrueType‚Ì‚İ‘Î‰
+	// TrueTypeã®ã¿å¯¾å¿œ
 	if( OUT_STROKE_PRECIS != lf.lfOutPrecision) {
 		return;
 	}
 
 	if( 0 != fontSize ){
-		// ƒtƒHƒ“ƒgƒTƒCƒY‚ğ’¼Ú‘I‘ğ‚·‚éê‡
+		// ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚ºã‚’ç›´æ¥é¸æŠã™ã‚‹å ´åˆ
 		nPointSize = t_max(sizeTable[0], t_min(sizeTable[_countof(sizeTable)-1], fontSize));
 
-		// V‚µ‚¢ƒtƒHƒ“ƒgƒTƒCƒYİ’è
+		// æ–°ã—ã„ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚ºè¨­å®š
 		lf.lfHeight = DpiPointsToPixels(-nPointSize, 10);
 		GetDllShareData().m_Common.m_sView.m_nPointSize = nPointSize;
 	} else if( 0 != shift ) {
-		// Œ»İ‚ÌƒtƒHƒ“ƒg‚É‘Î‚µ‚ÄAk¬orŠg‘å‚µ‚½ƒtƒHƒ“ƒg‘I‘ğ‚·‚éê‡
+		// ç¾åœ¨ã®ãƒ•ã‚©ãƒ³ãƒˆã«å¯¾ã—ã¦ã€ç¸®å°oræ‹¡å¤§ã—ãŸãƒ•ã‚©ãƒ³ãƒˆé¸æŠã™ã‚‹å ´åˆ
 		nPointSize = GetDllShareData().m_Common.m_sView.m_nPointSize;
 
-		// ƒtƒHƒ“ƒg‚ÌŠg‘åork¬‚·‚é‚½‚ß‚ÌƒTƒCƒYŒŸõ
+		// ãƒ•ã‚©ãƒ³ãƒˆã®æ‹¡å¤§orç¸®å°ã™ã‚‹ãŸã‚ã®ã‚µã‚¤ã‚ºæ¤œç´¢
 		int i;
 		for( i = 0; i < _countof(sizeTable); i++) {
 			if( nPointSize <= sizeTable[i] ){
@@ -260,19 +260,19 @@ void CViewCommander::Command_SETFONTSIZE( int fontSize, int shift )
 			}
 		}
 
-		// V‚µ‚¢ƒtƒHƒ“ƒgƒTƒCƒYİ’è
+		// æ–°ã—ã„ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚ºè¨­å®š
 		lf.lfHeight = DpiPointsToPixels(-nPointSize, 10);
 		GetDllShareData().m_Common.m_sView.m_nPointSize = nPointSize;
 	} else {
-		// ƒtƒHƒ“ƒgƒTƒCƒY‚ª•Ï‚í‚ç‚È‚¢‚Ì‚ÅI—¹
+		// ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚ºãŒå¤‰ã‚ã‚‰ãªã„ã®ã§çµ‚äº†
 		return;
 	}
 
 	HWND	hwndFrame;
 	hwndFrame = GetMainWindow();
 
-	/* İ’è•ÏX‚ğ”½‰f‚³‚¹‚é */
-	/* ‘S•ÒWƒEƒBƒ“ƒhƒE‚ÖƒƒbƒZ[ƒW‚ğƒ|ƒXƒg‚·‚é */
+	/* è¨­å®šå¤‰æ›´ã‚’åæ˜ ã•ã›ã‚‹ */
+	/* å…¨ç·¨é›†ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã¸ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’ãƒã‚¹ãƒˆã™ã‚‹ */
 	CAppNodeGroupHandle(0).PostMessageToAllEditors(
 		MYWM_CHANGESETTING,
 		(WPARAM)0, (LPARAM)PM_CHANGESETTING_FONT, hwndFrame
@@ -281,19 +281,19 @@ void CViewCommander::Command_SETFONTSIZE( int fontSize, int shift )
 
 
 
-/*! Œ»İ‚ÌƒEƒBƒ“ƒhƒE•‚ÅÜ‚è•Ô‚µ
+/*! ç¾åœ¨ã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦å¹…ã§æŠ˜ã‚Šè¿”ã—
 
-	@date 2002.01.14 YAZAKI Œ»İ‚ÌƒEƒBƒ“ƒhƒE•‚ÅÜ‚è•Ô‚³‚ê‚Ä‚¢‚é‚Æ‚«‚ÍAÅ‘å’l‚É‚·‚é‚æ‚¤‚É
-	@date 2002.04.08 YAZAKI ‚Æ‚«‚Ç‚«ƒEƒBƒ“ƒhƒE•‚ÅÜ‚è•Ô‚³‚ê‚È‚¢‚±‚Æ‚ª‚ ‚éƒoƒOC³B
-	@date 2005.08.14 genta ‚±‚±‚Å‚Ìİ’è‚Í‹¤’Êİ’è‚É”½‰f‚µ‚È‚¢D
-	@date 2005.10.22 aroka Œ»İ‚ÌƒEƒBƒ“ƒhƒE•¨Å‘å’l¨•¶‘ƒ^ƒCƒv‚Ì‰Šú’l ‚ğƒgƒOƒ‹‚É‚·‚é
+	@date 2002.01.14 YAZAKI ç¾åœ¨ã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦å¹…ã§æŠ˜ã‚Šè¿”ã•ã‚Œã¦ã„ã‚‹ã¨ãã¯ã€æœ€å¤§å€¤ã«ã™ã‚‹ã‚ˆã†ã«
+	@date 2002.04.08 YAZAKI ã¨ãã©ãã‚¦ã‚£ãƒ³ãƒ‰ã‚¦å¹…ã§æŠ˜ã‚Šè¿”ã•ã‚Œãªã„ã“ã¨ãŒã‚ã‚‹ãƒã‚°ä¿®æ­£ã€‚
+	@date 2005.08.14 genta ã“ã“ã§ã®è¨­å®šã¯å…±é€šè¨­å®šã«åæ˜ ã—ãªã„ï¼
+	@date 2005.10.22 aroka ç¾åœ¨ã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦å¹…â†’æœ€å¤§å€¤â†’æ–‡æ›¸ã‚¿ã‚¤ãƒ—ã®åˆæœŸå€¤ ã‚’ãƒˆã‚°ãƒ«ã«ã™ã‚‹
 
-	@note •ÏX‚·‚é‡˜‚ğ•ÏX‚µ‚½‚Æ‚«‚ÍCEditWnd::InitMenu()‚à•ÏX‚·‚é‚±‚Æ
+	@note å¤‰æ›´ã™ã‚‹é †åºã‚’å¤‰æ›´ã—ãŸã¨ãã¯CEditWnd::InitMenu()ã‚‚å¤‰æ›´ã™ã‚‹ã“ã¨
 	@sa CEditWnd::InitMenu()
 */
-void CViewCommander::Command_WRAPWINDOWWIDTH( void )	//	Oct. 7, 2000 JEPRO WRAPWINDIWWIDTH ‚ğ WRAPWINDOWWIDTH ‚É•ÏX
+void CViewCommander::Command_WRAPWINDOWWIDTH( void )	//	Oct. 7, 2000 JEPRO WRAPWINDIWWIDTH ã‚’ WRAPWINDOWWIDTH ã«å¤‰æ›´
 {
-	// Jan. 8, 2006 genta ”»’èˆ—‚ğm_pCommanderView->GetWrapMode()‚ÖˆÚ“®
+	// Jan. 8, 2006 genta åˆ¤å®šå‡¦ç†ã‚’m_pCommanderView->GetWrapMode()ã¸ç§»å‹•
 	CEditView::TOGGLE_WRAP_ACTION nWrapMode;
 	CLayoutInt newKetas;
 	
@@ -301,18 +301,18 @@ void CViewCommander::Command_WRAPWINDOWWIDTH( void )	//	Oct. 7, 2000 JEPRO WRAPW
 	GetDocument()->m_nTextWrapMethodCur = WRAP_SETTING_WIDTH;
 	GetDocument()->m_bTextWrapMethodCurTemp = !( GetDocument()->m_nTextWrapMethodCur == GetDocument()->m_cDocType.GetDocumentAttribute().m_nTextWrapMethod );
 	if( nWrapMode == CEditView::TGWRAP_NONE ){
-		return;	// Ü‚è•Ô‚µŒ…‚ÍŒ³‚Ì‚Ü‚Ü
+		return;	// æŠ˜ã‚Šè¿”ã—æ¡ã¯å…ƒã®ã¾ã¾
 	}
 
 	GetEditWindow()->ChangeLayoutParam( true, GetDocument()->m_cLayoutMgr.GetTabSpace(), newKetas );
 	
 
-	//	Aug. 14, 2005 genta ‹¤’Êİ’è‚Ö‚Í”½‰f‚³‚¹‚È‚¢
+	//	Aug. 14, 2005 genta å…±é€šè¨­å®šã¸ã¯åæ˜ ã•ã›ãªã„
 //	GetDocument()->m_cDocType.GetDocumentAttribute().m_nMaxLineKetas = m_nViewColNum;
 
-	m_pCommanderView->GetTextArea().SetViewLeftCol( CLayoutInt(0) );		/* •\¦ˆæ‚Ìˆê”Ô¶‚ÌŒ…(0ŠJn) */
+	m_pCommanderView->GetTextArea().SetViewLeftCol( CLayoutInt(0) );		/* è¡¨ç¤ºåŸŸã®ä¸€ç•ªå·¦ã®æ¡(0é–‹å§‹) */
 
-	/* ƒtƒH[ƒJƒXˆÚ“®‚ÌÄ•`‰æ */
+	/* ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ç§»å‹•æ™‚ã®å†æç”» */
 	m_pCommanderView->RedrawAll();
 	return;
 }
@@ -320,7 +320,7 @@ void CViewCommander::Command_WRAPWINDOWWIDTH( void )	//	Oct. 7, 2000 JEPRO WRAPW
 
 
 //	from CViewCommander_New.cpp
-/*!	—š—ğ‚ÌŠÇ—(ƒ_ƒCƒAƒƒO)
+/*!	å±¥æ­´ã®ç®¡ç†(ãƒ€ã‚¤ã‚¢ãƒ­ã‚°)
 	@author	MIK
 	@date	2003/04/07
 */
@@ -328,7 +328,7 @@ void CViewCommander::Command_Favorite( void )
 {
 	CDlgFavorite	cDlgFavorite;
 
-	//ƒ_ƒCƒAƒƒO‚ğ•\¦‚·‚é
+	//ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’è¡¨ç¤ºã™ã‚‹
 	if( !cDlgFavorite.DoModal( G_AppInstance(), m_pCommanderView->GetHwnd(), (LPARAM)GetDocument() ) )
 	{
 		return;
@@ -340,81 +340,81 @@ void CViewCommander::Command_Favorite( void )
 
 
 /*!
-	@brief ƒeƒLƒXƒg‚ÌÜ‚è•Ô‚µ•û–@‚ğ•ÏX‚·‚é
+	@brief ãƒ†ã‚­ã‚¹ãƒˆã®æŠ˜ã‚Šè¿”ã—æ–¹æ³•ã‚’å¤‰æ›´ã™ã‚‹
 	
-	@param[in] nWrapMethod Ü‚è•Ô‚µ•û–@
-		WRAP_NO_TEXT_WRAP  : Ü‚è•Ô‚³‚È‚¢
-		WRAP_SETTING_WIDTH ; w’èŒ…‚ÅÜ‚è•Ô‚·
-		WRAP_WINDOW_WIDTH  ; ‰E’[‚ÅÜ‚è•Ô‚·
+	@param[in] nWrapMethod æŠ˜ã‚Šè¿”ã—æ–¹æ³•
+		WRAP_NO_TEXT_WRAP  : æŠ˜ã‚Šè¿”ã•ãªã„
+		WRAP_SETTING_WIDTH ; æŒ‡å®šæ¡ã§æŠ˜ã‚Šè¿”ã™
+		WRAP_WINDOW_WIDTH  ; å³ç«¯ã§æŠ˜ã‚Šè¿”ã™
 	
-	@note ƒEƒBƒ“ƒhƒE‚ª¶‰E‚É•ªŠ„‚³‚ê‚Ä‚¢‚éê‡A¶‘¤‚ÌƒEƒBƒ“ƒhƒE•‚ğÜ‚è•Ô‚µ•‚Æ‚·‚éB
+	@note ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãŒå·¦å³ã«åˆ†å‰²ã•ã‚Œã¦ã„ã‚‹å ´åˆã€å·¦å´ã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦å¹…ã‚’æŠ˜ã‚Šè¿”ã—å¹…ã¨ã™ã‚‹ã€‚
 	
-	@date 2008.05.31 nasukoji	V‹Kì¬
-	@date 2009.08.28 nasukoji	ƒeƒLƒXƒg‚ÌÅ‘å•‚ğZo‚·‚é
+	@date 2008.05.31 nasukoji	æ–°è¦ä½œæˆ
+	@date 2009.08.28 nasukoji	ãƒ†ã‚­ã‚¹ãƒˆã®æœ€å¤§å¹…ã‚’ç®—å‡ºã™ã‚‹
 */
 void CViewCommander::Command_TEXTWRAPMETHOD( int nWrapMethod )
 {
 	CEditDoc* pcDoc = GetDocument();
 
-	// Œ»İ‚Ìİ’è’l‚Æ“¯‚¶‚È‚ç‰½‚à‚µ‚È‚¢
+	// ç¾åœ¨ã®è¨­å®šå€¤ã¨åŒã˜ãªã‚‰ä½•ã‚‚ã—ãªã„
 	if( pcDoc->m_nTextWrapMethodCur == nWrapMethod )
 		return;
 
 	int nWidth;
 
 	switch( nWrapMethod ){
-	case WRAP_NO_TEXT_WRAP:		// Ü‚è•Ô‚³‚È‚¢
-		nWidth = MAXLINEKETAS;	// ƒAƒvƒŠƒP[ƒVƒ‡ƒ“‚ÌÅ‘å•‚ÅÜ‚è•Ô‚µ
+	case WRAP_NO_TEXT_WRAP:		// æŠ˜ã‚Šè¿”ã•ãªã„
+		nWidth = MAXLINEKETAS;	// ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã®æœ€å¤§å¹…ã§æŠ˜ã‚Šè¿”ã—
 		break;
 
-	case WRAP_SETTING_WIDTH:	// w’èŒ…‚ÅÜ‚è•Ô‚·
+	case WRAP_SETTING_WIDTH:	// æŒ‡å®šæ¡ã§æŠ˜ã‚Šè¿”ã™
 		nWidth = (Int)pcDoc->m_cDocType.GetDocumentAttribute().m_nMaxLineKetas;
 		break;
 
-	case WRAP_WINDOW_WIDTH:		// ‰E’[‚ÅÜ‚è•Ô‚·
-		// ƒEƒBƒ“ƒhƒE‚ª¶‰E‚É•ªŠ„‚³‚ê‚Ä‚¢‚éê‡‚Í¶‘¤‚ÌƒEƒBƒ“ƒhƒE•‚ğg—p‚·‚é
+	case WRAP_WINDOW_WIDTH:		// å³ç«¯ã§æŠ˜ã‚Šè¿”ã™
+		// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãŒå·¦å³ã«åˆ†å‰²ã•ã‚Œã¦ã„ã‚‹å ´åˆã¯å·¦å´ã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦å¹…ã‚’ä½¿ç”¨ã™ã‚‹
 		nWidth = (Int)m_pCommanderView->ViewColNumToWrapColNum( GetEditWindow()->GetView(0).GetTextArea().m_nViewColNum );
 		break;
 
 	default:
-		return;		// •s³‚È’l‚Ì‚Í‰½‚à‚µ‚È‚¢
+		return;		// ä¸æ­£ãªå€¤ã®æ™‚ã¯ä½•ã‚‚ã—ãªã„
 	}
 
-	pcDoc->m_nTextWrapMethodCur = nWrapMethod;	// İ’è‚ğ‹L‰¯
+	pcDoc->m_nTextWrapMethodCur = nWrapMethod;	// è¨­å®šã‚’è¨˜æ†¶
 
-	// Ü‚è•Ô‚µ•û–@‚Ìˆêİ’è“K—p^ˆêİ’è“K—p‰ğœ	// 2008.06.08 ryoji
+	// æŠ˜ã‚Šè¿”ã—æ–¹æ³•ã®ä¸€æ™‚è¨­å®šé©ç”¨ï¼ä¸€æ™‚è¨­å®šé©ç”¨è§£é™¤	// 2008.06.08 ryoji
 	pcDoc->m_bTextWrapMethodCurTemp = !( pcDoc->m_cDocType.GetDocumentAttribute().m_nTextWrapMethod == nWrapMethod );
 
-	// Ü‚è•Ô‚µˆÊ’u‚ğ•ÏX
+	// æŠ˜ã‚Šè¿”ã—ä½ç½®ã‚’å¤‰æ›´
 	GetEditWindow()->ChangeLayoutParam( false, pcDoc->m_cLayoutMgr.GetTabSpace(), (CLayoutInt)nWidth );
 
-	// 2009.08.28 nasukoji	uÜ‚è•Ô‚³‚È‚¢v‚È‚çƒeƒLƒXƒgÅ‘å•‚ğZoA‚»‚êˆÈŠO‚Í•Ï”‚ğƒNƒŠƒA
+	// 2009.08.28 nasukoji	ã€ŒæŠ˜ã‚Šè¿”ã•ãªã„ã€ãªã‚‰ãƒ†ã‚­ã‚¹ãƒˆæœ€å¤§å¹…ã‚’ç®—å‡ºã€ãã‚Œä»¥å¤–ã¯å¤‰æ•°ã‚’ã‚¯ãƒªã‚¢
 	if( pcDoc->m_nTextWrapMethodCur == WRAP_NO_TEXT_WRAP ){
-		pcDoc->m_cLayoutMgr.CalculateTextWidth();		// ƒeƒLƒXƒgÅ‘å•‚ğZo‚·‚é
-		pcDoc->m_pcEditWnd->RedrawAllViews( NULL );		// ƒXƒNƒ[ƒ‹ƒo[‚ÌXV‚ª•K—v‚È‚Ì‚ÅÄ•\¦‚ğÀs‚·‚é
+		pcDoc->m_cLayoutMgr.CalculateTextWidth();		// ãƒ†ã‚­ã‚¹ãƒˆæœ€å¤§å¹…ã‚’ç®—å‡ºã™ã‚‹
+		pcDoc->m_pcEditWnd->RedrawAllViews( NULL );		// ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ãƒãƒ¼ã®æ›´æ–°ãŒå¿…è¦ãªã®ã§å†è¡¨ç¤ºã‚’å®Ÿè¡Œã™ã‚‹
 	}else{
-		pcDoc->m_cLayoutMgr.ClearLayoutLineWidth();		// Šes‚ÌƒŒƒCƒAƒEƒgs’·‚Ì‹L‰¯‚ğƒNƒŠƒA‚·‚é
+		pcDoc->m_cLayoutMgr.ClearLayoutLineWidth();		// å„è¡Œã®ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆè¡Œé•·ã®è¨˜æ†¶ã‚’ã‚¯ãƒªã‚¢ã™ã‚‹
 	}
 }
 
 
 
 /*!
-	@brief •¶šƒJƒEƒ“ƒg•û–@‚ğ•ÏX‚·‚é
+	@brief æ–‡å­—ã‚«ã‚¦ãƒ³ãƒˆæ–¹æ³•ã‚’å¤‰æ›´ã™ã‚‹
 	
-	@param[in] nMode •¶šƒJƒEƒ“ƒg•û–@
-		SELECT_COUNT_TOGGLE  : •¶šƒJƒEƒ“ƒg•û–@‚ğƒgƒOƒ‹
-		SELECT_COUNT_BY_CHAR ; •¶š”‚ÅƒJƒEƒ“ƒg
-		SELECT_COUNT_BY_BYTE ; ƒoƒCƒg”‚ÅƒJƒEƒ“ƒg
+	@param[in] nMode æ–‡å­—ã‚«ã‚¦ãƒ³ãƒˆæ–¹æ³•
+		SELECT_COUNT_TOGGLE  : æ–‡å­—ã‚«ã‚¦ãƒ³ãƒˆæ–¹æ³•ã‚’ãƒˆã‚°ãƒ«
+		SELECT_COUNT_BY_CHAR ; æ–‡å­—æ•°ã§ã‚«ã‚¦ãƒ³ãƒˆ
+		SELECT_COUNT_BY_BYTE ; ãƒã‚¤ãƒˆæ•°ã§ã‚«ã‚¦ãƒ³ãƒˆ
 */
 void CViewCommander::Command_SELECT_COUNT_MODE( int nMode )
 {
-	//İ’è‚É‚Í•Û‘¶‚¹‚¸AView–ˆ‚É‚Âƒtƒ‰ƒO‚ğİ’è
+	//è¨­å®šã«ã¯ä¿å­˜ã›ãšã€Viewæ¯ã«æŒã¤ãƒ•ãƒ©ã‚°ã‚’è¨­å®š
 	//BOOL* pbDispSelCountByByte = &GetDllShareData().m_Common.m_sStatusbar.m_bDispSelCountByByte;
 	ESelectCountMode* pnSelectCountMode = &GetEditWindow()->m_nSelectCountMode;
 
 	if( nMode == SELECT_COUNT_TOGGLE ){
-		//•¶š”ÌƒoƒCƒg”ƒgƒOƒ‹
+		//æ–‡å­—æ•°â‡”ãƒã‚¤ãƒˆæ•°ãƒˆã‚°ãƒ«
 		ESelectCountMode nCurrentMode;
 		if( *pnSelectCountMode == SELECT_COUNT_TOGGLE ){
 			nCurrentMode = ( GetDllShareData().m_Common.m_sStatusbar.m_bDispSelCountByByte ?
@@ -433,8 +433,8 @@ void CViewCommander::Command_SELECT_COUNT_MODE( int nMode )
 
 
 
-/*!	@brief ˆø—p•„‚Ìİ’è
-	@date Jan. 29, 2005 genta V‹Kì¬
+/*!	@brief å¼•ç”¨ç¬¦ã®è¨­å®š
+	@date Jan. 29, 2005 genta æ–°è¦ä½œæˆ
 */
 void CViewCommander::Command_SET_QUOTESTRING( const wchar_t* quotestr )
 {
@@ -450,11 +450,11 @@ void CViewCommander::Command_SET_QUOTESTRING( const wchar_t* quotestr )
 
 
 /*!
-	ƒJƒ‰[ƒŠƒ“ƒO‚Ì—LŒø/–³Œø‚ğƒgƒOƒ‹‚ÅØ‚è‘Ö‚¦‚é
+	ã‚«ãƒ©ãƒ¼ãƒªãƒ³ã‚°ã®æœ‰åŠ¹/ç„¡åŠ¹ã‚’ãƒˆã‚°ãƒ«ã§åˆ‡ã‚Šæ›¿ãˆã‚‹
 
-	ƒ^ƒCƒv•Êİ’è‚ÌƒJƒ‰[ƒŠƒ“ƒOİ’è‚ğ•ÏXŒãA‘SƒGƒfƒBƒ^‚ÉƒƒbƒZ[ƒW‚ğ
-	ƒuƒ[ƒhƒLƒƒƒXƒg”zM‚µ‚Ä”½‰f‚·‚éB‘SƒGƒfƒBƒ^‚É”½‰f‚µ‚½‚¢İ’è‚Å‚Í‚È‚¢‚ªA
-	‚ ‚Ü‚èg‚¤‹@”\‚Å‚à‚È‚¢‚Ì‚ÅAˆê”ÔŠy‚ÈÀ‘•‚ÅÀŒ»‚µ‚Ä‚¨‚­B
+	ã‚¿ã‚¤ãƒ—åˆ¥è¨­å®šã®ã‚«ãƒ©ãƒ¼ãƒªãƒ³ã‚°è¨­å®šã‚’å¤‰æ›´å¾Œã€å…¨ã‚¨ãƒ‡ã‚£ã‚¿ã«ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’
+	ãƒ–ãƒ­ãƒ¼ãƒ‰ã‚­ãƒ£ã‚¹ãƒˆé…ä¿¡ã—ã¦åæ˜ ã™ã‚‹ã€‚å…¨ã‚¨ãƒ‡ã‚£ã‚¿ã«åæ˜ ã—ãŸã„è¨­å®šã§ã¯ãªã„ãŒã€
+	ã‚ã¾ã‚Šä½¿ã†æ©Ÿèƒ½ã§ã‚‚ãªã„ã®ã§ã€ä¸€ç•ªæ¥½ãªå®Ÿè£…ã§å®Ÿç¾ã—ã¦ãŠãã€‚
 */
 void CViewCommander::ToggleColoring(EColorIndexType colorIndex)
 {
@@ -484,7 +484,7 @@ void CViewCommander::ToggleColoring(EColorIndexType colorIndex)
 
 
 /*!
-	TAB‹L†‚Ì•\¦/”ñ•\¦
+	TABè¨˜å·ã®è¡¨ç¤º/éè¡¨ç¤º
 */
 void CViewCommander::Command_ShowTabChar(void)
 {
@@ -494,7 +494,7 @@ void CViewCommander::Command_ShowTabChar(void)
 
 
 /*!
-	‰üs‹L†‚Ì•\¦/”ñ•\¦
+	æ”¹è¡Œè¨˜å·ã®è¡¨ç¤º/éè¡¨ç¤º
 */
 void CViewCommander::Command_ShowEolChar(void)
 {
@@ -504,10 +504,10 @@ void CViewCommander::Command_ShowEolChar(void)
 
 
 /*!
-	TAB ‹L†‚Ì•‚ğİ’è‚·‚é.
+	TAB è¨˜å·ã®å¹…ã‚’è¨­å®šã™ã‚‹.
 
-	ƒ^ƒCƒv•Êİ’è‚Ì TAB •‚Ìİ’è‚ğ•ÏXŒãA‘SƒGƒfƒBƒ^‚ÉƒƒbƒZ[ƒW‚ğ
-	ƒuƒ[ƒhƒLƒƒƒXƒg”zM‚µ‚Ä”½‰f‚·‚é.
+	ã‚¿ã‚¤ãƒ—åˆ¥è¨­å®šã® TAB å¹…ã®è¨­å®šã‚’å¤‰æ›´å¾Œã€å…¨ã‚¨ãƒ‡ã‚£ã‚¿ã«ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’
+	ãƒ–ãƒ­ãƒ¼ãƒ‰ã‚­ãƒ£ã‚¹ãƒˆé…ä¿¡ã—ã¦åæ˜ ã™ã‚‹.
 */
 void CViewCommander::SetTabWidth(int tabWidth)
 {
@@ -530,7 +530,7 @@ void CViewCommander::SetTabWidth(int tabWidth)
 
 
 /*!
-	TAB‹L†‚Ì•‚ğ 2 ‚Éİ’è‚·‚é.
+	TABè¨˜å·ã®å¹…ã‚’ 2 ã«è¨­å®šã™ã‚‹.
 */
 void CViewCommander::Command_TabWidth2(void)
 {
@@ -540,7 +540,7 @@ void CViewCommander::Command_TabWidth2(void)
 
 
 /*!
-	TAB‹L†‚Ì•‚ğ 4 ‚Éİ’è‚·‚é.
+	TABè¨˜å·ã®å¹…ã‚’ 4 ã«è¨­å®šã™ã‚‹.
 */
 void CViewCommander::Command_TabWidth4(void)
 {
@@ -550,7 +550,7 @@ void CViewCommander::Command_TabWidth4(void)
 
 
 /*!
-	TAB‹L†‚Ì•‚ğ 8 ‚Éİ’è‚·‚é.
+	TABè¨˜å·ã®å¹…ã‚’ 8 ã«è¨­å®šã™ã‚‹.
 */
 void CViewCommander::Command_TabWidth8(void)
 {

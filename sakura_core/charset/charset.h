@@ -25,68 +25,68 @@
 #define SAKURA_CHARSET_51A8CEE7_80CB_463F_975E_B30715B1C385_H_
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                           �萔                              //
+//                           定数                              //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
-// �����R�[�h�Z�b�g���
-//2007.08.14 kobake CODE_ERROR, CODE_DEFAULT �ǉ�
+// 文字コードセット種別
+//2007.08.14 kobake CODE_ERROR, CODE_DEFAULT 追加
 enum ECodeType {
-	CODE_SJIS,						//!< SJIS				(MS-CP932(Windows-31J), �V�t�gJIS(Shift_JIS))
-	CODE_JIS,						//!< JIS				(MS-CP5022x(ISO-2022-JP-MS)�ł͂Ȃ�)
-	CODE_EUC,						//!< EUC				(MS-CP51932, eucJP-ms(eucJP-open)�ł͂Ȃ�)
+	CODE_SJIS,						//!< SJIS				(MS-CP932(Windows-31J), シフトJIS(Shift_JIS))
+	CODE_JIS,						//!< JIS				(MS-CP5022x(ISO-2022-JP-MS)ではない)
+	CODE_EUC,						//!< EUC				(MS-CP51932, eucJP-ms(eucJP-open)ではない)
 	CODE_UNICODE,					//!< Unicode			(UTF-16 LittleEndian(UCS-2))
 	CODE_UTF8,						//!< UTF-8(UCS-2)
 	CODE_UTF7,						//!< UTF-7(UCS-2)
 	CODE_UNICODEBE,					//!< Unicode BigEndian	(UTF-16 BigEndian(UCS-2))
 	CODE_CESU8,						//!< CESU-8
-	CODE_LATIN1,					//!< Latin1				(Latin1, ����, Windows-1252, Windows Codepage 1252 West European)
+	CODE_LATIN1,					//!< Latin1				(Latin1, 欧文, Windows-1252, Windows Codepage 1252 West European)
 	CODE_CODEMAX,
-	CODE_AUTODETECT	= 99,			//!< �����R�[�h��������
-	CODE_ERROR      = -1,			//!< �G���[
-	CODE_NONE       = -1,			//!< �����o
-	CODE_DEFAULT    = CODE_UTF8,	//!< �f�t�H���g�̕����R�[�h
+	CODE_AUTODETECT	= 99,			//!< 文字コード自動判別
+	CODE_ERROR      = -1,			//!< エラー
+	CODE_NONE       = -1,			//!< 未検出
+	CODE_DEFAULT    = CODE_UTF8,	//!< デフォルトの文字コード
 	/*
 		- MS-CP50220 
-			Unicode ���� cp50220 �ւ̕ϊ����ɁA
-			JIS X 0201 �Љ����� JIS X 0208 �̕Љ����ɒu�������
+			Unicode から cp50220 への変換時に、
+			JIS X 0201 片仮名は JIS X 0208 の片仮名に置換される
 		- MS-CP50221
-			Unicode ���� cp50221 �ւ̕ϊ����ɁA
-			JIS X 0201 �Љ����́AG0 �W���ւ̎w���̃G�X�P�[�v�V�[�P���X ESC ( I ��p���ăG���R�[�h�����
+			Unicode から cp50221 への変換時に、
+			JIS X 0201 片仮名は、G0 集合への指示のエスケープシーケンス ESC ( I を用いてエンコードされる
 		- MS-CP50222
-			Unicode ���� cp50222 �ւ̕ϊ����ɁA
-			JIS X 0201 �Љ����́ASO/SI ��p���ăG���R�[�h�����
+			Unicode から cp50222 への変換時に、
+			JIS X 0201 片仮名は、SO/SI を用いてエンコードされる
 		
-		�Q�l
+		参考
 		http://legacy-encoding.sourceforge.jp/wiki/
 	*/
 };
 
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                           ����                              //
+//                           判定                              //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
-//2007.08.14 kobake �ǉ�
-//!�L���ȕ����R�[�h�Z�b�g�Ȃ�true
-//	2010/6/21	inline���͂���
+//2007.08.14 kobake 追加
+//!有効な文字コードセットならtrue
+//	2010/6/21	inlineをはずす
 bool IsValidCodeType(int code);
 
-//2007.08.14 kobake �ǉ�
-//!�L���ȕ����R�[�h�Z�b�g�Ȃ�true�B�������ASJIS�͏���(�t�@�C���ꗗ�ɕ����R�[�h��[]�t���ŕ\���̂���)
+//2007.08.14 kobake 追加
+//!有効な文字コードセットならtrue。ただし、SJISは除く(ファイル一覧に文字コードを[]付きで表示のため)
 inline bool IsValidCodeTypeExceptSJIS(int code)
 {
 	return IsValidCodeType(code) && code!=CODE_SJIS;
 }
 
-// 2010/6/21 Uchi �폜
-//2007.08.14 kobake �ǉ�
-//!ECodeType�^�ŕ\����l�Ȃ�true
+// 2010/6/21 Uchi 削除
+//2007.08.14 kobake 追加
+//!ECodeType型で表せる値ならtrue
 //inline bool IsInECodeType(int code)
 //{
 //	return (code>=0 && code<CODE_CODEMAX) || code==CODE_ERROR || code==CODE_AUTODETECT;
 //}
 
-// 2010/6/21 Uchi �폜
+// 2010/6/21 Uchi 削除
 //inline bool IsConcreteCodeType(ECodeType eCodeType)
 //{
 //	return IsValidCodeType(eCodeType) && eCodeType != CODE_AUTODETECT;
@@ -96,7 +96,7 @@ void InitCodeSet();
 
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                           ���O                              //
+//                           名前                              //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
 class CCodeTypeName{
@@ -115,7 +115,7 @@ private:
 
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                      �R���{�{�b�N�X                         //
+//                      コンボボックス                         //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
 class CCodeTypesForCombobox{

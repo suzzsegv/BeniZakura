@@ -1,14 +1,14 @@
 /*! @file
-	@brief ƒ^ƒCƒv•Êİ’è - ƒJƒ‰[
+	@brief ã‚¿ã‚¤ãƒ—åˆ¥è¨­å®š - ã‚«ãƒ©ãƒ¼
 
-	@date 2008.04.12 kobake CPropTypes.cpp‚©‚ç•ª—£
+	@date 2008.04.12 kobake CPropTypes.cppã‹ã‚‰åˆ†é›¢
 	@date 2009.02.22 ryoji
 */
 /*
 	Copyright (C) 1998-2002, Norio Nakatani
 	Copyright (C) 2000, jepro, genta
 	Copyright (C) 2001, jepro, genta, MIK, hor, Stonee, asa-o
-	Copyright (C) 2002, YAZAKI, aroka, MIK, genta, ‚±‚¨‚è, Moca
+	Copyright (C) 2002, YAZAKI, aroka, MIK, genta, ã“ãŠã‚Š, Moca
 	Copyright (C) 2003, MIK, zenryaku, Moca, naoh, KEITA, genta
 	Copyright (C) 2005, MIK, genta, Moca, ryoji
 	Copyright (C) 2006, ryoji, fon, novice
@@ -35,13 +35,13 @@
 
 using namespace std;
 
-//! ƒJƒXƒ^ƒ€ƒJƒ‰[—p‚Ì¯•Ê•¶š—ñ
+//! ã‚«ã‚¹ã‚¿ãƒ ã‚«ãƒ©ãƒ¼ç”¨ã®è­˜åˆ¥æ–‡å­—åˆ—
 static const TCHAR* TSTR_PTRCUSTOMCOLORS = _T("ptrCustomColors");
 
 WNDPROC	m_wpColorListProc;
 
 
-//	sƒRƒƒ“ƒg‚ÉŠÖ‚·‚éî•ñ
+//	è¡Œã‚³ãƒ¡ãƒ³ãƒˆã«é–¢ã™ã‚‹æƒ…å ±
 struct {
 	int nEditID;
 	int nCheckBoxID;
@@ -52,32 +52,32 @@ struct {
 	{ IDC_EDIT_LINECOMMENT3	, IDC_CHECK_LCPOS3, IDC_EDIT_LINECOMMENTPOS3}
 };
 
-/* F‚Ìİ’è‚ğƒCƒ“ƒ|[ƒg */
-// 2010/4/23 Uchi Import‚ÌŠOo‚µ
+/* è‰²ã®è¨­å®šã‚’ã‚¤ãƒ³ãƒãƒ¼ãƒˆ */
+// 2010/4/23 Uchi Importã®å¤–å‡ºã—
 bool CPropTypesColor::Import( HWND hwndDlg )
 {
 	ColorInfo		ColorInfoArr[64];
 	CImpExpColors	cImpExpColors( ColorInfoArr );
 
-	/* Fİ’è I/O */
+	/* è‰²è¨­å®š I/O */
 	for( int i = 0; i < m_Types.m_nColorInfoArrNum; ++i ){
 		ColorInfoArr[i] = m_Types.m_ColorInfoArr[i];
 		_tcscpy( ColorInfoArr[i].m_szName, m_Types.m_ColorInfoArr[i].m_szName );
 	}
 
-	// ƒCƒ“ƒ|[ƒg
+	// ã‚¤ãƒ³ãƒãƒ¼ãƒˆ
 	if (!cImpExpColors.ImportUI(m_hInstance, hwndDlg)) {
-		// ƒCƒ“ƒ|[ƒg‚ğ‚µ‚Ä‚¢‚È‚¢
+		// ã‚¤ãƒ³ãƒãƒ¼ãƒˆã‚’ã—ã¦ã„ãªã„
 		return false;
 	}
 
-	/* ƒf[ƒ^‚ÌƒRƒs[ */
+	/* ãƒ‡ãƒ¼ã‚¿ã®ã‚³ãƒ”ãƒ¼ */
 	m_Types.m_nColorInfoArrNum = COLORIDX_LAST;
 	for( int i = 0; i < m_Types.m_nColorInfoArrNum; ++i ){
 		m_Types.m_ColorInfoArr[i] =  ColorInfoArr[i];
 		_tcscpy( m_Types.m_ColorInfoArr[i].m_szName, ColorInfoArr[i].m_szName );
 	}
-	/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìİ’è color */
+	/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®è¨­å®š color */
 	SetData( hwndDlg );
 
 	return true;
@@ -86,10 +86,10 @@ bool CPropTypesColor::Import( HWND hwndDlg )
 
 #ifdef __COLOR_INFO_DUMP_TO_TEXT_AT_EXPORT__
 /*!
-	ƒJƒ‰[î•ñ‚ğƒeƒLƒXƒgƒtƒ@ƒCƒ‹‚Éo—Í‚·‚é.
+	ã‚«ãƒ©ãƒ¼æƒ…å ±ã‚’ãƒ†ã‚­ã‚¹ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ã«å‡ºåŠ›ã™ã‚‹.
 
-	ƒvƒŠƒZƒbƒg”zF‚Æ‚µ‚ÄƒJƒ‰[İ’è‚ğÀsƒtƒ@ƒCƒ‹‚Éæ‚è‚Şê‡‚ÌA
-	x‰‡ˆ—.
+	ãƒ—ãƒªã‚»ãƒƒãƒˆé…è‰²ã¨ã—ã¦ã‚«ãƒ©ãƒ¼è¨­å®šã‚’å®Ÿè¡Œãƒ•ã‚¡ã‚¤ãƒ«ã«å–ã‚Šè¾¼ã‚€å ´åˆã®ã€
+	æ”¯æ´å‡¦ç†.
 */
 void CPropTypesColor::ColorInfoDumpToTextFile(void)
 {
@@ -129,8 +129,8 @@ void CPropTypesColor::ColorInfoDumpToTextFile(void)
 }
 #endif
 
-/* F‚Ìİ’è‚ğƒGƒNƒXƒ|[ƒg */
-// 2010/4/23 Uchi Export‚ÌŠOo‚µ
+/* è‰²ã®è¨­å®šã‚’ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆ */
+// 2010/4/23 Uchi Exportã®å¤–å‡ºã—
 bool CPropTypesColor::Export( HWND hwndDlg )
 {
 #ifdef __COLOR_INFO_DUMP_TO_TEXT_AT_EXPORT__
@@ -139,7 +139,7 @@ bool CPropTypesColor::Export( HWND hwndDlg )
 
 	CImpExpColors	cImpExpColors( m_Types.m_ColorInfoArr);
 
-	// ƒGƒNƒXƒ|[ƒg
+	// ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆ
 	return cImpExpColors.ExportUI(m_hInstance, hwndDlg);
 }
 
@@ -183,14 +183,14 @@ LRESULT APIENTRY ColorList_SubclassProc( HWND hwnd, UINT uMsg, WPARAM wParam, LP
 		if( -1 == nIndex ){
 			break;
 		}
-		if( 18 <= xPos && xPos <= rcItem.right - 29 ){	// 2009.02.22 ryoji —LŒø”ÍˆÍ‚Ì§ŒÀ’Ç‰Á
+		if( 18 <= xPos && xPos <= rcItem.right - 29 ){	// 2009.02.22 ryoji æœ‰åŠ¹ç¯„å›²ã®åˆ¶é™è¿½åŠ 
 			List_SetCurSel( hwnd, nIndex );
 			::SendMessageCmd( ::GetParent( hwnd ), WM_COMMAND, MAKELONG( IDC_LIST_COLORS, LBN_SELCHANGE ), (LPARAM)hwnd );
 			pColorInfo = (ColorInfo*)List_GetItemData( hwnd, nIndex );
-			/* ‰ºü */
-			if( 0 == (g_ColorAttributeArr[nIndex].fAttribute & COLOR_ATTRIB_NO_UNDERLINE) )	// 2006.12.18 ryoji ƒtƒ‰ƒO—˜—p‚ÅŠÈ‘f‰»
+			/* ä¸‹ç·š */
+			if( 0 == (g_ColorAttributeArr[nIndex].fAttribute & COLOR_ATTRIB_NO_UNDERLINE) )	// 2006.12.18 ryoji ãƒ•ãƒ©ã‚°åˆ©ç”¨ã§ç°¡ç´ åŒ–
 			{
-				if( pColorInfo->m_bUnderLine ){	/* ‰ºü‚Å•\¦ */
+				if( pColorInfo->m_bUnderLine ){	/* ä¸‹ç·šã§è¡¨ç¤º */
 					pColorInfo->m_bUnderLine = false;
 					::CheckDlgButton( ::GetParent( hwnd ), IDC_CHECK_UNDERLINE, FALSE );
 				}else{
@@ -206,12 +206,12 @@ LRESULT APIENTRY ColorList_SubclassProc( HWND hwnd, UINT uMsg, WPARAM wParam, LP
 		if( -1 == nIndex ){
 			break;
 		}
-		if( 18 <= xPos && xPos <= rcItem.right - 29 ){	// 2009.02.22 ryoji —LŒø”ÍˆÍ‚Ì§ŒÀ’Ç‰Á
+		if( 18 <= xPos && xPos <= rcItem.right - 29 ){	// 2009.02.22 ryoji æœ‰åŠ¹ç¯„å›²ã®åˆ¶é™è¿½åŠ 
 			pColorInfo = (ColorInfo*)List_GetItemData( hwnd, nIndex );
-			/* ‘¾š‚Å•\¦ */
-			if( 0 == (g_ColorAttributeArr[nIndex].fAttribute & COLOR_ATTRIB_NO_BOLD) )	// 2006.12.18 ryoji ƒtƒ‰ƒO—˜—p‚ÅŠÈ‘f‰»
+			/* å¤ªå­—ã§è¡¨ç¤º */
+			if( 0 == (g_ColorAttributeArr[nIndex].fAttribute & COLOR_ATTRIB_NO_BOLD) )	// 2006.12.18 ryoji ãƒ•ãƒ©ã‚°åˆ©ç”¨ã§ç°¡ç´ åŒ–
 			{
-				if( pColorInfo->m_bBoldFont ){	/* ‘¾š‚Å•\¦ */
+				if( pColorInfo->m_bBoldFont ){	/* å¤ªå­—ã§è¡¨ç¤º */
 					pColorInfo->m_bBoldFont = false;
 					::CheckDlgButton( ::GetParent( hwnd ), IDC_CHECK_BOLD, FALSE );
 				}else{
@@ -227,12 +227,12 @@ LRESULT APIENTRY ColorList_SubclassProc( HWND hwnd, UINT uMsg, WPARAM wParam, LP
 			break;
 		}
 		pColorInfo = (ColorInfo*)List_GetItemData( hwnd, nIndex );
-		/* F•ª‚¯/•\¦ ‚·‚é */
+		/* è‰²åˆ†ã‘/è¡¨ç¤º ã™ã‚‹ */
 		if( 2 <= xPos && xPos <= 16
-			&& ( 0 == (g_ColorAttributeArr[nIndex].fAttribute & COLOR_ATTRIB_FORCE_DISP) )	// 2006.12.18 ryoji ƒtƒ‰ƒO—˜—p‚ÅŠÈ‘f‰»
+			&& ( 0 == (g_ColorAttributeArr[nIndex].fAttribute & COLOR_ATTRIB_FORCE_DISP) )	// 2006.12.18 ryoji ãƒ•ãƒ©ã‚°åˆ©ç”¨ã§ç°¡ç´ åŒ–
 			)
 		{
-			if( pColorInfo->m_bDisp ){	/* F•ª‚¯/•\¦‚·‚é */
+			if( pColorInfo->m_bDisp ){	/* è‰²åˆ†ã‘/è¡¨ç¤ºã™ã‚‹ */
 				pColorInfo->m_bDisp = false;
 			}else{
 				pColorInfo->m_bDisp = true;
@@ -244,25 +244,25 @@ LRESULT APIENTRY ColorList_SubclassProc( HWND hwnd, UINT uMsg, WPARAM wParam, LP
 
 			::InvalidateRect( hwnd, &rcItem, TRUE );
 		}else
-		/* ‘OŒiFŒ©–{ ‹éŒ` */
+		/* å‰æ™¯è‰²è¦‹æœ¬ çŸ©å½¢ */
 		if( rcItem.right - 27 <= xPos && xPos <= rcItem.right - 27 + 12
 			&& ( 0 == (g_ColorAttributeArr[nIndex].fAttribute & COLOR_ATTRIB_NO_TEXT) ) )
 		{
-			/* F‘I‘ğƒ_ƒCƒAƒƒO */
-			// 2005.11.30 Moca ƒJƒXƒ^ƒ€F•Û
+			/* è‰²é¸æŠãƒ€ã‚¤ã‚¢ãƒ­ã‚° */
+			// 2005.11.30 Moca ã‚«ã‚¹ã‚¿ãƒ è‰²ä¿æŒ
 			DWORD* pColors = (DWORD*)::GetProp( hwnd, TSTR_PTRCUSTOMCOLORS );
 			if( CPropTypesColor::SelectColor( hwnd, &pColorInfo->m_colTEXT, pColors ) ){
 				::InvalidateRect( hwnd, &rcItem, TRUE );
 				::InvalidateRect( ::GetDlgItem( ::GetParent( hwnd ), IDC_BUTTON_TEXTCOLOR ), NULL, TRUE );
 			}
 		}else
-		/* ‘OŒiFŒ©–{ ‹éŒ` */
+		/* å‰æ™¯è‰²è¦‹æœ¬ çŸ©å½¢ */
 		if( rcItem.right - 13 <= xPos && xPos <= rcItem.right - 13 + 12
-			&& ( 0 == (g_ColorAttributeArr[nIndex].fAttribute & COLOR_ATTRIB_NO_BACK) )	// 2006.12.18 ryoji ƒtƒ‰ƒO—˜—p‚ÅŠÈ‘f‰»
+			&& ( 0 == (g_ColorAttributeArr[nIndex].fAttribute & COLOR_ATTRIB_NO_BACK) )	// 2006.12.18 ryoji ãƒ•ãƒ©ã‚°åˆ©ç”¨ã§ç°¡ç´ åŒ–
 			)
 		{
-			/* F‘I‘ğƒ_ƒCƒAƒƒO */
-			// 2005.11.30 Moca ƒJƒXƒ^ƒ€F•Û
+			/* è‰²é¸æŠãƒ€ã‚¤ã‚¢ãƒ­ã‚° */
+			// 2005.11.30 Moca ã‚«ã‚¹ã‚¿ãƒ è‰²ä¿æŒ
 			DWORD* pColors = (DWORD*)::GetProp( hwnd, TSTR_PTRCUSTOMCOLORS );
 			if( CPropTypesColor::SelectColor( hwnd, &pColorInfo->m_colBACK, pColors ) ){
 				::InvalidateRect( hwnd, &rcItem, TRUE );
@@ -270,7 +270,7 @@ LRESULT APIENTRY ColorList_SubclassProc( HWND hwnd, UINT uMsg, WPARAM wParam, LP
 			}
 		}
 		break;
-	// 2005.11.30 Moca ƒJƒXƒ^ƒ€F•Û
+	// 2005.11.30 Moca ã‚«ã‚¹ã‚¿ãƒ è‰²ä¿æŒ
 	case WM_DESTROY:
 		if( ::GetProp( hwnd, TSTR_PTRCUSTOMCOLORS ) ){
 			::RemoveProp( hwnd, TSTR_PTRCUSTOMCOLORS );
@@ -284,7 +284,7 @@ LRESULT APIENTRY ColorList_SubclassProc( HWND hwnd, UINT uMsg, WPARAM wParam, LP
 
 
 
-/* color ƒƒbƒZ[ƒWˆ— */
+/* color ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å‡¦ç† */
 INT_PTR CPropTypesColor::DispatchEvent(
 	HWND				hwndDlg,	// handle to dialog box
 	UINT				uMsg,		// message
@@ -312,36 +312,36 @@ INT_PTR CPropTypesColor::DispatchEvent(
 
 		HWND	hwndWork;
 		hwndWork = ::GetDlgItem(hwndDlg, IDC_COMBO_THEME);
-		Combo_AddString(hwndWork, L"g÷");
-		Combo_AddString(hwndWork, L"ƒTƒNƒ‰ƒGƒfƒBƒ^");
-		Combo_AddString(hwndWork, L"GŠÛƒGƒfƒBƒ^ Black");
+		Combo_AddString(hwndWork, L"ç´…æ¡œ");
+		Combo_AddString(hwndWork, L"ã‚µã‚¯ãƒ©ã‚¨ãƒ‡ã‚£ã‚¿");
+		Combo_AddString(hwndWork, L"ç§€ä¸¸ã‚¨ãƒ‡ã‚£ã‚¿ Black");
 		Combo_AddString(hwndWork, L"MIFES Blue");
 		Combo_AddString(hwndWork, L"Monokai");
 		Combo_AddString(hwndWork, L"VS2012 Dark");
 
-		/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìİ’è color */
+		/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®è¨­å®š color */
 		SetData( hwndDlg );
 
-		/* FƒŠƒXƒg‚ğƒtƒbƒN */
+		/* è‰²ãƒªã‚¹ãƒˆã‚’ãƒ•ãƒƒã‚¯ */
 		// Modified by KEITA for WIN64 2003.9.6
 		m_wpColorListProc = (WNDPROC) ::SetWindowLongPtr( hwndListColor, GWLP_WNDPROC, (LONG_PTR)ColorList_SubclassProc );
-		// 2005.11.30 Moca ƒJƒXƒ^ƒ€F‚ğ•Û
+		// 2005.11.30 Moca ã‚«ã‚¹ã‚¿ãƒ è‰²ã‚’ä¿æŒ
 		::SetProp( hwndListColor, TSTR_PTRCUSTOMCOLORS, m_dwCustColors );
 		
 		return TRUE;
 
 	case WM_COMMAND:
-		wNotifyCode	= HIWORD( wParam );	/* ’Ê’mƒR[ƒh */
-		wID			= LOWORD( wParam );	/* €–ÚID¤ ƒRƒ“ƒgƒ[ƒ‹ID¤ ‚Ü‚½‚ÍƒAƒNƒZƒ‰ƒŒ[ƒ^ID */
-		hwndCtl		= (HWND) lParam;	/* ƒRƒ“ƒgƒ[ƒ‹‚Ìƒnƒ“ƒhƒ‹ */
+		wNotifyCode	= HIWORD( wParam );	/* é€šçŸ¥ã‚³ãƒ¼ãƒ‰ */
+		wID			= LOWORD( wParam );	/* é …ç›®IDã€ ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«IDã€ ã¾ãŸã¯ã‚¢ã‚¯ã‚»ãƒ©ãƒ¬ãƒ¼ã‚¿ID */
+		hwndCtl		= (HWND) lParam;	/* ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã®ãƒãƒ³ãƒ‰ãƒ« */
 		if( hwndListColor == hwndCtl ){
 			switch( wNotifyCode ){
 			case LBN_SELCHANGE:
 				nIndex = List_GetCurSel( hwndListColor );
-				m_nCurrentColorType = nIndex;		/* Œ»İ‘I‘ğ‚³‚ê‚Ä‚¢‚éFƒ^ƒCƒv */
+				m_nCurrentColorType = nIndex;		/* ç¾åœ¨é¸æŠã•ã‚Œã¦ã„ã‚‹è‰²ã‚¿ã‚¤ãƒ— */
 
 				{
-					// ŠeíƒRƒ“ƒgƒ[ƒ‹‚Ì—LŒø^–³Œø‚ğØ‚è‘Ö‚¦‚é	// 2006.12.18 ryoji ƒtƒ‰ƒO—˜—p‚ÅŠÈ‘f‰»
+					// å„ç¨®ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã®æœ‰åŠ¹ï¼ç„¡åŠ¹ã‚’åˆ‡ã‚Šæ›¿ãˆã‚‹	// 2006.12.18 ryoji ãƒ•ãƒ©ã‚°åˆ©ç”¨ã§ç°¡ç´ åŒ–
 					unsigned int fAttribute = g_ColorAttributeArr[nIndex].fAttribute;
 					::EnableWindow( ::GetDlgItem( hwndDlg, IDC_CHECK_DISP ),			(0 == (fAttribute & COLOR_ATTRIB_FORCE_DISP))? TRUE: FALSE );
 					::EnableWindow( ::GetDlgItem( hwndDlg, IDC_CHECK_BOLD ),			(0 == (fAttribute & COLOR_ATTRIB_NO_BOLD))? TRUE: FALSE );
@@ -354,19 +354,19 @@ INT_PTR CPropTypesColor::DispatchEvent(
 					::EnableWindow( ::GetDlgItem( hwndDlg, IDC_BUTTON_SAMEBKCOLOR ),	(0 == (fAttribute & COLOR_ATTRIB_NO_BACK))? TRUE: FALSE );
 				}
 
-				/* F•ª‚¯/•\¦ ‚ğ‚·‚é */
+				/* è‰²åˆ†ã‘/è¡¨ç¤º ã‚’ã™ã‚‹ */
 				if( m_Types.m_ColorInfoArr[m_nCurrentColorType].m_bDisp ){
 					::CheckDlgButton( hwndDlg, IDC_CHECK_DISP, TRUE );
 				}else{
 					::CheckDlgButton( hwndDlg, IDC_CHECK_DISP, FALSE );
 				}
-				/* ‘¾š‚Å•\¦ */
+				/* å¤ªå­—ã§è¡¨ç¤º */
 				if( m_Types.m_ColorInfoArr[m_nCurrentColorType].m_bBoldFont ){
 					::CheckDlgButton( hwndDlg, IDC_CHECK_BOLD, TRUE );
 				}else{
 					::CheckDlgButton( hwndDlg, IDC_CHECK_BOLD, FALSE );
 				}
-				/* ‰ºü‚ğ•\¦ */
+				/* ä¸‹ç·šã‚’è¡¨ç¤º */
 				if( m_Types.m_ColorInfoArr[m_nCurrentColorType].m_bUnderLine ){
 					::CheckDlgButton( hwndDlg, IDC_CHECK_UNDERLINE, TRUE );
 				}else{
@@ -412,12 +412,12 @@ INT_PTR CPropTypesColor::DispatchEvent(
 			}
 		}
 		switch( wNotifyCode ){
-		/* ƒ{ƒ^ƒ“^ƒ`ƒFƒbƒNƒ{ƒbƒNƒX‚ªƒNƒŠƒbƒN‚³‚ê‚½ */
+		/* ãƒœã‚¿ãƒ³ï¼ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹ãŒã‚¯ãƒªãƒƒã‚¯ã•ã‚ŒãŸ */
 		case BN_CLICKED:
 			switch( wID ){
-			case IDC_BUTTON_SAMETEXTCOLOR: /* •¶šF“ˆê */
+			case IDC_BUTTON_SAMETEXTCOLOR: /* æ–‡å­—è‰²çµ±ä¸€ */
 				{
-					// 2006.04.26 ryoji •¶šF^”wŒiF“ˆêƒ_ƒCƒAƒƒO‚ğg‚¤
+					// 2006.04.26 ryoji æ–‡å­—è‰²ï¼èƒŒæ™¯è‰²çµ±ä¸€ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’ä½¿ã†
 					CDlgSameColor cDlgSameColor;
 					COLORREF cr = m_Types.m_ColorInfoArr[m_nCurrentColorType].m_colTEXT;
 					cDlgSameColor.DoModal( ::GetModuleHandle(NULL), hwndDlg, wID, &m_Types, cr );
@@ -425,9 +425,9 @@ INT_PTR CPropTypesColor::DispatchEvent(
 				::InvalidateRect( hwndListColor, NULL, TRUE );
 				return TRUE;
 
-			case IDC_BUTTON_SAMEBKCOLOR:	/* ”wŒiF“ˆê */
+			case IDC_BUTTON_SAMEBKCOLOR:	/* èƒŒæ™¯è‰²çµ±ä¸€ */
 				{
-					// 2006.04.26 ryoji •¶šF^”wŒiF“ˆêƒ_ƒCƒAƒƒO‚ğg‚¤
+					// 2006.04.26 ryoji æ–‡å­—è‰²ï¼èƒŒæ™¯è‰²çµ±ä¸€ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’ä½¿ã†
 					CDlgSameColor cDlgSameColor;
 					COLORREF cr = m_Types.m_ColorInfoArr[m_nCurrentColorType].m_colBACK;
 					cDlgSameColor.DoModal( ::GetModuleHandle(NULL), hwndDlg, wID, &m_Types, cr );
@@ -435,62 +435,62 @@ INT_PTR CPropTypesColor::DispatchEvent(
 				::InvalidateRect( hwndListColor, NULL, TRUE );
 				return TRUE;
 
-			case IDC_BUTTON_TEXTCOLOR:	/* ƒeƒLƒXƒgF */
-				/* F‘I‘ğƒ_ƒCƒAƒƒO */
+			case IDC_BUTTON_TEXTCOLOR:	/* ãƒ†ã‚­ã‚¹ãƒˆè‰² */
+				/* è‰²é¸æŠãƒ€ã‚¤ã‚¢ãƒ­ã‚° */
 				if( SelectColor( hwndDlg, &m_Types.m_ColorInfoArr[m_nCurrentColorType].m_colTEXT, m_dwCustColors ) ){
 					::InvalidateRect( ::GetDlgItem( hwndDlg, IDC_BUTTON_TEXTCOLOR ), NULL, TRUE );
 				}
-				/* Œ»İ‘I‘ğ‚³‚ê‚Ä‚¢‚éFƒ^ƒCƒv */
+				/* ç¾åœ¨é¸æŠã•ã‚Œã¦ã„ã‚‹è‰²ã‚¿ã‚¤ãƒ— */
 				List_SetCurSel( hwndListColor, m_nCurrentColorType );
 				return TRUE;
-			case IDC_BUTTON_BACKCOLOR:	/* ”wŒiF */
-				/* F‘I‘ğƒ_ƒCƒAƒƒO */
+			case IDC_BUTTON_BACKCOLOR:	/* èƒŒæ™¯è‰² */
+				/* è‰²é¸æŠãƒ€ã‚¤ã‚¢ãƒ­ã‚° */
 				if( SelectColor( hwndDlg, &m_Types.m_ColorInfoArr[m_nCurrentColorType].m_colBACK, m_dwCustColors ) ){
 					::InvalidateRect( ::GetDlgItem( hwndDlg, IDC_BUTTON_BACKCOLOR ), NULL, TRUE );
 				}
-				/* Œ»İ‘I‘ğ‚³‚ê‚Ä‚¢‚éFƒ^ƒCƒv */
+				/* ç¾åœ¨é¸æŠã•ã‚Œã¦ã„ã‚‹è‰²ã‚¿ã‚¤ãƒ— */
 				List_SetCurSel( hwndListColor, m_nCurrentColorType );
 				return TRUE;
-			case IDC_CHECK_DISP:	/* F•ª‚¯/•\¦ ‚ğ‚·‚é */
+			case IDC_CHECK_DISP:	/* è‰²åˆ†ã‘/è¡¨ç¤º ã‚’ã™ã‚‹ */
 				if( ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_DISP ) ){
 					m_Types.m_ColorInfoArr[m_nCurrentColorType].m_bDisp = true;
 				}else{
 					m_Types.m_ColorInfoArr[m_nCurrentColorType].m_bDisp = false;
 				}
-				/* Œ»İ‘I‘ğ‚³‚ê‚Ä‚¢‚éFƒ^ƒCƒv */
+				/* ç¾åœ¨é¸æŠã•ã‚Œã¦ã„ã‚‹è‰²ã‚¿ã‚¤ãƒ— */
 				List_SetCurSel( hwndListColor, m_nCurrentColorType );
-				m_Types.m_nRegexKeyMagicNumber++;	//Need Compile	//@@@ 2001.11.17 add MIK ³‹K•\Œ»ƒL[ƒ[ƒh‚Ì‚½‚ß
+				m_Types.m_nRegexKeyMagicNumber++;	//Need Compile	//@@@ 2001.11.17 add MIK æ­£è¦è¡¨ç¾ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ã®ãŸã‚
 				return TRUE;
-			case IDC_CHECK_BOLD:	/* ‘¾š‚© */
+			case IDC_CHECK_BOLD:	/* å¤ªå­—ã‹ */
 				if( ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_BOLD ) ){
 					m_Types.m_ColorInfoArr[m_nCurrentColorType].m_bBoldFont = true;
 				}else{
 					m_Types.m_ColorInfoArr[m_nCurrentColorType].m_bBoldFont = false;
 				}
-				/* Œ»İ‘I‘ğ‚³‚ê‚Ä‚¢‚éFƒ^ƒCƒv */
+				/* ç¾åœ¨é¸æŠã•ã‚Œã¦ã„ã‚‹è‰²ã‚¿ã‚¤ãƒ— */
 				List_SetCurSel( hwndListColor, m_nCurrentColorType );
 				return TRUE;
-			case IDC_CHECK_UNDERLINE:	/* ‰ºü‚ğ•\¦ */
+			case IDC_CHECK_UNDERLINE:	/* ä¸‹ç·šã‚’è¡¨ç¤º */
 				if( ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_UNDERLINE ) ){
 					m_Types.m_ColorInfoArr[m_nCurrentColorType].m_bUnderLine = true;
 				}else{
 					m_Types.m_ColorInfoArr[m_nCurrentColorType].m_bUnderLine = false;
 				}
-				/* Œ»İ‘I‘ğ‚³‚ê‚Ä‚¢‚éFƒ^ƒCƒv */
+				/* ç¾åœ¨é¸æŠã•ã‚Œã¦ã„ã‚‹è‰²ã‚¿ã‚¤ãƒ— */
 				List_SetCurSel( hwndListColor, m_nCurrentColorType );
 				return TRUE;
 
-			case IDC_BUTTON_IMPORT:	/* F‚Ìİ’è‚ğƒCƒ“ƒ|[ƒg */
+			case IDC_BUTTON_IMPORT:	/* è‰²ã®è¨­å®šã‚’ã‚¤ãƒ³ãƒãƒ¼ãƒˆ */
 				Import( hwndDlg );
-				m_Types.m_nRegexKeyMagicNumber++;	//Need Compile	//@@@ 2001.11.17 add MIK ³‹K•\Œ»ƒL[ƒ[ƒh‚Ì‚½‚ß
+				m_Types.m_nRegexKeyMagicNumber++;	//Need Compile	//@@@ 2001.11.17 add MIK æ­£è¦è¡¨ç¾ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ã®ãŸã‚
 				return TRUE;
 
-			case IDC_BUTTON_EXPORT:	/* F‚Ìİ’è‚ğƒGƒNƒXƒ|[ƒg */
+			case IDC_BUTTON_EXPORT:	/* è‰²ã®è¨­å®šã‚’ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆ */
 				Export( hwndDlg );
 				return TRUE;
 
 			//	From Here Jun. 6, 2001 genta
-			//	sƒRƒƒ“ƒgŠJnŒ…w’è‚ÌON/OFF
+			//	è¡Œã‚³ãƒ¡ãƒ³ãƒˆé–‹å§‹æ¡æŒ‡å®šã®ON/OFF
 			case IDC_CHECK_LCPOS:
 			case IDC_CHECK_LCPOS2:
 			case IDC_CHECK_LCPOS3:
@@ -499,11 +499,11 @@ INT_PTR CPropTypesColor::DispatchEvent(
 				return TRUE;
 			//	To Here Sept. 10, 2000
 
-			//‹­’²ƒL[ƒ[ƒh‚Ì‘I‘ğ
+			//å¼·èª¿ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ã®é¸æŠ
 			case IDC_BUTTON_KEYWORD_SELECT:
 				{
 					CDlgKeywordSelect cDlgKeywordSelect;
-					//‹­’²ƒL[ƒ[ƒh1‚ğæ“¾‚·‚éB
+					//å¼·èª¿ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰1ã‚’å–å¾—ã™ã‚‹ã€‚
 					HWND hwndCombo = ::GetDlgItem( hwndDlg, IDC_COMBO_SET );
 					int nIdx = Combo_GetCurSel( hwndCombo );
 					if( CB_ERR == nIdx || 0 == nIdx ){
@@ -512,8 +512,8 @@ INT_PTR CPropTypesColor::DispatchEvent(
 						m_nSet[ 0 ] = nIdx - 1;
 					}
 					cDlgKeywordSelect.DoModal( ::GetModuleHandle(NULL), hwndDlg, m_nSet );
-					RearrangeKeywordSet( hwndDlg );	//	Jan. 23, 2005 genta ƒL[ƒ[ƒhƒZƒbƒgÄ”z’u
-					//‹­’²ƒL[ƒ[ƒh1‚ğ”½‰f‚·‚éB
+					RearrangeKeywordSet( hwndDlg );	//	Jan. 23, 2005 genta ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ã‚»ãƒƒãƒˆå†é…ç½®
+					//å¼·èª¿ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰1ã‚’åæ˜ ã™ã‚‹ã€‚
 					if( -1 == m_nSet[ 0 ] ){
 						Combo_SetCurSel( hwndCombo, 0 );
 					}else{
@@ -521,7 +521,7 @@ INT_PTR CPropTypesColor::DispatchEvent(
 					}
 				}
 				break;
-			//‹­’²ƒL[ƒ[ƒh‚Ì‘I‘ğ
+			//å¼·èª¿ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ã®é¸æŠ
 			case IDC_BUTTON_EDITKEYWORD:
 				{
 					CPropKeyword* pPropKeyword = new CPropKeyword;
@@ -553,7 +553,7 @@ INT_PTR CPropTypesColor::DispatchEvent(
 		switch( idCtrl ){
 		//	From Here May 21, 2001 genta activate spin control
 		case IDC_SPIN_LCColNum:
-			/* sƒRƒƒ“ƒgŒ…ˆÊ’u */
+			/* è¡Œã‚³ãƒ¡ãƒ³ãƒˆæ¡ä½ç½® */
 			nVal = ::GetDlgItemInt( hwndDlg, IDC_EDIT_LINECOMMENTPOS, NULL, FALSE );
 			if( pMNUD->iDelta < 0 ){
 				++nVal;
@@ -570,7 +570,7 @@ INT_PTR CPropTypesColor::DispatchEvent(
 			::SetDlgItemInt( hwndDlg, IDC_EDIT_LINECOMMENTPOS, nVal, FALSE );
 			return TRUE;
 		case IDC_SPIN_LCColNum2:
-			/* sƒRƒƒ“ƒgŒ…ˆÊ’u */
+			/* è¡Œã‚³ãƒ¡ãƒ³ãƒˆæ¡ä½ç½® */
 			nVal = ::GetDlgItemInt( hwndDlg, IDC_EDIT_LINECOMMENTPOS2, NULL, FALSE );
 			if( pMNUD->iDelta < 0 ){
 				++nVal;
@@ -588,9 +588,9 @@ INT_PTR CPropTypesColor::DispatchEvent(
 			return TRUE;
 		//	To Here May 21, 2001 genta activate spin control
 
-		//	From Here Jun. 01, 2001 JEPRO 3‚Â–Ú‚ğ’Ç‰Á
+		//	From Here Jun. 01, 2001 JEPRO 3ã¤ç›®ã‚’è¿½åŠ 
 		case IDC_SPIN_LCColNum3:
-			/* sƒRƒƒ“ƒgŒ…ˆÊ’u */
+			/* è¡Œã‚³ãƒ¡ãƒ³ãƒˆæ¡ä½ç½® */
 			nVal = ::GetDlgItemInt( hwndDlg, IDC_EDIT_LINECOMMENTPOS3, NULL, FALSE );
 			if( pMNUD->iDelta < 0 ){
 				++nVal;
@@ -611,10 +611,10 @@ INT_PTR CPropTypesColor::DispatchEvent(
 			switch( pNMHDR->code ){
 			case PSN_KILLACTIVE:
 //				MYTRACE( _T("color PSN_KILLACTIVE\n") );
-				/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìæ“¾ color */
+				/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®å–å¾— color */
 				GetData( hwndDlg );
 				return TRUE;
-//@@@ 2002.01.03 YAZAKI ÅŒã‚É•\¦‚µ‚Ä‚¢‚½ƒV[ƒg‚ğ³‚µ‚­Šo‚¦‚Ä‚¢‚È‚¢ƒoƒOC³
+//@@@ 2002.01.03 YAZAKI æœ€å¾Œã«è¡¨ç¤ºã—ã¦ã„ãŸã‚·ãƒ¼ãƒˆã‚’æ­£ã—ãè¦šãˆã¦ã„ãªã„ãƒã‚°ä¿®æ­£
 			case PSN_SETACTIVE:
 				m_nPageNum = 1;
 				return TRUE;
@@ -623,17 +623,17 @@ INT_PTR CPropTypesColor::DispatchEvent(
 		}
 		break;	/* WM_NOTIFY */
 	case WM_DRAWITEM:
-		idCtrl = (UINT) wParam;				/* ƒRƒ“ƒgƒ[ƒ‹‚ÌID */
-		pDis = (LPDRAWITEMSTRUCT) lParam;	/* €–Ú•`‰æî•ñ */
+		idCtrl = (UINT) wParam;				/* ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã®ID */
+		pDis = (LPDRAWITEMSTRUCT) lParam;	/* é …ç›®æç”»æƒ…å ± */
 		switch( idCtrl ){
 
-		case IDC_BUTTON_TEXTCOLOR:	/* ƒeƒLƒXƒgF */
+		case IDC_BUTTON_TEXTCOLOR:	/* ãƒ†ã‚­ã‚¹ãƒˆè‰² */
 			DrawColorButton( pDis, m_Types.m_ColorInfoArr[m_nCurrentColorType].m_colTEXT );
 			return TRUE;
-		case IDC_BUTTON_BACKCOLOR:	/* ”wŒiF */
+		case IDC_BUTTON_BACKCOLOR:	/* èƒŒæ™¯è‰² */
 			DrawColorButton( pDis, m_Types.m_ColorInfoArr[m_nCurrentColorType].m_colBACK );
 			return TRUE;
-		case IDC_LIST_COLORS:		/* Fí•ÊƒŠƒXƒg */
+		case IDC_LIST_COLORS:		/* è‰²ç¨®åˆ¥ãƒªã‚¹ãƒˆ */
 			DrawColorListItem( pDis );
 			return TRUE;
 		}
@@ -644,7 +644,7 @@ INT_PTR CPropTypesColor::DispatchEvent(
 }
 
 
-/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìİ’è color */
+/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®è¨­å®š color */
 void CPropTypesColor::SetData( HWND hwndDlg )
 {
 
@@ -652,12 +652,12 @@ void CPropTypesColor::SetData( HWND hwndDlg )
 	int		i;
 	int		nItem;
 
-	m_nCurrentColorType = 0;	/* Œ»İ‘I‘ğ‚³‚ê‚Ä‚¢‚éFƒ^ƒCƒv */
+	m_nCurrentColorType = 0;	/* ç¾åœ¨é¸æŠã•ã‚Œã¦ã„ã‚‹è‰²ã‚¿ã‚¤ãƒ— */
 
-	/* ƒ†[ƒU[‚ªƒGƒfƒBƒbƒg ƒRƒ“ƒgƒ[ƒ‹‚É“ü—Í‚Å‚«‚éƒeƒLƒXƒg‚Ì’·‚³‚ğ§ŒÀ‚·‚é */	//@@@ 2002.09.22 YAZAKI
+	/* ãƒ¦ãƒ¼ã‚¶ãƒ¼ãŒã‚¨ãƒ‡ã‚£ãƒƒãƒˆ ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã«å…¥åŠ›ã§ãã‚‹ãƒ†ã‚­ã‚¹ãƒˆã®é•·ã•ã‚’åˆ¶é™ã™ã‚‹ */	//@@@ 2002.09.22 YAZAKI
 	EditCtl_LimitText( ::GetDlgItem( hwndDlg, IDC_EDIT_LINECOMMENT )		, COMMENT_DELIMITER_BUFFERSIZE - 1 );
 	EditCtl_LimitText( ::GetDlgItem( hwndDlg, IDC_EDIT_LINECOMMENT2 )		, COMMENT_DELIMITER_BUFFERSIZE - 1 );
-	EditCtl_LimitText( ::GetDlgItem( hwndDlg, IDC_EDIT_LINECOMMENT3 )		, COMMENT_DELIMITER_BUFFERSIZE - 1 );	//Jun. 01, 2001 JEPRO ’Ç‰Á
+	EditCtl_LimitText( ::GetDlgItem( hwndDlg, IDC_EDIT_LINECOMMENT3 )		, COMMENT_DELIMITER_BUFFERSIZE - 1 );	//Jun. 01, 2001 JEPRO è¿½åŠ 
 	EditCtl_LimitText( ::GetDlgItem( hwndDlg, IDC_EDIT_BLOCKCOMMENT_FROM )	, BLOCKCOMMENT_BUFFERSIZE - 1 );
 	EditCtl_LimitText( ::GetDlgItem( hwndDlg, IDC_EDIT_BLOCKCOMMENT_TO )	, BLOCKCOMMENT_BUFFERSIZE - 1 );
 //#ifdef COMPILE_BLOCK_COMMENT2	//@@@ 2001.03.10 by MIK
@@ -665,22 +665,22 @@ void CPropTypesColor::SetData( HWND hwndDlg )
 	EditCtl_LimitText( ::GetDlgItem( hwndDlg, IDC_EDIT_BLOCKCOMMENT_TO2 )	, BLOCKCOMMENT_BUFFERSIZE - 1 );
 //#endif
 
-	::DlgItem_SetText( hwndDlg, IDC_EDIT_BLOCKCOMMENT_FROM	, m_Types.m_cBlockComments[0].getBlockCommentFrom() );	/* ƒuƒƒbƒNƒRƒƒ“ƒgƒfƒŠƒ~ƒ^(From) */
-	::DlgItem_SetText( hwndDlg, IDC_EDIT_BLOCKCOMMENT_TO	, m_Types.m_cBlockComments[0].getBlockCommentTo() );	/* ƒuƒƒbƒNƒRƒƒ“ƒgƒfƒŠƒ~ƒ^(To) */
+	::DlgItem_SetText( hwndDlg, IDC_EDIT_BLOCKCOMMENT_FROM	, m_Types.m_cBlockComments[0].getBlockCommentFrom() );	/* ãƒ–ãƒ­ãƒƒã‚¯ã‚³ãƒ¡ãƒ³ãƒˆãƒ‡ãƒªãƒŸã‚¿(From) */
+	::DlgItem_SetText( hwndDlg, IDC_EDIT_BLOCKCOMMENT_TO	, m_Types.m_cBlockComments[0].getBlockCommentTo() );	/* ãƒ–ãƒ­ãƒƒã‚¯ã‚³ãƒ¡ãƒ³ãƒˆãƒ‡ãƒªãƒŸã‚¿(To) */
 //#ifdef COMPILE_BLOCK_COMMENT2	//@@@ 2001.03.10 by MIK
-	::DlgItem_SetText( hwndDlg, IDC_EDIT_BLOCKCOMMENT_FROM2	, m_Types.m_cBlockComments[1].getBlockCommentFrom() );	/* ƒuƒƒbƒNƒRƒƒ“ƒgƒfƒŠƒ~ƒ^2(From) */
-	::DlgItem_SetText( hwndDlg, IDC_EDIT_BLOCKCOMMENT_TO2	, m_Types.m_cBlockComments[1].getBlockCommentTo() );	/* ƒuƒƒbƒNƒRƒƒ“ƒgƒfƒŠƒ~ƒ^2(To) */
+	::DlgItem_SetText( hwndDlg, IDC_EDIT_BLOCKCOMMENT_FROM2	, m_Types.m_cBlockComments[1].getBlockCommentFrom() );	/* ãƒ–ãƒ­ãƒƒã‚¯ã‚³ãƒ¡ãƒ³ãƒˆãƒ‡ãƒªãƒŸã‚¿2(From) */
+	::DlgItem_SetText( hwndDlg, IDC_EDIT_BLOCKCOMMENT_TO2	, m_Types.m_cBlockComments[1].getBlockCommentTo() );	/* ãƒ–ãƒ­ãƒƒã‚¯ã‚³ãƒ¡ãƒ³ãƒˆãƒ‡ãƒªãƒŸã‚¿2(To) */
 //#endif
 
-	/* sƒRƒƒ“ƒgƒfƒŠƒ~ƒ^ @@@ 2002.09.22 YAZAKI*/
+	/* è¡Œã‚³ãƒ¡ãƒ³ãƒˆãƒ‡ãƒªãƒŸã‚¿ @@@ 2002.09.22 YAZAKI*/
 	//	From Here May 12, 2001 genta
-	//	sƒRƒƒ“ƒg‚ÌŠJnŒ…ˆÊ’uİ’è
-	//	May 21, 2001 genta Œ…ˆÊ’u‚ğ1‚©‚ç”‚¦‚é‚æ‚¤‚É
+	//	è¡Œã‚³ãƒ¡ãƒ³ãƒˆã®é–‹å§‹æ¡ä½ç½®è¨­å®š
+	//	May 21, 2001 genta æ¡ä½ç½®ã‚’1ã‹ã‚‰æ•°ãˆã‚‹ã‚ˆã†ã«
 	for ( i=0; i<COMMENT_DELIMITER_NUM; i++ ){
-		//	ƒeƒLƒXƒg
+		//	ãƒ†ã‚­ã‚¹ãƒˆ
 		::DlgItem_SetText( hwndDlg, cLineComment[i].nEditID, m_Types.m_cLineComment.getLineComment(i) );	
 
-		//	Œ…”ƒ`ƒFƒbƒN‚ÆA”’l
+		//	æ¡æ•°ãƒã‚§ãƒƒã‚¯ã¨ã€æ•°å€¤
 		int nPos = m_Types.m_cLineComment.getLineCommentPos(i);
 		if( nPos >= 0 ){
 			::CheckDlgButton( hwndDlg, cLineComment[i].nCheckBoxID, TRUE );
@@ -692,7 +692,7 @@ void CPropTypesColor::SetData( HWND hwndDlg )
 		}
 	}
 
-	if( 0 == m_Types.m_nStringType ){	/* •¶š—ñ‹æØ‚è‹L†ƒGƒXƒP[ƒv•û–@  0=[\"][\'] 1=[""][''] */
+	if( 0 == m_Types.m_nStringType ){	/* æ–‡å­—åˆ—åŒºåˆ‡ã‚Šè¨˜å·ã‚¨ã‚¹ã‚±ãƒ¼ãƒ—æ–¹æ³•  0=[\"][\'] 1=[""][''] */
 		::CheckDlgButton( hwndDlg, IDC_RADIO_ESCAPETYPE_1, TRUE );
 		::CheckDlgButton( hwndDlg, IDC_RADIO_ESCAPETYPE_2, FALSE );
 	}else{
@@ -700,42 +700,42 @@ void CPropTypesColor::SetData( HWND hwndDlg )
 		::CheckDlgButton( hwndDlg, IDC_RADIO_ESCAPETYPE_2, TRUE );
 	}
 
-	/* ƒZƒbƒg–¼ƒRƒ“ƒ{ƒ{ƒbƒNƒX‚Ì’lƒZƒbƒg */
+	/* ã‚»ãƒƒãƒˆåã‚³ãƒ³ãƒœãƒœãƒƒã‚¯ã‚¹ã®å€¤ã‚»ãƒƒãƒˆ */
 	hwndWork = ::GetDlgItem( hwndDlg, IDC_COMBO_SET );
-	Combo_ResetContent( hwndWork );  /* ƒRƒ“ƒ{ƒ{ƒbƒNƒX‚ğ‹ó‚É‚·‚é */
-	/* ˆês–Ú‚Í‹ó”’ */
+	Combo_ResetContent( hwndWork );  /* ã‚³ãƒ³ãƒœãƒœãƒƒã‚¯ã‚¹ã‚’ç©ºã«ã™ã‚‹ */
+	/* ä¸€è¡Œç›®ã¯ç©ºç™½ */
 	Combo_AddString( hwndWork, L" " );
-	//	Mar. 31, 2003 genta KeyWordSetMgr‚ğƒ|ƒCƒ“ƒ^‚É
+	//	Mar. 31, 2003 genta KeyWordSetMgrã‚’ãƒã‚¤ãƒ³ã‚¿ã«
 	if( 0 < m_pCKeyWordSetMgr->m_nKeyWordSetNum ){
 		for( i = 0; i < m_pCKeyWordSetMgr->m_nKeyWordSetNum; ++i ){
 			Combo_AddString( hwndWork, m_pCKeyWordSetMgr->GetTypeName( i ) );
 		}
 		if( -1 == m_Types.m_nKeyWordSetIdx[0] ){
-			/* ƒZƒbƒg–¼ƒRƒ“ƒ{ƒ{ƒbƒNƒX‚ÌƒfƒtƒHƒ‹ƒg‘I‘ğ */
+			/* ã‚»ãƒƒãƒˆåã‚³ãƒ³ãƒœãƒœãƒƒã‚¯ã‚¹ã®ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆé¸æŠ */
 			Combo_SetCurSel( hwndWork, 0 );
 		}else{
-			/* ƒZƒbƒg–¼ƒRƒ“ƒ{ƒ{ƒbƒNƒX‚ÌƒfƒtƒHƒ‹ƒg‘I‘ğ */
+			/* ã‚»ãƒƒãƒˆåã‚³ãƒ³ãƒœãƒœãƒƒã‚¯ã‚¹ã®ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆé¸æŠ */
 			Combo_SetCurSel( hwndWork, m_Types.m_nKeyWordSetIdx[0] + 1 );
 		}
 	}
 
-	//‹­’²ƒL[ƒ[ƒh1`10‚Ìİ’è
+	//å¼·èª¿ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰1ã€œ10ã®è¨­å®š
 	for( i = 0; i < MAX_KEYWORDSET_PER_TYPE; i++ ){
 		m_nSet[ i ] = m_Types.m_nKeyWordSetIdx[i];
 	}
 
-	/* F‚ğ‚Â‚¯‚é•¶ší—Ş‚ÌƒŠƒXƒg */
+	/* è‰²ã‚’ã¤ã‘ã‚‹æ–‡å­—ç¨®é¡ã®ãƒªã‚¹ãƒˆ */
 	hwndWork = ::GetDlgItem( hwndDlg, IDC_LIST_COLORS );
-	List_ResetContent( hwndWork );  /* ƒŠƒXƒg‚ğ‹ó‚É‚·‚é */
+	List_ResetContent( hwndWork );  /* ãƒªã‚¹ãƒˆã‚’ç©ºã«ã™ã‚‹ */
 	for( i = 0; i < COLORIDX_LAST; ++i ){
 		nItem = ::List_AddString( hwndWork, m_Types.m_ColorInfoArr[i].m_szName );
 		List_SetItemData( hwndWork, nItem, &m_Types.m_ColorInfoArr[i] );
 	}
-	/* Œ»İ‘I‘ğ‚³‚ê‚Ä‚¢‚éFƒ^ƒCƒv */
+	/* ç¾åœ¨é¸æŠã•ã‚Œã¦ã„ã‚‹è‰²ã‚¿ã‚¤ãƒ— */
 	List_SetCurSel( hwndWork, m_nCurrentColorType );
 	::SendMessageCmd( hwndDlg, WM_COMMAND, MAKELONG( IDC_LIST_COLORS, LBN_SELCHANGE ), (LPARAM)hwndWork );
 
-	// from here 2005.11.30 Moca w’èˆÊ’ucü‚Ìİ’è
+	// from here 2005.11.30 Moca æŒ‡å®šä½ç½®ç¸¦ç·šã®è¨­å®š
 	WCHAR szVertLine[MAX_VERTLINES * 15] = L"";
 	int offset = 0;
 	for( i = 0; i < MAX_VERTLINES && m_Types.m_nVertLineIdx[i] != 0; i++ ){
@@ -769,7 +769,7 @@ void CPropTypesColor::SetData( HWND hwndDlg )
 	}
 	EditCtl_LimitText( ::GetDlgItem( hwndDlg, IDC_EDIT_VERTLINE ), MAX_VERTLINES * 15 );
 	::DlgItem_SetText( hwndDlg, IDC_EDIT_VERTLINE, szVertLine );
-	// to here 2005.11.30 Moca w’èˆÊ’ucü‚Ìİ’è
+	// to here 2005.11.30 Moca æŒ‡å®šä½ç½®ç¸¦ç·šã®è¨­å®š
 
 	EnableTypesPropInput( hwndDlg );
 
@@ -780,24 +780,24 @@ void CPropTypesColor::SetData( HWND hwndDlg )
 
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                         À‘••â•                            //
+//                         å®Ÿè£…è£œåŠ©                            //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
 
 
-/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìæ“¾ color */
+/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®å–å¾— color */
 int CPropTypesColor::GetData( HWND hwndDlg )
 {
 	int		nIdx;
 	HWND	hwndWork;
 
-//@@@ 2002.01.03 YAZAKI ÅŒã‚É•\¦‚µ‚Ä‚¢‚½ƒV[ƒg‚ğ³‚µ‚­Šo‚¦‚Ä‚¢‚È‚¢ƒoƒOC³
+//@@@ 2002.01.03 YAZAKI æœ€å¾Œã«è¡¨ç¤ºã—ã¦ã„ãŸã‚·ãƒ¼ãƒˆã‚’æ­£ã—ãè¦šãˆã¦ã„ãªã„ãƒã‚°ä¿®æ­£
 //	m_nPageNum = 1;
 
 	//	From Here May 12, 2001 genta
-	//	ƒRƒƒ“ƒg‚ÌŠJnŒ…ˆÊ’u‚Ìæ“¾
-	//	May 21, 2001 genta Œ…ˆÊ’u‚ğ1‚©‚ç”‚¦‚é‚æ‚¤‚É
-	wchar_t buffer[COMMENT_DELIMITER_BUFFERSIZE];	//@@@ 2002.09.22 YAZAKI LineComment‚ğæ“¾‚·‚é‚½‚ß‚Ìƒoƒbƒtƒ@
+	//	ã‚³ãƒ¡ãƒ³ãƒˆã®é–‹å§‹æ¡ä½ç½®ã®å–å¾—
+	//	May 21, 2001 genta æ¡ä½ç½®ã‚’1ã‹ã‚‰æ•°ãˆã‚‹ã‚ˆã†ã«
+	wchar_t buffer[COMMENT_DELIMITER_BUFFERSIZE];	//@@@ 2002.09.22 YAZAKI LineCommentã‚’å–å¾—ã™ã‚‹ãŸã‚ã®ãƒãƒƒãƒ•ã‚¡
 	int pos;
 	UINT en;
 	BOOL bTranslated;
@@ -810,34 +810,34 @@ int CPropTypesColor::GetData( HWND hwndDlg )
 			en = 0;
 			pos = 0;
 		}
-		//	pos == 0‚Ì‚Æ‚«‚Í–³Œøˆµ‚¢
+		//	pos == 0ã®ã¨ãã¯ç„¡åŠ¹æ‰±ã„
 		if( pos == 0 )	en = 0;
 		else			--pos;
-		//	–³Œø‚Ì‚Æ‚«‚Í1‚Ì•â”‚ÅŠi”[
+		//	ç„¡åŠ¹ã®ã¨ãã¯1ã®è£œæ•°ã§æ ¼ç´
 
-		::DlgItem_GetText( hwndDlg, cLineComment[i].nEditID		, buffer	, COMMENT_DELIMITER_BUFFERSIZE );		/* sƒRƒƒ“ƒgƒfƒŠƒ~ƒ^ */
+		::DlgItem_GetText( hwndDlg, cLineComment[i].nEditID		, buffer	, COMMENT_DELIMITER_BUFFERSIZE );		/* è¡Œã‚³ãƒ¡ãƒ³ãƒˆãƒ‡ãƒªãƒŸã‚¿ */
 		m_Types.m_cLineComment.CopyTo( i, buffer, en ? pos : ~pos );
 	}
 
 	wchar_t szFromBuffer[BLOCKCOMMENT_BUFFERSIZE];	//@@@ 2002.09.22 YAZAKI
 	wchar_t szToBuffer[BLOCKCOMMENT_BUFFERSIZE];	//@@@ 2002.09.22 YAZAKI
 
-	::DlgItem_GetText( hwndDlg, IDC_EDIT_BLOCKCOMMENT_FROM	, szFromBuffer	, BLOCKCOMMENT_BUFFERSIZE );	/* ƒuƒƒbƒNƒRƒƒ“ƒgƒfƒŠƒ~ƒ^(From) */
-	::DlgItem_GetText( hwndDlg, IDC_EDIT_BLOCKCOMMENT_TO		, szToBuffer	, BLOCKCOMMENT_BUFFERSIZE );	/* ƒuƒƒbƒNƒRƒƒ“ƒgƒfƒŠƒ~ƒ^(To) */
+	::DlgItem_GetText( hwndDlg, IDC_EDIT_BLOCKCOMMENT_FROM	, szFromBuffer	, BLOCKCOMMENT_BUFFERSIZE );	/* ãƒ–ãƒ­ãƒƒã‚¯ã‚³ãƒ¡ãƒ³ãƒˆãƒ‡ãƒªãƒŸã‚¿(From) */
+	::DlgItem_GetText( hwndDlg, IDC_EDIT_BLOCKCOMMENT_TO		, szToBuffer	, BLOCKCOMMENT_BUFFERSIZE );	/* ãƒ–ãƒ­ãƒƒã‚¯ã‚³ãƒ¡ãƒ³ãƒˆãƒ‡ãƒªãƒŸã‚¿(To) */
 	m_Types.m_cBlockComments[0].SetBlockCommentRule( szFromBuffer, szToBuffer );
 
-	::DlgItem_GetText( hwndDlg, IDC_EDIT_BLOCKCOMMENT_FROM2	, szFromBuffer	, BLOCKCOMMENT_BUFFERSIZE );	/* ƒuƒƒbƒNƒRƒƒ“ƒgƒfƒŠƒ~ƒ^(From) */
-	::DlgItem_GetText( hwndDlg, IDC_EDIT_BLOCKCOMMENT_TO2	, szToBuffer	, BLOCKCOMMENT_BUFFERSIZE );	/* ƒuƒƒbƒNƒRƒƒ“ƒgƒfƒŠƒ~ƒ^(To) */
+	::DlgItem_GetText( hwndDlg, IDC_EDIT_BLOCKCOMMENT_FROM2	, szFromBuffer	, BLOCKCOMMENT_BUFFERSIZE );	/* ãƒ–ãƒ­ãƒƒã‚¯ã‚³ãƒ¡ãƒ³ãƒˆãƒ‡ãƒªãƒŸã‚¿(From) */
+	::DlgItem_GetText( hwndDlg, IDC_EDIT_BLOCKCOMMENT_TO2	, szToBuffer	, BLOCKCOMMENT_BUFFERSIZE );	/* ãƒ–ãƒ­ãƒƒã‚¯ã‚³ãƒ¡ãƒ³ãƒˆãƒ‡ãƒªãƒŸã‚¿(To) */
 	m_Types.m_cBlockComments[1].SetBlockCommentRule( szFromBuffer, szToBuffer );
 
-	/* •¶š—ñ‹æØ‚è‹L†ƒGƒXƒP[ƒv•û–@  0=[\"][\'] 1=[""][''] */
+	/* æ–‡å­—åˆ—åŒºåˆ‡ã‚Šè¨˜å·ã‚¨ã‚¹ã‚±ãƒ¼ãƒ—æ–¹æ³•  0=[\"][\'] 1=[""][''] */
 	if( ::IsDlgButtonChecked( hwndDlg, IDC_RADIO_ESCAPETYPE_1 ) ){
 		m_Types.m_nStringType = 0;
 	}else{
 		m_Types.m_nStringType = 1;
 	}
 
-	/* ƒZƒbƒg–¼ƒRƒ“ƒ{ƒ{ƒbƒNƒX‚Ì’lƒZƒbƒg */
+	/* ã‚»ãƒƒãƒˆåã‚³ãƒ³ãƒœãƒœãƒƒã‚¯ã‚¹ã®å€¤ã‚»ãƒƒãƒˆ */
 	hwndWork = ::GetDlgItem( hwndDlg, IDC_COMBO_SET );
 	nIdx = Combo_GetCurSel( hwndWork );
 	if( CB_ERR == nIdx ||
@@ -848,12 +848,12 @@ int CPropTypesColor::GetData( HWND hwndDlg )
 
 	}
 
-	//‹­’²ƒL[ƒ[ƒh2`10‚Ìæ“¾(1‚Í•Ê)
+	//å¼·èª¿ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰2ã€œ10ã®å–å¾—(1ã¯åˆ¥)
 	for( nIdx = 1; nIdx < MAX_KEYWORDSET_PER_TYPE; nIdx++ ){
 		m_Types.m_nKeyWordSetIdx[nIdx] = m_nSet[nIdx];
 	}
 
-	// from here 2005.11.30 Moca w’èˆÊ’ucü‚Ìİ’è
+	// from here 2005.11.30 Moca æŒ‡å®šä½ç½®ç¸¦ç·šã®è¨­å®š
 	WCHAR szVertLine[MAX_VERTLINES * 15];
 	::DlgItem_GetText( hwndDlg, IDC_EDIT_VERTLINE, szVertLine, MAX_VERTLINES * 15 );
 
@@ -912,13 +912,13 @@ int CPropTypesColor::GetData( HWND hwndDlg )
 	if( i < MAX_VERTLINES ){
 		m_Types.m_nVertLineIdx[i] = CLayoutInt(0);
 	}
-	// to here 2005.11.30 Moca w’èˆÊ’ucü‚Ìİ’è
+	// to here 2005.11.30 Moca æŒ‡å®šä½ç½®ç¸¦ç·šã®è¨­å®š
 	return TRUE;
 }
 
 
 
-/* Fƒ{ƒ^ƒ“‚Ì•`‰æ */
+/* è‰²ãƒœã‚¿ãƒ³ã®æç”» */
 void CPropTypesColor::DrawColorButton( DRAWITEMSTRUCT* pDis, COLORREF cColor )
 {
 //	MYTRACE( _T("pDis->itemAction = ") );
@@ -930,14 +930,14 @@ void CPropTypesColor::DrawColorButton( DRAWITEMSTRUCT* pDis, COLORREF cColor )
 	RECT		rc;
 	RECT		rcFocus;
 
-	//•`‰æ‘ÎÛ
+	//æç”»å¯¾è±¡
 	CGraphics gr(pDis->hDC);
 
-	/* ƒ{ƒ^ƒ“‚Ì•\–Ê‚ÌF‚Å“h‚è‚Â‚Ô‚· */
+	/* ãƒœã‚¿ãƒ³ã®è¡¨é¢ã®è‰²ã§å¡—ã‚Šã¤ã¶ã™ */
 	gr.SetBrushColor( cBtnFace );
 	gr.FillMyRect( pDis->rcItem );
 
-	/* ˜g‚Ì•`‰æ */
+	/* æ ã®æç”» */
 	rcFocus = rc = pDis->rcItem;
 	rc.top += 4;
 	rc.left += 4;
@@ -992,13 +992,13 @@ void CPropTypesColor::DrawColorButton( DRAWITEMSTRUCT* pDis, COLORREF cColor )
 	}
 	
 	if((pDis->itemState & ODS_DISABLED)==0){
-		/* w’èF‚Å“h‚è‚Â‚Ô‚· */
+		/* æŒ‡å®šè‰²ã§å¡—ã‚Šã¤ã¶ã™ */
 		gr.SetBrushColor(cColor);
 		gr.SetPen(cBtnShadow);
 		::RoundRect( gr, rc.left, rc.top, rc.right, rc.bottom , 5, 5 );
 	}
 
-	/* ƒtƒH[ƒJƒX‚Ì’·•ûŒ` */
+	/* ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã®é•·æ–¹å½¢ */
 	if( pDis->itemState & ODS_FOCUS ){
 		rcFocus.top -= 3;
 		rcFocus.left -= 3;
@@ -1011,13 +1011,13 @@ void CPropTypesColor::DrawColorButton( DRAWITEMSTRUCT* pDis, COLORREF cColor )
 
 
 //	From Here Sept. 10, 2000 JEPRO
-//	ƒ`ƒFƒbƒNó‘Ô‚É‰‚¶‚Äƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX—v‘f‚ÌEnable/Disable‚ğ
-//	“KØ‚Éİ’è‚·‚é
+//	ãƒã‚§ãƒƒã‚¯çŠ¶æ…‹ã«å¿œã˜ã¦ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒœãƒƒã‚¯ã‚¹è¦ç´ ã®Enable/Disableã‚’
+//	é©åˆ‡ã«è¨­å®šã™ã‚‹
 void CPropTypesColor::EnableTypesPropInput( HWND hwndDlg )
 {
 	//	From Here Jun. 6, 2001 genta
-	//	sƒRƒƒ“ƒgŠJnŒ…ˆÊ’u“ü—Íƒ{ƒbƒNƒX‚ÌEnable/Disableİ’è
-	//	1‚Â–Ú
+	//	è¡Œã‚³ãƒ¡ãƒ³ãƒˆé–‹å§‹æ¡ä½ç½®å…¥åŠ›ãƒœãƒƒã‚¯ã‚¹ã®Enable/Disableè¨­å®š
+	//	1ã¤ç›®
 	if( ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_LCPOS ) ){
 		::EnableWindow( ::GetDlgItem( hwndDlg, IDC_EDIT_LINECOMMENTPOS ), TRUE );
 		::EnableWindow( ::GetDlgItem( hwndDlg, IDC_LABEL_LCPOS ), TRUE );
@@ -1027,7 +1027,7 @@ void CPropTypesColor::EnableTypesPropInput( HWND hwndDlg )
 		::EnableWindow( ::GetDlgItem( hwndDlg, IDC_LABEL_LCPOS ), FALSE );
 		::EnableWindow( ::GetDlgItem( hwndDlg, IDC_SPIN_LCColNum ), FALSE );
 	}
-	//	2‚Â–Ú
+	//	2ã¤ç›®
 	if( ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_LCPOS2 ) ){
 		::EnableWindow( ::GetDlgItem( hwndDlg, IDC_EDIT_LINECOMMENTPOS2 ), TRUE );
 		::EnableWindow( ::GetDlgItem( hwndDlg, IDC_LABEL_LCPOS2 ), TRUE );
@@ -1037,7 +1037,7 @@ void CPropTypesColor::EnableTypesPropInput( HWND hwndDlg )
 		::EnableWindow( ::GetDlgItem( hwndDlg, IDC_LABEL_LCPOS2 ), FALSE );
 		::EnableWindow( ::GetDlgItem( hwndDlg, IDC_SPIN_LCColNum2 ), FALSE );
 	}
-	//	3‚Â–Ú
+	//	3ã¤ç›®
 	if( ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_LCPOS3 ) ){
 		::EnableWindow( ::GetDlgItem( hwndDlg, IDC_EDIT_LINECOMMENTPOS3 ), TRUE );
 		::EnableWindow( ::GetDlgItem( hwndDlg, IDC_LABEL_LCPOS3 ), TRUE );
@@ -1053,16 +1053,16 @@ void CPropTypesColor::EnableTypesPropInput( HWND hwndDlg )
 
 
 
-/*!	@brief ƒL[ƒ[ƒhƒZƒbƒg‚ÌÄ”z—ñ
+/*!	@brief ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ã‚»ãƒƒãƒˆã®å†é…åˆ—
 
-	ƒL[ƒ[ƒhƒZƒbƒg‚ÌF•ª‚¯‚Å‚Í–¢w’è‚ÌƒL[ƒ[ƒhƒZƒbƒgˆÈ~‚Íƒ`ƒFƒbƒN‚ğÈ—ª‚·‚éD
-	‚»‚Ì‚½‚ßƒZƒbƒg‚Ì“r’†‚É–¢w’è‚Ì‚à‚Ì‚ª‚ ‚éê‡‚Í‚»‚êˆÈ~‚ğ‘O‚É‹l‚ß‚é‚±‚Æ‚Å
-	w’è‚³‚ê‚½‘S‚Ä‚ÌƒL[ƒ[ƒhƒZƒbƒg‚ª—LŒø‚É‚È‚é‚æ‚¤‚É‚·‚éD
-	‚»‚ÌÛCF•ª‚¯‚Ìİ’è‚à“¯‚ÉˆÚ“®‚·‚éD
+	ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ã‚»ãƒƒãƒˆã®è‰²åˆ†ã‘ã§ã¯æœªæŒ‡å®šã®ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ã‚»ãƒƒãƒˆä»¥é™ã¯ãƒã‚§ãƒƒã‚¯ã‚’çœç•¥ã™ã‚‹ï¼
+	ãã®ãŸã‚ã‚»ãƒƒãƒˆã®é€”ä¸­ã«æœªæŒ‡å®šã®ã‚‚ã®ãŒã‚ã‚‹å ´åˆã¯ãã‚Œä»¥é™ã‚’å‰ã«è©°ã‚ã‚‹ã“ã¨ã§
+	æŒ‡å®šã•ã‚ŒãŸå…¨ã¦ã®ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ã‚»ãƒƒãƒˆãŒæœ‰åŠ¹ã«ãªã‚‹ã‚ˆã†ã«ã™ã‚‹ï¼
+	ãã®éš›ï¼Œè‰²åˆ†ã‘ã®è¨­å®šã‚‚åŒæ™‚ã«ç§»å‹•ã™ã‚‹ï¼
 
-	m_nSet, m_Types.m_ColorInfoArr[]‚ª•ÏX‚³‚ê‚éD
+	m_nSet, m_Types.m_ColorInfoArr[]ãŒå¤‰æ›´ã•ã‚Œã‚‹ï¼
 
-	@param hwndDlg [in] ƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX‚ÌƒEƒBƒ“ƒhƒEƒnƒ“ƒhƒ‹
+	@param hwndDlg [in] ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒœãƒƒã‚¯ã‚¹ã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒãƒ³ãƒ‰ãƒ«
 
 	@author	genta 
 	@date	2005.01.23 genta new
@@ -1075,15 +1075,15 @@ void CPropTypesColor::RearrangeKeywordSet( HWND hwndDlg )
 		if( m_nSet[ i ] != -1 )
 			continue;
 
-		//	–¢İ’è‚Ìê‡
+		//	æœªè¨­å®šã®å ´åˆ
 		for( j = i; j < MAX_KEYWORDSET_PER_TYPE; j++ ){
 			if( m_nSet[ j ] != -1 ){
-				//	Œã‚ë‚Éİ’èÏ‚İ€–Ú‚ª‚ ‚Á‚½ê‡
+				//	å¾Œã‚ã«è¨­å®šæ¸ˆã¿é …ç›®ãŒã‚ã£ãŸå ´åˆ
 				m_nSet[ i ] = m_nSet[ j ];
 				m_nSet[ j ] = -1;
 
-				//	Fİ’è‚ğ“ü‚ê‘Ö‚¦‚é
-				//	\‘¢‘Ì‚²‚Æ“ü‚ê‘Ö‚¦‚é‚Æ–¼‘O‚ª•Ï‚í‚Á‚Ä‚µ‚Ü‚¤‚Ì‚Å’ˆÓ
+				//	è‰²è¨­å®šã‚’å…¥ã‚Œæ›¿ãˆã‚‹
+				//	æ§‹é€ ä½“ã”ã¨å…¥ã‚Œæ›¿ãˆã‚‹ã¨åå‰ãŒå¤‰ã‚ã£ã¦ã—ã¾ã†ã®ã§æ³¨æ„
 				ColorInfo colT;
 				ColorInfo &col1 = m_Types.m_ColorInfoArr[ COLORIDX_KEYWORD1 + i ];
 				ColorInfo &col2   = m_Types.m_ColorInfoArr[ COLORIDX_KEYWORD1 + j ];
@@ -1110,12 +1110,12 @@ void CPropTypesColor::RearrangeKeywordSet( HWND hwndDlg )
 			}
 		}
 		if( j == MAX_KEYWORDSET_PER_TYPE ){
-			//	Œã‚ë‚É‚Íİ’èÏ‚İ€–Ú‚ª‚È‚©‚Á‚½
+			//	å¾Œã‚ã«ã¯è¨­å®šæ¸ˆã¿é …ç›®ãŒãªã‹ã£ãŸ
 			break;
 		}
 	}
 	
-	//	ƒŠƒXƒgƒ{ƒbƒNƒX‹y‚ÑFİ’èƒ{ƒ^ƒ“‚ğÄ•`‰æ
+	//	ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹åŠã³è‰²è¨­å®šãƒœã‚¿ãƒ³ã‚’å†æç”»
 	::InvalidateRect( ::GetDlgItem( hwndDlg, IDC_BUTTON_TEXTCOLOR ), NULL, TRUE );
 	::InvalidateRect( ::GetDlgItem( hwndDlg, IDC_BUTTON_BACKCOLOR ), NULL, TRUE );
 	::InvalidateRect( ::GetDlgItem( hwndDlg, IDC_LIST_COLORS ), NULL, TRUE );
@@ -1123,7 +1123,7 @@ void CPropTypesColor::RearrangeKeywordSet( HWND hwndDlg )
 
 
 
-/* Fí•ÊƒŠƒXƒg ƒI[ƒi[•`‰æ */
+/* è‰²ç¨®åˆ¥ãƒªã‚¹ãƒˆ ã‚ªãƒ¼ãƒŠãƒ¼æç”» */
 void CPropTypesColor::DrawColorListItem( DRAWITEMSTRUCT* pDis )
 {
 	ColorInfo*	pColorInfo;
@@ -1133,21 +1133,21 @@ void CPropTypesColor::DrawColorListItem( DRAWITEMSTRUCT* pDis )
 
 	if( pDis == NULL || pDis->itemData == 0 ) return;
 
-	//•`‰æ‘ÎÛ
+	//æç”»å¯¾è±¡
 	CGraphics gr(pDis->hDC);
 
 //	rc0 = pDis->rcItem;
 	rc1 = pDis->rcItem;
 //	rc2 = pDis->rcItem;
 
-	/* ƒAƒCƒeƒ€ƒf[ƒ^‚Ìæ“¾ */
+	/* ã‚¢ã‚¤ãƒ†ãƒ ãƒ‡ãƒ¼ã‚¿ã®å–å¾— */
 	pColorInfo = (ColorInfo*)pDis->itemData;
 
-	/* ƒAƒCƒeƒ€‹éŒ`“h‚è‚Â‚Ô‚µ */
+	/* ã‚¢ã‚¤ãƒ†ãƒ çŸ©å½¢å¡—ã‚Šã¤ã¶ã— */
 	gr.SetBrushColor( ::GetSysColor( COLOR_WINDOW ) );
 	gr.FillMyRect( pDis->rcItem );
 	
-	/* ƒAƒCƒeƒ€‚ª‘I‘ğ‚³‚ê‚Ä‚¢‚é */
+	/* ã‚¢ã‚¤ãƒ†ãƒ ãŒé¸æŠã•ã‚Œã¦ã„ã‚‹ */
 	if( pDis->itemState & ODS_SELECTED ){
 		gr.SetBrushColor( ::GetSysColor( COLOR_HIGHLIGHT ) );
 		gr.SetTextForeColor( ::GetSysColor( COLOR_HIGHLIGHTTEXT ) );
@@ -1160,15 +1160,15 @@ void CPropTypesColor::DrawColorListItem( DRAWITEMSTRUCT* pDis )
 	rc1.top += 2;
 	rc1.right -= ( 2 + 27 );
 	rc1.bottom -= 2;
-	/* ‘I‘ğƒnƒCƒ‰ƒCƒg‹éŒ` */
+	/* é¸æŠãƒã‚¤ãƒ©ã‚¤ãƒˆçŸ©å½¢ */
 	gr.FillMyRect(rc1);
-	/* ƒeƒLƒXƒg */
+	/* ãƒ†ã‚­ã‚¹ãƒˆ */
 	::SetBkMode( gr, TRANSPARENT );
 	::TextOut( gr, rc1.left, rc1.top, pColorInfo->m_szName, _tcslen( pColorInfo->m_szName ) );
-	if( pColorInfo->m_bBoldFont ){	/* ‘¾š‚© */
+	if( pColorInfo->m_bBoldFont ){	/* å¤ªå­—ã‹ */
 		::TextOut( gr, rc1.left + 1, rc1.top, pColorInfo->m_szName, _tcslen( pColorInfo->m_szName ) );
 	}
-	if( pColorInfo->m_bUnderLine ){	/* ‰ºü‚© */
+	if( pColorInfo->m_bUnderLine ){	/* ä¸‹ç·šã‹ */
 		SIZE	sz;
 		::GetTextExtentPoint32( gr, pColorInfo->m_szName, _tcslen( pColorInfo->m_szName ), &sz );
 		::MoveToEx( gr, rc1.left,		rc1.bottom - 2, NULL );
@@ -1177,19 +1177,19 @@ void CPropTypesColor::DrawColorListItem( DRAWITEMSTRUCT* pDis )
 		::LineTo( gr, rc1.left + sz.cx,	rc1.bottom - 1 );
 	}
 
-	/* ƒAƒCƒeƒ€‚ÉƒtƒH[ƒJƒX‚ª‚ ‚é */	// 2006.05.01 ryoji •`‰æğŒ‚Ì•s³‚ğC³
+	/* ã‚¢ã‚¤ãƒ†ãƒ ã«ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ãŒã‚ã‚‹ */	// 2006.05.01 ryoji æç”»æ¡ä»¶ã®ä¸æ­£ã‚’ä¿®æ­£
 	if( pDis->itemState & ODS_FOCUS ){
 		::DrawFocusRect( gr, &pDis->rcItem );
 	}
 
-	/* uF•ª‚¯/•\¦‚·‚év‚Ìƒ`ƒFƒbƒN */
+	/* ã€Œè‰²åˆ†ã‘/è¡¨ç¤ºã™ã‚‹ã€ã®ãƒã‚§ãƒƒã‚¯ */
 	rc1 = pDis->rcItem;
 	rc1.left += 2;
 	rc1.top += 3;
 	rc1.right = rc1.left + 12;
 	rc1.bottom = rc1.top + 12;
-	if( pColorInfo->m_bDisp ){	/* F•ª‚¯/•\¦‚·‚é */
-		// 2006.04.26 ryoji ƒeƒLƒXƒgF‚ğg‚¤iuƒnƒCƒRƒ“ƒgƒ‰ƒXƒg•v‚Ì‚æ‚¤‚Èİ’è‚Å‚àŒ©‚¦‚é‚æ‚¤‚Éj
+	if( pColorInfo->m_bDisp ){	/* è‰²åˆ†ã‘/è¡¨ç¤ºã™ã‚‹ */
+		// 2006.04.26 ryoji ãƒ†ã‚­ã‚¹ãƒˆè‰²ã‚’ä½¿ã†ï¼ˆã€Œãƒã‚¤ã‚³ãƒ³ãƒˆãƒ©ã‚¹ãƒˆé»’ã€ã®ã‚ˆã†ãªè¨­å®šã§ã‚‚è¦‹ãˆã‚‹ã‚ˆã†ã«ï¼‰
 		gr.SetPen( ::GetSysColor( COLOR_WINDOWTEXT ) );
 
 		::MoveToEx( gr,	rc1.left + 2, rc1.top + 6, NULL );
@@ -1209,11 +1209,11 @@ void CPropTypesColor::DrawColorListItem( DRAWITEMSTRUCT* pDis )
 //	return;
 
 
-	// 2002/11/02 Moca ”äŠr•û–@•ÏX
-//	if( 0 != strcmp( "ƒJ[ƒ\ƒ‹sƒAƒ“ƒ_[ƒ‰ƒCƒ“", pColorInfo->m_szName ) )
-	if ( 0 == (g_ColorAttributeArr[pColorInfo->m_nColorIdx].fAttribute & COLOR_ATTRIB_NO_BACK) )	// 2006.12.18 ryoji ƒtƒ‰ƒO—˜—p‚ÅŠÈ‘f‰»
+	// 2002/11/02 Moca æ¯”è¼ƒæ–¹æ³•å¤‰æ›´
+//	if( 0 != strcmp( "ã‚«ãƒ¼ã‚½ãƒ«è¡Œã‚¢ãƒ³ãƒ€ãƒ¼ãƒ©ã‚¤ãƒ³", pColorInfo->m_szName ) )
+	if ( 0 == (g_ColorAttributeArr[pColorInfo->m_nColorIdx].fAttribute & COLOR_ATTRIB_NO_BACK) )	// 2006.12.18 ryoji ãƒ•ãƒ©ã‚°åˆ©ç”¨ã§ç°¡ç´ åŒ–
 	{
-		/* ”wŒiF Œ©–{‹éŒ` */
+		/* èƒŒæ™¯è‰² è¦‹æœ¬çŸ©å½¢ */
 		rc1 = pDis->rcItem;
 		rc1.left = rc1.right - 13;
 		rc1.top += 2;
@@ -1228,7 +1228,7 @@ void CPropTypesColor::DrawColorListItem( DRAWITEMSTRUCT* pDis )
 
 	if( 0 == (g_ColorAttributeArr[pColorInfo->m_nColorIdx].fAttribute & COLOR_ATTRIB_NO_TEXT) )
 	{
-		/* ‘OŒiF Œ©–{‹éŒ` */
+		/* å‰æ™¯è‰² è¦‹æœ¬çŸ©å½¢ */
 		rc1 = pDis->rcItem;
 		rc1.left = rc1.right - 27;
 		rc1.top += 2;
@@ -1242,7 +1242,7 @@ void CPropTypesColor::DrawColorListItem( DRAWITEMSTRUCT* pDis )
 
 
 
-/* F‘I‘ğƒ_ƒCƒAƒƒO */
+/* è‰²é¸æŠãƒ€ã‚¤ã‚¢ãƒ­ã‚° */
 BOOL CPropTypesColor::SelectColor( HWND hwndParent, COLORREF* pColor, DWORD* pCustColors )
 {
 	CHOOSECOLOR		cc;

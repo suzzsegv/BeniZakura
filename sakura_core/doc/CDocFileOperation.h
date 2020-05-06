@@ -33,7 +33,7 @@ class CDocFileOperation{
 public:
 	CDocFileOperation(CEditDoc* pcDoc) : m_pcDocRef(pcDoc) { }
 
-	//ÉçÉbÉN
+	//„É≠„ÉÉ„ÇØ
 	bool _ToDoLock() const;
 	void DoFileLock(bool bMsg = true);
 	void DoFileUnlock();
@@ -45,15 +45,15 @@ public:
 	bool LockShared();
 	bool Unlock();
 
-	//ÉçÅ[ÉhUI
+	//„É≠„Éº„ÉâUI
 	bool OpenFileDialog(
 		HWND				hwndParent,
-		const TCHAR*		pszOpenFolder,	//!< [in]  NULLà»äOÇéwíËÇ∑ÇÈÇ∆èâä˙ÉtÉHÉãÉ_ÇéwíËÇ≈Ç´ÇÈ
-		SLoadInfo*			pLoadInfo,		//!< [in/out] ÉçÅ[ÉhèÓïÒ
+		const TCHAR*		pszOpenFolder,	//!< [in]  NULL‰ª•Â§ñ„ÇíÊåáÂÆö„Åô„Çã„Å®ÂàùÊúü„Éï„Ç©„É´„ÉÄ„ÇíÊåáÂÆö„Åß„Åç„Çã
+		SLoadInfo*			pLoadInfo,		//!< [in/out] „É≠„Éº„ÉâÊÉÖÂ†±
 		std::vector<std::tstring>&	files
 	);
 
-	//ÉçÅ[ÉhÉtÉçÅ[
+	//„É≠„Éº„Éâ„Éï„É≠„Éº
 	bool DoLoadFlow(SLoadInfo* pLoadInfo);
 	bool FileLoad(
 		SLoadInfo*	pLoadInfo			//!< [in/out]
@@ -61,25 +61,25 @@ public:
 	bool FileLoadWithoutAutoMacro(
 		SLoadInfo*	pLoadInfo			//!< [in/out]
 	);
-	void ReloadCurrentFile(				//!< ìØàÍÉtÉ@ÉCÉãÇÃçƒÉIÅ[ÉvÉì Jul. 26, 2003 ryoji BOMÉIÉvÉVÉáÉìí«â¡
-		ECodeType	nCharCode			//!< [in] ï∂éöÉRÅ[ÉhéÌï 
+	void ReloadCurrentFile(				//!< Âêå‰∏Ä„Éï„Ç°„Ç§„É´„ÅÆÂÜç„Ç™„Éº„Éó„É≥ Jul. 26, 2003 ryoji BOM„Ç™„Éó„Ç∑„Éß„É≥ËøΩÂä†
+		ECodeType	nCharCode			//!< [in] ÊñáÂ≠ó„Ç≥„Éº„ÉâÁ®ÆÂà•
 	);
 
 	
-	//ÉZÅ[ÉuUI
-	bool SaveFileDialog(SSaveInfo* pSaveInfo);	//!<ÅuÉtÉ@ÉCÉãñºÇïtÇØÇƒï€ë∂ÅvÉ_ÉCÉAÉçÉO
-	bool SaveFileDialog(LPTSTR szPath);			//!<ÅuÉtÉ@ÉCÉãñºÇïtÇØÇƒï€ë∂ÅvÉ_ÉCÉAÉçÉO
+	//„Çª„Éº„ÉñUI
+	bool SaveFileDialog(SSaveInfo* pSaveInfo);	//!<„Äå„Éï„Ç°„Ç§„É´Âêç„Çí‰ªò„Åë„Å¶‰øùÂ≠ò„Äç„ÉÄ„Ç§„Ç¢„É≠„Ç∞
+	bool SaveFileDialog(LPTSTR szPath);			//!<„Äå„Éï„Ç°„Ç§„É´Âêç„Çí‰ªò„Åë„Å¶‰øùÂ≠ò„Äç„ÉÄ„Ç§„Ç¢„É≠„Ç∞
 
-	//ÉZÅ[ÉuÉtÉçÅ[
+	//„Çª„Éº„Éñ„Éï„É≠„Éº
 	bool DoSaveFlow(SSaveInfo* pSaveInfo);
-	bool FileSaveAs( const WCHAR* filename = NULL, EEolType eEolType = EOL_NONE );			//!< É_ÉCÉAÉçÉOÇ≈ÉtÉ@ÉCÉãñºÇì¸óÕÇ≥ÇπÅAï€ë∂ÅB	// 2006.12.30 ryoji
-	bool FileSave();			//!< è„èëÇ´ï€ë∂ÅBÉtÉ@ÉCÉãñºÇ™éwíËÇ≥ÇÍÇƒÇ¢Ç»Ç©Ç¡ÇΩÇÁÉ_ÉCÉAÉçÉOÇ≈ì¸óÕÇë£Ç∑ÅB	// 2006.12.30 ryoji
+	bool FileSaveAs( const WCHAR* filename = NULL, EEolType eEolType = EOL_NONE );			//!< „ÉÄ„Ç§„Ç¢„É≠„Ç∞„Åß„Éï„Ç°„Ç§„É´Âêç„ÇíÂÖ•Âäõ„Åï„Åõ„ÄÅ‰øùÂ≠ò„ÄÇ	// 2006.12.30 ryoji
+	bool FileSave();			//!< ‰∏äÊõ∏„Åç‰øùÂ≠ò„ÄÇ„Éï„Ç°„Ç§„É´Âêç„ÅåÊåáÂÆö„Åï„Çå„Å¶„ÅÑ„Å™„Åã„Å£„Åü„Çâ„ÉÄ„Ç§„Ç¢„É≠„Ç∞„ÅßÂÖ•Âäõ„Çí‰øÉ„Åô„ÄÇ	// 2006.12.30 ryoji
 
-	//ÉNÉçÅ[ÉY
-	bool FileClose();			//!< ï¬Ç∂Çƒ(ñ≥ëË)	// 2006.12.30 ryoji
+	//„ÇØ„É≠„Éº„Ç∫
+	bool FileClose();			//!< Èñâ„Åò„Å¶(ÁÑ°È°å)	// 2006.12.30 ryoji
 
-	//ÇªÇÃëº
-	void FileCloseOpen(				//!< ï¬Ç∂ÇƒäJÇ≠	// 2006.12.30 ryoji
+	//„Åù„ÅÆ‰ªñ
+	void FileCloseOpen(				//!< Èñâ„Åò„Å¶Èñã„Åè	// 2006.12.30 ryoji
 		const SLoadInfo& sLoadInfo = SLoadInfo(_T(""), CODE_AUTODETECT, false)
 	);
 

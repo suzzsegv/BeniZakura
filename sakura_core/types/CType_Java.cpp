@@ -7,7 +7,7 @@
 #include "view/Colors/EColorIndexType.h"
 
 /*!
- *	Java ƒL[ƒ[ƒh
+ *	Java ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰
  */
 static const wchar_t* g_defaultKeywordSetJava[] = {
 	L"abstract",
@@ -53,7 +53,7 @@ static const wchar_t* g_defaultKeywordSetJava[] = {
 
 
 /*!
-*	Java import ƒL[ƒ[ƒh
+*	Java import ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰
  */
 static const wchar_t* g_defaultKeywordSetJavaImport[] = {
 	L"import",
@@ -62,7 +62,7 @@ static const wchar_t* g_defaultKeywordSetJavaImport[] = {
 
 
 /*!
- *	Java ƒf[ƒ^ƒ^ƒCƒv ƒL[ƒ[ƒh
+ *	Java ãƒ‡ãƒ¼ã‚¿ã‚¿ã‚¤ãƒ— ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰
  */
 static const wchar_t* g_defaultKeywordSetJavaDataType[] = {
 	L"boolean",
@@ -86,17 +86,17 @@ static const wchar_t* g_defaultKeywordSetJavaDataType[] = {
 
 void CType_Java::InitTypeConfigImp(STypeConfig* pType)
 {
-	//–¼‘O‚ÆŠg’£q
+	//åå‰ã¨æ‹¡å¼µå­
 	_tcscpy( pType->m_szTypeName, _T("Java") );
 	_tcscpy( pType->m_szTypeExts, _T("java,jav") );
 
-	//İ’è
-	pType->m_cLineComment.CopyTo( 0, L"//", -1 );					/* sƒRƒƒ“ƒgƒfƒŠƒ~ƒ^ */
-	pType->m_cBlockComments[0].SetBlockCommentRule( L"/*", L"*/" );	/* ƒuƒƒbƒNƒRƒƒ“ƒgƒfƒŠƒ~ƒ^ */
-	pType->m_eDefaultOutline = OUTLINE_JAVA;						/* ƒAƒEƒgƒ‰ƒCƒ“‰ğÍ•û–@ */
-	pType->m_eSmartIndent = SMARTINDENT_NONE;						/* ƒXƒ}[ƒgƒCƒ“ƒfƒ“ƒgí•Ê */
-	pType->m_ColorInfoArr[COLORIDX_DIGIT].m_bDisp = true;			//”¼Šp”’l‚ğF•ª‚¯•\¦	//Mar. 10, 2001 JEPRO
-	pType->m_ColorInfoArr[COLORIDX_BRACKET_PAIR].m_bDisp = true;	//‘ÎŠ‡ŒÊ‚Ì‹­’²‚ğƒfƒtƒHƒ‹ƒgON‚É	//Sep. 21, 2002 genta
+	//è¨­å®š
+	pType->m_cLineComment.CopyTo( 0, L"//", -1 );					/* è¡Œã‚³ãƒ¡ãƒ³ãƒˆãƒ‡ãƒªãƒŸã‚¿ */
+	pType->m_cBlockComments[0].SetBlockCommentRule( L"/*", L"*/" );	/* ãƒ–ãƒ­ãƒƒã‚¯ã‚³ãƒ¡ãƒ³ãƒˆãƒ‡ãƒªãƒŸã‚¿ */
+	pType->m_eDefaultOutline = OUTLINE_JAVA;						/* ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³è§£ææ–¹æ³• */
+	pType->m_eSmartIndent = SMARTINDENT_NONE;						/* ã‚¹ãƒãƒ¼ãƒˆã‚¤ãƒ³ãƒ‡ãƒ³ãƒˆç¨®åˆ¥ */
+	pType->m_ColorInfoArr[COLORIDX_DIGIT].m_bDisp = true;			//åŠè§’æ•°å€¤ã‚’è‰²åˆ†ã‘è¡¨ç¤º	//Mar. 10, 2001 JEPRO
+	pType->m_ColorInfoArr[COLORIDX_BRACKET_PAIR].m_bDisp = true;	//å¯¾æ‹¬å¼§ã®å¼·èª¿ã‚’ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆONã«	//Sep. 21, 2002 genta
 
 	pType->m_nKeyWordSetIdx[0] = AddDefaultKeywordSet(
 										L"Java",
@@ -121,7 +121,7 @@ void CType_Java::InitTypeConfigImp(STypeConfig* pType)
 }
 
 
-/* Java‰ğÍƒ‚[ƒh */
+/* Javaè§£æãƒ¢ãƒ¼ãƒ‰ */
 enum EFuncListJavaMode {
 	FL_JAVA_MODE_NORMAL = 0,
 	FL_JAVA_MODE_WORD = 1,
@@ -133,7 +133,7 @@ enum EFuncListJavaMode {
 };
 
 
-/* JavaŠÖ”ƒŠƒXƒgì¬ */
+/* Javaé–¢æ•°ãƒªã‚¹ãƒˆä½œæˆ */
 void CDocOutline::MakeFuncList_Java( CFuncInfoArr* pcFuncInfoArr )
 {
 	const wchar_t*	pLine;
@@ -165,18 +165,18 @@ void CDocOutline::MakeFuncList_Java( CFuncInfoArr* pcFuncInfoArr )
 	szClass[0] = L'\0';
 	nClassNestArrNum = 0;
 	CLogicInt		nLineCount;
-	const wchar_t*	szJavaKigou = L"!\"#%&'()=-^|\\`@[{+;*}]<,>?/";	//¯•Êq‚Ég—p‚Å‚«‚È‚¢”¼Šp‹L†B_:~.$‚Í‹–‰Â
+	const wchar_t*	szJavaKigou = L"!\"#%&'()=-^|\\`@[{+;*}]<,>?/";	//è­˜åˆ¥å­ã«ä½¿ç”¨ã§ããªã„åŠè§’è¨˜å·ã€‚_:~.$ã¯è¨±å¯
 
 	for( nLineCount = CLogicInt(0); nLineCount <  m_pcDocRef->m_cDocLineMgr.GetLineCount(); ++nLineCount ){
 		pLine = m_pcDocRef->m_cDocLineMgr.GetLine(nLineCount)->GetDocLineStrWithEOL(&nLineLen);
 		for( i = 0; i < nLineLen; i += nCharChars ){
 			nCharChars = CNativeW::GetSizeOfChar( pLine, nLineLen, i );
 
-			/* ƒGƒXƒP[ƒvƒV[ƒPƒ“ƒX‚Íí‚Éæ‚èœ‚­ */
+			/* ã‚¨ã‚¹ã‚±ãƒ¼ãƒ—ã‚·ãƒ¼ã‚±ãƒ³ã‚¹ã¯å¸¸ã«å–ã‚Šé™¤ã */
 			if( L'\\' == pLine[i] ){
 				++i;
 			}else
-			/* ƒVƒ“ƒOƒ‹ƒNƒH[ƒe[ƒVƒ‡ƒ“•¶š—ñ“Ç‚İ‚İ’† */
+			/* ã‚·ãƒ³ã‚°ãƒ«ã‚¯ã‚©ãƒ¼ãƒ†ãƒ¼ã‚·ãƒ§ãƒ³æ–‡å­—åˆ—èª­ã¿è¾¼ã¿ä¸­ */
 			if( FL_JAVA_MODE_SINGLE_QUOTE == nMode ){
 				if( L'\'' == pLine[i] ){
 					nMode = FL_JAVA_MODE_NORMAL;
@@ -184,7 +184,7 @@ void CDocOutline::MakeFuncList_Java( CFuncInfoArr* pcFuncInfoArr )
 				}else{
 				}
 			}else
-			/* ƒ_ƒuƒ‹ƒNƒH[ƒe[ƒVƒ‡ƒ“•¶š—ñ“Ç‚İ‚İ’† */
+			/* ãƒ€ãƒ–ãƒ«ã‚¯ã‚©ãƒ¼ãƒ†ãƒ¼ã‚·ãƒ§ãƒ³æ–‡å­—åˆ—èª­ã¿è¾¼ã¿ä¸­ */
 			if( FL_JAVA_MODE_DOUBLE_QUOTE == nMode ){
 				if( L'"' == pLine[i] ){
 					nMode = FL_JAVA_MODE_NORMAL;
@@ -192,7 +192,7 @@ void CDocOutline::MakeFuncList_Java( CFuncInfoArr* pcFuncInfoArr )
 				}else{
 				}
 			}else
-			/* ƒRƒƒ“ƒg“Ç‚İ‚İ’† */
+			/* ã‚³ãƒ¡ãƒ³ãƒˆèª­ã¿è¾¼ã¿ä¸­ */
 			if( FL_JAVA_MODE_COMMENT == nMode ){
 				if( i < nLineLen - 1 && L'*' == pLine[i] &&  L'/' == pLine[i + 1] ){
 					++i;
@@ -201,9 +201,9 @@ void CDocOutline::MakeFuncList_Java( CFuncInfoArr* pcFuncInfoArr )
 				}else{
 				}
 			}
-			/* ’PŒê“Ç‚İ‚İ’† */
+			/* å˜èªèª­ã¿è¾¼ã¿ä¸­ */
 			else if( FL_JAVA_MODE_WORD == nMode ){
-				// 2011.09.16 syat ƒAƒEƒgƒ‰ƒCƒ“‰ğÍ‚Å“ú–{Œê‚ªŠÜ‚Ü‚ê‚Ä‚¢‚é•”•ª‚ª•\¦‚³‚ê‚È‚¢
+				// 2011.09.16 syat ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³è§£æã§æ—¥æœ¬èªãŒå«ã¾ã‚Œã¦ã„ã‚‹éƒ¨åˆ†ãŒè¡¨ç¤ºã•ã‚Œãªã„
 				if( ! WCODE::IsBlank(pLine[i]) &&
 					! WCODE::IsLineDelimiter(pLine[i]) &&
 					! WCODE::IsControlCode(pLine[i]) &&
@@ -218,8 +218,8 @@ void CDocOutline::MakeFuncList_Java( CFuncInfoArr* pcFuncInfoArr )
 					}
 					nWordIdx += nCharChars;
 				}else{
-					/* ƒNƒ‰ƒXéŒ¾•”•ª‚ğŒ©‚Â‚¯‚½ */
-					//	Oct. 10, 2002 genta interface‚à‘ÎÛ‚É
+					/* ã‚¯ãƒ©ã‚¹å®£è¨€éƒ¨åˆ†ã‚’è¦‹ã¤ã‘ãŸ */
+					//	Oct. 10, 2002 genta interfaceã‚‚å¯¾è±¡ã«
 					if( 0 == wcscmp( L"class", szWordPrev ) ||
 						0 == wcscmp( L"interface", szWordPrev )
 					 ){
@@ -234,10 +234,10 @@ void CDocOutline::MakeFuncList_Java( CFuncInfoArr* pcFuncInfoArr )
 						nFuncId = FL_OBJ_DEFINITION;
 						++nFuncNum;
 						/*
-						  ƒJ[ƒ\ƒ‹ˆÊ’u•ÏŠ·
-						  •¨—ˆÊ’u(s“ª‚©‚ç‚ÌƒoƒCƒg”AÜ‚è•Ô‚µ–³‚µsˆÊ’u)
-						  ¨
-						  ƒŒƒCƒAƒEƒgˆÊ’u(s“ª‚©‚ç‚Ì•\¦Œ…ˆÊ’uAÜ‚è•Ô‚µ‚ ‚èsˆÊ’u)
+						  ã‚«ãƒ¼ã‚½ãƒ«ä½ç½®å¤‰æ›
+						  ç‰©ç†ä½ç½®(è¡Œé ­ã‹ã‚‰ã®ãƒã‚¤ãƒˆæ•°ã€æŠ˜ã‚Šè¿”ã—ç„¡ã—è¡Œä½ç½®)
+						  â†’
+						  ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆä½ç½®(è¡Œé ­ã‹ã‚‰ã®è¡¨ç¤ºæ¡ä½ç½®ã€æŠ˜ã‚Šè¿”ã—ã‚ã‚Šè¡Œä½ç½®)
 						*/
 						CLogicPoint  ptPosXY_Logic = CLogicPoint(CLogicInt(0), nLineCount);
 						CLayoutPoint ptPosXY_Layout;
@@ -246,8 +246,8 @@ void CDocOutline::MakeFuncList_Java( CFuncInfoArr* pcFuncInfoArr )
 							&ptPosXY_Layout
 						);
 						wchar_t szWork[256];
-						if( 0 < auto_snprintf_s( szWork, _countof(szWork), L"%ls::%ls", szClass, L"’è‹`ˆÊ’u" ) ){
-							pcFuncInfoArr->AppendData( ptPosXY_Logic.GetY2() + CLogicInt(1), ptPosXY_Layout.GetY2() + CLayoutInt(1), szWork, nFuncId ); //2007.10.09 kobake ƒŒƒCƒAƒEƒgEƒƒWƒbƒN‚Ì¬İƒoƒOC³
+						if( 0 < auto_snprintf_s( szWork, _countof(szWork), L"%ls::%ls", szClass, L"å®šç¾©ä½ç½®" ) ){
+							pcFuncInfoArr->AppendData( ptPosXY_Logic.GetY2() + CLogicInt(1), ptPosXY_Layout.GetY2() + CLayoutInt(1), szWork, nFuncId ); //2007.10.09 kobake ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆãƒ»ãƒ­ã‚¸ãƒƒã‚¯ã®æ··åœ¨ãƒã‚°ä¿®æ­£
 						}
 					}
 
@@ -256,7 +256,7 @@ void CDocOutline::MakeFuncList_Java( CFuncInfoArr* pcFuncInfoArr )
 					continue;
 				}
 			}else
-			/* ‹L†—ñ“Ç‚İ‚İ’† */
+			/* è¨˜å·åˆ—èª­ã¿è¾¼ã¿ä¸­ */
 			if( FL_JAVA_MODE_SYMBOL == nMode ){
 				if( L'_' == pLine[i] ||
 					L':' == pLine[i] ||
@@ -284,9 +284,9 @@ void CDocOutline::MakeFuncList_Java( CFuncInfoArr* pcFuncInfoArr )
 				}else{
 				}
 			}else
-			/* ’·‰ß‚¬‚é’PŒê–³‹’† */
+			/* é•·éãã‚‹å˜èªç„¡è¦–ä¸­ */
 			if( FL_JAVA_MODE_TOO_LONG_WORD == nMode ){
-				/* ‹ó”’‚âƒ^ƒu‹L†“™‚ğ”ò‚Î‚· */
+				/* ç©ºç™½ã‚„ã‚¿ãƒ–è¨˜å·ç­‰ã‚’é£›ã°ã™ */
 				if( L'\t' == pLine[i] ||
 					L' ' == pLine[i] ||
 					WCODE::CR == pLine[i] ||
@@ -296,9 +296,9 @@ void CDocOutline::MakeFuncList_Java( CFuncInfoArr* pcFuncInfoArr )
 					continue;
 				}
 			}else
-			/* ƒm[ƒ}ƒ‹ƒ‚[ƒh */
+			/* ãƒãƒ¼ãƒãƒ«ãƒ¢ãƒ¼ãƒ‰ */
 			if( FL_JAVA_MODE_NORMAL == nMode ){
-				/* ‹ó”’‚âƒ^ƒu‹L†“™‚ğ”ò‚Î‚· */
+				/* ç©ºç™½ã‚„ã‚¿ãƒ–è¨˜å·ç­‰ã‚’é£›ã°ã™ */
 				if( L'\t' == pLine[i] ||
 					L' ' == pLine[i] ||
 					WCODE::CR == pLine[i] ||
@@ -325,8 +325,8 @@ void CDocOutline::MakeFuncList_Java( CFuncInfoArr* pcFuncInfoArr )
 				if( L'{' == pLine[i] ){
 					if( 0 < nClassNestArrNum && 2 == nNestLevel2Arr[nClassNestArrNum - 1] ){
 						//	Oct. 10, 2002 genta
-						//	ƒƒ\ƒbƒh’†‚Å‚³‚ç‚Éƒƒ\ƒbƒh‚ğ’è‹`‚·‚é‚±‚Æ‚Í‚È‚¢‚Ì‚Å
-						//	ƒlƒXƒgƒŒƒxƒ‹”»’è’Ç‰Á class/interface‚Ì’¼‰º‚Ìê‡‚Ì‚İ”»’è‚·‚é
+						//	ãƒ¡ã‚½ãƒƒãƒ‰ä¸­ã§ã•ã‚‰ã«ãƒ¡ã‚½ãƒƒãƒ‰ã‚’å®šç¾©ã™ã‚‹ã“ã¨ã¯ãªã„ã®ã§
+						//	ãƒã‚¹ãƒˆãƒ¬ãƒ™ãƒ«åˆ¤å®šè¿½åŠ  class/interfaceã®ç›´ä¸‹ã®å ´åˆã®ã¿åˆ¤å®šã™ã‚‹
 						if( nClassNestArr[nClassNestArrNum - 1] == nNestLevel - 1
 						 && 0 != wcscmp( L"sizeof", szFuncName )
 						 && 0 != wcscmp( L"if", szFuncName )
@@ -340,10 +340,10 @@ void CDocOutline::MakeFuncList_Java( CFuncInfoArr* pcFuncInfoArr )
 							nFuncId = FL_OBJ_FUNCTION;
 							++nFuncNum;
 							/*
-							  ƒJ[ƒ\ƒ‹ˆÊ’u•ÏŠ·
-							  •¨—ˆÊ’u(s“ª‚©‚ç‚ÌƒoƒCƒg”AÜ‚è•Ô‚µ–³‚µsˆÊ’u)
-							  ¨
-							  ƒŒƒCƒAƒEƒgˆÊ’u(s“ª‚©‚ç‚Ì•\¦Œ…ˆÊ’uAÜ‚è•Ô‚µ‚ ‚èsˆÊ’u)
+							  ã‚«ãƒ¼ã‚½ãƒ«ä½ç½®å¤‰æ›
+							  ç‰©ç†ä½ç½®(è¡Œé ­ã‹ã‚‰ã®ãƒã‚¤ãƒˆæ•°ã€æŠ˜ã‚Šè¿”ã—ç„¡ã—è¡Œä½ç½®)
+							  â†’
+							  ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆä½ç½®(è¡Œé ­ã‹ã‚‰ã®è¡¨ç¤ºæ¡ä½ç½®ã€æŠ˜ã‚Šè¿”ã—ã‚ã‚Šè¡Œä½ç½®)
 							*/
 							CLayoutPoint ptPosXY;
 							m_pcDocRef->m_cLayoutMgr.LogicToLayout(
@@ -447,7 +447,7 @@ void CDocOutline::MakeFuncList_Java( CFuncInfoArr* pcFuncInfoArr )
 						}
 					}else{
 						//	Oct. 10, 2002 genta
-						//	abstract ‚É‚à‘Î‰
+						//	abstract ã«ã‚‚å¯¾å¿œ
 						if( pLine2[k] == L'{' || pLine2[k] == L';' ||
 							__iscsym( pLine2[k] ) ){
 							if( 0 < nClassNestArrNum ){
@@ -467,7 +467,7 @@ void CDocOutline::MakeFuncList_Java( CFuncInfoArr* pcFuncInfoArr )
 				if( L';' == pLine[i] ){
 					if( 0 < nClassNestArrNum && 2 == nNestLevel2Arr[nClassNestArrNum - 1] ){
 						//	Oct. 10, 2002 genta
-						// ŠÖ”‚Ì’†‚Å•Ê‚ÌŠÖ”‚ÌéŒ¾•”‚ğg‚¤‚±‚Æ‚Á‚ÄCJava‚Å‚ ‚é‚ÌH
+						// é–¢æ•°ã®ä¸­ã§åˆ¥ã®é–¢æ•°ã®å®£è¨€éƒ¨ã‚’ä½¿ã†ã“ã¨ã£ã¦ï¼ŒJavaã§ã‚ã‚‹ã®ï¼Ÿ
 						if( nClassNestArr[nClassNestArrNum - 1] == nNestLevel - 1
 						 && 0 != wcscmp( L"sizeof", szFuncName )
 						 && 0 != wcscmp( L"if", szFuncName )
@@ -481,10 +481,10 @@ void CDocOutline::MakeFuncList_Java( CFuncInfoArr* pcFuncInfoArr )
 							nFuncId = FL_OBJ_DECLARE;
 							++nFuncNum;
 							/*
-							  ƒJ[ƒ\ƒ‹ˆÊ’u•ÏŠ·
-							  •¨—ˆÊ’u(s“ª‚©‚ç‚ÌƒoƒCƒg”AÜ‚è•Ô‚µ–³‚µsˆÊ’u)
-							  ¨
-							  ƒŒƒCƒAƒEƒgˆÊ’u(s“ª‚©‚ç‚Ì•\¦Œ…ˆÊ’uAÜ‚è•Ô‚µ‚ ‚èsˆÊ’u)
+							  ã‚«ãƒ¼ã‚½ãƒ«ä½ç½®å¤‰æ›
+							  ç‰©ç†ä½ç½®(è¡Œé ­ã‹ã‚‰ã®ãƒã‚¤ãƒˆæ•°ã€æŠ˜ã‚Šè¿”ã—ç„¡ã—è¡Œä½ç½®)
+							  â†’
+							  ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆä½ç½®(è¡Œé ­ã‹ã‚‰ã®è¡¨ç¤ºæ¡ä½ç½®ã€æŠ˜ã‚Šè¿”ã—ã‚ã‚Šè¡Œä½ç½®)
 							*/
 							CLayoutPoint ptPosXY;
 							m_pcDocRef->m_cLayoutMgr.LogicToLayout(

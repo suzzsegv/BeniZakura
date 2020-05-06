@@ -25,9 +25,9 @@
 #define SAKURA_CMYWND_2BBCE2D2_F4DC_4809_BFFE_476824F2E0ABR_H_
 
 /*
-	MFC��CWnd�I�ȃN���X�B
+	MFCのCWnd的なクラス。
 
-	2008.01.26 kobake �쐬
+	2008.01.26 kobake 作成
 */
 
 class CMyWnd{

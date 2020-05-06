@@ -1,5 +1,5 @@
 /*!	@file
-	@brief Cookieマネージャ
+	@brief Cookie繝槭ロ繝ｼ繧ｸ繝｣
 
 */
 /*

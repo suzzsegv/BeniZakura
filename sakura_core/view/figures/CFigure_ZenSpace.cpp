@@ -10,7 +10,7 @@
 
 bool CFigure_ZenSpace::Match(const wchar_t* pText) const
 {
-	if(pText[0] == L'@' && m_pTypeData->m_ColorInfoArr[COLORIDX_ZENSPACE].m_bDisp){
+	if(pText[0] == L'ã€€' && m_pTypeData->m_ColorInfoArr[COLORIDX_ZENSPACE].m_bDisp){
 		return true;
 	}
 	return false;
@@ -18,19 +18,19 @@ bool CFigure_ZenSpace::Match(const wchar_t* pText) const
 
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                         •`‰æŽÀ‘•                            //
+//                         æç”»å®Ÿè£…                            //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
-//! ‘SŠpƒXƒy[ƒX•`‰æ
+//! å…¨è§’ã‚¹ãƒšãƒ¼ã‚¹æç”»
 void CFigure_ZenSpace::DispSpace( CGraphics& gr, DispPos* pDispPos, CEditView* pcView, bool bTrans ) const
 {
-	//ƒNƒŠƒbƒsƒ“ƒO‹éŒ`‚ðŒvŽZB‰æ–ÊŠO‚È‚ç•`‰æ‚µ‚È‚¢
+	//ã‚¯ãƒªãƒƒãƒ”ãƒ³ã‚°çŸ©å½¢ã‚’è¨ˆç®—ã€‚ç”»é¢å¤–ãªã‚‰æç”»ã—ãªã„
 	RECT rc;
 	if(pcView->GetTextArea().GenerateClipRect(&rc,*pDispPos,2))
 	{
-		//•`‰æ
+		//æç”»
 		const wchar_t* szZenSpace =
-			CTypeSupport(pcView,COLORIDX_ZENSPACE).IsDisp()?L" ":L"@";
+			CTypeSupport(pcView,COLORIDX_ZENSPACE).IsDisp()?L"â–¡":L"ã€€";
 		::ExtTextOutW_AnyBuild(
 			gr,
 			pDispPos->GetDrawPos().x,
@@ -43,6 +43,6 @@ void CFigure_ZenSpace::DispSpace( CGraphics& gr, DispPos* pDispPos, CEditView* p
 		);
 	}
 
-	//ˆÊ’ui‚ß‚é
+	//ä½ç½®é€²ã‚ã‚‹
 	pDispPos->ForwardDrawCol(2);
 }

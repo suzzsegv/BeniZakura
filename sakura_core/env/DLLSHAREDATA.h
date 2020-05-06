@@ -25,23 +25,23 @@
 #define SAKURA_DLLSHAREDATA_3A6DD7E0_90DC_4219_8570_F5C1B8B6A306_H_
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                         ƒAƒNƒZƒT                            //
+//                         ã‚¢ã‚¯ã‚»ã‚µ                            //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
-//! ‚Ç‚±‚©‚ç‚Å‚àƒAƒNƒZƒX‚Å‚«‚éA‹¤—Lƒf[ƒ^ƒAƒNƒZƒTB2007.10.30 kobake
+//! ã©ã“ã‹ã‚‰ã§ã‚‚ã‚¢ã‚¯ã‚»ã‚¹ã§ãã‚‹ã€å…±æœ‰ãƒ‡ãƒ¼ã‚¿ã‚¢ã‚¯ã‚»ã‚µã€‚2007.10.30 kobake
 struct DLLSHAREDATA;
 DLLSHAREDATA& GetDllShareData();
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                    ‹¤—Lƒƒ‚ƒŠ\¬—v‘f                       //
+//                    å…±æœ‰ãƒ¡ãƒ¢ãƒªæ§‹æˆè¦ç´                        //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
-// 2010.04.19 Moca CShareData‚©‚çDLLSHAREDATAƒƒ“ƒo‚Ìinclude‚ğDLLSHAREDATA.h‚ÉˆÚ“®
+// 2010.04.19 Moca CShareDataã‹ã‚‰DLLSHAREDATAãƒ¡ãƒ³ãƒã®includeã‚’DLLSHAREDATA.hã«ç§»å‹•
 
 #include "config/maxdata.h"
 
 #include "env/CAppNodeManager.h"	//SShare_Nodes
-//2007.09.28 kobake Common\‘¢‘Ì‚ğCShareData.h‚©‚ç•ª—£
+//2007.09.28 kobake Commonæ§‹é€ ä½“ã‚’CShareData.hã‹ã‚‰åˆ†é›¢
 #include "env/CommonSetting.h"
 #include "env/CSearchKeywordManager.h"	//SShare_SearchKeywords
 #include "env/CTagJumpManager.h"		//SShare_TagJump
@@ -56,23 +56,23 @@ DLLSHAREDATA& GetDllShareData();
 
 
 
-//‹¤—Lƒtƒ‰ƒO
+//å…±æœ‰ãƒ•ãƒ©ã‚°
 struct SShare_Flags{
-	BOOL				m_bEditWndChanging;				// •ÒWƒEƒBƒ“ƒhƒEØ‘Ö’†	// 2007.04.03 ryoji
+	BOOL				m_bEditWndChanging;				// ç·¨é›†ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦åˆ‡æ›¿ä¸­	// 2007.04.03 ryoji
 	/*	@@@ 2002.1.24 YAZAKI
-		ƒL[ƒ{[ƒhƒ}ƒNƒ‚ÍA‹L˜^I—¹‚µ‚½“_‚Åƒtƒ@ƒCƒ‹um_szKeyMacroFileNamev‚É‘‚«o‚·‚±‚Æ‚É‚·‚éB
-		m_bRecordingKeyMacro‚ªTRUE‚Ì‚Æ‚«‚ÍAƒL[ƒ{[ƒhƒ}ƒNƒ‚Ì‹L˜^’†‚È‚Ì‚ÅAm_szKeyMacroFileName‚ÉƒAƒNƒZƒX‚µ‚Ä‚Í‚È‚ç‚È‚¢B
+		ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ãƒã‚¯ãƒ­ã¯ã€è¨˜éŒ²çµ‚äº†ã—ãŸæ™‚ç‚¹ã§ãƒ•ã‚¡ã‚¤ãƒ«ã€Œm_szKeyMacroFileNameã€ã«æ›¸ãå‡ºã™ã“ã¨ã«ã™ã‚‹ã€‚
+		m_bRecordingKeyMacroãŒTRUEã®ã¨ãã¯ã€ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ãƒã‚¯ãƒ­ã®è¨˜éŒ²ä¸­ãªã®ã§ã€m_szKeyMacroFileNameã«ã‚¢ã‚¯ã‚»ã‚¹ã—ã¦ã¯ãªã‚‰ãªã„ã€‚
 	*/
-	BOOL				m_bRecordingKeyMacro;		/* ƒL[ƒ{[ƒhƒ}ƒNƒ‚Ì‹L˜^’† */
-	HWND				m_hwndRecordingKeyMacro;	/* ƒL[ƒ{[ƒhƒ}ƒNƒ‚ğ‹L˜^’†‚ÌƒEƒBƒ“ƒhƒE */
+	BOOL				m_bRecordingKeyMacro;		/* ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ãƒã‚¯ãƒ­ã®è¨˜éŒ²ä¸­ */
+	HWND				m_hwndRecordingKeyMacro;	/* ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ãƒã‚¯ãƒ­ã‚’è¨˜éŒ²ä¸­ã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ */
 	bool				sessionRestored;
 	bool				sessionSaved;
 };
 
-//‹¤—Lƒ[ƒNƒoƒbƒtƒ@
+//å…±æœ‰ãƒ¯ãƒ¼ã‚¯ãƒãƒƒãƒ•ã‚¡
 struct SShare_WorkBuffer{
-	//2007.09.16 kobake charŒ^‚¾‚ÆAí‚É•¶š—ñ‚Å‚ ‚é‚Æ‚¢‚¤Œë‰ğ‚ğµ‚­‚Ì‚ÅABYTEŒ^‚É•ÏXB•Ï”–¼‚à•ÏXB
-	//           UNICODE”Å‚Å‚ÍA—]•ª‚É—Ìˆæ‚ğg‚¤‚±‚Æ‚ª—\‘z‚³‚ê‚é‚½‚ßAANSI”Å‚Ì2”{Šm•ÛB
+	//2007.09.16 kobake charå‹ã ã¨ã€å¸¸ã«æ–‡å­—åˆ—ã§ã‚ã‚‹ã¨ã„ã†èª¤è§£ã‚’æ‹›ãã®ã§ã€BYTEå‹ã«å¤‰æ›´ã€‚å¤‰æ•°åã‚‚å¤‰æ›´ã€‚
+	//           UNICODEç‰ˆã§ã¯ã€ä½™åˆ†ã«é ˜åŸŸã‚’ä½¿ã†ã“ã¨ãŒäºˆæƒ³ã•ã‚Œã‚‹ãŸã‚ã€ANSIç‰ˆã®2å€ç¢ºä¿ã€‚
 private:
 	BYTE				m_pWork[32000*sizeof(TCHAR)];
 public:
@@ -83,17 +83,17 @@ public:
 	size_t GetWorkBufferCount(){ return sizeof(m_pWork)/sizeof(T); }
 
 public:
-	EditInfo			m_EditInfo_MYWM_GETFILEINFO;	//MYWM_GETFILEINFOƒf[ƒ^ó‚¯“n‚µ—p	####”ü‚µ‚­‚È‚¢
+	EditInfo			m_EditInfo_MYWM_GETFILEINFO;	//MYWM_GETFILEINFOãƒ‡ãƒ¼ã‚¿å—ã‘æ¸¡ã—ç”¨	####ç¾ã—ããªã„
 };
 
-//‹¤—Lƒnƒ“ƒhƒ‹
+//å…±æœ‰ãƒãƒ³ãƒ‰ãƒ«
 struct SShare_Handles{
 	HWND				m_hwndTray;
 	HWND				m_hwndDebug;
 	HACCEL				m_hAccel;
 };
 
-//EXEî•ñ
+//EXEæƒ…å ±
 struct SShare_Version{
 	DWORD				m_dwProductVersionMS;
 	DWORD				m_dwProductVersionLS;
@@ -101,59 +101,59 @@ struct SShare_Version{
 
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                   ‹¤—Lƒƒ‚ƒŠ\‘¢‘Ì–{‘Ì                      //
+//                   å…±æœ‰ãƒ¡ãƒ¢ãƒªæ§‹é€ ä½“æœ¬ä½“                      //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
 struct DLLSHAREDATA{
 	void OnInit();
 	
-	// -- -- ƒo[ƒWƒ‡ƒ“ -- -- //
+	// -- -- ãƒãƒ¼ã‚¸ãƒ§ãƒ³ -- -- //
 	/*!
-		ƒf[ƒ^\‘¢ Version	//	Oct. 27, 2000 genta
-		ƒf[ƒ^\‘¢‚ÌˆÙ‚È‚éƒo[ƒWƒ‡ƒ“‚Ì“¯‹N“®‚ğ–h‚®‚½‚ß
-		•K‚¸æ“ª‚É‚È‚­‚Ä‚Í‚È‚ç‚È‚¢D
+		ãƒ‡ãƒ¼ã‚¿æ§‹é€  Version	//	Oct. 27, 2000 genta
+		ãƒ‡ãƒ¼ã‚¿æ§‹é€ ã®ç•°ãªã‚‹ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã®åŒæ™‚èµ·å‹•ã‚’é˜²ããŸã‚
+		å¿…ãšå…ˆé ­ã«ãªãã¦ã¯ãªã‚‰ãªã„ï¼
 	*/
 	unsigned int				m_vStructureVersion;
 
-	// -- -- ”ñ•Û‘¶‘ÎÛ -- -- //
-	SShare_Version				m_sVersion;	//¦“Ç‚Ís‚í‚È‚¢‚ªA‘‚Ís‚¤
+	// -- -- éä¿å­˜å¯¾è±¡ -- -- //
+	SShare_Version				m_sVersion;	//â€»èª­è¾¼ã¯è¡Œã‚ãªã„ãŒã€æ›¸è¾¼ã¯è¡Œã†
 	SShare_WorkBuffer			m_sWorkBuffer;
 	SShare_Flags				m_sFlags;
 	SShare_Nodes				m_sNodes;
 	SShare_Handles				m_sHandles;
 
-	SCharWidthCache				m_sCharWidth;							//!< •¶š”¼Šp‘SŠpƒLƒƒƒbƒVƒ…
-	DWORD						m_dwCustColors[16];						//!< ƒtƒHƒ“ƒgDialogƒJƒXƒ^ƒ€ƒpƒŒƒbƒg
-	SSearchOption				m_sSearchOptionForFindDialog;			//!< ŒŸõƒ_ƒCƒAƒƒO—p ŒŸõğŒ
-	SSearchOption				m_sSearchOptionForGrepDialog;			//!< Grep ƒ_ƒCƒAƒƒO—p ŒŸõğŒ
-	SSearchOption				m_sSearchOptionForReplaceDialog;		//!< ’uŠ·ƒ_ƒCƒAƒƒO—p ŒŸõğŒ
+	SCharWidthCache				m_sCharWidth;							//!< æ–‡å­—åŠè§’å…¨è§’ã‚­ãƒ£ãƒƒã‚·ãƒ¥
+	DWORD						m_dwCustColors[16];						//!< ãƒ•ã‚©ãƒ³ãƒˆDialogã‚«ã‚¹ã‚¿ãƒ ãƒ‘ãƒ¬ãƒƒãƒˆ
+	SSearchOption				m_sSearchOptionForFindDialog;			//!< æ¤œç´¢ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ç”¨ æ¤œç´¢æ¡ä»¶
+	SSearchOption				m_sSearchOptionForGrepDialog;			//!< Grep ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ç”¨ æ¤œç´¢æ¡ä»¶
+	SSearchOption				m_sSearchOptionForReplaceDialog;		//!< ç½®æ›ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ç”¨ æ¤œç´¢æ¡ä»¶
 
-	// -- -- •Û‘¶‘ÎÛ -- -- //
-	//İ’è
-	CommonSetting				m_Common;								// ‹¤’Êİ’è
-	STypeConfig					m_Types[MAX_TYPES];						// ƒ^ƒCƒv•Êİ’è
-	PRINTSETTING				m_PrintSettingArr[MAX_PRINTSETTINGARR];	// ˆóüƒy[ƒWİ’è
-	//‚»‚Ì‘¼
+	// -- -- ä¿å­˜å¯¾è±¡ -- -- //
+	//è¨­å®š
+	CommonSetting				m_Common;								// å…±é€šè¨­å®š
+	STypeConfig					m_Types[MAX_TYPES];						// ã‚¿ã‚¤ãƒ—åˆ¥è¨­å®š
+	PRINTSETTING				m_PrintSettingArr[MAX_PRINTSETTINGARR];	// å°åˆ·ãƒšãƒ¼ã‚¸è¨­å®š
+	//ãã®ä»–
 	SShare_SearchKeywords		m_sSearchKeywords;
 	SShare_TagJump				m_sTagJump;
 	SShare_FileNameManagement	m_sFileNameManagement;
 	SShare_History				m_sHistory;
 
-	//ŠO•”ƒRƒ}ƒ“ƒhÀsƒ_ƒCƒAƒƒO‚ÌƒIƒvƒVƒ‡ƒ“
-	int							m_nExecFlgOpt;				/* ŠO•”ƒRƒ}ƒ“ƒhÀsƒIƒvƒVƒ‡ƒ“ */	//	2006.12.03 maru ƒIƒvƒVƒ‡ƒ“‚ÌŠg’£‚Ì‚½‚ß
-	//DIFF·•ª•\¦ƒ_ƒCƒAƒƒO‚ÌƒIƒvƒVƒ‡ƒ“
-	int							m_nDiffFlgOpt;				/* DIFF·•ª•\¦ */	//@@@ 2002.05.27 MIK
-	//ƒ^ƒOƒtƒ@ƒCƒ‹‚Ìì¬ƒ_ƒCƒAƒƒO‚ÌƒIƒvƒVƒ‡ƒ“
-	TCHAR						m_szTagsCmdLine[_MAX_PATH];	/* TAGSƒRƒ}ƒ“ƒhƒ‰ƒCƒ“ƒIƒvƒVƒ‡ƒ“ */	//@@@ 2003.05.12 MIK
-	int							m_nTagsOpt;					/* TAGSƒIƒvƒVƒ‡ƒ“(ƒ`ƒFƒbƒN) */	//@@@ 2003.05.12 MIK
+	//å¤–éƒ¨ã‚³ãƒãƒ³ãƒ‰å®Ÿè¡Œãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³
+	int							m_nExecFlgOpt;				/* å¤–éƒ¨ã‚³ãƒãƒ³ãƒ‰å®Ÿè¡Œã‚ªãƒ—ã‚·ãƒ§ãƒ³ */	//	2006.12.03 maru ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®æ‹¡å¼µã®ãŸã‚
+	//DIFFå·®åˆ†è¡¨ç¤ºãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³
+	int							m_nDiffFlgOpt;				/* DIFFå·®åˆ†è¡¨ç¤º */	//@@@ 2002.05.27 MIK
+	//ã‚¿ã‚°ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½œæˆãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³
+	TCHAR						m_szTagsCmdLine[_MAX_PATH];	/* TAGSã‚³ãƒãƒ³ãƒ‰ãƒ©ã‚¤ãƒ³ã‚ªãƒ—ã‚·ãƒ§ãƒ³ */	//@@@ 2003.05.12 MIK
+	int							m_nTagsOpt;					/* TAGSã‚ªãƒ—ã‚·ãƒ§ãƒ³(ãƒã‚§ãƒƒã‚¯) */	//@@@ 2003.05.12 MIK
 		#define TAGS_OPTION_DEFAULT_TAG_MAKE_RECURSE		0x0001
 		#define TAGS_OPTION_DEFAULT_TAG_MAKE_EXTRA_KINDS	0x0002
 		#define TAGS_OPTION_DEFAULT_TAG_MAKE_UTF8			0x0004
 
 
-	// -- -- ƒeƒ“ƒ|ƒ‰ƒŠ -- -- //
-	//w’ès‚ÖƒWƒƒƒ“ƒvƒ_ƒCƒAƒƒO‚ÌƒIƒvƒVƒ‡ƒ“
-	bool						m_bLineNumIsCRLF_ForJump;			/* w’ès‚ÖƒWƒƒƒ“ƒv‚Ìu‰üs’PˆÊ‚Ìs”Ô†v‚©uÜ‚è•Ô‚µ’PˆÊ‚Ìs”Ô†v‚© */
+	// -- -- ãƒ†ãƒ³ãƒãƒ©ãƒª -- -- //
+	//æŒ‡å®šè¡Œã¸ã‚¸ãƒ£ãƒ³ãƒ—ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³
+	bool						m_bLineNumIsCRLF_ForJump;			/* æŒ‡å®šè¡Œã¸ã‚¸ãƒ£ãƒ³ãƒ—ã®ã€Œæ”¹è¡Œå˜ä½ã®è¡Œç•ªå·ã€ã‹ã€ŒæŠ˜ã‚Šè¿”ã—å˜ä½ã®è¡Œç•ªå·ã€ã‹ */
 };
 
 #endif /* SAKURA_DLLSHAREDATA_3A6DD7E0_90DC_4219_8570_F5C1B8B6A306_H_ */

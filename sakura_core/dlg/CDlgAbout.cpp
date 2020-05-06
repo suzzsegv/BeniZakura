@@ -1,8 +1,8 @@
 /*!	@file
-	@brief ƒo[ƒWƒ‡ƒ“î•ñƒ_ƒCƒAƒƒO
+	@brief ãƒãƒ¼ã‚¸ãƒ§ãƒ³æƒ…å ±ãƒ€ã‚¤ã‚¢ãƒ­ã‚°
 
 	@author Norio Nakatani
-	@date	1998/3/13 ì¬
+	@date	1998/3/13 ä½œæˆ
 */
 /*
 	Copyright (C) 1998-2001, Norio Nakatani
@@ -25,12 +25,12 @@
 #include "util/file.h"
 #include "util/module.h"
 #include "gitrev.h"
-#include "sakura_rc.h" // 2002/2/10 aroka •œ‹A
+#include "sakura_rc.h" // 2002/2/10 aroka å¾©å¸°
 
 
 //	From Here Feb. 7, 2002 genta
-// 2006.01.17 Moca COMPILER_VER‚ğ’Ç‰Á
-// 2010.04.15 Moca icc/dmc‚ğ’Ç‰Á‚µCPU‚ğ•ª—£
+// 2006.01.17 Moca COMPILER_VERã‚’è¿½åŠ 
+// 2010.04.15 Moca icc/dmcã‚’è¿½åŠ ã—CPUã‚’åˆ†é›¢
 #if defined(_M_IA64)
 #  define TARGET_M_SUFFIX "_I64"
 #elif defined(_M_AMD64)
@@ -88,7 +88,7 @@
 
 //	From Here Nov. 7, 2000 genta
 /*!
-	•W€ˆÈŠO‚ÌƒƒbƒZ[ƒW‚ğ•ß‘¨‚·‚é
+	æ¨™æº–ä»¥å¤–ã®ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’æ•æ‰ã™ã‚‹
 */
 INT_PTR CDlgAbout::DispatchEvent( HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam )
 {
@@ -97,7 +97,7 @@ INT_PTR CDlgAbout::DispatchEvent( HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lP
 	switch( wMsg ){
 	case WM_CTLCOLORDLG:
 	case WM_CTLCOLORSTATIC:
-		// EDIT‚à READONLY ‚© DISABLE‚Ìê‡ WM_CTLCOLORSTATIC ‚É‚È‚è‚Ü‚·
+		// EDITã‚‚ READONLY ã‹ DISABLEã®å ´åˆ WM_CTLCOLORSTATIC ã«ãªã‚Šã¾ã™
 		if( (HWND)lParam == GetDlgItem(hWnd, IDC_EDIT_ABOUT) ){
 			::SetTextColor( (HDC)wParam, RGB( 102, 102, 102 ) );
 		} else {
@@ -109,14 +109,14 @@ INT_PTR CDlgAbout::DispatchEvent( HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lP
 }
 //	To Here Nov. 7, 2000 genta
 
-/* ƒ‚[ƒ_ƒ‹ƒ_ƒCƒAƒƒO‚Ì•\¦ */
+/* ãƒ¢ãƒ¼ãƒ€ãƒ«ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®è¡¨ç¤º */
 int CDlgAbout::DoModal( HINSTANCE hInstance, HWND hwndParent )
 {
 	return (int)CDialog::DoModal( hInstance, hwndParent, IDD_ABOUT, NULL );
 }
 
-/*! ‰Šú‰»ˆ—
-	@date 2008.05.05 novice GetModuleHandle(NULL)¨NULL‚É•ÏX
+/*! åˆæœŸåŒ–å‡¦ç†
+	@date 2008.05.05 novice GetModuleHandle(NULL)â†’NULLã«å¤‰æ›´
 */
 BOOL CDlgAbout::OnInitDialog( HWND hwndDlg, WPARAM wParam, LPARAM lParam )
 {
@@ -125,10 +125,10 @@ BOOL CDlgAbout::OnInitDialog( HWND hwndDlg, WPARAM wParam, LPARAM lParam )
 	TCHAR			szMsg[2048];
 	wchar_t	vcVersion[64];
 
-	/* ƒo[ƒWƒ‡ƒ“î•ñ */
+	/* ãƒãƒ¼ã‚¸ãƒ§ãƒ³æƒ…å ± */
 
 	CNativeT cmemMsg;
-	cmemMsg.AppendString(_T("\r\ng÷  "));
+	cmemMsg.AppendString(_T("\r\nç´…æ¡œ  "));
 
 	DWORD dwVersionMS, dwVersionLS;
 	GetAppVersionInfo( NULL, VS_VERSION_INFO, &dwVersionMS, &dwVersionLS );
@@ -164,12 +164,12 @@ BOOL CDlgAbout::OnInitDialog( HWND hwndDlg, WPARAM wParam, LPARAM lParam )
 	cmemMsg.AppendString( _T("\r\n") );
 	cmemMsg.AppendString( _T("\r\n") );
 
-	cmemMsg.AppendString( _T("Based on ƒTƒNƒ‰ƒGƒfƒBƒ^  Ver.2.0.8.1+\r\n") );
+	cmemMsg.AppendString( _T("Based on ã‚µã‚¯ãƒ©ã‚¨ãƒ‡ã‚£ã‚¿  Ver.2.0.8.1+\r\n") );
 	cmemMsg.AppendString( _T("\r\n") );
 	cmemMsg.AppendString( _T("  Copyright (C) 1998-2014 by Norio Nakatani & Collaborators\r\n") );
 	cmemMsg.AppendString( _T("\r\n") );
 
-// ƒpƒbƒ`(‚©ƒŠƒrƒWƒ‡ƒ“)‚Ìî•ñ‚ğƒRƒ“ƒpƒCƒ‹‚É“n‚¹‚é‚æ‚¤‚É‚·‚é
+// ãƒ‘ãƒƒãƒ(ã‹ãƒªãƒ“ã‚¸ãƒ§ãƒ³)ã®æƒ…å ±ã‚’ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«æ™‚ã«æ¸¡ã›ã‚‹ã‚ˆã†ã«ã™ã‚‹
 #ifdef SKR_PATCH_INFO
 	cmemMsg.AppendString( _T("      ") );
 	const TCHAR* ptszPatchInfo = to_tchar(SKR_PATCH_INFO);
@@ -181,7 +181,7 @@ BOOL CDlgAbout::OnInitDialog( HWND hwndDlg, WPARAM wParam, LPARAM lParam )
 	::DlgItem_SetText( GetHwnd(), IDC_EDIT_VER, cmemMsg.GetStringPtr() );
 
 	//	From Here Jun. 8, 2001 genta
-	//	Edit Box‚ÉƒƒbƒZ[ƒW‚ğ’Ç‰Á‚·‚éD
+	//	Edit Boxã«ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’è¿½åŠ ã™ã‚‹ï¼
 	int desclen = ::LoadString( m_hInstance, IDS_ABOUT_DESCRIPTION, szMsg, _countof( szMsg ) );
 	if( desclen > 0 ){
 		::DlgItem_SetText( GetHwnd(), IDC_EDIT_ABOUT, szMsg );
@@ -189,7 +189,7 @@ BOOL CDlgAbout::OnInitDialog( HWND hwndDlg, WPARAM wParam, LPARAM lParam )
 	//	To Here Jun. 8, 2001 genta
 
 	//	From Here Dec. 2, 2002 genta
-	//	ƒAƒCƒRƒ“‚ğƒJƒXƒ^ƒ}ƒCƒYƒAƒCƒRƒ“‚É‡‚í‚¹‚é
+	//	ã‚¢ã‚¤ã‚³ãƒ³ã‚’ã‚«ã‚¹ã‚¿ãƒã‚¤ã‚ºã‚¢ã‚¤ã‚³ãƒ³ã«åˆã‚ã›ã‚‹
 	HICON hIcon = GetAppIcon( m_hInstance, ICON_DEFAULT_APP, FN_APP_ICON, false );
 	HWND hIconWnd = GetDlgItem( GetHwnd(), IDC_STATIC_MYICON );
 
@@ -198,7 +198,7 @@ BOOL CDlgAbout::OnInitDialog( HWND hwndDlg, WPARAM wParam, LPARAM lParam )
 	}
 	//	To Here Dec. 2, 2002 genta
 
-	/* Šî’êƒNƒ‰ƒXƒƒ“ƒo */
+	/* åŸºåº•ã‚¯ãƒ©ã‚¹ãƒ¡ãƒ³ãƒ */
 	return CDialog::OnInitDialog( GetHwnd(), wParam, lParam );
 }
 

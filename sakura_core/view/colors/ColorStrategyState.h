@@ -1,5 +1,5 @@
 /*!	@file	ColorStrategyState.h
-	@brief	ColorStrategy ó‘Ô•Û—p \‘¢‘Ì
+	@brief	ColorStrategy çŠ¶æ…‹ä¿æŒç”¨ æ§‹é€ ä½“
 
 	@author	Suzuki Satoshi
 */

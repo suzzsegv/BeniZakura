@@ -1,13 +1,13 @@
 /*! @file
-	@brief ƒ^ƒCƒv•Êİ’è - x‰‡
+	@brief ã‚¿ã‚¤ãƒ—åˆ¥è¨­å®š - æ”¯æ´
 
-	@date 2008.04.12 kobake CPropTypes.cpp‚©‚ç•ª—£
+	@date 2008.04.12 kobake CPropTypes.cppã‹ã‚‰åˆ†é›¢
 */
 /*
 	Copyright (C) 1998-2002, Norio Nakatani
 	Copyright (C) 2000, jepro, genta
 	Copyright (C) 2001, jepro, genta, MIK, hor, Stonee, asa-o
-	Copyright (C) 2002, YAZAKI, aroka, MIK, genta, ‚±‚¨‚è, Moca
+	Copyright (C) 2002, YAZAKI, aroka, MIK, genta, ã“ãŠã‚Š, Moca
 	Copyright (C) 2003, MIK, zenryaku, Moca, naoh, KEITA, genta
 	Copyright (C) 2005, MIK, genta, Moca, ryoji
 	Copyright (C) 2006, ryoji, fon, novice
@@ -41,9 +41,9 @@ static std::vector<SHokanMethod>* GetHokanMethodList()
 }
 
 
-// 2001/06/13 Start By asa-o: ƒ^ƒCƒv•Êİ’è‚Ìx‰‡ƒ^ƒu‚ÉŠÖ‚·‚éˆ—
+// 2001/06/13 Start By asa-o: ã‚¿ã‚¤ãƒ—åˆ¥è¨­å®šã®æ”¯æ´ã‚¿ãƒ–ã«é–¢ã™ã‚‹å‡¦ç†
 
-/* ƒƒbƒZ[ƒWˆ— */
+/* ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å‡¦ç† */
 INT_PTR CPropTypesSupport::DispatchEvent(
 	HWND		hwndDlg,	// handle to dialog box
 	UINT		uMsg,		// message
@@ -57,38 +57,38 @@ INT_PTR CPropTypesSupport::DispatchEvent(
 
 	switch( uMsg ){
 	case WM_INITDIALOG:
-		/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìİ’è p2 */
+		/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®è¨­å®š p2 */
 		SetData( hwndDlg );
 		// Modified by KEITA for WIN64 2003.9.6
 		::SetWindowLongPtr( hwndDlg, DWLP_USER, lParam );
 
-		/* ƒ†[ƒU[‚ªƒGƒfƒBƒbƒg ƒRƒ“ƒgƒ[ƒ‹‚É“ü—Í‚Å‚«‚éƒeƒLƒXƒg‚Ì’·‚³‚ğ§ŒÀ‚·‚é */
-		/* “ü—Í•âŠ® ’PŒêƒtƒ@ƒCƒ‹ */
+		/* ãƒ¦ãƒ¼ã‚¶ãƒ¼ãŒã‚¨ãƒ‡ã‚£ãƒƒãƒˆ ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã«å…¥åŠ›ã§ãã‚‹ãƒ†ã‚­ã‚¹ãƒˆã®é•·ã•ã‚’åˆ¶é™ã™ã‚‹ */
+		/* å…¥åŠ›è£œå®Œ å˜èªãƒ•ã‚¡ã‚¤ãƒ« */
 		EditCtl_LimitText( ::GetDlgItem( hwndDlg, IDC_EDIT_HOKANFILE ), _MAX_PATH - 1 );
 
 		return TRUE;
 	case WM_COMMAND:
-		wNotifyCode = HIWORD(wParam);	/* ’Ê’mƒR[ƒh */
-		wID			= LOWORD(wParam);	/* €–ÚID¤ ƒRƒ“ƒgƒ[ƒ‹ID¤ ‚Ü‚½‚ÍƒAƒNƒZƒ‰ƒŒ[ƒ^ID */
-//		hwndCtl		= (HWND) lParam;	/* ƒRƒ“ƒgƒ[ƒ‹‚Ìƒnƒ“ƒhƒ‹ */
+		wNotifyCode = HIWORD(wParam);	/* é€šçŸ¥ã‚³ãƒ¼ãƒ‰ */
+		wID			= LOWORD(wParam);	/* é …ç›®IDã€ ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«IDã€ ã¾ãŸã¯ã‚¢ã‚¯ã‚»ãƒ©ãƒ¬ãƒ¼ã‚¿ID */
+//		hwndCtl		= (HWND) lParam;	/* ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã®ãƒãƒ³ãƒ‰ãƒ« */
 		switch( wNotifyCode ){
-		/* ƒ{ƒ^ƒ“^ƒ`ƒFƒbƒNƒ{ƒbƒNƒX‚ªƒNƒŠƒbƒN‚³‚ê‚½ */
+		/* ãƒœã‚¿ãƒ³ï¼ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹ãŒã‚¯ãƒªãƒƒã‚¯ã•ã‚ŒãŸ */
 		case BN_CLICKED:
-			/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìæ“¾ p2 */
+			/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®å–å¾— p2 */
 			GetData( hwndDlg );
 			switch( wID ){
-			case IDC_BUTTON_HOKANFILE_REF:	/* “ü—Í•âŠ® ’PŒêƒtƒ@ƒCƒ‹‚ÌuQÆ...vƒ{ƒ^ƒ“ */
+			case IDC_BUTTON_HOKANFILE_REF:	/* å…¥åŠ›è£œå®Œ å˜èªãƒ•ã‚¡ã‚¤ãƒ«ã®ã€Œå‚ç…§...ã€ãƒœã‚¿ãƒ³ */
 				{
 					CDlgOpenFile	cDlgOpenFile;
 					TCHAR			szPath[_MAX_PATH + 1];
-					// 2003.06.23 Moca ‘Š‘ÎƒpƒX‚ÍÀsƒtƒ@ƒCƒ‹‚©‚ç‚ÌƒpƒX‚Æ‚µ‚ÄŠJ‚­
-					// 2007.05.19 ryoji ‘Š‘ÎƒpƒX‚Íİ’èƒtƒ@ƒCƒ‹‚©‚ç‚ÌƒpƒX‚ğ—Dæ
+					// 2003.06.23 Moca ç›¸å¯¾ãƒ‘ã‚¹ã¯å®Ÿè¡Œãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ã®ãƒ‘ã‚¹ã¨ã—ã¦é–‹ã
+					// 2007.05.19 ryoji ç›¸å¯¾ãƒ‘ã‚¹ã¯è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ã®ãƒ‘ã‚¹ã‚’å„ªå…ˆ
 					if( _IS_REL_PATH( m_Types.m_szHokanFile ) ){
 						GetInidirOrExedir( szPath, m_Types.m_szHokanFile );
 					}else{
 						_tcscpy( szPath, m_Types.m_szHokanFile );
 					}
-					/* ƒtƒ@ƒCƒ‹ƒI[ƒvƒ“ƒ_ƒCƒAƒƒO‚Ì‰Šú‰» */
+					/* ãƒ•ã‚¡ã‚¤ãƒ«ã‚ªãƒ¼ãƒ—ãƒ³ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®åˆæœŸåŒ– */
 					cDlgOpenFile.Create(
 						m_hInstance,
 						hwndDlg,
@@ -111,10 +111,10 @@ INT_PTR CPropTypesSupport::DispatchEvent(
 //		pMNUD  = (NM_UPDOWN*)lParam;
 		switch( pNMHDR->code ){
 		case PSN_KILLACTIVE:
-			/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìæ“¾ p2 */
+			/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®å–å¾— p2 */
 			GetData( hwndDlg );
 			return TRUE;
-//@@@ 2002.01.03 YAZAKI ÅŒã‚É•\¦‚µ‚Ä‚¢‚½ƒV[ƒg‚ğ³‚µ‚­Šo‚¦‚Ä‚¢‚È‚¢ƒoƒOC³
+//@@@ 2002.01.03 YAZAKI æœ€å¾Œã«è¡¨ç¤ºã—ã¦ã„ãŸã‚·ãƒ¼ãƒˆã‚’æ­£ã—ãè¦šãˆã¦ã„ãªã„ãƒã‚°ä¿®æ­£
 		case PSN_SETACTIVE:
 			m_nPageNum = 3;
 			return TRUE;
@@ -125,16 +125,16 @@ INT_PTR CPropTypesSupport::DispatchEvent(
 	return FALSE;
 }
 
-/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìİ’è */
+/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®è¨­å®š */
 void CPropTypesSupport::SetData( HWND hwndDlg )
 {
-	/* “ü—Í•âŠ® ’PŒêƒtƒ@ƒCƒ‹ */
+	/* å…¥åŠ›è£œå®Œ å˜èªãƒ•ã‚¡ã‚¤ãƒ« */
 	::DlgItem_SetText( hwndDlg, IDC_EDIT_HOKANFILE, m_Types.m_szHokanFile );
 
 	{
 		HWND hCombo = ::GetDlgItem( hwndDlg, IDC_COMBO_HOKAN_TYPE );
 		std::vector<SHokanMethod>* pMedothList = GetHokanMethodList();
-		ApiWrap::Combo_AddString( hCombo, L"‚È‚µ" );
+		ApiWrap::Combo_AddString( hCombo, L"ãªã—" );
 		Combo_SetCurSel( hCombo, 0 );
 		size_t nSize = pMedothList->size();
 		for( size_t i = 0; i < nSize; i++ ){
@@ -146,34 +146,34 @@ void CPropTypesSupport::SetData( HWND hwndDlg )
 	}
 
 //	2001/06/19 asa-o
-	/* “ü—Í•âŠ®‹@”\F‰p‘å•¶š¬•¶š‚ğ“¯ˆê‹‚·‚é */
+	/* å…¥åŠ›è£œå®Œæ©Ÿèƒ½ï¼šè‹±å¤§æ–‡å­—å°æ–‡å­—ã‚’åŒä¸€è¦–ã™ã‚‹ */
 	::CheckDlgButton( hwndDlg, IDC_CHECK_HOKANLOHICASE, m_Types.m_bHokanLoHiCase ? BST_CHECKED : BST_UNCHECKED);
 
-	// 2003.06.25 Moca ƒtƒ@ƒCƒ‹‚©‚ç‚Ì•âŠ®‹@”\
+	// 2003.06.25 Moca ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ã®è£œå®Œæ©Ÿèƒ½
 	::CheckDlgButton( hwndDlg, IDC_CHECK_HOKANBYFILE, m_Types.m_bUseHokanByFile ? BST_CHECKED : BST_UNCHECKED);
 	CheckDlgButtonBool( hwndDlg, IDC_CHECK_HOKANBYKEYWORD, m_Types.m_bUseHokanByKeyword );
 
-	// I—¹A‰üs‚Ìˆê’v‚ğŒŸ¸‚·‚é	2013/4/14 Uchi
+	// çµ‚äº†æ™‚ã€æ”¹è¡Œã®ä¸€è‡´ã‚’æ¤œæŸ»ã™ã‚‹	2013/4/14 Uchi
 	::CheckDlgButton( hwndDlg, IDC_CHECK_CHKENTERATEND, m_Types.m_bChkEnterAtEnd ? BST_CHECKED : BST_UNCHECKED);
 }
 
-/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìæ“¾ */
+/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®å–å¾— */
 int CPropTypesSupport::GetData( HWND hwndDlg )
 {
-//@@@ 2002.01.03 YAZAKI ÅŒã‚É•\¦‚µ‚Ä‚¢‚½ƒV[ƒg‚ğ³‚µ‚­Šo‚¦‚Ä‚¢‚È‚¢ƒoƒOC³
+//@@@ 2002.01.03 YAZAKI æœ€å¾Œã«è¡¨ç¤ºã—ã¦ã„ãŸã‚·ãƒ¼ãƒˆã‚’æ­£ã—ãè¦šãˆã¦ã„ãªã„ãƒã‚°ä¿®æ­£
 //	m_nPageNum = 3;
 
 //	2001/06/19	asa-o
-	/* “ü—Í•âŠ®‹@”\F‰p‘å•¶š¬•¶š‚ğ“¯ˆê‹‚·‚é */
+	/* å…¥åŠ›è£œå®Œæ©Ÿèƒ½ï¼šè‹±å¤§æ–‡å­—å°æ–‡å­—ã‚’åŒä¸€è¦–ã™ã‚‹ */
 	m_Types.m_bHokanLoHiCase = ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_HOKANLOHICASE ) != 0;
 
 	m_Types.m_bUseHokanByFile = ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_HOKANBYFILE ) != 0;
 	m_Types.m_bUseHokanByKeyword = IsDlgButtonCheckedBool( hwndDlg, IDC_CHECK_HOKANBYKEYWORD );
 
-	/* “ü—Í•âŠ® ’PŒêƒtƒ@ƒCƒ‹ */
+	/* å…¥åŠ›è£œå®Œ å˜èªãƒ•ã‚¡ã‚¤ãƒ« */
 	::DlgItem_GetText( hwndDlg, IDC_EDIT_HOKANFILE, m_Types.m_szHokanFile, _countof2( m_Types.m_szHokanFile ));
 
-	// “ü—Í•âŠ®í•Ê
+	// å…¥åŠ›è£œå®Œç¨®åˆ¥
 	{
 		HWND hCombo = ::GetDlgItem( hwndDlg, IDC_COMBO_HOKAN_TYPE );
 		int i = Combo_GetCurSel( hCombo );
@@ -184,7 +184,7 @@ int CPropTypesSupport::GetData( HWND hwndDlg )
 		}
 	}
 
-	// I—¹A‰üs‚Ìˆê’v‚ğŒŸ¸‚·‚é	2013/4/14 Uchi
+	// çµ‚äº†æ™‚ã€æ”¹è¡Œã®ä¸€è‡´ã‚’æ¤œæŸ»ã™ã‚‹	2013/4/14 Uchi
 	m_Types.m_bChkEnterAtEnd = ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_CHKENTERATEND ) != 0;
 
 	return TRUE;
@@ -192,7 +192,7 @@ int CPropTypesSupport::GetData( HWND hwndDlg )
 
 // 2001/06/13 End
 
-/*! •âŠ®í•Ê‚Ì’Ç‰Á
+/*! è£œå®Œç¨®åˆ¥ã®è¿½åŠ 
 /*/
 void CPropTypesSupport::AddHokanMethod(int nMethod, const WCHAR* szName)
 {

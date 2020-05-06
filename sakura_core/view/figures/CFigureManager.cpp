@@ -53,7 +53,7 @@ CFigureManager::~CFigureManager()
 	m_vFigures.clear();
 }
 
-//$$ ‚‘¬‰»‰Â”\
+//$$ é«˜é€ŸåŒ–å¯èƒ½
 CFigure& CFigureManager::GetFigure(const wchar_t* pText)
 {
 	int size = (int)m_vFigures.size();
@@ -68,7 +68,7 @@ CFigure& CFigureManager::GetFigure(const wchar_t* pText)
 	return cDummy;
 }
 
-/*! İ’èXV
+/*! è¨­å®šæ›´æ–°
 */
 void CFigureManager::OnChangeSetting(void)
 {

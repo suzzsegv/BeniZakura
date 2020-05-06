@@ -1,8 +1,8 @@
 /*!	@file
-	@brief ƒAƒEƒgƒ‰ƒCƒ“‰ğÍ
+	@brief ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³è§£æ
 
 	@author genta
-	@date	2004.08.08 ì¬
+	@date	2004.08.08 ä½œæˆ
 */
 /*
 	Copyright (C) 1998-2001, Norio Nakatani
@@ -10,7 +10,7 @@
 	Copyright (C) 2001, genta
 	Copyright (C) 2002, frozen
 	Copyright (C) 2003, zenryaku
-	Copyright (C) 2005, genta, D.S.Koba, ‚¶‚ã‚¤‚¶
+	Copyright (C) 2005, genta, D.S.Koba, ã˜ã‚…ã†ã˜
 
 	This source code is designed for sakura editor.
 	Please contact the copyright holders to use this code for other purpose.
@@ -28,16 +28,16 @@
 
 
 
-/*! ƒ‹[ƒ‹ƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚İAƒ‹[ƒ‹\‘¢‘Ì‚Ì”z—ñ‚ğì¬‚·‚é
+/*! ãƒ«ãƒ¼ãƒ«ãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã¿ã€ãƒ«ãƒ¼ãƒ«æ§‹é€ ä½“ã®é…åˆ—ã‚’ä½œæˆã™ã‚‹
 
 	@date 2002.04.01 YAZAKI
-	@date 2002.11.03 Moca ˆø”nMaxCount‚ğ’Ç‰ÁBƒoƒbƒtƒ@’·ƒ`ƒFƒbƒN‚ğ‚·‚é‚æ‚¤‚É•ÏX
+	@date 2002.11.03 Moca å¼•æ•°nMaxCountã‚’è¿½åŠ ã€‚ãƒãƒƒãƒ•ã‚¡é•·ãƒã‚§ãƒƒã‚¯ã‚’ã™ã‚‹ã‚ˆã†ã«å¤‰æ›´
 */
 int CDocOutline::ReadRuleFile( const TCHAR* pszFilename, SOneRule* pcOneRule, int nMaxCount )
 {
 	long	i;
-	// 2003.06.23 Moca ‘Š‘ÎƒpƒX‚ÍÀsƒtƒ@ƒCƒ‹‚©‚ç‚ÌƒpƒX‚Æ‚µ‚ÄŠJ‚­
-	// 2007.05.19 ryoji ‘Š‘ÎƒpƒX‚Íİ’èƒtƒ@ƒCƒ‹‚©‚ç‚ÌƒpƒX‚ğ—Dæ
+	// 2003.06.23 Moca ç›¸å¯¾ãƒ‘ã‚¹ã¯å®Ÿè¡Œãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ã®ãƒ‘ã‚¹ã¨ã—ã¦é–‹ã
+	// 2007.05.19 ryoji ç›¸å¯¾ãƒ‘ã‚¹ã¯è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ã®ãƒ‘ã‚¹ã‚’å„ªå…ˆ
 	FILE*	pFile = _tfopen_absini( pszFilename, _T("r") );
 	if( NULL == pFile ){
 		return 0;
@@ -55,7 +55,7 @@ int CDocOutline::ReadRuleFile( const TCHAR* pszFilename, SOneRule* pcOneRule, in
 			*pszWork = L'\0';
 			pszWork += nDelimitLen;
 
-			/* Å‰‚Ìƒg[ƒNƒ“‚ğæ“¾‚µ‚Ü‚·B */
+			/* æœ€åˆã®ãƒˆãƒ¼ã‚¯ãƒ³ã‚’å–å¾—ã—ã¾ã™ã€‚ */
 			wchar_t* pszToken = wcstok( szLine, pszKeySeps );
 			while( NULL != pszToken ){
 //				nRes = wcsicmp( pszKey, pszToken );
@@ -77,50 +77,50 @@ int CDocOutline::ReadRuleFile( const TCHAR* pszFilename, SOneRule* pcOneRule, in
 			}
 		}
 		assert_warning( '\0' != szLine[LINEREADBUFSIZE-1] && '\n' != szLine[LINEREADBUFSIZE-1] );
-		// TODO:Œã‚ë‚Ìƒf[ƒ^“Ç‚İ”ò‚Î‚µ
+		// TODO:å¾Œã‚ã®ãƒ‡ãƒ¼ã‚¿èª­ã¿é£›ã°ã—
 	}
 	fclose( pFile );
 	return nCount;
 }
 
-/*! ƒ‹[ƒ‹ƒtƒ@ƒCƒ‹‚ğŒ³‚ÉAƒgƒsƒbƒNƒŠƒXƒg‚ğì¬
+/*! ãƒ«ãƒ¼ãƒ«ãƒ•ã‚¡ã‚¤ãƒ«ã‚’å…ƒã«ã€ãƒˆãƒ”ãƒƒã‚¯ãƒªã‚¹ãƒˆã‚’ä½œæˆ
 
 	@date 2002.04.01 YAZAKI
-	@date 2002.11.03 Moca ƒlƒXƒg‚Ì[‚³‚ªÅ‘å’l‚ğ’´‚¦‚é‚Æƒoƒbƒtƒ@ƒI[ƒo[ƒ‰ƒ“‚·‚é‚Ì‚ğC³
-		Å‘å’lˆÈã‚Í’Ç‰Á‚¹‚¸‚É–³‹‚·‚é
-	@date 2007.11.29 kobake SOneRule test[1024] ‚ÅƒXƒ^ƒbƒN‚ªˆì‚ê‚Ä‚¢‚½‚Ì‚ğC³
+	@date 2002.11.03 Moca ãƒã‚¹ãƒˆã®æ·±ã•ãŒæœ€å¤§å€¤ã‚’è¶…ãˆã‚‹ã¨ãƒãƒƒãƒ•ã‚¡ã‚ªãƒ¼ãƒãƒ¼ãƒ©ãƒ³ã™ã‚‹ã®ã‚’ä¿®æ­£
+		æœ€å¤§å€¤ä»¥ä¸Šã¯è¿½åŠ ã›ãšã«ç„¡è¦–ã™ã‚‹
+	@date 2007.11.29 kobake SOneRule test[1024] ã§ã‚¹ã‚¿ãƒƒã‚¯ãŒæº¢ã‚Œã¦ã„ãŸã®ã‚’ä¿®æ­£
 */
 void CDocOutline::MakeFuncList_RuleFile( CFuncInfoArr* pcFuncInfoArr )
 {
 	wchar_t*		pszText;
 
-	/* ƒ‹[ƒ‹ƒtƒ@ƒCƒ‹‚Ì“à—e‚ğƒoƒbƒtƒ@‚É“Ç‚İ‚Ş */
-	auto_array_ptr<SOneRule> test(new SOneRule[1024]);	// 1024ŒÂ‹–‰ÂB 2007.11.29 kobake ƒXƒ^ƒbƒNg‚¢‚·‚¬‚È‚Ì‚ÅAƒq[ƒv‚ÉŠm•Û‚·‚é‚æ‚¤‚ÉC³B
+	/* ãƒ«ãƒ¼ãƒ«ãƒ•ã‚¡ã‚¤ãƒ«ã®å†…å®¹ã‚’ãƒãƒƒãƒ•ã‚¡ã«èª­ã¿è¾¼ã‚€ */
+	auto_array_ptr<SOneRule> test(new SOneRule[1024]);	// 1024å€‹è¨±å¯ã€‚ 2007.11.29 kobake ã‚¹ã‚¿ãƒƒã‚¯ä½¿ã„ã™ããªã®ã§ã€ãƒ’ãƒ¼ãƒ—ã«ç¢ºä¿ã™ã‚‹ã‚ˆã†ã«ä¿®æ­£ã€‚
 	int nCount = ReadRuleFile(m_pcDocRef->m_cDocType.GetDocumentAttribute().m_szOutlineRuleFilename, test.get(), 1024 );
 	if ( nCount < 1 ){
 		return;
 	}
 
-	/*	ƒlƒXƒg‚Ì[‚³‚ÍA32ƒŒƒxƒ‹‚Ü‚ÅA‚Ğ‚Æ‚Â‚Ìƒwƒbƒ_‚ÍAÅ’·256•¶š‚Ü‚Å‹æ•Ê
-		i256•¶š‚Ü‚Å“¯‚¶‚¾‚Á‚½‚ç“¯‚¶‚à‚Ì‚Æ‚µ‚Äˆµ‚¢‚Ü‚·j
+	/*	ãƒã‚¹ãƒˆã®æ·±ã•ã¯ã€32ãƒ¬ãƒ™ãƒ«ã¾ã§ã€ã²ã¨ã¤ã®ãƒ˜ãƒƒãƒ€ã¯ã€æœ€é•·256æ–‡å­—ã¾ã§åŒºåˆ¥
+		ï¼ˆ256æ–‡å­—ã¾ã§åŒã˜ã ã£ãŸã‚‰åŒã˜ã‚‚ã®ã¨ã—ã¦æ‰±ã„ã¾ã™ï¼‰
 	*/
-	const int	nMaxStack = 32;	//	ƒlƒXƒg‚ÌÅ[
-	int			nDepth = 0;				//	‚¢‚Ü‚ÌƒAƒCƒeƒ€‚Ì[‚³‚ğ•\‚·”’lB
+	const int	nMaxStack = 32;	//	ãƒã‚¹ãƒˆã®æœ€æ·±
+	int			nDepth = 0;				//	ã„ã¾ã®ã‚¢ã‚¤ãƒ†ãƒ ã®æ·±ã•ã‚’è¡¨ã™æ•°å€¤ã€‚
 	wchar_t		pszStack[nMaxStack][256];
-	wchar_t		szTitle[256];			//	ˆê—Ìˆæ
+	wchar_t		szTitle[256];			//	ä¸€æ™‚é ˜åŸŸ
 	for( CLogicInt nLineCount = CLogicInt(0); nLineCount <  m_pcDocRef->m_cDocLineMgr.GetLineCount(); ++nLineCount )
 	{
-		//sæ“¾
+		//è¡Œå–å¾—
 		CLogicInt		nLineLen;
 		const wchar_t*	pLine = m_pcDocRef->m_cDocLineMgr.GetLine(nLineCount)->GetDocLineStrWithEOL(&nLineLen);
 		if( NULL == pLine ){
 			break;
 		}
 
-		//s“ª‚Ì‹ó”’”ò‚Î‚µ
+		//è¡Œé ­ã®ç©ºç™½é£›ã°ã—
 		int		i;
 		for( i = 0; i < nLineLen; ++i ){
-			if( pLine[i] == L' ' || pLine[i] == L'\t' || pLine[i] == L'@'){
+			if( pLine[i] == L' ' || pLine[i] == L'\t' || pLine[i] == L'ã€€'){
 				continue;
 			}
 			break;
@@ -129,7 +129,7 @@ void CDocOutline::MakeFuncList_RuleFile( CFuncInfoArr* pcFuncInfoArr )
 			continue;
 		}
 
-		//æ“ª•¶š‚ªŒ©o‚µ‹L†‚Ì‚¢‚¸‚ê‚©‚Å‚ ‚ê‚ÎAŸ‚Öi‚Ş
+		//å…ˆé ­æ–‡å­—ãŒè¦‹å‡ºã—è¨˜å·ã®ã„ãšã‚Œã‹ã§ã‚ã‚Œã°ã€æ¬¡ã¸é€²ã‚€
 		int		j;
 		for( j = 0; j < nCount; j++ ){
 			if ( 0 == wcsncmp( &pLine[i], test[j].szMatch, test[j].nLength ) ){
@@ -141,10 +141,10 @@ void CDocOutline::MakeFuncList_RuleFile( CFuncInfoArr* pcFuncInfoArr )
 			continue;
 		}
 
-		/*	ƒ‹[ƒ‹‚Éƒ}ƒbƒ`‚µ‚½s‚ÍAƒAƒEƒgƒ‰ƒCƒ“Œ‹‰Ê‚É•\¦‚·‚éB
+		/*	ãƒ«ãƒ¼ãƒ«ã«ãƒãƒƒãƒã—ãŸè¡Œã¯ã€ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³çµæœã«è¡¨ç¤ºã™ã‚‹ã€‚
 		*/
 
-		//s•¶š—ñ‚©‚ç‰üs‚ğæ‚èœ‚­ pLine -> pszText
+		//è¡Œæ–‡å­—åˆ—ã‹ã‚‰æ”¹è¡Œã‚’å–ã‚Šé™¤ã pLine -> pszText
 		pszText = new wchar_t[nLineLen + 1];
 		wmemcpy( pszText, &pLine[i], nLineLen );
 		pszText[nLineLen] = L'\0';
@@ -157,10 +157,10 @@ void CDocOutline::MakeFuncList_RuleFile( CFuncInfoArr* pcFuncInfoArr )
 		}
 
 		/*
-		  ƒJ[ƒ\ƒ‹ˆÊ’u•ÏŠ·
-		  •¨—ˆÊ’u(s“ª‚©‚ç‚ÌƒoƒCƒg”AÜ‚è•Ô‚µ–³‚µsˆÊ’u)
-		  ¨
-		  ƒŒƒCƒAƒEƒgˆÊ’u(s“ª‚©‚ç‚Ì•\¦Œ…ˆÊ’uAÜ‚è•Ô‚µ‚ ‚èsˆÊ’u)
+		  ã‚«ãƒ¼ã‚½ãƒ«ä½ç½®å¤‰æ›
+		  ç‰©ç†ä½ç½®(è¡Œé ­ã‹ã‚‰ã®ãƒã‚¤ãƒˆæ•°ã€æŠ˜ã‚Šè¿”ã—ç„¡ã—è¡Œä½ç½®)
+		  â†’
+		  ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆä½ç½®(è¡Œé ­ã‹ã‚‰ã®è¡¨ç¤ºæ¡ä½ç½®ã€æŠ˜ã‚Šè¿”ã—ã‚ã‚Šè¡Œä½ç½®)
 		*/
 		CLayoutPoint ptPos;
 		m_pcDocRef->m_cLayoutMgr.LogicToLayout(
@@ -168,7 +168,7 @@ void CDocOutline::MakeFuncList_RuleFile( CFuncInfoArr* pcFuncInfoArr )
 			&ptPos
 		);
 
-		/* nDepth‚ğŒvZ */
+		/* nDepthã‚’è¨ˆç®— */
 		int k;
 		BOOL bAppend;
 		bAppend = TRUE;
@@ -179,16 +179,16 @@ void CDocOutline::MakeFuncList_RuleFile( CFuncInfoArr* pcFuncInfoArr )
 			}
 		}
 		if ( k < nDepth ){
-			//	ƒ‹[ƒv“r’†‚Åbreak;‚µ‚Ä‚«‚½B¡‚Ü‚Å‚É“¯‚¶Œ©o‚µ‚ª‘¶İ‚µ‚Ä‚¢‚½B
-			//	‚Ì‚ÅA“¯‚¶ƒŒƒxƒ‹‚É‡‚í‚¹‚ÄAppendData.
+			//	ãƒ«ãƒ¼ãƒ—é€”ä¸­ã§break;ã—ã¦ããŸã€‚ï¼ä»Šã¾ã§ã«åŒã˜è¦‹å‡ºã—ãŒå­˜åœ¨ã—ã¦ã„ãŸã€‚
+			//	ã®ã§ã€åŒã˜ãƒ¬ãƒ™ãƒ«ã«åˆã‚ã›ã¦AppendData.
 			nDepth = k;
 		}
 		else if( nMaxStack> k ){
-			//	‚¢‚Ü‚Ü‚Å‚É“¯‚¶Œ©o‚µ‚ª‘¶İ‚µ‚È‚©‚Á‚½B
-			//	‚Ì‚ÅApszStack‚ÉƒRƒs[‚µ‚ÄAppendData.
+			//	ã„ã¾ã¾ã§ã«åŒã˜è¦‹å‡ºã—ãŒå­˜åœ¨ã—ãªã‹ã£ãŸã€‚
+			//	ã®ã§ã€pszStackã«ã‚³ãƒ”ãƒ¼ã—ã¦AppendData.
 			wcscpy(pszStack[nDepth], szTitle);
 		}else{
-			// 2002.11.03 Moca Å‘å’l‚ğ’´‚¦‚é‚Æƒoƒbƒtƒ@ƒI[ƒo[ƒ‰ƒ“‚·‚é‚©‚ç‹K§‚·‚é
+			// 2002.11.03 Moca æœ€å¤§å€¤ã‚’è¶…ãˆã‚‹ã¨ãƒãƒƒãƒ•ã‚¡ã‚ªãƒ¼ãƒãƒ¼ãƒ©ãƒ³ã™ã‚‹ã‹ã‚‰è¦åˆ¶ã™ã‚‹
 			// nDepth = nMaxStack;
 			bAppend = FALSE;
 		}
@@ -206,11 +206,11 @@ void CDocOutline::MakeFuncList_RuleFile( CFuncInfoArr* pcFuncInfoArr )
 
 
 // From Here 2001.12.03 hor
-/*! ƒuƒbƒNƒ}[ƒNƒŠƒXƒgì¬i–³—–î—Ij
+/*! ãƒ–ãƒƒã‚¯ãƒãƒ¼ã‚¯ãƒªã‚¹ãƒˆä½œæˆï¼ˆç„¡ç†çŸ¢ç†ï¼ï¼‰
 
-	@date 2002.01.19 aroka ‹ós‚ğƒ}[ƒN‘ÎÛ‚É‚·‚éƒtƒ‰ƒO bMarkUpBlankLineEnable ‚ğ“±“ü‚µ‚Ü‚µ‚½B
-	@date 2005.10.11 ryoji "‚@" ‚Ì‰E‚QƒoƒCƒg‚ª‘SŠp‹ó”’‚Æ”»’è‚³‚ê‚é–â‘è‚Ì‘Îˆ
-	@date 2005.11.03 genta •¶š—ñ’·C³D‰E’[‚ÌƒSƒ~‚ğœ‹
+	@date 2002.01.19 aroka ç©ºè¡Œã‚’ãƒãƒ¼ã‚¯å¯¾è±¡ã«ã™ã‚‹ãƒ•ãƒ©ã‚° bMarkUpBlankLineEnable ã‚’å°å…¥ã—ã¾ã—ãŸã€‚
+	@date 2005.10.11 ryoji "ï½@" ã®å³ï¼’ãƒã‚¤ãƒˆãŒå…¨è§’ç©ºç™½ã¨åˆ¤å®šã•ã‚Œã‚‹å•é¡Œã®å¯¾å‡¦
+	@date 2005.11.03 genta æ–‡å­—åˆ—é•·ä¿®æ­£ï¼å³ç«¯ã®ã‚´ãƒŸã‚’é™¤å»
 */
 void CDocOutline::MakeFuncList_BookMark( CFuncInfoArr* pcFuncInfoArr )
 {
@@ -219,7 +219,7 @@ void CDocOutline::MakeFuncList_BookMark( CFuncInfoArr* pcFuncInfoArr )
 	CLogicInt		nLineCount;
 	int		leftspace, pos_wo_space, k;
 	wchar_t*	pszText;
-	BOOL	bMarkUpBlankLineEnable = GetDllShareData().m_Common.m_sOutline.m_bMarkUpBlankLineEnable;	//! ‹ós‚ğƒ}[ƒN‘ÎÛ‚É‚·‚éƒtƒ‰ƒO 20020119 aroka
+	BOOL	bMarkUpBlankLineEnable = GetDllShareData().m_Common.m_sOutline.m_bMarkUpBlankLineEnable;	//! ç©ºè¡Œã‚’ãƒãƒ¼ã‚¯å¯¾è±¡ã«ã™ã‚‹ãƒ•ãƒ©ã‚° 20020119 aroka
 	int		nNewLineLen	= m_pcDocRef->m_cDocEditor.m_cNewLineCode.GetLen();
 	CLogicInt	nLineLast	= m_pcDocRef->m_cDocLineMgr.GetLineCount();
 	int		nCharChars;
@@ -249,7 +249,7 @@ void CDocOutline::MakeFuncList_BookMark( CFuncInfoArr* pcFuncInfoArr )
 				continue;
 			}
 		}// RTrim
-		// 2005.10.11 ryoji ‰E‚©‚ç‘k‚é‚Ì‚Å‚Í‚È‚­¶‚©‚ç’T‚·‚æ‚¤‚ÉC³i"‚@" ‚Ì‰E‚QƒoƒCƒg‚ª‘SŠp‹ó”’‚Æ”»’è‚³‚ê‚é–â‘è‚Ì‘Îˆj
+		// 2005.10.11 ryoji å³ã‹ã‚‰é¡ã‚‹ã®ã§ã¯ãªãå·¦ã‹ã‚‰æ¢ã™ã‚ˆã†ã«ä¿®æ­£ï¼ˆ"ï½@" ã®å³ï¼’ãƒã‚¤ãƒˆãŒå…¨è§’ç©ºç™½ã¨åˆ¤å®šã•ã‚Œã‚‹å•é¡Œã®å¯¾å‡¦ï¼‰
 		k = pos_wo_space = leftspace;
 		while( k < nLineLen ){
 			nCharChars = CNativeW::GetSizeOfChar( pLine, nLineLen, k );
@@ -264,7 +264,7 @@ void CDocOutline::MakeFuncList_BookMark( CFuncInfoArr* pcFuncInfoArr )
 			}
 			k += nCharChars;
 		}
-		//	Nov. 3, 2005 genta •¶š—ñ’·ŒvZ®‚ÌC³
+		//	Nov. 3, 2005 genta æ–‡å­—åˆ—é•·è¨ˆç®—å¼ã®ä¿®æ­£
 		{
 			int nLen = pos_wo_space - leftspace;
 			pszText = new wchar_t[nLen + 1];

@@ -1,8 +1,8 @@
 /*!	@file
-	@brief ƒCƒ“ƒ|[ƒgAƒGƒNƒXƒ|[ƒgƒ}ƒl[ƒWƒƒ
+	@brief ã‚¤ãƒ³ãƒãƒ¼ãƒˆã€ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆãƒãƒãƒ¼ã‚¸ãƒ£
 
 	@author Uchi
-	@date 2010/4/22 V‹Kì¬
+	@date 2010/4/22 æ–°è¦ä½œæˆ
 */
 /*
 	Copyright (C) 2010, Uchi, Moca
@@ -44,34 +44,34 @@ public:
 	virtual bool ImportAscertain( HINSTANCE, HWND, const wstring&, wstring& );
 	virtual bool Import( const wstring&, wstring& ) = 0;
 	virtual bool Export( const wstring&, wstring& ) = 0;
-	// ƒtƒ@ƒCƒ‹–¼‚Ì‰Šú’l‚ğİ’è
+	// ãƒ•ã‚¡ã‚¤ãƒ«åã®åˆæœŸå€¤ã‚’è¨­å®š
 	void SetBaseName( const wstring& );
-	// ƒtƒ‹ƒpƒX–¼‚ğæ“¾
+	// ãƒ•ãƒ«ãƒ‘ã‚¹åã‚’å–å¾—
 	inline wstring GetFullPath()
 	{
 		return to_wchar( GetDllShareData().m_sHistory.m_szIMPORTFOLDER ) + m_sOriginName;
 	}
-	// ƒtƒ‹ƒpƒX–¼‚ğæ“¾
+	// ãƒ•ãƒ«ãƒ‘ã‚¹åã‚’å–å¾—
 	inline wstring MakeFullPath( wstring sFileName )
 	{
 		return to_wchar( GetDllShareData().m_sHistory.m_szIMPORTFOLDER ) + sFileName;
 	}
-	// ƒtƒ@ƒCƒ‹–¼‚ğæ“¾
+	// ãƒ•ã‚¡ã‚¤ãƒ«åã‚’å–å¾—
 	inline wstring GetFileName()	{ return m_sOriginName; }
 
 protected:
-	// Import Folder‚Ìİ’è
+	// Import Folderã®è¨­å®š
 	inline void SetImportFolder( const TCHAR* szPath ) 
 	{
-		/* ƒtƒ@ƒCƒ‹‚Ìƒtƒ‹ƒpƒX‚ğƒtƒHƒ‹ƒ_‚Æƒtƒ@ƒCƒ‹–¼‚É•ªŠ„ */
-		/* [c:\work\test\aaa.txt] ¨ [c:\work\test] + [aaa.txt] */
+		/* ãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ•ãƒ«ãƒ‘ã‚¹ã‚’ãƒ•ã‚©ãƒ«ãƒ€ã¨ãƒ•ã‚¡ã‚¤ãƒ«åã«åˆ†å‰² */
+		/* [c:\work\test\aaa.txt] â†’ [c:\work\test] + [aaa.txt] */
 		::SplitPath_FolderAndFile( szPath, GetDllShareData().m_sHistory.m_szIMPORTFOLDER, NULL );
 		_tcscat( GetDllShareData().m_sHistory.m_szIMPORTFOLDER, _T("\\") );
 	}
 
-	// ƒfƒtƒHƒ‹ƒgŠg’£q‚Ìæ“¾(u*.txtvŒ`®)
+	// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆæ‹¡å¼µå­ã®å–å¾—(ã€Œ*.txtã€å½¢å¼)
 	virtual const TCHAR* GetDefaultExtension();
-	// ƒfƒtƒHƒ‹ƒgŠg’£q‚Ìæ“¾(utxtvŒ`®)
+	// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆæ‹¡å¼µå­ã®å–å¾—(ã€Œtxtã€å½¢å¼)
 	virtual const wchar_t* GetOriginExtension();
 
 protected:
@@ -81,7 +81,7 @@ protected:
 
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                          ƒ^ƒCƒv•Êİ’è                       //
+//                          ã‚¿ã‚¤ãƒ—åˆ¥è¨­å®š                       //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 class CImpExpType : public CImpExpManager
 {
@@ -92,7 +92,7 @@ public:
 		, m_Types( types )
 		, m_hwndList( hwndList )
 	{
-		/* ‹¤—Lƒf[ƒ^\‘¢‘Ì‚ÌƒAƒhƒŒƒX‚ğ•Ô‚· */
+		/* å…±æœ‰ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“ã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’è¿”ã™ */
 		m_pShareData = &GetDllShareData();
 	}
 
@@ -102,17 +102,17 @@ public:
 	bool Export( const wstring&, wstring& );
 
 public:
-	// ƒfƒtƒHƒ‹ƒgŠg’£q‚Ìæ“¾
+	// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆæ‹¡å¼µå­ã®å–å¾—
 	const TCHAR* GetDefaultExtension()	{ return _T("*.ini"); }
 	const wchar_t* GetOriginExtension()	{ return L"ini"; }
 
 private:
-	// ƒCƒ“ƒ^[ƒtƒF[ƒX—p
+	// ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹ç”¨
 	int 			m_nIdx;
 	STypeConfig&	m_Types;
 	HWND			m_hwndList;
 
-	// “à•”g—p
+	// å†…éƒ¨ä½¿ç”¨
 	DLLSHAREDATA*	m_pShareData;
 	int				m_nColorType;
 	wstring 		m_sColorFile;
@@ -121,7 +121,7 @@ private:
 
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                          ƒJƒ‰[                             //
+//                          ã‚«ãƒ©ãƒ¼                             //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 class CImpExpColors : public CImpExpManager
 {
@@ -137,7 +137,7 @@ public:
 	bool Export( const wstring&, wstring& );
 
 public:
-	// ƒfƒtƒHƒ‹ƒgŠg’£q‚Ìæ“¾
+	// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆæ‹¡å¼µå­ã®å–å¾—
 	const TCHAR* GetDefaultExtension()	{ return _T("*.col"); }
 	const wchar_t* GetOriginExtension()	{ return L"col"; }
 
@@ -147,7 +147,7 @@ private:
 
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                    ³‹K•\Œ»ƒL[ƒ[ƒh                       //
+//                    æ­£è¦è¡¨ç¾ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰                       //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 class CImpExpRegex : public CImpExpManager
 {
@@ -163,7 +163,7 @@ public:
 	bool Export( const wstring&, wstring& );
 
 public:
-	// ƒfƒtƒHƒ‹ƒgŠg’£q‚Ìæ“¾
+	// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆæ‹¡å¼µå­ã®å–å¾—
 	const TCHAR* GetDefaultExtension()	{ return _T("*.rkw"); }
 	const wchar_t* GetOriginExtension()	{ return L"rkw"; }
 
@@ -173,7 +173,7 @@ private:
 
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                     ƒL[ƒ[ƒhƒwƒ‹ƒv                        //
+//                     ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ãƒ˜ãƒ«ãƒ—                        //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 class CImpExpKeyHelp : public CImpExpManager
 {
@@ -189,7 +189,7 @@ public:
 	bool Export( const wstring&, wstring& );
 
 public:
-	// ƒfƒtƒHƒ‹ƒgŠg’£q‚Ìæ“¾
+	// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆæ‹¡å¼µå­ã®å–å¾—
 	const TCHAR* GetDefaultExtension()	{ return _T("*.txt"); }
 	const wchar_t* GetOriginExtension()	{ return L"txt"; }
 
@@ -199,7 +199,7 @@ private:
 
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                     ƒL[Š„‚è“–‚Ä                            //
+//                     ã‚­ãƒ¼å‰²ã‚Šå½“ã¦                            //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 class CImpExpKeybind : public CImpExpManager
 {
@@ -215,7 +215,7 @@ public:
 	bool Export( const wstring&, wstring& );
 
 public:
-	// ƒfƒtƒHƒ‹ƒgŠg’£q‚Ìæ“¾
+	// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆæ‹¡å¼µå­ã®å–å¾—
 	const TCHAR* GetDefaultExtension()	{ return _T("*.key"); }
 	const wchar_t* GetOriginExtension()	{ return L"key"; }
 
@@ -225,7 +225,7 @@ private:
 
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                     ƒJƒXƒ^ƒ€ƒƒjƒ…[                        //
+//                     ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼                        //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 class CImpExpCustMenu : public CImpExpManager
 {
@@ -241,7 +241,7 @@ public:
 	bool Export( const wstring&, wstring& );
 
 public:
-	// ƒfƒtƒHƒ‹ƒgŠg’£q‚Ìæ“¾
+	// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆæ‹¡å¼µå­ã®å–å¾—
 	const TCHAR* GetDefaultExtension()	{ return _T("*.mnu"); }
 	const wchar_t* GetOriginExtension()	{ return L"mnu"; }
 
@@ -251,7 +251,7 @@ private:
 
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                     ‹­’²ƒL[ƒ[ƒh                          //
+//                     å¼·èª¿ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰                          //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 class CImpExpKeyWord : public CImpExpManager
 {
@@ -269,7 +269,7 @@ public:
 	bool Export( const wstring&, wstring& );
 
 public:
-	// ƒfƒtƒHƒ‹ƒgŠg’£q‚Ìæ“¾
+	// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆæ‹¡å¼µå­ã®å–å¾—
 	const TCHAR* GetDefaultExtension()	{ return _T("*.kwd"); }
 	const wchar_t* GetOriginExtension()	{ return L"kwd"; }
 
@@ -281,7 +281,7 @@ private:
 
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                     ƒƒCƒ“ƒƒjƒ…[                          //
+//                     ãƒ¡ã‚¤ãƒ³ãƒ¡ãƒ‹ãƒ¥ãƒ¼                          //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 class CImpExpMainMenu : public CImpExpManager
 {
@@ -297,7 +297,7 @@ public:
 	bool Export( const wstring&, wstring& );
 
 public:
-	// ƒfƒtƒHƒ‹ƒgŠg’£q‚Ìæ“¾
+	// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆæ‹¡å¼µå­ã®å–å¾—
 	const TCHAR* GetDefaultExtension()	{ return _T("*.ini"); }
 	const wchar_t* GetOriginExtension()	{ return L"ini"; }
 

@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Visual C++ ‚Å¶¬‚³‚ê‚½ƒCƒ“ƒNƒ‹[ƒh ƒtƒ@ƒCƒ‹B
-// sakura_rc.rc ‚Åg—p
+// Microsoft Visual C++ ã§ç”Ÿæˆã•ã‚ŒãŸã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰ ãƒ•ã‚¡ã‚¤ãƒ«ã€‚
+// sakura_rc.rc ã§ä½¿ç”¨
 //
 #define ID_RC_TYPE_INI                  100
 #define IDR_MENU1                       102

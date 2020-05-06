@@ -1,5 +1,5 @@
 /*!	@file
-	@brief ƒI[ƒvƒ“ƒ_ƒCƒAƒƒO—pƒtƒ@ƒCƒ‹Šg’£qŠÇ—
+	@brief ã‚ªãƒ¼ãƒ—ãƒ³ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ç”¨ãƒ•ã‚¡ã‚¤ãƒ«æ‹¡å¼µå­ç®¡ç†
 
 	@author MIK
 	@date 2003.5.12
@@ -40,9 +40,9 @@ CFileExt::CFileExt()
 	m_vstrFilter.resize( 1 );
 	m_vstrFilter[0] = _T('\0');
 
-//	//ƒeƒLƒXƒgƒGƒfƒBƒ^‚Æ‚µ‚ÄAŠù’è‚ÅƒŠƒXƒg‚ÉÚ‚Á‚Ä‚Ù‚µ‚¢Šg’£q
-//	AppendExt( "‚·‚×‚Ä‚Ìƒtƒ@ƒCƒ‹", "*" );
-//	AppendExt( "ƒeƒLƒXƒgƒtƒ@ƒCƒ‹", "txt" );
+//	//ãƒ†ã‚­ã‚¹ãƒˆã‚¨ãƒ‡ã‚£ã‚¿ã¨ã—ã¦ã€æ—¢å®šã§ãƒªã‚¹ãƒˆã«è¼‰ã£ã¦ã»ã—ã„æ‹¡å¼µå­
+//	AppendExt( "ã™ã¹ã¦ã®ãƒ•ã‚¡ã‚¤ãƒ«", "*" );
+//	AppendExt( "ãƒ†ã‚­ã‚¹ãƒˆãƒ•ã‚¡ã‚¤ãƒ«", "txt" );
 }
 
 CFileExt::~CFileExt()
@@ -105,7 +105,7 @@ const TCHAR *CFileExt::GetExtFilter( void )
 	int		i;
 	std::tstring work;
 
-	/* Šg’£qƒtƒBƒ‹ƒ^‚Ìì¬ */
+	/* æ‹¡å¼µå­ãƒ•ã‚£ãƒ«ã‚¿ã®ä½œæˆ */
 	m_vstrFilter.resize(0);
 
 	for( i = 0; i < m_nCount; i++ )
@@ -131,16 +131,16 @@ const TCHAR *CFileExt::GetExtFilter( void )
 	return &m_vstrFilter[0];
 }
 
-/*! ƒ^ƒCƒv•Êİ’è‚ÌŠg’£qƒŠƒXƒg‚ğƒ_ƒCƒAƒƒO—pƒŠƒXƒg‚É•ÏŠ·‚·‚é
-	@param pszSrcExt [in]  Šg’£qƒŠƒXƒg —áu.c .cpp;.hv
-	@param pszDstExt [out] Šg’£qƒŠƒXƒg —áu*.c;*.cpp;*.hv
+/*! ã‚¿ã‚¤ãƒ—åˆ¥è¨­å®šã®æ‹¡å¼µå­ãƒªã‚¹ãƒˆã‚’ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ç”¨ãƒªã‚¹ãƒˆã«å¤‰æ›ã™ã‚‹
+	@param pszSrcExt [in]  æ‹¡å¼µå­ãƒªã‚¹ãƒˆ ä¾‹ã€Œ.c .cpp;.hã€
+	@param pszDstExt [out] æ‹¡å¼µå­ãƒªã‚¹ãƒˆ ä¾‹ã€Œ*.c;*.cpp;*.hã€
 */
 bool CFileExt::ConvertTypesExtToDlgExt( const TCHAR *pszSrcExt, TCHAR *pszDstExt )
 {
 	TCHAR	*token;
 	TCHAR	*p;
 
-	//	2003.08.14 MIK NULL‚¶‚á‚È‚­‚Äfalse
+	//	2003.08.14 MIK NULLã˜ã‚ƒãªãã¦false
 	if( NULL == pszSrcExt ) return false;
 	if( NULL == pszDstExt ) return false;
 
@@ -157,7 +157,7 @@ bool CFileExt::ConvertTypesExtToDlgExt( const TCHAR *pszSrcExt, TCHAR *pszDstExt
 		token = _tcstok( NULL, _T(" ;,") );
 		if( token ) _tcscat( pszDstExt, _T(";") );
 	}
-	free( p );	// 2003.05.20 MIK ƒƒ‚ƒŠ‰ğ•ú˜R‚ê
+	free( p );	// 2003.05.20 MIK ãƒ¡ãƒ¢ãƒªè§£æ”¾æ¼ã‚Œ
 	return true;
 }
 

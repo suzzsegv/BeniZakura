@@ -1,4 +1,4 @@
-//	‚±‚Ìs‚Í•¶š‰»‚¯‘Îô—p‚Å‚·DÁ‚³‚È‚¢‚Å‚­‚¾‚³‚¢
+//	ã“ã®è¡Œã¯æ–‡å­—åŒ–ã‘å¯¾ç­–ç”¨ã§ã™ï¼æ¶ˆã•ãªã„ã§ãã ã•ã„
 
 #include "StdAfx.h"
 #include "CUnicode.h"
@@ -8,13 +8,13 @@
 
 EConvertResult CUnicode::_UnicodeToUnicode_in( CMemory* pMem, const bool bBigEndian )
 {
-	// ƒ\[ƒXæ“¾
+	// ã‚½ãƒ¼ã‚¹å–å¾—
 	int nSrcLen;
 	unsigned char* pSrc = reinterpret_cast<unsigned char*>( pMem->GetRawPtr(&nSrcLen) );
 
 	EConvertResult res = RESULT_COMPLETE;
 	if( nSrcLen % 2 == 1 ){
-		// •s‘«•ª‚ÌÅI1ƒoƒCƒg‚Æ‚µ‚Ä 0x00 ‚ğ•â‚¤B
+		// ä¸è¶³åˆ†ã®æœ€çµ‚1ãƒã‚¤ãƒˆã¨ã—ã¦ 0x00 ã‚’è£œã†ã€‚
 		pMem->AllocBuffer( nSrcLen + 1 );
 		if( pMem->GetRawPtr() != NULL ){
 			pSrc[nSrcLen] = 0;
@@ -36,7 +36,7 @@ EConvertResult CUnicode::_UnicodeToUnicode_out( CMemory* pMem, const bool bBigEn
 		pMem->SwapHLByte();   // Unicode -> UnicodeBe
 	}
 
-	return RESULT_COMPLETE;   // ‰½‚à‚µ‚È‚¢
+	return RESULT_COMPLETE;   // ä½•ã‚‚ã—ãªã„
 }
 
 

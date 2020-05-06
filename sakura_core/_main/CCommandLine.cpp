@@ -1,13 +1,13 @@
 /*!	@file
-	@brief ƒRƒ}ƒ“ƒhƒ‰ƒCƒ“ƒp[ƒT
+	@brief ã‚³ãƒãƒ³ãƒ‰ãƒ©ã‚¤ãƒ³ãƒ‘ãƒ¼ã‚µ
 
 	@author aroka
-	@date	2002/01/08 ì¬
+	@date	2002/01/08 ä½œæˆ
 */
 /*
 	Copyright (C) 1998-2001, Norio Nakatani
 	Copyright (C) 2000-2001, genta
-	Copyright (C) 2002, aroka CControlTray‚æ‚è•ª—£
+	Copyright (C) 2002, aroka CControlTrayã‚ˆã‚Šåˆ†é›¢
 	Copyright (C) 2002, genta, Moca
 	Copyright (C) 2005, D.S.Koba, genta, susu
 	Copyright (C) 2006, ryoji
@@ -25,14 +25,14 @@
 #include <io.h>
 #include <string.h>
 #include "debug/CRunningTimer.h"
-// ŠÖ”‚ğƒ}ƒNƒÄ’è‹`‚·‚é‚Ì‚Å my_icmp.h ‚ÍÅŒã‚É’u‚­	// 2006.10.25 ryoji
+// é–¢æ•°ã‚’ãƒã‚¯ãƒ­å†å®šç¾©ã™ã‚‹ã®ã§ my_icmp.h ã¯æœ€å¾Œã«ç½®ã	// 2006.10.25 ryoji
 #include "charset/charcode.h"  // 2006.06.28 rastiv
 #include "io/CTextStream.h"
 #include "util/shell.h"
 #include "util/file.h"
 #include "env/CSakuraEnvironment.h"
 
-/* ƒRƒ}ƒ“ƒhƒ‰ƒCƒ“ƒIƒvƒVƒ‡ƒ“—p’è” */
+/* ã‚³ãƒãƒ³ãƒ‰ãƒ©ã‚¤ãƒ³ã‚ªãƒ—ã‚·ãƒ§ãƒ³ç”¨å®šæ•° */
 #define CMDLINEOPT_R			1002
 #define CMDLINEOPT_NOWIN		1003
 #define CMDLINEOPT_WRITEQUIT	1004
@@ -61,40 +61,40 @@
 #define CMDLINEOPT_GROUP		500
 
 /*!
-	ƒRƒ}ƒ“ƒhƒ‰ƒCƒ“‚Ìƒ`ƒFƒbƒN‚ğs‚Á‚ÄAƒIƒvƒVƒ‡ƒ“”Ô†‚Æ
-	ˆø”‚ª‚ ‚éê‡‚Í‚»‚Ìæ“ªƒAƒhƒŒƒX‚ğ•Ô‚·B
-	CCommandLine::ParseCommandLine()‚Åg‚í‚ê‚éB
+	ã‚³ãƒãƒ³ãƒ‰ãƒ©ã‚¤ãƒ³ã®ãƒã‚§ãƒƒã‚¯ã‚’è¡Œã£ã¦ã€ã‚ªãƒ—ã‚·ãƒ§ãƒ³ç•ªå·ã¨
+	å¼•æ•°ãŒã‚ã‚‹å ´åˆã¯ãã®å…ˆé ­ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’è¿”ã™ã€‚
+	CCommandLine::ParseCommandLine()ã§ä½¿ã‚ã‚Œã‚‹ã€‚
 
-	@return ƒIƒvƒVƒ‡ƒ“‚Ì”Ô†B‚Ç‚ê‚É‚àŠY“–‚µ‚È‚¢‚Æ‚«‚Í0‚ğ•Ô‚·B
+	@return ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®ç•ªå·ã€‚ã©ã‚Œã«ã‚‚è©²å½“ã—ãªã„ã¨ãã¯0ã‚’è¿”ã™ã€‚
 
 	@author genta
 	@date Apr. 6, 2001
-	@date 2006.10.25 ryoji ƒIƒvƒVƒ‡ƒ“•¶š—ñ‚Ì‘å•¶š¬•¶š‚ğ‹æ•Ê‚µ‚È‚¢
+	@date 2006.10.25 ryoji ã‚ªãƒ—ã‚·ãƒ§ãƒ³æ–‡å­—åˆ—ã®å¤§æ–‡å­—å°æ–‡å­—ã‚’åŒºåˆ¥ã—ãªã„
 */
 int CCommandLine::CheckCommandLine(
-	LPTSTR	str,		//!< [in] ŒŸØ‚·‚é•¶š—ñiæ“ª‚Ì-‚ÍŠÜ‚Ü‚È‚¢j
-	TCHAR** arg,		//!< [out] ˆø”‚ª‚ ‚éê‡‚Í‚»‚Ìæ“ª‚Ö‚Ìƒ|ƒCƒ“ƒ^
-	int*	arglen		//!< [out] ˆø”‚Ì’·‚³
+	LPTSTR	str,		//!< [in] æ¤œè¨¼ã™ã‚‹æ–‡å­—åˆ—ï¼ˆå…ˆé ­ã®-ã¯å«ã¾ãªã„ï¼‰
+	TCHAR** arg,		//!< [out] å¼•æ•°ãŒã‚ã‚‹å ´åˆã¯ãã®å…ˆé ­ã¸ã®ãƒã‚¤ãƒ³ã‚¿
+	int*	arglen		//!< [out] å¼•æ•°ã®é•·ã•
 )
 {
 	/*!
-		ƒRƒ}ƒ“ƒhƒ‰ƒCƒ“ƒIƒvƒVƒ‡ƒ“‰ğÍ—p\‘¢‘Ì”z—ñ
+		ã‚³ãƒãƒ³ãƒ‰ãƒ©ã‚¤ãƒ³ã‚ªãƒ—ã‚·ãƒ§ãƒ³è§£æç”¨æ§‹é€ ä½“é…åˆ—
 	*/
 	struct _CmdLineOpt {
-		LPCTSTR opt;	//!< ƒIƒvƒVƒ‡ƒ“•¶š—ñ
-		int len;		//!< ƒIƒvƒVƒ‡ƒ“‚Ì•¶š—ñ’·iŒvZ‚ğÈ‚­‚½‚ßj
-		int value;		//!< •ÏŠ·Œã‚Ì’l
+		LPCTSTR opt;	//!< ã‚ªãƒ—ã‚·ãƒ§ãƒ³æ–‡å­—åˆ—
+		int len;		//!< ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®æ–‡å­—åˆ—é•·ï¼ˆè¨ˆç®—ã‚’çœããŸã‚ï¼‰
+		int value;		//!< å¤‰æ›å¾Œã®å€¤
 	};
 
 	/*!
-		ƒRƒ}ƒ“ƒhƒ‰ƒCƒ“ƒIƒvƒVƒ‡ƒ“
-		Œã‚ë‚Éˆø”‚ğæ‚ç‚È‚¢‚à‚Ì
+		ã‚³ãƒãƒ³ãƒ‰ãƒ©ã‚¤ãƒ³ã‚ªãƒ—ã‚·ãƒ§ãƒ³
+		å¾Œã‚ã«å¼•æ•°ã‚’å–ã‚‰ãªã„ã‚‚ã®
 	*/
 	static const _CmdLineOpt _COptWoA[] = {
 		{_T("R"),			1,	CMDLINEOPT_R},
 		{_T("-"),			1,	CMDLINEOPT_NOMOREOPT},
 		{_T("NOWIN"),		5,	CMDLINEOPT_NOWIN},
-		{_T("WQ"),			2,	CMDLINEOPT_WRITEQUIT},	// 2007.05.19 ryoji sakuext—p‚É’Ç‰Á
+		{_T("WQ"),			2,	CMDLINEOPT_WRITEQUIT},	// 2007.05.19 ryoji sakuextç”¨ã«è¿½åŠ 
 		{_T("GREPMODE"),	8,	CMDLINEOPT_GREPMODE},
 		{_T("GREPDLG"),		7,	CMDLINEOPT_GREPDLG},
 		{_T("DEBUGMODE"),	9,	CMDLINEOPT_DEBUGMODE},
@@ -102,8 +102,8 @@ int CCommandLine::CheckCommandLine(
 	};
 
 	/*!
-		ƒRƒ}ƒ“ƒhƒ‰ƒCƒ“ƒIƒvƒVƒ‡ƒ“
-		Œã‚ë‚Éˆø”‚ğæ‚é‚à‚Ì
+		ã‚³ãƒãƒ³ãƒ‰ãƒ©ã‚¤ãƒ³ã‚ªãƒ—ã‚·ãƒ§ãƒ³
+		å¾Œã‚ã«å¼•æ•°ã‚’å–ã‚‹ã‚‚ã®
 	*/
 	static const _CmdLineOpt _COptWithA[] = {
 		{_T("@"),		1,			CMDLINEOPT_AT},
@@ -115,13 +115,13 @@ int CCommandLine::CheckCommandLine(
 		{_T("SY"),		2,			CMDLINEOPT_SY},
 		{_T("WX"),		2,			CMDLINEOPT_WX},
 		{_T("WY"),		2,			CMDLINEOPT_WY},
-		{_T("CODE"),	4,			CMDLINEOPT_CODE},	// 2002/09/20 Moca _COptWoA‚©‚çˆÚ“®
-		{_T("TYPE"),	4,			CMDLINEOPT_TYPE},	//!< ƒ^ƒCƒv•Êİ’è Mar. 7, 2002 genta
+		{_T("CODE"),	4,			CMDLINEOPT_CODE},	// 2002/09/20 Moca _COptWoAã‹ã‚‰ç§»å‹•
+		{_T("TYPE"),	4,			CMDLINEOPT_TYPE},	//!< ã‚¿ã‚¤ãƒ—åˆ¥è¨­å®š Mar. 7, 2002 genta
 		{_T("GKEY"),	4,			CMDLINEOPT_GKEY},
 		{_T("GFILE"),	5,			CMDLINEOPT_GFILE},
 		{_T("GFOLDER"),	7,			CMDLINEOPT_GFOLDER},
 		{_T("GOPT"),	4,			CMDLINEOPT_GOPT},
-		{_T("GCODE"),	5,			CMDLINEOPT_GCODE},	// 2002/09/21 Moca ’Ç‰Á
+		{_T("GCODE"),	5,			CMDLINEOPT_GCODE},	// 2002/09/21 Moca è¿½åŠ 
 		{_T("GROUP"),	5,			CMDLINEOPT_GROUP},	// 2007.06.26 ryoji
 		{_T("M"),		1,			CMDLINEOPT_M},		// 2009.06.14 syat
 		{_T("MTYPE"),	5,			CMDLINEOPT_MTYPE},	// 2009.06.14 syat
@@ -131,64 +131,64 @@ int CCommandLine::CheckCommandLine(
 	const _CmdLineOpt *ptr;
 	int len = lstrlen( str );
 
-	//	ˆø”‚ª‚ ‚éê‡‚ğæ‚ÉŠm”F
+	//	å¼•æ•°ãŒã‚ã‚‹å ´åˆã‚’å…ˆã«ç¢ºèª
 	for( ptr = _COptWithA; ptr->opt != NULL; ptr++ )
 	{
-		if( len >= ptr->len &&	//	’·‚³‚ª‘«‚è‚Ä‚¢‚é‚©
-			( str[ptr->len] == '=' || str[ptr->len] == ':' ) &&	//	ƒIƒvƒVƒ‡ƒ“•”•ª‚Ì’·‚³ƒ`ƒFƒbƒN
-			auto_memicmp( str, ptr->opt, ptr->len ) == 0 )	//	•¶š—ñ‚Ì”äŠr	// 2006.10.25 ryoji memcmp() -> _memicmp()
+		if( len >= ptr->len &&	//	é•·ã•ãŒè¶³ã‚Šã¦ã„ã‚‹ã‹
+			( str[ptr->len] == '=' || str[ptr->len] == ':' ) &&	//	ã‚ªãƒ—ã‚·ãƒ§ãƒ³éƒ¨åˆ†ã®é•·ã•ãƒã‚§ãƒƒã‚¯
+			auto_memicmp( str, ptr->opt, ptr->len ) == 0 )	//	æ–‡å­—åˆ—ã®æ¯”è¼ƒ	// 2006.10.25 ryoji memcmp() -> _memicmp()
 		{
-			*arg = str + ptr->len + 1;				// ˆø”ŠJnˆÊ’u
+			*arg = str + ptr->len + 1;				// å¼•æ•°é–‹å§‹ä½ç½®
 			*arglen = len - ptr->len - 1;
-			if (**arg == '"') {						// ˆø”æ“ª‚É"‚ª‚ ‚ê‚Îíœ
+			if (**arg == '"') {						// å¼•æ•°å…ˆé ­ã«"ãŒã‚ã‚Œã°å‰Šé™¤
 				(*arg)++;
 				(*arglen)--;
-				if (*arglen > 0 && (*arg)[(*arglen)-1] == '"') {	// ˆø”––”ö‚É"‚ª‚ ‚ê‚Îíœ
+				if (*arglen > 0 && (*arg)[(*arglen)-1] == '"') {	// å¼•æ•°æœ«å°¾ã«"ãŒã‚ã‚Œã°å‰Šé™¤
 					(*arg)[(*arglen)-1] = '\0';
 					(*arglen)--;
 				}
 			}
 			if (*arglen <= 0) {
-				return 0;		//2010.06.12 syat ’l‚È‚µ‚ÍƒIƒvƒVƒ‡ƒ“‚Æ‚µ‚Ä”F‚ß‚È‚¢
+				return 0;		//2010.06.12 syat å€¤ãªã—ã¯ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã¨ã—ã¦èªã‚ãªã„
 			}
 			return ptr->value;
 		}
 	}
 
-	//	ˆø”‚ª‚È‚¢ê‡
+	//	å¼•æ•°ãŒãªã„å ´åˆ
 	for( ptr = _COptWoA; ptr->opt != NULL; ptr++ )
 	{
-		if( len == ptr->len &&	//	’·‚³ƒ`ƒFƒbƒN
-			auto_memicmp( str, ptr->opt, ptr->len ) == 0 )	//	•¶š—ñ‚Ì”äŠr
+		if( len == ptr->len &&	//	é•·ã•ãƒã‚§ãƒƒã‚¯
+			auto_memicmp( str, ptr->opt, ptr->len ) == 0 )	//	æ–‡å­—åˆ—ã®æ¯”è¼ƒ
 		{
 			*arglen = 0;
 			return ptr->value;
 		}
 	}
-	return 0;	//	ŠY“––³‚µ
+	return 0;	//	è©²å½“ç„¡ã—
 }
 
-/*! ƒRƒ}ƒ“ƒhƒ‰ƒCƒ“‚Ì‰ğÍ
+/*! ã‚³ãƒãƒ³ãƒ‰ãƒ©ã‚¤ãƒ³ã®è§£æ
 
-	WinMain()‚©‚çŒÄ‚Ño‚³‚ê‚éB
+	WinMain()ã‹ã‚‰å‘¼ã³å‡ºã•ã‚Œã‚‹ã€‚
 	
-	@date 2005-08-24 D.S.Koba ŠÖ”‚Ìstatic‚ğ‚â‚ßCƒƒ“ƒo•Ï”‚ğˆø”‚Å“n‚·‚Ì‚ğ‚â‚ß‚é
-	@date 2007.09.09 genta Visual Studio‚ªŠeX‚Ìˆø”‚ğ‚¨ß‰î‚É‚à""‚ÅˆÍ‚Ş–â‘è‚É‘Î‰D
-		ƒIƒvƒVƒ‡ƒ“‚ª""‚ÅˆÍ‚Ü‚ê‚½ê‡‚É‘Î‰‚·‚éD
-		‚»‚¤‚·‚é‚Æ-‚Ån‚Ü‚éƒtƒ@ƒCƒ‹–¼‚ğw’è‚Å‚«‚È‚­‚È‚é‚Ì‚ÅC
-		‚»‚êˆÈ~ƒIƒvƒVƒ‡ƒ“‰ğÍ‚ğ‚µ‚È‚¢‚Æ‚¢‚¤ "--" ƒIƒvƒVƒ‡ƒ“‚ğVİ‚·‚éD
-	@date 2012.02.25 novice •¡”ƒtƒ@ƒCƒ‹“Ç‚İ‚İ
+	@date 2005-08-24 D.S.Koba é–¢æ•°ã®staticã‚’ã‚„ã‚ï¼Œãƒ¡ãƒ³ãƒå¤‰æ•°ã‚’å¼•æ•°ã§æ¸¡ã™ã®ã‚’ã‚„ã‚ã‚‹
+	@date 2007.09.09 genta Visual StudioãŒå„ã€…ã®å¼•æ•°ã‚’ãŠç¯€ä»‹ã«ã‚‚""ã§å›²ã‚€å•é¡Œã«å¯¾å¿œï¼
+		ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãŒ""ã§å›²ã¾ã‚ŒãŸå ´åˆã«å¯¾å¿œã™ã‚‹ï¼
+		ãã†ã™ã‚‹ã¨-ã§å§‹ã¾ã‚‹ãƒ•ã‚¡ã‚¤ãƒ«åã‚’æŒ‡å®šã§ããªããªã‚‹ã®ã§ï¼Œ
+		ãã‚Œä»¥é™ã‚ªãƒ—ã‚·ãƒ§ãƒ³è§£æã‚’ã—ãªã„ã¨ã„ã† "--" ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚’æ–°è¨­ã™ã‚‹ï¼
+	@date 2012.02.25 novice è¤‡æ•°ãƒ•ã‚¡ã‚¤ãƒ«èª­ã¿è¾¼ã¿
 
 	@note
-	‚±‚ê‚ªŒÄ‚Ño‚³‚ê‚½“_‚Å‚Í‹¤—Lƒƒ‚ƒŠ‚Ì‰Šú‰»‚ªŠ®—¹‚µ‚Ä‚¢‚È‚¢‚½‚ßC
-	‹¤—Lƒƒ‚ƒŠ‚ÉƒAƒNƒZƒX‚µ‚Ä‚Í‚È‚ç‚È‚¢D
+	ã“ã‚ŒãŒå‘¼ã³å‡ºã•ã‚ŒãŸæ™‚ç‚¹ã§ã¯å…±æœ‰ãƒ¡ãƒ¢ãƒªã®åˆæœŸåŒ–ãŒå®Œäº†ã—ã¦ã„ãªã„ãŸã‚ï¼Œ
+	å…±æœ‰ãƒ¡ãƒ¢ãƒªã«ã‚¢ã‚¯ã‚»ã‚¹ã—ã¦ã¯ãªã‚‰ãªã„ï¼
 */
 void CCommandLine::ParseCommandLine( LPCTSTR pszCmdLineSrc, bool bResponse )
 {
 	MY_RUNNINGTIMER( cRunningTimer, "CCommandLine::Parse" );
 
 	//	May 30, 2000 genta
-	//	Àsƒtƒ@ƒCƒ‹–¼‚ğ‚à‚Æ‚ÉŠ¿šƒR[ƒh‚ğŒÅ’è‚·‚éD
+	//	å®Ÿè¡Œãƒ•ã‚¡ã‚¤ãƒ«åã‚’ã‚‚ã¨ã«æ¼¢å­—ã‚³ãƒ¼ãƒ‰ã‚’å›ºå®šã™ã‚‹ï¼
 	{
 		TCHAR	exename[512];
 		::GetModuleFileName( NULL, exename, _countof(exename) );
@@ -207,15 +207,15 @@ void CCommandLine::ParseCommandLine( LPCTSTR pszCmdLineSrc, bool bResponse )
 
 
 	TCHAR	szPath[_MAX_PATH];
-	bool	bFind = false;				// ƒtƒ@ƒCƒ‹–¼”­Œ©ƒtƒ‰ƒO
-	bool	bParseOptDisabled = false;	// 2007.09.09 genta ƒIƒvƒVƒ‡ƒ“‰ğÍ‚ğs‚í‚È‚¸Cƒtƒ@ƒCƒ‹–¼‚Æ‚µ‚Äˆµ‚¤
+	bool	bFind = false;				// ãƒ•ã‚¡ã‚¤ãƒ«åç™ºè¦‹ãƒ•ãƒ©ã‚°
+	bool	bParseOptDisabled = false;	// 2007.09.09 genta ã‚ªãƒ—ã‚·ãƒ§ãƒ³è§£æã‚’è¡Œã‚ãªãšï¼Œãƒ•ã‚¡ã‚¤ãƒ«åã¨ã—ã¦æ‰±ã†
 	int		nPos;
 	int		i = 0;
 	if( pszCmdLineSrc[0] != _T('-') ){
 		for( i = 0; i < _countof( szPath ); ++i ){
 			if( pszCmdLineSrc[i] == _T(' ') || pszCmdLineSrc[i] == _T('\0') ){
-				/* ƒtƒ@ƒCƒ‹‚Ì‘¶İ‚ğƒ`ƒFƒbƒN */
-				szPath[i] = _T('\0');	// I’[•¶š
+				/* ãƒ•ã‚¡ã‚¤ãƒ«ã®å­˜åœ¨ã‚’ãƒã‚§ãƒƒã‚¯ */
+				szPath[i] = _T('\0');	// çµ‚ç«¯æ–‡å­—
 				if( fexist(szPath) ){
 					bFind = true;
 					break;
@@ -229,7 +229,7 @@ void CCommandLine::ParseCommandLine( LPCTSTR pszCmdLineSrc, bool bResponse )
 	}
 	if( bFind ){
 		CSakuraEnvironment::ResolvePath(szPath);
-		_tcscpy( m_fi.m_szPath, szPath );	/* ƒtƒ@ƒCƒ‹–¼ */
+		_tcscpy( m_fi.m_szPath, szPath );	/* ãƒ•ã‚¡ã‚¤ãƒ«å */
 		nPos = i + 1;
 	}else{
 		m_fi.m_szPath[0] = _T('\0');
@@ -245,38 +245,38 @@ void CCommandLine::ParseCommandLine( LPCTSTR pszCmdLineSrc, bool bResponse )
 	{
 		DEBUG_TRACE( _T("OPT=[%ts]\n"), pszToken );
 
-		//	2007.09.09 genta ƒIƒvƒVƒ‡ƒ“”»’èƒ‹[ƒ‹•ÏXDƒIƒvƒVƒ‡ƒ“‰ğÍ’â~‚Æ""‚ÅˆÍ‚Ü‚ê‚½ƒIƒvƒVƒ‡ƒ“‚ğl—¶
+		//	2007.09.09 genta ã‚ªãƒ—ã‚·ãƒ§ãƒ³åˆ¤å®šãƒ«ãƒ¼ãƒ«å¤‰æ›´ï¼ã‚ªãƒ—ã‚·ãƒ§ãƒ³è§£æåœæ­¢ã¨""ã§å›²ã¾ã‚ŒãŸã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚’è€ƒæ…®
 		if( ( bParseOptDisabled ||
 			! (pszToken[0] == '-' || pszToken[0] == '"' && pszToken[1] == '-' ) )){
 
 			if( pszToken[0] == _T('\"') ){
 				CNativeT cmWork;
 				//	Nov. 3, 2005 genta
-				//	––”ö‚ÌƒNƒH[ƒe[ƒVƒ‡ƒ“‚ª–³‚¢ê‡‚ğl—¶‚µ‚ÄC
-				//	ÅŒã‚ªƒ_ƒuƒ‹ƒNƒH[ƒg‚Ìê‡‚Ì‚İæ‚èœ‚­
-				//	ƒtƒ@ƒCƒ‹–¼‚É‚Íg‚¦‚È‚¢•¶š‚È‚Ì‚Åƒtƒ@ƒCƒ‹–¼‚ÉŠÜ‚Ü‚ê‚Ä‚¢‚éê‡‚Íl—¶•s—v
-				//	‚Ü‚½SHIFT-JIS‚Ì2ƒoƒCƒg–Ú‚Ìl—¶‚à•s—v
+				//	æœ«å°¾ã®ã‚¯ã‚©ãƒ¼ãƒ†ãƒ¼ã‚·ãƒ§ãƒ³ãŒç„¡ã„å ´åˆã‚’è€ƒæ…®ã—ã¦ï¼Œ
+				//	æœ€å¾ŒãŒãƒ€ãƒ–ãƒ«ã‚¯ã‚©ãƒ¼ãƒˆã®å ´åˆã®ã¿å–ã‚Šé™¤ã
+				//	ãƒ•ã‚¡ã‚¤ãƒ«åã«ã¯ä½¿ãˆãªã„æ–‡å­—ãªã®ã§ãƒ•ã‚¡ã‚¤ãƒ«åã«å«ã¾ã‚Œã¦ã„ã‚‹å ´åˆã¯è€ƒæ…®ä¸è¦
+				//	ã¾ãŸSHIFT-JISã®2ãƒã‚¤ãƒˆç›®ã®è€ƒæ…®ã‚‚ä¸è¦
 				//	Nov. 27, 2005 genta
-				//	ˆø”‚ªƒ_ƒuƒ‹ƒNƒH[ƒg1‚Â‚Ìê‡‚ÉC‚»‚Ì1‚Â‚ğÅ‰‚ÆÅŒã‚Ì1‚Â‚¸‚Â‚Æ
-				//	Œ©ŠÔˆá‚¦‚ÄCƒCƒ“ƒfƒbƒNƒX-1‚ÉƒAƒNƒZƒX‚µ‚Ä‚µ‚Ü‚¤‚Ì‚ğ–h‚®‚½‚ß‚É’·‚³‚ğƒ`ƒFƒbƒN‚·‚é
-				//	ƒtƒ@ƒCƒ‹–¼‚ÌŒã‚ë‚É‚ ‚éOption‚ğ‰ğÍ‚·‚é‚½‚ßCƒ‹[ƒv‚ÍŒp‘±
+				//	å¼•æ•°ãŒãƒ€ãƒ–ãƒ«ã‚¯ã‚©ãƒ¼ãƒˆ1ã¤ã®å ´åˆã«ï¼Œãã®1ã¤ã‚’æœ€åˆã¨æœ€å¾Œã®1ã¤ãšã¤ã¨
+				//	è¦‹é–“é•ãˆã¦ï¼Œã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹-1ã«ã‚¢ã‚¯ã‚»ã‚¹ã—ã¦ã—ã¾ã†ã®ã‚’é˜²ããŸã‚ã«é•·ã•ã‚’ãƒã‚§ãƒƒã‚¯ã™ã‚‹
+				//	ãƒ•ã‚¡ã‚¤ãƒ«åã®å¾Œã‚ã«ã‚ã‚‹Optionã‚’è§£æã™ã‚‹ãŸã‚ï¼Œãƒ«ãƒ¼ãƒ—ã¯ç¶™ç¶š
 				int len = lstrlen( pszToken + 1 );
 				if( len > 0 ){
 					cmWork.SetString( &pszToken[1], len - ( pszToken[len] == _T('"') ? 1 : 0 ));
 					cmWork.Replace( _T("\"\""), _T("\"") );
-					_tcscpy_s( szPath, _countof(szPath), cmWork.GetStringPtr() );	/* ƒtƒ@ƒCƒ‹–¼ */
+					_tcscpy_s( szPath, _countof(szPath), cmWork.GetStringPtr() );	/* ãƒ•ã‚¡ã‚¤ãƒ«å */
 				}
 				else {
 					szPath[0] = _T('\0');
 				}
 			}
 			else{
-				_tcscpy_s( szPath, _countof(szPath), pszToken );		/* ƒtƒ@ƒCƒ‹–¼ */
+				_tcscpy_s( szPath, _countof(szPath), pszToken );		/* ãƒ•ã‚¡ã‚¤ãƒ«å */
 			}
 
 			// Nov. 11, 2005 susu
-			// •s³‚Èƒtƒ@ƒCƒ‹–¼‚Ì‚Ü‚Ü‚¾‚Æƒtƒ@ƒCƒ‹•Û‘¶ƒ_ƒCƒAƒƒO‚ªo‚È‚­‚È‚é‚Ì‚Å
-			// ŠÈ’P‚Èƒtƒ@ƒCƒ‹ƒ`ƒFƒbƒN‚ğs‚¤‚æ‚¤‚ÉC³
+			// ä¸æ­£ãªãƒ•ã‚¡ã‚¤ãƒ«åã®ã¾ã¾ã ã¨ãƒ•ã‚¡ã‚¤ãƒ«ä¿å­˜æ™‚ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãŒå‡ºãªããªã‚‹ã®ã§
+			// ç°¡å˜ãªãƒ•ã‚¡ã‚¤ãƒ«ãƒã‚§ãƒƒã‚¯ã‚’è¡Œã†ã‚ˆã†ã«ä¿®æ­£
 			if (_tcsncmp_literal(szPath, _T("file:///"))==0) {
 				_tcscpy(szPath, &(szPath[8]));
 			}
@@ -287,7 +287,7 @@ void CCommandLine::ParseCommandLine( LPCTSTR pszCmdLineSrc, bool bResponse )
 					_stprintf(
 						msg_str,
 						_T("%ls\r\n")
-						_T("ã‹L‚Ìƒtƒ@ƒCƒ‹–¼‚Í•s³‚Å‚·Bƒtƒ@ƒCƒ‹–¼‚É \\ / : * ? \" < > | ‚Ì•¶š‚Íg‚¦‚Ü‚¹‚ñB "),
+						_T("ä¸Šè¨˜ã®ãƒ•ã‚¡ã‚¤ãƒ«åã¯ä¸æ­£ã§ã™ã€‚ãƒ•ã‚¡ã‚¤ãƒ«åã« \\ / : * ? \" < > | ã®æ–‡å­—ã¯ä½¿ãˆã¾ã›ã‚“ã€‚ "),
 						szPath
 					);
 					MessageBox( NULL, msg_str, _T("FileNameError"), MB_OK);
@@ -311,14 +311,14 @@ void CCommandLine::ParseCommandLine( LPCTSTR pszCmdLineSrc, bool bResponse )
 		else{
 			int nQuoteLen = 0;
 			if( *pszToken == '"' ){
-				++pszToken;	// 2007.09.09 genta æ“ª‚Ì"‚ÍƒXƒLƒbƒv
+				++pszToken;	// 2007.09.09 genta å…ˆé ­ã®"ã¯ã‚¹ã‚­ãƒƒãƒ—
 				nQuoteLen = 1;
 				int tokenlen = _tcslen( pszToken );
-				if( pszToken[ tokenlen-1 ] == '"' ){	// 2009.06.14 syat ––”ö‚Ì"‚ğæ‚èœ‚­
+				if( pszToken[ tokenlen-1 ] == '"' ){	// 2009.06.14 syat æœ«å°¾ã®"ã‚’å–ã‚Šé™¤ã
 					pszToken[ tokenlen-1 ] = '\0';
 				}
 			}
-			++pszToken;	//	æ“ª‚Ì'-'‚Ískip
+			++pszToken;	//	å…ˆé ­ã®'-'ã¯skip
 			TCHAR *arg = NULL;
 			int nArgLen;
 			switch( CheckCommandLine( pszToken, &arg, &nArgLen ) ){
@@ -326,18 +326,18 @@ void CCommandLine::ParseCommandLine( LPCTSTR pszCmdLineSrc, bool bResponse )
 				cmResponseFile.SetStringT( arg, nArgLen );
 				break;
 			case CMDLINEOPT_X: //	X
-				/* sŒ…w’è‚ğ1ŠJn‚É‚µ‚½ */
+				/* è¡Œæ¡æŒ‡å®šã‚’1é–‹å§‹ã«ã—ãŸ */
 				m_fi.m_ptCursor.x = AtoiOptionInt( arg ) - 1;
 				break;
 			case CMDLINEOPT_Y:	//	Y
 				m_fi.m_ptCursor.y = AtoiOptionInt( arg ) - 1;
 				break;
 			case CMDLINEOPT_VX:	// VX
-				/* sŒ…w’è‚ğ1ŠJn‚É‚µ‚½ */
+				/* è¡Œæ¡æŒ‡å®šã‚’1é–‹å§‹ã«ã—ãŸ */
 				m_fi.m_nViewLeftCol = CLayoutInt( AtoiOptionInt( arg ) - 1 );
 				break;
 			case CMDLINEOPT_VY:	//	VY
-				/* sŒ…w’è‚ğ1ŠJn‚É‚µ‚½ */
+				/* è¡Œæ¡æŒ‡å®šã‚’1é–‹å§‹ã«ã—ãŸ */
 				m_fi.m_nViewTopLine = CLayoutInt( AtoiOptionInt( arg ) - 1 );
 				break;
 			case CMDLINEOPT_SX: //	SX
@@ -354,7 +354,7 @@ void CCommandLine::ParseCommandLine( LPCTSTR pszCmdLineSrc, bool bResponse )
 				break;
 			case CMDLINEOPT_TYPE:	//	TYPE
 				//	Mar. 7, 2002 genta
-				//	ƒtƒ@ƒCƒ‹ƒ^ƒCƒv‚Ì‹­§w’è
+				//	ãƒ•ã‚¡ã‚¤ãƒ«ã‚¿ã‚¤ãƒ—ã®å¼·åˆ¶æŒ‡å®š
 				{
 					_tcsncpy( m_fi.m_szDocType, arg, MAX_DOCTYPE_LEN );
 					m_fi.m_szDocType[ nArgLen < MAX_DOCTYPE_LEN ? nArgLen : MAX_DOCTYPE_LEN ] = L'\0';
@@ -369,9 +369,9 @@ void CCommandLine::ParseCommandLine( LPCTSTR pszCmdLineSrc, bool bResponse )
 			case CMDLINEOPT_NOWIN:	//	NOWIN
 				m_bNoWindow = true;
 				break;
-			case CMDLINEOPT_WRITEQUIT:	//	WRITEQUIT	// 2007.05.19 ryoji sakuext—p‚É’Ç‰Á
+			case CMDLINEOPT_WRITEQUIT:	//	WRITEQUIT	// 2007.05.19 ryoji sakuextç”¨ã«è¿½åŠ 
 				m_bWriteQuit = true;
-				m_bNoWindow = true;	// 2007.09.05 ryoji -WQ‚ğw’è‚³‚ê‚½‚ç-NOWIN‚àw’è‚³‚ê‚½‚Æ‚µ‚Äˆµ‚¤
+				m_bNoWindow = true;	// 2007.09.05 ryoji -WQã‚’æŒ‡å®šã•ã‚ŒãŸã‚‰-NOWINã‚‚æŒ‡å®šã•ã‚ŒãŸã¨ã—ã¦æ‰±ã†
 				break;
 			case CMDLINEOPT_GREPMODE:	//	GREPMODE
 				m_bGrepMode = true;
@@ -383,12 +383,12 @@ void CCommandLine::ParseCommandLine( LPCTSTR pszCmdLineSrc, bool bResponse )
 				m_bGrepDlg = true;
 				break;
 			case CMDLINEOPT_GKEY:	//	GKEY
-				//	‘OŒã‚Ì""‚ğæ‚èœ‚­
+				//	å‰å¾Œã®""ã‚’å–ã‚Šé™¤ã
 				m_gi.cmGrepKey.SetStringT( arg,  lstrlen( arg ) );
 				m_gi.cmGrepKey.Replace( L"\"\"", L"\"" );
 				break;
 			case CMDLINEOPT_GFILE:	//	GFILE
-				//	‘OŒã‚Ì""‚ğæ‚èœ‚­
+				//	å‰å¾Œã®""ã‚’å–ã‚Šé™¤ã
 				m_gi.cmGrepFile.SetStringT( arg,  lstrlen( arg ) );
 				m_gi.cmGrepFile.Replace( _T("\"\""), _T("\"") );
 				break;
@@ -400,34 +400,34 @@ void CCommandLine::ParseCommandLine( LPCTSTR pszCmdLineSrc, bool bResponse )
 				for( ; *arg != '\0' ; ++arg ){
 					switch( *arg ){
 					case 'S':
-						// ƒTƒuƒtƒHƒ‹ƒ_‚©‚ç‚àŒŸõ‚·‚é
+						// ã‚µãƒ–ãƒ•ã‚©ãƒ«ãƒ€ã‹ã‚‰ã‚‚æ¤œç´¢ã™ã‚‹
 						m_gi.bGrepSubFolder = true;	break;
 					case 'L':
-						// ‰p‘å•¶š‚Æ‰p¬•¶š‚ğ‹æ•Ê‚·‚é
+						// è‹±å¤§æ–‡å­—ã¨è‹±å°æ–‡å­—ã‚’åŒºåˆ¥ã™ã‚‹
 						m_gi.sGrepSearchOption.bLoHiCase = true;	break;
 					case 'R':
-						// ³‹K•\Œ»
+						// æ­£è¦è¡¨ç¾
 						m_gi.sGrepSearchOption.bRegularExp = true;	break;
 					case 'K':
-						// •¶šƒR[ƒh©“®”»•Ê
-						// 2002/09/21 Moca ŒİŠ·«•Û‚Ì‚½‚ß‚Ìˆ—
+						// æ–‡å­—ã‚³ãƒ¼ãƒ‰è‡ªå‹•åˆ¤åˆ¥
+						// 2002/09/21 Moca äº’æ›æ€§ä¿æŒã®ãŸã‚ã®å‡¦ç†
 						m_gi.nGrepCharSet = CODE_AUTODETECT;	break;
 					case 'P':
-						// s‚ğo—Í‚·‚é‚©ŠY“–•”•ª‚¾‚¯o—Í‚·‚é‚©
+						// è¡Œã‚’å‡ºåŠ›ã™ã‚‹ã‹è©²å½“éƒ¨åˆ†ã ã‘å‡ºåŠ›ã™ã‚‹ã‹
 						m_gi.bGrepOutputLine = true;	break;
 					case 'W':
-						// ’PŒê’PˆÊ‚Å’T‚·
+						// å˜èªå˜ä½ã§æ¢ã™
 						m_gi.sGrepSearchOption.bWordOnly = true;	break;
 					case '1':
-						// Grep: o—ÍŒ`®
+						// Grep: å‡ºåŠ›å½¢å¼
 						m_gi.nGrepOutputStyle = 1;	break;
 					case '2':
-						// Grep: o—ÍŒ`®
+						// Grep: å‡ºåŠ›å½¢å¼
 						m_gi.nGrepOutputStyle = 2;	break;
 					}
 				}
 				break;
-			// 2002/09/21 Moca Grep‚Å‚Ì•¶šƒR[ƒhƒZƒbƒg ’Ç‰Á
+			// 2002/09/21 Moca Grepã§ã®æ–‡å­—ã‚³ãƒ¼ãƒ‰ã‚»ãƒƒãƒˆ è¿½åŠ 
 			case CMDLINEOPT_GCODE:
 				m_gi.nGrepCharSet = (ECodeType)AtoiOptionInt( arg );	break;
 			case CMDLINEOPT_GROUP:	// GROUP	// 2007.06.26 ryoji
@@ -435,19 +435,19 @@ void CCommandLine::ParseCommandLine( LPCTSTR pszCmdLineSrc, bool bResponse )
 				break;
 			case CMDLINEOPT_DEBUGMODE:
 				m_bDebugMode = true;
-				// 2010.06.16 Moca -TYPE=output ˆµ‚¢‚Æ‚·‚é
+				// 2010.06.16 Moca -TYPE=output æ‰±ã„ã¨ã™ã‚‹
 				if( _T('\0') == m_fi.m_szDocType[0] ){
 					auto_strcpy( m_fi.m_szDocType , _T("output") );
 				}
 				break;
-			case CMDLINEOPT_NOMOREOPT:	// 2007.09.09 genta ‚±‚êˆÈ~ˆø”–³Œø
+			case CMDLINEOPT_NOMOREOPT:	// 2007.09.09 genta ã“ã‚Œä»¥é™å¼•æ•°ç„¡åŠ¹
 				bParseOptDisabled = true;
 				break;
-			case CMDLINEOPT_M:			// 2009.06.14 syat ’Ç‰Á
+			case CMDLINEOPT_M:			// 2009.06.14 syat è¿½åŠ 
 				m_cmMacro.SetStringT( arg );
 				m_cmMacro.Replace( L"\"\"", L"\"" );
 				break;
-			case CMDLINEOPT_MTYPE:		// 2009.06.14 syat ’Ç‰Á
+			case CMDLINEOPT_MTYPE:		// 2009.06.14 syat è¿½åŠ 
 				m_cmMacroType.SetStringT( arg );
 				break;
 			}
@@ -456,7 +456,7 @@ void CCommandLine::ParseCommandLine( LPCTSTR pszCmdLineSrc, bool bResponse )
 	}
 	delete [] pszCmdLineWork;
 
-	// ƒŒƒXƒ|ƒ“ƒXƒtƒ@ƒCƒ‹‰ğÍ
+	// ãƒ¬ã‚¹ãƒãƒ³ã‚¹ãƒ•ã‚¡ã‚¤ãƒ«è§£æ
 	if( cmResponseFile.GetStringLength() && bResponse ){
 		CTextInputStream input(cmResponseFile.GetStringPtr());
 		if( !input.Good() ){
@@ -473,9 +473,9 @@ void CCommandLine::ParseCommandLine( LPCTSTR pszCmdLineSrc, bool bResponse )
 }
 
 /*! 
-	ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	
-	@date 2005-08-24 D.S.Koba ParseCommandLine()•ÏX‚É‚æ‚èƒƒ“ƒo•Ï”‚É‰Šú’l‘ã“ü
+	@date 2005-08-24 D.S.Koba ParseCommandLine()å¤‰æ›´ã«ã‚ˆã‚Šãƒ¡ãƒ³ãƒå¤‰æ•°ã«åˆæœŸå€¤ä»£å…¥
 */
 CCommandLine::CCommandLine()
 {

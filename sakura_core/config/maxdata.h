@@ -32,7 +32,7 @@ enum maxdata{
 	MAX_REPLACEKEY				=  30,
 	MAX_GREPFILE				=  30,
 	MAX_GREPFOLDER				=  30,
-	MAX_TYPES					=  30,	//Jul. 12, 2001 JEPRO �^�C�v�ʐݒ�̍ő�ݒ萔��16���瑝�₵��
+	MAX_TYPES					=  30,	//Jul. 12, 2001 JEPRO タイプ別設定の最大設定数を16から増やした
 	MAX_TYPES_EXTS				=  64,
 	MAX_PRINTSETTINGARR			=   8,
 
@@ -53,28 +53,28 @@ enum maxdata{
 	MAX_DOCTYPE_LEN				= 7,
 	MAX_TRANSFORM_FILENAME		= 16,	/// 2002.11.24 Moca
 
-	/*! �o�^�ł���}�N���̐�
-		@date 2005.01.30 genta 50�ɑ��₵��
+	/*! 登録できるマクロの数
+		@date 2005.01.30 genta 50に増やした
 	*/
 	MAX_CUSTMACRO				= 50,
-	MAX_CUSTMACRO_ICO			= 50,	// �A�C�R���ɐ�p�ʒu�����蓖�ĂĂ��鐔	// 2010.06.25 Moca �ǉ�
+	MAX_CUSTMACRO_ICO			= 50,	// アイコンに専用位置を割り当てている数	// 2010.06.25 Moca 追加
 
-	// 2004/06/21 novice �^�O�W�����v�@�\�ǉ�
-	MAX_TAGJUMPNUM				= 100,	// �^�u�W�����v���ő�l
-	MAX_TAGJUMP_KEYWORD			= 30,	//�^�O�W�����v�p�L�[���[�h�ő�o�^��2005.04.04 MIK
-	MAX_KEYWORDSET_PER_TYPE		= 10,	// 2004.01.23 genta (for MIK) �^�C�v�ʐݒ薈�̃L�[���[�h�Z�b�g��
-	MAX_VERTLINES = 10,	// 2005.11.08 Moca �w�茅�c��
+	// 2004/06/21 novice タグジャンプ機能追加
+	MAX_TAGJUMPNUM				= 100,	// タブジャンプ情報最大値
+	MAX_TAGJUMP_KEYWORD			= 30,	//タグジャンプ用キーワード最大登録数2005.04.04 MIK
+	MAX_KEYWORDSET_PER_TYPE		= 10,	// 2004.01.23 genta (for MIK) タイプ別設定毎のキーワードセット数
+	MAX_VERTLINES = 10,	// 2005.11.08 Moca 指定桁縦線
 
-	//	MRU���X�g�Ɋ֌W����maxdata
-	MAX_MRU						=  36,	//Sept. 27, 2000 JEPRO 0-9, A-Z ��36�ɂȂ�̂ł���ɍ��킹��30��36�ɕύX�B2007.10.23 kobake maxdata�Ɉړ��B
-	MAX_OPENFOLDER				=  36,	//Sept. 27, 2000 JEPRO 0-9, A-Z ��36�ɂȂ�̂ł���ɍ��킹��30��36�ɕύX
+	//	MRUリストに関係するmaxdata
+	MAX_MRU						=  36,	//Sept. 27, 2000 JEPRO 0-9, A-Z で36個になるのでそれに合わせて30→36に変更。2007.10.23 kobake maxdataに移動。
+	MAX_OPENFOLDER				=  36,	//Sept. 27, 2000 JEPRO 0-9, A-Z で36個になるのでそれに合わせて30→36に変更
 
-	MAX_PLUGIN_ID				= 63+1,	// �v���O�C��ID�̍ő咷��
+	MAX_PLUGIN_ID				= 63+1,	// プラグインIDの最大長さ
 
 	// MainMenu
-	MAX_MAINMENU				= 500,	// �o�^�ł��郁�C�����j���[�̐�
-	MAX_MAINMENU_TOP			= 20,	// �o�^�ł��郁�C�����j���[�̐�
-	MAX_MAIN_MENU_NAME_LEN		= 32,	// ���C�����j���[��������
+	MAX_MAINMENU				= 500,	// 登録できるメインメニューの数
+	MAX_MAINMENU_TOP			= 20,	// 登録できるメインメニューの数
+	MAX_MAIN_MENU_NAME_LEN		= 32,	// メインメニュー名文字列長
 };
 
 #endif /* SAKURA_MAXDATA_CEFC5993_30DF_4A7C_981A_512B8CE6FD979_H_ */

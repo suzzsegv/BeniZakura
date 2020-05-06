@@ -1,14 +1,14 @@
 /*!	@file
-	@brief ‹¤’Êİ’èƒ_ƒCƒAƒƒOƒ{ƒbƒNƒXAu‘S”Êvƒy[ƒW
+	@brief å…±é€šè¨­å®šãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒœãƒƒã‚¯ã‚¹ã€ã€Œå…¨èˆ¬ã€ãƒšãƒ¼ã‚¸
 
 	@author Norio Nakatani
-	@date 1998/12/24 V‹Kì¬
+	@date 1998/12/24 æ–°è¦ä½œæˆ
 */
 /*
 	Copyright (C) 1998-2002, Norio Nakatani
 	Copyright (C) 2000-2001, jepro
 	Copyright (C) 2001, genta, MIK, hor, Stonee, YAZAKI
-	Copyright (C) 2002, YAZAKI, aroka, MIK, Moca, ‚±‚¨‚è
+	Copyright (C) 2002, YAZAKI, aroka, MIK, Moca, ã“ãŠã‚Š
 	Copyright (C) 2003, MIK, KEITA
 	Copyright (C) 2006, ryoji
 	Copyright (C) 2007, genta, ryoji
@@ -58,14 +58,14 @@ int	CPropCommon::SearchIntArr( int nKey, int* pnArr, int nArrNum )
 
 
 /*!
-	ƒvƒƒpƒeƒBƒy[ƒW‚²‚Æ‚ÌWindow Procedure‚ğˆø”‚Éæ‚é‚±‚Æ‚Å
-	ˆ—‚Ì‹¤’Ê‰»‚ğ‘_‚Á‚½D
+	ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ãƒšãƒ¼ã‚¸ã”ã¨ã®Window Procedureã‚’å¼•æ•°ã«å–ã‚‹ã“ã¨ã§
+	å‡¦ç†ã®å…±é€šåŒ–ã‚’ç‹™ã£ãŸï¼
 
-	@param DispatchPage ^‚ÌWindow Procedure‚Ìƒƒ“ƒoŠÖ”ƒ|ƒCƒ“ƒ^
-	@param hwndDlg ƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX‚ÌWindow Handlw
-	@param uMsg ƒƒbƒZ[ƒW
-	@param wParam ƒpƒ‰ƒ[ƒ^1
-	@param lParam ƒpƒ‰ƒ[ƒ^2
+	@param DispatchPage çœŸã®Window Procedureã®ãƒ¡ãƒ³ãƒé–¢æ•°ãƒã‚¤ãƒ³ã‚¿
+	@param hwndDlg ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒœãƒƒã‚¯ã‚¹ã®Window Handlw
+	@param uMsg ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+	@param wParam ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿1
+	@param lParam ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿2
 */
 INT_PTR CPropCommon::DlgProc(
 	INT_PTR (CPropCommon::*DispatchPage)( HWND, UINT, WPARAM, LPARAM ),
@@ -95,7 +95,7 @@ INT_PTR CPropCommon::DlgProc(
 }
 //	To Here Jun. 2, 2001 genta
 
-// “Æ—§ƒEƒBƒ“ƒhƒE—p 2013.3.14 aroka
+// ç‹¬ç«‹ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ç”¨ 2013.3.14 aroka
 INT_PTR CPropCommon::DlgProc2(
 	INT_PTR (CPropCommon::*DispatchPage)( HWND, UINT, WPARAM, LPARAM ),
 	HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
@@ -121,17 +121,17 @@ INT_PTR CPropCommon::DlgProc2(
 	}
 }
 
-//	@date 2002.2.17 YAZAKI CShareData‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ÍACProcess‚É‚Ğ‚Æ‚Â‚ ‚é‚Ì‚İB
+//	@date 2002.2.17 YAZAKI CShareDataã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã¯ã€CProcessã«ã²ã¨ã¤ã‚ã‚‹ã®ã¿ã€‚
 CPropCommon::CPropCommon()
 {
 //	int		i;
 //	long	lPathLen;
 
-	/* ‹¤—Lƒf[ƒ^\‘¢‘Ì‚ÌƒAƒhƒŒƒX‚ğ•Ô‚· */
+	/* å…±æœ‰ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“ã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’è¿”ã™ */
 	m_pShareData = CShareData::getInstance()->GetShareData();
 
-	m_hwndParent = NULL;	/* ƒI[ƒi[ƒEƒBƒ“ƒhƒE‚Ìƒnƒ“ƒhƒ‹ */
-	m_hwndThis  = NULL;		/* ‚±‚Ìƒ_ƒCƒAƒƒO‚Ìƒnƒ“ƒhƒ‹ */
+	m_hwndParent = NULL;	/* ã‚ªãƒ¼ãƒŠãƒ¼ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ãƒãƒ³ãƒ‰ãƒ« */
+	m_hwndThis  = NULL;		/* ã“ã®ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®ãƒãƒ³ãƒ‰ãƒ« */
 	m_nPageNum = ID_PAGENUM_GENERAL;
 	m_nKeywordSet1 = -1;
 
@@ -150,19 +150,19 @@ CPropCommon::~CPropCommon()
 
 
 
-/* ‰Šú‰» */
-//@@@ 2002.01.03 YAZAKI m_tbMyButton‚È‚Ç‚ğCShareData‚©‚çCMenuDrawer‚ÖˆÚ“®‚µ‚½‚±‚Æ‚É‚æ‚éC³B
+/* åˆæœŸåŒ– */
+//@@@ 2002.01.03 YAZAKI m_tbMyButtonãªã©ã‚’CShareDataã‹ã‚‰CMenuDrawerã¸ç§»å‹•ã—ãŸã“ã¨ã«ã‚ˆã‚‹ä¿®æ­£ã€‚
 void CPropCommon::Create( HWND hwndParent, CImageListMgr* cIcons, CMenuDrawer* pMenuDrawer )
 {
-	m_hwndParent = hwndParent;	/* ƒI[ƒi[ƒEƒBƒ“ƒhƒE‚Ìƒnƒ“ƒhƒ‹ */
+	m_hwndParent = hwndParent;	/* ã‚ªãƒ¼ãƒŠãƒ¼ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ãƒãƒ³ãƒ‰ãƒ« */
 	m_pcIcons = cIcons;
 
-	// 2007.11.02 ryoji ƒ}ƒNƒİ’è‚ğ•ÏX‚µ‚½‚ ‚ÆA‰æ–Ê‚ğ•Â‚¶‚È‚¢‚ÅƒJƒXƒ^ƒ€ƒƒjƒ…[Aƒc[ƒ‹ƒo[A
-	//                  ƒL[Š„‚è“–‚Ä‚Ì‰æ–Ê‚ÉØ‚è‘Ö‚¦‚½‚ÉŠe‰æ–Ê‚Åƒ}ƒNƒİ’è‚Ì•ÏX‚ª”½‰f‚³‚ê‚é‚æ‚¤A
-	//                  m_Common.m_sMacro.m_MacroTableiƒ[ƒJƒ‹ƒƒ“ƒoj‚Åm_cLookup‚ğ‰Šú‰»‚·‚é
-	m_cLookup.Init( m_Common.m_sMacro.m_MacroTable, &m_Common );	//	‹@”\–¼E”Ô†resolveƒNƒ‰ƒXD
+	// 2007.11.02 ryoji ãƒã‚¯ãƒ­è¨­å®šã‚’å¤‰æ›´ã—ãŸã‚ã¨ã€ç”»é¢ã‚’é–‰ã˜ãªã„ã§ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã€ãƒ„ãƒ¼ãƒ«ãƒãƒ¼ã€
+	//                  ã‚­ãƒ¼å‰²ã‚Šå½“ã¦ã®ç”»é¢ã«åˆ‡ã‚Šæ›¿ãˆãŸæ™‚ã«å„ç”»é¢ã§ãƒã‚¯ãƒ­è¨­å®šã®å¤‰æ›´ãŒåæ˜ ã•ã‚Œã‚‹ã‚ˆã†ã€
+	//                  m_Common.m_sMacro.m_MacroTableï¼ˆãƒ­ãƒ¼ã‚«ãƒ«ãƒ¡ãƒ³ãƒï¼‰ã§m_cLookupã‚’åˆæœŸåŒ–ã™ã‚‹
+	m_cLookup.Init( m_Common.m_sMacro.m_MacroTable, &m_Common );	//	æ©Ÿèƒ½åãƒ»ç•ªå·resolveã‚¯ãƒ©ã‚¹ï¼
 
-//@@@ 2002.01.03 YAZAKI m_tbMyButton‚È‚Ç‚ğCShareData‚©‚çCMenuDrawer‚ÖˆÚ“®‚µ‚½‚±‚Æ‚É‚æ‚éC³B
+//@@@ 2002.01.03 YAZAKI m_tbMyButtonãªã©ã‚’CShareDataã‹ã‚‰CMenuDrawerã¸ç§»å‹•ã—ãŸã“ã¨ã«ã‚ˆã‚‹ä¿®æ­£ã€‚
 	m_pcMenuDrawer = pMenuDrawer;
 
 	return;
@@ -175,19 +175,19 @@ void CPropCommon::Create( HWND hwndParent, CImageListMgr* cIcons, CMenuDrawer* p
 
 //	From Here Jun. 2, 2001 genta
 /*!
-	u‹¤’Êİ’èvƒvƒƒpƒeƒBƒV[ƒg‚Ìì¬‚É•K—v‚Èî•ñ‚ğ
-	•Û‚·‚é\‘¢‘Ì
+	ã€Œå…±é€šè¨­å®šã€ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚·ãƒ¼ãƒˆã®ä½œæˆæ™‚ã«å¿…è¦ãªæƒ…å ±ã‚’
+	ä¿æŒã™ã‚‹æ§‹é€ ä½“
 */
 struct ComPropSheetInfo {
-	const TCHAR* szTabname;									//!< TAB‚Ì•\¦–¼
-	unsigned int resId;										//!< Property sheet‚É‘Î‰‚·‚éDialog resource
+	const TCHAR* szTabname;									//!< TABã®è¡¨ç¤ºå
+	unsigned int resId;										//!< Property sheetã«å¯¾å¿œã™ã‚‹Dialog resource
 	INT_PTR (CALLBACK *DProc)(HWND, UINT, WPARAM, LPARAM);	//!< Dialog Procedure
 };
 //	To Here Jun. 2, 2001 genta
 
-//	ƒL[ƒ[ƒhF‹¤’Êİ’èƒ^ƒu‡˜(ƒvƒƒpƒeƒBƒV[ƒg)
-/*! ƒvƒƒpƒeƒBƒV[ƒg‚Ìì¬
-	@date 2002.2.17 YAZAKI CShareData‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ÍACProcess‚É‚Ğ‚Æ‚Â‚ ‚é‚Ì‚İB
+//	ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ï¼šå…±é€šè¨­å®šã‚¿ãƒ–é †åº(ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚·ãƒ¼ãƒˆ)
+/*! ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚·ãƒ¼ãƒˆã®ä½œæˆ
+	@date 2002.2.17 YAZAKI CShareDataã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã¯ã€CProcessã«ã²ã¨ã¤ã‚ã‚‹ã®ã¿ã€‚
 */
 int CPropCommon::DoPropertySheet( int nPageNum/*, int nActiveItem*/ )
 {
@@ -196,28 +196,28 @@ int CPropCommon::DoPropertySheet( int nPageNum/*, int nActiveItem*/ )
 	int					i;
 
 	//	From Here Jun. 2, 2001 genta
-	//	Feb. 11, 2007 genta URL‚ğTAB‚Æ“ü‚êŠ·‚¦	// 2007.02.13 ‡˜•ÏXiTAB‚ğWIN‚ÌŸ‚Éj
-	//!	u‹¤’Êİ’èvƒvƒƒpƒeƒBƒV[ƒg‚Ìì¬‚É•K—v‚Èî•ñ‚Ì”z—ñD
-	//	‡˜•ÏX Win,Toolbar,Tab,Statusbar‚Ì‡‚ÉAFile,FileName ‡‚É	2008/6/22 Uchi 
-	//	DProc‚Ì•ÏX	2010/5/9 Uchi
+	//	Feb. 11, 2007 genta URLã‚’TABã¨å…¥ã‚Œæ›ãˆ	// 2007.02.13 é †åºå¤‰æ›´ï¼ˆTABã‚’WINã®æ¬¡ã«ï¼‰
+	//!	ã€Œå…±é€šè¨­å®šã€ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚·ãƒ¼ãƒˆã®ä½œæˆæ™‚ã«å¿…è¦ãªæƒ…å ±ã®é…åˆ—ï¼
+	//	é †åºå¤‰æ›´ Win,Toolbar,Tab,Statusbarã®é †ã«ã€File,FileName é †ã«	2008/6/22 Uchi 
+	//	DProcã®å¤‰æ›´	2010/5/9 Uchi
 	static ComPropSheetInfo ComPropSheetInfoList[] = {
-		{ _T("‘S”Ê"), 				IDD_PROP_GENERAL,	CPropGeneral::DlgProc_page },
-		{ _T("ƒEƒBƒ“ƒhƒE"),			IDD_PROP_WIN,		CPropWin::DlgProc_page },
-		{ _T("ƒƒCƒ“ƒƒjƒ…["),		IDD_PROP_MAINMENU,	CPropMainMenu::DlgProc_page },	// 2010/5/8 Uchi
-		{ _T("ƒc[ƒ‹ƒo["),			IDD_PROP_TOOLBAR,	CPropToolbar::DlgProc_page },
-		{ _T("ƒ^ƒuƒo["),			IDD_PROP_TAB,		CPropTab::DlgProc_page },
-		{ _T("ƒXƒe[ƒ^ƒXƒo["),		IDD_PROP_STATUSBAR,	CPropStatusbar::DlgProc_page },	// •¶šƒR[ƒh•\¦w’è	2008/6/21	Uchi
-		{ _T("•ÒW"),				IDD_PROP_EDIT,		CPropEdit::DlgProc_page },
-		{ _T("ƒtƒ@ƒCƒ‹"),			IDD_PROP_FILE,		CPropFile::DlgProc_page },
-		{ _T("ƒtƒ@ƒCƒ‹–¼•\¦"),		IDD_PROP_FNAME,		CPropFileName::DlgProc_page },
-		{ _T("ƒoƒbƒNƒAƒbƒv"),		IDD_PROP_BACKUP,	CPropBackup::DlgProc_page },
-		{ _T("‘®"),				IDD_PROP_FORMAT,	CPropFormat::DlgProc_page },
-		{ _T("ŒŸõ"),				IDD_PROP_GREP,		CPropGrep::DlgProc_page },	// 2006.08.23 ryoji ƒ^ƒCƒgƒ‹•ÏXiGrep -> ŒŸõj
-		{ _T("ƒL[Š„‚è“–‚Ä"),		IDD_PROP_KEYBIND,	CPropKeybind::DlgProc_page },
-		{ _T("ƒJƒXƒ^ƒ€ƒƒjƒ…["),	IDD_PROP_CUSTMENU,	CPropCustmenu::DlgProc_page },
-		{ _T("‹­’²ƒL[ƒ[ƒh"),		IDD_PROP_KEYWORD,	CPropKeyword::DlgProc_page },
-		{ _T("x‰‡"),				IDD_PROP_HELPER,	CPropHelper::DlgProc_page },
-		{ _T("ƒ}ƒNƒ"),				IDD_PROP_MACRO,		CPropMacro::DlgProc_page },
+		{ _T("å…¨èˆ¬"), 				IDD_PROP_GENERAL,	CPropGeneral::DlgProc_page },
+		{ _T("ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦"),			IDD_PROP_WIN,		CPropWin::DlgProc_page },
+		{ _T("ãƒ¡ã‚¤ãƒ³ãƒ¡ãƒ‹ãƒ¥ãƒ¼"),		IDD_PROP_MAINMENU,	CPropMainMenu::DlgProc_page },	// 2010/5/8 Uchi
+		{ _T("ãƒ„ãƒ¼ãƒ«ãƒãƒ¼"),			IDD_PROP_TOOLBAR,	CPropToolbar::DlgProc_page },
+		{ _T("ã‚¿ãƒ–ãƒãƒ¼"),			IDD_PROP_TAB,		CPropTab::DlgProc_page },
+		{ _T("ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ãƒãƒ¼"),		IDD_PROP_STATUSBAR,	CPropStatusbar::DlgProc_page },	// æ–‡å­—ã‚³ãƒ¼ãƒ‰è¡¨ç¤ºæŒ‡å®š	2008/6/21	Uchi
+		{ _T("ç·¨é›†"),				IDD_PROP_EDIT,		CPropEdit::DlgProc_page },
+		{ _T("ãƒ•ã‚¡ã‚¤ãƒ«"),			IDD_PROP_FILE,		CPropFile::DlgProc_page },
+		{ _T("ãƒ•ã‚¡ã‚¤ãƒ«åè¡¨ç¤º"),		IDD_PROP_FNAME,		CPropFileName::DlgProc_page },
+		{ _T("ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—"),		IDD_PROP_BACKUP,	CPropBackup::DlgProc_page },
+		{ _T("æ›¸å¼"),				IDD_PROP_FORMAT,	CPropFormat::DlgProc_page },
+		{ _T("æ¤œç´¢"),				IDD_PROP_GREP,		CPropGrep::DlgProc_page },	// 2006.08.23 ryoji ã‚¿ã‚¤ãƒˆãƒ«å¤‰æ›´ï¼ˆGrep -> æ¤œç´¢ï¼‰
+		{ _T("ã‚­ãƒ¼å‰²ã‚Šå½“ã¦"),		IDD_PROP_KEYBIND,	CPropKeybind::DlgProc_page },
+		{ _T("ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼"),	IDD_PROP_CUSTMENU,	CPropCustmenu::DlgProc_page },
+		{ _T("å¼·èª¿ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰"),		IDD_PROP_KEYWORD,	CPropKeyword::DlgProc_page },
+		{ _T("æ”¯æ´"),				IDD_PROP_HELPER,	CPropHelper::DlgProc_page },
+		{ _T("ãƒã‚¯ãƒ­"),				IDD_PROP_MACRO,		CPropMacro::DlgProc_page },
 	};
 
 	PROPSHEETPAGE		psp[32];
@@ -243,19 +243,19 @@ int CPropCommon::DoPropertySheet( int nPageNum/*, int nActiveItem*/ )
 	PROPSHEETHEADER		psh;
 	memset_raw( &psh, 0, sizeof_raw( psh ) );
 	
-	//	Jun. 29, 2002 ‚±‚¨‚è
-	//	Windows 95‘ÎôDProperty Sheet‚ÌƒTƒCƒY‚ğWindows95‚ª”F¯‚Å‚«‚é•¨‚ÉŒÅ’è‚·‚éD
+	//	Jun. 29, 2002 ã“ãŠã‚Š
+	//	Windows 95å¯¾ç­–ï¼Property Sheetã®ã‚µã‚¤ã‚ºã‚’Windows95ãŒèªè­˜ã§ãã‚‹ç‰©ã«å›ºå®šã™ã‚‹ï¼
 	psh.dwSize = sizeof_old_PROPSHEETHEADER;
 
-	//	JEPROtest Sept. 30, 2000 ‹¤’Êİ’è‚Ì‰B‚ê[“K—p]ƒ{ƒ^ƒ“‚Ì³‘Ì‚Í‚±‚±Bs“ª‚ÌƒRƒƒ“ƒgƒAƒEƒg‚ğ“ü‚ê‘Ö‚¦‚Ä‚İ‚ê‚Î‚í‚©‚é
+	//	JEPROtest Sept. 30, 2000 å…±é€šè¨­å®šã®éš ã‚Œ[é©ç”¨]ãƒœã‚¿ãƒ³ã®æ­£ä½“ã¯ã“ã“ã€‚è¡Œé ­ã®ã‚³ãƒ¡ãƒ³ãƒˆã‚¢ã‚¦ãƒˆã‚’å…¥ã‚Œæ›¿ãˆã¦ã¿ã‚Œã°ã‚ã‹ã‚‹
 	psh.dwFlags    = PSH_NOAPPLYNOW | PSH_PROPSHEETPAGE | PSH_NOCONTEXTHELP;
 	psh.hwndParent = m_hwndParent;
 	psh.hInstance  = G_AppInstance();
 	psh.pszIcon    = NULL;
-	psh.pszCaption = _T("‹¤’Êİ’è");
+	psh.pszCaption = _T("å…±é€šè¨­å®š");
 	psh.nPages     = nIdx;
 
-	//- 20020106 aroka # psh.nStartPage ‚Í unsigned ‚È‚Ì‚Å•‰‚É‚È‚ç‚È‚¢
+	//- 20020106 aroka # psh.nStartPage ã¯ unsigned ãªã®ã§è² ã«ãªã‚‰ãªã„
 	if( -1 == nPageNum ){
 		psh.nStartPage = m_nPageNum;
 	}else
@@ -271,7 +271,7 @@ int CPropCommon::DoPropertySheet( int nPageNum/*, int nActiveItem*/ )
 	psh.ppsp = psp;
 	psh.pfnCallback = NULL;
 
-	nRet = MyPropertySheet( &psh );	// 2007.05.24 ryoji “Æ©Šg’£ƒvƒƒpƒeƒBƒV[ƒg
+	nRet = MyPropertySheet( &psh );	// 2007.05.24 ryoji ç‹¬è‡ªæ‹¡å¼µãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚·ãƒ¼ãƒˆ
 	if( -1 == nRet ){
 		TCHAR*	pszMsgBuf;
 		::FormatMessage(
@@ -280,16 +280,16 @@ int CPropCommon::DoPropertySheet( int nPageNum/*, int nActiveItem*/ )
 			FORMAT_MESSAGE_IGNORE_INSERTS,
 			NULL,
 			::GetLastError(),
-			MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),	// ƒfƒtƒHƒ‹ƒgŒ¾Œê
+			MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),	// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆè¨€èª
 			(LPTSTR)&pszMsgBuf,
 			0,
 			NULL
 		);
 		PleaseReportToAuthor(
 			NULL,
-			_T("CPropCommon::DoPropertySheet()“à‚ÅƒGƒ‰[‚ªo‚Ü‚µ‚½B\n")
+			_T("CPropCommon::DoPropertySheet()å†…ã§ã‚¨ãƒ©ãƒ¼ãŒå‡ºã¾ã—ãŸã€‚\n")
 			_T("psh.nStartPage=[%d]\n")
-			_T("::PropertySheet()¸”s\n")
+			_T("::PropertySheet()å¤±æ•—\n")
 			_T("\n")
 			_T("%ts\n"),
 			psh.nStartPage,
@@ -301,14 +301,14 @@ int CPropCommon::DoPropertySheet( int nPageNum/*, int nActiveItem*/ )
 	return nRet;
 }
 
-/*!	ShareData‚©‚çˆê—Ìˆæ‚Öİ’è‚ğƒRƒs[‚·‚é
-	@date 2002.12.11 Moca CEditDoc::OpenPropertySheet‚©‚çˆÚ“®
+/*!	ShareDataã‹ã‚‰ä¸€æ™‚é ˜åŸŸã¸è¨­å®šã‚’ã‚³ãƒ”ãƒ¼ã™ã‚‹
+	@date 2002.12.11 Moca CEditDoc::OpenPropertySheetã‹ã‚‰ç§»å‹•
 */
 void CPropCommon::InitData( void )
 {
 	m_Common = m_pShareData->m_Common;
 
-	//2002/04/25 YAZAKI STypeConfig‘S‘Ì‚ğ•Û‚·‚é•K—v‚Í‚È‚¢B
+	//2002/04/25 YAZAKI STypeConfigå…¨ä½“ã‚’ä¿æŒã™ã‚‹å¿…è¦ã¯ãªã„ã€‚
 	int i;
 	for( i = 0; i < MAX_TYPES; ++i ){
 		for( int j = 0; j < MAX_KEYWORDSET_PER_TYPE; j++ ){
@@ -317,9 +317,9 @@ void CPropCommon::InitData( void )
 	}
 }
 
-/*!	ShareData ‚É İ’è‚ğ“K—pEƒRƒs[‚·‚é
-	@note ShareData‚ÉƒRƒs[‚·‚é‚¾‚¯‚È‚Ì‚ÅCXV—v‹‚È‚Ç‚ÍC—˜—p‚·‚é‘¤‚Åˆ—‚µ‚Ä‚à‚ç‚¤
-	@date 2002.12.11 Moca CEditDoc::OpenPropertySheet‚©‚çˆÚ“®
+/*!	ShareData ã« è¨­å®šã‚’é©ç”¨ãƒ»ã‚³ãƒ”ãƒ¼ã™ã‚‹
+	@note ShareDataã«ã‚³ãƒ”ãƒ¼ã™ã‚‹ã ã‘ãªã®ã§ï¼Œæ›´æ–°è¦æ±‚ãªã©ã¯ï¼Œåˆ©ç”¨ã™ã‚‹å´ã§å‡¦ç†ã—ã¦ã‚‚ã‚‰ã†
+	@date 2002.12.11 Moca CEditDoc::OpenPropertySheetã‹ã‚‰ç§»å‹•
 */
 void CPropCommon::ApplyData( void )
 {
@@ -327,8 +327,8 @@ void CPropCommon::ApplyData( void )
 
 	int i;
 	for( i = 0; i < MAX_TYPES; ++i ){
-		//2002/04/25 YAZAKI STypeConfig‘S‘Ì‚ğ•Û‚·‚é•K—v‚Í‚È‚¢B
-		/* •ÏX‚³‚ê‚½İ’è’l‚ÌƒRƒs[ */
+		//2002/04/25 YAZAKI STypeConfigå…¨ä½“ã‚’ä¿æŒã™ã‚‹å¿…è¦ã¯ãªã„ã€‚
+		/* å¤‰æ›´ã•ã‚ŒãŸè¨­å®šå€¤ã®ã‚³ãƒ”ãƒ¼ */
 		for( int j = 0; j < MAX_KEYWORDSET_PER_TYPE; j++ ){
 			CTypeConfig(i)->m_nKeyWordSetIdx[j] = m_Types_nKeyWordSetIdx[i][j];
 		}
@@ -337,7 +337,7 @@ void CPropCommon::ApplyData( void )
 
 
 
-/*!	ƒRƒ“ƒgƒ[ƒ‹‚ÉƒtƒHƒ“ƒgİ’è‚·‚é
+/*!	ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã«ãƒ•ã‚©ãƒ³ãƒˆè¨­å®šã™ã‚‹
 	@date 2013.04.24 Uchi
 */
 HFONT CPropCommon::SetCtrlFont( HWND hwndDlg, int idc_ctrl, const LOGFONT& lf )
@@ -345,11 +345,11 @@ HFONT CPropCommon::SetCtrlFont( HWND hwndDlg, int idc_ctrl, const LOGFONT& lf )
 	HFONT	hFont;
 	HWND	hCtrl;
 
-	// ˜_—ƒtƒHƒ“ƒg‚ğì¬
+	// è«–ç†ãƒ•ã‚©ãƒ³ãƒˆã‚’ä½œæˆ
 	hCtrl = ::GetDlgItem( hwndDlg, idc_ctrl );
 	hFont = ::CreateFontIndirect( &lf );
 	if (hFont) {
-		// ƒtƒHƒ“ƒg‚Ìİ’è
+		// ãƒ•ã‚©ãƒ³ãƒˆã®è¨­å®š
 		::SendMessage( hCtrl, WM_SETFONT, (WPARAM)hFont, MAKELPARAM(FALSE, 0) );
 	}
 
@@ -358,7 +358,7 @@ HFONT CPropCommon::SetCtrlFont( HWND hwndDlg, int idc_ctrl, const LOGFONT& lf )
 
 
 
-/*!	ƒtƒHƒ“ƒgƒ‰ƒxƒ‹‚ÉƒtƒHƒ“ƒg‚ÆƒtƒHƒ“ƒg–¼İ’è‚·‚é
+/*!	ãƒ•ã‚©ãƒ³ãƒˆãƒ©ãƒ™ãƒ«ã«ãƒ•ã‚©ãƒ³ãƒˆã¨ãƒ•ã‚©ãƒ³ãƒˆåè¨­å®šã™ã‚‹
 	@date 2013.04.24 Uchi
 */
 HFONT CPropCommon::SetFontLabel( HWND hwndDlg, int idc_static, const LOGFONT& lf, int nps )
@@ -368,7 +368,7 @@ HFONT CPropCommon::SetFontLabel( HWND hwndDlg, int idc_static, const LOGFONT& lf
 
 	hFont = SetCtrlFont( hwndDlg, idc_static, lf );
 
-	// ƒtƒHƒ“ƒg–¼‚Ìİ’è
+	// ãƒ•ã‚©ãƒ³ãƒˆåã®è¨­å®š
 	auto_sprintf( szFontName, nps % 10 ? _T("%s(%.1fpt)") : _T("%s(%.0fpt)"),
 		lf.lfFaceName, double(nps)/10 );
 	::DlgItem_SetText( hwndDlg, idc_static, szFontName );

@@ -29,11 +29,11 @@
 
 class CCodeChecker : public CDocListenerEx, public TSingleton<CCodeChecker>{
 public:
-	//セーブ時チェック
+	//繧ｻ繝ｼ繝匁凾繝√ぉ繝�繧ｯ
 	ECallbackResult OnCheckSave(SSaveInfo* pSaveInfo);
 	void OnFinalSave(ESaveResult eSaveResult);
 
-	//ロード時チェック
+	//繝ｭ繝ｼ繝画凾繝√ぉ繝�繧ｯ
 	void OnFinalLoad(ELoadResult eLoadResult);
 };
 

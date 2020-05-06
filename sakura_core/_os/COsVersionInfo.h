@@ -1,10 +1,10 @@
 /*!	@file
 	@brief COsVersionInfo
 
-	OSVERSIONINFO‚ğƒ‰ƒbƒsƒ“ƒO
+	OSVERSIONINFOã‚’ãƒ©ãƒƒãƒ”ãƒ³ã‚°
 
 	@author YAZAKI
-	@date 2002”N3Œ3“ú
+	@date 2002å¹´3æœˆ3æ—¥
 */
 /*
 	Copyright (C) 2001, YAZAKI, shoji masami
@@ -57,8 +57,8 @@
 
 class COsVersionInfo {
 public:
-	// ‰Šú‰»‚ğs‚¤(ˆø”‚Íƒ_ƒ~[)
-	// ŒÄo‚ÍŠî–{1‰ñ‚Ì‚İ
+	// åˆæœŸåŒ–ã‚’è¡Œã†(å¼•æ•°ã¯ãƒ€ãƒŸãƒ¼)
+	// å‘¼å‡ºã¯åŸºæœ¬1å›ã®ã¿
 	COsVersionInfo( bool pbStart ) {
 		memset_raw( &m_cOsVersionInfo, 0, sizeof( m_cOsVersionInfo ) );
 		m_cOsVersionInfo.dwOSVersionInfoSize = sizeof( m_cOsVersionInfo );
@@ -71,16 +71,16 @@ public:
 #endif
 	}
 
-	// ’Êí‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	// ‰½‚à‚µ‚È‚¢
+	// é€šå¸¸ã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+	// ä½•ã‚‚ã—ãªã„
 	COsVersionInfo() {}
 
-	/* OsVersion‚ªæ“¾‚Å‚«‚½‚©H */
+	/* OsVersionãŒå–å¾—ã§ããŸã‹ï¼Ÿ */
 	BOOL GetVersion(){
 		return m_bSuccess;
 	}
 
-	/* g—p‚µ‚Ä‚¢‚éOSiWindowsj‚ªA“®ì‘ÎÛ‚©Šm”F‚·‚é */
+	/* ä½¿ç”¨ã—ã¦ã„ã‚‹OSï¼ˆWindowsï¼‰ãŒã€å‹•ä½œå¯¾è±¡ã‹ç¢ºèªã™ã‚‹ */
 	bool OsIsEnableVersion(){
 #if (WINVER >= _WIN32_WINNT_WIN7)
 		return ( _IsWin32NT() &&
@@ -97,7 +97,7 @@ public:
 
 
 	// From Here Jul. 5, 2001 shoji masami
-	/*! NTƒvƒ‰ƒbƒgƒtƒH[ƒ€‚©‚Ç‚¤‚©’²‚×‚é
+	/*! NTãƒ—ãƒ©ãƒƒãƒˆãƒ•ã‚©ãƒ¼ãƒ ã‹ã©ã†ã‹èª¿ã¹ã‚‹
 
 		@retval true NT platform
 		@retval false non-NT platform
@@ -107,7 +107,7 @@ public:
 	}
 
 	// 2005.10.31 ryoji
-	/*! Windowsƒvƒ‰ƒbƒgƒtƒH[ƒ€‚©‚Ç‚¤‚©’²‚×‚é
+	/*! Windowsãƒ—ãƒ©ãƒƒãƒˆãƒ•ã‚©ãƒ¼ãƒ ã‹ã©ã†ã‹èª¿ã¹ã‚‹
 
 		@retval true Windows platform
 		@retval false non-Windows platform
@@ -116,12 +116,12 @@ public:
 		return (m_cOsVersionInfo.dwPlatformId == VER_PLATFORM_WIN32_WINDOWS);
 	}
 
-	/*	Ä•ÏŠ·‚ªOS•W€‚Å’ñ‹Ÿ‚³‚ê‚Ä‚¢‚È‚¢‚©B
-		’ñ‹Ÿ‚³‚ê‚Ä‚¢‚È‚¢‚È‚çAfalseB
-		’ñ‹Ÿ‚³‚ê‚Ä‚¢‚é‚È‚çAtrueB
+	/*	å†å¤‰æ›ãŒOSæ¨™æº–ã§æä¾›ã•ã‚Œã¦ã„ãªã„ã‹ã€‚
+		æä¾›ã•ã‚Œã¦ã„ãªã„ãªã‚‰ã€falseã€‚
+		æä¾›ã•ã‚Œã¦ã„ã‚‹ãªã‚‰ã€trueã€‚
 
-		Windows95 or WindowsNT‚È‚çAFASLEi’ñ‹Ÿ‚³‚ê‚Ä‚¢‚È‚¢j
-		‚»‚êˆÈŠO‚ÌOS‚È‚çAtruei’ñ‹Ÿ‚³‚ê‚Ä‚¢‚éj
+		Windows95 or WindowsNTãªã‚‰ã€FASLEï¼ˆæä¾›ã•ã‚Œã¦ã„ãªã„ï¼‰
+		ãã‚Œä»¥å¤–ã®OSãªã‚‰ã€trueï¼ˆæä¾›ã•ã‚Œã¦ã„ã‚‹ï¼‰
 	*/
 	bool _OsSupportReconvert(){
 		return !((4 == m_cOsVersionInfo.dwMajorVersion) && ( 0 == m_cOsVersionInfo.dwMinorVersion ));
@@ -135,7 +135,7 @@ public:
 		return (_IsWin2000_or_later() || _IsWinMe()); 
 	}
 
-	/*! Windows VistaˆÈã‚©’²‚×‚é
+	/*! Windows Vistaä»¥ä¸Šã‹èª¿ã¹ã‚‹
 
 		@retval true Windows Vista or later
 
@@ -146,18 +146,18 @@ public:
 		return ( 6 <= m_cOsVersionInfo.dwMajorVersion );
 	}
 
-	/*! Windows XPˆÈã‚©’²‚×‚é
+	/*! Windows XPä»¥ä¸Šã‹èª¿ã¹ã‚‹
 
 		@retval true Windows XP or later
 
 		@date 2003.09.06 genta
 	*/
 	bool _IsWinXP_or_later(){
-		return ( m_cOsVersionInfo.dwMajorVersion >= 6 ||	// 2006.06.17 ryoji Ver 6.0, 7.0,...‚àŠÜ‚ß‚é
+		return ( m_cOsVersionInfo.dwMajorVersion >= 6 ||	// 2006.06.17 ryoji Ver 6.0, 7.0,...ã‚‚å«ã‚ã‚‹
 			(m_cOsVersionInfo.dwMajorVersion >= 5 && m_cOsVersionInfo.dwMinorVersion >= 1) );
 	}
 
-	/*! Windows 2000ˆÈã‚©’²‚×‚é
+	/*! Windows 2000ä»¥ä¸Šã‹èª¿ã¹ã‚‹
 
 		@retval true Windows 2000 or later
 
@@ -167,7 +167,7 @@ public:
 		return ( _IsWin32NT() && (5 <= m_cOsVersionInfo.dwMajorVersion) );
 	}
 
-	/*! Windows Me‚©’²‚×‚é
+	/*! Windows Meã‹èª¿ã¹ã‚‹
 
 		@retval true Windows Me
 
@@ -178,7 +178,7 @@ public:
 	}
 
 #ifdef USE_SSE
-	/*! SSEƒTƒ|[ƒg‚©‚ğ’²‚×‚é
+	/*! SSEã‚µãƒãƒ¼ãƒˆã‹ã‚’èª¿ã¹ã‚‹
 
 		@retval true support SSE
 	*/
@@ -188,7 +188,7 @@ public:
 #endif
 
 protected:
-	// Class‚Ístatic(‘SƒNƒ‰ƒX‹¤—L)•Ï”ˆÈŠO‚½‚È‚¢
+	// Classã¯static(å…¨ã‚¯ãƒ©ã‚¹å…±æœ‰)å¤‰æ•°ä»¥å¤–æŒãŸãªã„
 	static BOOL m_bSuccess;
 	static OSVERSIONINFO m_cOsVersionInfo;
 #ifdef USE_SSE

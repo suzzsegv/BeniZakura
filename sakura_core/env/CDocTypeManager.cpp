@@ -1,5 +1,5 @@
 /*
-	2008.05.18 kobake CShareData ‚©‚ç•ª—£
+	2008.05.18 kobake CShareData ã‹ã‚‰åˆ†é›¢
 */
 /*
 	Copyright (C) 2008, kobake
@@ -30,11 +30,11 @@
 
 
 /*!
-	ƒtƒ@ƒCƒ‹–¼‚©‚çAƒhƒLƒ…ƒƒ“ƒgƒ^ƒCƒvi”’lj‚ğæ“¾‚·‚é
+	ãƒ•ã‚¡ã‚¤ãƒ«åã‹ã‚‰ã€ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆã‚¿ã‚¤ãƒ—ï¼ˆæ•°å€¤ï¼‰ã‚’å–å¾—ã™ã‚‹
 	
-	@param pszFilePath [in] ƒtƒ@ƒCƒ‹–¼
+	@param pszFilePath [in] ãƒ•ã‚¡ã‚¤ãƒ«å
 	
-	Šg’£q‚ğØ‚èo‚µ‚Ä GetDocumentTypeOfExt ‚É“n‚·‚¾‚¯D
+	æ‹¡å¼µå­ã‚’åˆ‡ã‚Šå‡ºã—ã¦ GetDocumentTypeOfExt ã«æ¸¡ã™ã ã‘ï¼
 */
 CTypeConfig CDocTypeManager::GetDocumentTypeOfPath( const TCHAR* pszFilePath )
 {
@@ -44,14 +44,14 @@ CTypeConfig CDocTypeManager::GetDocumentTypeOfPath( const TCHAR* pszFilePath )
 
 	if( NULL != pszFilePath && pszFilePath[0] ){
 		_tsplitpath( pszFilePath, NULL, NULL, szName, szExt );
-		// 2dŠg’£q’Tõ
+		// 2é‡æ‹¡å¼µå­æ¢ç´¢
 		TCHAR* pFileExt = _tcschr( szName, '.' );
 		if( pFileExt ){
 			pFileExt++;
 			auto_strcat( pFileExt, pszExt );
 		}else{
 			if( 0 == pszExt[0] ){
-				// Šg’£q‚ªƒtƒ@ƒCƒ‹‚É‚È‚¢
+				// æ‹¡å¼µå­ãŒãƒ•ã‚¡ã‚¤ãƒ«ã«ãªã„
 				pFileExt = szName;
 			}else{
 				pFileExt = pszExt + 1;
@@ -64,14 +64,14 @@ CTypeConfig CDocTypeManager::GetDocumentTypeOfPath( const TCHAR* pszFilePath )
 
 
 /*!
-	Šg’£q‚©‚çAƒhƒLƒ…ƒƒ“ƒgƒ^ƒCƒvi”’lj‚ğæ“¾‚·‚é
+	æ‹¡å¼µå­ã‹ã‚‰ã€ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆã‚¿ã‚¤ãƒ—ï¼ˆæ•°å€¤ï¼‰ã‚’å–å¾—ã™ã‚‹
 	
-	@param pszExt [in] Šg’£q (æ“ª‚Ì.‚ÍŠÜ‚Ü‚È‚¢)
+	@param pszExt [in] æ‹¡å¼µå­ (å…ˆé ­ã®.ã¯å«ã¾ãªã„)
 	
-	w’è‚³‚ê‚½Šg’£q‚Ì‘®‚·‚é•¶‘ƒ^ƒCƒv”Ô†‚ğ•Ô‚·D
-	‚Æ‚è‚ ‚¦‚¸¡‚Ì‚Æ‚±‚ë‚Íƒ^ƒCƒv‚ÍŠg’£q‚Ì‚İ‚ÉˆË‘¶‚·‚é‚Æ‰¼’è‚µ‚Ä‚¢‚éD
-	ƒtƒ@ƒCƒ‹‘S‘Ì‚ÌŒ`®‚É‘Î‰‚³‚¹‚é‚Æ‚«‚ÍC‚Ü‚½l‚¦’¼‚·D
-	@date 2012.10.22 Moca ‚QdŠg’£q, Šg’£q‚È‚µ‚É‘Î‰
+	æŒ‡å®šã•ã‚ŒãŸæ‹¡å¼µå­ã®å±ã™ã‚‹æ–‡æ›¸ã‚¿ã‚¤ãƒ—ç•ªå·ã‚’è¿”ã™ï¼
+	ã¨ã‚Šã‚ãˆãšä»Šã®ã¨ã“ã‚ã¯ã‚¿ã‚¤ãƒ—ã¯æ‹¡å¼µå­ã®ã¿ã«ä¾å­˜ã™ã‚‹ã¨ä»®å®šã—ã¦ã„ã‚‹ï¼
+	ãƒ•ã‚¡ã‚¤ãƒ«å…¨ä½“ã®å½¢å¼ã«å¯¾å¿œã•ã›ã‚‹ã¨ãã¯ï¼Œã¾ãŸè€ƒãˆç›´ã™ï¼
+	@date 2012.10.22 Moca ï¼’é‡æ‹¡å¼µå­, æ‹¡å¼µå­ãªã—ã«å¯¾å¿œ
 */
 CTypeConfig CDocTypeManager::GetDocumentTypeOfExt( const TCHAR* pszExt )
 {
@@ -87,7 +87,7 @@ CTypeConfig CDocTypeManager::GetDocumentTypeOfExt( const TCHAR* pszExt )
 		pszToken = _tcstok( szText, pszSeps );
 		while( NULL != pszToken ){
 			if( 0 == _tcsicmp( pszExt, pszToken ) ){
-				return CTypeConfig(i);	//	”Ô†
+				return CTypeConfig(i);	//	ç•ªå·
 			}
 			pszToken = _tcstok( NULL, pszSeps );
 		}
@@ -96,5 +96,5 @@ CTypeConfig CDocTypeManager::GetDocumentTypeOfExt( const TCHAR* pszExt )
 	if( pFileExt && pFileExt[1] ){
 		return GetDocumentTypeOfExt( pFileExt + 1 );
 	}
-	return CTypeConfig(0);	//	ƒnƒYƒŒ
+	return CTypeConfig(0);	//	ãƒã‚ºãƒ¬
 }

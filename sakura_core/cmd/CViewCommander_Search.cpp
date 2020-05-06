@@ -1,17 +1,17 @@
 /*!	@file
-@brief CViewCommander�N���X�̃R�}���h(�����n ��{�`)�֐��Q
+@brief CViewCommanderクラスのコマンド(検索系 基本形)関数群
 
-	2012/12/17	CViewCommander.cpp,CViewCommander_New.cpp���番��
+	2012/12/17	CViewCommander.cpp,CViewCommander_New.cppから分離
 */
 /*
 	Copyright (C) 1998-2001, Norio Nakatani
 	Copyright (C) 2000-2001, jepro, genta
 	Copyright (C) 2001, hor, YAZAKI
 	Copyright (C) 2002, hor, YAZAKI, novice, Azumaiya, Moca
-	Copyright (C) 2003, �����
+	Copyright (C) 2003, かろと
 	Copyright (C) 2004, Moca
-	Copyright (C) 2005, �����, Moca, D.S.Koba
-	Copyright (C) 2006, genta, ryoji, �����, yukihane
+	Copyright (C) 2005, かろと, Moca, D.S.Koba
+	Copyright (C) 2006, genta, ryoji, かろと, yukihane
 	Copyright (C) 2007, ryoji, genta
 	Copyright (C) 2009, ryoji, genta
 	Copyright (C) 2010, ryoji
@@ -33,9 +33,9 @@
 
 
 /*!
-����(�{�b�N�X)�R�}���h���s.
-�c�[���o�[�̌����{�b�N�X�Ƀt�H�[�J�X���ړ�����.
-	@date 2006.06.04 yukihane �V�K�쐬
+検索(ボックス)コマンド実行.
+ツールバーの検索ボックスにフォーカスを移動する.
+	@date 2006.06.04 yukihane 新規作成
 */
 void CViewCommander::Command_SEARCH_BOX( void )
 {
@@ -45,23 +45,23 @@ void CViewCommander::Command_SEARCH_BOX( void )
 
 
 
-/* ����(�P�ꌟ���_�C�A���O) */
+/* 検索(単語検索ダイアログ) */
 void CViewCommander::Command_SEARCH_DIALOG( void )
 {
-	/* ���݃J�[�\���ʒu�P��܂��͑I��͈͂�茟�����̃L�[���擾 */
+	/* 現在カーソル位置単語または選択範囲より検索等のキーを取得 */
 	CNativeW		cmemCurText;
-	m_pCommanderView->GetCurrentTextForSearchDlg( cmemCurText );	// 2006.08.23 ryoji �_�C�A���O��p�֐��ɕύX
+	m_pCommanderView->GetCurrentTextForSearchDlg( cmemCurText );	// 2006.08.23 ryoji ダイアログ専用関数に変更
 
-	/* ����������������� */
+	/* 検索文字列を初期化 */
 	if( 0 < cmemCurText.GetStringLength() ){
 		GetEditWindow()->m_cDlgFind.m_strText = cmemCurText.GetStringPtr();
 	}
-	/* �����_�C�A���O�̕\�� */
+	/* 検索ダイアログの表示 */
 	if( NULL == GetEditWindow()->m_cDlgFind.GetHwnd() ){
 		GetEditWindow()->m_cDlgFind.DoModeless( G_AppInstance(), m_pCommanderView->GetHwnd(), (LPARAM)&GetEditWindow()->GetActiveView() );
 	}
 	else{
-		/* �A�N�e�B�u�ɂ��� */
+		/* アクティブにする */
 		ActivateFrameWindow( GetEditWindow()->m_cDlgFind.GetHwnd() );
 		::DlgItem_SetText( GetEditWindow()->m_cDlgFind.GetHwnd(), IDC_COMBO_TEXT, cmemCurText.GetStringT() );
 	}
@@ -70,10 +70,10 @@ void CViewCommander::Command_SEARCH_DIALOG( void )
 
 
 
-/*! ��������
-	@param bChangeCurRegexp ���L�f�[�^�̌�����������g��
-	@date 2003.05.22 ����� �����}�b�`�΍�D�s���E�s�������������D
-	@date 2004.05.30 Moca bChangeCurRegexp=true�ŏ]���ʂ�Bfalse�ŁACEditView�̌��ݐݒ肳��Ă��錟���p�^�[�����g��
+/*! 次を検索
+	@param bChangeCurRegexp 共有データの検索文字列を使う
+	@date 2003.05.22 かろと 無限マッチ対策．行頭・行末処理見直し．
+	@date 2004.05.30 Moca bChangeCurRegexp=trueで従来通り。falseで、CEditViewの現在設定されている検索パターンを使う
 */
 void CViewCommander::Command_SEARCH_NEXT(
 	bool			bChangeCurRegexp,
@@ -87,7 +87,7 @@ void CViewCommander::Command_SEARCH_NEXT(
 	bool		bSelectingLock_Old = false;
 	bool		bFound = false;
 	bool		bDisableSelect = false;
-	bool		b0Match = false;		//!< �����O�Ń}�b�`���Ă��邩�H�t���O by �����
+	bool		b0Match = false;		//!< 長さ０でマッチしているか？フラグ by かろと
 	const CLayout*	pcLayout;
 	const wchar_t*	pLine;
 	CLogicInt	nIdx(0);
@@ -107,69 +107,69 @@ void CViewCommander::Command_SEARCH_NEXT(
 
 	bSelecting = false;
 	// 2002.01.16 hor
-	// ���ʕ����̂����肾��
-	// 2004.05.30 Moca CEditView�̌��ݐݒ肳��Ă��錟���p�^�[�����g����悤��
+	// 共通部分のくくりだし
+	// 2004.05.30 Moca CEditViewの現在設定されている検索パターンを使えるように
 	if(bChangeCurRegexp && !m_pCommanderView->ChangeCurRegexp())return;
 	if( 0 == m_pCommanderView->m_strCurSearchKey.size() ){
 		goto end_of_func;
 	}
 
-	// �����J�n�ʒu�𒲐�
+	// 検索開始位置を調整
 	bFlag1 = false;
-	if( m_pCommanderView->GetSelectionInfo().IsTextSelected() ){	/* �e�L�X�g���I������Ă��邩 */
-		/* ��`�͈͑I�𒆂łȂ� & �I����Ԃ̃��b�N */
+	if( m_pCommanderView->GetSelectionInfo().IsTextSelected() ){	/* テキストが選択されているか */
+		/* 矩形範囲選択中でない & 選択状態のロック */
 		if( !m_pCommanderView->GetSelectionInfo().IsBoxSelecting() && m_pCommanderView->GetSelectionInfo().m_bSelectingLock ){
 			bSelecting = true;
 			bSelectingLock_Old = m_pCommanderView->GetSelectionInfo().m_bSelectingLock;
 
-			sSelectBgn_Old = m_pCommanderView->GetSelectionInfo().m_sSelectBgn; //�͈͑I��(���_)
+			sSelectBgn_Old = m_pCommanderView->GetSelectionInfo().m_sSelectBgn; //範囲選択(原点)
 			sSelect_Old = GetSelect();
 
 			if( PointCompare(m_pCommanderView->GetSelectionInfo().m_sSelectBgn.GetFrom(),GetCaret().GetCaretLayoutPos()) >= 0 ){
-				// �J�[�\���ړ�
+				// カーソル移動
 				GetCaret().SetCaretLayoutPos(GetSelect().GetFrom());
 				if (GetSelect().IsOne()) {
-					// ���݁A�����O�Ń}�b�`���Ă���ꍇ�͂P�����i�߂�(�����}�b�`�΍�) by �����
+					// 現在、長さ０でマッチしている場合は１文字進める(無限マッチ対策) by かろと
 					b0Match = true;
 				}
 				bFlag1 = true;
 			}
 			else{
-				// �J�[�\���ړ�
+				// カーソル移動
 				GetCaret().SetCaretLayoutPos(GetSelect().GetTo());
 				if (GetSelect().IsOne()) {
-					// ���݁A�����O�Ń}�b�`���Ă���ꍇ�͂P�����i�߂�(�����}�b�`�΍�) by �����
+					// 現在、長さ０でマッチしている場合は１文字進める(無限マッチ対策) by かろと
 					b0Match = true;
 				}
 			}
 		}
 		else{
-			/* �J�[�\���ړ� */
+			/* カーソル移動 */
 			GetCaret().SetCaretLayoutPos(GetSelect().GetTo());
 			if (GetSelect().IsOne()) {
-				// ���݁A�����O�Ń}�b�`���Ă���ꍇ�͂P�����i�߂�(�����}�b�`�΍�) by �����
+				// 現在、長さ０でマッチしている場合は１文字進める(無限マッチ対策) by かろと
 				b0Match = true;
 			}
 
-			/* ���݂̑I��͈͂��I����Ԃɖ߂� */
+			/* 現在の選択範囲を非選択状態に戻す */
 			m_pCommanderView->GetSelectionInfo().DisableSelectArea( bRedraw, false );
 			bDisableSelect = true;
 		}
 	}
 	nLineNum = GetCaret().GetCaretLayoutPos().GetY2();
-	nLineLen = CLogicInt(0); // 2004.03.17 Moca NULL == pLine�̂Ƃ��AnLineLen�����ݒ�ɂȂ藎����o�O�΍�
+	nLineLen = CLogicInt(0); // 2004.03.17 Moca NULL == pLineのとき、nLineLenが未設定になり落ちるバグ対策
 	pLine = GetDocument()->m_cLayoutMgr.GetLineStr(nLineNum, &nLineLen, &pcLayout);
 
-	/* �w�肳�ꂽ���ɑΉ�����s�̃f�[�^���̈ʒu�𒲂ׂ� */
-// 2002.02.08 hor EOF�݂̂̍s��������������Ă��Č����\�� (2/2)
+	/* 指定された桁に対応する行のデータ内の位置を調べる */
+// 2002.02.08 hor EOFのみの行からも次検索しても再検索可能に (2/2)
 	nIdx = pcLayout ? m_pCommanderView->LineColumnToIndex( pcLayout, GetCaret().GetCaretLayoutPos().GetX2() ) : CLogicInt(0);
 	if( b0Match ) {
-		// ���݁A�����O�Ń}�b�`���Ă���ꍇ�͕����s�łP�����i�߂�(�����}�b�`�΍�)
+		// 現在、長さ０でマッチしている場合は物理行で１文字進める(無限マッチ対策)
 		if( nIdx < nLineLen ) {
 			// 2005-09-02 D.S.Koba GetSizeOfChar
 			nIdx += CLogicInt(CNativeW::GetSizeOfChar(pLine, nLineLen, nIdx) == 2 ? 2 : 1);
 		} else {
-			// �O�̂��ߍs���͕ʏ���
+			// 念のため行末は別処理
 			++nIdx;
 		}
 	}
@@ -179,75 +179,75 @@ void CViewCommander::Command_SEARCH_NEXT(
 	nIdxOld		= nIdx;		//	hor
 
 re_do:;
-	 /* ���݈ʒu�����̈ʒu���������� */
-	// 2004.05.30 Moca ������GetShareData()���烁���o�ϐ��ɕύX�B���̃v���Z�X/�X���b�h�ɏ����������Ă��܂�Ȃ��悤�ɁB
+	 /* 現在位置より後ろの位置を検索する */
+	// 2004.05.30 Moca 引数をGetShareData()からメンバ変数に変更。他のプロセス/スレッドに書き換えられてしまわないように。
 	nSearchResult = GetDocument()->m_cLayoutMgr.SearchWord(
-		nLineNum,						// �����J�n���C�A�E�g�s
-		nIdx,							// �����J�n�f�[�^�ʒu
-		m_pCommanderView->m_strCurSearchKey.c_str(),					// ��������
-		SEARCH_FORWARD,					// 0==�O������ 1==�������
-		m_pCommanderView->m_sCurSearchOption,				// �����I�v�V����
-		&sRangeA,						// �}�b�`���C�A�E�g�͈�
-		&m_pCommanderView->m_CurRegexp					// ���K�\���R���p�C���f�[�^
+		nLineNum,						// 検索開始レイアウト行
+		nIdx,							// 検索開始データ位置
+		m_pCommanderView->m_strCurSearchKey.c_str(),					// 検索条件
+		SEARCH_FORWARD,					// 0==前方検索 1==後方検索
+		m_pCommanderView->m_sCurSearchOption,				// 検索オプション
+		&sRangeA,						// マッチレイアウト範囲
+		&m_pCommanderView->m_CurRegexp					// 正規表現コンパイルデータ
 	);
 	if( nSearchResult ){
-		// �w�肳�ꂽ�s�̃f�[�^���̈ʒu�ɑΉ����錅�̈ʒu�𒲂ׂ�
+		// 指定された行のデータ内の位置に対応する桁の位置を調べる
 		if( bFlag1 && sRangeA.GetFrom()==GetCaret().GetCaretLayoutPos() ){
 			CLogicRange sRange_Logic;
 			GetDocument()->m_cLayoutMgr.LayoutToLogic(sRangeA,&sRange_Logic);
 
 			nLineNum = sRangeA.GetTo().GetY2();
 			nIdx     = sRange_Logic.GetTo().GetX2();
-			if( sRange_Logic.GetFrom() == sRange_Logic.GetTo() ) { // ��0�}�b�`�ł̖������[�v�΍�B
-				nIdx += 1; // wchar_t����i�߂邾���ł͑���Ȃ���������Ȃ����B
+			if( sRange_Logic.GetFrom() == sRange_Logic.GetTo() ) { // 幅0マッチでの無限ループ対策。
+				nIdx += 1; // wchar_t一個分進めるだけでは足りないかもしれないが。
 			}
 			goto re_do;
 		}
 
 		if( bSelecting ){
-			/* ���݂̃J�[�\���ʒu�ɂ���đI��͈͂�ύX */
+			/* 現在のカーソル位置によって選択範囲を変更 */
 			m_pCommanderView->GetSelectionInfo().ChangeSelectAreaByCurrentCursor( sRangeA.GetTo() );
-			m_pCommanderView->GetSelectionInfo().m_bSelectingLock = bSelectingLock_Old;	/* �I����Ԃ̃��b�N */
+			m_pCommanderView->GetSelectionInfo().m_bSelectingLock = bSelectingLock_Old;	/* 選択状態のロック */
 		}
 		else{
-			/* �I��͈͂̕ύX */
+			/* 選択範囲の変更 */
 			//	2005.06.24 Moca
 			m_pCommanderView->GetSelectionInfo().SetSelectArea( sRangeA );
 
 			if( bRedraw ){
-				/* �I��̈�`�� */
+				/* 選択領域描画 */
 				m_pCommanderView->GetSelectionInfo().DrawSelectArea();
 			}
 		}
 
-		/* �J�[�\���ړ� */
+		/* カーソル移動 */
 		//	Sep. 8, 2000 genta
-		if ( m_pCommanderView->GetDrawSwitch() ) m_pCommanderView->AddCurrentLineToHistory();	// 2002.02.16 hor ���ׂĒu���̂Ƃ��͕s�v
+		if ( m_pCommanderView->GetDrawSwitch() ) m_pCommanderView->AddCurrentLineToHistory();	// 2002.02.16 hor すべて置換のときは不要
 		GetCaret().MoveCursor( sRangeA.GetFrom(), bRedraw );
 		GetCaret().m_nCaretPosX_Prev = GetCaret().GetCaretLayoutPos().GetX2();
 		bFound = TRUE;
 	}
 	else{
 		if( bSelecting ){
-			m_pCommanderView->GetSelectionInfo().m_bSelectingLock = bSelectingLock_Old;	/* �I����Ԃ̃��b�N */
+			m_pCommanderView->GetSelectionInfo().m_bSelectingLock = bSelectingLock_Old;	/* 選択状態のロック */
 
-			/* �I��͈͂̕ύX */
-			m_pCommanderView->GetSelectionInfo().m_sSelectBgn = sSelectBgn_Old; //�͈͑I��(���_)
+			/* 選択範囲の変更 */
+			m_pCommanderView->GetSelectionInfo().m_sSelectBgn = sSelectBgn_Old; //範囲選択(原点)
 			m_pCommanderView->GetSelectionInfo().m_sSelectOld = sSelect_Old;	// 2011.12.24
 			GetSelect().SetFrom(sSelect_Old.GetFrom());
 			GetSelect().SetTo(sRangeA.GetFrom());
 
-			/* �J�[�\���ړ� */
+			/* カーソル移動 */
 			GetCaret().MoveCursor( sRangeA.GetFrom(), bRedraw );
 			GetCaret().m_nCaretPosX_Prev = GetCaret().GetCaretLayoutPos().GetX2();
 
 			if( bRedraw ){
-				/* �I��̈�`�� */
+				/* 選択領域描画 */
 				m_pCommanderView->GetSelectionInfo().DrawSelectArea();
 			}
 		}else{
 			if( bDisableSelect ){
-				// 2011.12.21 ���W�b�N�J�[�\���ʒu�̏C��/�J�[�\�����E�Ί��ʂ̕\��
+				// 2011.12.21 ロジックカーソル位置の修正/カーソル線・対括弧の表示
 				CLogicPoint ptLogic;
 				GetDocument()->m_cLayoutMgr.LayoutToLogic(GetCaret().GetCaretLayoutPos(), &ptLogic);
 				GetCaret().SetCaretLogicPos(ptLogic);
@@ -257,33 +257,33 @@ re_do:;
 	}
 
 end_of_func:;
-// From Here 2002.01.26 hor �擪�i�����j����Č���
+// From Here 2002.01.26 hor 先頭（末尾）から再検索
 	if(GetDllShareData().m_Common.m_sSearch.m_bSearchAll){
-		if(!bFound	&&		// ������Ȃ�����
-			bRedo	&&		// �ŏ��̌���
-			m_pCommanderView->GetDrawSwitch()	// �S�Ēu���̎��s������Ȃ�
+		if(!bFound	&&		// 見つからなかった
+			bRedo	&&		// 最初の検索
+			m_pCommanderView->GetDrawSwitch()	// 全て置換の実行中じゃない
 		){
 			nLineNum	= CLayoutInt(0);
 			nIdx		= CLogicInt(0);
 			bRedo		= false;
-			goto re_do;		// �擪����Č���
+			goto re_do;		// 先頭から再検索
 		}
 	}
 
 	if(bFound){
 		if((nLineNumOld > nLineNum)||(nLineNumOld == nLineNum && nIdxOld > nIdx))
-			m_pCommanderView->SendStatusMessage(_T("���擪����Č������܂���"));
+			m_pCommanderView->SendStatusMessage(_T("▼先頭から再検索しました"));
 	}
 	else{
 		GetCaret().ShowEditCaret();	// 2002/04/18 YAZAKI
 		GetCaret().ShowCaretPosInfo();	// 2002/04/18 YAZAKI
-		m_pCommanderView->SendStatusMessage(_T("��������܂���ł���"));
+		m_pCommanderView->SendStatusMessage(_T("▽見つかりませんでした"));
 	}
 }
 
 
 
-/* �O������ */
+/* 前を検索 */
 void CViewCommander::Command_SEARCH_PREV( bool bReDraw, HWND hwndParent )
 {
 	bool		bSelecting;
@@ -305,25 +305,25 @@ void CViewCommander::Command_SEARCH_PREV( bool bReDraw, HWND hwndParent )
 
 	bSelecting = false;
 	// 2002.01.16 hor
-	// ���ʕ����̂����肾��
+	// 共通部分のくくりだし
 	if(!m_pCommanderView->ChangeCurRegexp()){
 		return;
 	}
 	if( 0 == m_pCommanderView->m_strCurSearchKey.size() ){
 		goto end_of_func;
 	}
-	if( m_pCommanderView->GetSelectionInfo().IsTextSelected() ){	/* �e�L�X�g���I������Ă��邩 */
-		sSelectBgn_Old = m_pCommanderView->GetSelectionInfo().m_sSelectBgn; //�͈͑I��(���_)
+	if( m_pCommanderView->GetSelectionInfo().IsTextSelected() ){	/* テキストが選択されているか */
+		sSelectBgn_Old = m_pCommanderView->GetSelectionInfo().m_sSelectBgn; //範囲選択(原点)
 		sSelect_Old = GetSelect();
 		
 		bSelectingLock_Old = m_pCommanderView->GetSelectionInfo().m_bSelectingLock;
 
-		/* ��`�͈͑I�𒆂� */
-		if( !m_pCommanderView->GetSelectionInfo().IsBoxSelecting() && TRUE == m_pCommanderView->GetSelectionInfo().m_bSelectingLock ){	/* �I����Ԃ̃��b�N */
+		/* 矩形範囲選択中か */
+		if( !m_pCommanderView->GetSelectionInfo().IsBoxSelecting() && TRUE == m_pCommanderView->GetSelectionInfo().m_bSelectingLock ){	/* 選択状態のロック */
 			bSelecting = true;
 		}
 		else{
-			/* ���݂̑I��͈͂��I����Ԃɖ߂� */
+			/* 現在の選択範囲を非選択状態に戻す */
 			m_pCommanderView->GetSelectionInfo().DisableSelectArea( bReDraw, false );
 			bDisableSelect = true;
 		}
@@ -334,8 +334,8 @@ void CViewCommander::Command_SEARCH_PREV( bool bReDraw, HWND hwndParent )
 
 
 	if( NULL == pcLayout ){
-		// pcLayout��NULL�ƂȂ�̂́A[EOF]����O���������ꍇ
-		// �P�s�O�Ɉړ����鏈��
+		// pcLayoutはNULLとなるのは、[EOF]から前検索した場合
+		// １行前に移動する処理
 		nLineNum--;
 		if( nLineNum < 0 ){
 			goto end_of_func;
@@ -344,11 +344,11 @@ void CViewCommander::Command_SEARCH_PREV( bool bReDraw, HWND hwndParent )
 		if( NULL == pcLayout ){
 			goto end_of_func;
 		}
-		// �J�[�\�����ړ��͂�߂� nIdx�͍s�̒����Ƃ��Ȃ���[EOF]������s��O�����������ɍŌ�̉��s�������ł��Ȃ� 2003.05.04 �����
+		// カーソル左移動はやめて nIdxは行の長さとしないと[EOF]から改行を前検索した時に最後の改行を検索できない 2003.05.04 かろと
 		CLayout* pCLayout = GetDocument()->m_cLayoutMgr.SearchLineByLayoutY( nLineNum );
-		nIdx = CLogicInt(pCLayout->GetDocLineRef()->GetLengthWithEOL() + 1);		// �s���̃k������(\0)�Ƀ}�b�`�����邽�߂�+1 2003.05.16 �����
+		nIdx = CLogicInt(pCLayout->GetDocLineRef()->GetLengthWithEOL() + 1);		// 行末のヌル文字(\0)にマッチさせるために+1 2003.05.16 かろと
 	} else {
-		/* �w�肳�ꂽ���ɑΉ�����s�̃f�[�^���̈ʒu�𒲂ׂ� */
+		/* 指定された桁に対応する行のデータ内の位置を調べる */
 		nIdx = m_pCommanderView->LineColumnToIndex( pcLayout, GetCaret().GetCaretLayoutPos().GetX2() );
 	}
 
@@ -356,31 +356,31 @@ void CViewCommander::Command_SEARCH_PREV( bool bReDraw, HWND hwndParent )
 	nLineNumOld	=	nLineNum;	//	hor
 	nIdxOld		=	nIdx;		//	hor
 re_do:;							//	hor
-	/* ���݈ʒu���O�̈ʒu���������� */
+	/* 現在位置より前の位置を検索する */
 	if( GetDocument()->m_cLayoutMgr.SearchWord(
-		nLineNum,								// �����J�n���C�A�E�g�s
-		nIdx,									// �����J�n�f�[�^�ʒu
-		m_pCommanderView->m_strCurSearchKey.c_str(),							// ��������
-		SEARCH_BACKWARD,						// 0==�O������ 1==�������
-		m_pCommanderView->m_sCurSearchOption,						// �����I�v�V����
-		&sRangeA,								// �}�b�`���C�A�E�g�͈�
-		&m_pCommanderView->m_CurRegexp							// ���K�\���R���p�C���f�[�^
+		nLineNum,								// 検索開始レイアウト行
+		nIdx,									// 検索開始データ位置
+		m_pCommanderView->m_strCurSearchKey.c_str(),							// 検索条件
+		SEARCH_BACKWARD,						// 0==前方検索 1==後方検索
+		m_pCommanderView->m_sCurSearchOption,						// 検索オプション
+		&sRangeA,								// マッチレイアウト範囲
+		&m_pCommanderView->m_CurRegexp							// 正規表現コンパイルデータ
 	) ){
 		if( bSelecting ){
-			/* ���݂̃J�[�\���ʒu�ɂ���đI��͈͂�ύX */
+			/* 現在のカーソル位置によって選択範囲を変更 */
 			m_pCommanderView->GetSelectionInfo().ChangeSelectAreaByCurrentCursor( sRangeA.GetFrom() );
-			m_pCommanderView->GetSelectionInfo().m_bSelectingLock = bSelectingLock_Old;	/* �I����Ԃ̃��b�N */
+			m_pCommanderView->GetSelectionInfo().m_bSelectingLock = bSelectingLock_Old;	/* 選択状態のロック */
 		}else{
-			/* �I��͈͂̕ύX */
+			/* 選択範囲の変更 */
 			//	2005.06.24 Moca
 			m_pCommanderView->GetSelectionInfo().SetSelectArea( sRangeA );
 
 			if( bReDraw ){
-				/* �I��̈�`�� */
+				/* 選択領域描画 */
 				m_pCommanderView->GetSelectionInfo().DrawSelectArea();
 			}
 		}
-		/* �J�[�\���ړ� */
+		/* カーソル移動 */
 		//	Sep. 8, 2000 genta
 		m_pCommanderView->AddCurrentLineToHistory();
 		GetCaret().MoveCursor( sRangeA.GetFrom(), bReDraw );
@@ -388,15 +388,15 @@ re_do:;							//	hor
 		bFound = TRUE;
 	}else{
 		if( bSelecting ){
-			m_pCommanderView->GetSelectionInfo().m_bSelectingLock = bSelectingLock_Old;	/* �I����Ԃ̃��b�N */
-			/* �I��͈͂̕ύX */
+			m_pCommanderView->GetSelectionInfo().m_bSelectingLock = bSelectingLock_Old;	/* 選択状態のロック */
+			/* 選択範囲の変更 */
 			m_pCommanderView->GetSelectionInfo().m_sSelectBgn = sSelectBgn_Old;
 			GetSelect() = sSelect_Old;
 
-			/* �J�[�\���ړ� */
+			/* カーソル移動 */
 			GetCaret().MoveCursor( sRangeA.GetFrom(), bReDraw );
 			GetCaret().m_nCaretPosX_Prev = GetCaret().GetCaretLayoutPos().GetX2();
-			/* �I��̈�`�� */
+			/* 選択領域描画 */
 			m_pCommanderView->GetSelectionInfo().DrawSelectArea();
 		}else{
 			if( bDisableSelect ){
@@ -405,82 +405,82 @@ re_do:;							//	hor
 		}
 	}
 end_of_func:;
-// From Here 2002.01.26 hor �擪�i�����j����Č���
+// From Here 2002.01.26 hor 先頭（末尾）から再検索
 	if(GetDllShareData().m_Common.m_sSearch.m_bSearchAll){
-		if(!bFound	&&	// ������Ȃ�����
-			bRedo		// �ŏ��̌���
+		if(!bFound	&&	// 見つからなかった
+			bRedo		// 最初の検索
 		){
 			nLineNum	= GetDocument()->m_cLayoutMgr.GetLineCount()-CLayoutInt(1);
 			nIdx		= CLogicInt(MAXLINEKETAS);
 			bRedo		= false;
-			goto re_do;	// ��������Č���
+			goto re_do;	// 末尾から再検索
 		}
 	}
 	if(bFound){
 		if((nLineNumOld < nLineNum)||(nLineNumOld == nLineNum && nIdxOld < nIdx))
-			m_pCommanderView->SendStatusMessage(_T("����������Č������܂���"));
+			m_pCommanderView->SendStatusMessage(_T("▲末尾から再検索しました"));
 	}else{
-		m_pCommanderView->SendStatusMessage(_T("��������܂���ł���"));
+		m_pCommanderView->SendStatusMessage(_T("△見つかりませんでした"));
 	}
 	return;
 }
 
 
 
-//�u��(�u���_�C�A���O)
+//置換(置換ダイアログ)
 void CViewCommander::Command_REPLACE_DIALOG( void )
 {
 	BOOL		bSelected = FALSE;
 
-	/* ���݃J�[�\���ʒu�P��܂��͑I��͈͂�茟�����̃L�[���擾 */
+	/* 現在カーソル位置単語または選択範囲より検索等のキーを取得 */
 	CNativeW	cmemCurText;
-	m_pCommanderView->GetCurrentTextForSearchDlg( cmemCurText );	// 2006.08.23 ryoji �_�C�A���O��p�֐��ɕύX
+	m_pCommanderView->GetCurrentTextForSearchDlg( cmemCurText );	// 2006.08.23 ryoji ダイアログ専用関数に変更
 
-	/* ����������������� */
+	/* 検索文字列を初期化 */
 	if( 0 < cmemCurText.GetStringLength() ){
 		GetEditWindow()->m_cDlgReplace.m_strText = cmemCurText.GetStringPtr();
 	}
 	if( 0 < GetDllShareData().m_sSearchKeywords.m_aReplaceKeys.size() ){
 		if( GetEditWindow()->m_cDlgReplace.m_nReplaceKeySequence < GetDllShareData().m_Common.m_sSearch.m_nReplaceKeySequence ){
-			GetEditWindow()->m_cDlgReplace.m_strText2 = GetDllShareData().m_sSearchKeywords.m_aReplaceKeys[0];	// 2006.08.23 ryoji �O��̒u���㕶����������p��
+			GetEditWindow()->m_cDlgReplace.m_strText2 = GetDllShareData().m_sSearchKeywords.m_aReplaceKeys[0];	// 2006.08.23 ryoji 前回の置換後文字列を引き継ぐ
 		}
 	}
 	
 	if ( m_pCommanderView->GetSelectionInfo().IsTextSelected() && !GetSelect().IsLineOne() ) {
-		bSelected = TRUE;	//�I��͈͂��`�F�b�N���ă_�C�A���O�\��
+		bSelected = TRUE;	//選択範囲をチェックしてダイアログ表示
 	}else{
-		bSelected = FALSE;	//�t�@�C���S�̂��`�F�b�N���ă_�C�A���O�\��
+		bSelected = FALSE;	//ファイル全体をチェックしてダイアログ表示
 	}
-	/* �u���I�v�V�����̏����� */
-	GetEditWindow()->m_cDlgReplace.m_nReplaceTarget=0;	/* �u���Ώ� */
-	GetEditWindow()->m_cDlgReplace.m_nPaste=FALSE;		/* �\��t����H */
+	/* 置換オプションの初期化 */
+	GetEditWindow()->m_cDlgReplace.m_nReplaceTarget=0;	/* 置換対象 */
+	GetEditWindow()->m_cDlgReplace.m_nPaste=FALSE;		/* 貼り付ける？ */
 // To Here 2001.12.03 hor
 
-	/* �u���_�C�A���O�̕\�� */
-	//	From Here Jul. 2, 2001 genta �u���E�B���h�E��2�d�J����}�~
+	/* 置換ダイアログの表示 */
+	//	From Here Jul. 2, 2001 genta 置換ウィンドウの2重開きを抑止
 	if( !::IsWindow( GetEditWindow()->m_cDlgReplace.GetHwnd() ) ){
 		GetEditWindow()->m_cDlgReplace.DoModeless( G_AppInstance(), m_pCommanderView->GetHwnd(), (LPARAM)m_pCommanderView, bSelected );
 	}
 	else {
-		/* �A�N�e�B�u�ɂ��� */
+		/* アクティブにする */
 		ActivateFrameWindow( GetEditWindow()->m_cDlgReplace.GetHwnd() );
 		::DlgItem_SetText( GetEditWindow()->m_cDlgReplace.GetHwnd(), IDC_COMBO_TEXT, cmemCurText.GetStringT() );
 	}
-	//	To Here Jul. 2, 2001 genta �u���E�B���h�E��2�d�J����}�~
+	//	To Here Jul. 2, 2001 genta 置換ウィンドウの2重開きを抑止
 	return;
 }
 
 
 
-/*! �u�����s
+/*! 置換実行
 	
-	@date 2002/04/08 �e�E�B���h�E���w�肷��悤�ɕύX�B
-	@date 2003.05.17 ����� �����O�}�b�`�̖����u������Ȃ�
-	@date 2011.12.18 Moca �I�v�V�����E�����L�[��DllShareData����m_cDlgReplace/EditView�x�[�X�ɕύX�B�����񒷐����̓P�p
+	@date 2002/04/08 親ウィンドウを指定するように変更。
+	@date 2003.05.17 かろと 長さ０マッチの無限置換回避など
+	@date 2011.12.18 Moca オプション・検索キーをDllShareDataからm_cDlgReplace/EditViewベースに変更。文字列長制限の撤廃
 */
 void CViewCommander::Command_REPLACE( HWND hwndParent )
 {
-	if ( hwndParent == NULL ){	//	�e�E�B���h�E���w�肳��Ă��Ȃ���΁ACEditView���e�B
+	if ( hwndParent == NULL ){	//	親ウィンドウが指定されていなければ、CEditViewが親。
 		hwndParent = m_pCommanderView->GetHwnd();
 	}
 	//2002.02.10 hor
@@ -489,14 +489,14 @@ void CViewCommander::Command_REPLACE( HWND hwndParent )
 
 	// From Here 2001.12.03 hor
 	if( nPaste && !GetDocument()->m_cDocEditor.IsEnablePaste()){
-		OkMessage( hwndParent, _T("�N���b�v�{�[�h�ɗL���ȃf�[�^������܂���I") );
+		OkMessage( hwndParent, _T("クリップボードに有効なデータがありません！") );
 		::CheckDlgButton( GetEditWindow()->m_cDlgReplace.GetHwnd(), IDC_CHK_PASTE, FALSE );
 		::EnableWindow( ::GetDlgItem( GetEditWindow()->m_cDlgReplace.GetHwnd(), IDC_COMBO_TEXT2 ), TRUE );
-		return;	//	���sreturn;
+		return;	//	失敗return;
 	}
 
 	// 2002.01.09 hor
-	// �I���G���A������΁A���̐擪�ɃJ�[�\�����ڂ�
+	// 選択エリアがあれば、その先頭にカーソルを移す
 	if( m_pCommanderView->GetSelectionInfo().IsTextSelected() ){
 		if( m_pCommanderView->GetSelectionInfo().IsBoxSelecting() ){
 			GetCaret().MoveCursor( GetSelect().GetFrom(), true );
@@ -506,74 +506,74 @@ void CViewCommander::Command_REPLACE( HWND hwndParent )
 	}
 	// To Here 2002.01.09 hor
 	
-	// ��`�I���H
+	// 矩形選択？
 //			bBeginBoxSelect = m_pCommanderView->GetSelectionInfo().IsBoxSelecting();
 
-	/* �J�[�\�����ړ� */
-	//HandleCommand( F_LEFT, true, 0, 0, 0, 0 );	//�H�H�H
+	/* カーソル左移動 */
+	//HandleCommand( F_LEFT, true, 0, 0, 0, 0 );	//？？？
 	// To Here 2001.12.03 hor
 
-	/* �e�L�X�g�I������ */
-	/* ���݂̑I��͈͂��I����Ԃɖ߂� */
+	/* テキスト選択解除 */
+	/* 現在の選択範囲を非選択状態に戻す */
 	m_pCommanderView->GetSelectionInfo().DisableSelectArea( true );
 
-	// 2004.06.01 Moca �������ɁA���̃v���Z�X�ɂ����m_aReplaceKeys�������������Ă����v�Ȃ悤��
+	// 2004.06.01 Moca 検索中に、他のプロセスによってm_aReplaceKeysが書き換えられても大丈夫なように
 	const CNativeW	cMemRepKey( GetEditWindow()->m_cDlgReplace.m_strText2.c_str() );
 
-	/* �������� */
+	/* 次を検索 */
 	Command_SEARCH_NEXT( true, TRUE, hwndParent, 0 );
 
 	BOOL	bRegularExp = m_pCommanderView->m_sCurSearchOption.bRegularExp;
 	int 	nFlag       = m_pCommanderView->m_sCurSearchOption.bLoHiCase ? 0x01 : 0x00;
 
-	/* �e�L�X�g���I������Ă��邩 */
+	/* テキストが選択されているか */
 	if( m_pCommanderView->GetSelectionInfo().IsTextSelected() ){
 		// From Here 2001.12.03 hor
 		CLayoutPoint ptTmp(0,0);
 		if ( nPaste || !bRegularExp ) {
-			// ���K�\������ ����Q��($&)�Ŏ�������̂ŁA���K�\���͏��O
-			if(nReplaceTarget==1){	//�}���ʒu�ֈړ�
+			// 正規表現時は 後方参照($&)で実現するので、正規表現は除外
+			if(nReplaceTarget==1){	//挿入位置へ移動
 				ptTmp = GetSelect().GetTo() - GetSelect().GetFrom();
 				GetSelect().Clear(-1);
 			}
-			else if(nReplaceTarget==2){	//�ǉ��ʒu�ֈړ�
-				// ���K�\�������O�����̂ŁA�u������̕��������s������玟�̍s�̐擪�ֈړ��v�̏������폜
+			else if(nReplaceTarget==2){	//追加位置へ移動
+				// 正規表現を除外したので、「検索後の文字が改行やったら次の行の先頭へ移動」の処理を削除
 				GetCaret().MoveCursor(GetSelect().GetTo(), false);
 				GetSelect().Clear(-1);
 			}
 			else{
-				// �ʒu�w��Ȃ��̂ŁA�������Ȃ�
+				// 位置指定ないので、何もしない
 			}
 		}
-		/* �R�}���h�R�[�h�ɂ�鏈���U�蕪�� */
-		/* �e�L�X�g��\��t�� */
+		/* コマンドコードによる処理振り分け */
+		/* テキストを貼り付け */
 		if(nPaste){
 			Command_PASTE(0);
-		} else if ( bRegularExp ) { /* �����^�u��  1==���K�\�� */
-			// ��ǂ݂ɑΉ����邽�߂ɕ����s���܂ł��g���悤�ɕύX 2005/03/27 �����
-			// 2002/01/19 novice ���K�\���ɂ�镶����u��
+		} else if ( bRegularExp ) { /* 検索／置換  1==正規表現 */
+			// 先読みに対応するために物理行末までを使うように変更 2005/03/27 かろと
+			// 2002/01/19 novice 正規表現による文字列置換
 			CBregexp cRegexp;
 
 			if( !InitRegexp( m_pCommanderView->GetHwnd(), cRegexp, true ) ){
-				return;	//	���sreturn;
+				return;	//	失敗return;
 			}
 
-			// �����s�A�����s���A�����s�ł̌����}�b�`�ʒu
+			// 物理行、物理行長、物理行での検索マッチ位置
 			const CLayout* pcLayout = GetDocument()->m_cLayoutMgr.SearchLineByLayoutY(GetSelect().GetFrom().GetY2());
 			const wchar_t* pLine = pcLayout->GetDocLineRef()->GetPtr();
 			CLogicInt nIdx = m_pCommanderView->LineColumnToIndex( pcLayout, GetSelect().GetFrom().GetX2() ) + pcLayout->GetLogicOffset();
 			CLogicInt nLen = pcLayout->GetDocLineRef()->GetLengthWithEOL();
-			// ���K�\���őI���n�_�E�I�_�ւ̑}�����L�q
-			//	Jun. 6, 2005 �����
-			// ������ł́u�����̌��̕��������s�������玟�̍s���ֈړ��v�������ł��Ȃ�
-			// �� Oct. 30, �u�����̌��̕��������s��������E�E�v�̏�������߂�i�N������Ȃ��݂����Ȃ̂Łj
-			// Nov. 9, 2005 ����� ���K�\���őI���n�_�E�I�_�ւ̑}�����@��ύX(��)
+			// 正規表現で選択始点・終点への挿入を記述
+			//	Jun. 6, 2005 かろと
+			// →これでは「検索の後ろの文字が改行だったら次の行頭へ移動」が処理できない
+			// → Oct. 30, 「検索の後ろの文字が改行だったら・・」の処理をやめる（誰もしらないみたいなので）
+			// Nov. 9, 2005 かろと 正規表現で選択始点・終点への挿入方法を変更(再)
 			CNativeW cMemMatchStr; cMemMatchStr.SetString(L"$&");
 			CNativeW cMemRepKey2;
-			if (nReplaceTarget == 1) {	//�I���n�_�֑}��
+			if (nReplaceTarget == 1) {	//選択始点へ挿入
 				cMemRepKey2 = cMemRepKey;
 				cMemRepKey2 += cMemMatchStr;
-			} else if (nReplaceTarget == 2) { // �I���I�_�֑}��
+			} else if (nReplaceTarget == 2) { // 選択終点へ挿入
 				cMemRepKey2 = cMemMatchStr;
 				cMemRepKey2 += cMemRepKey;
 			} else {
@@ -581,72 +581,72 @@ void CViewCommander::Command_REPLACE( HWND hwndParent )
 			}
 			cRegexp.Compile( m_pCommanderView->m_strCurSearchKey.c_str(), cMemRepKey2.GetStringPtr(), nFlag);
 			if( cRegexp.Replace(pLine, nLen, nIdx) ){
-				// From Here Jun. 6, 2005 �����
-				// �����s���܂�INSTEXT������@�́A�L�����b�g�ʒu�𒲐�����K�v������A
-				// �L�����b�g�ʒu�̌v�Z�����G�ɂȂ�B�i�u����ɉ��s������ꍇ�ɕs������j
-				// �����ŁAINSTEXT���镶���񒷂𒲐�������@�ɕύX����i���͂������̕����킩��₷���j
+				// From Here Jun. 6, 2005 かろと
+				// 物理行末までINSTEXTする方法は、キャレット位置を調整する必要があり、
+				// キャレット位置の計算が複雑になる。（置換後に改行がある場合に不具合発生）
+				// そこで、INSTEXTする文字列長を調整する方法に変更する（実はこっちの方がわかりやすい）
 				CLayoutMgr& rLayoutMgr = GetDocument()->m_cLayoutMgr;
 				CLogicInt matchLen = cRegexp.GetMatchLen();
-				CLogicInt nIdxTo = nIdx + matchLen;		// ����������̖���
+				CLogicInt nIdxTo = nIdx + matchLen;		// 検索文字列の末尾
 				if (matchLen == 0) {
-					// �O�����}�b�`�̎�(�����u���ɂȂ�Ȃ��悤�ɂP�����i�߂�)
+					// ０文字マッチの時(無限置換にならないように１文字進める)
 					if (nIdxTo < nLen) {
 						// 2005-09-02 D.S.Koba GetSizeOfChar
 						nIdxTo += CLogicInt(CNativeW::GetSizeOfChar(pLine, nLen, nIdxTo) == 2 ? 2 : 1);
 					}
-					// �����u�����Ȃ��悤�ɁA�P�������₵���̂łP�����I���ɕύX
-					// �I���n�_�E�I�_�ւ̑}���̏ꍇ���O�����}�b�`���͓���͓����ɂȂ�̂�
-					rLayoutMgr.LogicToLayout( CLogicPoint(nIdxTo, pcLayout->GetLogicLineNo()), GetSelect().GetToPointer() );	// 2007.01.19 ryoji �s�ʒu���擾����
+					// 無限置換しないように、１文字増やしたので１文字選択に変更
+					// 選択始点・終点への挿入の場合も０文字マッチ時は動作は同じになるので
+					rLayoutMgr.LogicToLayout( CLogicPoint(nIdxTo, pcLayout->GetLogicLineNo()), GetSelect().GetToPointer() );	// 2007.01.19 ryoji 行位置も取得する
 				}
-				// �s�����猟�������񖖔��܂ł̕�����
+				// 行末から検索文字列末尾までの文字数
 				CLogicInt colDiff = nLen - nIdxTo;
 				//	Oct. 22, 2005 Karoto
-				//	\r��u������Ƃ��̌���\n�������Ă��܂����̑Ή�
+				//	\rを置換するとその後ろの\nが消えてしまう問題の対応
 				if (colDiff < pcLayout->GetDocLineRef()->GetEol().GetLen()) {
-					// ���s�ɂ������Ă�����A�s�S�̂�INSTEXT����B
+					// 改行にかかっていたら、行全体をINSTEXTする。
 					colDiff = CLogicInt(0);
-					rLayoutMgr.LogicToLayout( CLogicPoint(nLen, pcLayout->GetLogicLineNo()), GetSelect().GetToPointer() );	// 2007.01.19 ryoji �ǉ�
+					rLayoutMgr.LogicToLayout( CLogicPoint(nLen, pcLayout->GetLogicLineNo()), GetSelect().GetToPointer() );	// 2007.01.19 ryoji 追加
 				}
-				// �u���㕶����ւ̏�������(�s�����猟�������񖖔��܂ł̕���������)
+				// 置換後文字列への書き換え(行末から検索文字列末尾までの文字を除く)
 				Command_INSTEXT( false, cRegexp.GetString(), cRegexp.GetStringLen() - colDiff, TRUE );
-				// To Here Jun. 6, 2005 �����
+				// To Here Jun. 6, 2005 かろと
 			}
 		}else{
 			//	HandleCommand( F_INSTEXT_W, false, (LPARAM)GetDllShareData().m_sSearchKeywords.m_aReplaceKeys[0], FALSE, 0, 0 );
 			Command_INSTEXT( false, cMemRepKey.GetStringPtr(), cMemRepKey.GetStringLength(), TRUE );
 		}
 
-		// �}����̌����J�n�ʒu�𒲐�
+		// 挿入後の検索開始位置を調整
 		if(nReplaceTarget==1){
 			GetCaret().SetCaretLayoutPos(GetCaret().GetCaretLayoutPos()+ptTmp);
 		}
 
 		// To Here 2001.12.03 hor
-		/* �Ō�܂Œu����������OK�����܂Œu���O�̏�Ԃ��\�������̂ŁA
-		** �u����A������������O�ɏ������� 2003.05.17 �����
+		/* 最後まで置換した時にOK押すまで置換前の状態が表示されるので、
+		** 置換後、次を検索する前に書き直す 2003.05.17 かろと
 		*/
 		m_pCommanderView->Redraw();
 
-		/* �������� */
-		Command_SEARCH_NEXT( true, TRUE, hwndParent, LTEXT("�Ō�܂Œu�����܂����B") );
+		/* 次を検索 */
+		Command_SEARCH_NEXT( true, TRUE, hwndParent, LTEXT("最後まで置換しました。") );
 	}
 }
 
 
 
-/*! ���ׂĒu�����s
+/*! すべて置換実行
 
-	@date 2003.05.22 ����� �����}�b�`�΍�D�s���E�s�������Ȃǌ�����
-	@date 2006.03.31 ����� �s�u���@�\�ǉ�
-	@date 2007.01.16 ryoji �s�u���@�\��S�u���̃I�v�V�����ɕύX
-	@date 2009.09.20 genta �����`�E��ŋ�`�I�����ꂽ�̈�̒u�����s���Ȃ�
-	@date 2010.09.17 ryoji ���C�����[�h�\��t��������ǉ�
-	@date 2011.12.18 Moca �I�v�V�����E�����L�[��DllShareData����m_cDlgReplace/EditView�x�[�X�ɕύX�B�����񒷐����̓P�p
+	@date 2003.05.22 かろと 無限マッチ対策．行頭・行末処理など見直し
+	@date 2006.03.31 かろと 行置換機能追加
+	@date 2007.01.16 ryoji 行置換機能を全置換のオプションに変更
+	@date 2009.09.20 genta 左下〜右上で矩形選択された領域の置換が行われない
+	@date 2010.09.17 ryoji ラインモード貼り付け処理を追加
+	@date 2011.12.18 Moca オプション・検索キーをDllShareDataからm_cDlgReplace/EditViewベースに変更。文字列長制限の撤廃
 */
 void CViewCommander::Command_REPLACE_ALL()
 {
 
-	// m_sSearchOption�I���̂��߂̐�ɓK�p
+	// m_sSearchOption選択のための先に適用
 	if( !m_pCommanderView->ChangeCurRegexp() ){
 		return;
 	}
@@ -656,21 +656,21 @@ void CViewCommander::Command_REPLACE_ALL()
 	BOOL nReplaceTarget	= GetEditWindow()->m_cDlgReplace.m_nReplaceTarget;
 	BOOL bRegularExp	= m_pCommanderView->m_sCurSearchOption.bRegularExp;
 	BOOL bSelectedArea	= GetEditWindow()->m_cDlgReplace.m_bSelectedArea;
-	BOOL bConsecutiveAll = GetEditWindow()->m_cDlgReplace.m_bConsecutiveAll;	/* �u���ׂĒu���v�͒u���̌J�Ԃ� */	// 2007.01.16 ryoji
+	BOOL bConsecutiveAll = GetEditWindow()->m_cDlgReplace.m_bConsecutiveAll;	/* 「すべて置換」は置換の繰返し */	// 2007.01.16 ryoji
 
 	GetEditWindow()->m_cDlgReplace.m_bCanceled=false;
 	GetEditWindow()->m_cDlgReplace.m_nReplaceCnt=0;
 
 	// From Here 2001.12.03 hor
 	if( nPaste && !GetDocument()->m_cDocEditor.IsEnablePaste() ){
-		OkMessage( m_pCommanderView->GetHwnd(), _T("�N���b�v�{�[�h�ɗL���ȃf�[�^������܂���I") );
+		OkMessage( m_pCommanderView->GetHwnd(), _T("クリップボードに有効なデータがありません！") );
 		::CheckDlgButton( m_pCommanderView->GetHwnd(), IDC_CHK_PASTE, FALSE );
 		::EnableWindow( ::GetDlgItem( m_pCommanderView->GetHwnd(), IDC_COMBO_TEXT2 ), TRUE );
 		return;	// TRUE;
 	}
 	// To Here 2001.12.03 hor
 
-	bool		bBeginBoxSelect; // ��`�I���H
+	bool		bBeginBoxSelect; // 矩形選択？
 	if(m_pCommanderView->GetSelectionInfo().IsTextSelected()){
 		bBeginBoxSelect=m_pCommanderView->GetSelectionInfo().IsBoxSelecting();
 	}
@@ -679,21 +679,21 @@ void CViewCommander::Command_REPLACE_ALL()
 		bBeginBoxSelect=false;
 	}
 
-	/* �\������ON/OFF */
+	/* 表示処理ON/OFF */
 	bool bDisplayUpdate = false;
 
 	m_pCommanderView->SetDrawSwitch(bDisplayUpdate);
 
 	int	nAllLineNum = (Int)GetDocument()->m_cLayoutMgr.GetLineCount();
 
-	/* �i���\��&���~�_�C�A���O�̍쐬 */
+	/* 進捗表示&中止ダイアログの作成 */
 	CDlgCancel	cDlgCancel;
 	HWND		hwndCancel = cDlgCancel.DoModeless( G_AppInstance(), m_pCommanderView->GetHwnd(), IDD_REPLACERUNNING );
 	::EnableWindow( m_pCommanderView->GetHwnd(), FALSE );
 	::EnableWindow( ::GetParent( m_pCommanderView->GetHwnd() ), FALSE );
 	::EnableWindow( ::GetParent( ::GetParent( m_pCommanderView->GetHwnd() ) ), FALSE );
 	//<< 2002/03/26 Azumaiya
-	// ����Z�|���Z�������ɐi���󋵂�\����悤�ɁA�V�t�g���Z������B
+	// 割り算掛け算をせずに進歩状況を表せるように、シフト演算をする。
 	int nShiftCount;
 	for ( nShiftCount = 0; SHRT_MAX < nAllLineNum; nShiftCount++ )
 	{
@@ -701,110 +701,110 @@ void CViewCommander::Command_REPLACE_ALL()
 	}
 	//>> 2002/03/26 Azumaiya
 
-	/* �v���O���X�o�[������ */
+	/* プログレスバー初期化 */
 	HWND		hwndProgress = ::GetDlgItem( hwndCancel, IDC_PROGRESS_REPLACE );
 	Progress_SetRange( hwndProgress, 0, nAllLineNum );
 	int			nNewPos = 0;
 	Progress_SetPos( hwndProgress, nNewPos);
 
-	/* �u���������� */
+	/* 置換個数初期化 */
 	int			nReplaceNum = 0;
 	HWND		hwndStatic = ::GetDlgItem( hwndCancel, IDC_STATIC_KENSUU );
 	TCHAR szLabel[64];
 	_itot( nReplaceNum, szLabel, 10 );
 	::SendMessage( hwndStatic, WM_SETTEXT, 0, (LPARAM)szLabel );
 
-	CLayoutRange sRangeA;	//�I��͈�
+	CLayoutRange sRangeA;	//選択範囲
 	CLogicPoint ptColLineP;
 
 	// From Here 2001.12.03 hor
 	if (bSelectedArea){
-		/* �I��͈͒u�� */
-		/* �I��͈͊J�n�ʒu�̎擾 */
+		/* 選択範囲置換 */
+		/* 選択範囲開始位置の取得 */
 		sRangeA = GetSelect();
 
-		//	From Here 2007.09.20 genta ��`�͈͂̑I��u�����ł��Ȃ�
-		//	�����`�E��ƑI�������ꍇ�Cm_nSelectColumnTo < m_nSelectColumnFrom �ƂȂ邪�C
-		//	�͈̓`�F�b�N�� colFrom < colTo �����肵�Ă���̂ŁC
-		//	��`�I���̏ꍇ�͍���`�E���w��ɂȂ�悤������ꊷ����D
+		//	From Here 2007.09.20 genta 矩形範囲の選択置換ができない
+		//	左下〜右上と選択した場合，m_nSelectColumnTo < m_nSelectColumnFrom となるが，
+		//	範囲チェックで colFrom < colTo を仮定しているので，
+		//	矩形選択の場合は左上〜右下指定になるよう桁を入れ換える．
 		if( bBeginBoxSelect && sRangeA.GetTo().x < sRangeA.GetFrom().x )
 			t_swap(sRangeA.GetFromPointer()->x,sRangeA.GetToPointer()->x);
-		//	To Here 2007.09.20 genta ��`�͈͂̑I��u�����ł��Ȃ�
+		//	To Here 2007.09.20 genta 矩形範囲の選択置換ができない
 
 		GetDocument()->m_cLayoutMgr.LayoutToLogic(
 			sRangeA.GetTo(),
 			&ptColLineP
 		);
-		//�I��͈͊J�n�ʒu�ֈړ�
+		//選択範囲開始位置へ移動
 		GetCaret().MoveCursor( sRangeA.GetFrom(), bDisplayUpdate );
 	}
 	else{
-		/* �t�@�C���S�̒u�� */
-		/* �t�@�C���̐擪�Ɉړ� */
+		/* ファイル全体置換 */
+		/* ファイルの先頭に移動 */
 	//	HandleCommand( F_GOFILETOP, bDisplayUpdate, 0, 0, 0, 0 );
 		Command_GOFILETOP(bDisplayUpdate);
 	}
 
 	CLayoutPoint ptLast = GetCaret().GetCaretLayoutPos();
 
-	/* �e�L�X�g�I������ */
-	/* ���݂̑I��͈͂��I����Ԃɖ߂� */
+	/* テキスト選択解除 */
+	/* 現在の選択範囲を非選択状態に戻す */
 	m_pCommanderView->GetSelectionInfo().DisableSelectArea( bDisplayUpdate );
-	/* �������� */
+	/* 次を検索 */
 	Command_SEARCH_NEXT( true, bDisplayUpdate, 0, 0 );
 	// To Here 2001.12.03 hor
 
 	//<< 2002/03/26 Azumaiya
-	// �������������Ƃ��ŗD��ɑg��ł݂܂����B
-	// ���[�v�̊O�ŕ�����̒��������ł���̂ŁA�ꎞ�ϐ����B
-	const wchar_t *szREPLACEKEY;		// �u���㕶����B
-	bool		bColumnSelect = false;	// ��`�\��t�����s�����ǂ����B
-	bool		bLineSelect = false;	// ���C�����[�h�\��t�����s�����ǂ���
-	CNativeW	cmemClip;				// �u���㕶����̃f�[�^�i�f�[�^���i�[���邾���ŁA���[�v���ł͂��̌`�ł̓f�[�^�������܂���j�B
+	// 速く動かすことを最優先に組んでみました。
+	// ループの外で文字列の長さを特定できるので、一時変数化。
+	const wchar_t *szREPLACEKEY;		// 置換後文字列。
+	bool		bColumnSelect = false;	// 矩形貼り付けを行うかどうか。
+	bool		bLineSelect = false;	// ラインモード貼り付けを行うかどうか
+	CNativeW	cmemClip;				// 置換後文字列のデータ（データを格納するだけで、ループ内ではこの形ではデータを扱いません）。
 
-	// �N���b�v�{�[�h����̃f�[�^�\��t�����ǂ����B
+	// クリップボードからのデータ貼り付けかどうか。
 	if( nPaste != 0 )
 	{
-		// �N���b�v�{�[�h����f�[�^���擾�B
+		// クリップボードからデータを取得。
 		if ( !m_pCommanderView->MyGetClipboardData( cmemClip, &bColumnSelect, GetDllShareData().m_Common.m_sEdit.m_bEnableLineModePaste? &bLineSelect: NULL ) )
 		{
 			ErrorBeep();
 			return;
 		}
 
-		// ��`�\��t����������Ă��āA�N���b�v�{�[�h�̃f�[�^����`�I���̂Ƃ��B
+		// 矩形貼り付けが許可されていて、クリップボードのデータが矩形選択のとき。
 		if ( GetDllShareData().m_Common.m_sEdit.m_bAutoColumnPaste && bColumnSelect )
 		{
-			// �}�E�X�ɂ��͈͑I��
+			// マウスによる範囲選択中
 			if( m_pCommanderView->GetSelectionInfo().IsMouseSelecting() )
 			{
 				ErrorBeep();
 				return;
 			}
 
-			// ���݂̃t�H���g�͌Œ蕝�t�H���g�ł���
+			// 現在のフォントは固定幅フォントである
 			if( !GetDllShareData().m_Common.m_sView.m_bFontIs_FIXED_PITCH )
 			{
 				return;
 			}
 		}
 		else
-		// �N���b�v�{�[�h����̃f�[�^�͕��ʂɈ����B
+		// クリップボードからのデータは普通に扱う。
 		{
 			bColumnSelect = false;
 		}
 	}
 	else
 	{
-		// 2004.05.14 Moca �S�u���̓r���ő��̃E�B���h�E�Œu�������Ƃ܂����̂ŃR�s�[����
+		// 2004.05.14 Moca 全置換の途中で他のウィンドウで置換されるとまずいのでコピーする
 		cmemClip.SetString( GetEditWindow()->m_cDlgReplace.m_strText2.c_str() );
 	}
 
-	CLogicInt nREPLACEKEY;			// �u���㕶����̒����B
+	CLogicInt nREPLACEKEY;			// 置換後文字列の長さ。
 	szREPLACEKEY = cmemClip.GetStringPtr(&nREPLACEKEY);
 
-	// �s�R�s�[�iMSDEVLineSelect�`���j�̃e�L�X�g�Ŗ��������s�ɂȂ��Ă��Ȃ���Ή��s��ǉ�����
-	// �����C�A�E�g�܂�Ԃ��̍s�R�s�[�������ꍇ�͖��������s�ɂȂ��Ă��Ȃ�
+	// 行コピー（MSDEVLineSelect形式）のテキストで末尾が改行になっていなければ改行を追加する
+	// ※レイアウト折り返しの行コピーだった場合は末尾が改行になっていない
 	if( bLineSelect ){
 		if( szREPLACEKEY[nREPLACEKEY - 1] != WCODE::CR && szREPLACEKEY[nREPLACEKEY - 1] != WCODE::LF ){
 			cmemClip.AppendString(GetDocument()->m_cDocEditor.GetNewLineCode().GetValue2());
@@ -813,24 +813,24 @@ void CViewCommander::Command_REPLACE_ALL()
 	}
 
 	if( GetDllShareData().m_Common.m_sEdit.m_bConvertEOLPaste ){
-		wchar_t	*pszConvertedText = new wchar_t[nREPLACEKEY * 2]; // �S����\n��\r\n�ϊ��ōő�̂Q�{�ɂȂ�
+		wchar_t	*pszConvertedText = new wchar_t[nREPLACEKEY * 2]; // 全文字\n→\r\n変換で最大の２倍になる
 		CLogicInt nConvertedTextLen = ConvertEol(szREPLACEKEY, nREPLACEKEY, pszConvertedText);
 		cmemClip.SetString(pszConvertedText, nConvertedTextLen);
 		szREPLACEKEY = cmemClip.GetStringPtr(&nREPLACEKEY);
 		delete [] pszConvertedText;
 	}
 
-	// �擾�ɃX�e�b�v�������肻���ȕϐ��Ȃǂ��A�ꎞ�ϐ�������B
-	// �Ƃ͂����A�����̑�������邱�Ƃɂ���ē�������N���b�N���͍��킹�Ă� 1 ���[�v�Ő��\���Ǝv���܂��B
-	// ���S�N���b�N�����[�v�̃I�[�_�[����l���Ă�����Ȃɓ��͂��Ȃ��悤�Ɏv���܂����ǁE�E�E�B
+	// 取得にステップがかかりそうな変数などを、一時変数化する。
+	// とはいえ、これらの操作をすることによって得をするクロック数は合わせても 1 ループで数十だと思います。
+	// 数百クロック毎ループのオーダーから考えてもそんなに得はしないように思いますけど・・・。
 	BOOL &bCANCEL = cDlgCancel.m_bCANCEL;
 	CDocLineMgr& rDocLineMgr = GetDocument()->m_cDocLineMgr;
 	CLayoutMgr& rLayoutMgr = GetDocument()->m_cLayoutMgr;
 
-	//  �N���X�֌W�����[�v�̒��Ő錾���Ă��܂��ƁA�����[�v���ƂɃR���X�g���N�^�A�f�X�g���N�^��
-	// �Ă΂�Ēx���Ȃ�̂ŁA�����Ő錾�B
+	//  クラス関係をループの中で宣言してしまうと、毎ループごとにコンストラクタ、デストラクタが
+	// 呼ばれて遅くなるので、ここで宣言。
 	CBregexp cRegexp;
-	// �����������l�ɖ����[�v���Ƃɂ��ƒx���̂ŁA�ŏ��ɍς܂��Ă��܂��B
+	// 初期化も同様に毎ループごとにやると遅いので、最初に済ましてしまう。
 	if( bRegularExp )
 	{
 		if ( !InitRegexp( m_pCommanderView->GetHwnd(), cRegexp, true ) )
@@ -839,53 +839,53 @@ void CViewCommander::Command_REPLACE_ALL()
 		}
 
 		const CNativeW	cMemRepKey( szREPLACEKEY, wcslen(szREPLACEKEY) );
-		// Nov. 9, 2005 ����� ���K�\���őI���n�_�E�I�_�ւ̑}�����@��ύX(��)
+		// Nov. 9, 2005 かろと 正規表現で選択始点・終点への挿入方法を変更(再)
 		CNativeW cMemRepKey2;
 		CNativeW cMemMatchStr;
 		cMemMatchStr.SetString(L"$&");
-		if (nReplaceTarget == 1 ) {	//�I���n�_�֑}��
+		if (nReplaceTarget == 1 ) {	//選択始点へ挿入
 			cMemRepKey2 = cMemRepKey;
 			cMemRepKey2 += cMemMatchStr;
-		} else if (nReplaceTarget == 2) { // �I���I�_�֑}��
+		} else if (nReplaceTarget == 2) { // 選択終点へ挿入
 			cMemRepKey2 = cMemMatchStr;
 			cMemRepKey2 += cMemRepKey;
 		} else {
 			cMemRepKey2 = cMemRepKey;
 		}
-		// ���K�\���I�v�V�����̐ݒ�2006.04.01 �����
+		// 正規表現オプションの設定2006.04.01 かろと
 		int nFlag = (m_pCommanderView->m_sCurSearchOption.bLoHiCase ? CBregexp::optCaseSensitive : CBregexp::optNothing);
 		nFlag |= (bConsecutiveAll ? CBregexp::optNothing : CBregexp::optGlobal);	// 2007.01.16 ryoji
 		cRegexp.Compile(m_pCommanderView->m_strCurSearchKey.c_str(), cMemRepKey2.GetStringPtr(), nFlag);
 	}
 
-	//$$ �P�ʍ���
-	CLayoutPoint	ptOld;						//������̑I��͈�
-	/*CLogicInt*/int		lineCnt = 0;		//�u���O�̍s��
-	/*CLayoutInt*/int		linDif = (0);		//�u����̍s����
-	/*CLayoutInt*/int		colDif = (0);		//�u����̌�����
-	/*CLayoutInt*/int		linPrev = (0);		//�O��̌����s(��`) @@@2001.12.31 YAZAKI warning�ގ�
-	/*CLogicInt*/int		linOldLen = (0);	//������̍s�̒���
-	/*CLayoutInt*/int		linNext;			//����̌����s(��`)
+	//$$ 単位混在
+	CLayoutPoint	ptOld;						//検索後の選択範囲
+	/*CLogicInt*/int		lineCnt = 0;		//置換前の行数
+	/*CLayoutInt*/int		linDif = (0);		//置換後の行調整
+	/*CLayoutInt*/int		colDif = (0);		//置換後の桁調整
+	/*CLayoutInt*/int		linPrev = (0);		//前回の検索行(矩形) @@@2001.12.31 YAZAKI warning退治
+	/*CLogicInt*/int		linOldLen = (0);	//検査後の行の長さ
+	/*CLayoutInt*/int		linNext;			//次回の検索行(矩形)
 
-	/* �e�L�X�g���I������Ă��邩 */
+	/* テキストが選択されているか */
 	while( m_pCommanderView->GetSelectionInfo().IsTextSelected() )
 	{
-		/* �L�����Z�����ꂽ�� */
+		/* キャンセルされたか */
 		if( bCANCEL )
 		{
 			break;
 		}
 
-		/* �������̃��[�U�[������\�ɂ��� */
+		/* 処理中のユーザー操作を可能にする */
 		if( !::BlockingHook( hwndCancel ) )
 		{
 			return;// -1;
 		}
 
-		// 128 ���Ƃɕ\���B
+		// 128 ごとに表示。
 		if( 0 == (nReplaceNum & 0x7F ) )
-		// ���Ԃ��Ƃɐi���󋵕`�悾�Ǝ��Ԏ擾���x���Ȃ�Ǝv�����A������̕������R���Ǝv���̂ŁE�E�E�B
-		// �Ǝv�������ǁA�t�ɂ�����̕������R�ł͂Ȃ��̂ŁA��߂�B
+		// 時間ごとに進歩状況描画だと時間取得分遅くなると思うが、そちらの方が自然だと思うので・・・。
+		// と思ったけど、逆にこちらの方が自然ではないので、やめる。
 		{
 			nNewPos = (Int)GetSelect().GetFrom().GetY2() >> nShiftCount;
 			Progress_SetPos( hwndProgress, nNewPos);
@@ -894,70 +894,70 @@ void CViewCommander::Command_REPLACE_ALL()
 		}
 
 		// From Here 2001.12.03 hor
-		/* ������̈ʒu���m�F */
+		/* 検索後の位置を確認 */
 		if( bSelectedArea )
 		{
-			// ��`�I��
-			//	o ���C�A�E�g���W���`�F�b�N���Ȃ���u������
-			//	o �܂�Ԃ�������ƕςɂȂ邩���E�E�E
+			// 矩形選択
+			//	o レイアウト座標をチェックしながら置換する
+			//	o 折り返しがあると変になるかも・・・
 			//
 			if ( bBeginBoxSelect )
 			{
-				// �������̍s�����L��
+				// 検索時の行数を記憶
 				lineCnt = (Int)rLayoutMgr.GetLineCount();
-				// ������͈̔͏I�[
+				// 検索後の範囲終端
 				ptOld = GetSelect().GetTo();
-				// �O��̌����s�ƈႤ�H
+				// 前回の検索行と違う？
 				if(ptOld.y!=linPrev){
 					colDif=(0);
 				}
 				linPrev=(Int)ptOld.GetY2();
-				// �s�͔͈͓��H
+				// 行は範囲内？
 				if ((sRangeA.GetTo().y+linDif == ptOld.y && sRangeA.GetTo().GetX2()+colDif < ptOld.x) ||
 					(sRangeA.GetTo().y+linDif <  ptOld.y)) {
 					break;
 				}
-				// ���͔͈͓��H
+				// 桁は範囲内？
 				if(!(sRangeA.GetFrom().x<=GetSelect().GetFrom().x && ptOld.GetX2()<=sRangeA.GetTo().GetX2()+colDif)){
 					if(ptOld.x<sRangeA.GetTo().GetX2()+colDif){
 						linNext=(Int)GetSelect().GetTo().GetY2();
 					}else{
 						linNext=(Int)GetSelect().GetTo().GetY2()+1;
 					}
-					//���̌����J�n�ʒu�փV�t�g
+					//次の検索開始位置へシフト
 					GetCaret().SetCaretLayoutPos(CLayoutPoint(sRangeA.GetFrom().x,CLayoutInt(linNext)));
-					// 2004.05.30 Moca ���݂̌�����������g���Č�������
+					// 2004.05.30 Moca 現在の検索文字列を使って検索する
 					Command_SEARCH_NEXT( false, bDisplayUpdate, 0, 0 );
 					colDif=(0);
 					continue;
 				}
 			}
-			// ���ʂ̑I��
-			//	o �������W���`�F�b�N���Ȃ���u������
+			// 普通の選択
+			//	o 物理座標をチェックしながら置換する
 			//
 			else {
-				// �������̍s�����L��
+				// 検索時の行数を記憶
 				lineCnt = rDocLineMgr.GetLineCount();
 
-				// ������͈̔͏I�[
+				// 検索後の範囲終端
 				CLogicPoint ptOldTmp;
 				rLayoutMgr.LayoutToLogic(
 					GetSelect().GetTo(),
 					&ptOldTmp
 				);
-				ptOld.x=(CLayoutInt)ptOldTmp.x; //$$ ���C�A�E�g�^�ɖ�����胍�W�b�N�^�����B�C��������
+				ptOld.x=(CLayoutInt)ptOldTmp.x; //$$ レイアウト型に無理やりロジック型を代入。気持ち悪い
 				ptOld.y=(CLayoutInt)ptOldTmp.y;
 
-				// �u���O�̍s�̒���(���s�͂P�����Ɛ�����)��ۑ����Ă����āA�u���O��ōs�ʒu���ς�����ꍇ�Ɏg�p
+				// 置換前の行の長さ(改行は１文字と数える)を保存しておいて、置換前後で行位置が変わった場合に使用
 				linOldLen = rDocLineMgr.GetLine(ptOldTmp.GetY2())->GetLengthWithoutEOL() + CLogicInt(1);
 
-				// �s�͔͈͓��H
-				// 2007.01.19 ryoji �����ǉ�: �I���I�_���s��(ptColLineP.x == 0)�ɂȂ��Ă���ꍇ�͑O�̍s�̍s���܂ł�I��͈͂Ƃ݂Ȃ�
-				// �i�I���n�_���s���Ȃ炻�̍s���͑I��͈͂Ɋ܂݁A�I�_���s���Ȃ炻�̍s���͑I��͈͂Ɋ܂܂Ȃ��A�Ƃ���j
-				// �_���I�ɏ����ςƎw�E����邩������Ȃ����A���p��͂��̂悤�ɂ����ق����]�܂����P�[�X�������Ǝv����B
-				// ���s�I���ōs���܂ł�I��͈͂ɂ�������ł��AUI��͎��̍s�̍s���ɃJ�[�\�����s��
-				// ���I�_�̍s�����u^�v�Ƀ}�b�`��������������P�����ȏ�I�����ĂˁA�Ƃ������ƂŁD�D�D
-				// $$ �P�ʍ��݂��܂��肾���ǁA���v�H�H
+				// 行は範囲内？
+				// 2007.01.19 ryoji 条件追加: 選択終点が行頭(ptColLineP.x == 0)になっている場合は前の行の行末までを選択範囲とみなす
+				// （選択始点が行頭ならその行頭は選択範囲に含み、終点が行頭ならその行頭は選択範囲に含まない、とする）
+				// 論理的に少し変と指摘されるかもしれないが、実用上はそのようにしたほうが望ましいケースが多いと思われる。
+				// ※行選択で行末までを選択範囲にしたつもりでも、UI上は次の行の行頭にカーソルが行く
+				// ※終点の行頭を「^」にマッチさせたかったら１文字以上選択してね、ということで．．．
+				// $$ 単位混在しまくりだけど、大丈夫？？
 				if ((ptColLineP.y+linDif == (Int)ptOld.y && (ptColLineP.x+colDif < (Int)ptOld.x || ptColLineP.x == 0))
 					|| ptColLineP.y+linDif < (Int)ptOld.y) {
 					break;
@@ -969,60 +969,60 @@ void CViewCommander::Command_REPLACE_ALL()
 		CLayoutPoint ptTmp(0,0);
 
 		if ( nPaste || !bRegularExp ) {
-			// ���K�\������ ����Q��($&)�Ŏ�������̂ŁA���K�\���͏��O
-			if( nReplaceTarget == 1 )	//�}���ʒu�Z�b�g
+			// 正規表現時は 後方参照($&)で実現するので、正規表現は除外
+			if( nReplaceTarget == 1 )	//挿入位置セット
 			{
 				ptTmp.x = GetSelect().GetTo().x - GetSelect().GetFrom().x;
 				ptTmp.y = GetSelect().GetTo().y - GetSelect().GetFrom().y;
 				GetSelect().Clear(-1);
 			}
-			else if( nReplaceTarget == 2 )	//�ǉ��ʒu�Z�b�g
+			else if( nReplaceTarget == 2 )	//追加位置セット
 			{
-				// ���K�\�������O�����̂ŁA�u������̕��������s������玟�̍s�̐擪�ֈړ��v�̏������폜
+				// 正規表現を除外したので、「検索後の文字が改行やったら次の行の先頭へ移動」の処理を削除
 				GetCaret().MoveCursor(GetSelect().GetTo(), false);
 				GetSelect().Clear(-1);
 		    }
 			else {
-				// �ʒu�w��Ȃ��̂ŁA�������Ȃ�
+				// 位置指定ないので、何もしない
 			}
 		}
 
-		/* �R�}���h�R�[�h�ɂ�鏈���U�蕪�� */
-		/* �e�L�X�g��\��t�� */
+		/* コマンドコードによる処理振り分け */
+		/* テキストを貼り付け */
 		if( nPaste )
 		{
 			if ( !bColumnSelect )
 			{
-				/* �{���� Command_INSTEXT ���g���ׂ��Ȃ�ł��傤���A���ʂȏ���������邽�߂ɒ��ڂ������B
-				** ��m_nSelectXXX��-1�̎��� m_pCommanderView->ReplaceData_CEditView�𒼐ڂ������Ɠ���s�ǂƂȂ邽��
-				**   ���ڂ������̂�߂��B2003.05.18 by �����
+				/* 本当は Command_INSTEXT を使うべきなんでしょうが、無駄な処理を避けるために直接たたく。
+				** →m_nSelectXXXが-1の時に m_pCommanderView->ReplaceData_CEditViewを直接たたくと動作不良となるため
+				**   直接たたくのやめた。2003.05.18 by かろと
 				*/
 				Command_INSTEXT( false, szREPLACEKEY, nREPLACEKEY, TRUE, bLineSelect );
 			}
 			else
 			{
 				Command_PASTEBOX(szREPLACEKEY, nREPLACEKEY);
-				// �ĕ`����s��Ȃ��Ƃǂ�Ȍ��ʂ��N���Ă���̂������炸�݂��Ƃ��Ȃ��̂ŁE�E�E�B
+				// 再描画を行わないとどんな結果が起きているのか分からずみっともないので・・・。
 				m_pCommanderView->AdjustScrollBars(); // 2007.07.22 ryoji
 				m_pCommanderView->Redraw();
 			}
 			++nReplaceNum;
 		}
-		// 2002/01/19 novice ���K�\���ɂ�镶����u��
-		else if( bRegularExp ) /* �����^�u��  1==���K�\�� */
+		// 2002/01/19 novice 正規表現による文字列置換
+		else if( bRegularExp ) /* 検索／置換  1==正規表現 */
 		{
-			// �����s�A�����s���A�����s�ł̌����}�b�`�ʒu
+			// 物理行、物理行長、物理行での検索マッチ位置
 			const CLayout* pcLayout = rLayoutMgr.SearchLineByLayoutY(GetSelect().GetFrom().GetY2());
 			const wchar_t* pLine = pcLayout->GetDocLineRef()->GetPtr();
 			CLogicInt nIdx = m_pCommanderView->LineColumnToIndex( pcLayout, GetSelect().GetFrom().GetX2() ) + pcLayout->GetLogicOffset();
 			CLogicInt nLen = pcLayout->GetDocLineRef()->GetLengthWithEOL();
 			CLogicInt colDiff = CLogicInt(0);
-			if( !bConsecutiveAll ){	// �ꊇ�u��
+			if( !bConsecutiveAll ){	// 一括置換
 				// 2007.01.16 ryoji
-				// �I��͈͒u���̏ꍇ�͍s���̑I��͈͖����܂Œu���͈͂��k�߁C
-				// ���̈ʒu���L������D
+				// 選択範囲置換の場合は行内の選択範囲末尾まで置換範囲を縮め，
+				// その位置を記憶する．
 				if( bSelectedArea ){
-					if( bBeginBoxSelect ){	// ��`�I��
+					if( bBeginBoxSelect ){	// 矩形選択
 						CLogicPoint ptWork;
 						rLayoutMgr.LayoutToLogic(
 							CLayoutPoint(sRangeA.GetTo().x,ptOld.y),
@@ -1031,8 +1031,8 @@ void CViewCommander::Command_REPLACE_ALL()
 						ptColLineP.x = ptWork.x;
 						if( nLen - pcLayout->GetDocLineRef()->GetEol().GetLen() > ptColLineP.x + colDif )
 							nLen = ptColLineP.GetX2() + CLogicInt(colDif);
-					} else {	// �ʏ�̑I��
-						if( ptColLineP.y+linDif == (Int)ptOld.y ){ //$$ �P�ʍ���
+					} else {	// 通常の選択
+						if( ptColLineP.y+linDif == (Int)ptOld.y ){ //$$ 単位混在
 							if( nLen - pcLayout->GetDocLineRef()->GetEol().GetLen() > ptColLineP.x + colDif )
 								nLen = ptColLineP.GetX2() + CLogicInt(colDif);
 						}
@@ -1040,61 +1040,61 @@ void CViewCommander::Command_REPLACE_ALL()
 				}
 
 				if(pcLayout->GetDocLineRef()->GetLengthWithoutEOL() < nLen)
-					ptOld.x = (CLayoutInt)(Int)pcLayout->GetDocLineRef()->GetLengthWithoutEOL() + 1; //$$ �P�ʍ���
+					ptOld.x = (CLayoutInt)(Int)pcLayout->GetDocLineRef()->GetLengthWithoutEOL() + 1; //$$ 単位混在
 				else
-					ptOld.x = (CLayoutInt)(Int)nLen; //$$ �P�ʍ���
+					ptOld.x = (CLayoutInt)(Int)nLen; //$$ 単位混在
 			}
 
 			if( int nReplace = cRegexp.Replace(pLine, nLen, nIdx) ){
 				nReplaceNum += nReplace;
-				if ( !bConsecutiveAll ) { // 2006.04.01 �����	// 2007.01.16 ryoji
-					// �s�P�ʂł̒u������
-					// �I��͈͂𕨗��s���܂łɂ̂΂�
+				if ( !bConsecutiveAll ) { // 2006.04.01 かろと	// 2007.01.16 ryoji
+					// 行単位での置換処理
+					// 選択範囲を物理行末までにのばす
 					rLayoutMgr.LogicToLayout( CLogicPoint(nLen, pcLayout->GetLogicLineNo()), GetSelect().GetToPointer() );
 				} else {
-				    // From Here Jun. 6, 2005 �����
-				    // �����s���܂�INSTEXT������@�́A�L�����b�g�ʒu�𒲐�����K�v������A
-				    // �L�����b�g�ʒu�̌v�Z�����G�ɂȂ�B�i�u����ɉ��s������ꍇ�ɕs������j
-				    // �����ŁAINSTEXT���镶���񒷂𒲐�������@�ɕύX����i���͂������̕����킩��₷���j
+				    // From Here Jun. 6, 2005 かろと
+				    // 物理行末までINSTEXTする方法は、キャレット位置を調整する必要があり、
+				    // キャレット位置の計算が複雑になる。（置換後に改行がある場合に不具合発生）
+				    // そこで、INSTEXTする文字列長を調整する方法に変更する（実はこっちの方がわかりやすい）
 				    CLogicInt matchLen = cRegexp.GetMatchLen();
-				    CLogicInt nIdxTo = nIdx + matchLen;		// ����������̖���
+				    CLogicInt nIdxTo = nIdx + matchLen;		// 検索文字列の末尾
 				    if (matchLen == 0) {
-					    // �O�����}�b�`�̎�(�����u���ɂȂ�Ȃ��悤�ɂP�����i�߂�)
+					    // ０文字マッチの時(無限置換にならないように１文字進める)
 					    if (nIdxTo < nLen) {
 						    // 2005-09-02 D.S.Koba GetSizeOfChar
 						    nIdxTo += CLogicInt(CNativeW::GetSizeOfChar(pLine, nLen, nIdxTo) == 2 ? 2 : 1);
 					    }
-					    // �����u�����Ȃ��悤�ɁA�P�������₵���̂łP�����I���ɕύX
-					    // �I���n�_�E�I�_�ւ̑}���̏ꍇ���O�����}�b�`���͓���͓����ɂȂ�̂�
-						rLayoutMgr.LogicToLayout( CLogicPoint(nIdxTo, pcLayout->GetLogicLineNo()), GetSelect().GetToPointer() );	// 2007.01.19 ryoji �s�ʒu���擾����
+					    // 無限置換しないように、１文字増やしたので１文字選択に変更
+					    // 選択始点・終点への挿入の場合も０文字マッチ時は動作は同じになるので
+						rLayoutMgr.LogicToLayout( CLogicPoint(nIdxTo, pcLayout->GetLogicLineNo()), GetSelect().GetToPointer() );	// 2007.01.19 ryoji 行位置も取得する
 				    }
-				    // �s�����猟�������񖖔��܂ł̕�����
+				    // 行末から検索文字列末尾までの文字数
 					colDiff =  nLen - nIdxTo;
-					ptOld.x = (CLayoutInt)(Int)nIdxTo;	// 2007.01.19 ryoji �ǉ�  // $$ �P�ʍ���
+					ptOld.x = (CLayoutInt)(Int)nIdxTo;	// 2007.01.19 ryoji 追加  // $$ 単位混在
 				    //	Oct. 22, 2005 Karoto
-				    //	\r��u������Ƃ��̌���\n�������Ă��܂����̑Ή�
+				    //	\rを置換するとその後ろの\nが消えてしまう問題の対応
 				    if (colDiff < pcLayout->GetDocLineRef()->GetEol().GetLen()) {
-					    // ���s�ɂ������Ă�����A�s�S�̂�INSTEXT����B
+					    // 改行にかかっていたら、行全体をINSTEXTする。
 					    colDiff = CLogicInt(0);
-						rLayoutMgr.LogicToLayout( CLogicPoint(nLen, pcLayout->GetLogicLineNo()), GetSelect().GetToPointer() );	// 2007.01.19 ryoji �ǉ�
-						ptOld.x = (CLayoutInt)(Int)pcLayout->GetDocLineRef()->GetLengthWithoutEOL() + 1;	// 2007.01.19 ryoji �ǉ� //$$ �P�ʍ���
+						rLayoutMgr.LogicToLayout( CLogicPoint(nLen, pcLayout->GetLogicLineNo()), GetSelect().GetToPointer() );	// 2007.01.19 ryoji 追加
+						ptOld.x = (CLayoutInt)(Int)pcLayout->GetDocLineRef()->GetLengthWithoutEOL() + 1;	// 2007.01.19 ryoji 追加 //$$ 単位混在
 				    }
 				}
-				// �u���㕶����ւ̏�������(�s�����猟�������񖖔��܂ł̕���������)
+				// 置換後文字列への書き換え(行末から検索文字列末尾までの文字を除く)
 				Command_INSTEXT( false, cRegexp.GetString(), cRegexp.GetStringLen() - colDiff, TRUE );
-				// To Here Jun. 6, 2005 �����
+				// To Here Jun. 6, 2005 かろと
 			}
 		}
 		else
 		{
-			/* �{���͌��R�[�h���g���ׂ��Ȃ�ł��傤���A���ʂȏ���������邽�߂ɒ��ڂ������B
-			** ��m_nSelectXXX��-1�̎��� m_pCommanderView->ReplaceData_CEditView�𒼐ڂ������Ɠ���s�ǂƂȂ邽�ߒ��ڂ������̂�߂��B2003.05.18 �����
+			/* 本当は元コードを使うべきなんでしょうが、無駄な処理を避けるために直接たたく。
+			** →m_nSelectXXXが-1の時に m_pCommanderView->ReplaceData_CEditViewを直接たたくと動作不良となるため直接たたくのやめた。2003.05.18 かろと
 			*/
 			Command_INSTEXT( false, szREPLACEKEY, nREPLACEKEY, TRUE );
 			++nReplaceNum;
 		}
 
-		// �}����̈ʒu����
+		// 挿入後の位置調整
 		if( nReplaceTarget == 1 )
 		{
 			GetCaret().SetCaretLayoutPos(GetCaret().GetCaretLayoutPos()+ptTmp);
@@ -1109,38 +1109,38 @@ void CViewCommander::Command_REPLACE_ALL()
 			}
 		}
 
-		// �Ō�ɒu�������ʒu���L��
+		// 最後に置換した位置を記憶
 		ptLast = GetCaret().GetCaretLayoutPos();
 
-		/* �u����̈ʒu���m�F */
+		/* 置換後の位置を確認 */
 		if( bSelectedArea )
 		{
-			// �������u���̍s�␳�l�擾
+			// 検索→置換の行補正値取得
 			if( bBeginBoxSelect )
 			{
 				colDif += (Int)(ptLast.GetX2() - ptOld.GetX2());
 				linDif += (Int)(rLayoutMgr.GetLineCount() - lineCnt);
 			}
 			else{
-				// �u���O�̌���������̍ŏI�ʒu�� ptOld
-				// �u����̃J�[�\���ʒu
+				// 置換前の検索文字列の最終位置は ptOld
+				// 置換後のカーソル位置
 				CLogicPoint ptTmp2 = GetCaret().GetCaretLogicPos();
-				int linDif_thistime = rDocLineMgr.GetLineCount() - lineCnt;	// ����u���ł̍s���ω�
+				int linDif_thistime = rDocLineMgr.GetLineCount() - lineCnt;	// 今回置換での行数変化
 				linDif += linDif_thistime;
 				if( ptColLineP.y + linDif == ptTmp2.y)
 				{
-					// �ŏI�s�Œu���������A���́A�u���̌��ʁA�I���G���A�ŏI�s�܂œ��B������
-					// �ŏI�s�Ȃ̂ŁA�u���O��̕������̑����Ō��ʒu�𒲐�����
-					colDif += (Int)ptTmp2.GetX2() - (Int)ptOld.GetX2(); //$$ �P�ʍ���
+					// 最終行で置換した時、又は、置換の結果、選択エリア最終行まで到達した時
+					// 最終行なので、置換前後の文字数の増減で桁位置を調整する
+					colDif += (Int)ptTmp2.GetX2() - (Int)ptOld.GetX2(); //$$ 単位混在
 
-					// �A���A�ȉ��̏ꍇ�͒u���O��ōs���قȂ��Ă��܂��̂ŁA�s�̒����ŕ␳����K�v������
-					// �P�j�ŏI�s���O�ōs�A�����N����A�s�������Ă���ꍇ�i�s�A���Ȃ̂ŁA���ʒu�͒u����̃J�[�\�����ʒu����������j
-					// �@�@ptTmp2.x-ptOld.x���ƁA\r\n �� "" �u���ōs�A�������ꍇ�ɁA���ʒu�����ɂȂ莸�s����i���Ƃ͑O�s�̌��̕��ɂȂ邱�ƂȂ̂ŕ␳����j
-					// �@�@����u���ł̍s���̕ω�(linDif_thistime)�ŁA�ŏI�s���s�A�����ꂽ���ǂ��������邱�Ƃɂ���
-					// �Q�j���s��u�������iptTmp2.y!=ptOld.y�j�ꍇ�A���s��u������ƒu����̌��ʒu�����s�̌��ʒu�ɂȂ��Ă��邽��
-					//     ptTmp2.x-ptOld.x���ƁA���̐��ƂȂ�A\r\n �� \n �� \n �� "abc" �ȂǂŌ��ʒu�������
-					//     ������O�s�̒����Œ�������K�v������
-					if (linDif_thistime < 0 || ptTmp2.y != (Int)ptOld.y) { //$$ �P�ʍ���
+					// 但し、以下の場合は置換前後で行が異なってしまうので、行の長さで補正する必要がある
+					// １）最終行直前で行連結が起こり、行が減っている場合（行連結なので、桁位置は置換後のカーソル桁位置分増加する）
+					// 　　ptTmp2.x-ptOld.xだと、\r\n → "" 置換で行連結した場合に、桁位置が負になり失敗する（負とは前行の後ろの方になることなので補正する）
+					// 　　今回置換での行数の変化(linDif_thistime)で、最終行が行連結されたかどうかを見ることにする
+					// ２）改行を置換した（ptTmp2.y!=ptOld.y）場合、改行を置換すると置換後の桁位置が次行の桁位置になっているため
+					//     ptTmp2.x-ptOld.xだと、負の数となり、\r\n → \n や \n → "abc" などで桁位置がずれる
+					//     これも前行の長さで調整する必要がある
+					if (linDif_thistime < 0 || ptTmp2.y != (Int)ptOld.y) { //$$ 単位混在
 						colDif += linOldLen;
 					}
 				}
@@ -1148,8 +1148,8 @@ void CViewCommander::Command_REPLACE_ALL()
 		}
 		// To Here 2001.12.03 hor
 
-		/* �������� */
-		// 2004.05.30 Moca ���݂̌�����������g���Č�������
+		/* 次を検索 */
+		// 2004.05.30 Moca 現在の検索文字列を使って検索する
 		Command_SEARCH_NEXT( false, bDisplayUpdate, 0, 0 );
 	}
 
@@ -1174,24 +1174,24 @@ void CViewCommander::Command_REPLACE_ALL()
 
 	// From Here 2001.12.03 hor
 
-	/* �e�L�X�g�I������ */
+	/* テキスト選択解除 */
 	m_pCommanderView->GetSelectionInfo().DisableSelectArea( true );
 
-	/* �J�[�\���E�I��͈͕��� */
-	if((!bSelectedArea) ||			// �t�@�C���S�̒u��
-	   (cDlgCancel.IsCanceled())) {		// �L�����Z�����ꂽ
-		// �Ō�ɒu������������̉E��
+	/* カーソル・選択範囲復元 */
+	if((!bSelectedArea) ||			// ファイル全体置換
+	   (cDlgCancel.IsCanceled())) {		// キャンセルされた
+		// 最後に置換した文字列の右へ
 		GetCaret().MoveCursor( ptLast, true );
 	}
 	else{
 		if (bBeginBoxSelect) {
-			// ��`�I��
+			// 矩形選択
 			m_pCommanderView->GetSelectionInfo().SetBoxSelect(bBeginBoxSelect);
 			sRangeA.GetToPointer()->y += linDif;
 			if(sRangeA.GetTo().y<0)sRangeA.SetToY(CLayoutInt(0));
 		}
 		else{
-			// ���ʂ̑I��
+			// 普通の選択
 			ptColLineP.x+=colDif;
 			if(ptColLineP.x<0)ptColLineP.x=0;
 			ptColLineP.y+=linDif;
@@ -1217,16 +1217,16 @@ void CViewCommander::Command_REPLACE_ALL()
 
 
 
-//�����}�[�N�̐ؑւ�	// 2001.12.03 hor �N���A �� �ؑւ� �ɕύX
+//検索マークの切替え	// 2001.12.03 hor クリア を 切替え に変更
 void CViewCommander::Command_SEARCH_CLEARMARK( void )
 {
 // From Here 2001.12.03 hor
 
-	//�����}�[�N�̃Z�b�g
+	//検索マークのセット
 
 	if(m_pCommanderView->GetSelectionInfo().IsTextSelected()){
 
-		// ����������擾
+		// 検索文字列取得
 		CNativeW	cmemCurText;
 		m_pCommanderView->GetCurrentTextForSearch( cmemCurText, false );
 
@@ -1234,10 +1234,10 @@ void CViewCommander::Command_SEARCH_CLEARMARK( void )
 		if( m_pCommanderView->m_nCurSearchKeySequence < GetDllShareData().m_Common.m_sSearch.m_nSearchKeySequence ){
 			m_pCommanderView->m_sCurSearchOption = GetDllShareData().m_Common.m_sSearch.m_sSearchOption;
 		}
-		m_pCommanderView->m_sCurSearchOption.bRegularExp = false;		//���K�\���g��Ȃ�
-		m_pCommanderView->m_sCurSearchOption.bWordOnly = false;		//�P��Ō������Ȃ�
+		m_pCommanderView->m_sCurSearchOption.bRegularExp = false;		//正規表現使わない
+		m_pCommanderView->m_sCurSearchOption.bWordOnly = false;		//単語で検索しない
 
-		// ���L�f�[�^�֓o�^
+		// 共有データへ登録
 		if( cmemCurText.GetStringLength() < _MAX_PATH ){
 			CSearchKeywordManager().AddToSearchKeyArr( cmemCurText.GetStringPtr() );
 			GetDllShareData().m_Common.m_sSearch.m_sSearchOption = m_pCommanderView->m_sCurSearchOption;
@@ -1245,18 +1245,18 @@ void CViewCommander::Command_SEARCH_CLEARMARK( void )
 		m_pCommanderView->m_nCurSearchKeySequence = GetDllShareData().m_Common.m_sSearch.m_nSearchKeySequence;
 		m_pCommanderView->m_bCurSearchUpdate = true;
 
-		m_pCommanderView->ChangeCurRegexp(false); // 2002.11.11 Moca ���K�\���Ō���������C�F�������ł��Ă��Ȃ�����
+		m_pCommanderView->ChangeCurRegexp(false); // 2002.11.11 Moca 正規表現で検索した後，色分けができていなかった
 
-		// �ĕ`��
+		// 再描画
 		m_pCommanderView->RedrawAll();
 		return;
 	}
 // To Here 2001.12.03 hor
 
-	//�����}�[�N�̃N���A
+	//検索マークのクリア
 
-	m_pCommanderView->m_bCurSrchKeyMark = false;	/* ����������̃}�[�N */
-	/* �t�H�[�J�X�ړ����̍ĕ`�� */
+	m_pCommanderView->m_bCurSrchKeyMark = false;	/* 検索文字列のマーク */
+	/* フォーカス移動時の再描画 */
 	m_pCommanderView->RedrawAll();
 	return;
 }
@@ -1264,7 +1264,7 @@ void CViewCommander::Command_SEARCH_CLEARMARK( void )
 
 
 //	Jun. 16, 2000 genta
-//	�Ί��ʂ̌���
+//	対括弧の検索
 void CViewCommander::Command_BRACKETPAIR( void )
 {
 	CLayoutPoint ptColLine;
@@ -1272,17 +1272,17 @@ void CViewCommander::Command_BRACKETPAIR( void )
 
 	int mode = 3;
 	/*
-	bit0(in)  : �\���̈�O�𒲂ׂ邩�H 0:���ׂȂ�  1:���ׂ�
-	bit1(in)  : �O�������𒲂ׂ邩�H   0:���ׂȂ�  1:���ׂ�
-	bit2(out) : ���������ʒu         0:���      1:�O
+	bit0(in)  : 表示領域外を調べるか？ 0:調べない  1:調べる
+	bit1(in)  : 前方文字を調べるか？   0:調べない  1:調べる
+	bit2(out) : 見つかった位置         0:後ろ      1:前
 	*/
 	if( m_pCommanderView->SearchBracket( GetCaret().GetCaretLayoutPos(), &ptColLine, &mode ) ){	// 02/09/18 ai
 		//	2005.06.24 Moca
-		//	2006.07.09 genta �\���X�V�R��F�V�K�֐��ɂđΉ�
+		//	2006.07.09 genta 表示更新漏れ：新規関数にて対応
 		m_pCommanderView->MoveCursorSelecting( ptColLine, m_pCommanderView->GetSelectionInfo().m_bSelectingLock );
 	}
 	else{
-		//	���s�����ꍇ�� nCol/nLine�ɂ͗L���Ȓl�������Ă��Ȃ�.
-		//	�������Ȃ�
+		//	失敗した場合は nCol/nLineには有効な値が入っていない.
+		//	何もしない
 	}
 }

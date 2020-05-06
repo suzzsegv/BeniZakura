@@ -1,5 +1,5 @@
 /*!	@file
-	@brief ƒtƒ@ƒCƒ‹ƒvƒƒpƒeƒBƒ_ƒCƒAƒƒO
+	@brief ãƒ•ã‚¡ã‚¤ãƒ«ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ãƒ€ã‚¤ã‚¢ãƒ­ã‚°
 
 	@author Norio Nakatani
 */
@@ -46,7 +46,7 @@
 #include "sakura_rc.h"
 
 
-/* ƒ‚[ƒ_ƒ‹ƒ_ƒCƒAƒƒO‚Ì•\¦ */
+/* ãƒ¢ãƒ¼ãƒ€ãƒ«ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®è¡¨ç¤º */
 int CDlgProperty::DoModal( HINSTANCE hInstance, HWND hwndParent, LPARAM lParam )
 {
 	return (int)CDialog::DoModal( hInstance, hwndParent, IDD_PROPERTY_FILE, lParam );
@@ -55,22 +55,22 @@ int CDlgProperty::DoModal( HINSTANCE hInstance, HWND hwndParent, LPARAM lParam )
 BOOL CDlgProperty::OnBnClicked( int wID )
 {
 	switch( wID ){
-	case IDOK:			/* ‰ºŒŸõ */
-		/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìæ“¾ */
+	case IDOK:			/* ä¸‹æ¤œç´¢ */
+		/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®å–å¾— */
 		::EndDialog( GetHwnd(), FALSE );
 		return TRUE;
-//	case IDCANCEL:							// –¢g—p del 2008/7/4 Uchi
+//	case IDCANCEL:							// æœªä½¿ç”¨ del 2008/7/4 Uchi
 //		::EndDialog( GetHwnd(), FALSE );
 //		return TRUE;
 	}
-	/* Šî’êƒNƒ‰ƒXƒƒ“ƒo */
+	/* åŸºåº•ã‚¯ãƒ©ã‚¹ãƒ¡ãƒ³ãƒ */
 	return CDialog::OnBnClicked( wID );
 }
 
 
-/*! ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìİ’è
+/*! ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®è¨­å®š
 
-	@date 2002.2.17 YAZAKI CShareData‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ÍACProcess‚É‚Ğ‚Æ‚Â‚ ‚é‚Ì‚İB
+	@date 2002.2.17 YAZAKI CShareDataã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã¯ã€CProcessã«ã²ã¨ã¤ã‚ã‚‹ã®ã¿ã€‚
 */
 void CDlgProperty::SetData( void )
 {
@@ -81,98 +81,98 @@ void CDlgProperty::SetData( void )
 	HANDLE			nFind;
 	WIN32_FIND_DATA	wfd;
 
-	//	Aug. 16, 2000 genta	‘SŠp‰»
-	cmemProp.AppendString( _T("ƒtƒ@ƒCƒ‹–¼  ") );
+	//	Aug. 16, 2000 genta	å…¨è§’åŒ–
+	cmemProp.AppendString( _T("ãƒ•ã‚¡ã‚¤ãƒ«å  ") );
 	cmemProp.AppendString( pCEditDoc->m_cDocFile.GetFilePath() );
 	cmemProp.AppendString( _T("\r\n") );
 
-	cmemProp.AppendString( _T("İ’è‚Ìƒ^ƒCƒv  ") );
+	cmemProp.AppendString( _T("è¨­å®šã®ã‚¿ã‚¤ãƒ—  ") );
 	cmemProp.AppendString( pCEditDoc->m_cDocType.GetDocumentAttribute().m_szTypeName );
 	cmemProp.AppendString( _T("\r\n") );
 
-	cmemProp.AppendString( _T("•¶šƒR[ƒh  ") );
+	cmemProp.AppendString( _T("æ–‡å­—ã‚³ãƒ¼ãƒ‰  ") );
 	cmemProp.AppendString( CCodeTypeName(pCEditDoc->GetDocumentEncoding()).Normal() );
 	//	From Here  2008/4/27 Uchi
 	if (pCEditDoc->GetDocumentBomExist()) {
-		cmemProp.AppendString( _T(" BOM•t") );
+		cmemProp.AppendString( _T(" BOMä»˜") );
 	}
 	//	To Here  2008/4/27 Uchi
 	cmemProp.AppendString( _T("\r\n") );
 
-	auto_sprintf( szWork, _T("s”  %ds\r\n"), pCEditDoc->m_cDocLineMgr.GetLineCount() );
+	auto_sprintf( szWork, _T("è¡Œæ•°  %dè¡Œ\r\n"), pCEditDoc->m_cDocLineMgr.GetLineCount() );
 	cmemProp.AppendString( szWork );
 
-	auto_sprintf( szWork, _T("ƒŒƒCƒAƒEƒgs”  %ds\r\n"), pCEditDoc->m_cLayoutMgr.GetLineCount() );
+	auto_sprintf( szWork, _T("ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆè¡Œæ•°  %dè¡Œ\r\n"), pCEditDoc->m_cLayoutMgr.GetLineCount() );
 	cmemProp.AppendString( szWork );
 
 	if( CAppMode::getInstance()->IsViewMode() ){
-		cmemProp.AppendString( _T("ƒrƒ…[ƒ‚[ƒh‚ÅŠJ‚¢‚Ä‚¢‚Ü‚·B\r\n") );	// 2009.04.11 ryoji uã‘‚«‹Ö~ƒ‚[ƒhv¨uƒrƒ…[ƒ‚[ƒhv
+		cmemProp.AppendString( _T("ãƒ“ãƒ¥ãƒ¼ãƒ¢ãƒ¼ãƒ‰ã§é–‹ã„ã¦ã„ã¾ã™ã€‚\r\n") );	// 2009.04.11 ryoji ã€Œä¸Šæ›¸ãç¦æ­¢ãƒ¢ãƒ¼ãƒ‰ã€â†’ã€Œãƒ“ãƒ¥ãƒ¼ãƒ¢ãƒ¼ãƒ‰ã€
 	}
 	if( pCEditDoc->m_cDocEditor.IsModified() ){
-		cmemProp.AppendString( _T("•ÏX‚³‚ê‚Ä‚¢‚Ü‚·B\r\n") );
+		cmemProp.AppendString( _T("å¤‰æ›´ã•ã‚Œã¦ã„ã¾ã™ã€‚\r\n") );
 	}else{
-		cmemProp.AppendString( _T("•ÏX‚³‚ê‚Ä‚¢‚Ü‚¹‚ñB\r\n") );
+		cmemProp.AppendString( _T("å¤‰æ›´ã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚\r\n") );
 	}
 
-	auto_sprintf( szWork, _T("\r\nƒRƒ}ƒ“ƒhÀs‰ñ”    %d‰ñ\r\n"), pCEditDoc->m_nCommandExecNum );
+	auto_sprintf( szWork, _T("\r\nã‚³ãƒãƒ³ãƒ‰å®Ÿè¡Œå›æ•°    %då›\r\n"), pCEditDoc->m_nCommandExecNum );
 	cmemProp.AppendString( szWork );
 
-	auto_sprintf( szWork, _T("--ƒtƒ@ƒCƒ‹î•ñ-----------------\r\n"), pCEditDoc->m_cDocLineMgr.GetLineCount() );
+	auto_sprintf( szWork, _T("--ãƒ•ã‚¡ã‚¤ãƒ«æƒ…å ±-----------------\r\n"), pCEditDoc->m_cDocLineMgr.GetLineCount() );
 	cmemProp.AppendString( szWork );
 
 	if( INVALID_HANDLE_VALUE != ( nFind = ::FindFirstFile( pCEditDoc->m_cDocFile.GetFilePath(), &wfd ) ) ){
 		if( pCEditDoc->m_cDocFile.IsFileLocking() ){
 			if( CAppMode::getInstance()->GetFileShareMode() == SHAREMODE_DENY_WRITE ){
-				auto_sprintf( szWork, _T("‚ ‚È‚½‚Í‚±‚Ìƒtƒ@ƒCƒ‹‚ğA‘¼ƒvƒƒZƒX‚©‚ç‚Ìã‘‚«‹Ö~ƒ‚[ƒh‚ÅƒƒbƒN‚µ‚Ä‚¢‚Ü‚·B\r\n") );
+				auto_sprintf( szWork, _T("ã‚ãªãŸã¯ã“ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ã€ä»–ãƒ—ãƒ­ã‚»ã‚¹ã‹ã‚‰ã®ä¸Šæ›¸ãç¦æ­¢ãƒ¢ãƒ¼ãƒ‰ã§ãƒ­ãƒƒã‚¯ã—ã¦ã„ã¾ã™ã€‚\r\n") );
 			}
 			else if( CAppMode::getInstance()->GetFileShareMode() == SHAREMODE_DENY_READWRITE ){
-				auto_sprintf( szWork, _T("‚ ‚È‚½‚Í‚±‚Ìƒtƒ@ƒCƒ‹‚ğA‘¼ƒvƒƒZƒX‚©‚ç‚Ì“Ç‚İ‘‚«‹Ö~ƒ‚[ƒh‚ÅƒƒbƒN‚µ‚Ä‚¢‚Ü‚·B\r\n") );
+				auto_sprintf( szWork, _T("ã‚ãªãŸã¯ã“ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ã€ä»–ãƒ—ãƒ­ã‚»ã‚¹ã‹ã‚‰ã®èª­ã¿æ›¸ãç¦æ­¢ãƒ¢ãƒ¼ãƒ‰ã§ãƒ­ãƒƒã‚¯ã—ã¦ã„ã¾ã™ã€‚\r\n") );
 			}
 			else{
-				auto_sprintf( szWork, _T("‚ ‚È‚½‚Í‚±‚Ìƒtƒ@ƒCƒ‹‚ğƒƒbƒN‚µ‚Ä‚¢‚Ü‚·B\r\n") );
+				auto_sprintf( szWork, _T("ã‚ãªãŸã¯ã“ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ãƒ­ãƒƒã‚¯ã—ã¦ã„ã¾ã™ã€‚\r\n") );
 			}
 			cmemProp.AppendString( szWork );
 		}
 		else{
-			auto_sprintf( szWork, _T("‚ ‚È‚½‚Í‚±‚Ìƒtƒ@ƒCƒ‹‚ğƒƒbƒN‚µ‚Ä‚¢‚Ü‚¹‚ñB\r\n") );
+			auto_sprintf( szWork, _T("ã‚ãªãŸã¯ã“ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ãƒ­ãƒƒã‚¯ã—ã¦ã„ã¾ã›ã‚“ã€‚\r\n") );
 			cmemProp.AppendString( szWork );
 		}
 
-		auto_sprintf( szWork, _T("ƒtƒ@ƒCƒ‹‘®«  "), pCEditDoc->m_cDocLineMgr.GetLineCount() );
+		auto_sprintf( szWork, _T("ãƒ•ã‚¡ã‚¤ãƒ«å±æ€§  "), pCEditDoc->m_cDocLineMgr.GetLineCount() );
 		cmemProp.AppendString( szWork );
 		if( wfd.dwFileAttributes & FILE_ATTRIBUTE_ARCHIVE ){
-			cmemProp.AppendString( _T("/ƒA[ƒJƒCƒu") );
+			cmemProp.AppendString( _T("/ã‚¢ãƒ¼ã‚«ã‚¤ãƒ–") );
 		}
 		if( wfd.dwFileAttributes & FILE_ATTRIBUTE_COMPRESSED ){
-			cmemProp.AppendString( _T("/ˆ³k") );
+			cmemProp.AppendString( _T("/åœ§ç¸®") );
 		}
 		if( wfd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY ){
-			cmemProp.AppendString( _T("/ƒtƒHƒ‹ƒ_") );
+			cmemProp.AppendString( _T("/ãƒ•ã‚©ãƒ«ãƒ€") );
 		}
 		if( wfd.dwFileAttributes & FILE_ATTRIBUTE_HIDDEN ){
-			cmemProp.AppendString( _T("/‰B‚µ") );
+			cmemProp.AppendString( _T("/éš ã—") );
 		}
 		if( wfd.dwFileAttributes & FILE_ATTRIBUTE_NORMAL ){
-			cmemProp.AppendString( _T("/ƒm[ƒ}ƒ‹") );
+			cmemProp.AppendString( _T("/ãƒãƒ¼ãƒãƒ«") );
 		}
 		if( wfd.dwFileAttributes & FILE_ATTRIBUTE_OFFLINE ){
-			cmemProp.AppendString( _T("/ƒIƒtƒ‰ƒCƒ“") );
+			cmemProp.AppendString( _T("/ã‚ªãƒ•ãƒ©ã‚¤ãƒ³") );
 		}
 		if( wfd.dwFileAttributes & FILE_ATTRIBUTE_READONLY ){
-			cmemProp.AppendString( _T("/“Ç‚İæ‚èê—p") );
+			cmemProp.AppendString( _T("/èª­ã¿å–ã‚Šå°‚ç”¨") );
 		}
 		if( wfd.dwFileAttributes & FILE_ATTRIBUTE_SYSTEM ){
-			cmemProp.AppendString( _T("/ƒVƒXƒeƒ€") );
+			cmemProp.AppendString( _T("/ã‚·ã‚¹ãƒ†ãƒ ") );
 		}
 		if( wfd.dwFileAttributes & FILE_ATTRIBUTE_TEMPORARY ){
-			cmemProp.AppendString( _T("/ƒeƒ“ƒ|ƒ‰ƒŠ") );
+			cmemProp.AppendString( _T("/ãƒ†ãƒ³ãƒãƒ©ãƒª") );
 		}
 		cmemProp.AppendString( _T("\r\n") );
 
 
-		cmemProp.AppendString( _T("ì¬“ú  ") );
+		cmemProp.AppendString( _T("ä½œæˆæ—¥æ™‚  ") );
 		CFileTime ctimeCreation = wfd.ftCreationTime;
-		auto_sprintf( szWork, _T("%d”N%dŒ%d“ú %02d:%02d:%02d"),
+		auto_sprintf( szWork, _T("%då¹´%dæœˆ%dæ—¥ %02d:%02d:%02d"),
 			ctimeCreation->wYear,
 			ctimeCreation->wMonth,
 			ctimeCreation->wDay,
@@ -183,9 +183,9 @@ void CDlgProperty::SetData( void )
 		cmemProp.AppendString( szWork );
 		cmemProp.AppendString( _T("\r\n") );
 
-		cmemProp.AppendString( _T("XV“ú  ") );
+		cmemProp.AppendString( _T("æ›´æ–°æ—¥æ™‚  ") );
 		CFileTime ctimeLastWrite = wfd.ftLastWriteTime;
-		auto_sprintf( szWork, _T("%d”N%dŒ%d“ú %02d:%02d:%02d"),
+		auto_sprintf( szWork, _T("%då¹´%dæœˆ%dæ—¥ %02d:%02d:%02d"),
 			ctimeLastWrite->wYear,
 			ctimeLastWrite->wMonth,
 			ctimeLastWrite->wDay,
@@ -197,9 +197,9 @@ void CDlgProperty::SetData( void )
 		cmemProp.AppendString( _T("\r\n") );
 
 
-		cmemProp.AppendString( _T("ƒAƒNƒZƒX“ú  ") );
+		cmemProp.AppendString( _T("ã‚¢ã‚¯ã‚»ã‚¹æ—¥  ") );
 		CFileTime ctimeLastAccess = wfd.ftLastAccessTime;
-		auto_sprintf( szWork, _T("%d”N%dŒ%d“ú"),
+		auto_sprintf( szWork, _T("%då¹´%dæœˆ%dæ—¥"),
 			ctimeLastAccess->wYear,
 			ctimeLastAccess->wMonth,
 			ctimeLastAccess->wDay
@@ -207,10 +207,10 @@ void CDlgProperty::SetData( void )
 		cmemProp.AppendString( szWork );
 		cmemProp.AppendString( _T("\r\n") );
 
-		auto_sprintf( szWork, _T("MS-DOSƒtƒ@ƒCƒ‹–¼  %ts\r\n"), wfd.cAlternateFileName );
+		auto_sprintf( szWork, _T("MS-DOSãƒ•ã‚¡ã‚¤ãƒ«å  %ts\r\n"), wfd.cAlternateFileName );
 		cmemProp.AppendString( szWork );
 
-		auto_sprintf( szWork, _T("ƒtƒ@ƒCƒ‹ƒTƒCƒY  %d ƒoƒCƒg\r\n"), wfd.nFileSizeLow );
+		auto_sprintf( szWork, _T("ãƒ•ã‚¡ã‚¤ãƒ«ã‚µã‚¤ã‚º  %d ãƒã‚¤ãƒˆ\r\n"), wfd.nFileSizeLow );
 		cmemProp.AppendString( szWork );
 
 		::FindClose( nFind );
@@ -224,7 +224,7 @@ void CDlgProperty::SetData( void )
 	char*					pBuf;
 	int						nBufLen;
 	CNativeT				ctext;
-	/* ƒƒ‚ƒŠŠm•Û & ƒtƒ@ƒCƒ‹“Ç‚İ‚İ */
+	/* ãƒ¡ãƒ¢ãƒªç¢ºä¿ & ãƒ•ã‚¡ã‚¤ãƒ«èª­ã¿è¾¼ã¿ */
 	hgData = NULL;
 	CBinaryInputStream in(pCEditDoc->m_cDocFile.GetFilePath());
 	if(!in){
@@ -243,7 +243,7 @@ void CDlgProperty::SetData( void )
 	in.Read( pBuf, nBufLen );
 	in.Close();
 
-	//CESI‚ÌƒfƒoƒbƒOî•ñ
+	//CESIã®ãƒ‡ãƒãƒƒã‚°æƒ…å ±
 	CESI::GetDebugInfo(pBuf,nBufLen,&ctext);
 	cmemProp.AppendNativeData(ctext);
 

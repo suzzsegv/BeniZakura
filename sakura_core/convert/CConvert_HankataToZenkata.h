@@ -27,7 +27,7 @@
 #include "CConvert.h"
 
 
-//!”¼ŠpƒJƒi¨‘SŠpƒJƒi
+//!åŠè§’ã‚«ãƒŠâ†’å…¨è§’ã‚«ãƒŠ
 class CConvert_HankataToZenkata : public CConvert{
 public:
 	bool DoConvert(CNativeW* pcData);

@@ -1,8 +1,8 @@
 /*!	@file
-	@brief ƒCƒ“ƒ|[ƒgAƒGƒNƒXƒ|[ƒgƒ}ƒl[ƒWƒƒ
+	@brief ã‚¤ãƒ³ãƒãƒ¼ãƒˆã€ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆãƒãƒãƒ¼ã‚¸ãƒ£
 
 	@author Uchi
-	@date 2010/4/22 V‹Kì¬
+	@date 2010/4/22 æ–°è¦ä½œæˆ
 */
 /*
 	Copyright (C) 2010, Uchi, Moca
@@ -40,18 +40,18 @@
 #include "util/other_util.h"
 
 /*-----------------------------------------------------------------------
-’è”
+å®šæ•°
 -----------------------------------------------------------------------*/
-// ƒƒbƒZ[ƒW
-static const wstring	MSG_NOT_OPEN		= L"ƒtƒ@ƒCƒ‹‚ğŠJ‚¯‚Ü‚¹‚ñ‚Å‚µ‚½B\n\n";
-static const wstring	MSG_NOT_EXPORT		= L"ƒGƒNƒXƒ|[ƒgo—ˆ‚Ü‚¹‚ñ‚Å‚µ‚½B\n\n";
-static const wstring	MSG_OK_EXPORT		= L"ƒtƒ@ƒCƒ‹‚ğƒGƒNƒXƒ|[ƒg‚µ‚Ü‚µ‚½B\n\n";
-static const wstring	MSG_OK_INPORT		= L"ƒtƒ@ƒCƒ‹‚ğƒCƒ“ƒ|[ƒg‚µ‚Ü‚µ‚½B\n\n";
+// ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+static const wstring	MSG_NOT_OPEN		= L"ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã‘ã¾ã›ã‚“ã§ã—ãŸã€‚\n\n";
+static const wstring	MSG_NOT_EXPORT		= L"ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆå‡ºæ¥ã¾ã›ã‚“ã§ã—ãŸã€‚\n\n";
+static const wstring	MSG_OK_EXPORT		= L"ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆã—ã¾ã—ãŸã€‚\n\n";
+static const wstring	MSG_OK_INPORT		= L"ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ã‚¤ãƒ³ãƒãƒ¼ãƒˆã—ã¾ã—ãŸã€‚\n\n";
 
 static const wchar_t	szSecInfo[]				= L"Info";
 
-// ƒ^ƒCƒv•Êİ’è
-static const wchar_t	WSTR_TYPE_HEAD[]		= L" ƒ^ƒCƒv•Êİ’è Ver1";
+// ã‚¿ã‚¤ãƒ—åˆ¥è¨­å®š
+static const wchar_t	WSTR_TYPE_HEAD[]		= L" ã‚¿ã‚¤ãƒ—åˆ¥è¨­å®š Ver1";
 
 static const wchar_t	szSecTypeEx[]			= L"TypeEx";
 static const wchar_t	szSecTypes[]			= L"Types";
@@ -66,38 +66,38 @@ static const wchar_t	szKeyPluginSmartIndentId[]		= L"szPluginSmartIndentId";
 static const wchar_t	szKeyVersion[]					= L"szVersion";
 static const wchar_t	szKeyStructureVersion[]			= L"vStructureVersion";
 
-// ƒJƒ‰[i CPropTypes.h‚©‚çƒRƒs[‰ü•Ï j
-//static const wchar_t	WSTR_COLORDATA_HEAD2[]	=  L" ƒeƒLƒXƒgƒGƒfƒBƒ^Fİ’è Ver2";
-//static const wchar_t	WSTR_COLORDATA_HEAD21[]	=  L" ƒeƒLƒXƒgƒGƒfƒBƒ^Fİ’è Ver2.1";	//Nov. 2, 2000 JEPRO •ÏX [’]. 0.3.9.0:ur3ƒÀ10ˆÈ~Aİ’è€–Ú‚Ì”Ô†‚ğ“ü‚ê‘Ö‚¦‚½‚½‚ß
-static const wchar_t	WSTR_COLORDATA_HEAD3[]	=  L" ƒeƒLƒXƒgƒGƒfƒBƒ^Fİ’è Ver3";		//Jan. 15, 2001 Stonee  Fİ’èVer3ƒhƒ‰ƒtƒg(İ’èƒtƒ@ƒCƒ‹‚ÌƒL[‚ğ˜A”Ô¨•¶š—ñ‚É)	//Feb. 11, 2001 JEPRO —LŒø‚É‚µ‚½
-//static const wchar_t	WSTR_COLORDATA_HEAD4[]	=  L" ƒeƒLƒXƒgƒGƒfƒBƒ^Fİ’è Ver4";		//2007.10.02 kobake UNICODE‰»‚ÉÛ‚µ‚ÄƒJƒ‰[ƒtƒ@ƒCƒ‹d—l‚à•ÏX
+// ã‚«ãƒ©ãƒ¼ï¼ˆ CPropTypes.hã‹ã‚‰ã‚³ãƒ”ãƒ¼æ”¹å¤‰ ï¼‰
+//static const wchar_t	WSTR_COLORDATA_HEAD2[]	=  L" ãƒ†ã‚­ã‚¹ãƒˆã‚¨ãƒ‡ã‚£ã‚¿è‰²è¨­å®š Ver2";
+//static const wchar_t	WSTR_COLORDATA_HEAD21[]	=  L" ãƒ†ã‚­ã‚¹ãƒˆã‚¨ãƒ‡ã‚£ã‚¿è‰²è¨­å®š Ver2.1";	//Nov. 2, 2000 JEPRO å¤‰æ›´ [æ³¨]. 0.3.9.0:ur3Î²10ä»¥é™ã€è¨­å®šé …ç›®ã®ç•ªå·ã‚’å…¥ã‚Œæ›¿ãˆãŸãŸã‚
+static const wchar_t	WSTR_COLORDATA_HEAD3[]	=  L" ãƒ†ã‚­ã‚¹ãƒˆã‚¨ãƒ‡ã‚£ã‚¿è‰²è¨­å®š Ver3";		//Jan. 15, 2001 Stonee  è‰²è¨­å®šVer3ãƒ‰ãƒ©ãƒ•ãƒˆ(è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã®ã‚­ãƒ¼ã‚’é€£ç•ªâ†’æ–‡å­—åˆ—ã«)	//Feb. 11, 2001 JEPRO æœ‰åŠ¹ã«ã—ãŸ
+//static const wchar_t	WSTR_COLORDATA_HEAD4[]	=  L" ãƒ†ã‚­ã‚¹ãƒˆã‚¨ãƒ‡ã‚£ã‚¿è‰²è¨­å®š Ver4";		//2007.10.02 kobake UNICODEåŒ–ã«éš›ã—ã¦ã‚«ãƒ©ãƒ¼ãƒ•ã‚¡ã‚¤ãƒ«ä»•æ§˜ã‚‚å¤‰æ›´
 static const wchar_t	szSecColor[]			=  L"SakuraColor";
 
-// ³‹K•\Œ»ƒL[ƒ[ƒh
-static const wchar_t	WSTR_REGEXKW_HEAD[]		= L"// ³‹K•\Œ»ƒL[ƒ[ƒh Ver1\n";
+// æ­£è¦è¡¨ç¾ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰
+static const wchar_t	WSTR_REGEXKW_HEAD[]		= L"// æ­£è¦è¡¨ç¾ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ Ver1\n";
 
-// ƒL[ƒ[ƒhƒwƒ‹ƒv
-static const wchar_t	WSTR_KEYHELP_HEAD[]		= L"// ƒL[ƒ[ƒh«‘İ’è Ver1\n";
+// ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ãƒ˜ãƒ«ãƒ—
+static const wchar_t	WSTR_KEYHELP_HEAD[]		= L"// ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰è¾æ›¸è¨­å®š Ver1\n";
 
-// ƒL[Š„‚è“–‚Ä
-static const wchar_t	WSTR_KEYBIND_HEAD[]		= L"SakuraKeyBind_Ver3";	//2007.10.05 kobake ƒtƒ@ƒCƒ‹Œ`®‚ğiniŒ`®‚É•ÏX
-static const wchar_t	WSTR_KEYBIND_HEAD2[]	= L"// ƒeƒLƒXƒgƒGƒfƒBƒ^ƒL[İ’è Ver2";	// (‹Œƒo[ƒWƒ‡ƒ“(ANSI”Å)j “Ç‚İ‚İ‚Ì‚İ‘Î‰ 2008/5/3 by Uchi
+// ã‚­ãƒ¼å‰²ã‚Šå½“ã¦
+static const wchar_t	WSTR_KEYBIND_HEAD[]		= L"SakuraKeyBind_Ver3";	//2007.10.05 kobake ãƒ•ã‚¡ã‚¤ãƒ«å½¢å¼ã‚’iniå½¢å¼ã«å¤‰æ›´
+static const wchar_t	WSTR_KEYBIND_HEAD2[]	= L"// ãƒ†ã‚­ã‚¹ãƒˆã‚¨ãƒ‡ã‚£ã‚¿ã‚­ãƒ¼è¨­å®š Ver2";	// (æ—§ãƒãƒ¼ã‚¸ãƒ§ãƒ³(ANSIç‰ˆ)ï¼‰ èª­ã¿è¾¼ã¿ã®ã¿å¯¾å¿œ 2008/5/3 by Uchi
 
-// ƒJƒXƒ^ƒ€ƒƒjƒ…[ƒtƒ@ƒCƒ‹
-// 2007.10.02 kobake UNICODE‰»‚ÉÛ‚µ‚ÄAƒJƒXƒ^ƒ€ƒƒjƒ…[ƒtƒ@ƒCƒ‹‚Ìd—l‚ğ•ÏX
+// ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼ãƒ•ã‚¡ã‚¤ãƒ«
+// 2007.10.02 kobake UNICODEåŒ–ã«éš›ã—ã¦ã€ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼ãƒ•ã‚¡ã‚¤ãƒ«ã®ä»•æ§˜ã‚’å¤‰æ›´
 static       wchar_t	WSTR_CUSTMENU_HEAD_V2[]	= L"SakuraEditorMenu_Ver2";
 
-// ƒL[ƒ[ƒh’è‹`ƒtƒ@ƒCƒ‹
-static const wchar_t	WSTR_KEYWORD_HEAD[]		= L" ƒL[ƒ[ƒh’è‹`ƒtƒ@ƒCƒ‹\n";
+// ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰å®šç¾©ãƒ•ã‚¡ã‚¤ãƒ«
+static const wchar_t	WSTR_KEYWORD_HEAD[]		= L" ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰å®šç¾©ãƒ•ã‚¡ã‚¤ãƒ«\n";
 static const wchar_t	WSTR_KEYWORD_CASE[]		= L"// CASE=";
 static const wchar_t	WSTR_CASE_TRUE[]		= L"// CASE=True";
 static const wchar_t	WSTR_CASE_FALSE[]		= L"// CASE=False";
 
-// ƒƒCƒ“ƒƒjƒ…[ƒtƒ@ƒCƒ‹
+// ãƒ¡ã‚¤ãƒ³ãƒ¡ãƒ‹ãƒ¥ãƒ¼ãƒ•ã‚¡ã‚¤ãƒ«
 static       wchar_t	WSTR_MAINMENU_HEAD_V1[]	= L"SakuraEditorMainMenu Ver1";
 
-// Exportƒtƒ@ƒCƒ‹–¼‚Ìì¬
-//	  ƒ^ƒCƒv–¼‚È‚Çƒtƒ@ƒCƒ‹‚Æ‚µ‚Äˆµ‚¤‚±‚Æ‚ğl‚¦‚Ä‚¢‚È‚¢•¶š—ñ‚ğˆµ‚¤
+// Exportãƒ•ã‚¡ã‚¤ãƒ«åã®ä½œæˆ
+//	  ã‚¿ã‚¤ãƒ—åãªã©ãƒ•ã‚¡ã‚¤ãƒ«ã¨ã—ã¦æ‰±ã†ã“ã¨ã‚’è€ƒãˆã¦ã„ãªã„æ–‡å­—åˆ—ã‚’æ‰±ã†
 //		2010/4/12 Uchi
 static wchar_t* MakeExportFileName(wchar_t* res, const wchar_t* trg, const wchar_t* ext)
 {
@@ -108,29 +108,29 @@ static wchar_t* MakeExportFileName(wchar_t* res, const wchar_t* trg, const wchar
 
 	p = conv;
 	while ( (p = wcspbrk( p, L"\t\\:*?\"<>|" )) != NULL ) {
-		// ƒtƒ@ƒCƒ‹–¼‚Ég‚¦‚È‚¢•¶š‚ğ _ ‚É’u‚«Š·‚¦‚é
+		// ãƒ•ã‚¡ã‚¤ãƒ«åã«ä½¿ãˆãªã„æ–‡å­—ã‚’ _ ã«ç½®ãæ›ãˆã‚‹
 		*p++ = L'_';
 	}
 	p = conv;
 	while ( (p = wcspbrk( p, L"/" )) != NULL ) {
-		// ƒtƒ@ƒCƒ‹–¼‚Ég‚¦‚È‚¢•¶š‚ğ ^ ‚É’u‚«Š·‚¦‚é
-		*p++ = L'^';
+		// ãƒ•ã‚¡ã‚¤ãƒ«åã«ä½¿ãˆãªã„æ–‡å­—ã‚’ ï¼ ã«ç½®ãæ›ãˆã‚‹
+		*p++ = L'ï¼';
 	}
 	auto_sprintf_s(res, _MAX_PATH, L"%ls.%ls", conv, ext);
 
 	return res;
 }
 
-// ƒCƒ“ƒ|[ƒg ƒtƒ@ƒCƒ‹w’è•t‚«
+// ã‚¤ãƒ³ãƒãƒ¼ãƒˆ ãƒ•ã‚¡ã‚¤ãƒ«æŒ‡å®šä»˜ã
 bool CImpExpManager::ImportUI( HINSTANCE hInstance, HWND hwndParent )
 {
-	/* ƒtƒ@ƒCƒ‹ƒI[ƒvƒ“ƒ_ƒCƒAƒƒO‚Ì‰Šú‰» */
+	/* ãƒ•ã‚¡ã‚¤ãƒ«ã‚ªãƒ¼ãƒ—ãƒ³ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®åˆæœŸåŒ– */
 	CDlgOpenFile	cDlgOpenFile;
 	cDlgOpenFile.Create(
 		hInstance,
 		hwndParent,
 		GetDefaultExtension(),
-		GetDllShareData().m_sHistory.m_szIMPORTFOLDER // ƒCƒ“ƒ|[ƒg—pƒtƒHƒ‹ƒ_
+		GetDllShareData().m_sHistory.m_szIMPORTFOLDER // ã‚¤ãƒ³ãƒãƒ¼ãƒˆç”¨ãƒ•ã‚©ãƒ«ãƒ€
 	);
 	TCHAR	szPath[_MAX_PATH + 1];
 	szPath[0] = _T('\0');
@@ -144,7 +144,7 @@ bool CImpExpManager::ImportUI( HINSTANCE hInstance, HWND hwndParent )
 	const wstring	sPath = to_wchar(szPath);
 	wstring	sErrMsg;
 
-	// Šm”F
+	// ç¢ºèª
 	if (!ImportAscertain( hInstance, hwndParent, sPath, sErrMsg )) {
 		if (sErrMsg.length() > 0) {
 			ErrorMessage( hwndParent, _T("%ls"), sErrMsg.c_str() );
@@ -152,7 +152,7 @@ bool CImpExpManager::ImportUI( HINSTANCE hInstance, HWND hwndParent )
 		return false;
 	}
 
-	// Import Folder‚Ìİ’è
+	// Import Folderã®è¨­å®š
 	SetImportFolder( szPath );
 
 	// Import
@@ -168,16 +168,16 @@ bool CImpExpManager::ImportUI( HINSTANCE hInstance, HWND hwndParent )
 	return true;
 }
 
-// ƒGƒNƒXƒ|[ƒg ƒtƒ@ƒCƒ‹w’è•t‚«
+// ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆ ãƒ•ã‚¡ã‚¤ãƒ«æŒ‡å®šä»˜ã
 bool CImpExpManager::ExportUI( HINSTANCE hInstance, HWND hwndParent )
 {
-	/* ƒtƒ@ƒCƒ‹ƒI[ƒvƒ“ƒ_ƒCƒAƒƒO‚Ì‰Šú‰» */
+	/* ãƒ•ã‚¡ã‚¤ãƒ«ã‚ªãƒ¼ãƒ—ãƒ³ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®åˆæœŸåŒ– */
 	CDlgOpenFile	cDlgOpenFile;
 	cDlgOpenFile.Create(
 		hInstance,
 		hwndParent,
 		GetDefaultExtension(),
-		GetDllShareData().m_sHistory.m_szIMPORTFOLDER // ƒCƒ“ƒ|[ƒg—pƒtƒHƒ‹ƒ_
+		GetDllShareData().m_sHistory.m_szIMPORTFOLDER // ã‚¤ãƒ³ãƒãƒ¼ãƒˆç”¨ãƒ•ã‚©ãƒ«ãƒ€
 	);
 	TCHAR			szPath[_MAX_PATH + 1];
 	szPath[0] = _T('\0');
@@ -188,7 +188,7 @@ bool CImpExpManager::ExportUI( HINSTANCE hInstance, HWND hwndParent )
 		return false;
 	}
 
-	// Import Folder‚Ìİ’è
+	// Import Folderã®è¨­å®š
 	SetImportFolder( szPath );
 
 	// Export
@@ -208,13 +208,13 @@ bool CImpExpManager::ExportUI( HINSTANCE hInstance, HWND hwndParent )
 	return true;
 }
 
-// ƒCƒ“ƒ|[ƒgŠm”F
+// ã‚¤ãƒ³ãƒãƒ¼ãƒˆç¢ºèª
 bool CImpExpManager::ImportAscertain( HINSTANCE hInstance, HWND hwndParent, const wstring& sFileName, wstring& sErrMsg )
 {
 	return true;
 }
 
-// ƒfƒtƒHƒ‹ƒgŠg’£q‚Ìæ“¾
+// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆæ‹¡å¼µå­ã®å–å¾—
 const TCHAR* CImpExpManager::GetDefaultExtension()
 {
 	return _T("");
@@ -224,7 +224,7 @@ const wchar_t* CImpExpManager::GetOriginExtension()
 	return L"";
 }
 
-// ƒtƒ@ƒCƒ‹–¼‚Ì‰Šú’l‚ğİ’è
+// ãƒ•ã‚¡ã‚¤ãƒ«åã®åˆæœŸå€¤ã‚’è¨­å®š
 void CImpExpManager::SetBaseName(const wstring& sBase)
 {
 	wchar_t		wbuff[_MAX_PATH + 1];
@@ -234,9 +234,9 @@ void CImpExpManager::SetBaseName(const wstring& sBase)
 }
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                          ƒ^ƒCƒv•Êİ’è                       //
+//                          ã‚¿ã‚¤ãƒ—åˆ¥è¨­å®š                       //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-// ƒCƒ“ƒ|[ƒgŠm”F
+// ã‚¤ãƒ³ãƒãƒ¼ãƒˆç¢ºèª
 bool CImpExpType::ImportAscertain( HINSTANCE hInstance, HWND hwndParent, const wstring& sFileName, wstring& sErrMsg )
 {
 	const tstring	sPath = to_tchar( sFileName.c_str() );
@@ -244,7 +244,7 @@ bool CImpExpType::ImportAscertain( HINSTANCE hInstance, HWND hwndParent, const w
 	m_cProfile.SetReadingMode();
 
 	if (!m_cProfile.ReadProfile( sPath.c_str() )) {
-		/* İ’èƒtƒ@ƒCƒ‹‚ª‘¶İ‚µ‚È‚¢ */
+		/* è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ãŒå­˜åœ¨ã—ãªã„ */
 		sErrMsg = MSG_NOT_OPEN + sFileName;
 		return false;
 	}
@@ -253,27 +253,27 @@ bool CImpExpType::ImportAscertain( HINSTANCE hInstance, HWND hwndParent, const w
 	int		nStructureVersion = 0;
 	wchar_t	szKeyVersion[64];
 	if (!m_cProfile.IOProfileData( szSecInfo, szKeyStructureVersion, nStructureVersion )) {
-		sErrMsg = L"•s³‚ÈŒ`®‚Å‚·B\nƒCƒ“ƒ|[ƒg‚ğ’†~‚µ‚Ü‚·";
+		sErrMsg = L"ä¸æ­£ãªå½¢å¼ã§ã™ã€‚\nã‚¤ãƒ³ãƒãƒ¼ãƒˆã‚’ä¸­æ­¢ã—ã¾ã™";
 		return false;
 	}
 	if ((unsigned int)nStructureVersion != m_pShareData->m_vStructureVersion) {
 		auto_strcpy( szKeyVersion, L"?" );
 		m_cProfile.IOProfileData( szSecInfo, szKeyVersion, MakeStringBufferW( szKeyVersion ) );
 		int nRet = ConfirmMessage( hwndParent,
-			_T("ƒGƒNƒXƒ|[ƒg‚µ‚½ %ls(%ls/%d) ‚Æƒo[ƒWƒ‡ƒ“‚ªˆÙ‚È‚è‚Ü‚·B\n\nƒCƒ“ƒ|[ƒg‚µ‚Ä‚à‚æ‚ë‚µ‚¢‚Å‚·‚©H"), 
+			_T("ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆã—ãŸ %ls(%ls/%d) ã¨ãƒãƒ¼ã‚¸ãƒ§ãƒ³ãŒç•°ãªã‚Šã¾ã™ã€‚\n\nã‚¤ãƒ³ãƒãƒ¼ãƒˆã—ã¦ã‚‚ã‚ˆã‚ã—ã„ã§ã™ã‹ï¼Ÿ"), 
 			_APP_NAME_(LTEXT), szKeyVersion, nStructureVersion );
 		if ( IDYES != nRet ) {
 			return false;
 		}
 	}
 
-	// Šm”F•Fw’è
+	// ç¢ºèªï¼†è‰²æŒ‡å®š
 	CDlgTypeAscertain::SAscertainInfo	sAscertainInfo;
 	CDlgTypeAscertain	cDlgTypeAscertain;
 	wchar_t wszLabel[1024];
 	STypeConfig TmpType;
 
-	// ƒpƒ‰ƒ[ƒ^‚Ìİ’è
+	// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®è¨­å®š
 	sAscertainInfo.sImportFile = sPath;
 	List_GetText( m_hwndList, m_nIdx, wszLabel );
 	sAscertainInfo.sTypeNameTo = wszLabel;
@@ -281,7 +281,7 @@ bool CImpExpType::ImportAscertain( HINSTANCE hInstance, HWND hwndParent, const w
 	m_cProfile.IOProfileData( szSecTypes, L"szTypeName", MakeStringBufferW( wszLabel ));
 	sAscertainInfo.sTypeNameFile = wszLabel;
 
-	// Šm”F
+	// ç¢ºèª
 	if (!cDlgTypeAscertain.DoModal( hInstance, hwndParent, &sAscertainInfo )) {
 		return false;
 	}
@@ -292,53 +292,53 @@ bool CImpExpType::ImportAscertain( HINSTANCE hInstance, HWND hwndParent, const w
 	return true;
 }
 
-// ƒCƒ“ƒ|[ƒg
+// ã‚¤ãƒ³ãƒãƒ¼ãƒˆ
 bool CImpExpType::Import( const wstring& sFileName, wstring& sErrMsg )
 {
 	wstring	files = L"";
 	wstring TmpMsg;
-	ColorInfo	colorInfoArr[_countof(m_Types.m_ColorInfoArr)];				// Fİ’è”z—ñ(ƒoƒbƒNƒAƒbƒv)
+	ColorInfo	colorInfoArr[_countof(m_Types.m_ColorInfoArr)];				// è‰²è¨­å®šé…åˆ—(ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—)
 	int		i;
 
-	// F‚Ì•ÏX
+	// è‰²ã®å¤‰æ›´
 	if (m_nColorType >= MAX_TYPES) {
-		// Fİ’èƒCƒ“ƒ|[ƒg
+		// è‰²è¨­å®šã‚¤ãƒ³ãƒãƒ¼ãƒˆ
 		CImpExpColors	cImpExpColors( colorInfoArr );
 		if (cImpExpColors.Import( cImpExpColors.MakeFullPath( m_sColorFile ), TmpMsg)) {
 			files += wstring(L"\n") + m_sColorFile;
 		}
 		else {
-			// ¸”s‚µ‚½‚çŠî–{‚ğƒRƒs[(ƒƒbƒZ[ƒW‚Ío‚³‚È‚¢)
+			// å¤±æ•—ã—ãŸã‚‰åŸºæœ¬ã‚’ã‚³ãƒ”ãƒ¼(ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã¯å‡ºã•ãªã„)
 			memcpy( &colorInfoArr, &CDocTypeManager().GetTypeSetting(CTypeConfig(0)).m_ColorInfoArr, sizeof(colorInfoArr) );
-			files += wstring(L"\n~ ") + m_sColorFile;	// ¸”s
+			files += wstring(L"\nÃ— ") + m_sColorFile;	// å¤±æ•—
 		}
 	}
 	else if (m_nColorType >= 0 ) {
-		// Fw’è(“à•”)
+		// è‰²æŒ‡å®š(å†…éƒ¨)
 		memcpy( &colorInfoArr, &CDocTypeManager().GetTypeSetting(CTypeConfig(m_nColorType)).m_ColorInfoArr, sizeof(colorInfoArr) );
 	}
 
-	// “Ç‚İ‚İ
+	// èª­ã¿è¾¼ã¿
 	CShareData_IO::ShareData_IO_Type_One( m_cProfile, m_nIdx, szSecTypes );
 
 	m_Types.m_nIdx = m_nIdx;
 	if (m_nIdx == 0) {
-		// Šî–{‚Ìê‡‚Ì–¼‘O‚ÆŠg’£q‚ğ‰Šú‰»
-		_tcscpy( m_Types.m_szTypeName, _T("Šî–{") );
+		// åŸºæœ¬ã®å ´åˆã®åå‰ã¨æ‹¡å¼µå­ã‚’åˆæœŸåŒ–
+		_tcscpy( m_Types.m_szTypeName, _T("åŸºæœ¬") );
 		_tcscpy( m_Types.m_szTypeExts, _T("") );
 	}
 
-	// F‚Ìİ’è
+	// è‰²ã®è¨­å®š
 	if (m_nColorType >= 0 ) {
-		// Fw’è‚ ‚è
+		// è‰²æŒ‡å®šã‚ã‚Š
 		for (i = 0; i < _countof(colorInfoArr); i++) {
 			bool bDisp = m_Types.m_ColorInfoArr[i].m_bDisp;
 			m_Types.m_ColorInfoArr[i] = colorInfoArr[i];
-			m_Types.m_ColorInfoArr[i].m_bDisp = bDisp;		// •\¦ƒtƒ‰ƒO‚Íƒtƒ@ƒCƒ‹‚Ì‚à‚Ì‚ğg—p‚·‚é
+			m_Types.m_ColorInfoArr[i].m_bDisp = bDisp;		// è¡¨ç¤ºãƒ•ãƒ©ã‚°ã¯ãƒ•ã‚¡ã‚¤ãƒ«ã®ã‚‚ã®ã‚’ä½¿ç”¨ã™ã‚‹
 		}
 	}
 
-	// ‹¤’Êİ’è‚Æ‚Ì˜AŒ‹•”
+	// å…±é€šè¨­å®šã¨ã®é€£çµéƒ¨
 	wchar_t	szKeyName[64];
 	wchar_t	szKeyData[1024];
 	int		nIdx;
@@ -350,7 +350,7 @@ bool CImpExpType::Import( const wstring& sFileName, wstring& sErrMsg )
 	wstring	sErrMag;
 	CommonSetting& common = m_pShareData->m_Common;
 
-	// ‹­’²ƒL[ƒ[ƒh
+	// å¼·èª¿ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰
 	CKeyWordSetMgr&	cKeyWordSetMgr = common.m_sSpecialKeyword.m_CKeyWordSetMgr;
 	for (i=0; i < MAX_KEYWORDSET_PER_TYPE; i++) {
 		//types.m_nKeyWordSetIdx[i] = -1;
@@ -358,16 +358,16 @@ bool CImpExpType::Import( const wstring& sFileName, wstring& sErrMsg )
 		if (m_cProfile.IOProfileData( szSecTypeEx, szKeyName, MakeStringBufferW( szKeyData ))) {
 			nIdx = cKeyWordSetMgr.SearchKeyWordSet( szKeyData );
 			if (nIdx < 0) {
-				// ƒGƒ“ƒgƒŠì¬
+				// ã‚¨ãƒ³ãƒˆãƒªä½œæˆ
 				cKeyWordSetMgr.AddKeyWordSet( szKeyData, false );
 				nIdx = cKeyWordSetMgr.SearchKeyWordSet( szKeyData );
 			}
 			if (nIdx >= 0) {
 				auto_sprintf( szKeyName, szKeyKeywordCaseTemp, i+1 );
-				bCase = false;		// ‘å•¶š¬•¶š‹æ•Ê‚µ‚È‚¢ (Defaule)
+				bCase = false;		// å¤§æ–‡å­—å°æ–‡å­—åŒºåˆ¥ã—ãªã„ (Defaule)
 				m_cProfile.IOProfileData( szSecTypeEx, szKeyName, bCase );
 
-				// ƒL[ƒ[ƒh’è‹`ƒtƒ@ƒCƒ‹“ü—Í
+				// ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰å®šç¾©ãƒ•ã‚¡ã‚¤ãƒ«å…¥åŠ›
 				CImpExpKeyWord	cImpExpKeyWord( common, nIdx, bCase );
 
 				auto_sprintf( szKeyName, szKeyKeywordFileTemp, i+1 );
@@ -376,7 +376,7 @@ bool CImpExpType::Import( const wstring& sFileName, wstring& sErrMsg )
 					if( cImpExpKeyWord.Import( cImpExpKeyWord.MakeFullPath( szFileName ), TmpMsg )) {
 						files += wstring(L"\n") + szFileName;
 					} else {
-						files += wstring(L"\n~ ") + szFileName;	// ¸”s
+						files += wstring(L"\nÃ— ") + szFileName;	// å¤±æ•—
 					}
 				}
 			}
@@ -390,7 +390,7 @@ bool CImpExpType::Import( const wstring& sFileName, wstring& sErrMsg )
 }
 
 
-// ƒGƒNƒXƒ|[ƒg
+// ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆ
 bool CImpExpType::Export( const wstring& sFileName, wstring& sErrMsg )
 {
 	CDataProfile	cProfile;
@@ -399,7 +399,7 @@ bool CImpExpType::Export( const wstring& sFileName, wstring& sErrMsg )
 
 	CShareData_IO::ShareData_IO_Type_One( cProfile , m_nIdx, szSecTypes );
 
-	// ‹¤’Êİ’è‚Æ‚Ì˜AŒ‹•”
+	// å…±é€šè¨­å®šã¨ã®é€£çµéƒ¨
 	int		i;
 	wchar_t	szKeyName[64];
 	wchar_t buff[64];
@@ -410,7 +410,7 @@ bool CImpExpType::Export( const wstring& sFileName, wstring& sErrMsg )
 	int		nIdx;
 	CommonSetting& common  = m_pShareData->m_Common;
 
-	// ‹­’²ƒL[ƒ[ƒh
+	// å¼·èª¿ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰
 	CKeyWordSetMgr&	cKeyWordSetMgr = common.m_sSpecialKeyword.m_CKeyWordSetMgr;
 	for (i=0; i < MAX_KEYWORDSET_PER_TYPE; i++) {
 		if (m_Types.m_nKeyWordSetIdx[i] >= 0) {
@@ -419,10 +419,10 @@ bool CImpExpType::Export( const wstring& sFileName, wstring& sErrMsg )
 			auto_strcpy( buff, cKeyWordSetMgr.GetTypeName( nIdx ));
 			cProfile.IOProfileData( szSecTypeEx, szKeyName, MakeStringBufferW( buff ));
 
-			// ‘å•¶š¬•¶š‹æ•Ê
+			// å¤§æ–‡å­—å°æ–‡å­—åŒºåˆ¥
 			bCase = common.m_sSpecialKeyword.m_CKeyWordSetMgr.GetKeyWordCase( nIdx );
 
-			// ƒL[ƒ[ƒh’è‹`ƒtƒ@ƒCƒ‹o—Í
+			// ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰å®šç¾©ãƒ•ã‚¡ã‚¤ãƒ«å‡ºåŠ›
 			CImpExpKeyWord	cImpExpKeyWord( common, m_Types.m_nKeyWordSetIdx[i], bCase );
 			cImpExpKeyWord.SetBaseName( common.m_sSpecialKeyword.m_CKeyWordSetMgr.GetTypeName( nIdx ));
 
@@ -452,7 +452,7 @@ bool CImpExpType::Export( const wstring& sFileName, wstring& sErrMsg )
 	nStructureVersion = int(pShare->m_vStructureVersion);
 	cProfile.IOProfileData( szSecInfo, szKeyStructureVersion, nStructureVersion );
 
-	// ‘‚«‚İ
+	// æ›¸ãè¾¼ã¿
 	if (!cProfile.WriteProfile( to_tchar(sFileName.c_str()), WSTR_TYPE_HEAD )) {
 		sErrMsg = MSG_NOT_EXPORT + sFileName;
 		return false;
@@ -465,31 +465,31 @@ bool CImpExpType::Export( const wstring& sFileName, wstring& sErrMsg )
 
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                          ƒJƒ‰[                             //
+//                          ã‚«ãƒ©ãƒ¼                             //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-// ƒCƒ“ƒ|[ƒg
+// ã‚¤ãƒ³ãƒãƒ¼ãƒˆ
 bool CImpExpColors::Import( const wstring& sFileName, wstring& sErrMsg )
 {
 	const tstring strPath = to_tchar( sFileName.c_str() );
 
-	// ŠJ‚¯‚é‚©
+	// é–‹ã‘ã‚‹ã‹
 	CTextInputStream in( strPath.c_str() );
 	if (!in) {
 		sErrMsg = MSG_NOT_OPEN + sFileName;
 		return false;
 	}
 
-	/* ƒtƒ@ƒCƒ‹æ“ª */
-	//ƒwƒbƒ_“Çæ
+	/* ãƒ•ã‚¡ã‚¤ãƒ«å…ˆé ­ */
+	//ãƒ˜ãƒƒãƒ€èª­å–
 	wstring szHeader = in.ReadLineW();
 	if(szHeader.length()>=2) {
-		//ƒRƒƒ“ƒg‚ğ”²‚­
+		//ã‚³ãƒ¡ãƒ³ãƒˆã‚’æŠœã
 		szHeader = &szHeader.c_str()[ szHeader.c_str()[0] == _T(';') ? 1 : 2];
 	}
-	//”äŠr
+	//æ¯”è¼ƒ
 	if (szHeader != WSTR_COLORDATA_HEAD3) {
 		in.Close();
-		sErrMsg = wstring(L"Fİ’èƒtƒ@ƒCƒ‹‚ÌŒ`®‚ªˆá‚¢‚Ü‚·BŒÃ‚¢Œ`®‚ÍƒTƒ|[ƒg‚³‚ê‚È‚­‚È‚è‚Ü‚µ‚½B\n")	// ‹Œƒo[ƒWƒ‡ƒ“‚Ìà–¾‚Ìíœ 2010/4/22 Uchi
+		sErrMsg = wstring(L"è‰²è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã®å½¢å¼ãŒé•ã„ã¾ã™ã€‚å¤ã„å½¢å¼ã¯ã‚µãƒãƒ¼ãƒˆã•ã‚Œãªããªã‚Šã¾ã—ãŸã€‚\n")	// æ—§ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã®èª¬æ˜ã®å‰Šé™¤ 2010/4/22 Uchi
 			+ sFileName;
 		return false;
 	}
@@ -498,21 +498,21 @@ bool CImpExpColors::Import( const wstring& sFileName, wstring& sErrMsg )
 	CDataProfile	cProfile;
 	cProfile.SetReadingMode();
 
-	/* Fİ’èVer3 */
+	/* è‰²è¨­å®šVer3 */
 	if( !cProfile.ReadProfile( strPath.c_str() ) ){
 		return false;
 	}
 
-	/* Fİ’è I/O */
+	/* è‰²è¨­å®š I/O */
 	CShareData_IO::IO_ColorSet( &cProfile, szSecColor, m_ColorInfoArr );
 
 	return true;
 }
 
-// ƒGƒNƒXƒ|[ƒg
+// ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆ
 bool CImpExpColors::Export( const wstring& sFileName, wstring& sErrMsg )
 {
-	/* Fİ’è I/O */
+	/* è‰²è¨­å®š I/O */
 	CDataProfile	cProfile;
 	cProfile.SetWritingMode();
 	CShareData_IO::IO_ColorSet( &cProfile, szSecColor, m_ColorInfoArr );
@@ -526,9 +526,9 @@ bool CImpExpColors::Export( const wstring& sFileName, wstring& sErrMsg )
 
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                    ³‹K•\Œ»ƒL[ƒ[ƒh                       //
+//                    æ­£è¦è¡¨ç¾ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰                       //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-// ƒCƒ“ƒ|[ƒg
+// ã‚¤ãƒ³ãƒãƒ¼ãƒˆ
 bool CImpExpRegex::Import( const wstring& sFileName, wstring& sErrMsg )
 {
 	CTextInputStream	in( to_tchar( sFileName.c_str() ) );
@@ -545,12 +545,12 @@ bool CImpExpRegex::Import( const wstring& sFileName, wstring& sErrMsg )
 	int count = 0;
 	while(in)
 	{
-		//1s“Ç‚İ‚İ
+		//1è¡Œèª­ã¿è¾¼ã¿
 		wstring line=in.ReadLineW();
 		_wcstotcs(buff,line.c_str(),_countof(buff));
 
 		if(count >= MAX_REGEX_KEYWORD){
-			sErrMsg = L"ƒL[ƒ[ƒh”‚ªãŒÀ‚É’B‚µ‚½‚½‚ßØ‚èÌ‚Ä‚Ü‚µ‚½B";
+			sErrMsg = L"ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰æ•°ãŒä¸Šé™ã«é”ã—ãŸãŸã‚åˆ‡ã‚Šæ¨ã¦ã¾ã—ãŸã€‚";
 			break;
 		}
 
@@ -564,12 +564,12 @@ bool CImpExpRegex::Import( const wstring& sFileName, wstring& sErrMsg )
 		{
 			*p = _T('\0');
 			p++;
-			if( p[0] && CRegexKeyword::RegexKeyCheckSyntax(to_wchar(p)) )	//ˆÍ‚İ‚ª‚ ‚é
+			if( p[0] && CRegexKeyword::RegexKeyCheckSyntax(to_wchar(p)) )	//å›²ã¿ãŒã‚ã‚‹
 			{
-				//Fw’è–¼‚É‘Î‰‚·‚é”Ô†‚ğ’T‚·
+				//è‰²æŒ‡å®šåã«å¯¾å¿œã™ã‚‹ç•ªå·ã‚’æ¢ã™
 				int k = GetColorIndexByName( &buff[11] );	//@@@ 2002.04.30
 				if( k == -1 ){
-					/* “ú–{Œê–¼‚©‚çƒCƒ“ƒfƒbƒNƒX”Ô†‚É•ÏŠ·‚·‚é */
+					/* æ—¥æœ¬èªåã‹ã‚‰ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ç•ªå·ã«å¤‰æ›ã™ã‚‹ */
 					for(int m = 0; m < COLORIDX_LAST; m++){
 						if( auto_strcmp(m_Types.m_ColorInfoArr[m].m_szName, &buff[11]) == 0 ){
 							k = m;
@@ -577,7 +577,7 @@ bool CImpExpRegex::Import( const wstring& sFileName, wstring& sErrMsg )
 						}
 					}
 				}
-				if( k != -1 )	/* 3•¶šƒJƒ‰[–¼‚©‚çƒCƒ“ƒfƒbƒNƒX”Ô†‚É•ÏŠ· */
+				if( k != -1 )	/* 3æ–‡å­—ã‚«ãƒ©ãƒ¼åã‹ã‚‰ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ç•ªå·ã«å¤‰æ› */
 				{
 					if( 0 < MAX_REGEX_KEYWORDLISTLEN - keywordPos - 1 ){
 						regexKeyArr[count].m_nColorIndex = k;
@@ -585,11 +585,11 @@ bool CImpExpRegex::Import( const wstring& sFileName, wstring& sErrMsg )
 						count++;
 						keywordPos += auto_strlen(&pKeyword[keywordPos]) + 1;
 					}else{
-						sErrMsg = L"ƒL[ƒ[ƒh—Ìˆæ‚ª‚¢‚Á‚Ï‚¢‚È‚½‚ßØ‚èÌ‚Ä‚Ü‚µ‚½B";
+						sErrMsg = L"ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰é ˜åŸŸãŒã„ã£ã±ã„ãªãŸã‚åˆ‡ã‚Šæ¨ã¦ã¾ã—ãŸã€‚";
 					}
 				}
 			}else{
-				sErrMsg = L"•s³‚ÈƒL[ƒ[ƒh‚ğ–³‹‚µ‚Ü‚µ‚½B";
+				sErrMsg = L"ä¸æ­£ãªã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ã‚’ç„¡è¦–ã—ã¾ã—ãŸã€‚";
 			}
 		}
 	}
@@ -608,7 +608,7 @@ bool CImpExpRegex::Import( const wstring& sFileName, wstring& sErrMsg )
 	return true;
 }
 
-// ƒGƒNƒXƒ|[ƒg
+// ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆ
 bool CImpExpRegex::Export( const wstring& sFileName, wstring& sErrMsg )
 {
 	CTextOutputStream out( to_tchar( sFileName.c_str() ) );
@@ -638,10 +638,10 @@ bool CImpExpRegex::Export( const wstring& sFileName, wstring& sErrMsg )
 
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                     ƒL[ƒ[ƒhƒwƒ‹ƒv                        //
+//                     ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ãƒ˜ãƒ«ãƒ—                        //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-/*! ƒCƒ“ƒ|[ƒg
-	@date 2010.07.14 Moca ListView‚Ö‚Ìİ’è‚©‚çm_Types‚Ö‚Ìİ’è‚É•ÏX
+/*! ã‚¤ãƒ³ãƒãƒ¼ãƒˆ
+	@date 2010.07.14 Moca ListViewã¸ã®è¨­å®šã‹ã‚‰m_Typesã¸ã®è¨­å®šã«å¤‰æ›´
 */
 bool CImpExpKeyHelp::Import( const wstring& sFileName, wstring& sErrMsg )
 {
@@ -653,20 +653,20 @@ bool CImpExpKeyHelp::Import( const wstring& sFileName, wstring& sErrMsg )
 		return false;
 	}
 
-	/* ƒf[ƒ^æ“¾ */
-	int invalid_record = 0; // •s³‚Ès
+	/* ãƒ‡ãƒ¼ã‚¿å–å¾— */
+	int invalid_record = 0; // ä¸æ­£ãªè¡Œ
 	int i=0;
 	while (in && i<MAX_KEYHELP_FILE) {
 		wstring buff=in.ReadLineW();
 
-		// 2007.02.03 genta ƒRƒƒ“ƒg‚İ‚½‚¢‚Ès‚Í–Ù‚Á‚ÄƒXƒLƒbƒv
-		// 2007.10.08 kobake ‹ós‚àƒXƒLƒbƒv
+		// 2007.02.03 genta ã‚³ãƒ¡ãƒ³ãƒˆã¿ãŸã„ãªè¡Œã¯é»™ã£ã¦ã‚¹ã‚­ãƒƒãƒ—
+		// 2007.10.08 kobake ç©ºè¡Œã‚‚ã‚¹ã‚­ãƒƒãƒ—
 		if( buff[0] == LTEXT('\0') ||
 			buff[0] == LTEXT('\n') ||
 			buff[0] == LTEXT('#') ||
 			buff[0] == LTEXT(';') ||
 			( buff[0] == LTEXT('/') && buff[1] == LTEXT('/') )){
-				//	2007.02.03 genta ˆ—‚ğŒp‘±
+				//	2007.02.03 genta å‡¦ç†ã‚’ç¶™ç¶š
 				continue;
 		}
 
@@ -675,34 +675,34 @@ bool CImpExpKeyHelp::Import( const wstring& sFileName, wstring& sErrMsg )
 			auto_memcmp(buff.c_str(), LTEXT("KDct["), 5) != 0 ||
 			auto_memcmp(&buff[7], LTEXT("]="), 2) != 0
 			){
-			//	2007.02.03 genta ˆ—‚ğŒp‘±
+			//	2007.02.03 genta å‡¦ç†ã‚’ç¶™ç¶š
 			++invalid_record;
 			continue;
 		}
 
 		WCHAR *p1, *p2, *p3;
 		p1 = &buff[9];
-		p3 = p1;					//Œ‹‰ÊŠm”F—p‚É‰Šú‰»
+		p3 = p1;					//çµæœç¢ºèªç”¨ã«åˆæœŸåŒ–
 		if( NULL != (p2=wcsstr(p1,LTEXT(","))) ){
 			*p2 = LTEXT('\0');
-			p2 += 1;				//ƒJƒ“ƒ}‚ÌŸ‚ªAŸ‚Ì—v‘f
+			p2 += 1;				//ã‚«ãƒ³ãƒã®æ¬¡ãŒã€æ¬¡ã®è¦ç´ 
 			if( NULL != (p3=wcsstr(p2,LTEXT(","))) ){
 				*p3 = LTEXT('\0');
-				p3 += 1;			//ƒJƒ“ƒ}‚ÌŸ‚ªAŸ‚Ì—v‘f
+				p3 += 1;			//ã‚«ãƒ³ãƒã®æ¬¡ãŒã€æ¬¡ã®è¦ç´ 
 			}
-		}/* Œ‹‰Ê‚ÌŠm”F */
-		if( (p3==NULL) ||			//ƒJƒ“ƒ}‚ª1ŒÂ‘«‚è‚È‚¢
-			(p3==p1) //||			//ƒJƒ“ƒ}‚ª2ŒÂ‘«‚è‚È‚¢
-			//	2007.02.03 genta ƒtƒ@ƒCƒ‹–¼‚ÉƒJƒ“ƒ}‚ª‚ ‚é‚©‚à‚µ‚ê‚È‚¢
-			//(NULL!=wcsstr(p3,","))	//ƒJƒ“ƒ}‚ª‘½‚·‚¬‚é
+		}/* çµæœã®ç¢ºèª */
+		if( (p3==NULL) ||			//ã‚«ãƒ³ãƒãŒ1å€‹è¶³ã‚Šãªã„
+			(p3==p1) //||			//ã‚«ãƒ³ãƒãŒ2å€‹è¶³ã‚Šãªã„
+			//	2007.02.03 genta ãƒ•ã‚¡ã‚¤ãƒ«åã«ã‚«ãƒ³ãƒãŒã‚ã‚‹ã‹ã‚‚ã—ã‚Œãªã„
+			//(NULL!=wcsstr(p3,","))	//ã‚«ãƒ³ãƒãŒå¤šã™ãã‚‹
 		){
-			//	2007.02.03 genta ˆ—‚ğŒp‘±
+			//	2007.02.03 genta å‡¦ç†ã‚’ç¶™ç¶š
 			++invalid_record;
 			continue;
 		}
-		/* value‚Ìƒ`ƒFƒbƒN */
+		/* valueã®ãƒã‚§ãƒƒã‚¯ */
 		//ON/OFF
-		//	2007.02.03 genta 1‚Å‚È‚¯‚ê‚Î1‚É‚·‚é
+		//	2007.02.03 genta 1ã§ãªã‘ã‚Œã°1ã«ã™ã‚‹
 		unsigned int b_enable_flag = (unsigned int)_wtoi(p1);
 		if( b_enable_flag > 1){
 			b_enable_flag = 1;
@@ -710,9 +710,9 @@ bool CImpExpKeyHelp::Import( const wstring& sFileName, wstring& sErrMsg )
 		//Path
 		FILE* fp2;
 		const WCHAR* p4 = p2;
-		if( (fp2=_tfopen_absini(to_tchar(p3),_T("r"))) == NULL ){	// 2007.02.03 genta ‘Š‘ÎƒpƒX‚Ísakura.exeŠî€‚ÅŠJ‚­	// 2007.05.19 ryoji ‘Š‘ÎƒpƒX‚Íİ’èƒtƒ@ƒCƒ‹‚©‚ç‚ÌƒpƒX‚ğ—Dæ
-			// 2007.02.03 genta «‘‚ªŒ©‚Â‚©‚ç‚È‚¢ê‡‚Ì‘[’uDŒx‚ğo‚·‚ªæ‚è‚Ş
-			p4 = L"y«‘ƒtƒ@ƒCƒ‹‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñz";
+		if( (fp2=_tfopen_absini(to_tchar(p3),_T("r"))) == NULL ){	// 2007.02.03 genta ç›¸å¯¾ãƒ‘ã‚¹ã¯sakura.exeåŸºæº–ã§é–‹ã	// 2007.05.19 ryoji ç›¸å¯¾ãƒ‘ã‚¹ã¯è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ã®ãƒ‘ã‚¹ã‚’å„ªå…ˆ
+			// 2007.02.03 genta è¾æ›¸ãŒè¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã®æªç½®ï¼è­¦å‘Šã‚’å‡ºã™ãŒå–ã‚Šè¾¼ã‚€
+			p4 = L"ã€è¾æ›¸ãƒ•ã‚¡ã‚¤ãƒ«ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“ã€‘";
 			b_enable_flag = 0;
 		}
 		else
@@ -720,13 +720,13 @@ bool CImpExpKeyHelp::Import( const wstring& sFileName, wstring& sErrMsg )
 
 		//About
 		if (wcslen(p2) > DICT_ABOUT_LEN) {
-			auto_sprintf( msgBuff, L"«‘‚Ìà–¾‚Í%d•¶šˆÈ“à‚É‚µ‚Ä‚­‚¾‚³‚¢B", DICT_ABOUT_LEN );
+			auto_sprintf( msgBuff, L"è¾æ›¸ã®èª¬æ˜ã¯%dæ–‡å­—ä»¥å†…ã«ã—ã¦ãã ã•ã„ã€‚", DICT_ABOUT_LEN );
 			sErrMsg = msgBuff;
 			++invalid_record;
 			continue;
 		}
 
-		//—Ç‚³‚»‚¤‚È‚ç
+		//è‰¯ã•ãã†ãªã‚‰
 		m_Types.m_KeyHelpArr[i].m_bUse = (b_enable_flag!=0);	// 2007.02.03 genta
 		_tcscpy(m_Types.m_KeyHelpArr[i].m_szAbout, to_tchar(p4));
 		_tcscpy(m_Types.m_KeyHelpArr[i].m_szPath,  to_tchar(p3));
@@ -734,7 +734,7 @@ bool CImpExpKeyHelp::Import( const wstring& sFileName, wstring& sErrMsg )
 	}
 	in.Close();
 
-	// ‹ó‚«‚ª‚ ‚é‚È‚ç”Ô•º‚ğİ’è
+	// ç©ºããŒã‚ã‚‹ãªã‚‰ç•ªå…µã‚’è¨­å®š
 	if( i < _countof(m_Types.m_KeyHelpArr) ){
 		m_Types.m_KeyHelpArr[i].m_bUse = false;
 		m_Types.m_KeyHelpArr[i].m_szAbout[0] = _T('\0');
@@ -742,17 +742,17 @@ bool CImpExpKeyHelp::Import( const wstring& sFileName, wstring& sErrMsg )
 	}
 	m_Types.m_nKeyHelpNum = i;
 
-	// 2007.02.03 genta ¸”s‚µ‚½‚çŒx‚·‚é
+	// 2007.02.03 genta å¤±æ•—ã—ãŸã‚‰è­¦å‘Šã™ã‚‹
 	if( invalid_record > 0 ){
-		auto_sprintf( msgBuff, L"ˆê•”‚Ìƒf[ƒ^‚ª“Ç‚İ‚ß‚Ü‚¹‚ñ‚Å‚µ‚½\n•s³‚Ès”: %d", invalid_record );
+		auto_sprintf( msgBuff, L"ä¸€éƒ¨ã®ãƒ‡ãƒ¼ã‚¿ãŒèª­ã¿è¾¼ã‚ã¾ã›ã‚“ã§ã—ãŸ\nä¸æ­£ãªè¡Œæ•°: %d", invalid_record );
 		sErrMsg = msgBuff;
 	}
 
 	return true;
 }
 
-/*! ƒGƒNƒXƒ|[ƒg
-	@date 2010.07.14 Moca ListView‚©‚çm_Types‚©‚ç‚ÌƒGƒNƒXƒ|[ƒg‚É•ÏX
+/*! ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆ
+	@date 2010.07.14 Moca ListViewã‹ã‚‰m_Typesã‹ã‚‰ã®ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆã«å¤‰æ›´
 */
 bool CImpExpKeyHelp::Export( const wstring& sFileName, wstring& sErrMsg )
 {
@@ -780,9 +780,9 @@ bool CImpExpKeyHelp::Export( const wstring& sFileName, wstring& sErrMsg )
 
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                     ƒL[Š„‚è“–‚Ä                            //
+//                     ã‚­ãƒ¼å‰²ã‚Šå½“ã¦                            //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-// ƒCƒ“ƒ|[ƒg
+// ã‚¤ãƒ³ãƒãƒ¼ãƒˆ
 bool CImpExpKeybind::Import( const wstring& sFileName, wstring& sErrMsg )
 {
 	CDataProfile in;
@@ -790,20 +790,20 @@ bool CImpExpKeybind::Import( const wstring& sFileName, wstring& sErrMsg )
 	CommonSetting_KeyBind sKeyBind = m_Common.m_sKeyBind;
 	int	nKeyNameArrNum;
 
-	//ƒI[ƒvƒ“
+	//ã‚ªãƒ¼ãƒ—ãƒ³
 	in.SetReadingMode();
 	if (!in.ReadProfile( to_tchar( sFileName.c_str() ))) {
 		sErrMsg = MSG_NOT_OPEN + sFileName;
 		return false;
 	}
 
-	//ƒo[ƒWƒ‡ƒ“Šm”F
+	//ãƒãƒ¼ã‚¸ãƒ§ãƒ³ç¢ºèª
 	in.IOProfileData(szSecInfo, L"KEYBIND_VERSION", MakeStringBufferW(szHeader));
 	if(wcscmp(szHeader,WSTR_KEYBIND_HEAD)!=0){
 		goto importError;
 	}
 
-	//ƒL[’è‹`”Šm”F
+	//ã‚­ãƒ¼å®šç¾©æ•°ç¢ºèª
 	in.IOProfileData(szSecInfo, L"KEYBIND_COUNT", nKeyNameArrNum);
 	if (nKeyNameArrNum != m_Common.m_sKeyBind.m_nKeyNameArrNum ){
 		goto importError;
@@ -815,11 +815,11 @@ bool CImpExpKeybind::Import( const wstring& sFileName, wstring& sErrMsg )
 	return true;
 
 importError:
-	sErrMsg = wstring(L"ƒL[İ’èƒtƒ@ƒCƒ‹‚ÌŒ`®‚ªˆá‚¢‚Ü‚·B\n\n") + sFileName;
+	sErrMsg = wstring(L"ã‚­ãƒ¼è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã®å½¢å¼ãŒé•ã„ã¾ã™ã€‚\n\n") + sFileName;
 	return false;
 }
 
-// ƒGƒNƒXƒ|[ƒg
+// ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆ
 bool CImpExpKeybind::Export( const wstring& sFileName, wstring& sErrMsg )
 {
 	const tstring	strPath = to_tchar( sFileName.c_str() );
@@ -832,21 +832,21 @@ bool CImpExpKeybind::Export( const wstring& sFileName, wstring& sErrMsg )
 
 	out.Close();
 
-	/* ƒL[Š„‚è“–‚Äî•ñ */
+	/* ã‚­ãƒ¼å‰²ã‚Šå½“ã¦æƒ…å ± */
 	CDataProfile cProfile;
 
-	// ‘‚«‚İƒ‚[ƒhİ’è
+	// æ›¸ãè¾¼ã¿ãƒ¢ãƒ¼ãƒ‰è¨­å®š
 	cProfile.SetWritingMode();
 
-	// ƒwƒbƒ_
+	// ãƒ˜ãƒƒãƒ€
 	StaticString<wchar_t,256> szKeydataHead = WSTR_KEYBIND_HEAD;
 	cProfile.IOProfileData( szSecInfo, L"KEYBIND_VERSION", szKeydataHead );
 	cProfile.IOProfileData_WrapInt( szSecInfo, L"KEYBIND_COUNT", m_Common.m_sKeyBind.m_nKeyNameArrNum );
 
-	//“à—e
+	//å†…å®¹
 	CShareData_IO::IO_KeyBind(cProfile, m_Common.m_sKeyBind, true);
 
-	// ‘‚«‚İ
+	// æ›¸ãè¾¼ã¿
 	if (!cProfile.WriteProfile( strPath.c_str(), WSTR_KEYBIND_HEAD)) {
 		sErrMsg = MSG_NOT_EXPORT + sFileName;
 		return false;
@@ -857,14 +857,14 @@ bool CImpExpKeybind::Export( const wstring& sFileName, wstring& sErrMsg )
 
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                     ƒJƒXƒ^ƒ€ƒƒjƒ…[                        //
+//                     ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼                        //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-// ƒCƒ“ƒ|[ƒg
+// ã‚¤ãƒ³ãƒãƒ¼ãƒˆ
 bool CImpExpCustMenu::Import( const wstring& sFileName, wstring& sErrMsg )
 {
 	const tstring	strPath = to_tchar( sFileName.c_str() );
 
-	//ƒwƒbƒ_Šm”F
+	//ãƒ˜ãƒƒãƒ€ç¢ºèª
 	CTextInputStream in(strPath.c_str());
 	if (!in) {
 		sErrMsg = MSG_NOT_OPEN + sFileName;
@@ -875,11 +875,11 @@ bool CImpExpCustMenu::Import( const wstring& sFileName, wstring& sErrMsg )
 	cProfile.SetReadingMode();
 	cProfile.ReadProfile(strPath.c_str());
 
-	//ƒo[ƒWƒ‡ƒ“Šm”F
+	//ãƒãƒ¼ã‚¸ãƒ§ãƒ³ç¢ºèª
 	WCHAR szHeader[256];
 	cProfile.IOProfileData(szSecInfo, L"MENU_VERSION", MakeStringBufferW(szHeader));
 	if(wcscmp(szHeader, WSTR_CUSTMENU_HEAD_V2)!=0) {
-		sErrMsg = wstring( L"ƒJƒXƒ^ƒ€ƒƒjƒ…[İ’èƒtƒ@ƒCƒ‹‚ÌŒ`®‚ªˆá‚¢‚Ü‚·B\n\n" ) + sFileName;
+		sErrMsg = wstring( L"ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã®å½¢å¼ãŒé•ã„ã¾ã™ã€‚\n\n" ) + sFileName;
 		return false;
 	}
 
@@ -888,12 +888,12 @@ bool CImpExpCustMenu::Import( const wstring& sFileName, wstring& sErrMsg )
 	return true;
 }
 
-// ƒGƒNƒXƒ|[ƒg
+// ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆ
 bool CImpExpCustMenu::Export( const wstring& sFileName, wstring& sErrMsg )
 {
 	const tstring	strPath = to_tchar( sFileName.c_str() );
 
-	// ƒI[ƒvƒ“
+	// ã‚ªãƒ¼ãƒ—ãƒ³
 	CTextOutputStream out(strPath.c_str());
 	if (!out) {
 		sErrMsg = MSG_NOT_OPEN + sFileName;
@@ -902,23 +902,23 @@ bool CImpExpCustMenu::Export( const wstring& sFileName, wstring& sErrMsg )
 
 	out.Close();
 
-	/* ƒJƒXƒ^ƒ€ƒƒjƒ…[î•ñ */
-	//ƒwƒbƒ_
+	/* ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼æƒ…å ± */
+	//ãƒ˜ãƒƒãƒ€
 	CDataProfile	cProfile;
 	CommonSetting_CustomMenu* menu=&m_Common.m_sCustomMenu;
 
-	// ‘‚«‚İƒ‚[ƒhİ’è
+	// æ›¸ãè¾¼ã¿ãƒ¢ãƒ¼ãƒ‰è¨­å®š
 	cProfile.SetWritingMode();
 
-	//ƒwƒbƒ_
+	//ãƒ˜ãƒƒãƒ€
 	cProfile.IOProfileData( szSecInfo, L"MENU_VERSION", MakeStringBufferW(WSTR_CUSTMENU_HEAD_V2) );
 	int iWork = MAX_CUSTOM_MENU;
 	cProfile.IOProfileData_WrapInt( szSecInfo, L"MAX_CUSTOM_MENU", iWork );
 	
-	//“à—e
+	//å†…å®¹
 	CShareData_IO::IO_CustMenu(cProfile, *menu, true);
 
-	// ‘‚«‚İ
+	// æ›¸ãè¾¼ã¿
 	if (!cProfile.WriteProfile( strPath.c_str(), WSTR_CUSTMENU_HEAD_V2)) {
 		sErrMsg = MSG_NOT_EXPORT + sFileName;
 		return false;
@@ -929,9 +929,9 @@ bool CImpExpCustMenu::Export( const wstring& sFileName, wstring& sErrMsg )
 
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                     ‹­’²ƒL[ƒ[ƒh                          //
+//                     å¼·èª¿ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰                          //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-// ƒCƒ“ƒ|[ƒg
+// ã‚¤ãƒ³ãƒãƒ¼ãƒˆ
 bool CImpExpKeyWord::Import( const wstring& sFileName, wstring& sErrMsg )
 {
 	bool			bAddError = false;
@@ -944,7 +944,7 @@ bool CImpExpKeyWord::Import( const wstring& sFileName, wstring& sErrMsg )
 	while( in ){
 		wstring szLine = in.ReadLineW();
 
-		// ƒRƒƒ“ƒg–³‹
+		// ã‚³ãƒ¡ãƒ³ãƒˆç„¡è¦–
 		if (szLine.length() == 0) {
 			continue;
 		}
@@ -958,9 +958,9 @@ bool CImpExpKeyWord::Import( const wstring& sFileName, wstring& sErrMsg )
 			continue;
 		}
 		
-		//‰ğÍ
+		//è§£æ
 		if( 0 < szLine.length() ){
-			/* ‚”Ô–Ú‚ÌƒZƒbƒg‚ÉƒL[ƒ[ƒh‚ğ’Ç‰Á */
+			/* ï½ç•ªç›®ã®ã‚»ãƒƒãƒˆã«ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ã‚’è¿½åŠ  */
 			int nRetValue = m_Common.m_sSpecialKeyword.m_CKeyWordSetMgr.AddKeyWord( m_nIdx, szLine.c_str() );
 			if( 2 == nRetValue ){
 				bAddError = true;
@@ -970,17 +970,17 @@ bool CImpExpKeyWord::Import( const wstring& sFileName, wstring& sErrMsg )
 	}
 	in.Close();
 
-	// ‘å•¶š¬•¶š‹æ•Ê
+	// å¤§æ–‡å­—å°æ–‡å­—åŒºåˆ¥
 	m_Common.m_sSpecialKeyword.m_CKeyWordSetMgr.SetKeyWordCase( m_nIdx, m_bCase );
 
 	if (bAddError) {
-		sErrMsg = L"ƒL[ƒ[ƒh‚Ì”‚ªãŒÀ‚É’B‚µ‚½‚½‚ßA‚¢‚­‚Â‚©‚ÌƒL[ƒ[ƒh‚ğ’Ç‰Á‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B";
+		sErrMsg = L"ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ã®æ•°ãŒä¸Šé™ã«é”ã—ãŸãŸã‚ã€ã„ãã¤ã‹ã®ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ã‚’è¿½åŠ ã§ãã¾ã›ã‚“ã§ã—ãŸã€‚";
 	}
 
 	return true;
 }
 
-// ƒGƒNƒXƒ|[ƒg
+// ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆ
 bool CImpExpKeyWord::Export( const wstring& sFileName, wstring& sErrMsg )
 {
 	int 		nKeyWordNum;
@@ -992,7 +992,7 @@ bool CImpExpKeyWord::Export( const wstring& sFileName, wstring& sErrMsg )
 		return false;
 	}
 	out.WriteF( L"// " );
-	// 2012.03.10 syat ƒL[ƒ[ƒh‚Éu%v‚ğŠÜ‚Şê‡‚ÉƒGƒNƒXƒ|[ƒgŒ‹‰Ê‚ª•s³
+	// 2012.03.10 syat ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ã«ã€Œ%ã€ã‚’å«ã‚€å ´åˆã«ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆçµæœãŒä¸æ­£
 	out.WriteString( m_Common.m_sSpecialKeyword.m_CKeyWordSetMgr.GetTypeName( m_nIdx ) );
 	out.WriteF( WSTR_KEYWORD_HEAD );
 
@@ -1002,11 +1002,11 @@ bool CImpExpKeyWord::Export( const wstring& sFileName, wstring& sErrMsg )
 
 	m_Common.m_sSpecialKeyword.m_CKeyWordSetMgr.SortKeyWord(m_nIdx);	//MIK 2000.12.01 sort keyword
 
-	/* ‚”Ô–Ú‚ÌƒZƒbƒg‚ÌƒL[ƒ[ƒh‚Ì”‚ğ•Ô‚· */
+	/* ï½ç•ªç›®ã®ã‚»ãƒƒãƒˆã®ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ã®æ•°ã‚’è¿”ã™ */
 	nKeyWordNum = m_Common.m_sSpecialKeyword.m_CKeyWordSetMgr.GetKeyWordNum( m_nIdx );
 	for( i = 0; i < nKeyWordNum; ++i ){
-		/* ‚”Ô–Ú‚ÌƒZƒbƒg‚Ì‚”Ô–Ú‚ÌƒL[ƒ[ƒh‚ğ•Ô‚· */
-		// 2012.03.10 syat ƒL[ƒ[ƒh‚Éu%v‚ğŠÜ‚Şê‡‚ÉƒGƒNƒXƒ|[ƒgŒ‹‰Ê‚ª•s³
+		/* ï½ç•ªç›®ã®ã‚»ãƒƒãƒˆã®ï½ç•ªç›®ã®ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ã‚’è¿”ã™ */
+		// 2012.03.10 syat ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ã«ã€Œ%ã€ã‚’å«ã‚€å ´åˆã«ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆçµæœãŒä¸æ­£
 		out.WriteString( m_Common.m_sSpecialKeyword.m_CKeyWordSetMgr.GetKeyWord( m_nIdx, i ) );
 		out.WriteF( L"\n" );
 	}
@@ -1017,15 +1017,15 @@ bool CImpExpKeyWord::Export( const wstring& sFileName, wstring& sErrMsg )
 
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                     ƒƒCƒ“ƒƒjƒ…[                          //
+//                     ãƒ¡ã‚¤ãƒ³ãƒ¡ãƒ‹ãƒ¥ãƒ¼                          //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 //	2010/5/23 Uchi
-// ƒCƒ“ƒ|[ƒg
+// ã‚¤ãƒ³ãƒãƒ¼ãƒˆ
 bool CImpExpMainMenu::Import( const wstring& sFileName, wstring& sErrMsg )
 {
 	const tstring strPath = to_tchar( sFileName.c_str() );
 
-	//ƒwƒbƒ_Šm”F
+	//ãƒ˜ãƒƒãƒ€ç¢ºèª
 	CTextInputStream in(strPath.c_str());
 	if (!in) {
 		sErrMsg = MSG_NOT_OPEN + sFileName;
@@ -1036,11 +1036,11 @@ bool CImpExpMainMenu::Import( const wstring& sFileName, wstring& sErrMsg )
 	cProfile.SetReadingMode();
 	cProfile.ReadProfile( strPath.c_str() );
 
-	//ƒo[ƒWƒ‡ƒ“Šm”F
+	//ãƒãƒ¼ã‚¸ãƒ§ãƒ³ç¢ºèª
 	WCHAR szHeader[256];
 	cProfile.IOProfileData(szSecInfo, L"MENU_VERSION", MakeStringBufferW(szHeader));
 	if(wcscmp(szHeader, WSTR_MAINMENU_HEAD_V1)!=0) {
-		sErrMsg = wstring( L"ƒƒCƒ“ƒƒjƒ…[İ’èƒtƒ@ƒCƒ‹‚ÌŒ`®‚ªˆá‚¢‚Ü‚·B\n\n" ) + sFileName;
+		sErrMsg = wstring( L"ãƒ¡ã‚¤ãƒ³ãƒ¡ãƒ‹ãƒ¥ãƒ¼è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã®å½¢å¼ãŒé•ã„ã¾ã™ã€‚\n\n" ) + sFileName;
 		return false;
 	}
 
@@ -1049,12 +1049,12 @@ bool CImpExpMainMenu::Import( const wstring& sFileName, wstring& sErrMsg )
 	return true;
 }
 
-// ƒGƒNƒXƒ|[ƒg
+// ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆ
 bool CImpExpMainMenu::Export( const wstring& sFileName, wstring& sErrMsg )
 {
 	const tstring strPath = to_tchar( sFileName.c_str() );
 
-	// ƒI[ƒvƒ“
+	// ã‚ªãƒ¼ãƒ—ãƒ³
 	CTextOutputStream out( strPath.c_str() );
 	if (!out) {
 		sErrMsg = MSG_NOT_OPEN + sFileName;
@@ -1063,20 +1063,20 @@ bool CImpExpMainMenu::Export( const wstring& sFileName, wstring& sErrMsg )
 
 	out.Close();
 
-	//ƒwƒbƒ_
+	//ãƒ˜ãƒƒãƒ€
 	CDataProfile	cProfile;
 	CommonSetting_MainMenu* menu=&m_Common.m_sMainMenu;
 
-	// ‘‚«‚İƒ‚[ƒhİ’è
+	// æ›¸ãè¾¼ã¿ãƒ¢ãƒ¼ãƒ‰è¨­å®š
 	cProfile.SetWritingMode();
 
-	//ƒwƒbƒ_
+	//ãƒ˜ãƒƒãƒ€
 	cProfile.IOProfileData( szSecInfo, L"MENU_VERSION", MakeStringBufferW(WSTR_MAINMENU_HEAD_V1) );
 	
-	//“à—e
+	//å†…å®¹
 	CShareData_IO::IO_MainMenu(cProfile, *menu, true);
 
-	// ‘‚«‚İ
+	// æ›¸ãè¾¼ã¿
 	if (!cProfile.WriteProfile( strPath.c_str(), WSTR_MAINMENU_HEAD_V1)) {
 		sErrMsg = MSG_NOT_EXPORT + sFileName;
 		return false;

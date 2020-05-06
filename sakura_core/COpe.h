@@ -1,8 +1,8 @@
 /*!	@file
-	@brief �ҏW����v�f
+	@brief 編集操作要素
 
 	@author Norio Nakatani
-	@date 1998/06/09 �V�K�쐬
+	@date 1998/06/09 新規作成
 */
 /*
 	Copyright (C) 1998-2001, Norio Nakatani
@@ -19,7 +19,7 @@ class COpe;
 class CMemory;// 2002/2/10 aroka
 
 
-// �A���h�D�o�b�t�@�p ����R�[�h
+// アンドゥバッファ用 操作コード
 enum EOpeCode {
 	OPE_UNKNOWN		= 0,
 	OPE_INSERT		= 1,
@@ -29,30 +29,30 @@ enum EOpeCode {
 
 
 /*!
-	�ҏW����v�f
+	編集操作要素
 	
-	Undo�̂��߂ɂɑ���菇���L�^���邽�߂ɗp����B
-	1�I�u�W�F�N�g���P�̑����\���B
+	Undoのためにに操作手順を記録するために用いる。
+	1オブジェクトが１つの操作を表す。
 */
-//2007.10.17 kobake ����R���h�����߁A�f�[�^���|�C���^�ł͂Ȃ��C���X�^���X���̂Ŏ��悤�ɕύX
+//2007.10.17 kobake 解放漏れを防ぐため、データをポインタではなくインスタンス実体で持つように変更
 class COpe {
 public:
-	COpe(EOpeCode eCode = OPE_UNKNOWN);		/* COpe�N���X�\�z */
-	virtual ~COpe();	/* COpe�N���X���� */
+	COpe(EOpeCode eCode = OPE_UNKNOWN);		/* COpeクラス構築 */
+	virtual ~COpe();	/* COpeクラス消滅 */
 
-	void DUMP( void );	/* �ҏW����v�f�̃_���v */
+	void DUMP( void );	/* 編集操作要素のダンプ */
 
 	EOpeCode	GetCode() const{ return m_nOpe; }
 
 private:
-	EOpeCode	m_nOpe;						//!< ������
+	EOpeCode	m_nOpe;						//!< 操作種別
 
 public:
-	CLogicPoint	m_ptCaretPos_PHY_Before;	//!< �L�����b�g�ʒu�B�����P�ʁB			[����]
-	CLogicPoint	m_ptCaretPos_PHY_After;		//!< �L�����b�g�ʒu�B�����P�ʁB			[����]
+	CLogicPoint	m_ptCaretPos_PHY_Before;	//!< キャレット位置。文字単位。			[共通]
+	CLogicPoint	m_ptCaretPos_PHY_After;		//!< キャレット位置。文字単位。			[共通]
 };
 
-//!�폜
+//!削除
 class CDeleteOpe : public COpe{
 public:
 	CDeleteOpe() : COpe(OPE_DELETE)
@@ -61,20 +61,20 @@ public:
 		m_nDataLen = CLogicInt(0);
 	}
 public:
-	CLogicPoint	m_ptCaretPos_PHY_To;		//!< ����O�̃L�����b�g�ʒu�B�����P�ʁB	[DELETE]
-	CLogicInt	m_nDataLen;					//!< ����Ɋ֘A����f�[�^�̃T�C�Y		[DELETE]
-	CNativeW	m_pcmemData;				//!< ����Ɋ֘A����f�[�^				[DELETE/INSERT]
+	CLogicPoint	m_ptCaretPos_PHY_To;		//!< 操作前のキャレット位置。文字単位。	[DELETE]
+	CLogicInt	m_nDataLen;					//!< 操作に関連するデータのサイズ		[DELETE]
+	CNativeW	m_pcmemData;				//!< 操作に関連するデータ				[DELETE/INSERT]
 };
 
-//!�}��
+//!挿入
 class CInsertOpe : public COpe{
 public:
 	CInsertOpe() : COpe(OPE_INSERT) { }
 public:
-	CNativeW	m_pcmemData;				//!< ����Ɋ֘A����f�[�^				[DELETE/INSERT]
+	CNativeW	m_pcmemData;				//!< 操作に関連するデータ				[DELETE/INSERT]
 };
 
-//!�L�����b�g�ړ�
+//!キャレット移動
 class CMoveCaretOpe : public COpe{
 public:
 	CMoveCaretOpe() : COpe(OPE_MOVECARET) { }

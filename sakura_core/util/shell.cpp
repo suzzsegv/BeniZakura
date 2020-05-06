@@ -2,7 +2,7 @@
 #include <HtmlHelp.h>
 #include <ShlObj.h>
 #include <ShellAPI.h>
-#include <CdErr.h> // Nov. 3, 2005 genta	//CDERR_FINDRESFAILURE��
+#include <CdErr.h> // Nov. 3, 2005 genta	//CDERR_FINDRESFAILURE等
 #include "util/shell.h"
 #include "util/string_ex2.h"
 #include "util/file.h"
@@ -32,21 +32,21 @@ int CALLBACK MYBrowseCallbackProc(
 }
 
 
-/* �t�H���_�I���_�C�A���O */
+/* フォルダ選択ダイアログ */
 BOOL SelectDir( HWND hWnd, const TCHAR* pszTitle, const TCHAR* pszInitFolder, TCHAR* strFolderName )
 {
 	BOOL	bRes;
 	TCHAR	szInitFolder[MAX_PATH];
 
 	_tcscpy( szInitFolder, pszInitFolder );
-	/* �t�H���_�̍Ōオ���p����'\\'�̏ꍇ�́A��菜�� "c:\\"���̃��[�g�͎�菜���Ȃ�*/
+	/* フォルダの最後が半角かつ'\\'の場合は、取り除く "c:\\"等のルートは取り除かない*/
 	CutLastYenFromDirectoryPath( szInitFolder );
 
-	// 2010.08.28 �t�H���_���J���ƃt�b�N���܂߂ĐF�XDLL���ǂݍ��܂��̂ňړ�
+	// 2010.08.28 フォルダを開くとフックも含めて色々DLLが読み込まれるので移動
 	CCurrentDirectoryBackupPoint dirBack;
 	ChangeCurrentDirectoryToExeDir();
 
-	// SHBrowseForFolder()�֐��ɓn���\����
+	// SHBrowseForFolder()関数に渡す構造体
 	BROWSEINFO bi;
 	bi.hwndOwner = hWnd;
 	bi.pidlRoot = NULL;
@@ -56,13 +56,13 @@ BOOL SelectDir( HWND hWnd, const TCHAR* pszTitle, const TCHAR* pszInitFolder, TC
 	bi.lpfn = MYBrowseCallbackProc;
 	bi.lParam = (LPARAM)szInitFolder;
 	bi.iImage = 0;
-	// �A�C�e���h�c���X�g��Ԃ�
-	// ITEMIDLIST�̓A�C�e���̈�ӂ�\���\����
+	// アイテムＩＤリストを返す
+	// ITEMIDLISTはアイテムの一意を表す構造体
 	LPITEMIDLIST pList = ::SHBrowseForFolder(&bi);
 	if( NULL != pList ){
-		// SHGetPathFromIDList()�֐��̓A�C�e���h�c���X�g�̕����p�X��T���Ă����
+		// SHGetPathFromIDList()関数はアイテムＩＤリストの物理パスを探してくれる
 		bRes = ::SHGetPathFromIDList( pList, strFolderName );
-		// :SHBrowseForFolder()�Ŏ擾�����A�C�e���h�c���X�g���폜
+		// :SHBrowseForFolder()で取得したアイテムＩＤリストを削除
 		::CoTaskMemFree( pList );
 		if( bRes ){
 			return TRUE;
@@ -75,11 +75,11 @@ BOOL SelectDir( HWND hWnd, const TCHAR* pszTitle, const TCHAR* pszInitFolder, TC
 
 
 
-/*!	����t�H���_�̃p�X���擾����
-	SHGetSpecialFolderPath API�ishell32.dll version 4.71�ȏオ�K�v�j�Ɠ����̏���������
+/*!	特殊フォルダのパスを取得する
+	SHGetSpecialFolderPath API（shell32.dll version 4.71以上が必要）と同等の処理をする
 
 	@author ryoji
-	@date 2007.05.19 �V�K
+	@date 2007.05.19 新規
 */
 BOOL GetSpecialFolderPath( int nFolder, LPTSTR pszPath )
 {
@@ -106,19 +106,19 @@ BOOL GetSpecialFolderPath( int nFolder, LPTSTR pszPath )
 
 
 ///////////////////////////////////////////////////////////////////////
-// From Here 2007.05.25 ryoji �Ǝ��g���̃v���p�e�B�V�[�g�֐��Q
+// From Here 2007.05.25 ryoji 独自拡張のプロパティシート関数群
 
-static WNDPROC s_pOldPropSheetWndProc;	// �v���p�e�B�V�[�g�̌��̃E�B���h�E�v���V�[�W��
+static WNDPROC s_pOldPropSheetWndProc;	// プロパティシートの元のウィンドウプロシージャ
 
-/*!	�Ǝ��g���v���p�e�B�V�[�g�̃E�B���h�E�v���V�[�W��
+/*!	独自拡張プロパティシートのウィンドウプロシージャ
 	@author ryoji
-	@date 2007.05.25 �V�K
+	@date 2007.05.25 新規
 */
 static LRESULT CALLBACK PropSheetWndProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 {
 	switch( uMsg ){
 	case WM_SHOWWINDOW:
-		// �ǉ��{�^���̈ʒu�𒲐�����
+		// 追加ボタンの位置を調整する
 		if( wParam ){
 			HWND hwndBtn;
 			RECT rcOk;
@@ -136,21 +136,21 @@ static LRESULT CALLBACK PropSheetWndProc( HWND hwnd, UINT uMsg, WPARAM wParam, L
 		break;
 
 	case WM_COMMAND:
-		// �ǉ��{�^���������ꂽ���͂��̏������s��
+		// 追加ボタンが押された時はその処理を行う
 		if( HIWORD( wParam ) == BN_CLICKED && LOWORD( wParam ) == 0x02000 ){
 			HWND hwndBtn = ::GetDlgItem( hwnd, 0x2000 );
 			RECT rc;
 			POINT pt;
 
-			// ���j���[��\������
+			// メニューを表示する
 			::GetWindowRect( hwndBtn, &rc );
 			pt.x = rc.left;
 			pt.y = rc.bottom;
-			GetMonitorWorkRect( pt, &rc );	// ���j�^�̃��[�N�G���A
+			GetMonitorWorkRect( pt, &rc );	// モニタのワークエリア
 
 			HMENU hMenu = ::CreatePopupMenu();
-			::InsertMenu( hMenu, 0, MF_BYPOSITION | MF_STRING, 100, _T("�J��(&O)...") );
-			::InsertMenu( hMenu, 1, MF_BYPOSITION | MF_STRING, 101, _T("�C���|�[�g�^�G�N�X�|�[�g�̋N�_���Z�b�g(&R)") );
+			::InsertMenu( hMenu, 0, MF_BYPOSITION | MF_STRING, 100, _T("開く(&O)...") );
+			::InsertMenu( hMenu, 1, MF_BYPOSITION | MF_STRING, 101, _T("インポート／エクスポートの起点リセット(&R)") );
 
 			int nId = ::TrackPopupMenu( hMenu, TPM_LEFTALIGN | TPM_TOPALIGN | TPM_LEFTBUTTON | TPM_RETURNCMD,
 										( pt.x > rc.left )? pt.x: rc.left,
@@ -158,17 +158,17 @@ static LRESULT CALLBACK PropSheetWndProc( HWND hwnd, UINT uMsg, WPARAM wParam, L
 										0, hwnd, NULL );
 			::DestroyMenu( hMenu );
 
-			// �I�����ꂽ���j���[�̏���
+			// 選択されたメニューの処理
 			switch( nId ){
-			case 100:	// �ݒ�t�H���_���J��
+			case 100:	// 設定フォルダを開く
 				TCHAR szPath[_MAX_PATH];
 				GetInidir( szPath );
 
-				// �t�H���_�� ITEMIDLIST ���擾���� ShellExecuteEx() �ŊJ��
-				// Note. MSDN �� ShellExecute() �̉���ɂ�����@�Ńt�H���_���J�����Ƃ����ꍇ�A
-				//       �t�H���_�Ɠ����ꏊ�� <�t�H���_��>.exe ������Ƃ��܂������Ȃ��B
-				//       verb��"open"��NULL�ł�exe�̂ق������s����"explore"�ł͎��s����
-				//       �i�t�H���_���̖�����'\\'��t�����Ă�Windows 2000�ł͕t�����Ȃ��̂Ɠ�������ɂȂ��Ă��܂��j
+				// フォルダの ITEMIDLIST を取得して ShellExecuteEx() で開く
+				// Note. MSDN の ShellExecute() の解説にある方法でフォルダを開こうとした場合、
+				//       フォルダと同じ場所に <フォルダ名>.exe があるとうまく動かない。
+				//       verbが"open"やNULLではexeのほうが実行され"explore"では失敗する
+				//       （フォルダ名の末尾に'\\'を付加してもWindows 2000では付加しないのと同じ動作になってしまう）
 				LPSHELLFOLDER pDesktopFolder;
 				if( SUCCEEDED(::SHGetDesktopFolder(&pDesktopFolder)) ){
 					LPMALLOC pMalloc;
@@ -191,7 +191,7 @@ static LRESULT CALLBACK PropSheetWndProc( HWND hwnd, UINT uMsg, WPARAM wParam, L
 							si.lpVerb   = _T("open");
 							si.lpIDList = pIDL;
 							si.nShow    = SW_SHOWNORMAL;
-							::ShellExecuteEx( &si );	// �t�H���_���J��
+							::ShellExecuteEx( &si );	// フォルダを開く
 							pMalloc->Free( (void*)pIDL );
 						}
 						pMalloc->Release();
@@ -199,13 +199,13 @@ static LRESULT CALLBACK PropSheetWndProc( HWND hwnd, UINT uMsg, WPARAM wParam, L
 					pDesktopFolder->Release();
 				}
 				break;
-			case 101:	// �C���|�[�g�^�G�N�X�|�[�g�̋N�_���Z�b�g�i�N�_��ݒ�t�H���_�ɂ���j
+			case 101:	// インポート／エクスポートの起点リセット（起点を設定フォルダにする）
 				int nMsgResult = MYMESSAGEBOX(
 					hwnd,
 					MB_OKCANCEL | MB_ICONINFORMATION,
 					GSTR_APPNAME,
-					_T("�e��ݒ�̃C���|�[�g�^�G�N�X�|�[�g�p�t�@�C���I����ʂ�\n")
-					_T("�����\���t�H���_��ݒ�t�H���_�ɖ߂��܂��B")
+					_T("各種設定のインポート／エクスポート用ファイル選択画面の\n")
+					_T("初期表示フォルダを設定フォルダに戻します。")
 				);
 				if( IDOK == nMsgResult )
 				{
@@ -226,17 +226,17 @@ static LRESULT CALLBACK PropSheetWndProc( HWND hwnd, UINT uMsg, WPARAM wParam, L
 	return ::CallWindowProc( s_pOldPropSheetWndProc, hwnd, uMsg, wParam, lParam );
 }
 
-/*!	�Ǝ��g���v���p�e�B�V�[�g�̃R�[���o�b�N�֐�
+/*!	独自拡張プロパティシートのコールバック関数
 	@author ryoji
-	@date 2007.05.25 �V�K
+	@date 2007.05.25 新規
 */
 static int CALLBACK PropSheetProc( HWND hwndDlg, UINT uMsg, LPARAM lParam )
 {
-	// �v���p�e�B�V�[�g�̏��������Ƀ{�^���ǉ��A�v���p�e�B�V�[�g�̃T�u�N���X�����s��
+	// プロパティシートの初期化時にボタン追加、プロパティシートのサブクラス化を行う
 	if( uMsg == PSCB_INITIALIZED ){
 		s_pOldPropSheetWndProc = (WNDPROC)::SetWindowLongPtr( hwndDlg, GWLP_WNDPROC, (LONG_PTR)PropSheetWndProc );
 		HINSTANCE hInstance = (HINSTANCE)::GetModuleHandle( NULL );
-		HWND hwndBtn = ::CreateWindowEx( 0, _T("BUTTON"), _T("�ݒ�t�H���_(&/) >>"), BS_PUSHBUTTON | WS_CHILD | WS_VISIBLE | WS_TABSTOP, 0, 0, 140, 20, hwndDlg, (HMENU)0x02000, hInstance, NULL );
+		HWND hwndBtn = ::CreateWindowEx( 0, _T("BUTTON"), _T("設定フォルダ(&/) >>"), BS_PUSHBUTTON | WS_CHILD | WS_VISIBLE | WS_TABSTOP, 0, 0, 140, 20, hwndDlg, (HMENU)0x02000, hInstance, NULL );
 		::SendMessage( hwndBtn, WM_SETFONT, (WPARAM)::SendMessage( hwndDlg, WM_GETFONT, 0, 0 ), MAKELPARAM( FALSE, 0 ) );
 		::SetWindowPos( hwndBtn, ::GetDlgItem( hwndDlg, IDHELP), 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE );
 	}
@@ -244,13 +244,13 @@ static int CALLBACK PropSheetProc( HWND hwndDlg, UINT uMsg, LPARAM lParam )
 }
 
 
-/*!	�Ǝ��g���v���p�e�B�V�[�g�i���ʐݒ�^�^�C�v�ʐݒ��ʗp�j
+/*!	独自拡張プロパティシート（共通設定／タイプ別設定画面用）
 	@author ryoji
-	@date 2007.05.25 �V�K
+	@date 2007.05.25 新規
 */
 int MyPropertySheet( LPPROPSHEETHEADER lppsph )
 {
-	// �l�ݒ�t�H���_���g�p����Ƃ��́u�ݒ�t�H���_�v�{�^����ǉ�����
+	// 個人設定フォルダを使用するときは「設定フォルダ」ボタンを追加する
 	if( CShareData::getInstance()->IsPrivateSettings() ){
 		lppsph->dwFlags |= PSH_USECALLBACK;
 		lppsph->pfnCallback = PropSheetProc;
@@ -259,38 +259,38 @@ int MyPropertySheet( LPPROPSHEETHEADER lppsph )
 }
 
 
-// To Here 2007.05.25 ryoji �Ǝ��g���̃v���p�e�B�V�[�g�֐��Q
+// To Here 2007.05.25 ryoji 独自拡張のプロパティシート関数群
 ///////////////////////////////////////////////////////////////////////
 
 
 
 
 // Stonee, 2001/12/21
-// NetWork��̃��\�[�X�ɐڑ����邽�߂̃_�C�A���O���o��������
-// NO_ERROR:���� ERROR_CANCELLED:�L�����Z�� ����ȊO:���s
-// �v���W�F�N�g�̐ݒ�Ń����N���W���[����Mpr.lib��ǉ��̂���
+// NetWork上のリソースに接続するためのダイアログを出現させる
+// NO_ERROR:成功 ERROR_CANCELLED:キャンセル それ以外:失敗
+// プロジェクトの設定でリンクモジュールにMpr.libを追加のこと
 DWORD NetConnect ( const TCHAR strNetWorkPass[] )
 {
-	//char sPassWord[] = "\0";	//�p�X���[�h
-	//char sUser[] = "\0";		//���[�U�[��
-	DWORD dwRet;				//�߂�l�@�G���[�R�[�h��WINERROR.H���Q��
+	//char sPassWord[] = "\0";	//パスワード
+	//char sUser[] = "\0";		//ユーザー名
+	DWORD dwRet;				//戻り値　エラーコードはWINERROR.Hを参照
 	TCHAR sTemp[256];
 	TCHAR sDrive[] = _T("");
     int i;
 
-	if (_tcslen(strNetWorkPass) < 3)	return ERROR_BAD_NET_NAME;  //UNC�ł͂Ȃ��B
-	if (strNetWorkPass[0] != _T('\\') && strNetWorkPass[1] != _T('\\'))	return ERROR_BAD_NET_NAME;  //UNC�ł͂Ȃ��B
+	if (_tcslen(strNetWorkPass) < 3)	return ERROR_BAD_NET_NAME;  //UNCではない。
+	if (strNetWorkPass[0] != _T('\\') && strNetWorkPass[1] != _T('\\'))	return ERROR_BAD_NET_NAME;  //UNCではない。
 
-	//3�����ڂ��琔���čŏ���\�̒��O�܂ł�؂�o��
+	//3文字目から数えて最初の\の直前までを切り出す
 	sTemp[0] = _T('\\');
 	sTemp[1] = _T('\\');
 	for (i = 2; strNetWorkPass[i] != _T('\0'); i++) {
 		if (strNetWorkPass[i] == _T('\\')) break;
 		sTemp[i] = strNetWorkPass[i];
 	}
-	sTemp[i] = _T('\0');	//�I�[
+	sTemp[i] = _T('\0');	//終端
 
-	//NETRESOURCE�쐬
+	//NETRESOURCE作成
 	NETRESOURCE nr;
 	ZeroMemory( &nr, sizeof( nr ) );
 	nr.dwScope       = RESOURCE_GLOBALNET;
@@ -300,7 +300,7 @@ DWORD NetConnect ( const TCHAR strNetWorkPass[] )
 	nr.lpLocalName   = sDrive;
 	nr.lpRemoteName  = sTemp;
 
-	//���[�U�[�F�؃_�C�A���O��\��
+	//ユーザー認証ダイアログを表示
 	dwRet = WNetAddConnection3(0, &nr, NULL, NULL, CONNECT_UPDATE_PROFILE | CONNECT_INTERACTIVE);
 
 	return dwRet;
@@ -309,8 +309,8 @@ DWORD NetConnect ( const TCHAR strNetWorkPass[] )
 
 
 
-/*! �V���[�g�J�b�g(.lnk)�̉���
-	@date 2009.01.08 ryoji CoInitialize/CoUninitialize���폜�iWinMain��OleInitialize/OleUninitialize��ǉ��j
+/*! ショートカット(.lnk)の解決
+	@date 2009.01.08 ryoji CoInitialize/CoUninitializeを削除（WinMainにOleInitialize/OleUninitializeを追加）
 */
 BOOL ResolveShortcutLink( HWND hwnd, LPCTSTR lpszLinkFile, LPTSTR lpszPath )
 {
@@ -319,13 +319,13 @@ BOOL ResolveShortcutLink( HWND hwnd, LPCTSTR lpszLinkFile, LPTSTR lpszPath )
 	IShellLink*		pIShellLink;
 	IPersistFile*	pIPersistFile;
 	WIN32_FIND_DATA	wfd;
-	/* ������ */
+	/* 初期化 */
 	pIShellLink = NULL;
 	pIPersistFile = NULL;
 	*lpszPath = 0; // assume failure
 	bRes = FALSE;
 
-// 2009.01.08 ryoji CoInitialize���폜�iWinMain��OleInitialize�ǉ��j
+// 2009.01.08 ryoji CoInitializeを削除（WinMainにOleInitialize追加）
 
 	// Get a pointer to the IShellLink interface.
 //	hRes = 0;
@@ -334,7 +334,7 @@ BOOL ResolveShortcutLink( HWND hwnd, LPCTSTR lpszLinkFile, LPTSTR lpszPath )
 		return FALSE;
 	}
 
-	// 2010.08.28 DLL �C���W�F�N�V�����΍�Ƃ���EXE�̃t�H���_�Ɉړ�����
+	// 2010.08.28 DLL インジェクション対策としてEXEのフォルダに移動する
 	CCurrentDirectoryBackupPoint dirBack;
 	ChangeCurrentDirectoryToExeDir();
 
@@ -357,7 +357,7 @@ BOOL ResolveShortcutLink( HWND hwnd, LPCTSTR lpszLinkFile, LPTSTR lpszPath )
 						TCHAR szDescription[MAX_PATH];
 						if( SUCCEEDED(hRes = pIShellLink->GetDescription(szDescription, MAX_PATH ) ) ){
 							if( _T('\0') != szGotPath[0] ){
-								/* ����I�� */
+								/* 正常終了 */
 								_tcscpy_s( lpszPath, _MAX_PATH, szGotPath );
 								bRes = TRUE;
 							}
@@ -377,32 +377,32 @@ BOOL ResolveShortcutLink( HWND hwnd, LPCTSTR lpszLinkFile, LPTSTR lpszPath )
 		pIShellLink->Release();
 		pIShellLink = NULL;
 	}
-// 2009.01.08 ryoji CoUninitialize���폜�iWinMain��OleUninitialize�ǉ��j
+// 2009.01.08 ryoji CoUninitializeを削除（WinMainにOleUninitialize追加）
 	return bRes;
 }
 
 
 
 
-/*�t�H���g�I���_�C�A���O
+/*フォント選択ダイアログ
 	@param plf [in/out]
-	@param piPointSize [in/out] 1/10�|�C���g�P��
+	@param piPointSize [in/out] 1/10ポイント単位
 	
-	2008.04.27 kobake CEditDoc::SelectFont ���番��
-	2009.10.01 ryoji �|�C���g�T�C�Y�i1/10�|�C���g�P�ʁj�����ǉ�
+	2008.04.27 kobake CEditDoc::SelectFont から分離
+	2009.10.01 ryoji ポイントサイズ（1/10ポイント単位）引数追加
 */
 BOOL MySelectFont( LOGFONT* plf, INT* piPointSize, HWND hwndDlgOwner, bool FixedFontOnly )
 {
-	// 2004.02.16 Moca CHOOSEFONT�������o����O��
+	// 2004.02.16 Moca CHOOSEFONTをメンバから外す
 	CHOOSEFONT cf;
-	/* CHOOSEFONT�̏����� */
+	/* CHOOSEFONTの初期化 */
 	::ZeroMemory( &cf, sizeof( cf ) );
 	cf.lStructSize = sizeof( cf );
 	cf.hwndOwner = hwndDlgOwner;
 	cf.hDC = NULL;
 	cf.Flags = CF_SCREENFONTS | CF_INITTOLOGFONTSTRUCT;
 	if( FixedFontOnly ){
-		//FIXED�t�H���g
+		//FIXEDフォント
 		cf.Flags |= CF_FIXEDPITCHONLY;
 	}
 	cf.lpLogFont = plf;

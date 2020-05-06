@@ -36,52 +36,52 @@ public:
 	CDocEditor(CEditDoc* pcDoc);
 
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-	//                         ƒCƒxƒ“ƒg                            //
+	//                         ã‚¤ãƒ™ãƒ³ãƒˆ                            //
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-	//ƒ[ƒh‘OŒã
+	//ãƒ­ãƒ¼ãƒ‰å‰å¾Œ
 	void OnBeforeLoad(SLoadInfo* sLoadInfo);
 	void OnAfterLoad(const SLoadInfo& sLoadInfo);
 
-	//ƒZ[ƒu‘OŒã
+	//ã‚»ãƒ¼ãƒ–å‰å¾Œ
 	void OnAfterSave(const SSaveInfo& sSaveInfo);
 
 
 
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-	//                           ó‘Ô                              //
+	//                           çŠ¶æ…‹                              //
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-	//	Jan. 22, 2002 genta Modified Flag‚Ìİ’è
+	//	Jan. 22, 2002 genta Modified Flagã®è¨­å®š
 	void SetModified( bool flag, bool redraw);
-	//! ƒtƒ@ƒCƒ‹‚ªC³’†‚©‚Ç‚¤‚©
+	//! ãƒ•ã‚¡ã‚¤ãƒ«ãŒä¿®æ­£ä¸­ã‹ã©ã†ã‹
 	bool IsModified() const { return m_bIsDocModified; }
 
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-	//                           İ’è                              //
+	//                           è¨­å®š                              //
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 	//	Nov. 20, 2000 genta
-	void SetImeMode(int mode);	//	IMEó‘Ô‚Ìİ’è
+	void SetImeMode(int mode);	//	IMEçŠ¶æ…‹ã®è¨­å®š
 
 	//	May 15, 2000 genta
 	CEol  GetNewLineCode() const { return m_cNewLineCode; }
 	void  SetNewLineCode(const CEol& t){ m_cNewLineCode = t; }
 
-	//	Oct. 2, 2005 genta ‘}“üƒ‚[ƒh‚Ìİ’è
+	//	Oct. 2, 2005 genta æŒ¿å…¥ãƒ¢ãƒ¼ãƒ‰ã®è¨­å®š
 	bool IsInsMode() const { return m_bInsMode; }
 	void SetInsMode(bool mode) { m_bInsMode = mode; }
 
-	//! Undo(Œ³‚É–ß‚·)‰Â”\‚Èó‘Ô‚©H */
+	//! Undo(å…ƒã«æˆ»ã™)å¯èƒ½ãªçŠ¶æ…‹ã‹ï¼Ÿ */
 	bool IsEnableUndo( void )
 	{
 		return m_cOpeBuf.IsEnableUndo();
 	}
 
-	//! Redo(‚â‚è’¼‚µ)‰Â”\‚Èó‘Ô‚©H
+	//! Redo(ã‚„ã‚Šç›´ã—)å¯èƒ½ãªçŠ¶æ…‹ã‹ï¼Ÿ
 	bool IsEnableRedo( void )
 	{
 		return m_cOpeBuf.IsEnableRedo();
 	}
 
-	//! ƒNƒŠƒbƒvƒ{[ƒh‚©‚ç“\‚è•t‚¯‰Â”\‚©H
+	//! ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ã‹ã‚‰è²¼ã‚Šä»˜ã‘å¯èƒ½ã‹ï¼Ÿ
 	bool IsEnablePaste( void )
 	{
 		return CClipboard::HasValidData();
@@ -89,10 +89,10 @@ public:
 
 public:
 	CEditDoc*		m_pcDocRef;
-	CEol 			m_cNewLineCode;				//!< Enter‰Ÿ‰º‚É‘}“ü‚·‚é‰üsƒR[ƒhí•Ê
-	COpeBuf			m_cOpeBuf;					//!< ƒAƒ“ƒhƒDƒoƒbƒtƒ@
-	COpeBlk*		m_pcOpeBlk;					//!< ‘€ìƒuƒƒbƒN
-	bool			m_bInsMode;					//!< ‘}“üEã‘‚«ƒ‚[ƒh Oct. 2, 2005 genta
+	CEol 			m_cNewLineCode;				//!< EnteræŠ¼ä¸‹æ™‚ã«æŒ¿å…¥ã™ã‚‹æ”¹è¡Œã‚³ãƒ¼ãƒ‰ç¨®åˆ¥
+	COpeBuf			m_cOpeBuf;					//!< ã‚¢ãƒ³ãƒ‰ã‚¥ãƒãƒƒãƒ•ã‚¡
+	COpeBlk*		m_pcOpeBlk;					//!< æ“ä½œãƒ–ãƒ­ãƒƒã‚¯
+	bool			m_bInsMode;					//!< æŒ¿å…¥ãƒ»ä¸Šæ›¸ããƒ¢ãƒ¼ãƒ‰ Oct. 2, 2005 genta
 	bool			m_bIsDocModified;
 };
 
@@ -102,30 +102,30 @@ public:
 	CDocEditAgent(CDocLineMgr* pcDocLineMgr) : m_pcDocLineMgr(pcDocLineMgr) { }
 
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-	//                           ‘€ì                              //
+	//                           æ“ä½œ                              //
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 	//	May 15, 2000 genta
-	void AddLineStrX( const wchar_t*, int );	/* ––”ö‚És‚ğ’Ç‰Á Ver1.5 */
+	void AddLineStrX( const wchar_t*, int );	/* æœ«å°¾ã«è¡Œã‚’è¿½åŠ  Ver1.5 */
 
 	void DeleteData_CDocLineMgr(
 		CLogicInt	nLine,
 		CLogicInt	nDelPos,
 		CLogicInt	nDelLen,
-		CLogicInt*	pnModLineOldFrom,	/* ‰e‹¿‚Ì‚ ‚Á‚½•ÏX‘O‚Ìs(from) */
-		CLogicInt*	pnModLineOldTo,		/* ‰e‹¿‚Ì‚ ‚Á‚½•ÏX‘O‚Ìs(to) */
-		CLogicInt*	pnDelLineOldFrom,	/* íœ‚³‚ê‚½•ÏX‘O˜_—s(from) */
-		CLogicInt*	pnDelLineOldNum,	/* íœ‚³‚ê‚½s” */
-		CNativeW*	cmemDeleted			/* íœ‚³‚ê‚½ƒf[ƒ^ */
+		CLogicInt*	pnModLineOldFrom,	/* å½±éŸ¿ã®ã‚ã£ãŸå¤‰æ›´å‰ã®è¡Œ(from) */
+		CLogicInt*	pnModLineOldTo,		/* å½±éŸ¿ã®ã‚ã£ãŸå¤‰æ›´å‰ã®è¡Œ(to) */
+		CLogicInt*	pnDelLineOldFrom,	/* å‰Šé™¤ã•ã‚ŒãŸå¤‰æ›´å‰è«–ç†è¡Œ(from) */
+		CLogicInt*	pnDelLineOldNum,	/* å‰Šé™¤ã•ã‚ŒãŸè¡Œæ•° */
+		CNativeW*	cmemDeleted			/* å‰Šé™¤ã•ã‚ŒãŸãƒ‡ãƒ¼ã‚¿ */
 	);
 
-	/* ƒf[ƒ^‚Ì‘}“ü */
+	/* ãƒ‡ãƒ¼ã‚¿ã®æŒ¿å…¥ */
 	void InsertData_CDocLineMgr(
 		CLogicInt		nLine,
 		CLogicInt		nInsPos,
 		const wchar_t*	pInsData,
 		CLogicInt		nInsDataLen,
-		CLogicInt*		pnInsLineNum,	// ‘}“ü‚É‚æ‚Á‚Ä‘‚¦‚½s‚Ì”
-		CLogicPoint*	pptNewPos		// ‘}“ü‚³‚ê‚½•”•ª‚ÌŸ‚ÌˆÊ’u
+		CLogicInt*		pnInsLineNum,	// æŒ¿å…¥ã«ã‚ˆã£ã¦å¢—ãˆãŸè¡Œã®æ•°
+		CLogicPoint*	pptNewPos		// æŒ¿å…¥ã•ã‚ŒãŸéƒ¨åˆ†ã®æ¬¡ã®ä½ç½®
 	);
 private:
 	CDocLineMgr* m_pcDocLineMgr;

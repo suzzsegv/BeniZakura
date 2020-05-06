@@ -39,11 +39,11 @@ const CLayout* SColorStrategyInfo::GetLayout() const
 	return pDispPos->GetLayoutRef();
 }
 
-/*! F‚ÌØ‚è‘Ö‚¦
-	@retval true F‚Ì•ÏX‚ ‚è
-	@retval false F‚Ì•ÏX/‚È‚µ
+/*! è‰²ã®åˆ‡ã‚Šæ›¿ãˆ
+	@retval true è‰²ã®å¤‰æ›´ã‚ã‚Š
+	@retval false è‰²ã®å¤‰æ›´/ãªã—
 
-	@date 2013.05.11 novice ÀÛ‚Ì•ÏX‚ÍŒÄ‚Ño‚µ‘¤‚Ås‚¤
+	@date 2013.05.11 novice å®Ÿéš›ã®å¤‰æ›´ã¯å‘¼ã³å‡ºã—å´ã§è¡Œã†
 */
 bool SColorStrategyInfo::DoChangeColor(const CStringRef& cLineStr, CColor3Setting *pcColor, ColorStrategyState& rColorStrategyState)
 {
@@ -53,14 +53,14 @@ bool SColorStrategyInfo::DoChangeColor(const CStringRef& cLineStr, CColor3Settin
 	CColor_Select* pcSelect = pool->GetSelectStrategy();
 	bool bChange = false;
 
-	//‘I‘ğ”ÍˆÍFI—¹
+	//é¸æŠç¯„å›²è‰²çµ‚äº†
 	if(this->pStrategySelect){
 		if(this->pStrategySelect->EndColor(cLineStr,this->GetPosInLogic())){
 			this->pStrategySelect = NULL;
 			bChange = true;
 		}
 	}
-	//‘I‘ğ”ÍˆÍFŠJn
+	//é¸æŠç¯„å›²è‰²é–‹å§‹
 	if(!this->pStrategySelect){
 		if(pcSelect->BeginColorEx(cLineStr,this->GetPosInLogic(), this->pDispPos->GetLayoutLineRef(), this->GetLayout())){
 			this->pStrategySelect = pcSelect;
@@ -68,7 +68,7 @@ bool SColorStrategyInfo::DoChangeColor(const CStringRef& cLineStr, CColor3Settin
 		}
 	}
 
-	//ŒŸõFI—¹
+	//æ¤œç´¢è‰²çµ‚äº†
 	if(this->pStrategyFound){
 		if(this->pStrategyFound->EndColor(cLineStr,this->GetPosInLogic())){
 			this->pStrategyFound = NULL;
@@ -76,7 +76,7 @@ bool SColorStrategyInfo::DoChangeColor(const CStringRef& cLineStr, CColor3Settin
 		}
 	}
 
-	//ŒŸõFŠJn
+	//æ¤œç´¢è‰²é–‹å§‹
 	if(!this->pStrategyFound){
 		if(pcFound->BeginColor(cLineStr,this->GetPosInLogic())){
 			this->pStrategyFound = pcFound;
@@ -84,7 +84,7 @@ bool SColorStrategyInfo::DoChangeColor(const CStringRef& cLineStr, CColor3Settin
 		}
 	}
 
-	//FI—¹
+	//è‰²çµ‚äº†
 	if(this->pStrategy){
 		if( this->pStrategy->EndColor( cLineStr, this->GetPosInLogic( ), rColorStrategyState ) ){
 			this->pStrategy = NULL;
@@ -92,7 +92,7 @@ bool SColorStrategyInfo::DoChangeColor(const CStringRef& cLineStr, CColor3Settin
 		}
 	}
 
-	//FŠJn
+	//è‰²é–‹å§‹
 	if(!this->pStrategy){
 		int size = pool->GetStrategyCount();
 		for(int i = 0; i < size; i++ ){
@@ -104,7 +104,7 @@ bool SColorStrategyInfo::DoChangeColor(const CStringRef& cLineStr, CColor3Settin
 		}
 	}
 
-	//ƒJ[ƒ\ƒ‹s”wŒiF
+	//ã‚«ãƒ¼ã‚½ãƒ«è¡ŒèƒŒæ™¯è‰²
 	CTypeSupport cCaretLineBg(this->pcView, COLORIDX_CARETLINEBG);
 	if( cCaretLineBg.IsDisp() ){
 		if(m_colorIdxBackLine==COLORIDX_CARETLINEBG){
@@ -120,7 +120,7 @@ bool SColorStrategyInfo::DoChangeColor(const CStringRef& cLineStr, CColor3Settin
 		}
 	}
 
-	// FŒˆ’è
+	// è‰²æ±ºå®š
 	if( bChange ){
 		pcColor->eColorIndex = GetCurrentColor();
 		pcColor->eColorIndex2 = GetCurrentColor2();
@@ -150,7 +150,7 @@ EColorIndexType SColorStrategyInfo::GetCurrentColor2() const
 
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                          ƒv[ƒ‹                             //
+//                          ãƒ—ãƒ¼ãƒ«                             //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
 CColorStrategyPool::CColorStrategyPool()
@@ -158,31 +158,31 @@ CColorStrategyPool::CColorStrategyPool()
 	m_pcView = &(CEditWnd::getInstance()->GetView(0));
 	m_pcSelectStrategy = new CColor_Select();
 	m_pcFoundStrategy = new CColor_Found();
-//	m_vStrategies.push_back(new CColor_Found);				// ƒ}ƒbƒ`•¶š—ñ
-	m_vStrategies.push_back(new CColor_RegexKeyword);		// ³‹K•\Œ»ƒL[ƒ[ƒh
-	m_vStrategies.push_back(new CColor_LineComment);		// sƒRƒƒ“ƒg
-	m_vStrategies.push_back(new CColor_BlockComment(COLORIDX_BLOCK1));	// ƒuƒƒbƒNƒRƒƒ“ƒg
-	m_vStrategies.push_back(new CColor_BlockComment(COLORIDX_BLOCK2));	// ƒuƒƒbƒNƒRƒƒ“ƒg2
-	m_vStrategies.push_back(new CColor_Comment_Cpp_If0());		// C++ƒRƒƒ“ƒg
-	m_vStrategies.push_back(new CColor_Comment_Cpp_If1());	// C++ "#if 1" ƒRƒƒ“ƒgƒAƒEƒgƒuƒƒbƒN
-	m_vStrategies.push_back(new CColor_SingleQuote);		// ƒVƒ“ƒOƒ‹ƒNƒH[ƒe[ƒVƒ‡ƒ“•¶š—ñ
-	m_vStrategies.push_back(new CColor_DoubleQuote);		// ƒ_ƒuƒ‹ƒNƒH[ƒe[ƒVƒ‡ƒ“•¶š—ñ
+//	m_vStrategies.push_back(new CColor_Found);				// ãƒãƒƒãƒæ–‡å­—åˆ—
+	m_vStrategies.push_back(new CColor_RegexKeyword);		// æ­£è¦è¡¨ç¾ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰
+	m_vStrategies.push_back(new CColor_LineComment);		// è¡Œã‚³ãƒ¡ãƒ³ãƒˆ
+	m_vStrategies.push_back(new CColor_BlockComment(COLORIDX_BLOCK1));	// ãƒ–ãƒ­ãƒƒã‚¯ã‚³ãƒ¡ãƒ³ãƒˆ
+	m_vStrategies.push_back(new CColor_BlockComment(COLORIDX_BLOCK2));	// ãƒ–ãƒ­ãƒƒã‚¯ã‚³ãƒ¡ãƒ³ãƒˆ2
+	m_vStrategies.push_back(new CColor_Comment_Cpp_If0());		// C++ã‚³ãƒ¡ãƒ³ãƒˆ
+	m_vStrategies.push_back(new CColor_Comment_Cpp_If1());	// C++ "#if 1" ã‚³ãƒ¡ãƒ³ãƒˆã‚¢ã‚¦ãƒˆãƒ–ãƒ­ãƒƒã‚¯
+	m_vStrategies.push_back(new CColor_SingleQuote);		// ã‚·ãƒ³ã‚°ãƒ«ã‚¯ã‚©ãƒ¼ãƒ†ãƒ¼ã‚·ãƒ§ãƒ³æ–‡å­—åˆ—
+	m_vStrategies.push_back(new CColor_DoubleQuote);		// ãƒ€ãƒ–ãƒ«ã‚¯ã‚©ãƒ¼ãƒ†ãƒ¼ã‚·ãƒ§ãƒ³æ–‡å­—åˆ—
 	m_vStrategies.push_back(new CColor_Url);				// URL
-	m_vStrategies.push_back(new CColor_Numeric);			// ”¼Šp”š
-	m_vStrategies.push_back(new CColor_KeywordSet);			// ƒL[ƒ[ƒhƒZƒbƒg
+	m_vStrategies.push_back(new CColor_Numeric);			// åŠè§’æ•°å­—
+	m_vStrategies.push_back(new CColor_KeywordSet);			// ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ã‚»ãƒƒãƒˆ
 
-	// İ’èXV
+	// è¨­å®šæ›´æ–°
 	OnChangeSetting();
 
-	// CheckColorMODE —p
-	m_pcLineComment = (CColor_LineComment*)GetStrategyByColor(COLORIDX_COMMENT);	// sƒRƒƒ“ƒg
-	m_pcBlockComment1 = (CColor_BlockComment*)GetStrategyByColor(COLORIDX_BLOCK1);	// ƒuƒƒbƒNƒRƒƒ“ƒg
-	m_pcBlockComment2 = (CColor_BlockComment*)GetStrategyByColor(COLORIDX_BLOCK2);	// ƒuƒƒbƒNƒRƒƒ“ƒg2
-	m_pcCommentCpp = (CColor_Comment_Cpp_If0*)GetStrategyByColor(COLORIDX_COMMENT2);	// C++ ƒvƒŠƒvƒƒZƒbƒT‚É‚æ‚éƒRƒƒ“ƒgƒAƒEƒgƒuƒƒbƒN
+	// CheckColorMODE ç”¨
+	m_pcLineComment = (CColor_LineComment*)GetStrategyByColor(COLORIDX_COMMENT);	// è¡Œã‚³ãƒ¡ãƒ³ãƒˆ
+	m_pcBlockComment1 = (CColor_BlockComment*)GetStrategyByColor(COLORIDX_BLOCK1);	// ãƒ–ãƒ­ãƒƒã‚¯ã‚³ãƒ¡ãƒ³ãƒˆ
+	m_pcBlockComment2 = (CColor_BlockComment*)GetStrategyByColor(COLORIDX_BLOCK2);	// ãƒ–ãƒ­ãƒƒã‚¯ã‚³ãƒ¡ãƒ³ãƒˆ2
+	m_pcCommentCpp = (CColor_Comment_Cpp_If0*)GetStrategyByColor(COLORIDX_COMMENT2);	// C++ ãƒ—ãƒªãƒ—ãƒ­ã‚»ãƒƒã‚µã«ã‚ˆã‚‹ã‚³ãƒ¡ãƒ³ãƒˆã‚¢ã‚¦ãƒˆãƒ–ãƒ­ãƒƒã‚¯
 	pCommentCppIf1 = (CColor_Comment_Cpp_If1*)GetStrategyByColor(COLORIDX_COMMENT_CPP_IF1);
-																					// C++ "#if 1" ƒRƒƒ“ƒgƒAƒEƒgƒuƒƒbƒN
-	m_pcSingleQuote = (CColor_SingleQuote*)GetStrategyByColor(COLORIDX_SSTRING);	// ƒVƒ“ƒOƒ‹ƒNƒH[ƒe[ƒVƒ‡ƒ“•¶š—ñ
-	m_pcDoubleQuote = (CColor_DoubleQuote*)GetStrategyByColor(COLORIDX_WSTRING);	// ƒ_ƒuƒ‹ƒNƒH[ƒe[ƒVƒ‡ƒ“•¶š—ñ
+																					// C++ "#if 1" ã‚³ãƒ¡ãƒ³ãƒˆã‚¢ã‚¦ãƒˆãƒ–ãƒ­ãƒƒã‚¯
+	m_pcSingleQuote = (CColor_SingleQuote*)GetStrategyByColor(COLORIDX_SSTRING);	// ã‚·ãƒ³ã‚°ãƒ«ã‚¯ã‚©ãƒ¼ãƒ†ãƒ¼ã‚·ãƒ§ãƒ³æ–‡å­—åˆ—
+	m_pcDoubleQuote = (CColor_DoubleQuote*)GetStrategyByColor(COLORIDX_WSTRING);	// ãƒ€ãƒ–ãƒ«ã‚¯ã‚©ãƒ¼ãƒ†ãƒ¼ã‚·ãƒ§ãƒ³æ–‡å­—åˆ—
 }
 
 CColorStrategyPool::~CColorStrategyPool()
@@ -221,7 +221,7 @@ void CColorStrategyPool::NotifyOnStartScanLogic()
 }
 
 
-// 2005.11.20 MocaƒRƒƒ“ƒg‚ÌF•ª‚¯‚ªON/OFFŠÖŒW‚È‚­s‚í‚ê‚Ä‚¢‚½ƒoƒO‚ğC³
+// 2005.11.20 Mocaã‚³ãƒ¡ãƒ³ãƒˆã®è‰²åˆ†ã‘ãŒON/OFFé–¢ä¿‚ãªãè¡Œã‚ã‚Œã¦ã„ãŸãƒã‚°ã‚’ä¿®æ­£
 bool CColorStrategyPool::CheckColorMODE(
 	CColorStrategy**	ppcColorStrategy,	//!< [in/out]
 	int					nPos,
@@ -229,7 +229,7 @@ bool CColorStrategyPool::CheckColorMODE(
 	ColorStrategyState& rColorStrategyState
 )
 {
-	//FI—¹
+	//è‰²çµ‚äº†
 	if(*ppcColorStrategy){
 		if( ( *ppcColorStrategy )->EndColor( cLineStr, nPos, rColorStrategyState ) ){
 			*ppcColorStrategy = NULL;
@@ -237,11 +237,11 @@ bool CColorStrategyPool::CheckColorMODE(
 		}
 	}
 
-	//FŠJn
+	//è‰²é–‹å§‹
 	if(!*ppcColorStrategy){
-		// CheckColorMODE ‚ÍƒŒƒCƒAƒEƒgˆ—‘S‘Ì‚Ìƒ{ƒgƒ‹ƒlƒbƒN‚É‚È‚é‚­‚ç‚¢•p”É‚ÉŒÄ‚Ño‚³‚ê‚é
-		// Šî–{ƒNƒ‰ƒX‚©‚ç‚Ì“®“I‰¼‘zŠÖ”ŒÄ‚Ño‚µ‚ğg—p‚·‚é‚Æ–³‹‚Å‚«‚È‚¢‚Ù‚Ç‚ÌƒI[ƒoƒwƒbƒh‚É‚È‚é–Í—l
-		// ‚±‚±‚ÍƒGƒŒƒKƒ“ƒg‚³‚æ‚è‚à«”\—Dæ‚ÅŒÂX‚Ì”h¶ƒNƒ‰ƒX‚©‚ç BeginColor() ‚ğŒÄ‚Ño‚·
+		// CheckColorMODE ã¯ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆå‡¦ç†å…¨ä½“ã®ãƒœãƒˆãƒ«ãƒãƒƒã‚¯ã«ãªã‚‹ãã‚‰ã„é »ç¹ã«å‘¼ã³å‡ºã•ã‚Œã‚‹
+		// åŸºæœ¬ã‚¯ãƒ©ã‚¹ã‹ã‚‰ã®å‹•çš„ä»®æƒ³é–¢æ•°å‘¼ã³å‡ºã—ã‚’ä½¿ç”¨ã™ã‚‹ã¨ç„¡è¦–ã§ããªã„ã»ã©ã®ã‚ªãƒ¼ãƒãƒ˜ãƒƒãƒ‰ã«ãªã‚‹æ¨¡æ§˜
+		// ã“ã“ã¯ã‚¨ãƒ¬ã‚¬ãƒ³ãƒˆã•ã‚ˆã‚Šã‚‚æ€§èƒ½å„ªå…ˆã§å€‹ã€…ã®æ´¾ç”Ÿã‚¯ãƒ©ã‚¹ã‹ã‚‰ BeginColor() ã‚’å‘¼ã³å‡ºã™
 		if(m_pcLineComment->BeginColor(cLineStr,nPos)){ *ppcColorStrategy = m_pcLineComment; return false; }
 		if(m_pcBlockComment1->BeginColor(cLineStr,nPos)){ *ppcColorStrategy = m_pcBlockComment1; return false; }
 		if(m_pcBlockComment2->BeginColor(cLineStr,nPos)){ *ppcColorStrategy = m_pcBlockComment2; return false; }
@@ -260,7 +260,7 @@ bool CColorStrategyPool::CheckColorMODE(
 	return false;
 }
 
-/*! İ’èXV
+/*! è¨­å®šæ›´æ–°
 */
 void CColorStrategyPool::OnChangeSetting(void)
 {
@@ -273,22 +273,22 @@ void CColorStrategyPool::OnChangeSetting(void)
 }
 
 /*!
-  ini‚ÌFİ’è‚ğ”Ô†‚Å‚È‚­•¶š—ñ‚Å‘‚«o‚·B(added by Stonee, 2001/01/12, 2001/01/15)
-  ”z—ñ‚Ì‡”Ô‚Í‹¤—Lƒƒ‚ƒŠ’†‚Ìƒf[ƒ^‚Ì‡”Ô‚Æˆê’v‚µ‚Ä‚¢‚éB
+  iniã®è‰²è¨­å®šã‚’ç•ªå·ã§ãªãæ–‡å­—åˆ—ã§æ›¸ãå‡ºã™ã€‚(added by Stonee, 2001/01/12, 2001/01/15)
+  é…åˆ—ã®é †ç•ªã¯å…±æœ‰ãƒ¡ãƒ¢ãƒªä¸­ã®ãƒ‡ãƒ¼ã‚¿ã®é †ç•ªã¨ä¸€è‡´ã—ã¦ã„ã‚‹ã€‚
 
-  @note ”’l‚É‚æ‚é“à•”“I‘Î‰‚Í EColorIndexType CColorStrategy.h
-  “ú–{Œê–¼‚È‚Ç‚Í  ColorInfo_DEFAULT CDocTypeSetting.cpp
-  CShareData‚©‚çglobal‚ÉˆÚ“®
+  @note æ•°å€¤ã«ã‚ˆã‚‹å†…éƒ¨çš„å¯¾å¿œã¯ EColorIndexType CColorStrategy.h
+  æ—¥æœ¬èªåãªã©ã¯  ColorInfo_DEFAULT CDocTypeSetting.cpp
+  CShareDataã‹ã‚‰globalã«ç§»å‹•
 */
 const SColorAttributeData g_ColorAttributeArr[] =
 {
 	{_T("TXT"), COLOR_ATTRIB_FORCE_DISP | COLOR_ATTRIB_NO_EFFECTS},
 	{_T("RUL"), COLOR_ATTRIB_NO_EFFECTS},
-	{_T("CAR"), COLOR_ATTRIB_FORCE_DISP | COLOR_ATTRIB_NO_BACK | COLOR_ATTRIB_NO_EFFECTS},	// ƒLƒƒƒŒƒbƒg		// 2006.12.07 ryoji
-	{_T("IME"), COLOR_ATTRIB_NO_BACK | COLOR_ATTRIB_NO_EFFECTS},	// IMEƒLƒƒƒŒƒbƒg	// 2006.12.07 ryoji
+	{_T("CAR"), COLOR_ATTRIB_FORCE_DISP | COLOR_ATTRIB_NO_BACK | COLOR_ATTRIB_NO_EFFECTS},	// ã‚­ãƒ£ãƒ¬ãƒƒãƒˆ		// 2006.12.07 ryoji
+	{_T("IME"), COLOR_ATTRIB_NO_BACK | COLOR_ATTRIB_NO_EFFECTS},	// IMEã‚­ãƒ£ãƒ¬ãƒƒãƒˆ	// 2006.12.07 ryoji
 	{_T("CBK"), COLOR_ATTRIB_NO_TEXT | COLOR_ATTRIB_NO_EFFECTS},
 	{_T("UND"), COLOR_ATTRIB_NO_BACK | COLOR_ATTRIB_NO_EFFECTS},
-	{_T("CVL"), COLOR_ATTRIB_NO_BACK | ( COLOR_ATTRIB_NO_EFFECTS & ~COLOR_ATTRIB_NO_BOLD )}, // 2007.09.09 Moca ƒJ[ƒ\ƒ‹ˆÊ’ucü
+	{_T("CVL"), COLOR_ATTRIB_NO_BACK | ( COLOR_ATTRIB_NO_EFFECTS & ~COLOR_ATTRIB_NO_BOLD )}, // 2007.09.09 Moca ã‚«ãƒ¼ã‚½ãƒ«ä½ç½®ç¸¦ç·š
 	{_T("LNO"), 0},
 	{_T("MOD"), 0},
 	{_T("TAB"), 0},
@@ -297,10 +297,10 @@ const SColorAttributeData g_ColorAttributeArr[] =
 	{_T("CTL"), 0},
 	{_T("EOL"), 0},
 	{_T("RAP"), 0},
-	{_T("VER"), 0},  // 2005.11.08 Moca w’èŒ…cü
+	{_T("VER"), 0},  // 2005.11.08 Moca æŒ‡å®šæ¡ç¸¦ç·š
 	{_T("EOF"), 0},
-	{_T("NUM"), 0},	//@@@ 2001.02.17 by MIK ”¼Šp”’l‚Ì‹­’²
-	{_T("BRC"), 0},	//‘ÎŠ‡ŒÊ	// 02/09/18 ai Add
+	{_T("NUM"), 0},	//@@@ 2001.02.17 by MIK åŠè§’æ•°å€¤ã®å¼·èª¿
+	{_T("BRC"), 0},	//å¯¾æ‹¬å¼§	// 02/09/18 ai Add
 	{_T("SEL"), 0},
 	{_T("FND"), 0},
 	{_T("FN2"), 0},
@@ -314,7 +314,7 @@ const SColorAttributeData g_ColorAttributeArr[] =
 	{_T("URL"), 0},
 	{_T("KW1"), 0},
 	{_T("KW2"), 0},
-	{_T("KW3"), 0},	//@@@ 2003.01.13 by MIK ‹­’²ƒL[ƒ[ƒh3-10
+	{_T("KW3"), 0},	//@@@ 2003.01.13 by MIK å¼·èª¿ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰3-10
 	{_T("KW4"), 0},
 	{_T("KW5"), 0},
 	{_T("KW6"), 0},
@@ -332,17 +332,17 @@ const SColorAttributeData g_ColorAttributeArr[] =
 	{_T("RK8"), 0},	//@@@ 2001.11.17 add MIK
 	{_T("RK9"), 0},	//@@@ 2001.11.17 add MIK
 	{_T("RKA"), 0},	//@@@ 2001.11.17 add MIK
-	{_T("DFA"), 0},	//DIFF’Ç‰Á	//@@@ 2002.06.01 MIK
-	{_T("DFC"), 0},	//DIFF•ÏX	//@@@ 2002.06.01 MIK
-	{_T("DFD"), 0},	//DIFFíœ	//@@@ 2002.06.01 MIK
-	{_T("MRK"), 0},	//ƒuƒbƒNƒ}[ƒN	// 02/10/16 ai Add
+	{_T("DFA"), 0},	//DIFFè¿½åŠ 	//@@@ 2002.06.01 MIK
+	{_T("DFC"), 0},	//DIFFå¤‰æ›´	//@@@ 2002.06.01 MIK
+	{_T("DFD"), 0},	//DIFFå‰Šé™¤	//@@@ 2002.06.01 MIK
+	{_T("MRK"), 0},	//ãƒ–ãƒƒã‚¯ãƒãƒ¼ã‚¯	// 02/10/16 ai Add
 	{_T("LAST"), 0}	// Not Used
 };
 
 
 
 /*
- * ƒJƒ‰[–¼‚©‚çƒCƒ“ƒfƒbƒNƒX”Ô†‚É•ÏŠ·‚·‚é
+ * ã‚«ãƒ©ãƒ¼åã‹ã‚‰ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ç•ªå·ã«å¤‰æ›ã™ã‚‹
  */
 int GetColorIndexByName( const TCHAR *name )
 {
@@ -355,7 +355,7 @@ int GetColorIndexByName( const TCHAR *name )
 }
 
 /*
- * ƒCƒ“ƒfƒbƒNƒX”Ô†‚©‚çƒJƒ‰[–¼‚É•ÏŠ·‚·‚é
+ * ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ç•ªå·ã‹ã‚‰ã‚«ãƒ©ãƒ¼åã«å¤‰æ›ã™ã‚‹
  */
 const TCHAR* GetColorNameByIndex( int index )
 {

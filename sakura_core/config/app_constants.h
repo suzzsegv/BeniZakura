@@ -25,12 +25,12 @@
 #define SAKURA_APP_CONSTANTS_AD36E2CE_B62E_497D_806F_6B9738310127_H_
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                           –¼‘O                              //
+//                           åå‰                              //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
-// ƒAƒvƒŠ–¼B2007.09.21 kobake ®—
+// ã‚¢ãƒ—ãƒªåã€‚2007.09.21 kobake æ•´ç†
 #ifdef _UNICODE
-	#define _APP_NAME_(TYPE) TYPE("g÷")
+	#define _APP_NAME_(TYPE) TYPE("ç´…æ¡œ")
 #else
 	#define _APP_NAME_(TYPE) TYPE("Beni Zakura")
 #endif
@@ -41,7 +41,7 @@
 	#define _APP_NAME_2_(TYPE) TYPE("")
 #endif
 
-#define _GSTR_APPNAME_(TYPE)  _APP_NAME_(TYPE) _APP_NAME_2_(TYPE) //—á:UNICODEƒfƒoƒbƒO¨_T("sakura(ƒfƒoƒbƒO”Å)")
+#define _GSTR_APPNAME_(TYPE)  _APP_NAME_(TYPE) _APP_NAME_2_(TYPE) //ä¾‹:UNICODEãƒ‡ãƒãƒƒã‚°â†’_T("sakura(ãƒ‡ãƒãƒƒã‚°ç‰ˆ)")
 
 #define GSTR_APPNAME    (_GSTR_APPNAME_(_T)   )
 #define GSTR_APPNAME_A  (_GSTR_APPNAME_(ATEXT))
@@ -49,18 +49,18 @@
 
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                      ƒeƒLƒXƒgƒGƒŠƒA                         //
+//                      ãƒ†ã‚­ã‚¹ãƒˆã‚¨ãƒªã‚¢                         //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
-// Feb. 18, 2003 genta Å‘å’l‚Ì’è”‰»‚Æ’l•ÏX
+// Feb. 18, 2003 genta æœ€å¤§å€¤ã®å®šæ•°åŒ–ã¨å€¤å¤‰æ›´
 const int LINESPACE_MAX = 128;
 const int COLUMNSPACE_MAX = 64;
 
-//	Aug. 14, 2005 genta ’è”’è‹`’Ç‰Á
-// 2007.09.07 kobake ’è”–¼•ÏX: MAXLINESIZE¨MAXLINEKETAS
-// 2007.09.07 kobake ’è”–¼•ÏX: MINLINESIZE¨MINLINEKETAS
-const int MAXLINEKETAS		= 1024;		//!< 1s‚ÌŒ…”‚ÌÅ‘å’l
-const int MINLINEKETAS		= 10;		//!< 1s‚ÌŒ…”‚ÌÅ¬’l
+//	Aug. 14, 2005 genta å®šæ•°å®šç¾©è¿½åŠ 
+// 2007.09.07 kobake å®šæ•°åå¤‰æ›´: MAXLINESIZEâ†’MAXLINEKETAS
+// 2007.09.07 kobake å®šæ•°åå¤‰æ›´: MINLINESIZEâ†’MINLINEKETAS
+const int MAXLINEKETAS		= 1024;		//!< 1è¡Œã®æ¡æ•°ã®æœ€å¤§å€¤
+const int MINLINEKETAS		= 10;		//!< 1è¡Œã®æ¡æ•°ã®æœ€å°å€¤
 
 #endif /* SAKURA_APP_CONSTANTS_AD36E2CE_B62E_497D_806F_6B9738310127_H_ */
 /*[EOF]*/

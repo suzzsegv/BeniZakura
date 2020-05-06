@@ -1,11 +1,11 @@
 /*!	@file
-	@brief •\¦—p•¶š—ñ“™‚Ìæ“¾
+	@brief è¡¨ç¤ºç”¨æ–‡å­—åˆ—ç­‰ã®å–å¾—
 
-	‹@”\–¼C‹@”\•ª—ŞC‹@”\”Ô†‚È‚Ç‚Ì•ÏŠ·Dİ’è‰æ–Ê‚Å‚Ì•\¦—p•¶š—ñ‚ğ—pˆÓ‚·‚éD
+	æ©Ÿèƒ½åï¼Œæ©Ÿèƒ½åˆ†é¡ï¼Œæ©Ÿèƒ½ç•ªå·ãªã©ã®å¤‰æ›ï¼è¨­å®šç”»é¢ã§ã®è¡¨ç¤ºç”¨æ–‡å­—åˆ—ã‚’ç”¨æ„ã™ã‚‹ï¼
 
 	@author genta
-	@date Oct.  1, 2001 ƒ}ƒNƒ
-	@date Oct. 15, 2001 ƒJƒXƒ^ƒ€ƒƒjƒ…[
+	@date Oct.  1, 2001 ãƒã‚¯ãƒ­
+	@date Oct. 15, 2001 ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼
 */
 /*
 	Copyright (C) 2001, genta
@@ -35,26 +35,26 @@
 #include "StdAfx.h"
 #include "func/CFuncLookup.h"
 
-//	ƒIƒtƒZƒbƒg’l
+//	ã‚ªãƒ•ã‚»ãƒƒãƒˆå€¤
 const int LUOFFSET_MACRO = 0;
 const int LUOFFSET_CUSTMENU = 1;
 const int LUOFFSET_PLUGIN = 2;
 
-//! “®“I‚É“à—e‚ª•Ï‚í‚é•ª—Ş‚Ì–¼‘O
+//! å‹•çš„ã«å†…å®¹ãŒå¤‰ã‚ã‚‹åˆ†é¡ã®åå‰
 const TCHAR *DynCategory[] = {
-	_T("ŠO•”ƒ}ƒNƒ"),
-	_T("ƒJƒXƒ^ƒ€ƒƒjƒ…["),
+	_T("å¤–éƒ¨ãƒã‚¯ãƒ­"),
+	_T("ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼"),
 };
 
-/*!	@brief •ª—Ş’†‚ÌˆÊ’u‚É‘Î‰‚·‚é‹@”\”Ô†‚ğ•Ô‚·D
+/*!	@brief åˆ†é¡ä¸­ã®ä½ç½®ã«å¯¾å¿œã™ã‚‹æ©Ÿèƒ½ç•ªå·ã‚’è¿”ã™ï¼
 
-	@param category [in] •ª—Ş”Ô† (0-)
-	@param position [in] •ª—Ş’†‚Ìindex (0-)
-	@param bGetUnavailable [in] –¢“o˜^ƒ}ƒNƒ‚Å‚à‹@”\”Ô†‚ğ•Ô‚·
+	@param category [in] åˆ†é¡ç•ªå· (0-)
+	@param position [in] åˆ†é¡ä¸­ã®index (0-)
+	@param bGetUnavailable [in] æœªç™»éŒ²ãƒã‚¯ãƒ­ã§ã‚‚æ©Ÿèƒ½ç•ªå·ã‚’è¿”ã™
 
-	@retval ‹@”\”Ô†
+	@retval æ©Ÿèƒ½ç•ªå·
 
-	@date 2007.11.02 ryoji bGetUnavailableƒpƒ‰ƒ[ƒ^’Ç‰Á
+	@date 2007.11.02 ryoji bGetUnavailableãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿è¿½åŠ 
 */
 EFunctionCode CFuncLookup::Pos2FuncCode( int category, int position, bool bGetUnavailable ) const
 {
@@ -66,14 +66,14 @@ EFunctionCode CFuncLookup::Pos2FuncCode( int category, int position, bool bGetUn
 			return nsFuncCode::ppnFuncListArr[category][position];
 	}
 	else if( category == nsFuncCode::nFuncKindNum + LUOFFSET_MACRO ){
-		//	ƒL[Š„‚è“–‚Äƒ}ƒNƒ
+		//	ã‚­ãƒ¼å‰²ã‚Šå½“ã¦ãƒã‚¯ãƒ­
 		if( position < MAX_CUSTMACRO ){
 			if( bGetUnavailable || m_pMacroRec[position].IsEnabled() )
 				return (EFunctionCode)(F_USERMACRO_0 + position);
 		}
 	}
 	else if( category == nsFuncCode::nFuncKindNum + LUOFFSET_CUSTMENU ){
-		//	ƒJƒXƒ^ƒ€ƒƒjƒ…[
+		//	ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼
 		if( position == 0 )
 			return F_MENU_RBUTTON;
 		else if( position < MAX_CUSTOM_MENU )
@@ -82,34 +82,34 @@ EFunctionCode CFuncLookup::Pos2FuncCode( int category, int position, bool bGetUn
 	return F_DISABLE;
 }
 
-/*!	@brief •ª—Ş’†‚ÌˆÊ’u‚É‘Î‰‚·‚é‹@”\–¼Ì‚ğ•Ô‚·D
+/*!	@brief åˆ†é¡ä¸­ã®ä½ç½®ã«å¯¾å¿œã™ã‚‹æ©Ÿèƒ½åç§°ã‚’è¿”ã™ï¼
 
-	@retval true w’è‚³‚ê‚½‹@”\”Ô†‚Í’è‹`‚³‚ê‚Ä‚¢‚é
-	@retval false w’è‚³‚ê‚½‹@”\”Ô†‚Í–¢’è‹`
+	@retval true æŒ‡å®šã•ã‚ŒãŸæ©Ÿèƒ½ç•ªå·ã¯å®šç¾©ã•ã‚Œã¦ã„ã‚‹
+	@retval false æŒ‡å®šã•ã‚ŒãŸæ©Ÿèƒ½ç•ªå·ã¯æœªå®šç¾©
 
-	@date 2007.11.02 ryoji ˆ—‚ğŠÈ‘f‰»
+	@date 2007.11.02 ryoji å‡¦ç†ã‚’ç°¡ç´ åŒ–
 */
 bool CFuncLookup::Pos2FuncName(
-	int		category,	//!< [in]  •ª—Ş”Ô† (0-)
-	int		position,	//!< [in]  •ª—Ş’†‚Ìindex (0-)
-	WCHAR*	ptr,		//!< [out] •¶š—ñ‚ğŠi”[‚·‚éƒoƒbƒtƒ@‚Ìæ“ª
-	int		bufsize		//!< [in]  •¶š—ñ‚ğŠi”[‚·‚éƒoƒbƒtƒ@‚ÌƒTƒCƒY
+	int		category,	//!< [in]  åˆ†é¡ç•ªå· (0-)
+	int		position,	//!< [in]  åˆ†é¡ä¸­ã®index (0-)
+	WCHAR*	ptr,		//!< [out] æ–‡å­—åˆ—ã‚’æ ¼ç´ã™ã‚‹ãƒãƒƒãƒ•ã‚¡ã®å…ˆé ­
+	int		bufsize		//!< [in]  æ–‡å­—åˆ—ã‚’æ ¼ç´ã™ã‚‹ãƒãƒƒãƒ•ã‚¡ã®ã‚µã‚¤ã‚º
 ) const
 {
 	int funccode = Pos2FuncCode( category, position );
 	return Funccode2Name( funccode, ptr, bufsize );
 }
 
-/*!	@brief ‹@”\”Ô†‚É‘Î‰‚·‚é‹@”\–¼Ì‚ğ•Ô‚·D
+/*!	@brief æ©Ÿèƒ½ç•ªå·ã«å¯¾å¿œã™ã‚‹æ©Ÿèƒ½åç§°ã‚’è¿”ã™ï¼
 
-	@param funccode [in] ‹@”\”Ô†
-	@param ptr [out] •¶š—ñ‚ğŠi”[‚·‚éƒoƒbƒtƒ@‚Ìæ“ª
-	@param bufsize [in] •¶š—ñ‚ğŠi”[‚·‚éƒoƒbƒtƒ@‚ÌƒTƒCƒY
+	@param funccode [in] æ©Ÿèƒ½ç•ªå·
+	@param ptr [out] æ–‡å­—åˆ—ã‚’æ ¼ç´ã™ã‚‹ãƒãƒƒãƒ•ã‚¡ã®å…ˆé ­
+	@param bufsize [in] æ–‡å­—åˆ—ã‚’æ ¼ç´ã™ã‚‹ãƒãƒƒãƒ•ã‚¡ã®ã‚µã‚¤ã‚º
 	
-	@retval true w’è‚³‚ê‚½‹@”\”Ô†‚Í’è‹`‚³‚ê‚Ä‚¢‚é
-	@retval false w’è‚³‚ê‚½‹@”\”Ô†‚Í–¢’è‹`
+	@retval true æŒ‡å®šã•ã‚ŒãŸæ©Ÿèƒ½ç•ªå·ã¯å®šç¾©ã•ã‚Œã¦ã„ã‚‹
+	@retval false æŒ‡å®šã•ã‚ŒãŸæ©Ÿèƒ½ç•ªå·ã¯æœªå®šç¾©
 
-	@date 2007.11.02 ryoji –¢“o˜^ƒ}ƒNƒ‚à•¶š—ñ‚ğŠi”[D–ß‚è’l‚ÌˆÓ–¡‚ğ•ÏXi•¶š—ñ‚Í•K‚¸Ši”[jD
+	@date 2007.11.02 ryoji æœªç™»éŒ²ãƒã‚¯ãƒ­ã‚‚æ–‡å­—åˆ—ã‚’æ ¼ç´ï¼æˆ»ã‚Šå€¤ã®æ„å‘³ã‚’å¤‰æ›´ï¼ˆæ–‡å­—åˆ—ã¯å¿…ãšæ ¼ç´ï¼‰ï¼
 */
 bool CFuncLookup::Funccode2Name( int funccode, WCHAR* ptr, int bufsize ) const
 {
@@ -120,7 +120,7 @@ bool CFuncLookup::Funccode2Name( int funccode, WCHAR* ptr, int bufsize ) const
 			_tcstowcs( ptr, p, bufsize - 1 );
 			ptr[ bufsize - 1 ] = LTEXT('\0');
 		}else{
-			_snwprintf( ptr, bufsize, LTEXT("ƒ}ƒNƒ %d (–¢“o˜^)"), position );
+			_snwprintf( ptr, bufsize, LTEXT("ãƒã‚¯ãƒ­ %d (æœªç™»éŒ²)"), position );
 			ptr[ bufsize - 1 ] = LTEXT('\0');
 		}
 		return true;
@@ -137,11 +137,11 @@ bool CFuncLookup::Funccode2Name( int funccode, WCHAR* ptr, int bufsize ) const
 	}
 	else if( F_MENU_FIRST <= funccode && funccode < F_MENU_NOT_USED_FIRST ){
 		if( ::LoadStringW_AnyBuild( G_AppInstance(), funccode, ptr, bufsize ) > 0 ){
-			return true;	// ’è‹`‚³‚ê‚½ƒRƒ}ƒ“ƒh
+			return true;	// å®šç¾©ã•ã‚ŒãŸã‚³ãƒãƒ³ãƒ‰
 		}
 	}
 
-	// –¢’è‹`ƒRƒ}ƒ“ƒh
+	// æœªå®šç¾©ã‚³ãƒãƒ³ãƒ‰
 	if( ::LoadStringW_AnyBuild( G_AppInstance(), F_DISABLE, ptr, bufsize ) > 0 ){
 		return false;
 	}
@@ -149,11 +149,11 @@ bool CFuncLookup::Funccode2Name( int funccode, WCHAR* ptr, int bufsize ) const
 	return false;
 }
 
-/*!	@brief ‹@”\•ª—Ş”Ô†‚É‘Î‰‚·‚é‹@”\–¼Ì‚ğ•Ô‚·D
+/*!	@brief æ©Ÿèƒ½åˆ†é¡ç•ªå·ã«å¯¾å¿œã™ã‚‹æ©Ÿèƒ½åç§°ã‚’è¿”ã™ï¼
 
-	@param category [in] ‹@”\•ª—Ş”Ô†
+	@param category [in] æ©Ÿèƒ½åˆ†é¡ç•ªå·
 	
-	@return NULL •ª—Ş–¼ÌDæ“¾‚É¸”s‚µ‚½‚çNULLD
+	@return NULL åˆ†é¡åç§°ï¼å–å¾—ã«å¤±æ•—ã—ãŸã‚‰NULLï¼
 */
 const TCHAR* CFuncLookup::Category2Name( int category ) const
 {
@@ -172,34 +172,34 @@ const TCHAR* CFuncLookup::Category2Name( int category ) const
 	return NULL;
 }
 
-/*!	@brief ComboBox‚É—˜—p‰Â”\‚È‹@”\•ª—Şˆê——‚ğ“o˜^‚·‚é
+/*!	@brief ComboBoxã«åˆ©ç”¨å¯èƒ½ãªæ©Ÿèƒ½åˆ†é¡ä¸€è¦§ã‚’ç™»éŒ²ã™ã‚‹
 
-	@param hComboBox [in(out)] ƒf[ƒ^‚ğİ’è‚·‚éƒRƒ“ƒ{ƒ{ƒbƒNƒX
+	@param hComboBox [in(out)] ãƒ‡ãƒ¼ã‚¿ã‚’è¨­å®šã™ã‚‹ã‚³ãƒ³ãƒœãƒœãƒƒã‚¯ã‚¹
 */
 void CFuncLookup::SetCategory2Combo( HWND hComboBox ) const
 {
 	int i;
 
-	//	ƒRƒ“ƒ{ƒ{ƒbƒNƒX‚ğ‰Šú‰»‚·‚é
+	//	ã‚³ãƒ³ãƒœãƒœãƒƒã‚¯ã‚¹ã‚’åˆæœŸåŒ–ã™ã‚‹
 	Combo_ResetContent( hComboBox );
 
-	//	ŒÅ’è‹@”\ƒŠƒXƒg
+	//	å›ºå®šæ©Ÿèƒ½ãƒªã‚¹ãƒˆ
 	for( i = 0; i < nsFuncCode::nFuncKindNum; ++i ){
 		Combo_AddString( hComboBox, nsFuncCode::ppszFuncKind[i] );
 	}
 
-	//	ƒ†[ƒUƒ}ƒNƒ
+	//	ãƒ¦ãƒ¼ã‚¶ãƒã‚¯ãƒ­
 	Combo_AddString( hComboBox, DynCategory[0] );
-	//	ƒJƒXƒ^ƒ€ƒƒjƒ…[
+	//	ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼
 	Combo_AddString( hComboBox, DynCategory[1] );
 }
 
-/*!	@brief w’è‚³‚ê‚½•ª—Ş‚É‘®‚·‚é‹@”\ƒŠƒXƒg‚ğListBox‚É“o˜^‚·‚éD
+/*!	@brief æŒ‡å®šã•ã‚ŒãŸåˆ†é¡ã«å±ã™ã‚‹æ©Ÿèƒ½ãƒªã‚¹ãƒˆã‚’ListBoxã«ç™»éŒ²ã™ã‚‹ï¼
 	
-	@param hListBox [in(out)] ’l‚ğİ’è‚·‚éƒŠƒXƒgƒ{ƒbƒNƒX
-	@param category [in] ‹@”\•ª—Ş”Ô†
+	@param hListBox [in(out)] å€¤ã‚’è¨­å®šã™ã‚‹ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹
+	@param category [in] æ©Ÿèƒ½åˆ†é¡ç•ªå·
 
-	@date 2007.11.02 ryoji –¢’è‹`ƒRƒ}ƒ“ƒh‚ÍœŠODˆ—‚àŠÈ‘f‰»D
+	@date 2007.11.02 ryoji æœªå®šç¾©ã‚³ãƒãƒ³ãƒ‰ã¯é™¤å¤–ï¼å‡¦ç†ã‚‚ç°¡ç´ åŒ–ï¼
 */
 void CFuncLookup::SetListItem( HWND hListBox, int category ) const
 {
@@ -207,7 +207,7 @@ void CFuncLookup::SetListItem( HWND hListBox, int category ) const
 	int n;
 	int i;
 
-	//	ƒŠƒXƒg‚ğ‰Šú‰»‚·‚é
+	//	ãƒªã‚¹ãƒˆã‚’åˆæœŸåŒ–ã™ã‚‹
 	List_ResetContent( hListBox );
 
 	n = GetItemCount( category );
@@ -220,9 +220,9 @@ void CFuncLookup::SetListItem( HWND hListBox, int category ) const
 }
 
 /*!
-	w’è•ª—Ş’†‚Ì‹@”\”‚ğæ“¾‚·‚éD
+	æŒ‡å®šåˆ†é¡ä¸­ã®æ©Ÿèƒ½æ•°ã‚’å–å¾—ã™ã‚‹ï¼
 	
-	@param category [in] ‹@”\•ª—Ş”Ô†
+	@param category [in] æ©Ÿèƒ½åˆ†é¡ç•ªå·
 */
 int CFuncLookup::GetItemCount(int category) const
 {
@@ -233,11 +233,11 @@ int CFuncLookup::GetItemCount(int category) const
 		return nsFuncCode::pnFuncListNumArr[category];
 	}
 	else if( category == nsFuncCode::nFuncKindNum + LUOFFSET_MACRO ){
-		//	ƒ}ƒNƒ
+		//	ãƒã‚¯ãƒ­
 		return MAX_CUSTMACRO;
 	}
 	else if( category == nsFuncCode::nFuncKindNum + LUOFFSET_CUSTMENU ){
-		//	ƒJƒXƒ^ƒ€ƒƒjƒ…[
+		//	ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼
 		return MAX_CUSTOM_MENU;
 	}
 	return 0;

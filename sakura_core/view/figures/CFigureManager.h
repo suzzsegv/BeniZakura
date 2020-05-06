@@ -34,7 +34,7 @@ public:
 	virtual ~CFigureManager();
 	CFigure& GetFigure(const wchar_t* pText);
 
-	// �ݒ�ύX
+	// 設定変更
 	void OnChangeSetting(void);
 
 private:

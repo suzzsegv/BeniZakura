@@ -1,8 +1,8 @@
 /*! @file
-	@brief ƒEƒBƒ“ƒhƒE‚ÌˆÊ’u‚Æ‘å‚«‚³ƒ_ƒCƒAƒƒO
+	@brief ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ä½ç½®ã¨å¤§ãã•ãƒ€ã‚¤ã‚¢ãƒ­ã‚°
 
 	@author Moca
-	@date 2004/05/13 ì¬
+	@date 2004/05/13 ä½œæˆ
 */
 /*
 	Copyright (C) 2004, genta, Moca
@@ -46,14 +46,14 @@ CDlgWinSize::~CDlgWinSize()
 }
 
 
-// !ƒ‚[ƒ_ƒ‹ƒ_ƒCƒAƒƒO‚Ì•\¦
+// !ãƒ¢ãƒ¼ãƒ€ãƒ«ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®è¡¨ç¤º
 int CDlgWinSize::DoModal(
 	HINSTANCE		hInstance,
 	HWND			hwndParent,
-	EWinSizeMode&	eSaveWinSize,	//!< [in/out] ƒEƒBƒ“ƒhƒEˆÊ’uŒp³
-	EWinSizeMode&	eSaveWinPos,	//!< [in/out] ƒEƒBƒ“ƒhƒEƒTƒCƒYŒp³
-	int&			nWinSizeType,	//!< [in/out] ƒEƒBƒ“ƒhƒE‚ÌÀs‚Ì‘å‚«‚³
-	RECT&			rc				//!< [in/out] •A‚‚³A¶Aã
+	EWinSizeMode&	eSaveWinSize,	//!< [in/out] ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ä½ç½®ç¶™æ‰¿
+	EWinSizeMode&	eSaveWinPos,	//!< [in/out] ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚µã‚¤ã‚ºç¶™æ‰¿
+	int&			nWinSizeType,	//!< [in/out] ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®å®Ÿè¡Œæ™‚ã®å¤§ãã•
+	RECT&			rc				//!< [in/out] å¹…ã€é«˜ã•ã€å·¦ã€ä¸Š
 )
 {
 	m_eSaveWinSize = eSaveWinSize;
@@ -68,19 +68,19 @@ int CDlgWinSize::DoModal(
 	return TRUE;
 }
 
-/*! ‰Šú‰»ˆ—
+/*! åˆæœŸåŒ–å‡¦ç†
 */
 BOOL CDlgWinSize::OnInitDialog( HWND hwndDlg, WPARAM wParam, LPARAM lParam )
 {
 	_SetHwnd( hwndDlg );
 
-	Combo_AddString( ::GetDlgItem( GetHwnd(), IDC_COMBO_WINTYPE ), L"•’Ê" );
-	Combo_AddString( ::GetDlgItem( GetHwnd(), IDC_COMBO_WINTYPE ), L"Å‘å‰»" );
-	Combo_AddString( ::GetDlgItem( GetHwnd(), IDC_COMBO_WINTYPE ), L"(Å¬‰»)" );
+	Combo_AddString( ::GetDlgItem( GetHwnd(), IDC_COMBO_WINTYPE ), L"æ™®é€š" );
+	Combo_AddString( ::GetDlgItem( GetHwnd(), IDC_COMBO_WINTYPE ), L"æœ€å¤§åŒ–" );
+	Combo_AddString( ::GetDlgItem( GetHwnd(), IDC_COMBO_WINTYPE ), L"(æœ€å°åŒ–)" );
 
 	UpDown_SetRange( ::GetDlgItem( GetHwnd(), IDC_SPIN_SX ), 30000, 0 );
 	UpDown_SetRange( ::GetDlgItem( GetHwnd(), IDC_SPIN_SY ), 30000, 0 );
-	// ƒEƒBƒ“ƒhƒE‚ÌÀ•W‚ÍAƒ}ƒCƒiƒX’l‚à—LŒøB
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®åº§æ¨™ã¯ã€ãƒã‚¤ãƒŠã‚¹å€¤ã‚‚æœ‰åŠ¹ã€‚
 	UpDown_SetRange( ::GetDlgItem( GetHwnd(), IDC_SPIN_WX ), 30000, -30000 );
 	UpDown_SetRange( ::GetDlgItem( GetHwnd(), IDC_SPIN_WY ), 30000, -30000 );
 
@@ -106,7 +106,7 @@ BOOL CDlgWinSize::OnBnClicked( int wID )
 	return CDialog::OnBnClicked( wID );
 }
 
-/*! @brief ƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX‚Éƒf[ƒ^‚ğİ’è
+/*! @brief ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒœãƒƒã‚¯ã‚¹ã«ãƒ‡ãƒ¼ã‚¿ã‚’è¨­å®š
 */
 void CDlgWinSize::SetData( void )
 {
@@ -152,7 +152,7 @@ void CDlgWinSize::SetData( void )
 }
 
 
-/*! ƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX‚Ìƒf[ƒ^‚ğ“Ç‚İo‚·
+/*! ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒœãƒƒã‚¯ã‚¹ã®ãƒ‡ãƒ¼ã‚¿ã‚’èª­ã¿å‡ºã™
 */
 int CDlgWinSize::GetData( void )
 {
@@ -196,7 +196,7 @@ int CDlgWinSize::GetData( void )
 }
 
 
-/*! —˜—p‰Â”\E•s‰Â‚Ìó‘Ô‚ğXV‚·‚é
+/*! åˆ©ç”¨å¯èƒ½ãƒ»ä¸å¯ã®çŠ¶æ…‹ã‚’æ›´æ–°ã™ã‚‹
 */
 void CDlgWinSize::RenewItemState( void )
 {

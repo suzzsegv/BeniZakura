@@ -1,8 +1,8 @@
 /*!	@file
-	@brief ‹¤’Êİ’èƒ_ƒCƒAƒƒOƒ{ƒbƒNƒXAuƒ^ƒuƒo[vƒy[ƒW
+	@brief å…±é€šè¨­å®šãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒœãƒƒã‚¯ã‚¹ã€ã€Œã‚¿ãƒ–ãƒãƒ¼ã€ãƒšãƒ¼ã‚¸
 
 	@author Norio Nakatani
-	@date 2007.02.11 genta ‹¤’Êİ’è‚ÉV‹Kƒ^ƒu‚ğ’Ç‰Á
+	@date 2007.02.11 genta å…±é€šè¨­å®šã«æ–°è¦ã‚¿ãƒ–ã‚’è¿½åŠ 
 */
 /*
 	Copyright (C) 1998-2001, Norio Nakatani
@@ -44,10 +44,10 @@
 
 //	From Here Jun. 2, 2001 genta
 /*!
-	@param hwndDlg[in] ƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX‚ÌWindow Handle
-	@param uMsg[in] ƒƒbƒZ[ƒW
-	@param wParam[in] ƒpƒ‰ƒ[ƒ^1
-	@param lParam[in] ƒpƒ‰ƒ[ƒ^2
+	@param hwndDlg[in] ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒœãƒƒã‚¯ã‚¹ã®Window Handle
+	@param uMsg[in] ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+	@param wParam[in] ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿1
+	@param lParam[in] ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿2
 */
 INT_PTR CALLBACK CPropTab::DlgProc_page(
 	HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam )
@@ -56,7 +56,7 @@ INT_PTR CALLBACK CPropTab::DlgProc_page(
 }
 //	To Here Jun. 2, 2001 genta
 
-/* ƒƒbƒZ[ƒWˆ— */
+/* ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å‡¦ç† */
 INT_PTR CPropTab::DispatchEvent( HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam )
 {
 	NMHDR*		pNMHDR;
@@ -66,12 +66,12 @@ INT_PTR CPropTab::DispatchEvent( HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM 
 	switch( uMsg ){
 
 	case WM_INITDIALOG:
-		/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìİ’è Tab */
+		/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®è¨­å®š Tab */
 		SetData( hwndDlg );
 		// Modified by KEITA for WIN64 2003.9.6
 		::SetWindowLongPtr( hwndDlg, DWLP_USER, lParam );
 
-		/* ƒ†[ƒU[‚ªƒGƒfƒBƒbƒg ƒRƒ“ƒgƒ[ƒ‹‚É“ü—Í‚Å‚«‚éƒeƒLƒXƒg‚Ì’·‚³‚ğ§ŒÀ‚·‚é */
+		/* ãƒ¦ãƒ¼ã‚¶ãƒ¼ãŒã‚¨ãƒ‡ã‚£ãƒƒãƒˆ ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã«å…¥åŠ›ã§ãã‚‹ãƒ†ã‚­ã‚¹ãƒˆã®é•·ã•ã‚’åˆ¶é™ã™ã‚‹ */
 
 		return TRUE;
 	case WM_NOTIFY:
@@ -82,10 +82,10 @@ INT_PTR CPropTab::DispatchEvent( HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM 
 //		default:
 			switch( pNMHDR->code ){
 			case PSN_KILLACTIVE:
-				/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìæ“¾ Tab */
+				/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®å–å¾— Tab */
 				GetData( hwndDlg );
 				return TRUE;
-//@@@ 2002.01.03 YAZAKI ÅŒã‚É•\¦‚µ‚Ä‚¢‚½ƒV[ƒg‚ğ³‚µ‚­Šo‚¦‚Ä‚¢‚È‚¢ƒoƒOC³
+//@@@ 2002.01.03 YAZAKI æœ€å¾Œã«è¡¨ç¤ºã—ã¦ã„ãŸã‚·ãƒ¼ãƒˆã‚’æ­£ã—ãè¦šãˆã¦ã„ãªã„ãƒã‚°ä¿®æ­£
 			case PSN_SETACTIVE:
 				m_nPageNum = ID_PAGENUM_TAB;
 				return TRUE;
@@ -96,8 +96,8 @@ INT_PTR CPropTab::DispatchEvent( HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM 
 
 	case WM_COMMAND:
 		{
-			WORD wNotifyCode = HIWORD(wParam);	/* ’Ê’mƒR[ƒh */
-			WORD wID = LOWORD(wParam);	/* €–ÚID¤ ƒRƒ“ƒgƒ[ƒ‹ID¤ ‚Ü‚½‚ÍƒAƒNƒZƒ‰ƒŒ[ƒ^ID */
+			WORD wNotifyCode = HIWORD(wParam);	/* é€šçŸ¥ã‚³ãƒ¼ãƒ‰ */
+			WORD wID = LOWORD(wParam);	/* é …ç›®IDã€ ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«IDã€ ã¾ãŸã¯ã‚¢ã‚¯ã‚»ãƒ©ãƒ¬ãƒ¼ã‚¿ID */
 			if( wNotifyCode == BN_CLICKED ){
 				switch( wID ){
 				case IDC_CHECK_DispTabWnd:
@@ -111,7 +111,7 @@ INT_PTR CPropTab::DispatchEvent( HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM 
 					if( MySelectFont( &lf, &nPointSize, hwndDlg, false) ){
 						m_Common.m_sTabBar.m_lf = lf;
 						m_Common.m_sTabBar.m_nPointSize = nPointSize;
-						// ƒ^ƒu ƒtƒHƒ“ƒg•\¦	// 2013/4/24 Uchi
+						// ã‚¿ãƒ– ãƒ•ã‚©ãƒ³ãƒˆè¡¨ç¤º	// 2013/4/24 Uchi
 						HFONT hFont = SetFontLabel( hwndDlg, IDC_STATIC_TABFONT, m_Common.m_sTabBar.m_lf, m_Common.m_sTabBar.m_nPointSize);
 						if (m_hTabFont != NULL){
 							::DeleteObject( m_hTabFont );
@@ -125,7 +125,7 @@ INT_PTR CPropTab::DispatchEvent( HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM 
 		break;
 
 	case WM_DESTROY:
-		// ƒ^ƒu ƒtƒHƒ“ƒg”jŠü	// 2013/4/24 Uchi
+		// ã‚¿ãƒ– ãƒ•ã‚©ãƒ³ãƒˆç ´æ£„	// 2013/4/24 Uchi
 		if (m_hTabFont != NULL) {
 			::DeleteObject( m_hTabFont );
 			m_hTabFont = NULL;
@@ -136,10 +136,10 @@ INT_PTR CPropTab::DispatchEvent( HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM 
 }
 
 
-/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìİ’è */
+/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®è¨­å®š */
 void CPropTab::SetData( HWND hwndDlg )
 {
-	//	Feb. 11, 2007 gentauƒEƒBƒ“ƒhƒEvƒV[ƒg‚æ‚èˆÚ“®
+	//	Feb. 11, 2007 gentaã€Œã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã€ã‚·ãƒ¼ãƒˆã‚ˆã‚Šç§»å‹•
 	::CheckDlgButton( hwndDlg, IDC_CHECK_DispTabWnd, m_Common.m_sTabBar.m_bDispTabWnd );	//@@@ 2003.05.31 MIK
 	::CheckDlgButton( hwndDlg, IDC_CHECK_SameTabWidth, m_Common.m_sTabBar.m_bSameTabWidth );	//@@@ 2006.01.28 ryoji
 	::CheckDlgButton( hwndDlg, IDC_CHECK_DispTabIcon, m_Common.m_sTabBar.m_bDispTabIcon );	//@@@ 2006.01.28 ryoji
@@ -149,22 +149,22 @@ void CPropTab::SetData( HWND hwndDlg )
 	EditCtl_LimitText( ::GetDlgItem( hwndDlg, IDC_TABWND_CAPTION ), _countof( m_Common.m_sTabBar.m_szTabWndCaption ) - 1 );
 	::DlgItem_SetText( hwndDlg, IDC_TABWND_CAPTION, m_Common.m_sTabBar.m_szTabWndCaption );
 
-	//	Feb. 11, 2007 genta V‹Kì¬
+	//	Feb. 11, 2007 genta æ–°è¦ä½œæˆ
 	::CheckDlgButton( hwndDlg, IDC_CHECK_RetainEmptyWindow, m_Common.m_sTabBar.m_bTab_RetainEmptyWin );
 	::CheckDlgButton( hwndDlg, IDC_CHECK_CloseOneWin, m_Common.m_sTabBar.m_bTab_CloseOneWin );
 	::CheckDlgButton( hwndDlg, IDC_CHECK_ChgWndByWheel, m_Common.m_sTabBar.m_bChgWndByWheel );	// 2007.04.03 ryoji
 	::CheckDlgButton( hwndDlg, IDC_CHECK_OpenNewWin, m_Common.m_sTabBar.m_bNewWindow ); // 2009.06.17
 
-	// ƒ^ƒu ƒtƒHƒ“ƒg	// 2013/4/24 Uchi
+	// ã‚¿ãƒ– ãƒ•ã‚©ãƒ³ãƒˆ	// 2013/4/24 Uchi
 	m_hTabFont = SetFontLabel( hwndDlg, IDC_STATIC_TABFONT, m_Common.m_sTabBar.m_lf, m_Common.m_sTabBar.m_nPointSize);
 
 	EnableTabPropInput(hwndDlg);
 }
 
-/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìæ“¾ */
+/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®å–å¾— */
 int CPropTab::GetData( HWND hwndDlg )
 {
-	//	Feb. 11, 2007 gentauƒEƒBƒ“ƒhƒEvƒV[ƒg‚æ‚èˆÚ“®
+	//	Feb. 11, 2007 gentaã€Œã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã€ã‚·ãƒ¼ãƒˆã‚ˆã‚Šç§»å‹•
 	m_Common.m_sTabBar.m_bDispTabWnd = ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_DispTabWnd );
 	m_Common.m_sTabBar.m_bSameTabWidth = ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_SameTabWidth );		// 2006.01.28 ryoji
 	m_Common.m_sTabBar.m_bDispTabIcon = ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_DispTabIcon );		// 2006.01.28 ryoji
@@ -174,7 +174,7 @@ int CPropTab::GetData( HWND hwndDlg )
 		( ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_DispTabWndMultiWin ) == BST_CHECKED ) ? FALSE : TRUE;
 	::DlgItem_GetText( hwndDlg, IDC_TABWND_CAPTION, m_Common.m_sTabBar.m_szTabWndCaption, _countof( m_Common.m_sTabBar.m_szTabWndCaption ) );
 
-	//	Feb. 11, 2007 genta V‹Kì¬
+	//	Feb. 11, 2007 genta æ–°è¦ä½œæˆ
 	m_Common.m_sTabBar.m_bTab_RetainEmptyWin = ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_RetainEmptyWindow );
 	m_Common.m_sTabBar.m_bTab_CloseOneWin = ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_CloseOneWin );
 	m_Common.m_sTabBar.m_bChgWndByWheel = ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_ChgWndByWheel );	// 2007.04.03 ryoji
@@ -183,9 +183,9 @@ int CPropTab::GetData( HWND hwndDlg )
 	return TRUE;
 }
 
-/*! uƒ^ƒuƒo[vƒV[ƒgã‚ÌƒAƒCƒeƒ€‚Ì—LŒøE–³Œø‚ğ“KØ‚Éİ’è‚·‚é
+/*! ã€Œã‚¿ãƒ–ãƒãƒ¼ã€ã‚·ãƒ¼ãƒˆä¸Šã®ã‚¢ã‚¤ãƒ†ãƒ ã®æœ‰åŠ¹ãƒ»ç„¡åŠ¹ã‚’é©åˆ‡ã«è¨­å®šã™ã‚‹
 
-	@date 2007.02.12 genta V‹Kì¬
+	@date 2007.02.12 genta æ–°è¦ä½œæˆ
 */
 void CPropTab::EnableTabPropInput(HWND hwndDlg)
 {

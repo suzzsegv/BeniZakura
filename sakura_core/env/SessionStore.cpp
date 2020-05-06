@@ -1,6 +1,6 @@
 /*!
  * \file SessionStore.cpp
- * \brief I—¹‚É•ÒW’†‚Ìƒtƒ@ƒCƒ‹‚ÉŠÖ‚·‚éî•ñ‚ğ‹L˜^‚µAÄ‹N“®Œã‚É•œŒ³‚·‚é.
+ * \brief çµ‚äº†æ™‚ã«ç·¨é›†ä¸­ã®ãƒ•ã‚¡ã‚¤ãƒ«ã«é–¢ã™ã‚‹æƒ…å ±ã‚’è¨˜éŒ²ã—ã€å†èµ·å‹•å¾Œã«å¾©å…ƒã™ã‚‹.
  *
  * \author Suzuki Satoshi
  */
@@ -47,7 +47,7 @@
 SessionStore* SessionStore::pUniqInstance = NULL;
 
 /*!
- * SessionStore ƒNƒ‰ƒX‚Ì—Bˆê‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ğ¶¬‚·‚é.
+ * SessionStore ã‚¯ãƒ©ã‚¹ã®å”¯ä¸€ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ç”Ÿæˆã™ã‚‹.
  */
 void SessionStore::createUniqInstance()
 {
@@ -58,7 +58,7 @@ void SessionStore::createUniqInstance()
 }
 
 /*!
- * SessionStore ƒNƒ‰ƒX‚Ì—Bˆê‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ğ”jŠü‚·‚é.
+ * SessionStore ã‚¯ãƒ©ã‚¹ã®å”¯ä¸€ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ç ´æ£„ã™ã‚‹.
  */
 void SessionStore::destroyUniqInstance()
 {
@@ -68,7 +68,7 @@ void SessionStore::destroyUniqInstance()
 }
 
 /*!
- * •ÒW’†ƒtƒ@ƒCƒ‹‚Ìˆê——‚ğƒZƒbƒVƒ‡ƒ“î•ñƒtƒ@ƒCƒ‹‚É•Û‘¶‚·‚é.
+ * ç·¨é›†ä¸­ãƒ•ã‚¡ã‚¤ãƒ«ã®ä¸€è¦§ã‚’ã‚»ãƒƒã‚·ãƒ§ãƒ³æƒ…å ±ãƒ•ã‚¡ã‚¤ãƒ«ã«ä¿å­˜ã™ã‚‹.
  */
 void SessionStore::save(void)
 {
@@ -102,7 +102,7 @@ void SessionStore::save(void)
 }
 
 /*!
- * ƒZƒbƒVƒ‡ƒ“î•ñƒtƒ@ƒCƒ‹‚ğŒ³‚ÉAƒZƒbƒVƒ‡ƒ“‚Ì•œŒ³i•¡”‚ÌƒGƒfƒBƒ^ƒvƒƒZƒX¶¬j‚ğs‚¤.
+ * ã‚»ãƒƒã‚·ãƒ§ãƒ³æƒ…å ±ãƒ•ã‚¡ã‚¤ãƒ«ã‚’å…ƒã«ã€ã‚»ãƒƒã‚·ãƒ§ãƒ³ã®å¾©å…ƒï¼ˆè¤‡æ•°ã®ã‚¨ãƒ‡ã‚£ã‚¿ãƒ—ãƒ­ã‚»ã‚¹ç”Ÿæˆï¼‰ã‚’è¡Œã†.
  */
 void SessionStore::restore(CEditWnd* pEditWnd, EditInfo* pEditInfo)
 {
@@ -141,7 +141,7 @@ void SessionStore::restore(CEditWnd* pEditWnd, EditInfo* pEditInfo)
 	}
 	fileClose();
 
-	/* ƒtƒ@ƒCƒ‹–¼‚ğw’è‚µ‚Ä‹N“®‚³‚ê‚½ê‡‚É‚ÍAw’èƒtƒ@ƒCƒ‹‚ÌƒEƒBƒ“ƒhƒE‚ğƒAƒNƒeƒBƒu‚É•ÏX‚·‚é */
+	/* ãƒ•ã‚¡ã‚¤ãƒ«åã‚’æŒ‡å®šã—ã¦èµ·å‹•ã•ã‚ŒãŸå ´åˆã«ã¯ã€æŒ‡å®šãƒ•ã‚¡ã‚¤ãƒ«ã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã«å¤‰æ›´ã™ã‚‹ */
 	if(pEditInfo->m_szPath[0] != L'\0'){
 		HWND hwndOwner;
 		if(CShareData::getInstance()->IsPathOpened(pEditInfo->m_szPath, &hwndOwner)){
@@ -157,7 +157,7 @@ void SessionStore::restore(CEditWnd* pEditWnd, EditInfo* pEditInfo)
 
 #define STORE_FILE_NAME L"BeniZakura.PreviouslyOpenedFiles.txt"
 /*!
- * ‘‚«‚İ—p‚ÉƒZƒbƒVƒ‡ƒ“î•ñƒtƒ@ƒCƒ‹‚ğŠJ‚­.
+ * æ›¸ãè¾¼ã¿ç”¨ã«ã‚»ãƒƒã‚·ãƒ§ãƒ³æƒ…å ±ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã.
  */
 void SessionStore::fileOpenForSave(void)
 {
@@ -169,7 +169,7 @@ void SessionStore::fileOpenForSave(void)
 }
 
 /*!
- * ƒZƒbƒVƒ‡ƒ“î•ñƒtƒ@ƒCƒ‹‚É‚PƒŒƒR[ƒh‘‚«‚Ş.
+ * ã‚»ãƒƒã‚·ãƒ§ãƒ³æƒ…å ±ãƒ•ã‚¡ã‚¤ãƒ«ã«ï¼‘ãƒ¬ã‚³ãƒ¼ãƒ‰æ›¸ãè¾¼ã‚€.
  */
 void SessionStore::fileOneRecordWrite(const wchar_t* pRecord)
 {
@@ -177,7 +177,7 @@ void SessionStore::fileOneRecordWrite(const wchar_t* pRecord)
 }
 
 /*!
- * “Ç‚İ‚İ—p‚ÉƒZƒbƒVƒ‡ƒ“î•ñƒtƒ@ƒCƒ‹‚ğŠJ‚­.
+ * èª­ã¿è¾¼ã¿ç”¨ã«ã‚»ãƒƒã‚·ãƒ§ãƒ³æƒ…å ±ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã.
  */
 bool SessionStore::fileOpenForRestore(void)
 {
@@ -194,7 +194,7 @@ bool SessionStore::fileOpenForRestore(void)
 }
 
 /*!
- * ƒZƒbƒVƒ‡ƒ“î•ñƒtƒ@ƒCƒ‹‚©‚ç‚PƒŒƒR[ƒh“Ç‚İ‚Ş.
+ * ã‚»ãƒƒã‚·ãƒ§ãƒ³æƒ…å ±ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ï¼‘ãƒ¬ã‚³ãƒ¼ãƒ‰èª­ã¿è¾¼ã‚€.
  */
 bool SessionStore::fileOneRecordRead(wchar_t* pRecord)
 {
@@ -214,7 +214,7 @@ bool SessionStore::fileOneRecordRead(wchar_t* pRecord)
 }
 
 /*!
- * ƒZƒbƒVƒ‡ƒ“î•ñƒtƒ@ƒCƒ‹‚ğ•Â‚¶‚é.
+ * ã‚»ãƒƒã‚·ãƒ§ãƒ³æƒ…å ±ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‰ã˜ã‚‹.
  */
 void SessionStore::fileClose(void)
 {

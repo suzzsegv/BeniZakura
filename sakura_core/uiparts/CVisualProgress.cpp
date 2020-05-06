@@ -6,7 +6,7 @@
 
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//               ÉRÉìÉXÉgÉâÉNÉ^ÅEÉfÉXÉgÉâÉNÉ^                  //
+//               „Ç≥„É≥„Çπ„Éà„É©„ÇØ„Çø„Éª„Éá„Çπ„Éà„É©„ÇØ„Çø                  //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
 CVisualProgress::CVisualProgress()
@@ -21,7 +21,7 @@ CVisualProgress::~CVisualProgress()
 
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                        ÉçÅ[ÉhëOå„                           //
+//                        „É≠„Éº„ÉâÂâçÂæå                           //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
 void CVisualProgress::OnBeforeLoad(SLoadInfo* sLoadInfo)
@@ -36,7 +36,7 @@ void CVisualProgress::OnAfterLoad(const SLoadInfo& sLoadInfo)
 
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                        ÉZÅ[ÉuëOå„                           //
+//                        „Çª„Éº„ÉñÂâçÂæå                           //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
 void CVisualProgress::OnBeforeSave(const SSaveInfo& sSaveInfo)
@@ -51,7 +51,7 @@ void CVisualProgress::OnFinalSave(ESaveResult eSaveResult)
 
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                      ÉvÉçÉOÉåÉXéÛêM                         //
+//                      „Éó„É≠„Ç∞„É¨„ÇπÂèó‰ø°                         //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
 void CVisualProgress::OnProgress(int nPer)
@@ -61,21 +61,21 @@ void CVisualProgress::OnProgress(int nPer)
 
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                         é¿ëïï‚èï                            //
+//                         ÂÆüË£ÖË£úÂä©                            //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
 void CVisualProgress::_Begin()
 {
-	//çªéûåv
+	//Á†ÇÊôÇË®à
 	if(!m_pcWaitCursor){
 		m_pcWaitCursor = new CWaitCursor( CEditWnd::getInstance()->GetHwnd() );
 	}
 
-	//ÉvÉçÉOÉåÉXÉoÅ[
+	//„Éó„É≠„Ç∞„É¨„Çπ„Éê„Éº
 	HWND hwndProgress = CEditWnd::getInstance()->m_cStatusBar.GetProgressHwnd();
 	if( hwndProgress ){
 		::ShowWindow( hwndProgress, SW_SHOW );
-		//îÕàÕê›íËÅEÉäÉZÉbÉg
+		//ÁØÑÂõ≤Ë®≠ÂÆö„Éª„É™„Çª„ÉÉ„Éà
 		Progress_SetRange( hwndProgress, 0, 100 );
 		Progress_SetPos( hwndProgress, 0);
 	}
@@ -83,7 +83,7 @@ void CVisualProgress::_Begin()
 
 void CVisualProgress::_Doing(int nPer)
 {
-	//ÉvÉçÉOÉåÉXÉoÅ[çXêV
+	//„Éó„É≠„Ç∞„É¨„Çπ„Éê„ÉºÊõ¥Êñ∞
 	HWND hwndProgress = CEditWnd::getInstance()->m_cStatusBar.GetProgressHwnd();
 	if(hwndProgress)
 		Progress_SetPos( hwndProgress, nPer );
@@ -91,14 +91,14 @@ void CVisualProgress::_Doing(int nPer)
 
 void CVisualProgress::_End()
 {
-	//ÉvÉçÉOÉåÉXÉoÅ[
+	//„Éó„É≠„Ç∞„É¨„Çπ„Éê„Éº
 	HWND hwndProgress = CEditWnd::getInstance()->m_cStatusBar.GetProgressHwnd();
 	if( hwndProgress ){
 		Progress_SetPos( hwndProgress, 0);
 		::ShowWindow( hwndProgress, SW_HIDE );
 	}
 
-	//çªéûåv
+	//Á†ÇÊôÇË®à
 	SAFE_DELETE(m_pcWaitCursor);
 }
 

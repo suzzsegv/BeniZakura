@@ -29,13 +29,13 @@
 
 typedef StaticString<TCHAR, _MAX_PATH> CGrepFileString;
 
-//! GREPƒtƒ@ƒCƒ‹‚Ì—š—ğ‚ğŠÇ— (RECENT_FOR_GREP_FILE)
+//! GREPãƒ•ã‚¡ã‚¤ãƒ«ã®å±¥æ­´ã‚’ç®¡ç† (RECENT_FOR_GREP_FILE)
 class CRecentGrepFile : public CRecentImp<CGrepFileString, LPCTSTR>{
 public:
-	//¶¬
+	//ç”Ÿæˆ
 	CRecentGrepFile();
 
-	//ƒI[ƒo[ƒ‰ƒCƒh
+	//ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰
 	int				CompareItem( const CGrepFileString* p1, LPCTSTR p2 ) const;
 	void			CopyItem( CGrepFileString* dst, LPCTSTR src ) const;
 	const TCHAR*	GetItemText( int nIndex ) const;

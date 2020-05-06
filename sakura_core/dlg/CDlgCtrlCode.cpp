@@ -1,5 +1,5 @@
 /*!	@file
-	@brief ƒRƒ“ƒgƒ[ƒ‹ƒR[ƒh“ü—Íƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX
+	@brief ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã‚³ãƒ¼ãƒ‰å…¥åŠ›ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒœãƒƒã‚¯ã‚¹
 
 	@author MIK
 	@date 2002.6.2
@@ -37,56 +37,56 @@
 
 
 struct ctrl_info_t {
-	wchar_t			code;		//“ü—Í‚·‚é•¶ŽšƒR[ƒh
-	unsigned int	vKey;		//•\‹L
-	TCHAR			name[4];	//–¼‘O
-	const TCHAR		*jname;		//à–¾
+	wchar_t			code;		//å…¥åŠ›ã™ã‚‹æ–‡å­—ã‚³ãƒ¼ãƒ‰
+	unsigned int	vKey;		//è¡¨è¨˜
+	TCHAR			name[4];	//åå‰
+	const TCHAR		*jname;		//èª¬æ˜Ž
 } static const p_ctrl_list[] = {
-	{ 0x0000, 0x00c0, _T("NUL"), _T("‹ó•¶Žš")    }, //NULL
-	{ 0x0001, 'A', _T("SOH"), _T("ƒwƒbƒ_ŠJŽn")   }, //START OF HEADING
-	{ 0x0002, 'B', _T("STX"), _T("ƒeƒLƒXƒgŠJŽn") }, //START OF TEXT
-	{ 0x0003, 'C', _T("ETX"), _T("ƒeƒLƒXƒgI—¹") }, //END OF TEXT
-	{ 0x0004, 'D', _T("EOT"), _T("“]‘—I—¹")     }, //END OF TRANSMISSION
-	{ 0x0005, 'E', _T("ENQ"), _T("Æ‰ï")         }, //ENQUIRY
-	{ 0x0006, 'F', _T("ACK"), _T("ŽóMOK")       }, //ACKNOWLEDGE
-	{ 0x0007, 'G', _T("BEL"), _T("Œx(ƒxƒ‹)")   }, //BELL
-	{ 0x0008, 'H', _T("BS"),  _T("Œã‘Þ")         }, //BACKSPACE
-	{ 0x0009, 'I', _T("HT"),  _T("ƒ^ƒu")         }, //horizontal tabulation (HT)
-	{ 0x000a, 'J', _T("LF"),  _T("‰üs")         },	//LINE FEED (LF); new line (NL); end of line(EOL)
-	{ 0x000b, 'K', _T("VT"),  _T("‚’¼ƒ^ƒu")     }, //vertical tabulation (VT)
-	{ 0x000c, 'L', _T("FF"),  _T("‰üƒy[ƒW")     },	//FORM FEED (FF)
-	{ 0x000d, 'M', _T("CR"),  _T("•œ‹A")         }, //CARRIAGE RETURN
-	{ 0x000e, 'N', _T("SO"),  _T("ƒVƒtƒgƒAƒEƒg") }, //SHIFT OUT
-	{ 0x000f, 'O', _T("SI"),  _T("ƒVƒtƒgƒCƒ“")   }, //SHIFT IN
-	{ 0x0010, 'P', _T("DLE"), _T("ƒf[ƒ^ƒŠƒ“ƒNƒGƒXƒP[ƒv") }, //DATA LINK ESCAPE
-	{ 0x0011, 'Q', _T("DC1"), _T("‘•’u§Œä1")    }, //DEVICE CONTROL ONE
-	{ 0x0012, 'R', _T("DC2"), _T("‘•’u§Œä2")    }, //DEVICE CONTROL TWO
-	{ 0x0013, 'S', _T("DC3"), _T("‘•’u§Œä3")    }, //DEVICE CONTROL THREE
-	{ 0x0014, 'T', _T("DC4"), _T("‘•’u§Œä4")    }, //DEVICE CONTROL FOUR
-	{ 0x0015, 'U', _T("NAK"), _T("ŽóMŽ¸”s")     }, //NEGATIVE ACKNOWLEDGE
-	{ 0x0016, 'V', _T("SYN"), _T("“¯Šú")         }, //SYNCHRONOUS IDLE
-	{ 0x0017, 'W', _T("ETB"), _T("“]‘—ƒuƒƒbƒNI—¹") }, //END OF TRANSMISSION BLOCK
-	{ 0x0018, 'X', _T("CAN"), _T("ƒLƒƒƒ“ƒZƒ‹")   }, //CANCEL
-	{ 0x0019, 'Y', _T("EM"),  _T("ƒƒfƒBƒAI—¹") }, //END OF MEDIUM
-	{ 0x001a, 'Z', _T("SUB"), _T("’uŠ·")         }, //SUBSTITUTE
-	{ 0x001b, 0x00db, _T("ESC"), _T("ƒGƒXƒP[ƒv")   }, //ESCAPE
-	{ 0x001c, 0x00dc, _T("FS"),  _T("ƒtƒH[ƒ€‹æØ") }, //file separator (FS)
-	{ 0x001d, 0x00dd, _T("GS"),  _T("ƒOƒ‹[ƒv‹æØ") }, //group separator (GS)
-	{ 0x001e, 0x00de, _T("RS"),  _T("ƒŒƒR[ƒh‹æØ") }, //record separator (RS)
-	{ 0x001f, 0x00e2, _T("US"),  _T("ƒ†ƒjƒbƒg‹æØ") }, //unit separator (US)
-	{ 0x007f, 0x00bf, _T("DEL"), _T("íœ")         }, //DELETE
+	{ 0x0000, 0x00c0, _T("NUL"), _T("ç©ºæ–‡å­—")    }, //NULL
+	{ 0x0001, 'A', _T("SOH"), _T("ãƒ˜ãƒƒãƒ€é–‹å§‹")   }, //START OF HEADING
+	{ 0x0002, 'B', _T("STX"), _T("ãƒ†ã‚­ã‚¹ãƒˆé–‹å§‹") }, //START OF TEXT
+	{ 0x0003, 'C', _T("ETX"), _T("ãƒ†ã‚­ã‚¹ãƒˆçµ‚äº†") }, //END OF TEXT
+	{ 0x0004, 'D', _T("EOT"), _T("è»¢é€çµ‚äº†")     }, //END OF TRANSMISSION
+	{ 0x0005, 'E', _T("ENQ"), _T("ç…§ä¼š")         }, //ENQUIRY
+	{ 0x0006, 'F', _T("ACK"), _T("å—ä¿¡OK")       }, //ACKNOWLEDGE
+	{ 0x0007, 'G', _T("BEL"), _T("è­¦å‘Š(ãƒ™ãƒ«)")   }, //BELL
+	{ 0x0008, 'H', _T("BS"),  _T("å¾Œé€€")         }, //BACKSPACE
+	{ 0x0009, 'I', _T("HT"),  _T("ã‚¿ãƒ–")         }, //horizontal tabulation (HT)
+	{ 0x000a, 'J', _T("LF"),  _T("æ”¹è¡Œ")         },	//LINE FEED (LF); new line (NL); end of line(EOL)
+	{ 0x000b, 'K', _T("VT"),  _T("åž‚ç›´ã‚¿ãƒ–")     }, //vertical tabulation (VT)
+	{ 0x000c, 'L', _T("FF"),  _T("æ”¹ãƒšãƒ¼ã‚¸")     },	//FORM FEED (FF)
+	{ 0x000d, 'M', _T("CR"),  _T("å¾©å¸°")         }, //CARRIAGE RETURN
+	{ 0x000e, 'N', _T("SO"),  _T("ã‚·ãƒ•ãƒˆã‚¢ã‚¦ãƒˆ") }, //SHIFT OUT
+	{ 0x000f, 'O', _T("SI"),  _T("ã‚·ãƒ•ãƒˆã‚¤ãƒ³")   }, //SHIFT IN
+	{ 0x0010, 'P', _T("DLE"), _T("ãƒ‡ãƒ¼ã‚¿ãƒªãƒ³ã‚¯ã‚¨ã‚¹ã‚±ãƒ¼ãƒ—") }, //DATA LINK ESCAPE
+	{ 0x0011, 'Q', _T("DC1"), _T("è£…ç½®åˆ¶å¾¡1")    }, //DEVICE CONTROL ONE
+	{ 0x0012, 'R', _T("DC2"), _T("è£…ç½®åˆ¶å¾¡2")    }, //DEVICE CONTROL TWO
+	{ 0x0013, 'S', _T("DC3"), _T("è£…ç½®åˆ¶å¾¡3")    }, //DEVICE CONTROL THREE
+	{ 0x0014, 'T', _T("DC4"), _T("è£…ç½®åˆ¶å¾¡4")    }, //DEVICE CONTROL FOUR
+	{ 0x0015, 'U', _T("NAK"), _T("å—ä¿¡å¤±æ•—")     }, //NEGATIVE ACKNOWLEDGE
+	{ 0x0016, 'V', _T("SYN"), _T("åŒæœŸ")         }, //SYNCHRONOUS IDLE
+	{ 0x0017, 'W', _T("ETB"), _T("è»¢é€ãƒ–ãƒ­ãƒƒã‚¯çµ‚äº†") }, //END OF TRANSMISSION BLOCK
+	{ 0x0018, 'X', _T("CAN"), _T("ã‚­ãƒ£ãƒ³ã‚»ãƒ«")   }, //CANCEL
+	{ 0x0019, 'Y', _T("EM"),  _T("ãƒ¡ãƒ‡ã‚£ã‚¢çµ‚äº†") }, //END OF MEDIUM
+	{ 0x001a, 'Z', _T("SUB"), _T("ç½®æ›")         }, //SUBSTITUTE
+	{ 0x001b, 0x00db, _T("ESC"), _T("ã‚¨ã‚¹ã‚±ãƒ¼ãƒ—")   }, //ESCAPE
+	{ 0x001c, 0x00dc, _T("FS"),  _T("ãƒ•ã‚©ãƒ¼ãƒ åŒºåˆ‡") }, //file separator (FS)
+	{ 0x001d, 0x00dd, _T("GS"),  _T("ã‚°ãƒ«ãƒ¼ãƒ—åŒºåˆ‡") }, //group separator (GS)
+	{ 0x001e, 0x00de, _T("RS"),  _T("ãƒ¬ã‚³ãƒ¼ãƒ‰åŒºåˆ‡") }, //record separator (RS)
+	{ 0x001f, 0x00e2, _T("US"),  _T("ãƒ¦ãƒ‹ãƒƒãƒˆåŒºåˆ‡") }, //unit separator (US)
+	{ 0x007f, 0x00bf, _T("DEL"), _T("å‰Šé™¤")         }, //DELETE
 
 	//internal data
 	{ 0x001f, 0x00df, _T("US"),  NULL }	//PC98 "_"  //unit separator (US)
 };
-// Feb. 12, 2003 MIK long‚ª”²‚¯‚Ä‚¢‚½
+// Feb. 12, 2003 MIK longãŒæŠœã‘ã¦ã„ãŸ
 
 CDlgCtrlCode::CDlgCtrlCode()
 {
 	m_nCode = L'\0';
 }
 
-/* ƒ‚[ƒ_ƒ‹ƒ_ƒCƒAƒƒO‚Ì•\Ž¦ */
+/* ãƒ¢ãƒ¼ãƒ€ãƒ«ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®è¡¨ç¤º */
 int CDlgCtrlCode::DoModal(
 	HINSTANCE	hInstance,
 	HWND		hwndParent,
@@ -96,7 +96,7 @@ int CDlgCtrlCode::DoModal(
 	return (int)CDialog::DoModal( hInstance, hwndParent, IDD_CTRLCODE, lParam );
 }
 
-/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚ÌÝ’è */
+/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®è¨­å®š */
 void CDlgCtrlCode::SetData( void )
 {
 	HWND	hwndWork;
@@ -104,16 +104,16 @@ void CDlgCtrlCode::SetData( void )
 	long	lngStyle;
 	LV_ITEM	lvi;
 
-	/* ƒŠƒXƒg */
+	/* ãƒªã‚¹ãƒˆ */
 	hwndWork = ::GetDlgItem( GetHwnd(), IDC_LIST_CTRLCODE );
-	ListView_DeleteAllItems( hwndWork );  /* ƒŠƒXƒg‚ð‹ó‚É‚·‚é */
+	ListView_DeleteAllItems( hwndWork );  /* ãƒªã‚¹ãƒˆã‚’ç©ºã«ã™ã‚‹ */
 
-	/* s‘I‘ð */
+	/* è¡Œé¸æŠž */
 	lngStyle = ListView_GetExtendedListViewStyle( hwndWork );
 	lngStyle |= LVS_EX_FULLROWSELECT;
 	ListView_SetExtendedListViewStyle( hwndWork, lngStyle );
 
-	/* ƒf[ƒ^•\Ž¦ */
+	/* ãƒ‡ãƒ¼ã‚¿è¡¨ç¤º */
 	TCHAR	tmp[10];
 	count = 0;
 	for( i = 0; i < _countof(p_ctrl_list); i++ )
@@ -133,7 +133,7 @@ void CDlgCtrlCode::SetData( void )
 		else if( p_ctrl_list[i].code == 0x7f )
 			_tcscpy( tmp, _T("^?") );
 		else
-			_tcscpy( tmp, _T("¥") );
+			_tcscpy( tmp, _T("ãƒ»") );
 		lvi.mask     = LVIF_TEXT;
 		lvi.iItem    = count;
 		lvi.iSubItem = 1;
@@ -159,15 +159,15 @@ void CDlgCtrlCode::SetData( void )
 	return;
 }
 
-/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚ÌŽæ“¾ */
-/* TRUE==³í  FALSE==“ü—ÍƒGƒ‰[ */
+/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®å–å¾— */
+/* TRUE==æ­£å¸¸  FALSE==å…¥åŠ›ã‚¨ãƒ©ãƒ¼ */
 int CDlgCtrlCode::GetData( void )
 {
 	int		nIndex;
 	HWND	hwndList;
 
 	hwndList = GetDlgItem( GetHwnd(), IDC_LIST_CTRLCODE );
-	//‘I‘ð’†‚ÌƒL[”Ô†‚ð’T‚·B
+	//é¸æŠžä¸­ã®ã‚­ãƒ¼ç•ªå·ã‚’æŽ¢ã™ã€‚
 	nIndex = ListView_GetNextItem( hwndList, -1, LVNI_ALL | LVNI_SELECTED );
 	if( nIndex == -1 ) return FALSE;
 
@@ -190,32 +190,32 @@ BOOL CDlgCtrlCode::OnInitDialog( HWND hwndDlg, WPARAM wParam, LPARAM lParam )
 	col.mask     = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM;
 	col.fmt      = LVCFMT_LEFT;
 	col.cx       = (rc.right - rc.left) * 15 / 100;
-	col.pszText  = _T("ƒR[ƒh");
+	col.pszText  = _T("ã‚³ãƒ¼ãƒ‰");
 	col.iSubItem = 0;
 	ListView_InsertColumn( hwndList, 0, &col );
 
 	col.mask     = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM;
 	col.fmt      = LVCFMT_LEFT;
 	col.cx       = (rc.right - rc.left) * 15 / 100;
-	col.pszText  = _T("•\‹L");
+	col.pszText  = _T("è¡¨è¨˜");
 	col.iSubItem = 1;
 	ListView_InsertColumn( hwndList, 1, &col );
 
 	col.mask     = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM;
 	col.fmt      = LVCFMT_LEFT;
 	col.cx       = (rc.right - rc.left) * 15 / 100;
-	col.pszText  = _T("–¼‘O");
+	col.pszText  = _T("åå‰");
 	col.iSubItem = 2;
 	ListView_InsertColumn( hwndList, 2, &col );
 
 	col.mask     = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM;
 	col.fmt      = LVCFMT_LEFT;
 	col.cx       = (rc.right - rc.left) * 46 / 100;
-	col.pszText  = _T("à–¾");
+	col.pszText  = _T("èª¬æ˜Ž");
 	col.iSubItem = 3;
 	ListView_InsertColumn( hwndList, 3, &col );
 
-	/* Šî’êƒNƒ‰ƒXƒƒ“ƒo */
+	/* åŸºåº•ã‚¯ãƒ©ã‚¹ãƒ¡ãƒ³ãƒ */
 	return CDialog::OnInitDialog( GetHwnd(), wParam, lParam );
 }
 
@@ -223,8 +223,8 @@ BOOL CDlgCtrlCode::OnBnClicked( int wID )
 {
 	switch( wID )
 	{
-	case IDOK:			/* ¶‰E‚É•\Ž¦ */
-		/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚ÌŽæ“¾ */
+	case IDOK:			/* å·¦å³ã«è¡¨ç¤º */
+		/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®å–å¾— */
 		::EndDialog( GetHwnd(), GetData() );
 		return TRUE;
 
@@ -234,7 +234,7 @@ BOOL CDlgCtrlCode::OnBnClicked( int wID )
 
 	}
 
-	/* Šî’êƒNƒ‰ƒXƒƒ“ƒo */
+	/* åŸºåº•ã‚¯ãƒ©ã‚¹ãƒ¡ãƒ³ãƒ */
 	return CDialog::OnBnClicked( wID );
 }
 
@@ -282,7 +282,7 @@ BOOL CDlgCtrlCode::OnNotify( WPARAM wParam, LPARAM lParam )
 								ListView_SetItemState( hwndList, j, LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED );
 								ListView_EnsureVisible( hwndList, j, FALSE );
 						
-								/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚ÌŽæ“¾ */
+								/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®å–å¾— */
 								::EndDialog( GetHwnd(), GetData() );
 								return TRUE;
 							}
@@ -295,7 +295,7 @@ BOOL CDlgCtrlCode::OnNotify( WPARAM wParam, LPARAM lParam )
 		}
 	}
 
-	/* Šî’êƒNƒ‰ƒXƒƒ“ƒo */
+	/* åŸºåº•ã‚¯ãƒ©ã‚¹ãƒ¡ãƒ³ãƒ */
 	return CDialog::OnNotify( wParam, lParam );
 }
 

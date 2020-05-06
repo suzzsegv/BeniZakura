@@ -26,7 +26,7 @@
 
 #include "view/figures/CFigureStrategy.h"
 
-//! コントロールコード描画
+//! 繧ｳ繝ｳ繝医Ο繝ｼ繝ｫ繧ｳ繝ｼ繝画緒逕ｻ
 class CFigure_CtrlCode : public CFigureSpace{
 public:
 	//traits
@@ -37,7 +37,7 @@ public:
 	EColorIndexType GetColorIdx(void) const{ return COLORIDX_CTRLCODE; }
 };
 
-//! バイナリ半角描画
+//! 繝舌う繝翫Μ蜊願ｧ呈緒逕ｻ
 class CFigure_HanBinary : public CFigureSpace{
 public:
 	//traits
@@ -48,7 +48,7 @@ public:
 	EColorIndexType GetColorIdx(void) const{ return COLORIDX_CTRLCODE; }
 };
 
-//! バイナリ全角描画
+//! 繝舌う繝翫Μ蜈ｨ隗呈緒逕ｻ
 class CFigure_ZenBinary : public CFigureSpace{
 public:
 	//traits

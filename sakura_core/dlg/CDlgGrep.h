@@ -1,9 +1,9 @@
 /*!	@file
-	@brief GREPƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX
+	@brief GREPãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒœãƒƒã‚¯ã‚¹
 
 	@author Norio Nakatani
-	@date 1998.09/07  V‹Kì¬
-	@date 1999.12/05 Äì¬
+	@date 1998.09/07  æ–°è¦ä½œæˆ
+	@date 1999.12/05 å†ä½œæˆ
 */
 /*
 	Copyright (C) 1998-2001, Norio Nakatani
@@ -21,7 +21,7 @@ class CDlgGrep;
 #include "dlg/CDialog.h"
 #include "util/window.h"
 
-//! GREPƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX
+//! GREPãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒœãƒƒã‚¯ã‚¹
 class CDlgGrep : public CDialog
 {
 public:
@@ -33,34 +33,34 @@ public:
 	||  Attributes & Operations
 	*/
 	BOOL OnCbnDropDown( HWND hwndCtl, int wID );
-	int DoModal( HINSTANCE, HWND, const TCHAR* );	/* ƒ‚[ƒ_ƒ‹ƒ_ƒCƒAƒƒO‚Ì•\¦ */
-//	HWND DoModeless( HINSTANCE, HWND, const char* );	/* ƒ‚[ƒhƒŒƒXƒ_ƒCƒAƒƒO‚Ì•\¦ */
+	int DoModal( HINSTANCE, HWND, const TCHAR* );	/* ãƒ¢ãƒ¼ãƒ€ãƒ«ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®è¡¨ç¤º */
+//	HWND DoModeless( HINSTANCE, HWND, const char* );	/* ãƒ¢ãƒ¼ãƒ‰ãƒ¬ã‚¹ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®è¡¨ç¤º */
 
 
-	BOOL		m_bSubFolder;/*!< ƒTƒuƒtƒHƒ‹ƒ_‚©‚ç‚àŒŸõ‚·‚é */
-	BOOL		m_bFromThisText;/*!< ‚±‚Ì•ÒW’†‚ÌƒeƒLƒXƒg‚©‚çŒŸõ‚·‚é */
+	BOOL		m_bSubFolder;/*!< ã‚µãƒ–ãƒ•ã‚©ãƒ«ãƒ€ã‹ã‚‰ã‚‚æ¤œç´¢ã™ã‚‹ */
+	BOOL		m_bFromThisText;/*!< ã“ã®ç·¨é›†ä¸­ã®ãƒ†ã‚­ã‚¹ãƒˆã‹ã‚‰æ¤œç´¢ã™ã‚‹ */
 
-	SSearchOption	m_sSearchOption;	//!< ŒŸõƒIƒvƒVƒ‡ƒ“
+	SSearchOption	m_sSearchOption;	//!< æ¤œç´¢ã‚ªãƒ—ã‚·ãƒ§ãƒ³
 	/*
-	int			m_bRegularExp;	//!< ³‹K•\Œ»
-	int			m_bLoHiCase;	//!< ‰p‘å•¶š‚Æ¬•¶š‚ğ‹æ•Ê‚·‚é
-	BOOL		m_bWordOnly;	//!< ’PŒê’PˆÊ‚ÅŒŸõ
+	int			m_bRegularExp;	//!< æ­£è¦è¡¨ç¾
+	int			m_bLoHiCase;	//!< è‹±å¤§æ–‡å­—ã¨å°æ–‡å­—ã‚’åŒºåˆ¥ã™ã‚‹
+	BOOL		m_bWordOnly;	//!< å˜èªå˜ä½ã§æ¤œç´¢
 	*/
 
-	BOOL		m_bGrepOutputLine;	/*!< s‚ğo—Í‚·‚é‚©ŠY“–•”•ª‚¾‚¯o—Í‚·‚é‚© */
+	BOOL		m_bGrepOutputLine;	/*!< è¡Œã‚’å‡ºåŠ›ã™ã‚‹ã‹è©²å½“éƒ¨åˆ†ã ã‘å‡ºåŠ›ã™ã‚‹ã‹ */
 
-	ECodeType	m_nGrepCharSet;		/*!< •¶šƒR[ƒhƒZƒbƒg */
+	ECodeType	m_nGrepCharSet;		/*!< æ–‡å­—ã‚³ãƒ¼ãƒ‰ã‚»ãƒƒãƒˆ */
 
-	int			m_nGrepOutputStyle;			/*!< Grep: o—ÍŒ`® */
-	std::wstring	m_strText;				/*!< ŒŸõ•¶š—ñ */
-	SFilePath	m_szFile;					/*!< ŒŸõƒtƒ@ƒCƒ‹ */
-	SFilePath	m_szFolder;					/*!< ŒŸõƒtƒHƒ‹ƒ_ */
+	int			m_nGrepOutputStyle;			/*!< Grep: å‡ºåŠ›å½¢å¼ */
+	std::wstring	m_strText;				/*!< æ¤œç´¢æ–‡å­—åˆ— */
+	SFilePath	m_szFile;					/*!< æ¤œç´¢ãƒ•ã‚¡ã‚¤ãƒ« */
+	SFilePath	m_szFolder;					/*!< æ¤œç´¢ãƒ•ã‚©ãƒ«ãƒ€ */
 	SFilePath	m_szCurrentFilePath;
 protected:
 	CFontAutoDeleter		m_cFontText;
 
 	/*
-	||  À‘•ƒwƒ‹ƒpŠÖ”
+	||  å®Ÿè£…ãƒ˜ãƒ«ãƒ‘é–¢æ•°
 	*/
 	BOOL OnInitDialog( HWND, WPARAM, LPARAM );
 	BOOL OnDestroy();
@@ -68,9 +68,9 @@ protected:
 	void SetCurrentFolderToFolderComboBox( void );
 	bool SetVcsRepositoryRootFolderToFolderComboBox( void );
 
-	void SetData( void );	/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìİ’è */
-	int GetData( void );	/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìæ“¾ */
-	void SetDataFromThisText( bool );	/* Œ»İ•ÒW’†ƒtƒ@ƒCƒ‹‚©‚çŒŸõƒ`ƒFƒbƒN‚Å‚Ìİ’è */
+	void SetData( void );	/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®è¨­å®š */
+	int GetData( void );	/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®å–å¾— */
+	void SetDataFromThisText( bool );	/* ç¾åœ¨ç·¨é›†ä¸­ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰æ¤œç´¢ãƒã‚§ãƒƒã‚¯ã§ã®è¨­å®š */
 };
 
 

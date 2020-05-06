@@ -24,7 +24,7 @@
 #ifndef SAKURA_CCOLORSTRATEGY_BC7B5956_A0AF_4C9C_9C0E_07FE658028AC9_H_
 #define SAKURA_CCOLORSTRATEGY_BC7B5956_A0AF_4C9C_9C0E_07FE658028AC9_H_
 
-// —væs’è‹`
+// è¦å…ˆè¡Œå®šç¾©
 // #include "view/CEditView.h"
 #include "EColorIndexType.h"
 #include "uiparts/CGraphics.h"
@@ -34,21 +34,21 @@ class	CEditView;
 bool _IsPosKeywordHead(const CStringRef& cStr, int nPos);
 
 
-//! ³‹K•\Œ»ƒL[ƒ[ƒh‚ÌEColorIndexType’l‚ğì‚éŠÖ”
+//! æ­£è¦è¡¨ç¾ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ã®EColorIndexTypeå€¤ã‚’ä½œã‚‹é–¢æ•°
 inline EColorIndexType ToColorIndexType_RegularExpression(const int nRegexColorIndex)
 {
 	return (EColorIndexType)(COLORIDX_REGEX_FIRST + nRegexColorIndex);
 }
 
-//! ³‹K•\Œ»ƒL[ƒ[ƒh‚ÌEColorIndexType’l‚ğF”Ô†‚É–ß‚·ŠÖ”
+//! æ­£è¦è¡¨ç¾ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ã®EColorIndexTypeå€¤ã‚’è‰²ç•ªå·ã«æˆ»ã™é–¢æ•°
 inline int ToColorInfoArrIndex_RegularExpression(const EColorIndexType eRegexColorIndex)
 {
 	return eRegexColorIndex - COLORIDX_REGEX_FIRST;
 }
 
-/*! F’è”‚ğF”Ô†‚É•ÏŠ·‚·‚éŠÖ”
+/*! è‰²å®šæ•°ã‚’è‰²ç•ªå·ã«å¤‰æ›ã™ã‚‹é–¢æ•°
 
-	@date 2013.05.08 novice ”ÍˆÍŠO‚Ì‚Æ‚«‚ÍƒeƒLƒXƒg‚ğ‘I‘ğ‚·‚é
+	@date 2013.05.08 novice ç¯„å›²å¤–ã®ã¨ãã¯ãƒ†ã‚­ã‚¹ãƒˆã‚’é¸æŠã™ã‚‹
 */
 inline int ToColorInfoArrIndex(const EColorIndexType eColorIndex)
 {
@@ -61,17 +61,17 @@ inline int ToColorInfoArrIndex(const EColorIndexType eColorIndex)
 	else if( eColorIndex & COLORIDX_REGEX_BIT )
 		return ToColorInfoArrIndex_RegularExpression( eColorIndex );
 
-	assert(0); // ‚±‚±‚É‚Í—ˆ‚È‚¢
+	assert(0); // ã“ã“ã«ã¯æ¥ãªã„
 	return COLORIDX_TEXT;
 }
 
-// ƒJƒ‰[–¼ƒ„ƒCƒ“ƒfƒbƒNƒX”Ô†‚Ì•ÏŠ·	//@@@ 2002.04.30
+// ã‚«ãƒ©ãƒ¼åï¼œï¼ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ç•ªå·ã®å¤‰æ›	//@@@ 2002.04.30
 int GetColorIndexByName( const TCHAR *name );
 const TCHAR* GetColorNameByIndex( int index );
 
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                           Šî’ê                              //
+//                           åŸºåº•                              //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
 struct DispPos;
@@ -81,43 +81,43 @@ class CColorStrategy;
 class CColor_Found;
 class CColor_Select;
 
-//! Fİ’è
+//! è‰²è¨­å®š
 struct CColor3Setting {
-	EColorIndexType eColorIndex;    //!< ‘I‘ğ‚ğŠÜ‚ŞŒ»İ‚ÌF
-	EColorIndexType eColorIndex2;   //!< ‘I‘ğˆÈŠO‚ÌŒ»İ‚ÌF
-	EColorIndexType eColorIndexBg;  //!< ”wŒiF
+	EColorIndexType eColorIndex;    //!< é¸æŠã‚’å«ã‚€ç¾åœ¨ã®è‰²
+	EColorIndexType eColorIndex2;   //!< é¸æŠä»¥å¤–ã®ç¾åœ¨ã®è‰²
+	EColorIndexType eColorIndexBg;  //!< èƒŒæ™¯è‰²
 };
 
 struct SColorStrategyInfo{
 	SColorStrategyInfo() : sDispPosBegin(0,0), pStrategy(NULL), pStrategyFound(NULL), pStrategySelect(NULL), m_colorIdxBackLine(COLORIDX_TEXT) {}
 
-	//QÆ
+	//å‚ç…§
 	CEditView*	pcView;
-	CGraphics	gr;	//(SColorInfo‚Å‚Í–¢g—p)
+	CGraphics	gr;	//(SColorInfoã§ã¯æœªä½¿ç”¨)
 
-	//ƒXƒLƒƒƒ“ˆÊ’u
+	//ã‚¹ã‚­ãƒ£ãƒ³ä½ç½®
 	LPCWSTR			pLineOfLogic;
 	CLogicInt		nPosInLogic;
 	CLayoutInt		nLayoutLineNum;
 
-	//•`‰æˆÊ’u
+	//æç”»ä½ç½®
 	DispPos*		pDispPos;
 	DispPos			sDispPosBegin;
 
-	//F•Ï‚¦
+	//è‰²å¤‰ãˆ
 	CColorStrategy*		pStrategy;
 	CColor_Found*		pStrategyFound;
 	CColor_Select*		pStrategySelect;
 	EColorIndexType		m_colorIdxBackLine;
 	ColorStrategyState	colorStrategyState;
 
-	//! F‚ÌØ‚è‘Ö‚¦
+	//! è‰²ã®åˆ‡ã‚Šæ›¿ãˆ
 	bool DoChangeColor(const CStringRef& cLineStr, CColor3Setting *pcColor, ColorStrategyState& rColorStrategyState);
 	EColorIndexType GetCurrentColor() const;
 	EColorIndexType GetCurrentColor2() const;
 	EColorIndexType GetCurrentColorBg() const{ return m_colorIdxBackLine; }
 
-	//! Œ»İ‚ÌƒXƒLƒƒƒ“ˆÊ’u
+	//! ç¾åœ¨ã®ã‚¹ã‚­ãƒ£ãƒ³ä½ç½®
 	CLogicInt GetPosInLogic() const
 	{
 		return nPosInLogic;
@@ -130,9 +130,9 @@ struct SColorStrategyInfo{
 class CColorStrategy{
 public:
 	virtual ~CColorStrategy(){}
-	//! F’è‹`
+	//! è‰²å®šç¾©
 	virtual EColorIndexType GetStrategyColor() const = 0;
-	//! FØ‚è‘Ö‚¦ŠJn‚ğŒŸo‚µ‚½‚çA‚»‚Ì’¼‘O‚Ü‚Å‚Ì•`‰æ‚ğs‚¢A‚³‚ç‚ÉFİ’è‚ğs‚¤B
+	//! è‰²åˆ‡ã‚Šæ›¿ãˆé–‹å§‹ã‚’æ¤œå‡ºã—ãŸã‚‰ã€ãã®ç›´å‰ã¾ã§ã®æç”»ã‚’è¡Œã„ã€ã•ã‚‰ã«è‰²è¨­å®šã‚’è¡Œã†ã€‚
 	virtual void InitStrategyStatus() = 0;
 
 	virtual bool BeginColor(const CStringRef& cStr, int nPos){ return false; }
@@ -148,17 +148,17 @@ public:
 		return EndColor( cStr, nPos );
 	}
 
-	//ƒCƒxƒ“ƒg
+	//ã‚¤ãƒ™ãƒ³ãƒˆ
 	virtual void OnStartScanLogic(){}
 
-	//! İ’èXV
+	//! è¨­å®šæ›´æ–°
 	virtual void Update(void)
 	{
 		m_pCEditDoc = CEditDoc::GetInstance(0);
 		m_pTypeData = &m_pCEditDoc->m_cDocType.GetDocumentAttribute();
 	}
 
-	//#######ƒ‰ƒbƒv
+	//#######ãƒ©ãƒƒãƒ—
 	EColorIndexType GetStrategyColorSafe() const{ if(this)return GetStrategyColor(); else return COLORIDX_TEXT; }
 
 protected:
@@ -178,27 +178,27 @@ class CColor_DoubleQuote;
 
 class CColorStrategyPool : public TSingleton<CColorStrategyPool>{
 public:
-	//ƒRƒ“ƒXƒgƒ‰ƒNƒ^EƒfƒXƒgƒ‰ƒNƒ^
+	//ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ãƒ»ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	CColorStrategyPool();
 	virtual ~CColorStrategyPool();
 
-	//æ“¾
+	//å–å¾—
 	CColorStrategy*	GetStrategy(int nIndex) const{ return m_vStrategies[nIndex]; }
 	int				GetStrategyCount() const{ return (int)m_vStrategies.size(); }
 	CColorStrategy*	GetStrategyByColor(EColorIndexType eColor) const;
 
-	//“Á’èæ“¾
+	//ç‰¹å®šå–å¾—
 	CColor_Found*   GetFoundStrategy() const{ return m_pcFoundStrategy; }
 	CColor_Select*  GetSelectStrategy() const{ return m_pcSelectStrategy; }
 
-	//ƒCƒxƒ“ƒg
+	//ã‚¤ãƒ™ãƒ³ãƒˆ
 	void NotifyOnStartScanLogic();
 
 	/*
-	|| F•ª‚¯
+	|| è‰²åˆ†ã‘
 	*/
 	//@@@ 2002.09.22 YAZAKI
-	// 2005.11.21 Moca ˆø—p•„‚ÌF•ª‚¯î•ñ‚ğˆø”‚©‚çœ‹
+	// 2005.11.21 Moca å¼•ç”¨ç¬¦ã®è‰²åˆ†ã‘æƒ…å ±ã‚’å¼•æ•°ã‹ã‚‰é™¤å»
 	bool CheckColorMODE(
 			CColorStrategy** ppcColorStrategy,
 			int nPos,
@@ -206,10 +206,10 @@ public:
 			ColorStrategyState& rColorStrategyState
 		);
 
-	//İ’è•ÏX
+	//è¨­å®šå¤‰æ›´
 	void OnChangeSetting(void);
 
-	//ƒrƒ…[‚Ìİ’èEæ“¾
+	//ãƒ“ãƒ¥ãƒ¼ã®è¨­å®šãƒ»å–å¾—
 	CEditView* GetCurrentView(void) const{ return m_pcView; }
 	void SetCurrentView(CEditView* pcView) { m_pcView = pcView; }
 

@@ -30,18 +30,18 @@
 
 class CUnicodeBe : public CCodeBase{
 public:
-	//CCodeBaseƒCƒ“ƒ^[ƒtƒF[ƒX
-	EConvertResult CodeToUnicode(const CMemory& cSrc, CNativeW* pDst){ *pDst->_GetMemory()=cSrc; return UnicodeBEToUnicode(pDst->_GetMemory()); }	//!< “Á’èƒR[ƒh ¨ UNICODE    •ÏŠ·
-	EConvertResult UnicodeToCode(const CNativeW& cSrc, CMemory* pDst){ *pDst=*cSrc._GetMemory(); return UnicodeToUnicodeBE(pDst); }	//!< UNICODE    ¨ “Á’èƒR[ƒh •ÏŠ·
-	void GetBom(CMemory* pcmemBom);	//!< BOMƒf[ƒ^Žæ“¾
-	void GetEol(CMemory* pcmemEol, EEolType eEolType);	//!< ‰üsƒf[ƒ^Žæ“¾
+	//CCodeBaseã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹
+	EConvertResult CodeToUnicode(const CMemory& cSrc, CNativeW* pDst){ *pDst->_GetMemory()=cSrc; return UnicodeBEToUnicode(pDst->_GetMemory()); }	//!< ç‰¹å®šã‚³ãƒ¼ãƒ‰ â†’ UNICODE    å¤‰æ›
+	EConvertResult UnicodeToCode(const CNativeW& cSrc, CMemory* pDst){ *pDst=*cSrc._GetMemory(); return UnicodeToUnicodeBE(pDst); }	//!< UNICODE    â†’ ç‰¹å®šã‚³ãƒ¼ãƒ‰ å¤‰æ›
+	void GetBom(CMemory* pcmemBom);	//!< BOMãƒ‡ãƒ¼ã‚¿å–å¾—
+	void GetEol(CMemory* pcmemEol, EEolType eEolType);	//!< æ”¹è¡Œãƒ‡ãƒ¼ã‚¿å–å¾—
 
 public:
 
 	inline static EConvertResult UnicodeBEToUnicode(CMemory* pMem)
-		{ return CUnicode::_UnicodeToUnicode_in(pMem,true); }	// UnicodeBE ¨ UnicodeƒR[ƒh•ÏŠ· //2007.08.13 kobake ’Ç‰Á
+		{ return CUnicode::_UnicodeToUnicode_in(pMem,true); }	// UnicodeBE â†’ Unicodeã‚³ãƒ¼ãƒ‰å¤‰æ› //2007.08.13 kobake è¿½åŠ 
 	inline static EConvertResult UnicodeToUnicodeBE(CMemory* pMem)
-		{ return CUnicode::_UnicodeToUnicode_out(pMem,true); }	// Unicode   ¨ UnicodeBEƒR[ƒh•ÏŠ·
+		{ return CUnicode::_UnicodeToUnicode_out(pMem,true); }	// Unicode   â†’ UnicodeBEã‚³ãƒ¼ãƒ‰å¤‰æ›
 
 };
 

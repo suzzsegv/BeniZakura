@@ -23,9 +23,9 @@
 */
 
 #include "StdAfx.h"
-#if _MSC_VER>=1400 //VS2005ˆÈ~‚È‚ç
+#if _MSC_VER>=1400 //VS2005ä»¥é™ãªã‚‰
 #ifdef _DEBUG
-#define USE_STRICT_INT //©‚±‚ê‚ðƒRƒƒ“ƒgƒAƒEƒg‚·‚é‚ÆŒµŠi‚Èint‚ª–³Œø‚É‚È‚è‚Ü‚·BƒŠƒŠ[ƒXƒrƒ‹ƒh‚Å‚Íí‚É–³ŒøB
+#define USE_STRICT_INT //â†ã“ã‚Œã‚’ã‚³ãƒ¡ãƒ³ãƒˆã‚¢ã‚¦ãƒˆã™ã‚‹ã¨åŽ³æ ¼ãªintãŒç„¡åŠ¹ã«ãªã‚Šã¾ã™ã€‚ãƒªãƒªãƒ¼ã‚¹ãƒ“ãƒ«ãƒ‰ã§ã¯å¸¸ã«ç„¡åŠ¹ã€‚
 #endif
 #endif
 

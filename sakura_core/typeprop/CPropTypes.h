@@ -1,8 +1,8 @@
 /*!	@file
-	@brief ƒ^ƒCƒv•Êİ’èƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX
+	@brief ã‚¿ã‚¤ãƒ—åˆ¥è¨­å®šãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒœãƒƒã‚¯ã‚¹
 
 	@author Norio Nakatani
-	@date 1998/05/08  V‹Kì¬
+	@date 1998/05/08  æ–°è¦ä½œæˆ
 */
 /*
 	Copyright (C) 1998-2001, Norio Nakatani
@@ -27,10 +27,10 @@ class CPropTypes;
 class CKeyWordSetMgr;
 
 /*-----------------------------------------------------------------------
-’è”
+å®šæ•°
 -----------------------------------------------------------------------*/
 
-//2007.11.29 kobake •Ï”‚ÌˆÓ–¡‚ğ–¾Šm‚É‚·‚é‚½‚ßAnMethos ‚ğ ƒeƒ“ƒvƒŒ[ƒg‰»B
+//2007.11.29 kobake å¤‰æ•°ã®æ„å‘³ã‚’æ˜ç¢ºã«ã™ã‚‹ãŸã‚ã€nMethos ã‚’ ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆåŒ–ã€‚
 template <class TYPE>
 struct TYPE_NAME {
 	TYPE		nMethod;
@@ -38,123 +38,123 @@ struct TYPE_NAME {
 };
 
 /*-----------------------------------------------------------------------
-ƒNƒ‰ƒX‚ÌéŒ¾
+ã‚¯ãƒ©ã‚¹ã®å®£è¨€
 -----------------------------------------------------------------------*/
 /*!
-	@brief ƒ^ƒCƒv•Êİ’èƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX
+	@brief ã‚¿ã‚¤ãƒ—åˆ¥è¨­å®šãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒœãƒƒã‚¯ã‚¹
 
-	@date 2002.2.17 YAZAKI CShareData‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ÍACProcess‚É‚Ğ‚Æ‚Â‚ ‚é‚Ì‚İB
+	@date 2002.2.17 YAZAKI CShareDataã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã¯ã€CProcessã«ã²ã¨ã¤ã‚ã‚‹ã®ã¿ã€‚
 */
 class CPropTypes{
 
 public:
-	//¶¬‚Æ”jŠü
+	//ç”Ÿæˆã¨ç ´æ£„
 	CPropTypes();
 	~CPropTypes();
-	void Create( HINSTANCE, HWND );	//!< ‰Šú‰»
-	int DoPropertySheet( int );		//!< ƒvƒƒpƒeƒBƒV[ƒg‚Ìì¬
+	void Create( HINSTANCE, HWND );	//!< åˆæœŸåŒ–
+	int DoPropertySheet( int );		//!< ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚·ãƒ¼ãƒˆã®ä½œæˆ
 
-	//ƒCƒ“ƒ^[ƒtƒF[ƒX	
-	void SetTypeData( const STypeConfig& t ){ m_Types = t; }	//!< ƒ^ƒCƒv•Êİ’èƒf[ƒ^‚Ìİ’è  Jan. 23, 2005 genta
-	void GetTypeData( STypeConfig& t ) const { t = m_Types; }	//!< ƒ^ƒCƒv•Êİ’èƒf[ƒ^‚Ìæ“¾  Jan. 23, 2005 genta
+	//ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹	
+	void SetTypeData( const STypeConfig& t ){ m_Types = t; }	//!< ã‚¿ã‚¤ãƒ—åˆ¥è¨­å®šãƒ‡ãƒ¼ã‚¿ã®è¨­å®š  Jan. 23, 2005 genta
+	void GetTypeData( STypeConfig& t ) const { t = m_Types; }	//!< ã‚¿ã‚¤ãƒ—åˆ¥è¨­å®šãƒ‡ãƒ¼ã‚¿ã®å–å¾—  Jan. 23, 2005 genta
 
 protected:
-	//ŠeíQÆ
-	HINSTANCE	m_hInstance;	//!< ƒAƒvƒŠƒP[ƒVƒ‡ƒ“ƒCƒ“ƒXƒ^ƒ“ƒX‚Ìƒnƒ“ƒhƒ‹
-	HWND		m_hwndParent;	//!< ƒI[ƒi[ƒEƒBƒ“ƒhƒE‚Ìƒnƒ“ƒhƒ‹
-	HWND		m_hwndThis;		//!< ‚±‚Ìƒ_ƒCƒAƒƒO‚Ìƒnƒ“ƒhƒ‹
+	//å„ç¨®å‚ç…§
+	HINSTANCE	m_hInstance;	//!< ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã®ãƒãƒ³ãƒ‰ãƒ«
+	HWND		m_hwndParent;	//!< ã‚ªãƒ¼ãƒŠãƒ¼ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ãƒãƒ³ãƒ‰ãƒ«
+	HWND		m_hwndThis;		//!< ã“ã®ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®ãƒãƒ³ãƒ‰ãƒ«
 
-	//ƒ_ƒCƒAƒƒOƒf[ƒ^
+	//ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿
 	int			m_nPageNum;
 	DLLSHAREDATA*	m_pShareData;
 	STypeConfig		m_Types;
 
-	// ƒXƒNƒŠ[ƒ“—pƒf[ƒ^	2010/5/10 CPropTypes_P1_Screen.cpp‚©‚çˆÚ“®
-	static std::vector<TYPE_NAME<EOutlineType> > m_OlmArr;			//!<ƒAƒEƒgƒ‰ƒCƒ“‰ğÍƒ‹[ƒ‹”z—ñ
-	static std::vector<TYPE_NAME<ESmartIndentType> > m_SIndentArr;	//!<ƒXƒ}[ƒgƒCƒ“ƒfƒ“ƒgƒ‹[ƒ‹”z—ñ
+	// ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ç”¨ãƒ‡ãƒ¼ã‚¿	2010/5/10 CPropTypes_P1_Screen.cppã‹ã‚‰ç§»å‹•
+	static std::vector<TYPE_NAME<EOutlineType> > m_OlmArr;			//!<ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³è§£æãƒ«ãƒ¼ãƒ«é…åˆ—
+	static std::vector<TYPE_NAME<ESmartIndentType> > m_SIndentArr;	//!<ã‚¹ãƒãƒ¼ãƒˆã‚¤ãƒ³ãƒ‡ãƒ³ãƒˆãƒ«ãƒ¼ãƒ«é…åˆ—
 
-	// ƒJƒ‰[—pƒf[ƒ^
-	DWORD			m_dwCustColors[16];						//!< ƒtƒHƒ“ƒgDialogƒJƒXƒ^ƒ€ƒpƒŒƒbƒg
+	// ã‚«ãƒ©ãƒ¼ç”¨ãƒ‡ãƒ¼ã‚¿
+	DWORD			m_dwCustColors[16];						//!< ãƒ•ã‚©ãƒ³ãƒˆDialogã‚«ã‚¹ã‚¿ãƒ ãƒ‘ãƒ¬ãƒƒãƒˆ
 	int				m_nSet[ MAX_KEYWORDSET_PER_TYPE ];		//!< keyword set index  2005.01.13 MIK
-	int				m_nCurrentColorType;					//!< Œ»İ‘I‘ğ‚³‚ê‚Ä‚¢‚éFƒ^ƒCƒv
-	CKeyWordSetMgr*	m_pCKeyWordSetMgr;						//!< ƒƒ‚ƒŠíŒ¸‚Ì‚½‚ßƒ|ƒCƒ“ƒ^‚É  Mar. 31, 2003 genta
+	int				m_nCurrentColorType;					//!< ç¾åœ¨é¸æŠã•ã‚Œã¦ã„ã‚‹è‰²ã‚¿ã‚¤ãƒ—
+	CKeyWordSetMgr*	m_pCKeyWordSetMgr;						//!< ãƒ¡ãƒ¢ãƒªå‰Šæ¸›ã®ãŸã‚ãƒã‚¤ãƒ³ã‚¿ã«  Mar. 31, 2003 genta
 
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-	//                      ŠeƒvƒƒpƒeƒBƒy[ƒW                     //
+	//                      å„ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ãƒšãƒ¼ã‚¸                     //
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 public:
-	INT_PTR DispatchEvent( HWND, UINT, WPARAM, LPARAM );			//!< ƒƒbƒZ[ƒWˆ—
+	INT_PTR DispatchEvent( HWND, UINT, WPARAM, LPARAM );			//!< ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å‡¦ç†
 protected:
-	void SetData( HWND );											//!< ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìİ’è
-	int  GetData( HWND );											//!< ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìæ“¾
-	bool Import( HWND );											//!< ƒCƒ“ƒ|[ƒg
-	bool Export( HWND );											//!< ƒGƒNƒXƒ|[ƒg
+	void SetData( HWND );											//!< ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®è¨­å®š
+	int  GetData( HWND );											//!< ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®å–å¾—
+	bool Import( HWND );											//!< ã‚¤ãƒ³ãƒãƒ¼ãƒˆ
+	bool Export( HWND );											//!< ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆ
 };
 
 
 /*!
-	@brief ƒ^ƒCƒv•Êİ’èƒvƒƒpƒeƒBƒy[ƒWƒNƒ‰ƒX
+	@brief ã‚¿ã‚¤ãƒ—åˆ¥è¨­å®šãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ãƒšãƒ¼ã‚¸ã‚¯ãƒ©ã‚¹
 
-	ƒvƒƒpƒeƒBƒy[ƒW–ˆ‚É’è‹`
-	•Ï”‚Ì’è‹`‚ÍCPropTypes‚Ås‚¤
+	ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ãƒšãƒ¼ã‚¸æ¯ã«å®šç¾©
+	å¤‰æ•°ã®å®šç¾©ã¯CPropTypesã§è¡Œã†
 */
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                        ƒXƒNƒŠ[ƒ“                           //
+//                        ã‚¹ã‚¯ãƒªãƒ¼ãƒ³                           //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 class CPropTypesScreen : CPropTypes
 {
 public:
-	INT_PTR DispatchEvent( HWND, UINT, WPARAM, LPARAM );			//!< ƒƒbƒZ[ƒWˆ—
+	INT_PTR DispatchEvent( HWND, UINT, WPARAM, LPARAM );			//!< ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å‡¦ç†
 protected:
-	void SetData( HWND );											//!< ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìİ’è
-	int  GetData( HWND );											//!< ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìæ“¾
+	void SetData( HWND );											//!< ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®è¨­å®š
+	int  GetData( HWND );											//!< ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®å–å¾—
 
 public:
-	static void AddOutlineMethod(int nMethod, const WCHAR* szName);	//!<ƒAƒEƒgƒ‰ƒCƒ“‰ğÍƒ‹[ƒ‹‚Ì’Ç‰Á
-	static void AddSIndentMethod(int nMethod, const WCHAR* szName);	//!<ƒXƒ}[ƒgƒCƒ“ƒfƒ“ƒgƒ‹[ƒ‹‚Ì’Ç‰Á
-	static void RemoveOutlineMethod(int nMethod, const WCHAR* szName);	//!<ƒAƒEƒgƒ‰ƒCƒ“‰ğÍƒ‹[ƒ‹‚Ì’Ç‰Á
-	static void RemoveSIndentMethod(int nMethod, const WCHAR* szName);	//!<ƒXƒ}[ƒgƒCƒ“ƒfƒ“ƒgƒ‹[ƒ‹‚Ì’Ç‰Á
-	void CPropTypes_Screen();										//!<ƒXƒNƒŠ[ƒ“ƒ^ƒu‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	static void AddOutlineMethod(int nMethod, const WCHAR* szName);	//!<ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³è§£æãƒ«ãƒ¼ãƒ«ã®è¿½åŠ 
+	static void AddSIndentMethod(int nMethod, const WCHAR* szName);	//!<ã‚¹ãƒãƒ¼ãƒˆã‚¤ãƒ³ãƒ‡ãƒ³ãƒˆãƒ«ãƒ¼ãƒ«ã®è¿½åŠ 
+	static void RemoveOutlineMethod(int nMethod, const WCHAR* szName);	//!<ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³è§£æãƒ«ãƒ¼ãƒ«ã®è¿½åŠ 
+	static void RemoveSIndentMethod(int nMethod, const WCHAR* szName);	//!<ã‚¹ãƒãƒ¼ãƒˆã‚¤ãƒ³ãƒ‡ãƒ³ãƒˆãƒ«ãƒ¼ãƒ«ã®è¿½åŠ 
+	void CPropTypes_Screen();										//!<ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã‚¿ãƒ–ã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 };
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                          ƒEƒBƒ“ƒhƒE                         //
+//                          ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦                         //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 class CPropTypesWindow : CPropTypes
 {
 public:
-	INT_PTR DispatchEvent( HWND, UINT, WPARAM, LPARAM );			//!< ƒƒbƒZ[ƒWˆ—
+	INT_PTR DispatchEvent( HWND, UINT, WPARAM, LPARAM );			//!< ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å‡¦ç†
 protected:
-	void SetData( HWND );											//!< ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìİ’è
-	int  GetData( HWND );											//!< ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìæ“¾
+	void SetData( HWND );											//!< ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®è¨­å®š
+	int  GetData( HWND );											//!< ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®å–å¾—
 
 protected:
 	void SetCombobox(HWND hwndWork, const TCHAR** pszLabels, int nCount, int select);
-	void EnableTypesPropInput( HWND hwndDlg );						//!< ƒ^ƒCƒv•Êİ’è‚ÌON/OFF
+	void EnableTypesPropInput( HWND hwndDlg );						//!< ã‚¿ã‚¤ãƒ—åˆ¥è¨­å®šã®ON/OFF
 public:
 private:
 };
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                          ƒJƒ‰[                             //
+//                          ã‚«ãƒ©ãƒ¼                             //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 class CPropTypesColor : CPropTypes
 {
 public:
-	INT_PTR DispatchEvent( HWND, UINT, WPARAM, LPARAM );			//!< ƒƒbƒZ[ƒWˆ—
+	INT_PTR DispatchEvent( HWND, UINT, WPARAM, LPARAM );			//!< ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å‡¦ç†
 protected:
-	void SetData( HWND );											//!< ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìİ’è
-	int  GetData( HWND );											//!< ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìæ“¾
-	bool Import( HWND );											//!< ƒCƒ“ƒ|[ƒg
-	bool Export( HWND );											//!< ƒGƒNƒXƒ|[ƒg
+	void SetData( HWND );											//!< ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®è¨­å®š
+	int  GetData( HWND );											//!< ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®å–å¾—
+	bool Import( HWND );											//!< ã‚¤ãƒ³ãƒãƒ¼ãƒˆ
+	bool Export( HWND );											//!< ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆ
 
 protected:
-	void DrawColorListItem( DRAWITEMSTRUCT* );				//!< Fí•ÊƒŠƒXƒg ƒI[ƒi[•`‰æ
-	void EnableTypesPropInput( HWND hwndDlg );				//!< ƒ^ƒCƒv•Êİ’è‚ÌƒJƒ‰[İ’è‚ÌON/OFF
-	void RearrangeKeywordSet( HWND );						//!< ƒL[ƒ[ƒhƒZƒbƒgÄ”z’u  Jan. 23, 2005 genta
-	void DrawColorButton( DRAWITEMSTRUCT* , COLORREF );		//!< Fƒ{ƒ^ƒ“‚Ì•`‰æ
+	void DrawColorListItem( DRAWITEMSTRUCT* );				//!< è‰²ç¨®åˆ¥ãƒªã‚¹ãƒˆ ã‚ªãƒ¼ãƒŠãƒ¼æç”»
+	void EnableTypesPropInput( HWND hwndDlg );				//!< ã‚¿ã‚¤ãƒ—åˆ¥è¨­å®šã®ã‚«ãƒ©ãƒ¼è¨­å®šã®ON/OFF
+	void RearrangeKeywordSet( HWND );						//!< ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ã‚»ãƒƒãƒˆå†é…ç½®  Jan. 23, 2005 genta
+	void DrawColorButton( DRAWITEMSTRUCT* , COLORREF );		//!< è‰²ãƒœã‚¿ãƒ³ã®æç”»
 public:
-	static BOOL SelectColor( HWND , COLORREF*, DWORD* );	//!< F‘I‘ğƒ_ƒCƒAƒƒO
+	static BOOL SelectColor( HWND , COLORREF*, DWORD* );	//!< è‰²é¸æŠãƒ€ã‚¤ã‚¢ãƒ­ã‚°
 private:
 	#undef __COLOR_INFO_DUMP_TO_TEXT_AT_EXPORT__
 	#ifdef __COLOR_INFO_DUMP_TO_TEXT_AT_EXPORT__
@@ -163,33 +163,33 @@ private:
 };
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                           x‰‡                              //
+//                           æ”¯æ´                              //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 class CPropTypesSupport : CPropTypes
 {
 public:
-	INT_PTR DispatchEvent( HWND, UINT, WPARAM, LPARAM );			//!< ƒƒbƒZ[ƒWˆ—
+	INT_PTR DispatchEvent( HWND, UINT, WPARAM, LPARAM );			//!< ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å‡¦ç†
 protected:
-	void SetData( HWND );											//!< ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìİ’è
-	int  GetData( HWND );											//!< ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìæ“¾
+	void SetData( HWND );											//!< ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®è¨­å®š
+	int  GetData( HWND );											//!< ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®å–å¾—
 public:
-	static void AddHokanMethod(int nMethod, const WCHAR* szName);	//!<•âŠ®í•Ê‚Ì’Ç‰Á
-	static void RemoveHokanMethod(int nMethod, const WCHAR* szName);	//!<•âŠ®í•Ê‚Ì’Ç‰Á
+	static void AddHokanMethod(int nMethod, const WCHAR* szName);	//!<è£œå®Œç¨®åˆ¥ã®è¿½åŠ 
+	static void RemoveHokanMethod(int nMethod, const WCHAR* szName);	//!<è£œå®Œç¨®åˆ¥ã®è¿½åŠ 
 };
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                    ³‹K•\Œ»ƒL[ƒ[ƒh                       //
+//                    æ­£è¦è¡¨ç¾ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰                       //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 class CPropTypesRegex : CPropTypes
 {
 public:
-	INT_PTR DispatchEvent( HWND, UINT, WPARAM, LPARAM );			//!< ƒƒbƒZ[ƒWˆ—
+	INT_PTR DispatchEvent( HWND, UINT, WPARAM, LPARAM );			//!< ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å‡¦ç†
 protected:
-	void SetData( HWND );											//!< ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìİ’è
-	void SetDataKeywordList( HWND );								//!< ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìİ’èƒŠƒXƒg•”•ª
-	int  GetData( HWND );											//!< ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìæ“¾
-	bool Import( HWND );											//!< ƒCƒ“ƒ|[ƒg
-	bool Export( HWND );											//!< ƒGƒNƒXƒ|[ƒg
+	void SetData( HWND );											//!< ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®è¨­å®š
+	void SetDataKeywordList( HWND );								//!< ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®è¨­å®šãƒªã‚¹ãƒˆéƒ¨åˆ†
+	int  GetData( HWND );											//!< ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®å–å¾—
+	bool Import( HWND );											//!< ã‚¤ãƒ³ãƒãƒ¼ãƒˆ
+	bool Export( HWND );											//!< ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆ
 private:
 	BOOL RegexKakomiCheck(const wchar_t *s);	//@@@ 2001.11.17 add MIK
 
@@ -198,17 +198,17 @@ private:
 };
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                     ƒL[ƒ[ƒhƒwƒ‹ƒv                        //
+//                     ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ãƒ˜ãƒ«ãƒ—                        //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 class CPropTypesKeyHelp : CPropTypes
 {
 public:
-	INT_PTR DispatchEvent( HWND, UINT, WPARAM, LPARAM );			//!< ƒƒbƒZ[ƒWˆ—
+	INT_PTR DispatchEvent( HWND, UINT, WPARAM, LPARAM );			//!< ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å‡¦ç†
 protected:
-	void SetData( HWND );											//!< ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìİ’è
-	int  GetData( HWND );											//!< ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìæ“¾
-	bool Import( HWND );											//!< ƒCƒ“ƒ|[ƒg
-	bool Export( HWND );											//!< ƒGƒNƒXƒ|[ƒg
+	void SetData( HWND );											//!< ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®è¨­å®š
+	int  GetData( HWND );											//!< ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®å–å¾—
+	bool Import( HWND );											//!< ã‚¤ãƒ³ãƒãƒ¼ãƒˆ
+	bool Export( HWND );											//!< ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆ
 };
 
 

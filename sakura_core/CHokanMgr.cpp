@@ -1,5 +1,5 @@
 /*!	@file
-	@brief �L�[���[�h�⊮
+	@brief キーワード補完
 
 	@author Norio Nakatani
 */
@@ -38,23 +38,23 @@ LRESULT APIENTRY HokanList_SubclassProc( HWND hwnd, UINT uMsg, WPARAM wParam, LP
 	switch( uMsg ){
 	case WM_KEYDOWN:
 		nVKey = (int) wParam;	// virtual-key code
-		/* �L�[������U�����悤 */
+		/* キー操作を偽造しよう */
 		if (nVKey == VK_SPACE){	//	Space
 // novice 2004/10/10
-			/* Shift,Ctrl,Alt�L�[��������Ă����� */
+			/* Shift,Ctrl,Altキーが押されていたか */
 			int nIdx = getCtrlKeyState();
 			if (nIdx == _SHIFT){
-				//	Shift + Space�Ł����U��
+				//	Shift + Spaceで↑を偽造
 				wParam = VK_UP;
 			}
 			else if (nIdx == 0) {
-				//	Space�݂̂Ł����U��
+				//	Spaceのみで↓を偽造
 				wParam = VK_DOWN;
 			}
 		}
-		/* �⊮���s�L�[�Ȃ�⊮���� */
+		/* 補完実行キーなら補完する */
 		if( -1 != pCHokanMgr->KeyProc( wParam, lParam ) ){
-			/* �L�[�X�g���[�N��e�ɓ]�� */
+			/* キーストロークを親に転送 */
 			return ::PostMessageAny( ::GetParent( ::GetParent( pCDialog->m_hwndParent ) ), uMsg, wParam, lParam );
 		}
 		break;
@@ -65,7 +65,7 @@ LRESULT APIENTRY HokanList_SubclassProc( HWND hwnd, UINT uMsg, WPARAM wParam, LP
 			return 0;
 		}
 //		MYTRACE( _T("WM_GETDLGCODE  pMsg->message = %xh\n"), pMsg->message );
-		return DLGC_WANTALLKEYS;/* ���ׂẴL�[�X�g���[�N�����ɉ����� */	//	Sept. 17, 2000 jepro �����́u�S�āv���u���ׂāv�ɓ���
+		return DLGC_WANTALLKEYS;/* すべてのキーストロークを私に下さい */	//	Sept. 17, 2000 jepro 説明の「全て」を「すべて」に統一
 	}
 	return CallWindowProc( gm_wpHokanListProc, hwnd, uMsg, wParam, lParam);
 }
@@ -84,13 +84,13 @@ CHokanMgr::~CHokanMgr()
 {
 }
 
-/* ���[�h���X�_�C�A���O�̕\�� */
+/* モードレスダイアログの表示 */
 HWND CHokanMgr::DoModeless( HINSTANCE hInstance , HWND hwndParent, LPARAM lParam )
 {
 	HWND hwndWork;
 	hwndWork = CDialog::DoModeless( hInstance, hwndParent, IDD_HOKAN, lParam, SW_HIDE );
 	OnSize( 0, 0 );
-	/* ���X�g���t�b�N */
+	/* リストをフック */
 	// Modified by KEITA for WIN64 2003.9.6
 	::gm_wpHokanListProc = (WNDPROC) ::SetWindowLongPtr( ::GetDlgItem( GetHwnd(), IDC_LIST_WORDS ), GWLP_WNDPROC, (LONG_PTR)HokanList_SubclassProc  );
 
@@ -98,7 +98,7 @@ HWND CHokanMgr::DoModeless( HINSTANCE hInstance , HWND hwndParent, LPARAM lParam
 	return hwndWork;
 }
 
-/* ���[�h���X���F�ΏۂƂȂ�r���[�̕ύX */
+/* モードレス時：対象となるビューの変更 */
 void CHokanMgr::ChangeView( LPARAM pcEditView )
 {
 	m_lParam = pcEditView;
@@ -110,18 +110,18 @@ void CHokanMgr::Hide( void )
 
 	::ShowWindow( GetHwnd(), SW_HIDE );
 	m_nCurKouhoIdx = -1;
-	/* ���̓t�H�[�J�X���󂯎�����Ƃ��̏��� */
+	/* 入力フォーカスを受け取ったときの処理 */
 	CEditView* pcEditView = (CEditView*)m_lParam;
 	pcEditView->OnSetFocus();
 	return;
 
 }
 
-/*!	������
-	pcmemHokanWord == NULL�̂Ƃ��A�⊮��₪�ЂƂ�������A�⊮�E�B���h�E��\�����Ȃ��ŏI�����܂��B
-	Search()�Ăяo�����Ŋm�菈����i�߂Ă��������B
+/*!	初期化
+	pcmemHokanWord == NULLのとき、補完候補がひとつだったら、補完ウィンドウを表示しないで終了します。
+	Search()呼び出し元で確定処理を進めてください。
 
-	@date 2002.2.17 YAZAKI CShareData�̃C���X�^���X�́ACProcess�ɂЂƂ���̂݁B
+	@date 2002.2.17 YAZAKI CShareDataのインスタンスは、CProcessにひとつあるのみ。
 */
 int CHokanMgr::Search(
 	POINT*			ppoWin,
@@ -129,8 +129,8 @@ int CHokanMgr::Search(
 	int				nColumnWidth,
 	const wchar_t*	pszCurWord,
 	const TCHAR*	pszHokanFile,
-	bool			bHokanLoHiCase,	// ���͕⊮�@�\�F�p�啶���������𓯈ꎋ���� 2001/06/19 asa-o
-	bool			bHokanByFile,	// �ҏW���f�[�^�������T�� 2003.06.23 Moca
+	bool			bHokanLoHiCase,	// 入力補完機能：英大文字小文字を同一視する 2001/06/19 asa-o
+	bool			bHokanByFile,	// 編集中データから候補を探す 2003.06.23 Moca
 	int				nHokanType,
 	bool			bHokanByKeyword,
 	CNativeW*		pcmemHokanWord	// 2001/06/19 asa-o
@@ -138,36 +138,36 @@ int CHokanMgr::Search(
 {
 	CEditView* pcEditView = (CEditView*)m_lParam;
 
-	/* ���L�f�[�^�\���̂̃A�h���X��Ԃ� */
+	/* 共有データ構造体のアドレスを返す */
 	m_pShareData = CShareData::getInstance()->GetShareData();
 
 	/*
-	||  �⊮�L�[���[�h�̌���
+	||  補完キーワードの検索
 	||
-	||  �E���������������ׂĕԂ�(���s�ŋ�؂��ĕԂ�)
-	||  �E�w�肳�ꂽ���̍ő吔�𒴂���Ə����𒆒f����
-	||  �E������������Ԃ�
+	||  ・見つかった候補をすべて返す(改行で区切って返す)
+	||  ・指定された候補の最大数を超えると処理を中断する
+	||  ・見つかった数を返す
 	||
 	*/
 	m_vKouho.clear();
 	CDicMgr::HokanSearch(
 		pszCurWord,
-		bHokanLoHiCase,								// ��������ɕύX	2001/06/19 asa-o
+		bHokanLoHiCase,								// 引数からに変更	2001/06/19 asa-o
 		m_vKouho,
-		0, //Max��␔
+		0, //Max候補数
 		pszHokanFile
 	);
 
-	// 2003.05.16 Moca �ǉ� �ҏW���f�[�^���������T��
+	// 2003.05.16 Moca 追加 編集中データ内から候補を探す
 	if( bHokanByFile ){
 		pcEditView->HokanSearchByFile(
 			pszCurWord,
 			bHokanLoHiCase,
 			m_vKouho,
-			1024 // �ҏW���f�[�^����Ȃ̂Ő��𐧌����Ă���
+			1024 // 編集中データからなので数を制限しておく
 		);
 	}
-	// 2012.10.13 Moca �����L�[���[�h�������T��
+	// 2012.10.13 Moca 強調キーワードから候補を探す
 	if( bHokanByKeyword ){
 		HokanSearchByKeyword(
 			pszCurWord,
@@ -181,7 +181,7 @@ int CHokanMgr::Search(
 		return 0;
 	}
 
-//	2001/06/19 asa-o ��₪�P�̏ꍇ�⊮�E�B���h�E�͕\�����Ȃ�(�����⊮�̏ꍇ�͏���)
+//	2001/06/19 asa-o 候補が１つの場合補完ウィンドウは表示しない(逐次補完の場合は除く)
 	if( 1 == m_vKouho.size() ){
 		if(pcmemHokanWord != NULL){
 			m_nCurKouhoIdx = -1;
@@ -234,7 +234,7 @@ int CHokanMgr::Search(
 	int nCX;
 	int nCY;
 	RECT	rcDesktop;
-	//	May 01, 2004 genta �}���`���j�^�Ή�
+	//	May 01, 2004 genta マルチモニタ対応
 	::GetMonitorWorkRect( GetHwnd(), &rcDesktop );
 
 	nX = m_poWin.x - m_nColumnWidth;
@@ -242,56 +242,56 @@ int CHokanMgr::Search(
 	nCX = m_nWidth;
 	nCY = m_nHeight;
 
-	/* ���ɓ���Ȃ� */
+	/* 下に入るなら */
 	if( nY + nCY < rcDesktop.bottom ){
-		/* �������Ȃ� */
+		/* 何もしない */
 	}else
-	/* ��ɓ���Ȃ� */
+	/* 上に入るなら */
 	if( rcDesktop.top < m_poWin.y - m_nHeight - 4 ){
-		/* ��ɏo�� */
+		/* 上に出す */
 		nY = m_poWin.y - m_nHeight - 4;
 	}else
-	/* ��ɏo�������ɏo����(�L���ق��ɏo��) */
+	/* 上に出すか下に出すか(広いほうに出す) */
 	if(	rcDesktop.bottom - nY > m_poWin.y ){
-		/* ���ɏo�� */
+		/* 下に出す */
 //		m_nHeight = rcDesktop.bottom - nY;
 		nCY = rcDesktop.bottom - nY;
 	}else{
-		/* ��ɏo�� */
+		/* 上に出す */
 		nY = rcDesktop.top;
 		nCY = m_poWin.y - 4 - rcDesktop.top;
 	}
 
-//	2001/06/19 Start by asa-o: �\���ʒu�␳
+//	2001/06/19 Start by asa-o: 表示位置補正
 
-	// �E�ɓ���
+	// 右に入る
 	if(nX + nCX < rcDesktop.right ){
-		// ���̂܂�
+		// そのまま
 	}else
-	// ���ɓ���
+	// 左に入る
 	if(rcDesktop.left < nX - nCX + 8){
-		// ���ɕ\��
+		// 左に表示
 		nX -= nCX - 8;
 	}else{
-		// �T�C�Y�𒲐����ĉE�ɕ\��
-		nCX = t_max((int)(rcDesktop.right - nX) , 100);	// �Œ�T�C�Y��100���炢��
+		// サイズを調整して右に表示
+		nCX = t_max((int)(rcDesktop.right - nX) , 100);	// 最低サイズを100くらいに
 	}
 
 //	2001/06/19 End
 
-//	2001/06/18 Start by asa-o: �␳��̈ʒu�E�T�C�Y��ۑ�
+//	2001/06/18 Start by asa-o: 補正後の位置・サイズを保存
 	m_poWin.x = nX;
 	m_poWin.y = nY;
 	m_nHeight = nCY;
 	m_nWidth = nCX;
 //	2001/06/18 End
 
-	/* �͂ݏo���Ȃ珬�������� */
+	/* はみ出すなら小さくする */
 //	if( rcDesktop.bottom < nY + nCY ){
-//		/* ���ɂ͂ݏo�� */
+//		/* 下にはみ出す */
 //		if( m_poWin.y - 4 - nCY < 0 ){
-//			/* ��ɂ͂ݏo�� */
-//			/* �������������� */
+//			/* 上にはみ出す */
+//			/* →高さだけ調節 */
 //			nCY = rcDesktop.bottom - nY - 4;
 //		}else{
 //
@@ -307,9 +307,9 @@ int CHokanMgr::Search(
 
 
 //	2001/06/18 asa-o:
-	ShowTip();	// �⊮�E�B���h�E�őI�𒆂̒P��ɃL�[���[�h�w���v��\��
+	ShowTip();	// 補完ウィンドウで選択中の単語にキーワードヘルプを表示
 
-//	2003.06.25 Moca ���̃��\�b�h�Ŏg���Ă��Ȃ��̂ŁA�Ƃ肠�����폜���Ă���
+//	2003.06.25 Moca 他のメソッドで使っていないので、とりあえず削除しておく
 	int kouhoNum = m_vKouho.size();
 	m_vKouho.clear();
 	return kouhoNum;
@@ -351,7 +351,7 @@ void CHokanMgr::HokanSearchByKeyword(
 BOOL CHokanMgr::OnInitDialog( HWND hwndDlg, WPARAM wParam, LPARAM lParam )
 {
 	_SetHwnd( hwndDlg );
-	/* ���N���X�����o */
+	/* 基底クラスメンバ */
 //-	CreateSizeBox();
 	return CDialog::OnInitDialog( hwndDlg, wParam, lParam );
 
@@ -359,7 +359,7 @@ BOOL CHokanMgr::OnInitDialog( HWND hwndDlg, WPARAM wParam, LPARAM lParam )
 
 BOOL CHokanMgr::OnDestroy( void )
 {
-	/* ���N���X�����o */
+	/* 基底クラスメンバ */
 	CreateSizeBox();
 	return CDialog::OnDestroy();
 
@@ -369,7 +369,7 @@ BOOL CHokanMgr::OnDestroy( void )
 
 BOOL CHokanMgr::OnSize( WPARAM wParam, LPARAM lParam )
 {
-	/* ���N���X�����o */
+	/* 基底クラスメンバ */
 	CDialog::OnSize( wParam, lParam );
 
 	int	Controls[] = {
@@ -392,7 +392,7 @@ BOOL CHokanMgr::OnSize( WPARAM wParam, LPARAM lParam )
 	nWidth = rcDlg.right - rcDlg.left;  // width of client area
 	nHeight = rcDlg.bottom - rcDlg.top; // height of client area
 
-//	2001/06/18 Start by asa-o: �T�C�Y�ύX��̈ʒu��ۑ�
+//	2001/06/18 Start by asa-o: サイズ変更後の位置を保存
 	m_poWin.x = rcDlg.left - 4;
 	m_poWin.y = rcDlg.top - 3;
 	::ClientToScreen(GetHwnd(),&m_poWin);
@@ -426,7 +426,7 @@ BOOL CHokanMgr::OnSize( WPARAM wParam, LPARAM lParam )
 	}
 
 //	2001/06/18 asa-o:
-	ShowTip();	// �⊮�E�B���h�E�őI�𒆂̒P��ɃL�[���[�h�w���v��\��
+	ShowTip();	// 補完ウィンドウで選択中の単語にキーワードヘルプを表示
 
 	return TRUE;
 
@@ -441,7 +441,7 @@ BOOL CHokanMgr::OnBnClicked( int wID )
 		return TRUE;
 	case IDOK:
 //		CloseDialog( 0 );
-		/* �⊮���s */
+		/* 補完実行 */
 		DoHokan( VK_RETURN );
 		return TRUE;
 	}
@@ -471,13 +471,13 @@ BOOL CHokanMgr::OnKeyDown( WPARAM wParam, LPARAM lParam )
 BOOL CHokanMgr::OnLbnSelChange( HWND hwndCtl, int wID )
 {
 //	2001/06/18 asa-o:
-	ShowTip();	// �⊮�E�B���h�E�őI�𒆂̒P��ɃL�[���[�h�w���v��\��
+	ShowTip();	// 補完ウィンドウで選択中の単語にキーワードヘルプを表示
 	return TRUE;
 }
 
 BOOL CHokanMgr::OnLbnDblclk( int wID )
 {
-	/* �⊮���s */
+	/* 補完実行 */
 	DoHokan( 0 );
 	return TRUE;
 
@@ -492,15 +492,15 @@ BOOL CHokanMgr::OnKillFocus( WPARAM wParam, LPARAM lParam )
 
 
 
-/* �⊮���s */
+/* 補完実行 */
 BOOL CHokanMgr::DoHokan( int nVKey )
 {
 	DEBUG_TRACE( _T("CHokanMgr::DoHokan( nVKey==%xh )\n"), nVKey );
 
-	/* �⊮��⌈��L�[ */
-	if( VK_RETURN	== nVKey && !m_pShareData->m_Common.m_sHelper.m_bHokanKey_RETURN )	return FALSE;/* VK_RETURN �⊮����L�[���L��/���� */
-	if( VK_TAB		== nVKey && !m_pShareData->m_Common.m_sHelper.m_bHokanKey_TAB ) 		return FALSE;/* VK_TAB    �⊮����L�[���L��/���� */
-	if( VK_RIGHT	== nVKey && !m_pShareData->m_Common.m_sHelper.m_bHokanKey_RIGHT )		return FALSE;/* VK_RIGHT  �⊮����L�[���L��/���� */
+	/* 補完候補決定キー */
+	if( VK_RETURN	== nVKey && !m_pShareData->m_Common.m_sHelper.m_bHokanKey_RETURN )	return FALSE;/* VK_RETURN 補完決定キーが有効/無効 */
+	if( VK_TAB		== nVKey && !m_pShareData->m_Common.m_sHelper.m_bHokanKey_TAB ) 		return FALSE;/* VK_TAB    補完決定キーが有効/無効 */
+	if( VK_RIGHT	== nVKey && !m_pShareData->m_Common.m_sHelper.m_bHokanKey_RIGHT )		return FALSE;/* VK_RIGHT  補完決定キーが有効/無効 */
 
 	HWND hwndList;
 	int nItem;
@@ -514,7 +514,7 @@ BOOL CHokanMgr::DoHokan( int nVKey )
 	auto_array_ptr<WCHAR> wszLabel( new WCHAR [nLabelLen + 1] );
 	List_GetText( hwndList, nItem, &wszLabel[0] );
 
- 	/* �e�L�X�g��\��t�� */
+ 	/* テキストを貼り付け */
 	pcEditView = (CEditView*)m_lParam;
 	//	Apr. 28, 2000 genta
 	pcEditView->GetCommander().HandleCommand( F_WordDeleteToStart, false, 0, 0, 0, 0 );
@@ -524,20 +524,20 @@ BOOL CHokanMgr::DoHokan( int nVKey )
 //	pcEditView->GetCommander().HandleCommand( F_INSTEXT_W, true, (LPARAM)(wszLabel + m_cmemCurWord.GetLength()), TRUE, 0, 0 );
 	Hide();
 
-	m_pShareData->m_Common.m_sHelper.m_bUseHokan = FALSE;	//	�⊮������
+	m_pShareData->m_Common.m_sHelper.m_bUseHokan = FALSE;	//	補完したら
 	return TRUE;
 }
 
 /*
-�߂�l�� -2 �̏ꍇ�́A�A�v���P�[�V�����͍��ڂ̑I�����������A
-���X�g �{�b�N�X�ł���ȏ�̓��삪�K�v�łȂ����Ƃ������܂��B
+戻り値が -2 の場合は、アプリケーションは項目の選択を完了し、
+リスト ボックスでそれ以上の動作が必要でないことを示します。
 
-�߂�l�� -1 �̏ꍇ�́A���X�g �{�b�N�X���L�[�X�g���[�N�ɉ�����
-�f�t�H���g�̓�������s���邱�Ƃ������܂��B
+戻り値が -1 の場合は、リスト ボックスがキーストロークに応じて
+デフォルトの動作を実行することを示します。
 
- �߂�l�� 0 �ȏ�̏ꍇ�́A���̒l�̓��X�g �{�b�N�X�̍��ڂ� 0 ��
-��Ƃ����C���f�b�N�X���Ӗ����A���X�g �{�b�N�X�����̍��ڂł�
-�L�[�X�g���[�N�ɉ����ăf�t�H���g�̓�������s���邱�Ƃ������܂��B
+ 戻り値が 0 以上の場合は、その値はリスト ボックスの項目の 0 を
+基準としたインデックスを意味し、リスト ボックスがその項目での
+キーストロークに応じてデフォルトの動作を実行することを示します。
 
 */
 //	int CHokanMgr::OnVKeyToItem( WPARAM wParam, LPARAM lParam )
@@ -546,15 +546,15 @@ BOOL CHokanMgr::DoHokan( int nVKey )
 //	}
 
 /*
-�߂�l�� -2 �̏ꍇ�́A�A�v���P�[�V�����͍��ڂ̑I�����������A
-���X�g �{�b�N�X�ł���ȏ�̓��삪�K�v�łȂ����Ƃ������܂��B
+戻り値が -2 の場合は、アプリケーションは項目の選択を完了し、
+リスト ボックスでそれ以上の動作が必要でないことを示します。
 
-�߂�l�� -1 �̏ꍇ�́A���X�g �{�b�N�X���L�[�X�g���[�N�ɉ�����
-�f�t�H���g�̓�������s���邱�Ƃ������܂��B
+戻り値が -1 の場合は、リスト ボックスがキーストロークに応じて
+デフォルトの動作を実行することを示します。
 
- �߂�l�� 0 �ȏ�̏ꍇ�́A���̒l�̓��X�g �{�b�N�X�̍��ڂ� 0 ��
-��Ƃ����C���f�b�N�X���Ӗ����A���X�g �{�b�N�X�����̍��ڂł�
-�L�[�X�g���[�N�ɉ����ăf�t�H���g�̓�������s���邱�Ƃ������܂��B
+ 戻り値が 0 以上の場合は、その値はリスト ボックスの項目の 0 を
+基準としたインデックスを意味し、リスト ボックスがその項目での
+キーストロークに応じてデフォルトの動作を実行することを示します。
 
 */
 //	int CHokanMgr::OnCharToItem( WPARAM wParam, LPARAM lParam )
@@ -588,7 +588,7 @@ int CHokanMgr::KeyProc( WPARAM wParam, LPARAM lParam )
 	case VK_DOWN:
 	case VK_PRIOR:
 	case VK_NEXT:
-		/* ���X�g�{�b�N�X�̃f�t�H���g�̓���������� */
+		/* リストボックスのデフォルトの動作をさせる */
 		return -1;
 	case VK_RETURN:
 	case VK_TAB:
@@ -596,7 +596,7 @@ int CHokanMgr::KeyProc( WPARAM wParam, LPARAM lParam )
 #if 0
 	case VK_SPACE:
 #endif
-		/* �⊮���s */
+		/* 補完実行 */
 		if( DoHokan( vkey ) ){
 			return -1;
 		}else{
@@ -610,7 +610,7 @@ int CHokanMgr::KeyProc( WPARAM wParam, LPARAM lParam )
 	return -2;
 }
 
-//	2001/06/18 Start by asa-o: �⊮�E�B���h�E�őI�𒆂̒P��ɃL�[���[�h�w���v��\��
+//	2001/06/18 Start by asa-o: 補完ウィンドウで選択中の単語にキーワードヘルプを表示
 void CHokanMgr::ShowTip()
 {
 	INT			nItem,
@@ -628,29 +628,29 @@ void CHokanMgr::ShowTip()
 
 	int nLabelLen = List_GetTextLen( hwndCtrl, nItem );
 	auto_array_ptr<WCHAR> szLabel( new WCHAR [nLabelLen + 1] );
-	List_GetText( hwndCtrl, nItem, &szLabel[0] );	// �I�𒆂̒P����擾
+	List_GetText( hwndCtrl, nItem, &szLabel[0] );	// 選択中の単語を取得
 
 	pcEditView = (CEditView*)m_lParam;
 
-	// ���łɎ���Tip���\������Ă�����
+	// すでに辞書Tipが表示されていたら
 	if( pcEditView->m_dwTipTimer == 0 )
 	{
-		// ����Tip������
+		// 辞書Tipを消す
 		pcEditView -> m_cTipWnd.Hide();
 		pcEditView -> m_dwTipTimer = ::GetTickCount();
 	}
 
-	// �\������ʒu������
+	// 表示する位置を決定
 	nTopItem = List_GetTopIndex( hwndCtrl );
 	nItemHeight = List_GetItemHeight( hwndCtrl, 0 );
 	point.x = m_poWin.x + m_nWidth;
 	point.y = m_poWin.y + 4 + (nItem - nTopItem) * nItemHeight;
-	// 2001/06/19 asa-o �I�𒆂̒P�ꂪ�⊮�E�B���h�E�ɕ\������Ă���Ȃ玫��Tip��\��
+	// 2001/06/19 asa-o 選択中の単語が補完ウィンドウに表示されているなら辞書Tipを表示
 	if( point.y > m_poWin.y && point.y < m_poWin.y + m_nHeight )
 	{
 		::SetRect( &rcHokanWin , m_poWin.x, m_poWin.y, m_poWin.x + m_nWidth, m_poWin.y + m_nHeight );
 		if( !pcEditView -> ShowKeywordHelp( point, &szLabel[0], &rcHokanWin ) )
-			pcEditView -> m_dwTipTimer = ::GetTickCount();	// �\������ׂ��L�[���[�h�w���v������
+			pcEditView -> m_dwTipTimer = ::GetTickCount();	// 表示するべきキーワードヘルプが無い
 	}
 }
 //	2001/06/18 End

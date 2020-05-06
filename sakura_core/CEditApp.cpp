@@ -41,35 +41,35 @@
 CEditApp::CEditApp(HINSTANCE hInst, int nGroupId)
 : m_hInst(hInst)
 {
-	//•ÒWƒ‚[ƒh
+	//ç·¨é›†ãƒ¢ãƒ¼ãƒ‰
 	CAppMode::getInstance();
 
-	//ƒwƒ‹ƒpì¬
+	//ãƒ˜ãƒ«ãƒ‘ä½œæˆ
 	m_cIcons.Create( m_hInst );	//	CreateImage List
 
-	//ƒhƒLƒ…ƒƒ“ƒg‚Ìì¬
+	//ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆã®ä½œæˆ
 	m_pcEditDoc = new CEditDoc(this);
 	m_pcEditDoc->Create( &m_cIcons );
 
-	//IOŠÇ—
+	//IOç®¡ç†
 	m_pcLoadAgent = new CLoadAgent();
 	m_pcSaveAgent = new CSaveAgent();
 	m_pcVisualProgress = new CVisualProgress();
 
-	//GREPƒ‚[ƒhŠÇ—
+	//GREPãƒ¢ãƒ¼ãƒ‰ç®¡ç†
 	m_pcGrepAgent = new CGrepAgent();
 
-	//ƒ}ƒNƒ
+	//ãƒžã‚¯ãƒ­
 	m_pcSMacroMgr = new CSMacroMgr();
 
-	//ƒEƒBƒ“ƒhƒE‚Ìì¬
+	//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ä½œæˆ
 	m_pcEditWnd = new CEditWnd();
 	m_pcEditWnd->Create( nGroupId );
 
-	//MRUŠÇ—
+	//MRUç®¡ç†
 	m_pcMruListener = new CMruListener();
 
-	//ƒvƒƒpƒeƒBŠÇ—
+	//ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ç®¡ç†
 	m_pcPropertyManager = new CPropertyManager(
 		m_pcEditWnd->GetHwnd(),
 		&GetIcons(),

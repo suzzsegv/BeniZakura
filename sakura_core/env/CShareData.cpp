@@ -1,8 +1,8 @@
 /*!	@file
-	@brief ƒvƒƒZƒXŠÔ‹¤—Lƒf[ƒ^‚Ö‚ÌƒAƒNƒZƒX
+	@brief ãƒ—ãƒ­ã‚»ã‚¹é–“å…±æœ‰ãƒ‡ãƒ¼ã‚¿ã¸ã®ã‚¢ã‚¯ã‚»ã‚¹
 
 	@author Norio Nakatani
-	@date 1998/05/26  V‹Kì¬
+	@date 1998/05/26  æ–°è¦ä½œæˆ
 */
 /*
 	Copyright (C) 1998-2001, Norio Nakatani
@@ -11,7 +11,7 @@
 	Copyright (C) 2002, genta, ai, Moca, MIK, YAZAKI, hor, KK, aroka
 	Copyright (C) 2003, Moca, aroka, MIK, genta, wmlhq, sui
 	Copyright (C) 2004, Moca, novice, genta, isearch, MIK
-	Copyright (C) 2005, Moca, MIK, genta, ryoji, ‚è‚ñ‚², aroka
+	Copyright (C) 2005, Moca, MIK, genta, ryoji, ã‚Šã‚“ã”, aroka
 	Copyright (C) 2006, aroka, ryoji, genta
 	Copyright (C) 2007, ryoji, genta, maru
 	Copyright (C) 2008, ryoji, Uchi, nasukoji
@@ -49,12 +49,12 @@ struct ARRHEAD {
 const unsigned int uShareDataVersion = N_SHAREDATA_VERSION;
 
 /*
-||	Singleton•—
+||	Singletoné¢¨
 */
 CShareData* CShareData::_instance = NULL;
 
-//	CShareData_new2.cpp‚Æ“‡
-//@@@ 2002.01.03 YAZAKI m_tbMyButton‚È‚Ç‚ğCShareData‚©‚çCMenuDrawer‚ÖˆÚ“®
+//	CShareData_new2.cppã¨çµ±åˆ
+//@@@ 2002.01.03 YAZAKI m_tbMyButtonãªã©ã‚’CShareDataã‹ã‚‰CMenuDrawerã¸ç§»å‹•
 CShareData::CShareData()
 {
 	m_hFileMap   = NULL;
@@ -62,13 +62,13 @@ CShareData::CShareData()
 }
 
 /*!
-	‹¤—Lƒƒ‚ƒŠ—Ìˆæ‚ª‚ ‚éê‡‚ÍƒvƒƒZƒX‚ÌƒAƒhƒŒƒX‹óŠÔ‚©‚ç¤
-	‚·‚Å‚Éƒ}ƒbƒv‚³‚ê‚Ä‚¢‚éƒtƒ@ƒCƒ‹ ƒrƒ…[‚ğƒAƒ“ƒ}ƒbƒv‚·‚éB
+	å…±æœ‰ãƒ¡ãƒ¢ãƒªé ˜åŸŸãŒã‚ã‚‹å ´åˆã¯ãƒ—ãƒ­ã‚»ã‚¹ã®ã‚¢ãƒ‰ãƒ¬ã‚¹ç©ºé–“ã‹ã‚‰ã€
+	ã™ã§ã«ãƒãƒƒãƒ—ã•ã‚Œã¦ã„ã‚‹ãƒ•ã‚¡ã‚¤ãƒ« ãƒ“ãƒ¥ãƒ¼ã‚’ã‚¢ãƒ³ãƒãƒƒãƒ—ã™ã‚‹ã€‚
 */
 CShareData::~CShareData()
 {
 	if( m_pShareData ){
-		/* ƒvƒƒZƒX‚ÌƒAƒhƒŒƒX‹óŠÔ‚©‚ç¤ ‚·‚Å‚Éƒ}ƒbƒv‚³‚ê‚Ä‚¢‚éƒtƒ@ƒCƒ‹ ƒrƒ…[‚ğƒAƒ“ƒ}ƒbƒv‚µ‚Ü‚· */
+		/* ãƒ—ãƒ­ã‚»ã‚¹ã®ã‚¢ãƒ‰ãƒ¬ã‚¹ç©ºé–“ã‹ã‚‰ã€ ã™ã§ã«ãƒãƒƒãƒ—ã•ã‚Œã¦ã„ã‚‹ãƒ•ã‚¡ã‚¤ãƒ« ãƒ“ãƒ¥ãƒ¼ã‚’ã‚¢ãƒ³ãƒãƒƒãƒ—ã—ã¾ã™ */
 		::UnmapViewOfFile( m_pShareData );
 		m_pShareData = NULL;
 	}
@@ -78,27 +78,27 @@ CShareData::~CShareData()
 }
 
 
-//! CShareDataƒNƒ‰ƒX‚Ì‰Šú‰»ˆ—
+//! CShareDataã‚¯ãƒ©ã‚¹ã®åˆæœŸåŒ–å‡¦ç†
 /*!
-	CShareDataƒNƒ‰ƒX‚ğ—˜—p‚·‚é‘O‚É•K‚¸ŒÄ‚Ño‚·‚±‚ÆB
+	CShareDataã‚¯ãƒ©ã‚¹ã‚’åˆ©ç”¨ã™ã‚‹å‰ã«å¿…ãšå‘¼ã³å‡ºã™ã“ã¨ã€‚
 
-	@retval true ‰Šú‰»¬Œ÷
-	@retval false ‰Šú‰»¸”s
+	@retval true åˆæœŸåŒ–æˆåŠŸ
+	@retval false åˆæœŸåŒ–å¤±æ•—
 
-	@note Šù‚É‘¶İ‚·‚é‹¤—Lƒƒ‚ƒŠ‚Ìƒo[ƒWƒ‡ƒ“‚ª‚±‚ÌƒGƒfƒBƒ^‚ªg‚¤‚à‚Ì‚Æ
-	ˆÙ‚È‚éê‡‚Í’v–½“IƒGƒ‰[‚ğ–h‚®‚½‚ß‚Éfalse‚ğ•Ô‚µ‚Ü‚·BCProcess::Initialize()
-	‚ÅInit()‚É¸”s‚·‚é‚ÆƒƒbƒZ[ƒW‚ğo‚µ‚ÄƒGƒfƒBƒ^‚Ì‹N“®‚ğ’†~‚µ‚Ü‚·B
+	@note æ—¢ã«å­˜åœ¨ã™ã‚‹å…±æœ‰ãƒ¡ãƒ¢ãƒªã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³ãŒã“ã®ã‚¨ãƒ‡ã‚£ã‚¿ãŒä½¿ã†ã‚‚ã®ã¨
+	ç•°ãªã‚‹å ´åˆã¯è‡´å‘½çš„ã‚¨ãƒ©ãƒ¼ã‚’é˜²ããŸã‚ã«falseã‚’è¿”ã—ã¾ã™ã€‚CProcess::Initialize()
+	ã§Init()ã«å¤±æ•—ã™ã‚‹ã¨ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’å‡ºã—ã¦ã‚¨ãƒ‡ã‚£ã‚¿ã®èµ·å‹•ã‚’ä¸­æ­¢ã—ã¾ã™ã€‚
 */
 bool CShareData::InitShareData()
 {
 	MY_RUNNINGTIMER(cRunningTimer,"CShareData::InitShareData" );
 
-	if (CShareData::_instance == NULL)	//	Singleton•—
+	if (CShareData::_instance == NULL)	//	Singletoné¢¨
 		CShareData::_instance = this;
 
 	m_hwndTraceOutSource = NULL;	// 2006.06.26 ryoji
 
-	/* ƒtƒ@ƒCƒ‹ƒ}ƒbƒsƒ“ƒOƒIƒuƒWƒFƒNƒg */
+	/* ãƒ•ã‚¡ã‚¤ãƒ«ãƒãƒƒãƒ”ãƒ³ã‚°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ */
 	m_hFileMap = ::CreateFileMapping(
 		INVALID_HANDLE_VALUE,	//	Sep. 6, 2003 wmlhq
 		NULL,
@@ -110,15 +110,15 @@ bool CShareData::InitShareData()
 	if( NULL == m_hFileMap ){
 		::MessageBox(
 			NULL,
-			_T("CreateFileMapping()‚É¸”s‚µ‚Ü‚µ‚½"),
-			_T("—\Šú‚¹‚ÊƒGƒ‰["),
+			_T("CreateFileMapping()ã«å¤±æ•—ã—ã¾ã—ãŸ"),
+			_T("äºˆæœŸã›ã¬ã‚¨ãƒ©ãƒ¼"),
 			MB_OK | MB_APPLMODAL | MB_ICONSTOP
 		);
 		return false;
 	}
 	if( GetLastError() != ERROR_ALREADY_EXISTS ){
-		/* ƒIƒuƒWƒFƒNƒg‚ª‘¶İ‚µ‚Ä‚¢‚È‚©‚Á‚½ê‡ */
-		/* ƒtƒ@ƒCƒ‹‚Ìƒrƒ…[‚ğ¤ ŒÄ‚Ño‚µ‘¤ƒvƒƒZƒX‚ÌƒAƒhƒŒƒX‹óŠÔ‚Éƒ}ƒbƒv‚µ‚Ü‚· */
+		/* ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒå­˜åœ¨ã—ã¦ã„ãªã‹ã£ãŸå ´åˆ */
+		/* ãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ“ãƒ¥ãƒ¼ã‚’ã€ å‘¼ã³å‡ºã—å´ãƒ—ãƒ­ã‚»ã‚¹ã®ã‚¢ãƒ‰ãƒ¬ã‚¹ç©ºé–“ã«ãƒãƒƒãƒ—ã—ã¾ã™ */
 		m_pShareData = (DLLSHAREDATA*)::MapViewOfFile(
 			m_hFileMap,
 			FILE_MAP_ALL_ACCESS,
@@ -128,38 +128,38 @@ bool CShareData::InitShareData()
 		);
 		m_pShareData->OnInit();
 
-		// 2007.05.19 ryoji Àsƒtƒ@ƒCƒ‹ƒtƒHƒ‹ƒ_->İ’èƒtƒ@ƒCƒ‹ƒtƒHƒ‹ƒ_‚É•ÏX
+		// 2007.05.19 ryoji å®Ÿè¡Œãƒ•ã‚¡ã‚¤ãƒ«ãƒ•ã‚©ãƒ«ãƒ€->è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ãƒ•ã‚©ãƒ«ãƒ€ã«å¤‰æ›´
 		TCHAR	szIniFolder[_MAX_PATH];
 		m_pShareData->m_sFileNameManagement.m_IniFolder.m_bInit = false;
 		GetInidir( szIniFolder );
 		AddLastChar( szIniFolder, _MAX_PATH, _T('\\') );
 
 		m_pShareData->m_vStructureVersion = uShareDataVersion;
-		_tcscpy(m_pShareData->m_Common.m_sMacro.m_szKeyMacroFileName, _T(""));	/* ƒL[ƒ[ƒhƒ}ƒNƒ‚Ìƒtƒ@ƒCƒ‹–¼ */ //@@@ 2002.1.24 YAZAKI
-		m_pShareData->m_sFlags.m_bRecordingKeyMacro = FALSE;		/* ƒL[ƒ{[ƒhƒ}ƒNƒ‚Ì‹L˜^’† */
-		m_pShareData->m_sFlags.m_hwndRecordingKeyMacro = NULL;	/* ƒL[ƒ{[ƒhƒ}ƒNƒ‚ğ‹L˜^’†‚ÌƒEƒBƒ“ƒhƒE */
+		_tcscpy(m_pShareData->m_Common.m_sMacro.m_szKeyMacroFileName, _T(""));	/* ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ãƒã‚¯ãƒ­ã®ãƒ•ã‚¡ã‚¤ãƒ«å */ //@@@ 2002.1.24 YAZAKI
+		m_pShareData->m_sFlags.m_bRecordingKeyMacro = FALSE;		/* ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ãƒã‚¯ãƒ­ã®è¨˜éŒ²ä¸­ */
+		m_pShareData->m_sFlags.m_hwndRecordingKeyMacro = NULL;	/* ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ãƒã‚¯ãƒ­ã‚’è¨˜éŒ²ä¸­ã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ */
 		m_pShareData->m_sFlags.sessionRestored = false;
 		m_pShareData->m_sFlags.sessionSaved = false;
 
-		// 2004.05.13 Moca ƒŠƒ\[ƒX‚©‚ç»•iƒo[ƒWƒ‡ƒ“‚Ìæ“¾
+		// 2004.05.13 Moca ãƒªã‚½ãƒ¼ã‚¹ã‹ã‚‰è£½å“ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã®å–å¾—
 		GetAppVersionInfo( NULL, VS_VERSION_INFO,
 			&m_pShareData->m_sVersion.m_dwProductVersionMS, &m_pShareData->m_sVersion.m_dwProductVersionLS );
 		m_pShareData->m_sHandles.m_hwndTray = NULL;
 		m_pShareData->m_sHandles.m_hAccel = NULL;
 		m_pShareData->m_sHandles.m_hwndDebug = NULL;
-		m_pShareData->m_sNodes.m_nSequences = 0;					/* ƒEƒBƒ“ƒhƒE˜A”Ô */
+		m_pShareData->m_sNodes.m_nSequences = 0;					/* ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦é€£ç•ª */
 		m_pShareData->m_sNodes.m_nNonameSequences = 0;
-		m_pShareData->m_sNodes.m_nGroupSequences = 0;			/* ƒ^ƒuƒOƒ‹[ƒv˜A”Ô */	// 2007.06.20 ryoji
+		m_pShareData->m_sNodes.m_nGroupSequences = 0;			/* ã‚¿ãƒ–ã‚°ãƒ«ãƒ¼ãƒ—é€£ç•ª */	// 2007.06.20 ryoji
 		m_pShareData->m_sNodes.m_nEditArrNum = 0;
 
-		m_pShareData->m_sFlags.m_bEditWndChanging = FALSE;	// •ÒWƒEƒBƒ“ƒhƒEØ‘Ö’†	// 2007.04.03 ryoji
+		m_pShareData->m_sFlags.m_bEditWndChanging = FALSE;	// ç·¨é›†ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦åˆ‡æ›¿ä¸­	// 2007.04.03 ryoji
 
-		m_pShareData->m_Common.m_sGeneral.m_nMRUArrNum_MAX = MAX_MRU;	/* ƒtƒ@ƒCƒ‹‚Ì—š—ğMAX */
-//@@@ 2001.12.26 YAZAKI MRUƒŠƒXƒg‚ÍACMRU‚ÉˆË—Š‚·‚é
+		m_pShareData->m_Common.m_sGeneral.m_nMRUArrNum_MAX = MAX_MRU;	/* ãƒ•ã‚¡ã‚¤ãƒ«ã®å±¥æ­´MAX */
+//@@@ 2001.12.26 YAZAKI MRUãƒªã‚¹ãƒˆã¯ã€CMRUã«ä¾é ¼ã™ã‚‹
 		CMRUFile cMRU;
 		cMRU.ClearAll();
-		m_pShareData->m_Common.m_sGeneral.m_nOPENFOLDERArrNum_MAX = MAX_OPENFOLDER;	/* ƒtƒHƒ‹ƒ_‚Ì—š—ğMAX */
-//@@@ 2001.12.26 YAZAKI OPENFOLDERƒŠƒXƒg‚ÍACMRUFolder‚É‚·‚×‚ÄˆË—Š‚·‚é
+		m_pShareData->m_Common.m_sGeneral.m_nOPENFOLDERArrNum_MAX = MAX_OPENFOLDER;	/* ãƒ•ã‚©ãƒ«ãƒ€ã®å±¥æ­´MAX */
+//@@@ 2001.12.26 YAZAKI OPENFOLDERãƒªã‚¹ãƒˆã¯ã€CMRUFolderã«ã™ã¹ã¦ä¾é ¼ã™ã‚‹
 		CMRUFolder cMRUFolder;
 		cMRUFolder.ClearAll();
 		m_pShareData->m_sHistory.m_aExceptMRU.clear();
@@ -170,59 +170,59 @@ bool CShareData::InitShareData()
 		m_pShareData->m_sSearchKeywords.m_aGrepFiles.push_back(_T("*.*"));
 		m_pShareData->m_sSearchKeywords.m_aGrepFolders.clear();
 
-		_tcscpy( m_pShareData->m_Common.m_sMacro.m_szMACROFOLDER, szIniFolder );	/* ƒ}ƒNƒ—pƒtƒHƒ‹ƒ_ */
-		_tcscpy( m_pShareData->m_sHistory.m_szIMPORTFOLDER, szIniFolder );	/* İ’èƒCƒ“ƒ|[ƒg—pƒtƒHƒ‹ƒ_ */
+		_tcscpy( m_pShareData->m_Common.m_sMacro.m_szMACROFOLDER, szIniFolder );	/* ãƒã‚¯ãƒ­ç”¨ãƒ•ã‚©ãƒ«ãƒ€ */
+		_tcscpy( m_pShareData->m_sHistory.m_szIMPORTFOLDER, szIniFolder );	/* è¨­å®šã‚¤ãƒ³ãƒãƒ¼ãƒˆç”¨ãƒ•ã‚©ãƒ«ãƒ€ */
 
 		for( int i = 0; i < MAX_TRANSFORM_FILENAME; ++i ){
 			_tcscpy( m_pShareData->m_Common.m_sFileName.m_szTransformFileNameFrom[i], _T("") );
 			_tcscpy( m_pShareData->m_Common.m_sFileName.m_szTransformFileNameTo[i], _T("") );
 		}
 		_tcscpy( m_pShareData->m_Common.m_sFileName.m_szTransformFileNameFrom[0], _T("%DeskTop%\\") );
-		_tcscpy( m_pShareData->m_Common.m_sFileName.m_szTransformFileNameTo[0],   _T("ƒfƒXƒNƒgƒbƒv\\") );
+		_tcscpy( m_pShareData->m_Common.m_sFileName.m_szTransformFileNameTo[0],   _T("ãƒ‡ã‚¹ã‚¯ãƒˆãƒƒãƒ—\\") );
 		_tcscpy( m_pShareData->m_Common.m_sFileName.m_szTransformFileNameFrom[1], _T("%Personal%\\") );
-		_tcscpy( m_pShareData->m_Common.m_sFileName.m_szTransformFileNameTo[1],   _T("ƒ}ƒCƒhƒLƒ…ƒƒ“ƒg\\") );
+		_tcscpy( m_pShareData->m_Common.m_sFileName.m_szTransformFileNameTo[1],   _T("ãƒã‚¤ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆ\\") );
 		_tcscpy( m_pShareData->m_Common.m_sFileName.m_szTransformFileNameFrom[2], _T("%Cache%\\Content.IE5\\") );
-		_tcscpy( m_pShareData->m_Common.m_sFileName.m_szTransformFileNameTo[2],   _T("IEƒLƒƒƒbƒVƒ…\\") );
+		_tcscpy( m_pShareData->m_Common.m_sFileName.m_szTransformFileNameTo[2],   _T("IEã‚­ãƒ£ãƒƒã‚·ãƒ¥\\") );
 		_tcscpy( m_pShareData->m_Common.m_sFileName.m_szTransformFileNameFrom[3], _T("%TEMP%\\") );
 		_tcscpy( m_pShareData->m_Common.m_sFileName.m_szTransformFileNameTo[3],   _T("TEMP\\") );
 		_tcscpy( m_pShareData->m_Common.m_sFileName.m_szTransformFileNameFrom[4], _T("%Common DeskTop%\\") );
-		_tcscpy( m_pShareData->m_Common.m_sFileName.m_szTransformFileNameTo[4],   _T("‹¤—LƒfƒXƒNƒgƒbƒv\\") );
+		_tcscpy( m_pShareData->m_Common.m_sFileName.m_szTransformFileNameTo[4],   _T("å…±æœ‰ãƒ‡ã‚¹ã‚¯ãƒˆãƒƒãƒ—\\") );
 		_tcscpy( m_pShareData->m_Common.m_sFileName.m_szTransformFileNameFrom[5], _T("%Common Documents%\\") );
-		_tcscpy( m_pShareData->m_Common.m_sFileName.m_szTransformFileNameTo[5],   _T("‹¤—LƒhƒLƒ…ƒƒ“ƒg\\") );
-		_tcscpy( m_pShareData->m_Common.m_sFileName.m_szTransformFileNameFrom[6], _T("%AppData%\\") );	// 2007.05.19 ryoji ’Ç‰Á
-		_tcscpy( m_pShareData->m_Common.m_sFileName.m_szTransformFileNameTo[6],   _T("ƒAƒvƒŠƒf[ƒ^\\") );	// 2007.05.19 ryoji ’Ç‰Á
+		_tcscpy( m_pShareData->m_Common.m_sFileName.m_szTransformFileNameTo[5],   _T("å…±æœ‰ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆ\\") );
+		_tcscpy( m_pShareData->m_Common.m_sFileName.m_szTransformFileNameFrom[6], _T("%AppData%\\") );	// 2007.05.19 ryoji è¿½åŠ 
+		_tcscpy( m_pShareData->m_Common.m_sFileName.m_szTransformFileNameTo[6],   _T("ã‚¢ãƒ—ãƒªãƒ‡ãƒ¼ã‚¿\\") );	// 2007.05.19 ryoji è¿½åŠ 
 		m_pShareData->m_Common.m_sFileName.m_nTransformFileNameArrNum = 7;
 		
-		/* m_PrintSettingArr[0]‚ğİ’è‚µ‚ÄAc‚è‚Ì1`7‚ÉƒRƒs[‚·‚éB
-			•K—v‚É‚È‚é‚Ü‚Å’x‚ç‚¹‚é‚½‚ß‚ÉACPrint‚ÉACShareData‚ğ‘€ì‚·‚éŒ ŒÀ‚ğ—^‚¦‚éB
+		/* m_PrintSettingArr[0]ã‚’è¨­å®šã—ã¦ã€æ®‹ã‚Šã®1ã€œ7ã«ã‚³ãƒ”ãƒ¼ã™ã‚‹ã€‚
+			å¿…è¦ã«ãªã‚‹ã¾ã§é…ã‚‰ã›ã‚‹ãŸã‚ã«ã€CPrintã«ã€CShareDataã‚’æ“ä½œã™ã‚‹æ¨©é™ã‚’ä¸ãˆã‚‹ã€‚
 			YAZAKI.
 		*/
 		{
 			/*
-				2006.08.16 Moca ‰Šú‰»’PˆÊ‚ğ PRINTSETTING‚É•ÏXBCShareData‚É‚ÍˆË‘¶‚µ‚È‚¢B
+				2006.08.16 Moca åˆæœŸåŒ–å˜ä½ã‚’ PRINTSETTINGã«å¤‰æ›´ã€‚CShareDataã«ã¯ä¾å­˜ã—ãªã„ã€‚
 			*/
 			TCHAR szSettingName[64];
 			int i = 0;
-			auto_sprintf( szSettingName, _T("ˆóüİ’è %d"), i + 1 );
-			CPrint::SettingInitialize( m_pShareData->m_PrintSettingArr[0], szSettingName );	//	‰Šú‰»–½—ßB
+			auto_sprintf( szSettingName, _T("å°åˆ·è¨­å®š %d"), i + 1 );
+			CPrint::SettingInitialize( m_pShareData->m_PrintSettingArr[0], szSettingName );	//	åˆæœŸåŒ–å‘½ä»¤ã€‚
 		}
 		for( int i = 1; i < MAX_PRINTSETTINGARR; ++i ){
 			m_pShareData->m_PrintSettingArr[i] = m_pShareData->m_PrintSettingArr[0];
-			auto_sprintf( m_pShareData->m_PrintSettingArr[i].m_szPrintSettingName, _T("ˆóüİ’è %d"), i + 1 );	/* ˆóüİ’è‚Ì–¼‘O */
+			auto_sprintf( m_pShareData->m_PrintSettingArr[i].m_szPrintSettingName, _T("å°åˆ·è¨­å®š %d"), i + 1 );	/* å°åˆ·è¨­å®šã®åå‰ */
 		}
 
-		//	Jan. 30, 2005 genta ŠÖ”‚Æ‚µ‚Ä“Æ—§
-		//	2007.11.04 genta –ß‚è’lƒ`ƒFƒbƒNDfalse‚È‚ç‹N“®’†’fD
+		//	Jan. 30, 2005 genta é–¢æ•°ã¨ã—ã¦ç‹¬ç«‹
+		//	2007.11.04 genta æˆ»ã‚Šå€¤ãƒã‚§ãƒƒã‚¯ï¼falseãªã‚‰èµ·å‹•ä¸­æ–­ï¼
 		if( ! InitKeyAssign( m_pShareData )){
 			return false;
 		}
 
-//	From Here Sept. 19, 2000 JEPRO ƒRƒƒ“ƒgƒAƒEƒg‚É‚È‚Á‚Ä‚¢‚½‰‚ß‚ÌƒuƒƒbƒN‚ğ•œŠˆ‚µ‚»‚Ì‰º‚ğƒRƒƒ“ƒgƒAƒEƒg
-//	MS ƒSƒVƒbƒN•W€ƒXƒ^ƒCƒ‹10pt‚Éİ’è
-//		/* LOGFONT‚Ì‰Šú‰» */
+//	From Here Sept. 19, 2000 JEPRO ã‚³ãƒ¡ãƒ³ãƒˆã‚¢ã‚¦ãƒˆã«ãªã£ã¦ã„ãŸåˆã‚ã®ãƒ–ãƒ­ãƒƒã‚¯ã‚’å¾©æ´»ã—ãã®ä¸‹ã‚’ã‚³ãƒ¡ãƒ³ãƒˆã‚¢ã‚¦ãƒˆ
+//	MS ã‚´ã‚·ãƒƒã‚¯æ¨™æº–ã‚¹ã‚¿ã‚¤ãƒ«10ptã«è¨­å®š
+//		/* LOGFONTã®åˆæœŸåŒ– */
 		LOGFONT lf;
 		memset_raw( &lf, 0, sizeof( lf ) );
-		lf.lfHeight			= DpiPointsToPixels(-12);	// 2009.10.01 ryoji ‚DPI‘Î‰iƒ|ƒCƒ“ƒg”‚©‚çZoj
+		lf.lfHeight			= DpiPointsToPixels(-12);	// 2009.10.01 ryoji é«˜DPIå¯¾å¿œï¼ˆãƒã‚¤ãƒ³ãƒˆæ•°ã‹ã‚‰ç®—å‡ºï¼‰
 		lf.lfWidth			= 0;
 		lf.lfEscapement		= 0;
 		lf.lfOrientation	= 0;
@@ -235,15 +235,15 @@ bool CShareData::InitShareData()
 		lf.lfClipPrecision	= 0x2;
 		lf.lfQuality		= 0x1;
 		lf.lfPitchAndFamily	= 0x31;
-		_tcscpy( lf.lfFaceName, _T("‚l‚r ƒSƒVƒbƒN") );
+		_tcscpy( lf.lfFaceName, _T("ï¼­ï¼³ ã‚´ã‚·ãƒƒã‚¯") );
 		m_pShareData->m_Common.m_sView.m_lf = lf;
-		m_pShareData->m_Common.m_sView.m_nPointSize = 0;	// ƒtƒHƒ“ƒgƒTƒCƒYi1/10ƒ|ƒCƒ“ƒg’PˆÊj ¦ŒÃ‚¢ƒo[ƒWƒ‡ƒ“‚©‚ç‚ÌˆÚs‚ğl—¶‚µ‚Ä–³Œø’l‚Å‰Šú‰»	// 2009.10.01 ryoji
+		m_pShareData->m_Common.m_sView.m_nPointSize = 0;	// ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚ºï¼ˆ1/10ãƒã‚¤ãƒ³ãƒˆå˜ä½ï¼‰ â€»å¤ã„ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã‹ã‚‰ã®ç§»è¡Œã‚’è€ƒæ…®ã—ã¦ç„¡åŠ¹å€¤ã§åˆæœŸåŒ–	// 2009.10.01 ryoji
 
-		// LoadShareData‚ÅƒtƒHƒ“ƒg‚ª•Ï‚í‚é‰Â”\«‚ª‚ ‚é‚Ì‚ÅA‚±‚±‚Å‚Í•s—v // 2013.04.08 aroka
+		// LoadShareDataã§ãƒ•ã‚©ãƒ³ãƒˆãŒå¤‰ã‚ã‚‹å¯èƒ½æ€§ãŒã‚ã‚‹ã®ã§ã€ã“ã“ã§ã¯ä¸è¦ // 2013.04.08 aroka
 		//InitCharWidthCacheCommon();								// 2008/5/17 Uchi
 
-		// ƒL[ƒ[ƒhƒwƒ‹ƒv‚ÌƒtƒHƒ“ƒg ai 02/05/21 Add S
-		LOGFONT lfIconTitle;	// ƒGƒNƒXƒvƒ[ƒ‰‚Ìƒtƒ@ƒCƒ‹–¼•\¦‚Ég—p‚³‚ê‚éƒtƒHƒ“ƒg
+		// ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ãƒ˜ãƒ«ãƒ—ã®ãƒ•ã‚©ãƒ³ãƒˆ ai 02/05/21 Add S
+		LOGFONT lfIconTitle;	// ã‚¨ã‚¯ã‚¹ãƒ—ãƒ­ãƒ¼ãƒ©ã®ãƒ•ã‚¡ã‚¤ãƒ«åè¡¨ç¤ºã«ä½¿ç”¨ã•ã‚Œã‚‹ãƒ•ã‚©ãƒ³ãƒˆ
 		::SystemParametersInfo(
 			SPI_GETICONTITLELOGFONT,				// system parameter to query or set
 			sizeof(LOGFONT),						// depends on action to be taken
@@ -251,244 +251,244 @@ bool CShareData::InitShareData()
 			0										// user profile update flag
 		);
 		// ai 02/05/21 Add E
-		INT		nIconPointSize = lfIconTitle.lfHeight >=0 ? lfIconTitle.lfHeight : DpiPixelsToPoints( -lfIconTitle.lfHeight, 10 );	// ƒtƒHƒ“ƒgƒTƒCƒYi1/10ƒ|ƒCƒ“ƒg’PˆÊj
+		INT		nIconPointSize = lfIconTitle.lfHeight >=0 ? lfIconTitle.lfHeight : DpiPixelsToPoints( -lfIconTitle.lfHeight, 10 );	// ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚ºï¼ˆ1/10ãƒã‚¤ãƒ³ãƒˆå˜ä½ï¼‰
 		m_pShareData->m_Common.m_sHelper.m_lf = lfIconTitle;
-		m_pShareData->m_Common.m_sHelper.m_nPointSize = nIconPointSize;	// ƒtƒHƒ“ƒgƒTƒCƒYi1/10ƒ|ƒCƒ“ƒg’PˆÊj ¦ŒÃ‚¢ƒo[ƒWƒ‡ƒ“‚©‚ç‚ÌˆÚs‚ğl—¶‚µ‚Ä–³Œø’l‚Å‰Šú‰»	// 2009.10.01 ryoji
+		m_pShareData->m_Common.m_sHelper.m_nPointSize = nIconPointSize;	// ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚ºï¼ˆ1/10ãƒã‚¤ãƒ³ãƒˆå˜ä½ï¼‰ â€»å¤ã„ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã‹ã‚‰ã®ç§»è¡Œã‚’è€ƒæ…®ã—ã¦ç„¡åŠ¹å€¤ã§åˆæœŸåŒ–	// 2009.10.01 ryoji
 
 //	To Here Sept. 19,2000
 
-		m_pShareData->m_Common.m_sView.m_bFontIs_FIXED_PITCH = TRUE;				/* Œ»İ‚ÌƒtƒHƒ“ƒg‚ÍŒÅ’è•ƒtƒHƒ“ƒg‚Å‚ ‚é */
+		m_pShareData->m_Common.m_sView.m_bFontIs_FIXED_PITCH = TRUE;				/* ç¾åœ¨ã®ãƒ•ã‚©ãƒ³ãƒˆã¯å›ºå®šå¹…ãƒ•ã‚©ãƒ³ãƒˆã§ã‚ã‚‹ */
 
-//		m_pShareData->m_Common.m_bUseCaretKeyWord = FALSE;		/* ƒLƒƒƒŒƒbƒgˆÊ’u‚Ì’PŒê‚ğ«‘ŒŸõ-‹@”\OFF */	// 2006.03.24 fon sakura‹N“®‚²‚ÆFALSE‚Æ‚µA‰Šú‰»‚µ‚È‚¢
+//		m_pShareData->m_Common.m_bUseCaretKeyWord = FALSE;		/* ã‚­ãƒ£ãƒ¬ãƒƒãƒˆä½ç½®ã®å˜èªã‚’è¾æ›¸æ¤œç´¢-æ©Ÿèƒ½OFF */	// 2006.03.24 fon sakuraèµ·å‹•ã”ã¨FALSEã¨ã—ã€åˆæœŸåŒ–ã—ãªã„
 
 
-		/* ƒoƒbƒNƒAƒbƒv */
+		/* ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ— */
 		CommonSetting_Backup& sBackup = m_pShareData->m_Common.m_sBackup;
-		sBackup.m_bBackUp = false;										/* ƒoƒbƒNƒAƒbƒv‚Ìì¬ */
-		sBackup.m_bBackUpDialog = true;									/* ƒoƒbƒNƒAƒbƒv‚Ìì¬‘O‚ÉŠm”F */
-		sBackup.m_bBackUpFolder = false;								/* w’èƒtƒHƒ‹ƒ_‚ÉƒoƒbƒNƒAƒbƒv‚ğì¬‚·‚é */
-		sBackup.m_szBackUpFolder[0] = L'\0';							/* ƒoƒbƒNƒAƒbƒv‚ğì¬‚·‚éƒtƒHƒ‹ƒ_ */
-		sBackup.m_nBackUpType = 2;										/* ƒoƒbƒNƒAƒbƒvƒtƒ@ƒCƒ‹–¼‚Ìƒ^ƒCƒv 1=(.bak) 2=*_“ú•t.* */
-		sBackup.m_nBackUpType_Opt1 = BKUP_YEAR | BKUP_MONTH | BKUP_DAY;	/* ƒoƒbƒNƒAƒbƒvƒtƒ@ƒCƒ‹–¼F“ú•t */
-		sBackup.m_nBackUpType_Opt2 = ('b' << 16 ) + 10;					/* ƒoƒbƒNƒAƒbƒvƒtƒ@ƒCƒ‹–¼F˜A”Ô‚Ì”‚Ææ“ª•¶š */
-		sBackup.m_nBackUpType_Opt3 = 5;									/* ƒoƒbƒNƒAƒbƒvƒtƒ@ƒCƒ‹–¼FOption3 */
-		sBackup.m_nBackUpType_Opt4 = 0;									/* ƒoƒbƒNƒAƒbƒvƒtƒ@ƒCƒ‹–¼FOption4 */
-		sBackup.m_nBackUpType_Opt5 = 0;									/* ƒoƒbƒNƒAƒbƒvƒtƒ@ƒCƒ‹–¼FOption5 */
-		sBackup.m_nBackUpType_Opt6 = 0;									/* ƒoƒbƒNƒAƒbƒvƒtƒ@ƒCƒ‹–¼FOption6 */
-		sBackup.m_bBackUpDustBox = false;								/* ƒoƒbƒNƒAƒbƒvƒtƒ@ƒCƒ‹‚ğ‚²‚İ” ‚É•ú‚è‚Ş */	//@@@ 2001.12.11 add MIK
-		sBackup.m_bBackUpPathAdvanced = false;							/* 20051107 aroka ƒoƒbƒNƒAƒbƒvæƒtƒHƒ‹ƒ_‚ğÚ×İ’è‚·‚é */
-		sBackup.m_szBackUpPathAdvanced[0] = _T('\0');					/* 20051107 aroka ƒoƒbƒNƒAƒbƒv‚ğì¬‚·‚éƒtƒHƒ‹ƒ_‚ÌÚ×İ’è */
+		sBackup.m_bBackUp = false;										/* ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ã®ä½œæˆ */
+		sBackup.m_bBackUpDialog = true;									/* ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ã®ä½œæˆå‰ã«ç¢ºèª */
+		sBackup.m_bBackUpFolder = false;								/* æŒ‡å®šãƒ•ã‚©ãƒ«ãƒ€ã«ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ã‚’ä½œæˆã™ã‚‹ */
+		sBackup.m_szBackUpFolder[0] = L'\0';							/* ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ã‚’ä½œæˆã™ã‚‹ãƒ•ã‚©ãƒ«ãƒ€ */
+		sBackup.m_nBackUpType = 2;										/* ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«åã®ã‚¿ã‚¤ãƒ— 1=(.bak) 2=*_æ—¥ä»˜.* */
+		sBackup.m_nBackUpType_Opt1 = BKUP_YEAR | BKUP_MONTH | BKUP_DAY;	/* ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«åï¼šæ—¥ä»˜ */
+		sBackup.m_nBackUpType_Opt2 = ('b' << 16 ) + 10;					/* ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«åï¼šé€£ç•ªã®æ•°ã¨å…ˆé ­æ–‡å­— */
+		sBackup.m_nBackUpType_Opt3 = 5;									/* ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«åï¼šOption3 */
+		sBackup.m_nBackUpType_Opt4 = 0;									/* ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«åï¼šOption4 */
+		sBackup.m_nBackUpType_Opt5 = 0;									/* ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«åï¼šOption5 */
+		sBackup.m_nBackUpType_Opt6 = 0;									/* ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«åï¼šOption6 */
+		sBackup.m_bBackUpDustBox = false;								/* ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ã”ã¿ç®±ã«æ”¾ã‚Šè¾¼ã‚€ */	//@@@ 2001.12.11 add MIK
+		sBackup.m_bBackUpPathAdvanced = false;							/* 20051107 aroka ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—å…ˆãƒ•ã‚©ãƒ«ãƒ€ã‚’è©³ç´°è¨­å®šã™ã‚‹ */
+		sBackup.m_szBackUpPathAdvanced[0] = _T('\0');					/* 20051107 aroka ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ã‚’ä½œæˆã™ã‚‹ãƒ•ã‚©ãƒ«ãƒ€ã®è©³ç´°è¨­å®š */
 
-		m_pShareData->m_Common.m_sGeneral.m_nCaretType = 1;					/* ƒJ[ƒ\ƒ‹‚Ìƒ^ƒCƒv 0=win 1=dos */
-		m_pShareData->m_Common.m_sGeneral.m_bIsINSMode = true;				/* ‘}“ü^ã‘‚«ƒ‚[ƒh */
-		m_pShareData->m_Common.m_sGeneral.m_bIsFreeCursorMode = false;		/* ƒtƒŠ[ƒJ[ƒ\ƒ‹ƒ‚[ƒh‚© */	//Oct. 29, 2000 JEPRO u‚È‚µv‚É•ÏX
+		m_pShareData->m_Common.m_sGeneral.m_nCaretType = 1;					/* ã‚«ãƒ¼ã‚½ãƒ«ã®ã‚¿ã‚¤ãƒ— 0=win 1=dos */
+		m_pShareData->m_Common.m_sGeneral.m_bIsINSMode = true;				/* æŒ¿å…¥ï¼ä¸Šæ›¸ããƒ¢ãƒ¼ãƒ‰ */
+		m_pShareData->m_Common.m_sGeneral.m_bIsFreeCursorMode = false;		/* ãƒ•ãƒªãƒ¼ã‚«ãƒ¼ã‚½ãƒ«ãƒ¢ãƒ¼ãƒ‰ã‹ */	//Oct. 29, 2000 JEPRO ã€Œãªã—ã€ã«å¤‰æ›´
 
-		m_pShareData->m_Common.m_sGeneral.m_bStopsBothEndsWhenSearchWord = FALSE;	/* ’PŒê’PˆÊ‚ÅˆÚ“®‚·‚é‚Æ‚«‚ÉA’PŒê‚Ì—¼’[‚Å~‚Ü‚é‚© */
-		m_pShareData->m_Common.m_sGeneral.m_bStopsBothEndsWhenSearchParagraph = FALSE;	/* ’PŒê’PˆÊ‚ÅˆÚ“®‚·‚é‚Æ‚«‚ÉA’PŒê‚Ì—¼’[‚Å~‚Ü‚é‚© */
+		m_pShareData->m_Common.m_sGeneral.m_bStopsBothEndsWhenSearchWord = FALSE;	/* å˜èªå˜ä½ã§ç§»å‹•ã™ã‚‹ã¨ãã«ã€å˜èªã®ä¸¡ç«¯ã§æ­¢ã¾ã‚‹ã‹ */
+		m_pShareData->m_Common.m_sGeneral.m_bStopsBothEndsWhenSearchParagraph = FALSE;	/* å˜èªå˜ä½ã§ç§»å‹•ã™ã‚‹ã¨ãã«ã€å˜èªã®ä¸¡ç«¯ã§æ­¢ã¾ã‚‹ã‹ */
 
 		m_pShareData->m_Common.m_sHelper.m_szMigemoDll[0] = L'\0';			/* migemo dll */
 		m_pShareData->m_Common.m_sHelper.m_szMigemoDict[0] = L'\0';		/* migemo dict */
 
-		m_pShareData->m_Common.m_sGeneral.m_bCloseAllConfirm = FALSE;		/* [‚·‚×‚Ä•Â‚¶‚é]‚Å‘¼‚É•ÒW—p‚ÌƒEƒBƒ“ƒhƒE‚ª‚ ‚ê‚ÎŠm”F‚·‚é */	// 2006.12.25 ryoji
-		m_pShareData->m_Common.m_sGeneral.m_bExitConfirm = FALSE;			/* I—¹‚ÌŠm”F‚ğ‚·‚é */
-		m_pShareData->m_Common.m_sGeneral.m_nRepeatedScrollLineNum = CLayoutInt(3);	/* ƒL[ƒŠƒs[ƒg‚ÌƒXƒNƒ[ƒ‹s” */
-		m_pShareData->m_Common.m_sGeneral.m_nRepeatedScroll_Smooth = FALSE;/* ƒL[ƒŠƒs[ƒg‚ÌƒXƒNƒ[ƒ‹‚ğŠŠ‚ç‚©‚É‚·‚é‚© */
-		m_pShareData->m_Common.m_sGeneral.m_nPageScrollByWheel = 0;			/* ƒL[/ƒ}ƒEƒXƒ{ƒ^ƒ“ + ƒzƒC[ƒ‹ƒXƒNƒ[ƒ‹‚Åƒy[ƒWƒXƒNƒ[ƒ‹‚·‚é */	// 2009.01.17 nasukoji
-		m_pShareData->m_Common.m_sGeneral.m_nHorizontalScrollByWheel = 0;	/* ƒL[/ƒ}ƒEƒXƒ{ƒ^ƒ“ + ƒzƒC[ƒ‹ƒXƒNƒ[ƒ‹‚Å‰¡ƒXƒNƒ[ƒ‹‚·‚é */		// 2009.01.17 nasukoji
+		m_pShareData->m_Common.m_sGeneral.m_bCloseAllConfirm = FALSE;		/* [ã™ã¹ã¦é–‰ã˜ã‚‹]ã§ä»–ã«ç·¨é›†ç”¨ã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãŒã‚ã‚Œã°ç¢ºèªã™ã‚‹ */	// 2006.12.25 ryoji
+		m_pShareData->m_Common.m_sGeneral.m_bExitConfirm = FALSE;			/* çµ‚äº†æ™‚ã®ç¢ºèªã‚’ã™ã‚‹ */
+		m_pShareData->m_Common.m_sGeneral.m_nRepeatedScrollLineNum = CLayoutInt(3);	/* ã‚­ãƒ¼ãƒªãƒ”ãƒ¼ãƒˆæ™‚ã®ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«è¡Œæ•° */
+		m_pShareData->m_Common.m_sGeneral.m_nRepeatedScroll_Smooth = FALSE;/* ã‚­ãƒ¼ãƒªãƒ”ãƒ¼ãƒˆæ™‚ã®ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ã‚’æ»‘ã‚‰ã‹ã«ã™ã‚‹ã‹ */
+		m_pShareData->m_Common.m_sGeneral.m_nPageScrollByWheel = 0;			/* ã‚­ãƒ¼/ãƒã‚¦ã‚¹ãƒœã‚¿ãƒ³ + ãƒ›ã‚¤ãƒ¼ãƒ«ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ã§ãƒšãƒ¼ã‚¸ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ã™ã‚‹ */	// 2009.01.17 nasukoji
+		m_pShareData->m_Common.m_sGeneral.m_nHorizontalScrollByWheel = 0;	/* ã‚­ãƒ¼/ãƒã‚¦ã‚¹ãƒœã‚¿ãƒ³ + ãƒ›ã‚¤ãƒ¼ãƒ«ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ã§æ¨ªã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ã™ã‚‹ */		// 2009.01.17 nasukoji
 
-		m_pShareData->m_Common.m_sEdit.m_bAddCRLFWhenCopy = false;			/* Ü‚è•Ô‚µs‚É‰üs‚ğ•t‚¯‚ÄƒRƒs[ */
+		m_pShareData->m_Common.m_sEdit.m_bAddCRLFWhenCopy = false;			/* æŠ˜ã‚Šè¿”ã—è¡Œã«æ”¹è¡Œã‚’ä»˜ã‘ã¦ã‚³ãƒ”ãƒ¼ */
 
-//ƒL[ƒ[ƒhFƒc[ƒ‹ƒo[‡˜
-		//	Jan. 30, 2005 genta ŠÖ”‚Æ‚µ‚Ä“Æ—§
+//ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ï¼šãƒ„ãƒ¼ãƒ«ãƒãƒ¼é †åº
+		//	Jan. 30, 2005 genta é–¢æ•°ã¨ã—ã¦ç‹¬ç«‹
 		InitToolButtons( m_pShareData );
 
-		m_pShareData->m_Common.m_sWindow.m_bDispTOOLBAR = FALSE;			/* Ÿ‰ñƒEƒBƒ“ƒhƒE‚ğŠJ‚¢‚½‚Æ‚«ƒc[ƒ‹ƒo[‚ğ•\¦‚·‚é */
-		m_pShareData->m_Common.m_sWindow.m_bDispSTATUSBAR = TRUE;			/* Ÿ‰ñƒEƒBƒ“ƒhƒE‚ğŠJ‚¢‚½‚Æ‚«ƒXƒe[ƒ^ƒXƒo[‚ğ•\¦‚·‚é */
-		m_pShareData->m_Common.m_sWindow.m_bDispFUNCKEYWND = TRUE;			/* Ÿ‰ñƒEƒBƒ“ƒhƒE‚ğŠJ‚¢‚½‚Æ‚«ƒtƒ@ƒ“ƒNƒVƒ‡ƒ“ƒL[‚ğ•\¦‚·‚é */
-		m_pShareData->m_Common.m_sWindow.m_nFUNCKEYWND_Place = 1;			/* ƒtƒ@ƒ“ƒNƒVƒ‡ƒ“ƒL[•\¦ˆÊ’u^0:ã 1:‰º */
-		m_pShareData->m_Common.m_sWindow.m_nFUNCKEYWND_GroupNum = 4;			// 2002/11/04 Moca ƒtƒ@ƒ“ƒNƒVƒ‡ƒ“ƒL[‚ÌƒOƒ‹[ƒvƒ{ƒ^ƒ“”
+		m_pShareData->m_Common.m_sWindow.m_bDispTOOLBAR = FALSE;			/* æ¬¡å›ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’é–‹ã„ãŸã¨ããƒ„ãƒ¼ãƒ«ãƒãƒ¼ã‚’è¡¨ç¤ºã™ã‚‹ */
+		m_pShareData->m_Common.m_sWindow.m_bDispSTATUSBAR = TRUE;			/* æ¬¡å›ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’é–‹ã„ãŸã¨ãã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ãƒãƒ¼ã‚’è¡¨ç¤ºã™ã‚‹ */
+		m_pShareData->m_Common.m_sWindow.m_bDispFUNCKEYWND = TRUE;			/* æ¬¡å›ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’é–‹ã„ãŸã¨ããƒ•ã‚¡ãƒ³ã‚¯ã‚·ãƒ§ãƒ³ã‚­ãƒ¼ã‚’è¡¨ç¤ºã™ã‚‹ */
+		m_pShareData->m_Common.m_sWindow.m_nFUNCKEYWND_Place = 1;			/* ãƒ•ã‚¡ãƒ³ã‚¯ã‚·ãƒ§ãƒ³ã‚­ãƒ¼è¡¨ç¤ºä½ç½®ï¼0:ä¸Š 1:ä¸‹ */
+		m_pShareData->m_Common.m_sWindow.m_nFUNCKEYWND_GroupNum = 4;			// 2002/11/04 Moca ãƒ•ã‚¡ãƒ³ã‚¯ã‚·ãƒ§ãƒ³ã‚­ãƒ¼ã®ã‚°ãƒ«ãƒ¼ãƒ—ãƒœã‚¿ãƒ³æ•°
 
-		m_pShareData->m_Common.m_sTabBar.m_bDispTabWnd = TRUE;			//ƒ^ƒuƒEƒCƒ“ƒhƒE•\¦
-		m_pShareData->m_Common.m_sTabBar.m_bDispTabWndMultiWin = FALSE;	// TODO: ƒ^ƒuƒEƒCƒ“ƒhƒE: ƒEƒBƒ“ƒhƒE‚ğ‚Ü‚Æ‚ß‚ÄƒOƒ‹[ƒv‰»‚·‚é
-																		// ... TRUE/FALSE ‚ª‹t‚Ì‚æ‚¤‚È‚Ì‚ÅA’¼‚µ‚½‚Ù‚¤‚ª‚æ‚¢B
+		m_pShareData->m_Common.m_sTabBar.m_bDispTabWnd = TRUE;			//ã‚¿ãƒ–ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦è¡¨ç¤º
+		m_pShareData->m_Common.m_sTabBar.m_bDispTabWndMultiWin = FALSE;	// TODO: ã‚¿ãƒ–ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦: ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’ã¾ã¨ã‚ã¦ã‚°ãƒ«ãƒ¼ãƒ—åŒ–ã™ã‚‹
+																		// ... TRUE/FALSE ãŒé€†ã®ã‚ˆã†ãªã®ã§ã€ç›´ã—ãŸã»ã†ãŒã‚ˆã„ã€‚
 		wcscpy(	//@@@ 2003.06.13 MIK
 			m_pShareData->m_Common.m_sTabBar.m_szTabWndCaption,
-			L"${w?yGrepz$h$:yƒAƒEƒgƒvƒbƒgz$:$f$n$}${U?*$}${R?(ƒrƒ…[ƒ‚[ƒh)$:(ã‘‚«‹Ö~)$}${M?yƒL[ƒ}ƒNƒ‚Ì‹L˜^’†z$}"
+			L"${w?ã€Grepã€‘$h$:ã€ã‚¢ã‚¦ãƒˆãƒ—ãƒƒãƒˆã€‘$:$f$n$}${U?*$}${R?(ãƒ“ãƒ¥ãƒ¼ãƒ¢ãƒ¼ãƒ‰)$:(ä¸Šæ›¸ãç¦æ­¢)$}${M?ã€ã‚­ãƒ¼ãƒã‚¯ãƒ­ã®è¨˜éŒ²ä¸­ã€‘$}"
 		);
-		m_pShareData->m_Common.m_sTabBar.m_bSameTabWidth = FALSE;			//ƒ^ƒu‚ğ“™•‚É‚·‚é			//@@@ 2006.01.28 ryoji
-		m_pShareData->m_Common.m_sTabBar.m_bDispTabIcon = FALSE;			//ƒ^ƒu‚ÉƒAƒCƒRƒ“‚ğ•\¦‚·‚é	//@@@ 2006.01.28 ryoji
-		m_pShareData->m_Common.m_sTabBar.m_bDispTabClose = TRUE;			//ƒ^ƒu‚É•Â‚¶‚éƒ{ƒ^ƒ“‚ğ•\¦‚·‚é	//@@@ 2012.04.14 syat
-		m_pShareData->m_Common.m_sTabBar.m_bSortTabList = TRUE;			//ƒ^ƒuˆê——‚ğƒ\[ƒg‚·‚é		//@@@ 2006.05.10 ryoji
-		m_pShareData->m_Common.m_sTabBar.m_bTab_RetainEmptyWin = FALSE;	// ÅŒã‚Ìƒtƒ@ƒCƒ‹‚ª•Â‚¶‚ç‚ê‚½‚Æ‚«(–³‘è)‚ğc‚·	// 2007.02.11 genta
-		m_pShareData->m_Common.m_sTabBar.m_bTab_CloseOneWin = FALSE;	// ƒ^ƒuƒ‚[ƒh‚Å‚àƒEƒBƒ“ƒhƒE‚Ì•Â‚¶‚éƒ{ƒ^ƒ“‚ÅŒ»İ‚Ìƒtƒ@ƒCƒ‹‚Ì‚İ•Â‚¶‚é	// 2007.02.11 genta
-		m_pShareData->m_Common.m_sTabBar.m_bTab_ListFull = FALSE;			//ƒ^ƒuˆê——‚ğƒtƒ‹ƒpƒX•\¦‚·‚é	//@@@ 2007.02.28 ryoji
-		m_pShareData->m_Common.m_sTabBar.m_bChgWndByWheel = FALSE;		//ƒ}ƒEƒXƒzƒC[ƒ‹‚ÅƒEƒBƒ“ƒhƒEØ‘Ö	//@@@ 2006.03.26 ryoji
-		m_pShareData->m_Common.m_sTabBar.m_bNewWindow = FALSE;			// ŠO•”‚©‚ç‹N“®‚·‚é‚Æ‚«‚ÍV‚µ‚¢ƒEƒCƒ“ƒhƒE‚ÅŠJ‚­
+		m_pShareData->m_Common.m_sTabBar.m_bSameTabWidth = FALSE;			//ã‚¿ãƒ–ã‚’ç­‰å¹…ã«ã™ã‚‹			//@@@ 2006.01.28 ryoji
+		m_pShareData->m_Common.m_sTabBar.m_bDispTabIcon = FALSE;			//ã‚¿ãƒ–ã«ã‚¢ã‚¤ã‚³ãƒ³ã‚’è¡¨ç¤ºã™ã‚‹	//@@@ 2006.01.28 ryoji
+		m_pShareData->m_Common.m_sTabBar.m_bDispTabClose = TRUE;			//ã‚¿ãƒ–ã«é–‰ã˜ã‚‹ãƒœã‚¿ãƒ³ã‚’è¡¨ç¤ºã™ã‚‹	//@@@ 2012.04.14 syat
+		m_pShareData->m_Common.m_sTabBar.m_bSortTabList = TRUE;			//ã‚¿ãƒ–ä¸€è¦§ã‚’ã‚½ãƒ¼ãƒˆã™ã‚‹		//@@@ 2006.05.10 ryoji
+		m_pShareData->m_Common.m_sTabBar.m_bTab_RetainEmptyWin = FALSE;	// æœ€å¾Œã®ãƒ•ã‚¡ã‚¤ãƒ«ãŒé–‰ã˜ã‚‰ã‚ŒãŸã¨ã(ç„¡é¡Œ)ã‚’æ®‹ã™	// 2007.02.11 genta
+		m_pShareData->m_Common.m_sTabBar.m_bTab_CloseOneWin = FALSE;	// ã‚¿ãƒ–ãƒ¢ãƒ¼ãƒ‰ã§ã‚‚ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®é–‰ã˜ã‚‹ãƒœã‚¿ãƒ³ã§ç¾åœ¨ã®ãƒ•ã‚¡ã‚¤ãƒ«ã®ã¿é–‰ã˜ã‚‹	// 2007.02.11 genta
+		m_pShareData->m_Common.m_sTabBar.m_bTab_ListFull = FALSE;			//ã‚¿ãƒ–ä¸€è¦§ã‚’ãƒ•ãƒ«ãƒ‘ã‚¹è¡¨ç¤ºã™ã‚‹	//@@@ 2007.02.28 ryoji
+		m_pShareData->m_Common.m_sTabBar.m_bChgWndByWheel = FALSE;		//ãƒã‚¦ã‚¹ãƒ›ã‚¤ãƒ¼ãƒ«ã§ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦åˆ‡æ›¿	//@@@ 2006.03.26 ryoji
+		m_pShareData->m_Common.m_sTabBar.m_bNewWindow = FALSE;			// å¤–éƒ¨ã‹ã‚‰èµ·å‹•ã™ã‚‹ã¨ãã¯æ–°ã—ã„ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã§é–‹ã
 
 		m_pShareData->m_Common.m_sTabBar.m_lf = lfIconTitle;
 		m_pShareData->m_Common.m_sTabBar.m_nPointSize = nIconPointSize;
 
-		m_pShareData->m_Common.m_sWindow.m_bSplitterWndHScroll = FALSE;	// 2001/06/20 asa-o •ªŠ„ƒEƒBƒ“ƒhƒE‚Ì…•½ƒXƒNƒ[ƒ‹‚Ì“¯Šú‚ğ‚Æ‚é
-		m_pShareData->m_Common.m_sWindow.m_bSplitterWndVScroll = FALSE;	// 2001/06/20 asa-o •ªŠ„ƒEƒBƒ“ƒhƒE‚Ì‚’¼ƒXƒNƒ[ƒ‹‚Ì“¯Šú‚ğ‚Æ‚é
+		m_pShareData->m_Common.m_sWindow.m_bSplitterWndHScroll = FALSE;	// 2001/06/20 asa-o åˆ†å‰²ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®æ°´å¹³ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ã®åŒæœŸã‚’ã¨ã‚‹
+		m_pShareData->m_Common.m_sWindow.m_bSplitterWndVScroll = FALSE;	// 2001/06/20 asa-o åˆ†å‰²ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®å‚ç›´ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ã®åŒæœŸã‚’ã¨ã‚‹
 
-		/* Œ©o‚µ‹L† */
-		wcscpy( m_pShareData->m_Common.m_sFormat.m_szMidashiKigou, L"‚P‚Q‚R‚S‚T‚U‚V‚W‚X‚Oi(m[uwy¡ £¢¥¤Ÿ›œ˜E¦™š‘æ‡@‡A‡B‡C‡D‡E‡F‡G‡H‡I‡J‡K‡L‡M‡N‡O‡P‡Q‡R‡S‡T‡U‡V‡W‡X‡Y‡Z‡[‡\‡]ˆê“ñOlŒÜ˜Zµ”ª‹ã\ˆë“óQŒŞ" );
-		/* ˆø—p•„ */
-		wcscpy( m_pShareData->m_Common.m_sFormat.m_szInyouKigou, L"> " );		/* ˆø—p•„ */
-		m_pShareData->m_Common.m_sHelper.m_bUseHokan = FALSE;					/* “ü—Í•âŠ®‹@”\‚ğg—p‚·‚é */
+		/* è¦‹å‡ºã—è¨˜å· */
+		wcscpy( m_pShareData->m_Common.m_sFormat.m_szMidashiKigou, L"ï¼‘ï¼’ï¼“ï¼”ï¼•ï¼–ï¼—ï¼˜ï¼™ï¼ï¼ˆ(ï¼»[ã€Œã€ã€â– â–¡â–²â–³â–¼â–½â—†â—‡â—‹â—â—Â§ãƒ»â€»â˜†â˜…ç¬¬â‘ â‘¡â‘¢â‘£â‘¤â‘¥â‘¦â‘§â‘¨â‘©â‘ªâ‘«â‘¬â‘­â‘®â‘¯â‘°â‘±â‘²â‘³â… â…¡â…¢â…£â…¤â…¥â…¦â…§â…¨â…©ä¸€äºŒä¸‰å››äº”å…­ä¸ƒå…«ä¹åå£±å¼å‚ä¼" );
+		/* å¼•ç”¨ç¬¦ */
+		wcscpy( m_pShareData->m_Common.m_sFormat.m_szInyouKigou, L"> " );		/* å¼•ç”¨ç¬¦ */
+		m_pShareData->m_Common.m_sHelper.m_bUseHokan = FALSE;					/* å…¥åŠ›è£œå®Œæ©Ÿèƒ½ã‚’ä½¿ç”¨ã™ã‚‹ */
 
-		// 2001/06/14 asa-o •âŠ®‚ÆƒL[ƒ[ƒhƒwƒ‹ƒv‚Íƒ^ƒCƒv•Ê‚ÉˆÚ“®‚µ‚½‚Ì‚Åíœ
-		//	2004.05.13 Moca ƒEƒBƒ“ƒhƒEƒTƒCƒYŒÅ’èw’è’Ç‰Á‚É”º‚¤w’è•û–@•ÏX
-		m_pShareData->m_Common.m_sWindow.m_eSaveWindowSize = WINSIZEMODE_SAVE;	// ƒEƒBƒ“ƒhƒEƒTƒCƒYŒp³
+		// 2001/06/14 asa-o è£œå®Œã¨ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ãƒ˜ãƒ«ãƒ—ã¯ã‚¿ã‚¤ãƒ—åˆ¥ã«ç§»å‹•ã—ãŸã®ã§å‰Šé™¤
+		//	2004.05.13 Moca ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚µã‚¤ã‚ºå›ºå®šæŒ‡å®šè¿½åŠ ã«ä¼´ã†æŒ‡å®šæ–¹æ³•å¤‰æ›´
+		m_pShareData->m_Common.m_sWindow.m_eSaveWindowSize = WINSIZEMODE_SAVE;	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚µã‚¤ã‚ºç¶™æ‰¿
 		m_pShareData->m_Common.m_sWindow.m_nWinSizeType = SIZE_RESTORED;
 		m_pShareData->m_Common.m_sWindow.m_nWinSizeCX = CW_USEDEFAULT;
 		m_pShareData->m_Common.m_sWindow.m_nWinSizeCY = 0;
 		
-		//	2004.05.13 Moca ƒEƒBƒ“ƒhƒEˆÊ’u
-		m_pShareData->m_Common.m_sWindow.m_eSaveWindowPos = WINSIZEMODE_DEF;		// ƒEƒBƒ“ƒhƒEˆÊ’uŒÅ’èEŒp³
+		//	2004.05.13 Moca ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ä½ç½®
+		m_pShareData->m_Common.m_sWindow.m_eSaveWindowPos = WINSIZEMODE_DEF;		// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ä½ç½®å›ºå®šãƒ»ç¶™æ‰¿
 		m_pShareData->m_Common.m_sWindow.m_nWinPosX = CW_USEDEFAULT;
 		m_pShareData->m_Common.m_sWindow.m_nWinPosY = 0;
 
-		m_pShareData->m_Common.m_sGeneral.m_bUseTaskTray = FALSE;				/* ƒ^ƒXƒNƒgƒŒƒC‚ÌƒAƒCƒRƒ“‚ğg‚¤ */
+		m_pShareData->m_Common.m_sGeneral.m_bUseTaskTray = FALSE;				/* ã‚¿ã‚¹ã‚¯ãƒˆãƒ¬ã‚¤ã®ã‚¢ã‚¤ã‚³ãƒ³ã‚’ä½¿ã† */
 #ifdef _DEBUG
-		m_pShareData->m_Common.m_sGeneral.m_bStayTaskTray = FALSE;				/* ƒ^ƒXƒNƒgƒŒƒC‚ÌƒAƒCƒRƒ“‚ğí’“ */
+		m_pShareData->m_Common.m_sGeneral.m_bStayTaskTray = FALSE;				/* ã‚¿ã‚¹ã‚¯ãƒˆãƒ¬ã‚¤ã®ã‚¢ã‚¤ã‚³ãƒ³ã‚’å¸¸é§ */
 #else
-		m_pShareData->m_Common.m_sGeneral.m_bStayTaskTray = TRUE;				/* ƒ^ƒXƒNƒgƒŒƒC‚ÌƒAƒCƒRƒ“‚ğí’“ */
+		m_pShareData->m_Common.m_sGeneral.m_bStayTaskTray = TRUE;				/* ã‚¿ã‚¹ã‚¯ãƒˆãƒ¬ã‚¤ã®ã‚¢ã‚¤ã‚³ãƒ³ã‚’å¸¸é§ */
 #endif
-		m_pShareData->m_Common.m_sGeneral.m_wTrayMenuHotKeyCode = L'Z';		/* ƒ^ƒXƒNƒgƒŒƒC¶ƒNƒŠƒbƒNƒƒjƒ…[ ƒL[ */
-		m_pShareData->m_Common.m_sGeneral.m_wTrayMenuHotKeyMods = HOTKEYF_ALT | HOTKEYF_CONTROL;	/* ƒ^ƒXƒNƒgƒŒƒC¶ƒNƒŠƒbƒNƒƒjƒ…[ ƒL[ */
-		m_pShareData->m_Common.m_sEdit.m_bUseOLE_DragDrop = TRUE;			/* OLE‚É‚æ‚éƒhƒ‰ƒbƒO & ƒhƒƒbƒv‚ğg‚¤ */
-		m_pShareData->m_Common.m_sEdit.m_bUseOLE_DropSource = TRUE;			/* OLE‚É‚æ‚éƒhƒ‰ƒbƒOŒ³‚É‚·‚é‚© */
-		m_pShareData->m_Common.m_sGeneral.m_bDispExitingDialog = FALSE;		/* I—¹ƒ_ƒCƒAƒƒO‚ğ•\¦‚·‚é */
-		m_pShareData->m_Common.m_sEdit.m_bSelectClickedURL = TRUE;			/* URL‚ªƒNƒŠƒbƒN‚³‚ê‚½‚ç‘I‘ğ‚·‚é‚© */
-//		m_pShareData->m_Common.m_bRulerDisp = TRUE;					/* ƒ‹[ƒ‰[•\¦ */
-		m_pShareData->m_Common.m_sWindow.m_nRulerHeight = 13;					/* ƒ‹[ƒ‰[‚Ì‚‚³ */
-		m_pShareData->m_Common.m_sWindow.m_nRulerBottomSpace = 0;				/* ƒ‹[ƒ‰[‚ÆƒeƒLƒXƒg‚ÌŒ„ŠÔ */
-		m_pShareData->m_Common.m_sWindow.m_nRulerType = 0;					/* ƒ‹[ƒ‰[‚Ìƒ^ƒCƒv */
+		m_pShareData->m_Common.m_sGeneral.m_wTrayMenuHotKeyCode = L'Z';		/* ã‚¿ã‚¹ã‚¯ãƒˆãƒ¬ã‚¤å·¦ã‚¯ãƒªãƒƒã‚¯ãƒ¡ãƒ‹ãƒ¥ãƒ¼ ã‚­ãƒ¼ */
+		m_pShareData->m_Common.m_sGeneral.m_wTrayMenuHotKeyMods = HOTKEYF_ALT | HOTKEYF_CONTROL;	/* ã‚¿ã‚¹ã‚¯ãƒˆãƒ¬ã‚¤å·¦ã‚¯ãƒªãƒƒã‚¯ãƒ¡ãƒ‹ãƒ¥ãƒ¼ ã‚­ãƒ¼ */
+		m_pShareData->m_Common.m_sEdit.m_bUseOLE_DragDrop = TRUE;			/* OLEã«ã‚ˆã‚‹ãƒ‰ãƒ©ãƒƒã‚° & ãƒ‰ãƒ­ãƒƒãƒ—ã‚’ä½¿ã† */
+		m_pShareData->m_Common.m_sEdit.m_bUseOLE_DropSource = TRUE;			/* OLEã«ã‚ˆã‚‹ãƒ‰ãƒ©ãƒƒã‚°å…ƒã«ã™ã‚‹ã‹ */
+		m_pShareData->m_Common.m_sGeneral.m_bDispExitingDialog = FALSE;		/* çµ‚äº†ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’è¡¨ç¤ºã™ã‚‹ */
+		m_pShareData->m_Common.m_sEdit.m_bSelectClickedURL = TRUE;			/* URLãŒã‚¯ãƒªãƒƒã‚¯ã•ã‚ŒãŸã‚‰é¸æŠã™ã‚‹ã‹ */
+//		m_pShareData->m_Common.m_bRulerDisp = TRUE;					/* ãƒ«ãƒ¼ãƒ©ãƒ¼è¡¨ç¤º */
+		m_pShareData->m_Common.m_sWindow.m_nRulerHeight = 13;					/* ãƒ«ãƒ¼ãƒ©ãƒ¼ã®é«˜ã• */
+		m_pShareData->m_Common.m_sWindow.m_nRulerBottomSpace = 0;				/* ãƒ«ãƒ¼ãƒ©ãƒ¼ã¨ãƒ†ã‚­ã‚¹ãƒˆã®éš™é–“ */
+		m_pShareData->m_Common.m_sWindow.m_nRulerType = 0;					/* ãƒ«ãƒ¼ãƒ©ãƒ¼ã®ã‚¿ã‚¤ãƒ— */
 		//	Sep. 18, 2002 genta
-		m_pShareData->m_Common.m_sWindow.m_nLineNumRightSpace = 0;			/* s”Ô†‚Ì‰E‚ÌŒ„ŠÔ */
-		m_pShareData->m_Common.m_sWindow.m_nVertLineOffset = -1;			// 2005.11.10 Moca w’èŒ…cü
-		m_pShareData->m_Common.m_sWindow.m_bUseCompatibleBMP = TRUE;		// 2007.09.09 Moca ‰æ–ÊƒLƒƒƒbƒVƒ…‚ğg‚¤	// 2009.06.09 ryoji FALSE->TRUE
-		m_pShareData->m_Common.m_sEdit.m_bCopyAndDisablSelection = TRUE;	/* ƒRƒs[‚µ‚½‚ç‘I‘ğ‰ğœ */
-		m_pShareData->m_Common.m_sEdit.m_bEnableNoSelectCopy = TRUE;		/* ‘I‘ğ‚È‚µ‚ÅƒRƒs[‚ğ‰Â”\‚É‚·‚é */	// 2007.11.18 ryoji
-		m_pShareData->m_Common.m_sEdit.m_bEnableLineModePaste = true;		/* ƒ‰ƒCƒ“ƒ‚[ƒh“\‚è•t‚¯‚ğ‰Â”\‚É‚·‚é */	// 2007.10.08 ryoji
-		m_pShareData->m_Common.m_sCompare.m_bCompareAndTileHorz = TRUE;		/* •¶‘”äŠrŒãA¶‰E‚É•À‚×‚Ä•\¦ */
-		m_pShareData->m_Common.m_sEdit.m_bConvertEOLPaste = false;			/* ‰üsƒR[ƒh‚ğ•ÏŠ·‚µ‚Ä“\‚è•t‚¯‚é */	// 2009.02.28 salarm
+		m_pShareData->m_Common.m_sWindow.m_nLineNumRightSpace = 0;			/* è¡Œç•ªå·ã®å³ã®éš™é–“ */
+		m_pShareData->m_Common.m_sWindow.m_nVertLineOffset = -1;			// 2005.11.10 Moca æŒ‡å®šæ¡ç¸¦ç·š
+		m_pShareData->m_Common.m_sWindow.m_bUseCompatibleBMP = TRUE;		// 2007.09.09 Moca ç”»é¢ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚’ä½¿ã†	// 2009.06.09 ryoji FALSE->TRUE
+		m_pShareData->m_Common.m_sEdit.m_bCopyAndDisablSelection = TRUE;	/* ã‚³ãƒ”ãƒ¼ã—ãŸã‚‰é¸æŠè§£é™¤ */
+		m_pShareData->m_Common.m_sEdit.m_bEnableNoSelectCopy = TRUE;		/* é¸æŠãªã—ã§ã‚³ãƒ”ãƒ¼ã‚’å¯èƒ½ã«ã™ã‚‹ */	// 2007.11.18 ryoji
+		m_pShareData->m_Common.m_sEdit.m_bEnableLineModePaste = true;		/* ãƒ©ã‚¤ãƒ³ãƒ¢ãƒ¼ãƒ‰è²¼ã‚Šä»˜ã‘ã‚’å¯èƒ½ã«ã™ã‚‹ */	// 2007.10.08 ryoji
+		m_pShareData->m_Common.m_sCompare.m_bCompareAndTileHorz = TRUE;		/* æ–‡æ›¸æ¯”è¼ƒå¾Œã€å·¦å³ã«ä¸¦ã¹ã¦è¡¨ç¤º */
+		m_pShareData->m_Common.m_sEdit.m_bConvertEOLPaste = false;			/* æ”¹è¡Œã‚³ãƒ¼ãƒ‰ã‚’å¤‰æ›ã—ã¦è²¼ã‚Šä»˜ã‘ã‚‹ */	// 2009.02.28 salarm
 
-		//[ƒtƒ@ƒCƒ‹]ƒ^ƒu
+		//[ãƒ•ã‚¡ã‚¤ãƒ«]ã‚¿ãƒ–
 		{
-			//ƒtƒ@ƒCƒ‹‚Ì”r‘¼§Œä
-			m_pShareData->m_Common.m_sFile.m_nFileShareMode = SHAREMODE_NOT_EXCLUSIVE;			// ƒtƒ@ƒCƒ‹‚Ì”r‘¼§Œäƒ‚[ƒh
-			m_pShareData->m_Common.m_sFile.m_bCheckFileTimeStamp = true;			// XV‚ÌŠÄ‹
-			m_pShareData->m_Common.m_sFile.m_nAutoloadDelay = 0;					// ©“®“Ç’x‰„
-			m_pShareData->m_Common.m_sFile.m_bUneditableIfUnwritable = true;		// ã‘‚«‹Ö~ŒŸo‚Í•ÒW‹Ö~‚É‚·‚é
+			//ãƒ•ã‚¡ã‚¤ãƒ«ã®æ’ä»–åˆ¶å¾¡
+			m_pShareData->m_Common.m_sFile.m_nFileShareMode = SHAREMODE_NOT_EXCLUSIVE;			// ãƒ•ã‚¡ã‚¤ãƒ«ã®æ’ä»–åˆ¶å¾¡ãƒ¢ãƒ¼ãƒ‰
+			m_pShareData->m_Common.m_sFile.m_bCheckFileTimeStamp = true;			// æ›´æ–°ã®ç›£è¦–
+			m_pShareData->m_Common.m_sFile.m_nAutoloadDelay = 0;					// è‡ªå‹•èª­è¾¼æ™‚é…å»¶
+			m_pShareData->m_Common.m_sFile.m_bUneditableIfUnwritable = true;		// ä¸Šæ›¸ãç¦æ­¢æ¤œå‡ºæ™‚ã¯ç·¨é›†ç¦æ­¢ã«ã™ã‚‹
 
-			//ƒtƒ@ƒCƒ‹‚Ì•Û‘¶
-			m_pShareData->m_Common.m_sFile.m_bEnableUnmodifiedOverwrite = false;	// –³•ÏX‚Å‚àã‘‚«‚·‚é‚©
+			//ãƒ•ã‚¡ã‚¤ãƒ«ã®ä¿å­˜
+			m_pShareData->m_Common.m_sFile.m_bEnableUnmodifiedOverwrite = false;	// ç„¡å¤‰æ›´ã§ã‚‚ä¸Šæ›¸ãã™ã‚‹ã‹
 
-			// u–¼‘O‚ğ•t‚¯‚Ä•Û‘¶v‚Åƒtƒ@ƒCƒ‹‚Ìí—Ş‚ª[ƒ†[ƒUw’è]‚Ì‚Æ‚«‚Ìƒtƒ@ƒCƒ‹ˆê——•\¦	//ƒtƒ@ƒCƒ‹•Û‘¶ƒ_ƒCƒAƒƒO‚ÌƒtƒBƒ‹ƒ^İ’è	// 2006.11.16 ryoji
-			m_pShareData->m_Common.m_sFile.m_bNoFilterSaveNew = true;		// V‹K‚©‚ç•Û‘¶‚Í‘Sƒtƒ@ƒCƒ‹•\¦
-			m_pShareData->m_Common.m_sFile.m_bNoFilterSaveFile = true;		// V‹KˆÈŠO‚©‚ç•Û‘¶‚Í‘Sƒtƒ@ƒCƒ‹•\¦
+			// ã€Œåå‰ã‚’ä»˜ã‘ã¦ä¿å­˜ã€ã§ãƒ•ã‚¡ã‚¤ãƒ«ã®ç¨®é¡ãŒ[ãƒ¦ãƒ¼ã‚¶æŒ‡å®š]ã®ã¨ãã®ãƒ•ã‚¡ã‚¤ãƒ«ä¸€è¦§è¡¨ç¤º	//ãƒ•ã‚¡ã‚¤ãƒ«ä¿å­˜ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®ãƒ•ã‚£ãƒ«ã‚¿è¨­å®š	// 2006.11.16 ryoji
+			m_pShareData->m_Common.m_sFile.m_bNoFilterSaveNew = true;		// æ–°è¦ã‹ã‚‰ä¿å­˜æ™‚ã¯å…¨ãƒ•ã‚¡ã‚¤ãƒ«è¡¨ç¤º
+			m_pShareData->m_Common.m_sFile.m_bNoFilterSaveFile = true;		// æ–°è¦ä»¥å¤–ã‹ã‚‰ä¿å­˜æ™‚ã¯å…¨ãƒ•ã‚¡ã‚¤ãƒ«è¡¨ç¤º
 
-			//ƒtƒ@ƒCƒ‹ƒI[ƒvƒ“
-			m_pShareData->m_Common.m_sFile.m_bDropFileAndClose = false;		// ƒtƒ@ƒCƒ‹‚ğƒhƒƒbƒv‚µ‚½‚Æ‚«‚Í•Â‚¶‚ÄŠJ‚­
-			m_pShareData->m_Common.m_sFile.m_nDropFileNumMax = 8;			// ˆê“x‚Éƒhƒƒbƒv‰Â”\‚Èƒtƒ@ƒCƒ‹”
-			m_pShareData->m_Common.m_sFile.m_bRestoreCurPosition = true;	// ƒJ[ƒ\ƒ‹ˆÊ’u•œŒ³	//	Oct. 27, 2000 genta
-			m_pShareData->m_Common.m_sFile.m_bRestoreBookmarks = true;		// ƒuƒbƒNƒ}[ƒN•œŒ³	//2002.01.16 hor
-			m_pShareData->m_Common.m_sFile.m_bAutoMIMEdecode = false;		// ƒtƒ@ƒCƒ‹“Ç‚İ‚İ‚ÉMIME‚ÌƒfƒR[ƒh‚ğs‚¤‚©	//Jul. 13, 2001 JEPRO
-			m_pShareData->m_Common.m_sFile.m_bQueryIfCodeChange = true;		// ‘O‰ñ‚ÆˆÙ‚È‚é•¶šƒR[ƒh‚Ì‚É–â‚¢‡‚í‚¹‚ğs‚¤‚©	Oct. 03, 2004 genta
-			m_pShareData->m_Common.m_sFile.m_bAlertIfFileNotExist = false;	// ŠJ‚±‚¤‚Æ‚µ‚½ƒtƒ@ƒCƒ‹‚ª‘¶İ‚µ‚È‚¢‚Æ‚«Œx‚·‚é	Oct. 09, 2004 genta
-			m_pShareData->m_Common.m_sFile.m_bAlertIfLargeFile = false;		// ŠJ‚±‚¤‚Æ‚µ‚½ƒtƒ@ƒCƒ‹‚ª‘å‚«‚¢ê‡‚ÉŒx‚·‚é
-			m_pShareData->m_Common.m_sFile.m_nAlertFileSize = 10;			// Œx‚ğn‚ß‚éƒtƒ@ƒCƒ‹ƒTƒCƒYiMB’PˆÊj
+			//ãƒ•ã‚¡ã‚¤ãƒ«ã‚ªãƒ¼ãƒ—ãƒ³
+			m_pShareData->m_Common.m_sFile.m_bDropFileAndClose = false;		// ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ãƒ‰ãƒ­ãƒƒãƒ—ã—ãŸã¨ãã¯é–‰ã˜ã¦é–‹ã
+			m_pShareData->m_Common.m_sFile.m_nDropFileNumMax = 8;			// ä¸€åº¦ã«ãƒ‰ãƒ­ãƒƒãƒ—å¯èƒ½ãªãƒ•ã‚¡ã‚¤ãƒ«æ•°
+			m_pShareData->m_Common.m_sFile.m_bRestoreCurPosition = true;	// ã‚«ãƒ¼ã‚½ãƒ«ä½ç½®å¾©å…ƒ	//	Oct. 27, 2000 genta
+			m_pShareData->m_Common.m_sFile.m_bRestoreBookmarks = true;		// ãƒ–ãƒƒã‚¯ãƒãƒ¼ã‚¯å¾©å…ƒ	//2002.01.16 hor
+			m_pShareData->m_Common.m_sFile.m_bAutoMIMEdecode = false;		// ãƒ•ã‚¡ã‚¤ãƒ«èª­ã¿è¾¼ã¿æ™‚ã«MIMEã®ãƒ‡ã‚³ãƒ¼ãƒ‰ã‚’è¡Œã†ã‹	//Jul. 13, 2001 JEPRO
+			m_pShareData->m_Common.m_sFile.m_bQueryIfCodeChange = true;		// å‰å›ã¨ç•°ãªã‚‹æ–‡å­—ã‚³ãƒ¼ãƒ‰ã®æ™‚ã«å•ã„åˆã‚ã›ã‚’è¡Œã†ã‹	Oct. 03, 2004 genta
+			m_pShareData->m_Common.m_sFile.m_bAlertIfFileNotExist = false;	// é–‹ã“ã†ã¨ã—ãŸãƒ•ã‚¡ã‚¤ãƒ«ãŒå­˜åœ¨ã—ãªã„ã¨ãè­¦å‘Šã™ã‚‹	Oct. 09, 2004 genta
+			m_pShareData->m_Common.m_sFile.m_bAlertIfLargeFile = false;		// é–‹ã“ã†ã¨ã—ãŸãƒ•ã‚¡ã‚¤ãƒ«ãŒå¤§ãã„å ´åˆã«è­¦å‘Šã™ã‚‹
+			m_pShareData->m_Common.m_sFile.m_nAlertFileSize = 10;			// è­¦å‘Šã‚’å§‹ã‚ã‚‹ãƒ•ã‚¡ã‚¤ãƒ«ã‚µã‚¤ã‚ºï¼ˆMBå˜ä½ï¼‰
 		}
 
-		//[ŒŸõ]ƒ^ƒu
+		//[æ¤œç´¢]ã‚¿ãƒ–
 		{
-			m_pShareData->m_Common.m_sSearch.m_sSearchOption.Reset();			// ŒŸõƒIƒvƒVƒ‡ƒ“
+			m_pShareData->m_Common.m_sSearch.m_sSearchOption.Reset();			// æ¤œç´¢ã‚ªãƒ—ã‚·ãƒ§ãƒ³
 
-			m_pShareData->m_Common.m_sSearch.m_bCaretTextForSearch = false;		/* ƒJ[ƒ\ƒ‹ˆÊ’u‚Ì•¶š—ñ‚ğƒfƒtƒHƒ‹ƒg‚ÌŒŸõ•¶š—ñ‚É‚·‚é */
+			m_pShareData->m_Common.m_sSearch.m_bCaretTextForSearch = false;		/* ã‚«ãƒ¼ã‚½ãƒ«ä½ç½®ã®æ–‡å­—åˆ—ã‚’ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®æ¤œç´¢æ–‡å­—åˆ—ã«ã™ã‚‹ */
 			m_pShareData->m_Common.m_sSearch.m_bInheritKeyOtherView = true;
-			m_pShareData->m_Common.m_sSearch.m_szRegexpLib[0] =_T('\0');		/* 2007.08.12 genta ³‹K•\Œ»DLL */
+			m_pShareData->m_Common.m_sSearch.m_szRegexpLib[0] =_T('\0');		/* 2007.08.12 genta æ­£è¦è¡¨ç¾DLL */
 
-			m_pShareData->m_Common.m_sSearch.m_bNOTIFYNOTFOUND = TRUE;			/* ŒŸõ^’uŠ·  Œ©‚Â‚©‚ç‚È‚¢‚Æ‚«ƒƒbƒZ[ƒW‚ğ•\¦ */
+			m_pShareData->m_Common.m_sSearch.m_bNOTIFYNOTFOUND = TRUE;			/* æ¤œç´¢ï¼ç½®æ›  è¦‹ã¤ã‹ã‚‰ãªã„ã¨ããƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’è¡¨ç¤º */
 			m_pShareData->m_Common.m_sSearch.m_sSearchOption.bLoHiCase = true;
 
 			m_pShareData->m_sSearchOptionForFindDialog.bLoHiCase = true;
-			m_pShareData->m_Common.m_sSearch.m_bSearchAll = FALSE;				/* ŒŸõ^’uŠ·^ƒuƒbƒNƒ}[ƒN  æ“ªi––”öj‚©‚çÄŒŸõ 2002.01.26 hor */
-			m_pShareData->m_Common.m_sSearch.m_bAutoCloseDlgFind = TRUE;		/* ŒŸõƒ_ƒCƒAƒƒO‚ğ©“®“I‚É•Â‚¶‚é */
+			m_pShareData->m_Common.m_sSearch.m_bSearchAll = FALSE;				/* æ¤œç´¢ï¼ç½®æ›ï¼ãƒ–ãƒƒã‚¯ãƒãƒ¼ã‚¯  å…ˆé ­ï¼ˆæœ«å°¾ï¼‰ã‹ã‚‰å†æ¤œç´¢ 2002.01.26 hor */
+			m_pShareData->m_Common.m_sSearch.m_bAutoCloseDlgFind = TRUE;		/* æ¤œç´¢ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’è‡ªå‹•çš„ã«é–‰ã˜ã‚‹ */
 
 			m_pShareData->m_sSearchOptionForReplaceDialog.bLoHiCase = true;
-			m_pShareData->m_Common.m_sSearch.m_bAutoCloseDlgReplace = TRUE;		/* ’uŠ· ƒ_ƒCƒAƒƒO‚ğ©“®“I‚É•Â‚¶‚é */
-			m_pShareData->m_Common.m_sSearch.m_bConsecutiveAll = 0;				// u‚·‚×‚Ä’uŠ·v‚Í’uŠ·‚ÌŒJ•Ô‚µ	// 2007.01.16 ryoji
-			m_pShareData->m_Common.m_sSearch.m_bSelectedArea = FALSE;			// ‘I‘ğ”ÍˆÍ“à’uŠ·
+			m_pShareData->m_Common.m_sSearch.m_bAutoCloseDlgReplace = TRUE;		/* ç½®æ› ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’è‡ªå‹•çš„ã«é–‰ã˜ã‚‹ */
+			m_pShareData->m_Common.m_sSearch.m_bConsecutiveAll = 0;				// ã€Œã™ã¹ã¦ç½®æ›ã€ã¯ç½®æ›ã®ç¹°è¿”ã—	// 2007.01.16 ryoji
+			m_pShareData->m_Common.m_sSearch.m_bSelectedArea = FALSE;			// é¸æŠç¯„å›²å†…ç½®æ›
 
 			m_pShareData->m_sSearchOptionForGrepDialog.bLoHiCase = true;
-			m_pShareData->m_Common.m_sSearch.m_bGrepExitConfirm = FALSE;		/* Grepƒ‚[ƒh‚Å•Û‘¶Šm”F‚·‚é‚© */
-			m_pShareData->m_Common.m_sSearch.m_bGrepRealTimeView = TRUE;		/* Grep: Œ‹‰Ê‚ÌƒŠƒAƒ‹ƒ^ƒCƒ€•\¦ */
+			m_pShareData->m_Common.m_sSearch.m_bGrepExitConfirm = FALSE;		/* Grepãƒ¢ãƒ¼ãƒ‰ã§ä¿å­˜ç¢ºèªã™ã‚‹ã‹ */
+			m_pShareData->m_Common.m_sSearch.m_bGrepRealTimeView = TRUE;		/* Grep: çµæœã®ãƒªã‚¢ãƒ«ã‚¿ã‚¤ãƒ è¡¨ç¤º */
 
-			m_pShareData->m_Common.m_sSearch.m_bGrepSubFolder = TRUE;			/* Grep: ƒTƒuƒtƒHƒ‹ƒ_‚àŒŸõ */
-			m_pShareData->m_Common.m_sSearch.m_bGrepOutputLine = TRUE;			/* Grep: s‚ğo—Í‚·‚é‚©ŠY“–•”•ª‚¾‚¯o—Í‚·‚é‚© */
-			m_pShareData->m_Common.m_sSearch.m_nGrepOutputStyle = 1;			/* Grep: o—ÍŒ`® */
-			m_pShareData->m_Common.m_sSearch.m_bGrepDefaultFolder = true;		/* Grep: ƒtƒHƒ‹ƒ_‚Ì‰Šú’l‚ğƒJƒŒƒ“ƒgƒtƒHƒ‹ƒ_‚É‚·‚é */
-			m_pShareData->m_Common.m_sSearch.m_nGrepCharSet = CODE_AUTODETECT;	/* Grep: •¶šƒR[ƒhƒZƒbƒg */
+			m_pShareData->m_Common.m_sSearch.m_bGrepSubFolder = TRUE;			/* Grep: ã‚µãƒ–ãƒ•ã‚©ãƒ«ãƒ€ã‚‚æ¤œç´¢ */
+			m_pShareData->m_Common.m_sSearch.m_bGrepOutputLine = TRUE;			/* Grep: è¡Œã‚’å‡ºåŠ›ã™ã‚‹ã‹è©²å½“éƒ¨åˆ†ã ã‘å‡ºåŠ›ã™ã‚‹ã‹ */
+			m_pShareData->m_Common.m_sSearch.m_nGrepOutputStyle = 1;			/* Grep: å‡ºåŠ›å½¢å¼ */
+			m_pShareData->m_Common.m_sSearch.m_bGrepDefaultFolder = true;		/* Grep: ãƒ•ã‚©ãƒ«ãƒ€ã®åˆæœŸå€¤ã‚’ã‚«ãƒ¬ãƒ³ãƒˆãƒ•ã‚©ãƒ«ãƒ€ã«ã™ã‚‹ */
+			m_pShareData->m_Common.m_sSearch.m_nGrepCharSet = CODE_AUTODETECT;	/* Grep: æ–‡å­—ã‚³ãƒ¼ãƒ‰ã‚»ãƒƒãƒˆ */
 
-			m_pShareData->m_Common.m_sSearch.m_bGTJW_RETURN = TRUE;				/* ƒGƒ“ƒ^[ƒL[‚Åƒ^ƒOƒWƒƒƒ“ƒv */
-			m_pShareData->m_Common.m_sSearch.m_bGTJW_LDBLCLK = TRUE;			/* ƒ_ƒuƒ‹ƒNƒŠƒbƒN‚Åƒ^ƒOƒWƒƒƒ“ƒv */
+			m_pShareData->m_Common.m_sSearch.m_bGTJW_RETURN = TRUE;				/* ã‚¨ãƒ³ã‚¿ãƒ¼ã‚­ãƒ¼ã§ã‚¿ã‚°ã‚¸ãƒ£ãƒ³ãƒ— */
+			m_pShareData->m_Common.m_sSearch.m_bGTJW_LDBLCLK = TRUE;			/* ãƒ€ãƒ–ãƒ«ã‚¯ãƒªãƒƒã‚¯ã§ã‚¿ã‚°ã‚¸ãƒ£ãƒ³ãƒ— */
 		}
 
-		m_pShareData->m_Common.m_sEdit.m_bNotOverWriteCRLF = TRUE;			/* ‰üs‚Íã‘‚«‚µ‚È‚¢ */
-		m_pShareData->m_Common.m_sEdit.m_bOverWriteFixMode = false;			// •¶š•‚É‡‚í‚¹‚ÄƒXƒy[ƒX‚ğ‹l‚ß‚é
-		::SetRect( &m_pShareData->m_Common.m_sOthers.m_rcOpenDialog, 0, 0, 0, 0 );	/* uŠJ‚­vƒ_ƒCƒAƒƒO‚ÌƒTƒCƒY‚ÆˆÊ’u */
+		m_pShareData->m_Common.m_sEdit.m_bNotOverWriteCRLF = TRUE;			/* æ”¹è¡Œã¯ä¸Šæ›¸ãã—ãªã„ */
+		m_pShareData->m_Common.m_sEdit.m_bOverWriteFixMode = false;			// æ–‡å­—å¹…ã«åˆã‚ã›ã¦ã‚¹ãƒšãƒ¼ã‚¹ã‚’è©°ã‚ã‚‹
+		::SetRect( &m_pShareData->m_Common.m_sOthers.m_rcOpenDialog, 0, 0, 0, 0 );	/* ã€Œé–‹ãã€ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®ã‚µã‚¤ã‚ºã¨ä½ç½® */
 		::SetRect( &m_pShareData->m_Common.m_sOthers.m_rcCompareDialog, 0, 0, 0, 0 );
 		::SetRect( &m_pShareData->m_Common.m_sOthers.m_rcDiffDialog, 0, 0, 0, 0 );
 		::SetRect( &m_pShareData->m_Common.m_sOthers.m_rcFavoriteDialog, 0, 0, 0, 0 );
 		::SetRect( &m_pShareData->m_Common.m_sOthers.m_rcTagJumpDialog, 0, 0, 0, 0 );
 		m_pShareData->m_Common.m_sEdit.m_eOpenDialogDir = OPENDIALOGDIR_CUR;
 		auto_strcpy(m_pShareData->m_Common.m_sEdit.m_OpenDialogSelDir, _T("%Personal%\\"));
-		m_pShareData->m_Common.m_sWindow.m_bScrollBarHorz = TRUE;				/* …•½ƒXƒNƒ[ƒ‹ƒo[‚ğg‚¤ */
-		m_pShareData->m_Common.m_sOutline.m_bAutoCloseDlgFuncList = TRUE;		/* ƒAƒEƒgƒ‰ƒCƒ“ ƒ_ƒCƒAƒƒO‚ğ©“®“I‚É•Â‚¶‚é */	//Nov. 18, 2000 JEPRO TRUE¨FALSE ‚É•ÏX
-		m_pShareData->m_Common.m_sEdit.m_bAutoColumnPaste = TRUE;			/* ‹éŒ`ƒRƒs[‚ÌƒeƒLƒXƒg‚Íí‚É‹éŒ`“\‚è•t‚¯ */
-		m_pShareData->m_Common.m_sGeneral.m_bNoCaretMoveByActivation = FALSE;	/* ƒ}ƒEƒXƒNƒŠƒbƒN‚É‚ÄƒAƒNƒeƒBƒx[ƒg‚³‚ê‚½‚ÍƒJ[ƒ\ƒ‹ˆÊ’u‚ğˆÚ“®‚µ‚È‚¢ 2007.10.02 nasukoji (add by genta) */
+		m_pShareData->m_Common.m_sWindow.m_bScrollBarHorz = TRUE;				/* æ°´å¹³ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ãƒãƒ¼ã‚’ä½¿ã† */
+		m_pShareData->m_Common.m_sOutline.m_bAutoCloseDlgFuncList = TRUE;		/* ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³ ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’è‡ªå‹•çš„ã«é–‰ã˜ã‚‹ */	//Nov. 18, 2000 JEPRO TRUEâ†’FALSE ã«å¤‰æ›´
+		m_pShareData->m_Common.m_sEdit.m_bAutoColumnPaste = TRUE;			/* çŸ©å½¢ã‚³ãƒ”ãƒ¼ã®ãƒ†ã‚­ã‚¹ãƒˆã¯å¸¸ã«çŸ©å½¢è²¼ã‚Šä»˜ã‘ */
+		m_pShareData->m_Common.m_sGeneral.m_bNoCaretMoveByActivation = FALSE;	/* ãƒã‚¦ã‚¹ã‚¯ãƒªãƒƒã‚¯ã«ã¦ã‚¢ã‚¯ãƒ†ã‚£ãƒ™ãƒ¼ãƒˆã•ã‚ŒãŸæ™‚ã¯ã‚«ãƒ¼ã‚½ãƒ«ä½ç½®ã‚’ç§»å‹•ã—ãªã„ 2007.10.02 nasukoji (add by genta) */
 
-		m_pShareData->m_Common.m_sHelper.m_bHokanKey_RETURN	= TRUE;			/* VK_RETURN •âŠ®Œˆ’èƒL[‚ª—LŒø/–³Œø */
-		m_pShareData->m_Common.m_sHelper.m_bHokanKey_TAB	= TRUE;			/* VK_TAB   •âŠ®Œˆ’èƒL[‚ª—LŒø/–³Œø */
-		m_pShareData->m_Common.m_sHelper.m_bHokanKey_RIGHT	= TRUE;			/* VK_RIGHT •âŠ®Œˆ’èƒL[‚ª—LŒø/–³Œø */
-		m_pShareData->m_Common.m_sHelper.m_bHokanKey_SPACE	= FALSE;		/* VK_SPACE •âŠ®Œˆ’èƒL[‚ª—LŒø/–³Œø */
+		m_pShareData->m_Common.m_sHelper.m_bHokanKey_RETURN	= TRUE;			/* VK_RETURN è£œå®Œæ±ºå®šã‚­ãƒ¼ãŒæœ‰åŠ¹/ç„¡åŠ¹ */
+		m_pShareData->m_Common.m_sHelper.m_bHokanKey_TAB	= TRUE;			/* VK_TAB   è£œå®Œæ±ºå®šã‚­ãƒ¼ãŒæœ‰åŠ¹/ç„¡åŠ¹ */
+		m_pShareData->m_Common.m_sHelper.m_bHokanKey_RIGHT	= TRUE;			/* VK_RIGHT è£œå®Œæ±ºå®šã‚­ãƒ¼ãŒæœ‰åŠ¹/ç„¡åŠ¹ */
+		m_pShareData->m_Common.m_sHelper.m_bHokanKey_SPACE	= FALSE;		/* VK_SPACE è£œå®Œæ±ºå®šã‚­ãƒ¼ãŒæœ‰åŠ¹/ç„¡åŠ¹ */
 
-		m_pShareData->m_Common.m_sOutline.m_nOutlineDockSet = 0;					/* ƒAƒEƒgƒ‰ƒCƒ“‰ğÍ‚ÌƒhƒbƒLƒ“ƒOˆÊ’uŒp³•û–@ */
-		m_pShareData->m_Common.m_sOutline.m_bOutlineDockSync = FALSE;				/* ƒAƒEƒgƒ‰ƒCƒ“‰ğÍ‚ÌƒhƒbƒLƒ“ƒOˆÊ’u‚ğ“¯Šú‚·‚é */
-		m_pShareData->m_Common.m_sOutline.m_bOutlineDockDisp = FALSE;				/* ƒAƒEƒgƒ‰ƒCƒ“‰ğÍ•\¦‚Ì—L–³ */
-		m_pShareData->m_Common.m_sOutline.m_eOutlineDockSide = DOCKSIDE_FLOAT;		/* ƒAƒEƒgƒ‰ƒCƒ“‰ğÍƒhƒbƒLƒ“ƒO”z’u */
-		m_pShareData->m_Common.m_sOutline.m_cxOutlineDockLeft		=	0;	// ƒAƒEƒgƒ‰ƒCƒ“‚Ì¶ƒhƒbƒLƒ“ƒO•
-		m_pShareData->m_Common.m_sOutline.m_cyOutlineDockTop		=	0;	// ƒAƒEƒgƒ‰ƒCƒ“‚ÌãƒhƒbƒLƒ“ƒO‚
-		m_pShareData->m_Common.m_sOutline.m_cxOutlineDockRight		=	0;	// ƒAƒEƒgƒ‰ƒCƒ“‚Ì‰EƒhƒbƒLƒ“ƒO•
-		m_pShareData->m_Common.m_sOutline.m_cyOutlineDockBottom		=	0;	// ƒAƒEƒgƒ‰ƒCƒ“‚Ì‰ºƒhƒbƒLƒ“ƒO‚
-		m_pShareData->m_Common.m_sOutline.m_bMarkUpBlankLineEnable	=	FALSE;	//ƒAƒEƒgƒ‰ƒCƒ“ƒ_ƒCƒAƒƒO‚ÅƒuƒbƒNƒ}[ƒN‚Ì‹ós‚ğ–³‹			2002.02.08 aroka,hor
-		m_pShareData->m_Common.m_sOutline.m_bFunclistSetFocusOnJump	=	FALSE;	//ƒAƒEƒgƒ‰ƒCƒ“ƒ_ƒCƒAƒƒO‚ÅƒWƒƒƒ“ƒv‚µ‚½‚çƒtƒH[ƒJƒX‚ğˆÚ‚·	2002.02.08 hor
+		m_pShareData->m_Common.m_sOutline.m_nOutlineDockSet = 0;					/* ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³è§£æã®ãƒ‰ãƒƒã‚­ãƒ³ã‚°ä½ç½®ç¶™æ‰¿æ–¹æ³• */
+		m_pShareData->m_Common.m_sOutline.m_bOutlineDockSync = FALSE;				/* ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³è§£æã®ãƒ‰ãƒƒã‚­ãƒ³ã‚°ä½ç½®ã‚’åŒæœŸã™ã‚‹ */
+		m_pShareData->m_Common.m_sOutline.m_bOutlineDockDisp = FALSE;				/* ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³è§£æè¡¨ç¤ºã®æœ‰ç„¡ */
+		m_pShareData->m_Common.m_sOutline.m_eOutlineDockSide = DOCKSIDE_FLOAT;		/* ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³è§£æãƒ‰ãƒƒã‚­ãƒ³ã‚°é…ç½® */
+		m_pShareData->m_Common.m_sOutline.m_cxOutlineDockLeft		=	0;	// ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³ã®å·¦ãƒ‰ãƒƒã‚­ãƒ³ã‚°å¹…
+		m_pShareData->m_Common.m_sOutline.m_cyOutlineDockTop		=	0;	// ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³ã®ä¸Šãƒ‰ãƒƒã‚­ãƒ³ã‚°é«˜
+		m_pShareData->m_Common.m_sOutline.m_cxOutlineDockRight		=	0;	// ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³ã®å³ãƒ‰ãƒƒã‚­ãƒ³ã‚°å¹…
+		m_pShareData->m_Common.m_sOutline.m_cyOutlineDockBottom		=	0;	// ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³ã®ä¸‹ãƒ‰ãƒƒã‚­ãƒ³ã‚°é«˜
+		m_pShareData->m_Common.m_sOutline.m_bMarkUpBlankLineEnable	=	FALSE;	//ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã§ãƒ–ãƒƒã‚¯ãƒãƒ¼ã‚¯ã®ç©ºè¡Œã‚’ç„¡è¦–			2002.02.08 aroka,hor
+		m_pShareData->m_Common.m_sOutline.m_bFunclistSetFocusOnJump	=	FALSE;	//ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã§ã‚¸ãƒ£ãƒ³ãƒ—ã—ãŸã‚‰ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã‚’ç§»ã™	2002.02.08 hor
 
 		/*
-			‘®w’èq‚ÌˆÓ–¡‚ÍWindows SDK‚ÌGetDateFormat(), GetTimeFormat()‚ğQÆ‚Ì‚±‚Æ
+			æ›¸å¼æŒ‡å®šå­ã®æ„å‘³ã¯Windows SDKã®GetDateFormat(), GetTimeFormat()ã‚’å‚ç…§ã®ã“ã¨
 		*/
 
-		m_pShareData->m_Common.m_sFormat.m_nDateFormatType = 0;	//“ú•t‘®‚Ìƒ^ƒCƒv
-		_tcscpy( m_pShareData->m_Common.m_sFormat.m_szDateFormat, _T("yyyy\'”N\'M\'Œ\'d\'“ú(\'dddd\')\'") );	//“ú•t‘®
-		m_pShareData->m_Common.m_sFormat.m_nTimeFormatType = 0;	//‘®‚Ìƒ^ƒCƒv
-		_tcscpy( m_pShareData->m_Common.m_sFormat.m_szTimeFormat, _T("tthh\'\'mm\'•ª\'ss\'•b\'")  );			//‘®
+		m_pShareData->m_Common.m_sFormat.m_nDateFormatType = 0;	//æ—¥ä»˜æ›¸å¼ã®ã‚¿ã‚¤ãƒ—
+		_tcscpy( m_pShareData->m_Common.m_sFormat.m_szDateFormat, _T("yyyy\'å¹´\'M\'æœˆ\'d\'æ—¥(\'dddd\')\'") );	//æ—¥ä»˜æ›¸å¼
+		m_pShareData->m_Common.m_sFormat.m_nTimeFormatType = 0;	//æ™‚åˆ»æ›¸å¼ã®ã‚¿ã‚¤ãƒ—
+		_tcscpy( m_pShareData->m_Common.m_sFormat.m_szTimeFormat, _T("tthh\'æ™‚\'mm\'åˆ†\'ss\'ç§’\'")  );			//æ™‚åˆ»æ›¸å¼
 
-		m_pShareData->m_Common.m_sWindow.m_bMenuIcon = TRUE;		/* ƒƒjƒ…[‚ÉƒAƒCƒRƒ“‚ğ•\¦‚·‚é */
+		m_pShareData->m_Common.m_sWindow.m_bMenuIcon = TRUE;		/* ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«ã‚¢ã‚¤ã‚³ãƒ³ã‚’è¡¨ç¤ºã™ã‚‹ */
 
-		m_pShareData->m_Common.m_sKeyBind.m_bCreateAccelTblEachWin = FALSE;	// ƒEƒBƒ“ƒhƒE–ˆ‚ÉƒAƒNƒZƒ‰ƒŒ[ƒ^ƒe[ƒuƒ‹‚ğì¬‚·‚é(Wine—p)	// 2009.08.15 nasukoji
+		m_pShareData->m_Common.m_sKeyBind.m_bCreateAccelTblEachWin = FALSE;	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦æ¯ã«ã‚¢ã‚¯ã‚»ãƒ©ãƒ¬ãƒ¼ã‚¿ãƒ†ãƒ¼ãƒ–ãƒ«ã‚’ä½œæˆã™ã‚‹(Wineç”¨)	// 2009.08.15 nasukoji
 
-		// [ƒXƒe[ƒ^ƒXƒo[]ƒ^ƒu
-		// •\¦•¶šƒR[ƒh‚Ìw’è		2008/6/21	Uchi
-		m_pShareData->m_Common.m_sStatusbar.m_bDispUniInSjis		= FALSE;	// SJIS‚Å•¶šƒR[ƒh’l‚ğUnicode‚Å•\¦‚·‚é
-		m_pShareData->m_Common.m_sStatusbar.m_bDispUniInJis			= FALSE;	// JIS‚Å•¶šƒR[ƒh’l‚ğUnicode‚Å•\¦‚·‚é
-		m_pShareData->m_Common.m_sStatusbar.m_bDispUniInEuc			= FALSE;	// EUC‚Å•¶šƒR[ƒh’l‚ğUnicode‚Å•\¦‚·‚é
-		m_pShareData->m_Common.m_sStatusbar.m_bDispUtf8Codepoint	= TRUE;		// UTF-8‚ğƒR[ƒhƒ|ƒCƒ“ƒg‚Å•\¦‚·‚é
-		m_pShareData->m_Common.m_sStatusbar.m_bDispSPCodepoint		= TRUE;		// ƒTƒƒQ[ƒgƒyƒA‚ğƒR[ƒhƒ|ƒCƒ“ƒg‚Å•\¦‚·‚é
-		m_pShareData->m_Common.m_sStatusbar.m_bDispSelCountByByte	= FALSE;	// ‘I‘ğ•¶š”‚ğ•¶š’PˆÊ‚Å‚Í‚È‚­ƒoƒCƒg’PˆÊ‚Å•\¦‚·‚é
+		// [ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ãƒãƒ¼]ã‚¿ãƒ–
+		// è¡¨ç¤ºæ–‡å­—ã‚³ãƒ¼ãƒ‰ã®æŒ‡å®š		2008/6/21	Uchi
+		m_pShareData->m_Common.m_sStatusbar.m_bDispUniInSjis		= FALSE;	// SJISã§æ–‡å­—ã‚³ãƒ¼ãƒ‰å€¤ã‚’Unicodeã§è¡¨ç¤ºã™ã‚‹
+		m_pShareData->m_Common.m_sStatusbar.m_bDispUniInJis			= FALSE;	// JISã§æ–‡å­—ã‚³ãƒ¼ãƒ‰å€¤ã‚’Unicodeã§è¡¨ç¤ºã™ã‚‹
+		m_pShareData->m_Common.m_sStatusbar.m_bDispUniInEuc			= FALSE;	// EUCã§æ–‡å­—ã‚³ãƒ¼ãƒ‰å€¤ã‚’Unicodeã§è¡¨ç¤ºã™ã‚‹
+		m_pShareData->m_Common.m_sStatusbar.m_bDispUtf8Codepoint	= TRUE;		// UTF-8ã‚’ã‚³ãƒ¼ãƒ‰ãƒã‚¤ãƒ³ãƒˆã§è¡¨ç¤ºã™ã‚‹
+		m_pShareData->m_Common.m_sStatusbar.m_bDispSPCodepoint		= TRUE;		// ã‚µãƒ­ã‚²ãƒ¼ãƒˆãƒšã‚¢ã‚’ã‚³ãƒ¼ãƒ‰ãƒã‚¤ãƒ³ãƒˆã§è¡¨ç¤ºã™ã‚‹
+		m_pShareData->m_Common.m_sStatusbar.m_bDispSelCountByByte	= FALSE;	// é¸æŠæ–‡å­—æ•°ã‚’æ–‡å­—å˜ä½ã§ã¯ãªããƒã‚¤ãƒˆå˜ä½ã§è¡¨ç¤ºã™ã‚‹
 
-		// [ƒƒCƒ“ƒƒjƒ…[]ƒ^ƒu
+		// [ãƒ¡ã‚¤ãƒ³ãƒ¡ãƒ‹ãƒ¥ãƒ¼]ã‚¿ãƒ–
 		{
 			CDataProfile	cProfile;
 			cProfile.SetReadingMode();
@@ -504,17 +504,17 @@ bool CShareData::InitShareData()
 		InitTypeConfigs( m_pShareData );
 		InitPopupMenu( m_pShareData );
 
-		//	Apr. 05, 2003 genta ƒEƒBƒ“ƒhƒEƒLƒƒƒvƒVƒ‡ƒ“‚Ì‰Šú’l
-		//	Aug. 16, 2003 genta $N(ƒtƒ@ƒCƒ‹–¼È—ª•\¦)‚ğƒfƒtƒHƒ‹ƒg‚É•ÏX
+		//	Apr. 05, 2003 genta ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚­ãƒ£ãƒ—ã‚·ãƒ§ãƒ³ã®åˆæœŸå€¤
+		//	Aug. 16, 2003 genta $N(ãƒ•ã‚¡ã‚¤ãƒ«åçœç•¥è¡¨ç¤º)ã‚’ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã«å¤‰æ›´
 		_tcscpy( m_pShareData->m_Common.m_sWindow.m_szWindowCaptionActive, 
-			_T("${w?$h$:ƒAƒEƒgƒvƒbƒg$:${I?$f$n$:$N$n$}$}${U?*$} -")
-			_T(" $A $V ${R?(ƒrƒ…[ƒ‚[ƒh)$:(ã‘‚«‹Ö~)$}${X?$:(”r‘¼:ã‘‚«‹Ö~)$:(”r‘¼:“Ç‚İ‘‚«‹Ö~)$}${M? yƒL[ƒ}ƒNƒ‚Ì‹L˜^’†z$}") );
+			_T("${w?$h$:ã‚¢ã‚¦ãƒˆãƒ—ãƒƒãƒˆ$:${I?$f$n$:$N$n$}$}${U?*$} -")
+			_T(" $A $V ${R?(ãƒ“ãƒ¥ãƒ¼ãƒ¢ãƒ¼ãƒ‰)$:(ä¸Šæ›¸ãç¦æ­¢)$}${X?$:(æ’ä»–:ä¸Šæ›¸ãç¦æ­¢)$:(æ’ä»–:èª­ã¿æ›¸ãç¦æ­¢)$}${M? ã€ã‚­ãƒ¼ãƒã‚¯ãƒ­ã®è¨˜éŒ²ä¸­ã€‘$}") );
 		_tcscpy( m_pShareData->m_Common.m_sWindow.m_szWindowCaptionInactive, 
-			_T("${w?$h$:ƒAƒEƒgƒvƒbƒg$:${I?$f$n$:$N$n$}$}${U?*$} -")
-			_T(" $A $V ${R?(ƒrƒ…[ƒ‚[ƒh)$:(ã‘‚«‹Ö~)$}${X?$:(”r‘¼:ã‘‚«‹Ö~)$:(”r‘¼:“Ç‚İ‘‚«‹Ö~)$}${M? yƒL[ƒ}ƒNƒ‚Ì‹L˜^’†z$}") );
+			_T("${w?$h$:ã‚¢ã‚¦ãƒˆãƒ—ãƒƒãƒˆ$:${I?$f$n$:$N$n$}$}${U?*$} -")
+			_T(" $A $V ${R?(ãƒ“ãƒ¥ãƒ¼ãƒ¢ãƒ¼ãƒ‰)$:(ä¸Šæ›¸ãç¦æ­¢)$}${X?$:(æ’ä»–:ä¸Šæ›¸ãç¦æ­¢)$:(æ’ä»–:èª­ã¿æ›¸ãç¦æ­¢)$}${M? ã€ã‚­ãƒ¼ãƒã‚¯ãƒ­ã®è¨˜éŒ²ä¸­ã€‘$}") );
 
 		//	From Here Sep. 14, 2001 genta
-		//	Macro“o˜^‚Ì‰Šú‰»
+		//	Macroç™»éŒ²ã®åˆæœŸåŒ–
 		MacroRec *mptr = m_pShareData->m_Common.m_sMacro.m_MacroTable;
 		for( int i = 0; i < MAX_CUSTMACRO; ++i, ++mptr ){
 			mptr->m_szName[0] = L'\0';
@@ -522,23 +522,23 @@ bool CShareData::InitShareData()
 			mptr->m_bReloadWhenExecute = false;
 		}
 		//	To Here Sep. 14, 2001 genta
-		m_pShareData->m_Common.m_sMacro.m_nMacroOnOpened = -1;	/* ƒI[ƒvƒ“Œã©“®Àsƒ}ƒNƒ”Ô† */	//@@@ 2006.09.01 ryoji
-		m_pShareData->m_Common.m_sMacro.m_nMacroOnTypeChanged = -1;	/* ƒ^ƒCƒv•ÏXŒã©“®Àsƒ}ƒNƒ”Ô† */	//@@@ 2006.09.01 ryoji
-		m_pShareData->m_Common.m_sMacro.m_nMacroOnSave = -1;	/* •Û‘¶‘O©“®Àsƒ}ƒNƒ”Ô† */	//@@@ 2006.09.01 ryoji
-		m_pShareData->m_Common.m_sMacro.m_nMacroCancelTimer = 10;	// ƒ}ƒNƒ’â~ƒ_ƒCƒAƒƒO•\¦‘Ò‚¿ŠÔ(•b)	// 2011.08.04 syat
+		m_pShareData->m_Common.m_sMacro.m_nMacroOnOpened = -1;	/* ã‚ªãƒ¼ãƒ—ãƒ³å¾Œè‡ªå‹•å®Ÿè¡Œãƒã‚¯ãƒ­ç•ªå· */	//@@@ 2006.09.01 ryoji
+		m_pShareData->m_Common.m_sMacro.m_nMacroOnTypeChanged = -1;	/* ã‚¿ã‚¤ãƒ—å¤‰æ›´å¾Œè‡ªå‹•å®Ÿè¡Œãƒã‚¯ãƒ­ç•ªå· */	//@@@ 2006.09.01 ryoji
+		m_pShareData->m_Common.m_sMacro.m_nMacroOnSave = -1;	/* ä¿å­˜å‰è‡ªå‹•å®Ÿè¡Œãƒã‚¯ãƒ­ç•ªå· */	//@@@ 2006.09.01 ryoji
+		m_pShareData->m_Common.m_sMacro.m_nMacroCancelTimer = 10;	// ãƒã‚¯ãƒ­åœæ­¢ãƒ€ã‚¤ã‚¢ãƒ­ã‚°è¡¨ç¤ºå¾…ã¡æ™‚é–“(ç§’)	// 2011.08.04 syat
 
-		// 2004/06/21 novice ƒ^ƒOƒWƒƒƒ“ƒv‹@”\’Ç‰Á
+		// 2004/06/21 novice ã‚¿ã‚°ã‚¸ãƒ£ãƒ³ãƒ—æ©Ÿèƒ½è¿½åŠ 
 		m_pShareData->m_sTagJump.m_TagJumpNum = 0;
-		// 2004.06.22 Moca ƒ^ƒOƒWƒƒƒ“ƒv‚Ìæ“ª
+		// 2004.06.22 Moca ã‚¿ã‚°ã‚¸ãƒ£ãƒ³ãƒ—ã®å…ˆé ­
 		m_pShareData->m_sTagJump.m_TagJumpTop = 0;
-		m_pShareData->m_nExecFlgOpt = 1;	/* ŠO•”ƒRƒ}ƒ“ƒhÀs‚Ìu•W€o—Í‚ğ“¾‚év */	// 2006.12.03 maru ƒIƒvƒVƒ‡ƒ“‚ÌŠg’£‚Ì‚½‚ß
-		m_pShareData->m_bLineNumIsCRLF_ForJump = true;	/* w’ès‚ÖƒWƒƒƒ“ƒv‚Ìu‰üs’PˆÊ‚Ìs”Ô†v‚©uÜ‚è•Ô‚µ’PˆÊ‚Ìs”Ô†v‚© */
+		m_pShareData->m_nExecFlgOpt = 1;	/* å¤–éƒ¨ã‚³ãƒãƒ³ãƒ‰å®Ÿè¡Œã®ã€Œæ¨™æº–å‡ºåŠ›ã‚’å¾—ã‚‹ã€ */	// 2006.12.03 maru ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®æ‹¡å¼µã®ãŸã‚
+		m_pShareData->m_bLineNumIsCRLF_ForJump = true;	/* æŒ‡å®šè¡Œã¸ã‚¸ãƒ£ãƒ³ãƒ—ã®ã€Œæ”¹è¡Œå˜ä½ã®è¡Œç•ªå·ã€ã‹ã€ŒæŠ˜ã‚Šè¿”ã—å˜ä½ã®è¡Œç•ªå·ã€ã‹ */
 
-		m_pShareData->m_nDiffFlgOpt = 0;	/* DIFF·•ª•\¦ */	//@@@ 2002.05.27 MIK
+		m_pShareData->m_nDiffFlgOpt = 0;	/* DIFFå·®åˆ†è¡¨ç¤º */	//@@@ 2002.05.27 MIK
 
-		m_pShareData->m_nTagsOpt = TAGS_OPTION_DEFAULT_TAG_MAKE_RECURSE;	/* TAGSƒIƒvƒVƒ‡ƒ“(ƒ`ƒFƒbƒN) */
+		m_pShareData->m_nTagsOpt = TAGS_OPTION_DEFAULT_TAG_MAKE_RECURSE;	/* TAGSã‚ªãƒ—ã‚·ãƒ§ãƒ³(ãƒã‚§ãƒƒã‚¯) */
 		_tcscpy( m_pShareData->m_szTagsCmdLine, _T("") );	/* CTAGS */	//@@@ 2003.05.12 MIK
-		//From Here 2005.04.03 MIK ƒL[ƒ[ƒhw’èƒ^ƒOƒWƒƒƒ“ƒv‚ÌHistory•ÛŠÇ
+		//From Here 2005.04.03 MIK ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰æŒ‡å®šã‚¿ã‚°ã‚¸ãƒ£ãƒ³ãƒ—ã®Historyä¿ç®¡
 		m_pShareData->m_sTagJump.m_aTagJumpKeywords.clear();
 		m_pShareData->m_sTagJump.m_bTagJumpICase = FALSE;
 		m_pShareData->m_sTagJump.m_bTagJumpAnyWhere = FALSE;
@@ -548,8 +548,8 @@ bool CShareData::InitShareData()
 			m_pShareData->m_dwCustColors[i] = RGB( 255, 255, 255 );
 		}
 	}else{
-		/* ƒIƒuƒWƒFƒNƒg‚ª‚·‚Å‚É‘¶İ‚·‚éê‡ */
-		/* ƒtƒ@ƒCƒ‹‚Ìƒrƒ…[‚ğ¤ ŒÄ‚Ño‚µ‘¤ƒvƒƒZƒX‚ÌƒAƒhƒŒƒX‹óŠÔ‚Éƒ}ƒbƒv‚µ‚Ü‚· */
+		/* ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒã™ã§ã«å­˜åœ¨ã™ã‚‹å ´åˆ */
+		/* ãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ“ãƒ¥ãƒ¼ã‚’ã€ å‘¼ã³å‡ºã—å´ãƒ—ãƒ­ã‚»ã‚¹ã®ã‚¢ãƒ‰ãƒ¬ã‚¹ç©ºé–“ã«ãƒãƒƒãƒ—ã—ã¾ã™ */
 		m_pShareData = (DLLSHAREDATA*)::MapViewOfFile(
 			m_hFileMap,
 			FILE_MAP_ALL_ACCESS,
@@ -564,8 +564,8 @@ bool CShareData::InitShareData()
 
 		//	From Here Oct. 27, 2000 genta
 		if( m_pShareData->m_vStructureVersion != uShareDataVersion ){
-			//	‚±‚Ì‹¤—Lƒf[ƒ^—Ìˆæ‚Íg‚¦‚È‚¢D
-			//	ƒnƒ“ƒhƒ‹‚ğ‰ğ•ú‚·‚é
+			//	ã“ã®å…±æœ‰ãƒ‡ãƒ¼ã‚¿é ˜åŸŸã¯ä½¿ãˆãªã„ï¼
+			//	ãƒãƒ³ãƒ‰ãƒ«ã‚’è§£æ”¾ã™ã‚‹
 			::UnmapViewOfFile( m_pShareData );
 			m_pShareData = NULL;
 			return false;
@@ -586,38 +586,38 @@ bool CShareData::InitShareData()
 
 
 /*!
-	@brief	w’èƒtƒ@ƒCƒ‹‚ªŠJ‚©‚ê‚Ä‚¢‚é‚©’²‚×‚é
+	@brief	æŒ‡å®šãƒ•ã‚¡ã‚¤ãƒ«ãŒé–‹ã‹ã‚Œã¦ã„ã‚‹ã‹èª¿ã¹ã‚‹
 	
-	w’è‚Ìƒtƒ@ƒCƒ‹‚ªŠJ‚©‚ê‚Ä‚¢‚éê‡‚ÍŠJ‚¢‚Ä‚¢‚éƒEƒBƒ“ƒhƒE‚Ìƒnƒ“ƒhƒ‹‚ğ•Ô‚·
+	æŒ‡å®šã®ãƒ•ã‚¡ã‚¤ãƒ«ãŒé–‹ã‹ã‚Œã¦ã„ã‚‹å ´åˆã¯é–‹ã„ã¦ã„ã‚‹ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ãƒãƒ³ãƒ‰ãƒ«ã‚’è¿”ã™
 
-	@retval	TRUE ‚·‚Å‚ÉŠJ‚¢‚Ä‚¢‚½
-	@retval	FALSE ŠJ‚¢‚Ä‚¢‚È‚©‚Á‚½
+	@retval	TRUE ã™ã§ã«é–‹ã„ã¦ã„ãŸ
+	@retval	FALSE é–‹ã„ã¦ã„ãªã‹ã£ãŸ
 */
 BOOL CShareData::IsPathOpened( const TCHAR* pszPath, HWND* phwndOwner )
 {
 	EditInfo*	pfi;
 	*phwndOwner = NULL;
 
-	//	2007.10.01 genta ‘Š‘ÎƒpƒX‚ğâ‘ÎƒpƒX‚É•ÏŠ·
-	//	•ÏŠ·‚µ‚È‚¢‚ÆIsPathOpened‚Å³‚µ‚¢Œ‹‰Ê‚ª“¾‚ç‚ê‚¸C
-	//	“¯ˆêƒtƒ@ƒCƒ‹‚ğ•¡”ŠJ‚­‚±‚Æ‚ª‚ ‚éD
+	//	2007.10.01 genta ç›¸å¯¾ãƒ‘ã‚¹ã‚’çµ¶å¯¾ãƒ‘ã‚¹ã«å¤‰æ›
+	//	å¤‰æ›ã—ãªã„ã¨IsPathOpenedã§æ­£ã—ã„çµæœãŒå¾—ã‚‰ã‚Œãšï¼Œ
+	//	åŒä¸€ãƒ•ã‚¡ã‚¤ãƒ«ã‚’è¤‡æ•°é–‹ãã“ã¨ãŒã‚ã‚‹ï¼
 	TCHAR	szBuf[_MAX_PATH];
 	if( GetLongFileName( pszPath, szBuf )){
 		pszPath = szBuf;
 	}
 
-	// Œ»İ‚Ì•ÒWƒEƒBƒ“ƒhƒE‚Ì”‚ğ’²‚×‚é
+	// ç¾åœ¨ã®ç·¨é›†ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®æ•°ã‚’èª¿ã¹ã‚‹
 	if( 0 == CAppNodeGroupHandle(0).GetEditorWindowsNum() ){
 		return FALSE;
 	}
 	
 	for( int i = 0; i < m_pShareData->m_sNodes.m_nEditArrNum; ++i ){
 		if( IsSakuraMainWindow( m_pShareData->m_sNodes.m_pEditArr[i].m_hWnd ) ){
-			// ƒgƒŒƒC‚©‚çƒGƒfƒBƒ^‚Ö‚Ì•ÒWƒtƒ@ƒCƒ‹–¼—v‹’Ê’m
+			// ãƒˆãƒ¬ã‚¤ã‹ã‚‰ã‚¨ãƒ‡ã‚£ã‚¿ã¸ã®ç·¨é›†ãƒ•ã‚¡ã‚¤ãƒ«åè¦æ±‚é€šçŸ¥
 			::SendMessageAny( m_pShareData->m_sNodes.m_pEditArr[i].m_hWnd, MYWM_GETFILEINFO, 1, 0 );
 			pfi = (EditInfo*)&m_pShareData->m_sWorkBuffer.m_EditInfo_MYWM_GETFILEINFO;
 
-			// “¯ˆêƒpƒX‚Ìƒtƒ@ƒCƒ‹‚ªŠù‚ÉŠJ‚©‚ê‚Ä‚¢‚é‚©
+			// åŒä¸€ãƒ‘ã‚¹ã®ãƒ•ã‚¡ã‚¤ãƒ«ãŒæ—¢ã«é–‹ã‹ã‚Œã¦ã„ã‚‹ã‹
 			if( 0 == _tcsicmp( pfi->m_szPath, pszPath ) ){
 				*phwndOwner = m_pShareData->m_sNodes.m_pEditArr[i].m_hWnd;
 				return TRUE;
@@ -628,28 +628,28 @@ BOOL CShareData::IsPathOpened( const TCHAR* pszPath, HWND* phwndOwner )
 }
 
 /*!
-	@brief	w’èƒtƒ@ƒCƒ‹‚ªŠJ‚©‚ê‚Ä‚¢‚é‚©’²‚×‚Â‚ÂA‘½dƒI[ƒvƒ“‚Ì•¶šƒR[ƒhÕ“Ë‚àŠm”F
+	@brief	æŒ‡å®šãƒ•ã‚¡ã‚¤ãƒ«ãŒé–‹ã‹ã‚Œã¦ã„ã‚‹ã‹èª¿ã¹ã¤ã¤ã€å¤šé‡ã‚ªãƒ¼ãƒ—ãƒ³æ™‚ã®æ–‡å­—ã‚³ãƒ¼ãƒ‰è¡çªã‚‚ç¢ºèª
 
-	‚à‚µ‚·‚Å‚ÉŠJ‚¢‚Ä‚¢‚ê‚ÎƒAƒNƒeƒBƒu‚É‚µ‚ÄAƒEƒBƒ“ƒhƒE‚Ìƒnƒ“ƒhƒ‹‚ğ•Ô‚·B
-	‚³‚ç‚ÉA•¶šƒR[ƒh‚ªˆÙ‚È‚é‚Æ‚«‚Ìƒ[ƒjƒ“ƒO‚àˆ—‚·‚éB
-	‚ ‚¿‚±‚¿‚ÉU‚ç‚Î‚Á‚½‘½dƒI[ƒvƒ“ˆ—‚ğWŒ‹‚³‚¹‚é‚Ì‚ª–Ú“IB
+	ã‚‚ã—ã™ã§ã«é–‹ã„ã¦ã„ã‚Œã°ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã«ã—ã¦ã€ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ãƒãƒ³ãƒ‰ãƒ«ã‚’è¿”ã™ã€‚
+	ã•ã‚‰ã«ã€æ–‡å­—ã‚³ãƒ¼ãƒ‰ãŒç•°ãªã‚‹ã¨ãã®ãƒ¯ãƒ¼ãƒ‹ãƒ³ã‚°ã‚‚å‡¦ç†ã™ã‚‹ã€‚
+	ã‚ã¡ã“ã¡ã«æ•£ã‚‰ã°ã£ãŸå¤šé‡ã‚ªãƒ¼ãƒ—ãƒ³å‡¦ç†ã‚’é›†çµã•ã›ã‚‹ã®ãŒç›®çš„ã€‚
 
-	@retval	ŠJ‚©‚ê‚Ä‚¢‚éê‡‚ÍŠJ‚¢‚Ä‚¢‚éƒEƒBƒ“ƒhƒE‚Ìƒnƒ“ƒhƒ‹
+	@retval	é–‹ã‹ã‚Œã¦ã„ã‚‹å ´åˆã¯é–‹ã„ã¦ã„ã‚‹ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ãƒãƒ³ãƒ‰ãƒ«
 
-	@note	CEditDoc::FileLoad‚Éæ—§‚Á‚ÄÀs‚³‚ê‚é‚±‚Æ‚à‚ ‚é‚ªA
-			CEditDoc::FileLoad‚©‚ç‚àÀs‚³‚ê‚é•K—v‚ª‚ ‚é‚±‚Æ‚É’ˆÓB
-			(ƒtƒHƒ‹ƒ_w’è‚Ìê‡‚âCEditDoc::FileLoad‚ª’¼ÚÀs‚³‚ê‚éê‡‚à‚ ‚é‚½‚ß)
+	@note	CEditDoc::FileLoadã«å…ˆç«‹ã£ã¦å®Ÿè¡Œã•ã‚Œã‚‹ã“ã¨ã‚‚ã‚ã‚‹ãŒã€
+			CEditDoc::FileLoadã‹ã‚‰ã‚‚å®Ÿè¡Œã•ã‚Œã‚‹å¿…è¦ãŒã‚ã‚‹ã“ã¨ã«æ³¨æ„ã€‚
+			(ãƒ•ã‚©ãƒ«ãƒ€æŒ‡å®šã®å ´åˆã‚„CEditDoc::FileLoadãŒç›´æ¥å®Ÿè¡Œã•ã‚Œã‚‹å ´åˆã‚‚ã‚ã‚‹ãŸã‚)
 
-	@retval	TRUE ‚·‚Å‚ÉŠJ‚¢‚Ä‚¢‚½
-	@retval	FALSE ŠJ‚¢‚Ä‚¢‚È‚©‚Á‚½
+	@retval	TRUE ã™ã§ã«é–‹ã„ã¦ã„ãŸ
+	@retval	FALSE é–‹ã„ã¦ã„ãªã‹ã£ãŸ
 
-	@date 2007.03.12 maru V‹Kì¬
+	@date 2007.03.12 maru æ–°è¦ä½œæˆ
 */
 BOOL CShareData::ActiveAlreadyOpenedWindow( const TCHAR* pszPath, HWND* phwndOwner, ECodeType nCharCode )
 {
 	if( IsPathOpened( pszPath, phwndOwner ) ){
 		
-		//•¶šƒR[ƒh‚Ìˆê’vŠm”F
+		//æ–‡å­—ã‚³ãƒ¼ãƒ‰ã®ä¸€è‡´ç¢ºèª
 		EditInfo*		pfi;
 		::SendMessageAny( *phwndOwner, MYWM_GETFILEINFO, 0, 0 );
 		pfi = (EditInfo*)&m_pShareData->m_sWorkBuffer.m_EditInfo_MYWM_GETFILEINFO;
@@ -660,11 +660,11 @@ BOOL CShareData::ActiveAlreadyOpenedWindow( const TCHAR* pszPath, HWND* phwndOwn
 			if(pszCodeNameCur && pszCodeNameNew){
 				if(nCharCode != pfi->m_nCharCode){
 					TopWarningMessage( *phwndOwner,
-						_T("%ts\n\n\nŠù‚ÉŠJ‚¢‚Ä‚¢‚éƒtƒ@ƒCƒ‹‚ğˆá‚¤•¶šƒR[ƒh‚ÅŠJ‚­ê‡‚ÍA\n")
-						_T("ƒtƒ@ƒCƒ‹ƒƒjƒ…[‚©‚çu•Â‚¶‚ÄŠJ‚­v‚ğg—p‚µ‚Ä‚­‚¾‚³‚¢B\n")
+						_T("%ts\n\n\næ—¢ã«é–‹ã„ã¦ã„ã‚‹ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é•ã†æ–‡å­—ã‚³ãƒ¼ãƒ‰ã§é–‹ãå ´åˆã¯ã€\n")
+						_T("ãƒ•ã‚¡ã‚¤ãƒ«ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‹ã‚‰ã€Œé–‰ã˜ã¦é–‹ãã€ã‚’ä½¿ç”¨ã—ã¦ãã ã•ã„ã€‚\n")
 						_T("\n")
-						_T("Œ»İ‚Ì•¶šƒR[ƒhƒZƒbƒg=[%ts]\n")
-						_T("V‚µ‚¢•¶šƒR[ƒhƒZƒbƒg=[%ts]"),
+						_T("ç¾åœ¨ã®æ–‡å­—ã‚³ãƒ¼ãƒ‰ã‚»ãƒƒãƒˆ=[%ts]\n")
+						_T("æ–°ã—ã„æ–‡å­—ã‚³ãƒ¼ãƒ‰ã‚»ãƒƒãƒˆ=[%ts]"),
 						pszPath,
 						pszCodeNameCur,
 						pszCodeNameNew
@@ -673,22 +673,22 @@ BOOL CShareData::ActiveAlreadyOpenedWindow( const TCHAR* pszPath, HWND* phwndOwn
 			}
 			else{
 				TopWarningMessage( *phwndOwner,
-					_T("%ts\n\n‘½dƒI[ƒvƒ“‚ÌŠm”F‚Å•s–¾‚È•¶šƒR[ƒh‚ªw’è‚³‚ê‚Ü‚µ‚½B\n")
+					_T("%ts\n\nå¤šé‡ã‚ªãƒ¼ãƒ—ãƒ³ã®ç¢ºèªã§ä¸æ˜ãªæ–‡å­—ã‚³ãƒ¼ãƒ‰ãŒæŒ‡å®šã•ã‚Œã¾ã—ãŸã€‚\n")
 					_T("\n")
-					_T("Œ»İ‚Ì•¶šƒR[ƒhƒZƒbƒg=%d [%ts]\nV‚µ‚¢•¶šƒR[ƒhƒZƒbƒg=%d [%ts]"),
+					_T("ç¾åœ¨ã®æ–‡å­—ã‚³ãƒ¼ãƒ‰ã‚»ãƒƒãƒˆ=%d [%ts]\næ–°ã—ã„æ–‡å­—ã‚³ãƒ¼ãƒ‰ã‚»ãƒƒãƒˆ=%d [%ts]"),
 					pszPath,
 					pfi->m_nCharCode,
-					NULL==pszCodeNameCur?_T("•s–¾"):pszCodeNameCur,
+					NULL==pszCodeNameCur?_T("ä¸æ˜"):pszCodeNameCur,
 					nCharCode,
-					NULL==pszCodeNameNew?_T("•s–¾"):pszCodeNameNew
+					NULL==pszCodeNameNew?_T("ä¸æ˜"):pszCodeNameNew
 				);
 			}
 		}
 
-		// ŠJ‚¢‚Ä‚¢‚éƒEƒBƒ“ƒhƒE‚ğƒAƒNƒeƒBƒu‚É‚·‚é
+		// é–‹ã„ã¦ã„ã‚‹ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã«ã™ã‚‹
 		ActivateFrameWindow( *phwndOwner );
 
-		// MRUƒŠƒXƒg‚Ö‚Ì“o˜^
+		// MRUãƒªã‚¹ãƒˆã¸ã®ç™»éŒ²
 		CMRUFile().Add( pfi );
 		return TRUE;
 	}
@@ -711,11 +711,11 @@ BOOL CShareData::ActiveAlreadyOpenedWindow( const TCHAR* pszPath, HWND* phwndOwn
 
 
 /*!
-	ƒAƒEƒgƒvƒbƒgƒEƒCƒ“ƒhƒE‚Éo—Í(‘®•t)
+	ã‚¢ã‚¦ãƒˆãƒ—ãƒƒãƒˆã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã«å‡ºåŠ›(æ›¸å¼ä»˜)
 
-	ƒAƒEƒgƒvƒbƒgƒEƒCƒ“ƒhƒE‚ª–³‚¯‚ê‚ÎƒI[ƒvƒ“‚·‚é
-	@param lpFmt [in] ‘®w’è•¶š—ñ(wchar_t”Å)
-	@date 2010.02.22 Moca auto_vsprintf‚©‚ç tchar_vsnwprintf_s ‚É•ÏX.’·‚·‚¬‚é‚Æ‚«‚ÍØ‚è‹l‚ß‚ç‚ê‚é
+	ã‚¢ã‚¦ãƒˆãƒ—ãƒƒãƒˆã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãŒç„¡ã‘ã‚Œã°ã‚ªãƒ¼ãƒ—ãƒ³ã™ã‚‹
+	@param lpFmt [in] æ›¸å¼æŒ‡å®šæ–‡å­—åˆ—(wchar_tç‰ˆ)
+	@date 2010.02.22 Moca auto_vsprintfã‹ã‚‰ tchar_vsnwprintf_s ã«å¤‰æ›´.é•·ã™ãã‚‹ã¨ãã¯åˆ‡ã‚Šè©°ã‚ã‚‰ã‚Œã‚‹
 */
 void CShareData::TraceOut( LPCTSTR lpFmt, ... )
 {
@@ -730,10 +730,10 @@ void CShareData::TraceOut( LPCTSTR lpFmt, ... )
 		to_wchar(lpFmt), argList );
 	va_end( argList );
 	if( -1 == ret ){
-		// Ø‚è‹l‚ß‚ç‚ê‚½
+		// åˆ‡ã‚Šè©°ã‚ã‚‰ã‚ŒãŸ
 		ret = auto_strlen( m_pShareData->m_sWorkBuffer.GetWorkBuffer<WCHAR>() );
 	}else if( ret < 0 ){
-		// •ÛŒìƒR[ƒh:ó‚¯‘¤‚ÍwParam¨size_t‚Å•„†‚È‚µ‚Ì‚½‚ß
+		// ä¿è­·ã‚³ãƒ¼ãƒ‰:å—ã‘å´ã¯wParamâ†’size_tã§ç¬¦å·ãªã—ã®ãŸã‚
 		ret = 0;
 	}
 	DWORD_PTR dwMsgResult;
@@ -742,13 +742,13 @@ void CShareData::TraceOut( LPCTSTR lpFmt, ... )
 }
 
 /*!
-	ƒAƒEƒgƒvƒbƒgƒEƒCƒ“ƒhƒE‚Éo—Í(•¶š—ñw’è)
+	ã‚¢ã‚¦ãƒˆãƒ—ãƒƒãƒˆã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã«å‡ºåŠ›(æ–‡å­—åˆ—æŒ‡å®š)
 
-	’·‚¢ê‡‚Í•ªŠ„‚µ‚Ä‘—‚é
-	ƒAƒEƒgƒvƒbƒgƒEƒCƒ“ƒhƒE‚ª–³‚¯‚ê‚ÎƒI[ƒvƒ“‚·‚é
-	@param  pStr  o—Í‚·‚é•¶š—ñ
-	@param  len   pStr‚Ì•¶š”(I’[NUL‚ğŠÜ‚Ü‚È‚¢) -1‚Å©“®ŒvZ
-	@date 2010.05.11 Moca Vİ
+	é•·ã„å ´åˆã¯åˆ†å‰²ã—ã¦é€ã‚‹
+	ã‚¢ã‚¦ãƒˆãƒ—ãƒƒãƒˆã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãŒç„¡ã‘ã‚Œã°ã‚ªãƒ¼ãƒ—ãƒ³ã™ã‚‹
+	@param  pStr  å‡ºåŠ›ã™ã‚‹æ–‡å­—åˆ—
+	@param  len   pStrã®æ–‡å­—æ•°(çµ‚ç«¯NULã‚’å«ã¾ãªã„) -1ã§è‡ªå‹•è¨ˆç®—
+	@date 2010.05.11 Moca æ–°è¨­
 */
 void CShareData::TraceOutString( const wchar_t* pStr, int len )
 {
@@ -758,25 +758,25 @@ void CShareData::TraceOutString( const wchar_t* pStr, int len )
 	if( -1 == len ){
 		len = wcslen(pStr);
 	}
-	// m_sWorkBuffer‚¬‚è‚¬‚è‚Å‚à–â‘è‚È‚¢‚¯‚ê‚ÇA”O‚Ì‚½‚ß\0I’[‚É‚·‚é‚½‚ß‚É—]—T‚ğ‚Æ‚é
-	// -1 ‚æ‚è 8,4ƒoƒCƒg‹«ŠE‚Ì‚Ù‚¤‚ªƒRƒs[‚ª‘‚¢‚Í‚¸‚È‚Ì‚ÅA-4‚É‚·‚é
+	// m_sWorkBufferãã‚Šãã‚Šã§ã‚‚å•é¡Œãªã„ã‘ã‚Œã©ã€å¿µã®ãŸã‚\0çµ‚ç«¯ã«ã™ã‚‹ãŸã‚ã«ä½™è£•ã‚’ã¨ã‚‹
+	// -1 ã‚ˆã‚Š 8,4ãƒã‚¤ãƒˆå¢ƒç•Œã®ã»ã†ãŒã‚³ãƒ”ãƒ¼ãŒæ—©ã„ã¯ãšãªã®ã§ã€-4ã«ã™ã‚‹
 	const int buffLen = (int)m_pShareData->m_sWorkBuffer.GetWorkBufferCount<WCHAR>() - 4;
 	wchar_t*  pOutBuffer = m_pShareData->m_sWorkBuffer.GetWorkBuffer<WCHAR>();
 	int outPos = 0;
 	if(0 == len){
-		// 0‚Ì‚Æ‚«‚Í‰½‚à’Ç‰Á‚µ‚È‚¢‚ªAƒJ[ƒ\ƒ‹ˆÚ“®‚ª”­¶‚·‚é
+		// 0ã®ã¨ãã¯ä½•ã‚‚è¿½åŠ ã—ãªã„ãŒã€ã‚«ãƒ¼ã‚½ãƒ«ç§»å‹•ãŒç™ºç”Ÿã™ã‚‹
 		pOutBuffer[0] = L'\0';
 		::SendMessage( m_pShareData->m_sHandles.m_hwndDebug, MYWM_ADDSTRINGLEN_W, 0, 0 );
 	}else{
 		while(outPos < len){
 			int outLen = buffLen;
 			if(len - outPos < buffLen){
-				// c‚è‘S•”
+				// æ®‹ã‚Šå…¨éƒ¨
 				outLen = len - outPos;
 			}
-			// ‚ ‚Ü‚è‚ª1•¶šˆÈã‚ ‚é
+			// ã‚ã¾ã‚ŠãŒ1æ–‡å­—ä»¥ä¸Šã‚ã‚‹
 			if( outPos + outLen < len ){
-				// CRLF(\r\n)‚ÆUTF-16‚ª•ª—£‚³‚ê‚È‚¢‚æ‚¤‚É
+				// CRLF(\r\n)ã¨UTF-16ãŒåˆ†é›¢ã•ã‚Œãªã„ã‚ˆã†ã«
 				if( (pStr[outPos + outLen - 1] == WCODE::CR && pStr[outPos + outLen] == WCODE::LF)
 					|| (IsUtf16SurrogHi( pStr[outPos + outLen - 1] ) && IsUtf16SurrogLow( pStr[outPos + outLen] )) ){
 					--outLen;
@@ -787,7 +787,7 @@ void CShareData::TraceOutString( const wchar_t* pStr, int len )
 			DWORD_PTR	dwMsgResult;
 			if( 0 == ::SendMessageTimeout( m_pShareData->m_sHandles.m_hwndDebug, MYWM_ADDSTRINGLEN_W, outLen, 0,
 				SMTO_NORMAL, 10000, &dwMsgResult ) ){
-				// ƒGƒ‰[‚©ƒ^ƒCƒ€ƒAƒEƒg
+				// ã‚¨ãƒ©ãƒ¼ã‹ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆ
 				break;
 			}
 			outPos += outLen;
@@ -796,11 +796,11 @@ void CShareData::TraceOutString( const wchar_t* pStr, int len )
 }
 
 /*
-	ƒfƒoƒbƒOƒEƒBƒ“ƒhƒE‚ğ•\¦
-	@param hwnd V‹KƒEƒBƒ“ƒhƒE‚Ì‚Æ‚«‚ÌƒfƒoƒbƒOƒEƒBƒ“ƒhƒE‚ÌŠ‘®ƒOƒ‹[ƒv
-	@param bAllwaysActive •\¦Ï‚İƒEƒBƒ“ƒhƒE‚Å‚àƒAƒNƒeƒBƒu‚É‚·‚é
-	@return true:•\¦‚Å‚«‚½B‚Ü‚½‚Í‚·‚Å‚É•\¦‚³‚ê‚Ä‚¢‚éB
-	@date 2010.05.11 Moca TraceOut‚©‚ç•ª—£
+	ãƒ‡ãƒãƒƒã‚°ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’è¡¨ç¤º
+	@param hwnd æ–°è¦ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ã¨ãã®ãƒ‡ãƒãƒƒã‚°ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®æ‰€å±ã‚°ãƒ«ãƒ¼ãƒ—
+	@param bAllwaysActive è¡¨ç¤ºæ¸ˆã¿ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã§ã‚‚ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã«ã™ã‚‹
+	@return true:è¡¨ç¤ºã§ããŸã€‚ã¾ãŸã¯ã™ã§ã«è¡¨ç¤ºã•ã‚Œã¦ã„ã‚‹ã€‚
+	@date 2010.05.11 Moca TraceOutã‹ã‚‰åˆ†é›¢
 */
 bool CShareData::OpenDebugWindow( HWND hwnd, bool bAllwaysActive )
 {
@@ -809,30 +809,30 @@ bool CShareData::OpenDebugWindow( HWND hwnd, bool bAllwaysActive )
 	|| !IsSakuraMainWindow( m_pShareData->m_sHandles.m_hwndDebug )
 	){
 		// 2007.06.26 ryoji
-		// ƒAƒEƒgƒvƒbƒgƒEƒBƒ“ƒhƒE‚ğì¬Œ³‚Æ“¯‚¶ƒOƒ‹[ƒv‚Éì¬‚·‚é‚½‚ß‚É m_hwndTraceOutSource ‚ğg‚Á‚Ä‚¢‚Ü‚·
-		// im_hwndTraceOutSource ‚Í CEditWnd::Create() ‚Å—\‚ßİ’èj
-		// ‚¿‚å‚Á‚Æ•sŠ†D‚¾‚¯‚ÇATraceOut() ‚Ìˆø”‚É‚¢‚¿‚¢‚¿‹N“®Œ³‚ğw’è‚·‚é‚Ì‚àDDD
-		// 2010.05.11 Moca m_hwndTraceOutSource‚ÍˆË‘R‚Æ‚µ‚Äg‚Á‚Ä‚¢‚Ü‚·‚ªˆø”‚É‚µ‚Ü‚µ‚½
+		// ã‚¢ã‚¦ãƒˆãƒ—ãƒƒãƒˆã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’ä½œæˆå…ƒã¨åŒã˜ã‚°ãƒ«ãƒ¼ãƒ—ã«ä½œæˆã™ã‚‹ãŸã‚ã« m_hwndTraceOutSource ã‚’ä½¿ã£ã¦ã„ã¾ã™
+		// ï¼ˆm_hwndTraceOutSource ã¯ CEditWnd::Create() ã§äºˆã‚è¨­å®šï¼‰
+		// ã¡ã‚‡ã£ã¨ä¸æ°å¥½ã ã‘ã©ã€TraceOut() ã®å¼•æ•°ã«ã„ã¡ã„ã¡èµ·å‹•å…ƒã‚’æŒ‡å®šã™ã‚‹ã®ã‚‚ï¼ï¼ï¼
+		// 2010.05.11 Moca m_hwndTraceOutSourceã¯ä¾ç„¶ã¨ã—ã¦ä½¿ã£ã¦ã„ã¾ã™ãŒå¼•æ•°ã«ã—ã¾ã—ãŸ
 		SLoadInfo sLoadInfo;
 		sLoadInfo.cFilePath = _T("");
 		// CODE_SJIS->CODE_UNICODE	2008/6/8 Uchi
-		// CODE_UNICODE->CODE_NONE	2010.05.11 Moca ƒfƒtƒHƒ‹ƒg•¶šƒR[ƒh‚Åİ’è‚Å‚«‚é‚æ‚¤‚É–³w’è‚É•ÏX
+		// CODE_UNICODE->CODE_NONE	2010.05.11 Moca ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆæ–‡å­—ã‚³ãƒ¼ãƒ‰ã§è¨­å®šã§ãã‚‹ã‚ˆã†ã«ç„¡æŒ‡å®šã«å¤‰æ›´
 		sLoadInfo.eCharCode = CODE_NONE;
 		sLoadInfo.bViewMode = false;
 		ret = CControlTray::OpenNewEditor( NULL, hwnd, sLoadInfo, _T("-DEBUGMODE"), true );
-		//	2001/06/23 N.Nakatani ‘‹‚ªo‚é‚Ü‚ÅƒEƒGƒCƒg‚ğ‚©‚¯‚é‚æ‚¤‚ÉC³
-		//ƒAƒEƒgƒvƒbƒgƒEƒCƒ“ƒhƒE‚ªo—ˆ‚é‚Ü‚Å5•b‚®‚ç‚¢‘Ò‚ÂB
-		//	Jun. 25, 2001 genta OpenNewEditor‚Ì“¯Šú‹@”\‚ğ—˜—p‚·‚é‚æ‚¤‚É•ÏX
-		bAllwaysActive = true; // V‚µ‚­ì‚Á‚½‚Æ‚«‚Íactive
+		//	2001/06/23 N.Nakatani çª“ãŒå‡ºã‚‹ã¾ã§ã‚¦ã‚¨ã‚¤ãƒˆã‚’ã‹ã‘ã‚‹ã‚ˆã†ã«ä¿®æ­£
+		//ã‚¢ã‚¦ãƒˆãƒ—ãƒƒãƒˆã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãŒå‡ºæ¥ã‚‹ã¾ã§5ç§’ãã‚‰ã„å¾…ã¤ã€‚
+		//	Jun. 25, 2001 genta OpenNewEditorã®åŒæœŸæ©Ÿèƒ½ã‚’åˆ©ç”¨ã™ã‚‹ã‚ˆã†ã«å¤‰æ›´
+		bAllwaysActive = true; // æ–°ã—ãä½œã£ãŸã¨ãã¯active
 	}
-	/* ŠJ‚¢‚Ä‚¢‚éƒEƒBƒ“ƒhƒE‚ğƒAƒNƒeƒBƒu‚É‚·‚é */
+	/* é–‹ã„ã¦ã„ã‚‹ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã«ã™ã‚‹ */
 	if(ret && bAllwaysActive){
 		ActivateFrameWindow( m_pShareData->m_sHandles.m_hwndDebug );
 	}
 	return ret;
 }
 
-/* iniƒtƒ@ƒCƒ‹‚Ì•Û‘¶æ‚ªƒ†[ƒU•Êİ’èƒtƒHƒ‹ƒ_‚©‚Ç‚¤‚© */	// 2007.05.25 ryoji
+/* iniãƒ•ã‚¡ã‚¤ãƒ«ã®ä¿å­˜å…ˆãŒãƒ¦ãƒ¼ã‚¶åˆ¥è¨­å®šãƒ•ã‚©ãƒ«ãƒ€ã‹ã©ã†ã‹ */	// 2007.05.25 ryoji
 BOOL CShareData::IsPrivateSettings( void ){
 	return m_pShareData->m_sFileNameManagement.m_IniFolder.m_bWritePrivate;
 }
@@ -841,30 +841,30 @@ BOOL CShareData::IsPrivateSettings( void ){
 
 /*
 	CShareData::CheckMRUandOPENFOLDERList
-	MRU‚ÆOPENFOLDERƒŠƒXƒg‚Ì‘¶İƒ`ƒFƒbƒN‚È‚Ç
-	‘¶İ‚µ‚È‚¢ƒtƒ@ƒCƒ‹‚âƒtƒHƒ‹ƒ_‚ÍMRU‚âOPENFOLDERƒŠƒXƒg‚©‚çíœ‚·‚é
+	MRUã¨OPENFOLDERãƒªã‚¹ãƒˆã®å­˜åœ¨ãƒã‚§ãƒƒã‚¯ãªã©
+	å­˜åœ¨ã—ãªã„ãƒ•ã‚¡ã‚¤ãƒ«ã‚„ãƒ•ã‚©ãƒ«ãƒ€ã¯MRUã‚„OPENFOLDERãƒªã‚¹ãƒˆã‹ã‚‰å‰Šé™¤ã™ã‚‹
 
-	@note Œ»İ‚Íg‚í‚ê‚Ä‚¢‚È‚¢‚æ‚¤‚¾B
+	@note ç¾åœ¨ã¯ä½¿ã‚ã‚Œã¦ã„ãªã„ã‚ˆã†ã ã€‚
 	@par History
-	2001.12.26 íœ‚µ‚½BiYAZAKIj
+	2001.12.26 å‰Šé™¤ã—ãŸã€‚ï¼ˆYAZAKIï¼‰
 	
 */
-/*!	idx‚Åw’è‚µ‚½ƒ}ƒNƒƒtƒ@ƒCƒ‹–¼iƒtƒ‹ƒpƒXj‚ğæ“¾‚·‚éD
+/*!	idxã§æŒ‡å®šã—ãŸãƒã‚¯ãƒ­ãƒ•ã‚¡ã‚¤ãƒ«åï¼ˆãƒ•ãƒ«ãƒ‘ã‚¹ï¼‰ã‚’å–å¾—ã™ã‚‹ï¼
 
-	@param pszPath [in]	ƒpƒX–¼‚Ìo—ÍæD’·‚³‚Ì‚İ‚ğ’m‚è‚½‚¢‚Æ‚«‚ÍNULL‚ğ“ü‚ê‚éD
-	@param idx [in]		ƒ}ƒNƒ”Ô†
-	@param nBufLen [in]	pszPath‚Åw’è‚³‚ê‚½ƒoƒbƒtƒ@‚Ìƒoƒbƒtƒ@ƒTƒCƒY
+	@param pszPath [in]	ãƒ‘ã‚¹åã®å‡ºåŠ›å…ˆï¼é•·ã•ã®ã¿ã‚’çŸ¥ã‚ŠãŸã„ã¨ãã¯NULLã‚’å…¥ã‚Œã‚‹ï¼
+	@param idx [in]		ãƒã‚¯ãƒ­ç•ªå·
+	@param nBufLen [in]	pszPathã§æŒ‡å®šã•ã‚ŒãŸãƒãƒƒãƒ•ã‚¡ã®ãƒãƒƒãƒ•ã‚¡ã‚µã‚¤ã‚º
 
-	@retval >0 : ƒpƒX–¼‚Ì’·‚³D
-	@retval  0 : ƒGƒ‰[C‚»‚Ìƒ}ƒNƒ‚Íg‚¦‚È‚¢Cƒtƒ@ƒCƒ‹–¼‚ªw’è‚³‚ê‚Ä‚¢‚È‚¢D
-	@retval <0 : ƒoƒbƒtƒ@•s‘«D•K—v‚Èƒoƒbƒtƒ@ƒTƒCƒY‚Í -(–ß‚è’l)+1
+	@retval >0 : ãƒ‘ã‚¹åã®é•·ã•ï¼
+	@retval  0 : ã‚¨ãƒ©ãƒ¼ï¼Œãã®ãƒã‚¯ãƒ­ã¯ä½¿ãˆãªã„ï¼Œãƒ•ã‚¡ã‚¤ãƒ«åãŒæŒ‡å®šã•ã‚Œã¦ã„ãªã„ï¼
+	@retval <0 : ãƒãƒƒãƒ•ã‚¡ä¸è¶³ï¼å¿…è¦ãªãƒãƒƒãƒ•ã‚¡ã‚µã‚¤ã‚ºã¯ -(æˆ»ã‚Šå€¤)+1
 
 	@author YAZAKI
-	@date 2003.06.08 Moca ƒ[ƒJƒ‹•Ï”‚Ö‚Ìƒ|ƒCƒ“ƒ^‚ğ•Ô‚³‚È‚¢‚æ‚¤‚Éd—l•ÏX
-	@date 2003.06.14 genta •¶š—ñ’·Cƒ|ƒCƒ“ƒ^‚Ìƒ`ƒFƒbƒN‚ğ’Ç‰Á
-	@date 2003.06.24 Moca idx‚ª-1‚Ì‚Æ‚«AƒL[ƒ}ƒNƒ‚Ìƒtƒ‹ƒpƒX‚ğ•Ô‚·.
+	@date 2003.06.08 Moca ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã¸ã®ãƒã‚¤ãƒ³ã‚¿ã‚’è¿”ã•ãªã„ã‚ˆã†ã«ä»•æ§˜å¤‰æ›´
+	@date 2003.06.14 genta æ–‡å­—åˆ—é•·ï¼Œãƒã‚¤ãƒ³ã‚¿ã®ãƒã‚§ãƒƒã‚¯ã‚’è¿½åŠ 
+	@date 2003.06.24 Moca idxãŒ-1ã®ã¨ãã€ã‚­ãƒ¼ãƒã‚¯ãƒ­ã®ãƒ•ãƒ«ãƒ‘ã‚¹ã‚’è¿”ã™.
 	
-	@note idx‚Í³Šm‚È‚à‚Ì‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢B(“à•”‚Å³“–«ƒ`ƒFƒbƒN‚ğs‚Á‚Ä‚¢‚È‚¢)
+	@note idxã¯æ­£ç¢ºãªã‚‚ã®ã§ãªã‘ã‚Œã°ãªã‚‰ãªã„ã€‚(å†…éƒ¨ã§æ­£å½“æ€§ãƒã‚§ãƒƒã‚¯ã‚’è¡Œã£ã¦ã„ãªã„)
 */
 int CShareData::GetMacroFilename( int idx, TCHAR *pszPath, int nBufLen )
 {
@@ -878,32 +878,32 @@ int CShareData::GetMacroFilename( int idx, TCHAR *pszPath, int nBufLen )
 	}else{
 		pszFile = m_pShareData->m_Common.m_sMacro.m_MacroTable[idx].m_szFile;
 	}
-	if( pszFile[0] == _T('\0') ){	//	ƒtƒ@ƒCƒ‹–¼‚ª–³‚¢
+	if( pszFile[0] == _T('\0') ){	//	ãƒ•ã‚¡ã‚¤ãƒ«åãŒç„¡ã„
 		if( pszPath != NULL ){
 			pszPath[0] = _T('\0');
 		}
 		return 0;
 	}
 	ptr = pszFile;
-	int nLen = _tcslen( ptr ); // Jul. 21, 2003 genta wcslen‘ÎÛ‚ªŒë‚Á‚Ä‚¢‚½‚½‚ßƒ}ƒNƒÀs‚ª‚Å‚«‚È‚¢
+	int nLen = _tcslen( ptr ); // Jul. 21, 2003 genta wcslenå¯¾è±¡ãŒèª¤ã£ã¦ã„ãŸãŸã‚ãƒã‚¯ãƒ­å®Ÿè¡ŒãŒã§ããªã„
 
-	if( !_IS_REL_PATH( pszFile )	// â‘ÎƒpƒX
-		|| m_pShareData->m_Common.m_sMacro.m_szMACROFOLDER[0] == _T('\0') ){	//	ƒtƒHƒ‹ƒ_w’è‚È‚µ
+	if( !_IS_REL_PATH( pszFile )	// çµ¶å¯¾ãƒ‘ã‚¹
+		|| m_pShareData->m_Common.m_sMacro.m_szMACROFOLDER[0] == _T('\0') ){	//	ãƒ•ã‚©ãƒ«ãƒ€æŒ‡å®šãªã—
 		if( pszPath == NULL || nBufLen <= nLen ){
 			return -nLen;
 		}
 		_tcscpy( pszPath, pszFile );
 		return nLen;
 	}
-	else {	//	ƒtƒHƒ‹ƒ_w’è‚ ‚è
-		//	‘Š‘ÎƒpƒX¨â‘ÎƒpƒX
+	else {	//	ãƒ•ã‚©ãƒ«ãƒ€æŒ‡å®šã‚ã‚Š
+		//	ç›¸å¯¾ãƒ‘ã‚¹â†’çµ¶å¯¾ãƒ‘ã‚¹
 		int nFolderSep = AddLastChar( m_pShareData->m_Common.m_sMacro.m_szMACROFOLDER, _countof2(m_pShareData->m_Common.m_sMacro.m_szMACROFOLDER), _T('\\') );
 		int nAllLen;
 		TCHAR *pszDir;
 		TCHAR szDir[_MAX_PATH + _countof2( m_pShareData->m_Common.m_sMacro.m_szMACROFOLDER )];
 
-		 // 2003.06.24 Moca ƒtƒHƒ‹ƒ_‚à‘Š‘ÎƒpƒX‚È‚çÀsƒtƒ@ƒCƒ‹‚©‚ç‚ÌƒpƒX
-		// 2007.05.19 ryoji ‘Š‘ÎƒpƒX‚Íİ’èƒtƒ@ƒCƒ‹‚©‚ç‚ÌƒpƒX‚ğ—Dæ
+		 // 2003.06.24 Moca ãƒ•ã‚©ãƒ«ãƒ€ã‚‚ç›¸å¯¾ãƒ‘ã‚¹ãªã‚‰å®Ÿè¡Œãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ã®ãƒ‘ã‚¹
+		// 2007.05.19 ryoji ç›¸å¯¾ãƒ‘ã‚¹ã¯è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ã®ãƒ‘ã‚¹ã‚’å„ªå…ˆ
 		if( _IS_REL_PATH( m_pShareData->m_Common.m_sMacro.m_szMACROFOLDER ) ){
 			GetInidirOrExedir( szDir, m_pShareData->m_Common.m_sMacro.m_szMACROFOLDER );
 			pszDir = szDir;
@@ -928,8 +928,8 @@ int CShareData::GetMacroFilename( int idx, TCHAR *pszPath, int nBufLen )
 
 }
 
-/*!	idx‚Åw’è‚µ‚½ƒ}ƒNƒ‚Ìm_bReloadWhenExecute‚ğæ“¾‚·‚éB
-	idx‚Í³Šm‚È‚à‚Ì‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢B
+/*!	idxã§æŒ‡å®šã—ãŸãƒã‚¯ãƒ­ã®m_bReloadWhenExecuteã‚’å–å¾—ã™ã‚‹ã€‚
+	idxã¯æ­£ç¢ºãªã‚‚ã®ã§ãªã‘ã‚Œã°ãªã‚‰ãªã„ã€‚
 	YAZAKI
 */
 bool CShareData::BeReloadWhenExecuteMacro( int idx )
@@ -941,19 +941,19 @@ bool CShareData::BeReloadWhenExecuteMacro( int idx )
 }
 
 
-/*!	@brief ƒ^ƒCƒv•Êİ’è‚Ì‰Šú‰»ˆ—
+/*!	@brief ã‚¿ã‚¤ãƒ—åˆ¥è¨­å®šã®åˆæœŸåŒ–å‡¦ç†
 
-	@date 2005.01.30 genta CShareData::Init()‚©‚ç•ª—£D
+	@date 2005.01.30 genta CShareData::Init()ã‹ã‚‰åˆ†é›¢ï¼
 */
 void CShareData::InitTypeConfigs(DLLSHAREDATA* pShareData)
 {
 	CType* table[] = {
-		new CType_Basis(),	//Šî–{
-		new CType_Text(),	//ƒeƒLƒXƒg
+		new CType_Basis(),	//åŸºæœ¬
+		new CType_Text(),	//ãƒ†ã‚­ã‚¹ãƒˆ
 		new CType_Cpp(),	//C/C++
 		new CType_Java(),	//Java
-		new CType_Asm(),	//ƒAƒZƒ“ƒuƒ‰
-		new CType_Ini(),	//İ’èƒtƒ@ƒCƒ‹
+		new CType_Asm(),	//ã‚¢ã‚»ãƒ³ãƒ–ãƒ©
+		new CType_Ini(),	//è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«
 		new CType_Markdown(),	//Markdown
 	};
 	assert( 1 <= MAX_TYPES );
@@ -962,7 +962,7 @@ void CShareData::InitTypeConfigs(DLLSHAREDATA* pShareData)
 		SAFE_DELETE(table[i]);
 	}
 
-	// MAX_TYPES ‚Ü‚Å‚Ì‰Šúİ’è
+	// MAX_TYPES ã¾ã§ã®åˆæœŸè¨­å®š
 	if( _countof(table) < MAX_TYPES ){
 		CType_Other other;
 		for( int i = _countof(table); i < MAX_TYPES; i++ ){
@@ -972,7 +972,7 @@ void CShareData::InitTypeConfigs(DLLSHAREDATA* pShareData)
 }
 
 
-/*!	@brief ‹­’²ƒL[ƒ[ƒh‚Ì‰Šú‰»ˆ—
+/*!	@brief å¼·èª¿ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ã®åˆæœŸåŒ–å‡¦ç†
  *
  */
 void CShareData::InitKeyword(DLLSHAREDATA* pShareData)
@@ -981,7 +981,7 @@ void CShareData::InitKeyword(DLLSHAREDATA* pShareData)
 }
 
 
-/*!	@brief ƒfƒtƒHƒ‹ƒgƒL[Š„‚è“–‚Ä‚Ì‰Šú‰»ˆ—
+/*!	@brief ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚­ãƒ¼å‰²ã‚Šå½“ã¦ã®åˆæœŸåŒ–å‡¦ç†
  *
  */
 bool CShareData::InitKeyAssign(DLLSHAREDATA* pShareData)
@@ -990,53 +990,53 @@ bool CShareData::InitKeyAssign(DLLSHAREDATA* pShareData)
 }
 
 
-/*!	@brief ‹¤—Lƒƒ‚ƒŠ‰Šú‰»/ƒc[ƒ‹ƒo[
+/*!	@brief å…±æœ‰ãƒ¡ãƒ¢ãƒªåˆæœŸåŒ–/ãƒ„ãƒ¼ãƒ«ãƒãƒ¼
 
-	ƒc[ƒ‹ƒo[ŠÖ˜A‚Ì‰Šú‰»ˆ—
+	ãƒ„ãƒ¼ãƒ«ãƒãƒ¼é–¢é€£ã®åˆæœŸåŒ–å‡¦ç†
 
 	@author genta
-	@date 2005.01.30 genta CShareData::Init()‚©‚ç•ª—£D
-		ˆê‚Â‚¸‚Âİ’è‚µ‚È‚¢‚Åˆê‹C‚Éƒf[ƒ^“]‘—‚·‚é‚æ‚¤‚ÉD
+	@date 2005.01.30 genta CShareData::Init()ã‹ã‚‰åˆ†é›¢ï¼
+		ä¸€ã¤ãšã¤è¨­å®šã—ãªã„ã§ä¸€æ°—ã«ãƒ‡ãƒ¼ã‚¿è»¢é€ã™ã‚‹ã‚ˆã†ã«ï¼
 */
 void CShareData::InitToolButtons(DLLSHAREDATA* pShareData)
 {
-		/* ƒc[ƒ‹ƒo[ƒ{ƒ^ƒ“\‘¢‘Ì */
+		/* ãƒ„ãƒ¼ãƒ«ãƒãƒ¼ãƒœã‚¿ãƒ³æ§‹é€ ä½“ */
 //Sept. 16, 2000 JEPRO
-//	CShareData_new2.cpp‚Å‚Å‚«‚é‚¾‚¯Œn‚²‚Æ‚ÉW‚Ü‚é‚æ‚¤‚ÉƒAƒCƒRƒ“‚Ì‡”Ô‚ğ‘å•‚É“ü‚ê‘Ö‚¦‚½‚Ì‚É”º‚¢ˆÈ‰º‚Ì‰Šúİ’è’l‚ğ•ÏX
-	// 2010.06.26 Moca “à—e‚Í CMenuDrawer::FindToolbarNoFromCommandId ‚Ì–ß‚è’l‚Å‚·
+//	CShareData_new2.cppã§ã§ãã‚‹ã ã‘ç³»ã”ã¨ã«é›†ã¾ã‚‹ã‚ˆã†ã«ã‚¢ã‚¤ã‚³ãƒ³ã®é †ç•ªã‚’å¤§å¹…ã«å…¥ã‚Œæ›¿ãˆãŸã®ã«ä¼´ã„ä»¥ä¸‹ã®åˆæœŸè¨­å®šå€¤ã‚’å¤‰æ›´
+	// 2010.06.26 Moca å†…å®¹ã¯ CMenuDrawer::FindToolbarNoFromCommandId ã®æˆ»ã‚Šå€¤ã§ã™
 	static const int DEFAULT_TOOL_BUTTONS[] = {
-		1,	//V‹Kì¬
-		25,		//ƒtƒ@ƒCƒ‹‚ğŠJ‚­(DropDown)
-		3,		//ã‘‚«•Û‘¶		//Sept. 16, 2000 JEPRO 3¨11‚É•ÏX	//Oct. 25, 2000 11¨3
-		4,		//–¼‘O‚ğ•t‚¯‚Ä•Û‘¶	//Sept. 19, 2000 JEPRO ’Ç‰Á
+		1,	//æ–°è¦ä½œæˆ
+		25,		//ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã(DropDown)
+		3,		//ä¸Šæ›¸ãä¿å­˜		//Sept. 16, 2000 JEPRO 3â†’11ã«å¤‰æ›´	//Oct. 25, 2000 11â†’3
+		4,		//åå‰ã‚’ä»˜ã‘ã¦ä¿å­˜	//Sept. 19, 2000 JEPRO è¿½åŠ 
 		0,
 
-		33,	//Œ³‚É–ß‚·(Undo)	//Sept. 16, 2000 JEPRO 7¨19‚É•ÏX	//Oct. 25, 2000 19¨33
-		34,	//‚â‚è’¼‚µ(Redo)	//Sept. 16, 2000 JEPRO 8¨20‚É•ÏX	//Oct. 25, 2000 20¨34
+		33,	//å…ƒã«æˆ»ã™(Undo)	//Sept. 16, 2000 JEPRO 7â†’19ã«å¤‰æ›´	//Oct. 25, 2000 19â†’33
+		34,	//ã‚„ã‚Šç›´ã—(Redo)	//Sept. 16, 2000 JEPRO 8â†’20ã«å¤‰æ›´	//Oct. 25, 2000 20â†’34
 		0,
 
-		87,	//ˆÚ“®—š—ğ: ‘O‚Ö	//Dec. 24, 2000 JEPRO ’Ç‰Á
-		88,	//ˆÚ“®—š—ğ: Ÿ‚Ö	//Dec. 24, 2000 JEPRO ’Ç‰Á
+		87,	//ç§»å‹•å±¥æ­´: å‰ã¸	//Dec. 24, 2000 JEPRO è¿½åŠ 
+		88,	//ç§»å‹•å±¥æ­´: æ¬¡ã¸	//Dec. 24, 2000 JEPRO è¿½åŠ 
 		0,
 
-		225,	//ŒŸõ		//Sept. 16, 2000 JEPRO 9¨22‚É•ÏX	//Oct. 25, 2000 22¨225
-		226,	//Ÿ‚ğŒŸõ	//Sept. 16, 2000 JEPRO 16¨23‚É•ÏX	//Oct. 25, 2000 23¨226
-		227,	//‘O‚ğŒŸõ	//Sept. 16, 2000 JEPRO 17¨24‚É•ÏX	//Oct. 25, 2000 24¨227
-		228,	//’uŠ·		// Oct. 7, 2000 JEPRO ’Ç‰Á
-		229,	//ŒŸõƒ}[ƒN‚ÌƒNƒŠƒA	//Sept. 16, 2000 JEPRO 41¨25‚É•ÏX(Oct. 7, 2000 25¨26)	//Oct. 25, 2000 25¨229
-		230,	//Grep		//Sept. 16, 2000 JEPRO 14¨31‚É•ÏX	//Oct. 25, 2000 31¨230
-		232,	//ƒAƒEƒgƒ‰ƒCƒ“‰ğÍ	//Dec. 24, 2000 JEPRO ’Ç‰Á
+		225,	//æ¤œç´¢		//Sept. 16, 2000 JEPRO 9â†’22ã«å¤‰æ›´	//Oct. 25, 2000 22â†’225
+		226,	//æ¬¡ã‚’æ¤œç´¢	//Sept. 16, 2000 JEPRO 16â†’23ã«å¤‰æ›´	//Oct. 25, 2000 23â†’226
+		227,	//å‰ã‚’æ¤œç´¢	//Sept. 16, 2000 JEPRO 17â†’24ã«å¤‰æ›´	//Oct. 25, 2000 24â†’227
+		228,	//ç½®æ›		// Oct. 7, 2000 JEPRO è¿½åŠ 
+		229,	//æ¤œç´¢ãƒãƒ¼ã‚¯ã®ã‚¯ãƒªã‚¢	//Sept. 16, 2000 JEPRO 41â†’25ã«å¤‰æ›´(Oct. 7, 2000 25â†’26)	//Oct. 25, 2000 25â†’229
+		230,	//Grep		//Sept. 16, 2000 JEPRO 14â†’31ã«å¤‰æ›´	//Oct. 25, 2000 31â†’230
+		232,	//ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³è§£æ	//Dec. 24, 2000 JEPRO è¿½åŠ 
 		0,
 
-		264,	//ƒ^ƒCƒv•Êİ’èˆê——	//Sept. 16, 2000 JEPRO ’Ç‰Á
-		265,	//ƒ^ƒCƒv•Êİ’è		//Sept. 16, 2000 JEPRO 18¨36‚É•ÏX	//Oct. 25, 2000 36¨265
-		266,	//‹¤’Êİ’è			//Sept. 16, 2000 JEPRO 10¨37‚É•ÏX à–¾‚ğuİ’èƒvƒƒpƒeƒBƒV[ƒgv‚©‚ç•ÏX	//Oct. 25, 2000 37¨266
-		0,		//Oct. 8, 2000 jepro Ÿs‚Ì‚½‚ß‚É’Ç‰Á
-		346,	//ƒRƒ}ƒ“ƒhˆê——	//Oct. 8, 2000 JEPRO ’Ç‰Á
+		264,	//ã‚¿ã‚¤ãƒ—åˆ¥è¨­å®šä¸€è¦§	//Sept. 16, 2000 JEPRO è¿½åŠ 
+		265,	//ã‚¿ã‚¤ãƒ—åˆ¥è¨­å®š		//Sept. 16, 2000 JEPRO 18â†’36ã«å¤‰æ›´	//Oct. 25, 2000 36â†’265
+		266,	//å…±é€šè¨­å®š			//Sept. 16, 2000 JEPRO 10â†’37ã«å¤‰æ›´ èª¬æ˜ã‚’ã€Œè¨­å®šãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚·ãƒ¼ãƒˆã€ã‹ã‚‰å¤‰æ›´	//Oct. 25, 2000 37â†’266
+		0,		//Oct. 8, 2000 jepro æ¬¡è¡Œã®ãŸã‚ã«è¿½åŠ 
+		346,	//ã‚³ãƒãƒ³ãƒ‰ä¸€è¦§	//Oct. 8, 2000 JEPRO è¿½åŠ 
 	};
 
-	//	ƒc[ƒ‹ƒo[ƒAƒCƒRƒ“”‚ÌÅ‘å’l‚ğ’´‚¦‚È‚¢‚½‚ß‚Ì‚¨‚Ü‚¶‚È‚¢
-	//	Å‘å’l‚ğ’´‚¦‚Ä’è‹`‚µ‚æ‚¤‚Æ‚·‚é‚Æ‚±‚±‚ÅƒRƒ“ƒpƒCƒ‹ƒGƒ‰[‚É‚È‚è‚Ü‚·D
+	//	ãƒ„ãƒ¼ãƒ«ãƒãƒ¼ã‚¢ã‚¤ã‚³ãƒ³æ•°ã®æœ€å¤§å€¤ã‚’è¶…ãˆãªã„ãŸã‚ã®ãŠã¾ã˜ãªã„
+	//	æœ€å¤§å€¤ã‚’è¶…ãˆã¦å®šç¾©ã—ã‚ˆã†ã¨ã™ã‚‹ã¨ã“ã“ã§ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã‚¨ãƒ©ãƒ¼ã«ãªã‚Šã¾ã™ï¼
 	char dummy[ _countof(DEFAULT_TOOL_BUTTONS) < MAX_TOOLBAR_BUTTON_ITEMS ? 1:0 ];
 	dummy[0]=0;
 
@@ -1046,24 +1046,24 @@ void CShareData::InitToolButtons(DLLSHAREDATA* pShareData)
 		sizeof(DEFAULT_TOOL_BUTTONS)
 	);
 
-	/* ƒc[ƒ‹ƒo[ƒ{ƒ^ƒ“‚Ì” */
+	/* ãƒ„ãƒ¼ãƒ«ãƒãƒ¼ãƒœã‚¿ãƒ³ã®æ•° */
 	pShareData->m_Common.m_sToolBar.m_nToolBarButtonNum = _countof(DEFAULT_TOOL_BUTTONS);
-	pShareData->m_Common.m_sToolBar.m_bToolBarIsFlat = !IsVisualStyle();			/* ƒtƒ‰ƒbƒgƒc[ƒ‹ƒo[‚É‚·‚é^‚µ‚È‚¢ */	// 2006.06.23 ryoji ƒrƒWƒ…ƒAƒ‹ƒXƒ^ƒCƒ‹‚Å‚Í‰Šú’l‚ğƒm[ƒ}ƒ‹‚É‚·‚é
+	pShareData->m_Common.m_sToolBar.m_bToolBarIsFlat = !IsVisualStyle();			/* ãƒ•ãƒ©ãƒƒãƒˆãƒ„ãƒ¼ãƒ«ãƒãƒ¼ã«ã™ã‚‹ï¼ã—ãªã„ */	// 2006.06.23 ryoji ãƒ“ã‚¸ãƒ¥ã‚¢ãƒ«ã‚¹ã‚¿ã‚¤ãƒ«ã§ã¯åˆæœŸå€¤ã‚’ãƒãƒ¼ãƒãƒ«ã«ã™ã‚‹
 	
 }
 
 
-/*!	@brief ‹¤—Lƒƒ‚ƒŠ‰Šú‰»/ƒ|ƒbƒvƒAƒbƒvƒƒjƒ…[
+/*!	@brief å…±æœ‰ãƒ¡ãƒ¢ãƒªåˆæœŸåŒ–/ãƒãƒƒãƒ—ã‚¢ãƒƒãƒ—ãƒ¡ãƒ‹ãƒ¥ãƒ¼
 
-	ƒ|ƒbƒvƒAƒbƒvƒƒjƒ…[‚Ì‰Šú‰»ˆ—
+	ãƒãƒƒãƒ—ã‚¢ãƒƒãƒ—ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®åˆæœŸåŒ–å‡¦ç†
 
-	@date 2005.01.30 genta CShareData::Init()‚©‚ç•ª—£D
+	@date 2005.01.30 genta CShareData::Init()ã‹ã‚‰åˆ†é›¢ï¼
 */
 void CShareData::InitPopupMenu(DLLSHAREDATA* pShareData)
 {
 	CommonSetting_CustomMenu& rMenu = pShareData->m_Common.m_sCustomMenu;
 
-	/* ˆê’UA‘S‚Ä‰Šú‰»‚µ‚Ä‚¨‚­ */
+	/* ä¸€æ—¦ã€å…¨ã¦åˆæœŸåŒ–ã—ã¦ãŠã */
 	for(int i = 0; i < MAX_CUSTOM_MENU; i++){
 		auto_sprintf(rMenu.m_szCustMenuNameArr[i], LTEXT("MENU%d"), i);
 		rMenu.m_nCustMenuItemNumArr[i] = 0;
@@ -1073,8 +1073,8 @@ void CShareData::InitPopupMenu(DLLSHAREDATA* pShareData)
 		}
 	}
 
-	/* ‰EƒNƒŠƒbƒNƒƒjƒ…[ */
-	auto_sprintf(rMenu.m_szCustMenuNameArr[0], LTEXT("‰EƒNƒŠƒbƒNƒƒjƒ…["));
+	/* å³ã‚¯ãƒªãƒƒã‚¯ãƒ¡ãƒ‹ãƒ¥ãƒ¼ */
+	auto_sprintf(rMenu.m_szCustMenuNameArr[0], LTEXT("å³ã‚¯ãƒªãƒƒã‚¯ãƒ¡ãƒ‹ãƒ¥ãƒ¼"));
 	int n = 0;
 	rMenu.m_nCustMenuItemFuncArr[0][n] = F_CUT;
 	rMenu.m_nCustMenuItemKeyArr[0][n] = 'T';
@@ -1108,7 +1108,7 @@ void CShareData::InitPopupMenu(DLLSHAREDATA* pShareData)
 	n++;
 	rMenu.m_nCustMenuItemNumArr[0] = n;
 
-	/* ƒJƒXƒ^ƒ€ƒƒjƒ…[‚P */
+	/* ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼ï¼‘ */
 	auto_sprintf(rMenu.m_szCustMenuNameArr[1], LTEXT("MENU1"));
 	n = 0;
 	rMenu.m_nCustMenuItemFuncArr[1][n] = F_FILESAVECLOSE;
@@ -1149,7 +1149,7 @@ void CShareData::InitPopupMenu(DLLSHAREDATA* pShareData)
 	n++;
 	rMenu.m_nCustMenuItemNumArr[1] = n;
 
-	/* ƒJƒXƒ^ƒ€ƒƒjƒ…[‚Q */
+	/* ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼ï¼’ */
 	auto_sprintf(rMenu.m_szCustMenuNameArr[2], LTEXT("MENU2"));
 	n = 0;
 	rMenu.m_nCustMenuItemFuncArr[2][n] = F_SEARCH_DIALOG;
@@ -1187,7 +1187,7 @@ void CShareData::InitPopupMenu(DLLSHAREDATA* pShareData)
 	n++;
 	rMenu.m_nCustMenuItemNumArr[2] = n;
 
-	/* ƒJƒXƒ^ƒ€ƒƒjƒ…[‚R */
+	/* ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼ï¼“ */
 	auto_sprintf(rMenu.m_szCustMenuNameArr[3], LTEXT("MENU3"));
 	n = 0;
 	rMenu.m_nCustMenuItemFuncArr[3][n] = F_UNDO;
@@ -1231,7 +1231,7 @@ void CShareData::InitPopupMenu(DLLSHAREDATA* pShareData)
 	n++;
 	rMenu.m_nCustMenuItemNumArr[3] = n;
 
-	/* ƒJƒXƒ^ƒ€ƒƒjƒ…[‚S */
+	/* ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼ï¼” */
 	auto_sprintf(rMenu.m_szCustMenuNameArr[4], LTEXT("MENU4"));
 	n = 0;
 	rMenu.m_nCustMenuItemFuncArr[4][n] = F_OUTLINE;
@@ -1266,8 +1266,8 @@ void CShareData::InitPopupMenu(DLLSHAREDATA* pShareData)
 	n++;
 	rMenu.m_nCustMenuItemNumArr[4] = n;
 
-	/* ƒJƒXƒ^ƒ€ƒƒjƒ…[‚T */
-	auto_sprintf(rMenu.m_szCustMenuNameArr[5], LTEXT("İ’è"));
+	/* ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼ï¼• */
+	auto_sprintf(rMenu.m_szCustMenuNameArr[5], LTEXT("è¨­å®š"));
 	n = 0;
 	rMenu.m_nCustMenuItemFuncArr[5][n] = F_TAB_WIDTH_2;
 	rMenu.m_nCustMenuItemKeyArr[5][n] = '2';
@@ -1301,7 +1301,7 @@ void CShareData::InitPopupMenu(DLLSHAREDATA* pShareData)
 	n++;
 	rMenu.m_nCustMenuItemNumArr[5] = n;
 
-	/* ƒJƒXƒ^ƒ€ƒƒjƒ…[‚U */
+	/* ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼ï¼– */
 	auto_sprintf(rMenu.m_szCustMenuNameArr[6], LTEXT("FINAL Ctrl+Q MENU"));
 	n = 0;
 	rMenu.m_nCustMenuItemFuncArr[6][n] = F_GOLINETOP;
@@ -1375,8 +1375,8 @@ void CShareData::InitPopupMenu(DLLSHAREDATA* pShareData)
 	n++;
 	rMenu.m_nCustMenuItemNumArr[6] = n;
 
-	/* ƒ^ƒuƒƒjƒ…[ */
-	auto_sprintf(rMenu.m_szCustMenuNameArr[CUSTMENU_INDEX_FOR_TABWND], LTEXT("ƒ^ƒuƒƒjƒ…["));
+	/* ã‚¿ãƒ–ãƒ¡ãƒ‹ãƒ¥ãƒ¼ */
+	auto_sprintf(rMenu.m_szCustMenuNameArr[CUSTMENU_INDEX_FOR_TABWND], LTEXT("ã‚¿ãƒ–ãƒ¡ãƒ‹ãƒ¥ãƒ¼"));
 	n = 0;
 	rMenu.m_nCustMenuItemFuncArr[CUSTMENU_INDEX_FOR_TABWND][n] = F_GREP_WIN_ALL_CLOSE;
 	rMenu.m_nCustMenuItemKeyArr[CUSTMENU_INDEX_FOR_TABWND][n] = 'G';

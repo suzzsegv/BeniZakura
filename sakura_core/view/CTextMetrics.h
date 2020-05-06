@@ -24,7 +24,7 @@
 #ifndef SAKURA_CTEXTMETRICS_815A7F9E_8E38_4FA5_9F68_7CA776A18F1F_H_
 #define SAKURA_CTEXTMETRICS_815A7F9E_8E38_4FA5_9F68_7CA776A18F1F_H_
 
-//2007.08.25 kobake ’Ç‰Á
+//2007.08.25 kobake è¿½åŠ 
 
 #include <vector>
 
@@ -32,61 +32,61 @@ class CTextMetrics;
 
 class CTextMetrics{
 public:
-	//ƒRƒ“ƒXƒgƒ‰ƒNƒ^EƒfƒXƒgƒ‰ƒNƒ^
+	//ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ãƒ»ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	CTextMetrics();
 	virtual ~CTextMetrics();
 	void CopyTextMetricsStatus(CTextMetrics* pDst) const;
 	void Update(HFONT hFont);
 
-	//İ’è
-	void SetHankakuWidth(int nHankakuWidth);   //!< ”¼Šp•¶š‚Ì•‚ğİ’èB’PˆÊ‚ÍƒsƒNƒZƒ‹B
-	void SetHankakuHeight(int nHankakuHeight); //!< ”¼Šp•¶š‚Ìc•‚ğİ’èB’PˆÊ‚ÍƒsƒNƒZƒ‹B
-	void SetHankakuDx(int nHankakuDx);         //!< ”¼Šp•¶š‚Ì•¶šŠÔŠu‚ğİ’èB’PˆÊ‚ÍƒsƒNƒZƒ‹B
-	void SetHankakuDy(int nHankakuDy);         //!< ”¼Šp•¶š‚ÌsŠÔŠu‚ğİ’èB’PˆÊ‚ÍƒsƒNƒZƒ‹B
+	//è¨­å®š
+	void SetHankakuWidth(int nHankakuWidth);   //!< åŠè§’æ–‡å­—ã®å¹…ã‚’è¨­å®šã€‚å˜ä½ã¯ãƒ”ã‚¯ã‚»ãƒ«ã€‚
+	void SetHankakuHeight(int nHankakuHeight); //!< åŠè§’æ–‡å­—ã®ç¸¦å¹…ã‚’è¨­å®šã€‚å˜ä½ã¯ãƒ”ã‚¯ã‚»ãƒ«ã€‚
+	void SetHankakuDx(int nHankakuDx);         //!< åŠè§’æ–‡å­—ã®æ–‡å­—é–“éš”ã‚’è¨­å®šã€‚å˜ä½ã¯ãƒ”ã‚¯ã‚»ãƒ«ã€‚
+	void SetHankakuDy(int nHankakuDy);         //!< åŠè§’æ–‡å­—ã®è¡Œé–“éš”ã‚’è¨­å®šã€‚å˜ä½ã¯ãƒ”ã‚¯ã‚»ãƒ«ã€‚
 
-	//æ“¾
-	int GetHankakuWidth() const{ return m_nCharWidth; }		//!< ”¼Šp•¶š‚Ì‰¡•‚ğæ“¾B’PˆÊ‚ÍƒsƒNƒZƒ‹B
-	int GetHankakuHeight() const{ return m_nCharHeight; }	//!< ”¼Šp•¶š‚Ìc•‚ğæ“¾B’PˆÊ‚ÍƒsƒNƒZƒ‹B
-	int GetHankakuDx() const{ return m_nDxBasis; }			//!< ”¼Šp•¶š‚Ì•¶šŠÔŠu‚ğæ“¾B’PˆÊ‚ÍƒsƒNƒZƒ‹B
-	int GetZenkakuDx() const{ return m_nDxBasis*2; }		//!< ‘SŠp•¶š‚Ì•¶šŠÔŠu‚ğæ“¾B’PˆÊ‚ÍƒsƒNƒZƒ‹B
-	int GetHankakuDy() const{ return m_nDyBasis; }			//!< Y•ûŒü•¶šŠÔŠuB•¶šc•{sŠÔŠuB’PˆÊ‚ÍƒsƒNƒZƒ‹B
+	//å–å¾—
+	int GetHankakuWidth() const{ return m_nCharWidth; }		//!< åŠè§’æ–‡å­—ã®æ¨ªå¹…ã‚’å–å¾—ã€‚å˜ä½ã¯ãƒ”ã‚¯ã‚»ãƒ«ã€‚
+	int GetHankakuHeight() const{ return m_nCharHeight; }	//!< åŠè§’æ–‡å­—ã®ç¸¦å¹…ã‚’å–å¾—ã€‚å˜ä½ã¯ãƒ”ã‚¯ã‚»ãƒ«ã€‚
+	int GetHankakuDx() const{ return m_nDxBasis; }			//!< åŠè§’æ–‡å­—ã®æ–‡å­—é–“éš”ã‚’å–å¾—ã€‚å˜ä½ã¯ãƒ”ã‚¯ã‚»ãƒ«ã€‚
+	int GetZenkakuDx() const{ return m_nDxBasis*2; }		//!< å…¨è§’æ–‡å­—ã®æ–‡å­—é–“éš”ã‚’å–å¾—ã€‚å˜ä½ã¯ãƒ”ã‚¯ã‚»ãƒ«ã€‚
+	int GetHankakuDy() const{ return m_nDyBasis; }			//!< Yæ–¹å‘æ–‡å­—é–“éš”ã€‚æ–‡å­—ç¸¦å¹…ï¼‹è¡Œé–“éš”ã€‚å˜ä½ã¯ãƒ”ã‚¯ã‚»ãƒ«ã€‚
 
-	//•¶šŠÔŠu”z—ñ‚ğæ“¾
-	const int* GetDxArray_AllHankaku() const{ return m_anHankakuDx; } //!<”¼Šp•¶š—ñ‚Ì•¶šŠÔŠu”z—ñ‚ğæ“¾B—v‘f”‚Í64B
-	const int* GetDxArray_AllZenkaku() const{ return m_anZenkakuDx; } //!<”¼Šp•¶š—ñ‚Ì•¶šŠÔŠu”z—ñ‚ğæ“¾B—v‘f”‚Í64B
+	//æ–‡å­—é–“éš”é…åˆ—ã‚’å–å¾—
+	const int* GetDxArray_AllHankaku() const{ return m_anHankakuDx; } //!<åŠè§’æ–‡å­—åˆ—ã®æ–‡å­—é–“éš”é…åˆ—ã‚’å–å¾—ã€‚è¦ç´ æ•°ã¯64ã€‚
+	const int* GetDxArray_AllZenkaku() const{ return m_anZenkakuDx; } //!<åŠè§’æ–‡å­—åˆ—ã®æ–‡å­—é–“éš”é…åˆ—ã‚’å–å¾—ã€‚è¦ç´ æ•°ã¯64ã€‚
 
-	//! w’è‚µ‚½•¶š—ñ‚É‚æ‚è•¶šŠÔŠu”z—ñ‚ğ¶¬‚·‚éB
+	//! æŒ‡å®šã—ãŸæ–‡å­—åˆ—ã«ã‚ˆã‚Šæ–‡å­—é–“éš”é…åˆ—ã‚’ç”Ÿæˆã™ã‚‹ã€‚
 	static const int* GenerateDxArray(
-		std::vector<int>* vResultArray, //!< [out] •¶šŠÔŠu”z—ñ‚Ìó‚¯æ‚èƒRƒ“ƒeƒi
-		const wchar_t* pText,           //!< [in]  •¶š—ñ
-		int nLength,                    //!< [in]  •¶š—ñ’·
-		int	nHankakuDx,					//!< [in]  ”¼Šp•¶š‚Ì•¶šŠÔŠu
-		int	nTabSpace = 8,				//   [in]  TAB•
-		int	nIndent = 0					//   [in]  ƒCƒ“ƒfƒ“ƒg
+		std::vector<int>* vResultArray, //!< [out] æ–‡å­—é–“éš”é…åˆ—ã®å—ã‘å–ã‚Šã‚³ãƒ³ãƒ†ãƒŠ
+		const wchar_t* pText,           //!< [in]  æ–‡å­—åˆ—
+		int nLength,                    //!< [in]  æ–‡å­—åˆ—é•·
+		int	nHankakuDx,					//!< [in]  åŠè§’æ–‡å­—ã®æ–‡å­—é–“éš”
+		int	nTabSpace = 8,				//   [in]  TABå¹…
+		int	nIndent = 0					//   [in]  ã‚¤ãƒ³ãƒ‡ãƒ³ãƒˆ
 	);
 
-	//!•¶š—ñ‚ÌƒsƒNƒZƒ‹•‚ğ•Ô‚·B
+	//!æ–‡å­—åˆ—ã®ãƒ”ã‚¯ã‚»ãƒ«å¹…ã‚’è¿”ã™ã€‚
 	static int CalcTextWidth(
-		const wchar_t* pText, //!< •¶š—ñ
-		int nLength,          //!< •¶š—ñ’·
-		const int* pnDx       //!< •¶šŠÔŠu‚Ì“ü‚Á‚½”z—ñ
+		const wchar_t* pText, //!< æ–‡å­—åˆ—
+		int nLength,          //!< æ–‡å­—åˆ—é•·
+		const int* pnDx       //!< æ–‡å­—é–“éš”ã®å…¥ã£ãŸé…åˆ—
 	);
 
-	//!•¶š—ñ‚ÌƒsƒNƒZƒ‹•‚ğ•Ô‚·B
+	//!æ–‡å­—åˆ—ã®ãƒ”ã‚¯ã‚»ãƒ«å¹…ã‚’è¿”ã™ã€‚
 	static int CalcTextWidth2(
-		const wchar_t* pText, //!< •¶š—ñ
-		int nLength,          //!< •¶š—ñ’·
-		int nHankakuDx        //!< ”¼Šp•¶š‚Ì•¶šŠÔŠu
+		const wchar_t* pText, //!< æ–‡å­—åˆ—
+		int nLength,          //!< æ–‡å­—åˆ—é•·
+		int nHankakuDx        //!< åŠè§’æ–‡å­—ã®æ–‡å­—é–“éš”
 	);
 
 private:
-//	HDC m_hdc; //!< ŒvZ‚É—p‚¢‚éƒfƒoƒCƒXƒRƒ“ƒeƒLƒXƒg
-	int	m_nCharWidth;      //!< ”¼Šp•¶š‚Ì‰¡•
-	int m_nCharHeight;     //!< ”¼Šp•¶š‚Ìc•
-	int m_nDxBasis;        //!< ”¼Šp•¶š‚Ì•¶šŠÔŠu (‰¡•+ƒ¿)
-	int m_nDyBasis;        //!< ”¼Šp•¶š‚ÌsŠÔŠu (c•+ƒ¿)
-	int m_anHankakuDx[64]; //!< ”¼Šp—p•¶šŠÔŠu”z—ñ
-	int m_anZenkakuDx[64]; //!< ‘SŠp—p•¶šŠÔŠu”z—ñ
+//	HDC m_hdc; //!< è¨ˆç®—ã«ç”¨ã„ã‚‹ãƒ‡ãƒã‚¤ã‚¹ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆ
+	int	m_nCharWidth;      //!< åŠè§’æ–‡å­—ã®æ¨ªå¹…
+	int m_nCharHeight;     //!< åŠè§’æ–‡å­—ã®ç¸¦å¹…
+	int m_nDxBasis;        //!< åŠè§’æ–‡å­—ã®æ–‡å­—é–“éš” (æ¨ªå¹…+Î±)
+	int m_nDyBasis;        //!< åŠè§’æ–‡å­—ã®è¡Œé–“éš” (ç¸¦å¹…+Î±)
+	int m_anHankakuDx[64]; //!< åŠè§’ç”¨æ–‡å­—é–“éš”é…åˆ—
+	int m_anZenkakuDx[64]; //!< å…¨è§’ç”¨æ–‡å­—é–“éš”é…åˆ—
 };
 
 #endif /* SAKURA_CTEXTMETRICS_815A7F9E_8E38_4FA5_9F68_7CA776A18F1F_H_ */

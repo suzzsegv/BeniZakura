@@ -66,14 +66,14 @@ private:
 
 class CSearchAgent{
 public:
-	// •¶š—ñŒŸõ
+	// æ–‡å­—åˆ—æ¤œç´¢
 	static const wchar_t* SearchString(
 		const wchar_t*	pLine,
 		int				nLineLen,
 		int				nIdxPos,
 		const CSearchStringPattern& pattern
 	);
-	// ’PŒê’PˆÊ‚Å•¶š—ñŒŸõ
+	// å˜èªå˜ä½ã§æ–‡å­—åˆ—æ¤œç´¢
 	static const wchar_t* SearchStringWord(
 		const wchar_t*	pLine,
 		int				nLineLen,
@@ -84,7 +84,7 @@ public:
 	);
 
 	
-	// ŒŸõğŒ‚Ìî•ñ
+	// æ¤œç´¢æ¡ä»¶ã®æƒ…å ±
 	static void CreateCharCharsArr(
 		const wchar_t*	pszPattern,
 		int				nSrcLen,
@@ -100,11 +100,11 @@ public:
 public:
 	CSearchAgent(CDocLineMgr* pcDocLineMgr) : m_pcDocLineMgr(pcDocLineMgr) { }
 
-	bool WhereCurrentWord( CLogicInt , CLogicInt , CLogicInt* , CLogicInt*, CNativeW*, CNativeW* );	/* Œ»İˆÊ’u‚Ì’PŒê‚Ì”ÍˆÍ‚ğ’²‚×‚é */
+	bool WhereCurrentWord( CLogicInt , CLogicInt , CLogicInt* , CLogicInt*, CNativeW*, CNativeW* );	/* ç¾åœ¨ä½ç½®ã®å˜èªã®ç¯„å›²ã‚’èª¿ã¹ã‚‹ */
 
-	bool PrevOrNextWord( CLogicInt , CLogicInt , CLogicInt* , BOOL bLEFT, BOOL bStopsBothEnds );	/* Œ»İˆÊ’u‚Ì¶‰E‚Ì’PŒê‚Ìæ“ªˆÊ’u‚ğ’²‚×‚é */
-	//	Jun. 26, 2001 genta	³‹K•\Œ»ƒ‰ƒCƒuƒ‰ƒŠ‚Ì·‚µ‘Ö‚¦
-	int SearchWord( CLogicPoint ptSerachBegin, const wchar_t* , ESearchDirection eDirection, const SSearchOption& sSearchOption , CLogicRange* pMatchRange, CBregexp* ); /* ’PŒêŒŸõ */
+	bool PrevOrNextWord( CLogicInt , CLogicInt , CLogicInt* , BOOL bLEFT, BOOL bStopsBothEnds );	/* ç¾åœ¨ä½ç½®ã®å·¦å³ã®å˜èªã®å…ˆé ­ä½ç½®ã‚’èª¿ã¹ã‚‹ */
+	//	Jun. 26, 2001 genta	æ­£è¦è¡¨ç¾ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã®å·®ã—æ›¿ãˆ
+	int SearchWord( CLogicPoint ptSerachBegin, const wchar_t* , ESearchDirection eDirection, const SSearchOption& sSearchOption , CLogicRange* pMatchRange, CBregexp* ); /* å˜èªæ¤œç´¢ */
 
 	void ReplaceData( DocLineReplaceArg* );
 private:

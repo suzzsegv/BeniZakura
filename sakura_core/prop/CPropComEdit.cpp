@@ -1,5 +1,5 @@
 /*!	@file
-	@brief ‹¤’Êİ’èƒ_ƒCƒAƒƒOƒ{ƒbƒNƒXAu•ÒWvƒy[ƒW
+	@brief å…±é€šè¨­å®šãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒœãƒƒã‚¯ã‚¹ã€ã€Œç·¨é›†ã€ãƒšãƒ¼ã‚¸
 
 	@author Norio Nakatani
 */
@@ -27,10 +27,10 @@
 
 //	From Here Jun. 2, 2001 genta
 /*!
-	@param hwndDlg ƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX‚ÌWindow Handle
-	@param uMsg ƒƒbƒZ[ƒW
-	@param wParam ƒpƒ‰ƒ[ƒ^1
-	@param lParam ƒpƒ‰ƒ[ƒ^2
+	@param hwndDlg ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒœãƒƒã‚¯ã‚¹ã®Window Handle
+	@param uMsg ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+	@param wParam ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿1
+	@param lParam ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿2
 */
 INT_PTR CALLBACK CPropEdit::DlgProc_page(
 	HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam )
@@ -39,7 +39,7 @@ INT_PTR CALLBACK CPropEdit::DlgProc_page(
 }
 //	To Here Jun. 2, 2001 genta
 
-/* ƒƒbƒZ[ƒWˆ— */
+/* ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å‡¦ç† */
 INT_PTR CPropEdit::DispatchEvent(
     HWND		hwndDlg,	// handle to dialog box
     UINT		uMsg,		// message
@@ -60,23 +60,23 @@ INT_PTR CPropEdit::DispatchEvent(
 
 	case WM_INITDIALOG:
 		EditCtl_LimitText( ::GetDlgItem( hwndDlg, IDC_EDIT_FILEOPENDIR ), _MAX_PATH - 1 );
-		/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìİ’è Edit */
+		/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®è¨­å®š Edit */
 		SetData( hwndDlg );
 		// Modified by KEITA for WIN64 2003.9.6
 		::SetWindowLongPtr( hwndDlg, DWLP_USER, lParam );
 
-		/* ƒ†[ƒU[‚ªƒGƒfƒBƒbƒg ƒRƒ“ƒgƒ[ƒ‹‚É“ü—Í‚Å‚«‚éƒeƒLƒXƒg‚Ì’·‚³‚ğ§ŒÀ‚·‚é */
+		/* ãƒ¦ãƒ¼ã‚¶ãƒ¼ãŒã‚¨ãƒ‡ã‚£ãƒƒãƒˆ ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã«å…¥åŠ›ã§ãã‚‹ãƒ†ã‚­ã‚¹ãƒˆã®é•·ã•ã‚’åˆ¶é™ã™ã‚‹ */
 
 		return TRUE;
 	case WM_COMMAND:
-		wNotifyCode	= HIWORD(wParam);	/* ’Ê’mƒR[ƒh */
-		wID			= LOWORD(wParam);	/* €–ÚID¤ ƒRƒ“ƒgƒ[ƒ‹ID¤ ‚Ü‚½‚ÍƒAƒNƒZƒ‰ƒŒ[ƒ^ID */
-		hwndCtl		= (HWND) lParam;	/* ƒRƒ“ƒgƒ[ƒ‹‚Ìƒnƒ“ƒhƒ‹ */
+		wNotifyCode	= HIWORD(wParam);	/* é€šçŸ¥ã‚³ãƒ¼ãƒ‰ */
+		wID			= LOWORD(wParam);	/* é …ç›®IDã€ ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«IDã€ ã¾ãŸã¯ã‚¢ã‚¯ã‚»ãƒ©ãƒ¬ãƒ¼ã‚¿ID */
+		hwndCtl		= (HWND) lParam;	/* ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã®ãƒãƒ³ãƒ‰ãƒ« */
 		switch( wNotifyCode ){
-		/* ƒ{ƒ^ƒ“^ƒ`ƒFƒbƒNƒ{ƒbƒNƒX‚ªƒNƒŠƒbƒN‚³‚ê‚½ */
+		/* ãƒœã‚¿ãƒ³ï¼ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹ãŒã‚¯ãƒªãƒƒã‚¯ã•ã‚ŒãŸ */
 		case BN_CLICKED:
 			switch( wID ){
-			case IDC_CHECK_DRAGDROP:	/* ƒ^ƒXƒNƒgƒŒƒC‚ğg‚¤ */
+			case IDC_CHECK_DRAGDROP:	/* ã‚¿ã‚¹ã‚¯ãƒˆãƒ¬ã‚¤ã‚’ä½¿ã† */
 				if( ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_DRAGDROP ) ){
 					::EnableWindow( ::GetDlgItem( hwndDlg, IDC_CHECK_DROPSOURCE ), TRUE );
 				}
@@ -95,7 +95,7 @@ INT_PTR CPropEdit::DispatchEvent(
 					TCHAR szPath[_MAX_PATH];
 					::DlgItem_GetText( hwndDlg, IDC_EDIT_FILEOPENDIR, szMetaPath, _countof(szMetaPath) );
 					CFileNameManager::ExpandMetaToFolder( szMetaPath, szPath, _countof(szPath) );
-					if( SelectDir( hwndDlg, _T("ƒtƒ@ƒCƒ‹ƒ_ƒCƒAƒƒO‚Ìw’èƒtƒHƒ‹ƒ_‚Ì‘I‘ğ"), szPath, szPath ) ){
+					if( SelectDir( hwndDlg, _T("ãƒ•ã‚¡ã‚¤ãƒ«ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®æŒ‡å®šãƒ•ã‚©ãƒ«ãƒ€ã®é¸æŠ"), szPath, szPath ) ){
 						CNativeT cmem(szPath);
 						cmem.Replace(_T("%"), _T("%%"));
 						::DlgItem_SetText( hwndDlg, IDC_EDIT_FILEOPENDIR, cmem.GetStringPtr() );
@@ -115,11 +115,11 @@ INT_PTR CPropEdit::DispatchEvent(
 		case PSN_KILLACTIVE:
 			DEBUG_TRACE( _T("Edit PSN_KILLACTIVE\n") );
 
-			/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìæ“¾ Edit */
+			/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®å–å¾— Edit */
 			GetData( hwndDlg );
 			return TRUE;
 
-		case PSN_SETACTIVE: //@@@ 2002.01.03 YAZAKI ÅŒã‚É•\¦‚µ‚Ä‚¢‚½ƒV[ƒg‚ğ³‚µ‚­Šo‚¦‚Ä‚¢‚È‚¢ƒoƒOC³
+		case PSN_SETACTIVE: //@@@ 2002.01.03 YAZAKI æœ€å¾Œã«è¡¨ç¤ºã—ã¦ã„ãŸã‚·ãƒ¼ãƒˆã‚’æ­£ã—ãè¦šãˆã¦ã„ãªã„ãƒã‚°ä¿®æ­£
 			m_nPageNum = ID_PAGENUM_EDIT;
 			return TRUE;
 		}
@@ -130,10 +130,10 @@ INT_PTR CPropEdit::DispatchEvent(
 }
 
 
-/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìİ’è */
+/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®è¨­å®š */
 void CPropEdit::SetData( HWND hwndDlg )
 {
-	/* ƒhƒ‰ƒbƒO & ƒhƒƒbƒv•ÒW */
+	/* ãƒ‰ãƒ©ãƒƒã‚° & ãƒ‰ãƒ­ãƒƒãƒ—ç·¨é›† */
 	::CheckDlgButton( hwndDlg, IDC_CHECK_DRAGDROP, m_Common.m_sEdit.m_bUseOLE_DragDrop );
 	if( ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_DRAGDROP ) ){
 		::EnableWindow( ::GetDlgItem( hwndDlg, IDC_CHECK_DROPSOURCE ), TRUE );
@@ -145,31 +145,31 @@ void CPropEdit::SetData( HWND hwndDlg )
 	/* DropSource */
 	::CheckDlgButton( hwndDlg, IDC_CHECK_DROPSOURCE, m_Common.m_sEdit.m_bUseOLE_DropSource );
 
-	/* Ü‚è•Ô‚µs‚É‰üs‚ğ•t‚¯‚ÄƒRƒs[ */
+	/* æŠ˜ã‚Šè¿”ã—è¡Œã«æ”¹è¡Œã‚’ä»˜ã‘ã¦ã‚³ãƒ”ãƒ¼ */
 	::CheckDlgButton( hwndDlg, IDC_CHECK_ADDCRLFWHENCOPY, m_Common.m_sEdit.m_bAddCRLFWhenCopy ? BST_CHECKED : BST_UNCHECKED );
 
-	/* ƒRƒs[‚µ‚½‚ç‘I‘ğ‰ğœ */
+	/* ã‚³ãƒ”ãƒ¼ã—ãŸã‚‰é¸æŠè§£é™¤ */
 	::CheckDlgButton( hwndDlg, IDC_CHECK_COPYnDISABLESELECTEDAREA, m_Common.m_sEdit.m_bCopyAndDisablSelection );
 
-	/* ‘I‘ğ‚È‚µ‚ÅƒRƒs[‚ğ‰Â”\‚É‚·‚é */	// 2007.11.18 ryoji
+	/* é¸æŠãªã—ã§ã‚³ãƒ”ãƒ¼ã‚’å¯èƒ½ã«ã™ã‚‹ */	// 2007.11.18 ryoji
 	::CheckDlgButton( hwndDlg, IDC_CHECK_bEnableNoSelectCopy, m_Common.m_sEdit.m_bEnableNoSelectCopy );
 
-	/* ƒ‰ƒCƒ“ƒ‚[ƒh“\‚è•t‚¯‚ğ‰Â”\‚É‚·‚é */	// 2007.10.08 ryoji
+	/* ãƒ©ã‚¤ãƒ³ãƒ¢ãƒ¼ãƒ‰è²¼ã‚Šä»˜ã‘ã‚’å¯èƒ½ã«ã™ã‚‹ */	// 2007.10.08 ryoji
 	::CheckDlgButton( hwndDlg, IDC_CHECK_bEnableLineModePaste, m_Common.m_sEdit.m_bEnableLineModePaste ? BST_CHECKED : BST_UNCHECKED );
 
-	/* ‰üs‚Íã‘‚«‚µ‚È‚¢ */
+	/* æ”¹è¡Œã¯ä¸Šæ›¸ãã—ãªã„ */
 	::CheckDlgButton( hwndDlg, IDC_CHECK_bNotOverWriteCRLF, m_Common.m_sEdit.m_bNotOverWriteCRLF );
 
-	// •¶š•‚É‡‚í‚¹‚ÄƒXƒy[ƒX‚ğ‹l‚ß‚é
+	// æ–‡å­—å¹…ã«åˆã‚ã›ã¦ã‚¹ãƒšãƒ¼ã‚¹ã‚’è©°ã‚ã‚‹
 	CheckDlgButtonBool( hwndDlg, IDC_CHECK_bOverWriteFixMode, m_Common.m_sEdit.m_bOverWriteFixMode );
 
-	//	URL‚ªƒNƒŠƒbƒN‚³‚ê‚½‚ç‘I‘ğ‚·‚é‚© */	// 2007.02.11 genta ‚±‚Ìƒy[ƒW‚ÖˆÚ“®
+	//	URLãŒã‚¯ãƒªãƒƒã‚¯ã•ã‚ŒãŸã‚‰é¸æŠã™ã‚‹ã‹ */	// 2007.02.11 genta ã“ã®ãƒšãƒ¼ã‚¸ã¸ç§»å‹•
 	::CheckDlgButton( hwndDlg, IDC_CHECK_bSelectClickedURL, m_Common.m_sEdit.m_bSelectClickedURL );
 
-	/*	‰üsƒR[ƒh‚ğ•ÏŠ·‚µ‚Ä“\‚è•t‚¯‚é */	// 2009.02.28 salarm
+	/*	æ”¹è¡Œã‚³ãƒ¼ãƒ‰ã‚’å¤‰æ›ã—ã¦è²¼ã‚Šä»˜ã‘ã‚‹ */	// 2009.02.28 salarm
 	::CheckDlgButton( hwndDlg, IDC_CHECK_CONVERTEOLPASTE, m_Common.m_sEdit.m_bConvertEOLPaste ? BST_CHECKED : BST_UNCHECKED );
 
-	// ƒtƒ@ƒCƒ‹ƒ_ƒCƒAƒƒO‚Ì‰ŠúˆÊ’u
+	// ãƒ•ã‚¡ã‚¤ãƒ«ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®åˆæœŸä½ç½®
 	if( m_Common.m_sEdit.m_eOpenDialogDir == OPENDIALOGDIR_CUR ){
 		::CheckDlgButton( hwndDlg, IDC_RADIO_CURDIR, TRUE );
 	}
@@ -186,39 +186,39 @@ void CPropEdit::SetData( HWND hwndDlg )
 
 
 
-/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìæ“¾ */
+/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®å–å¾— */
 int CPropEdit::GetData( HWND hwndDlg )
 {
-//@@@ 2002.01.03 YAZAKI ÅŒã‚É•\¦‚µ‚Ä‚¢‚½ƒV[ƒg‚ğ³‚µ‚­Šo‚¦‚Ä‚¢‚È‚¢ƒoƒOC³
+//@@@ 2002.01.03 YAZAKI æœ€å¾Œã«è¡¨ç¤ºã—ã¦ã„ãŸã‚·ãƒ¼ãƒˆã‚’æ­£ã—ãè¦šãˆã¦ã„ãªã„ãƒã‚°ä¿®æ­£
 //	m_nPageNum = ID_PAGENUM_EDIT;
 
-	/* ƒhƒ‰ƒbƒO & ƒhƒƒbƒv•ÒW */
+	/* ãƒ‰ãƒ©ãƒƒã‚° & ãƒ‰ãƒ­ãƒƒãƒ—ç·¨é›† */
 	m_Common.m_sEdit.m_bUseOLE_DragDrop = ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_DRAGDROP );
 	/* DropSource */
 	m_Common.m_sEdit.m_bUseOLE_DropSource = ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_DROPSOURCE );
 
-	/* Ü‚è•Ô‚µs‚É‰üs‚ğ•t‚¯‚ÄƒRƒs[ */
+	/* æŠ˜ã‚Šè¿”ã—è¡Œã«æ”¹è¡Œã‚’ä»˜ã‘ã¦ã‚³ãƒ”ãƒ¼ */
 	m_Common.m_sEdit.m_bAddCRLFWhenCopy = (0 != ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_ADDCRLFWHENCOPY ));
 
-	/* ƒRƒs[‚µ‚½‚ç‘I‘ğ‰ğœ */
+	/* ã‚³ãƒ”ãƒ¼ã—ãŸã‚‰é¸æŠè§£é™¤ */
 	m_Common.m_sEdit.m_bCopyAndDisablSelection = ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_COPYnDISABLESELECTEDAREA );
 
-	/* ‘I‘ğ‚È‚µ‚ÅƒRƒs[‚ğ‰Â”\‚É‚·‚é */	// 2007.11.18 ryoji
+	/* é¸æŠãªã—ã§ã‚³ãƒ”ãƒ¼ã‚’å¯èƒ½ã«ã™ã‚‹ */	// 2007.11.18 ryoji
 	m_Common.m_sEdit.m_bEnableNoSelectCopy = ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_bEnableNoSelectCopy );
 
-	/* ƒ‰ƒCƒ“ƒ‚[ƒh“\‚è•t‚¯‚ğ‰Â”\‚É‚·‚é */	// 2007.10.08 ryoji
+	/* ãƒ©ã‚¤ãƒ³ãƒ¢ãƒ¼ãƒ‰è²¼ã‚Šä»˜ã‘ã‚’å¯èƒ½ã«ã™ã‚‹ */	// 2007.10.08 ryoji
 	m_Common.m_sEdit.m_bEnableLineModePaste = (0 != ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_bEnableLineModePaste ));
 
-	/* ‰üs‚Íã‘‚«‚µ‚È‚¢ */
+	/* æ”¹è¡Œã¯ä¸Šæ›¸ãã—ãªã„ */
 	m_Common.m_sEdit.m_bNotOverWriteCRLF = ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_bNotOverWriteCRLF );
 
-	// •¶š•‚É‡‚í‚¹‚ÄƒXƒy[ƒX‚ğ‹l‚ß‚é
+	// æ–‡å­—å¹…ã«åˆã‚ã›ã¦ã‚¹ãƒšãƒ¼ã‚¹ã‚’è©°ã‚ã‚‹
 	m_Common.m_sEdit.m_bOverWriteFixMode = IsDlgButtonCheckedBool( hwndDlg, IDC_CHECK_bOverWriteFixMode );
 
-	/* URL‚ªƒNƒŠƒbƒN‚³‚ê‚½‚ç‘I‘ğ‚·‚é‚© */	// 2007.02.11 genta ‚±‚Ìƒy[ƒW‚ÖˆÚ“®
+	/* URLãŒã‚¯ãƒªãƒƒã‚¯ã•ã‚ŒãŸã‚‰é¸æŠã™ã‚‹ã‹ */	// 2007.02.11 genta ã“ã®ãƒšãƒ¼ã‚¸ã¸ç§»å‹•
 	m_Common.m_sEdit.m_bSelectClickedURL = ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_bSelectClickedURL );
 
-	//	‰üsƒR[ƒh‚ğ•ÏŠ·‚µ‚Ä“\‚è•t‚¯‚é */	// 2009.02.28 salarm
+	//	æ”¹è¡Œã‚³ãƒ¼ãƒ‰ã‚’å¤‰æ›ã—ã¦è²¼ã‚Šä»˜ã‘ã‚‹ */	// 2009.02.28 salarm
 	m_Common.m_sEdit.m_bConvertEOLPaste = (0 != ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_CONVERTEOLPASTE ));
 
 	if( ::IsDlgButtonChecked(hwndDlg, IDC_RADIO_CURDIR) ){
@@ -234,16 +234,16 @@ int CPropEdit::GetData( HWND hwndDlg )
 	return TRUE;
 }
 
-/*!	ƒ`ƒFƒbƒNó‘Ô‚É‰‚¶‚Äƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX—v‘f‚ÌEnable/Disable‚ğ
-	“KØ‚Éİ’è‚·‚é
+/*!	ãƒã‚§ãƒƒã‚¯çŠ¶æ…‹ã«å¿œã˜ã¦ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒœãƒƒã‚¯ã‚¹è¦ç´ ã®Enable/Disableã‚’
+	é©åˆ‡ã«è¨­å®šã™ã‚‹
 
-	@param hwndDlg ƒvƒƒpƒeƒBƒV[ƒg‚ÌWindow Handle
+	@param hwndDlg ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚·ãƒ¼ãƒˆã®Window Handle
 
-	@date 2013.03.31 novice V‹Kì¬
+	@date 2013.03.31 novice æ–°è¦ä½œæˆ
 */
 void CPropEdit::EnableEditPropInput( HWND hwndDlg )
 {
-	// w’èƒtƒHƒ‹ƒ_
+	// æŒ‡å®šãƒ•ã‚©ãƒ«ãƒ€
 	if( ::IsDlgButtonChecked( hwndDlg, IDC_RADIO_SELDIR ) ){
 		::EnableWindow( ::GetDlgItem( hwndDlg, IDC_EDIT_FILEOPENDIR ), TRUE );
 		::EnableWindow( ::GetDlgItem( hwndDlg, IDC_BUTTON_FILEOPENDIR ), TRUE );

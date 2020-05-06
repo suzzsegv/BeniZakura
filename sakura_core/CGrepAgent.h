@@ -28,17 +28,17 @@
 class CDlgCancel;
 class CEditView;
 
-//	Jun. 26, 2001 genta	³‹K•\Œ»ƒ‰ƒCƒuƒ‰ƒŠ‚Ì·‚µ‘Ö‚¦
-//	Mar. 28, 2004 genta DoGrepFile‚©‚ç•s—v‚Èˆø”‚ğíœ
+//	Jun. 26, 2001 genta	æ­£è¦è¡¨ç¾ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã®å·®ã—æ›¿ãˆ
+//	Mar. 28, 2004 genta DoGrepFileã‹ã‚‰ä¸è¦ãªå¼•æ•°ã‚’å‰Šé™¤
 class CGrepAgent : public CDocListenerEx{
 public:
 	CGrepAgent();
 
-	// ƒCƒxƒ“ƒg
+	// ã‚¤ãƒ™ãƒ³ãƒˆ
 	ECallbackResult OnBeforeClose();
 	void OnAfterSave(const SSaveInfo& sSaveInfo);
 
-	// GrepÀs
+	// Grepå®Ÿè¡Œ
 	DWORD DoGrep(
 		CEditView*				pcViewDst,
 		const CNativeW*			pcmGrepKey,
@@ -46,31 +46,31 @@ public:
 		const CNativeT*			pcmGrepFolder,
 		BOOL					bGrepSubFolder,
 		const SSearchOption&	sSearchOption,
-		ECodeType				nGrepCharSet,	// 2002/09/21 Moca •¶šƒR[ƒhƒZƒbƒg‘I‘ğ
+		ECodeType				nGrepCharSet,	// 2002/09/21 Moca æ–‡å­—ã‚³ãƒ¼ãƒ‰ã‚»ãƒƒãƒˆé¸æŠ
 		BOOL					bGrepOutputLine,
 		int						nGrepOutputStyle
 	);
 
 private:
-	// GrepÀs
+	// Grepå®Ÿè¡Œ
 	int DoGrepTree(
 		CEditView*				pcViewDst,
-		CDlgCancel*				pcDlgCancel,		//!< [in] Cancelƒ_ƒCƒAƒƒO‚Ö‚Ìƒ|ƒCƒ“ƒ^
-		HWND					hwndCancel,			//!< [in] Cancelƒ_ƒCƒAƒƒO‚ÌƒEƒBƒ“ƒhƒEƒnƒ“ƒhƒ‹
-		const wchar_t*			pszKey,				//!< [in] ŒŸõƒpƒ^[ƒ“
-		const TCHAR*			pszFile,			//!< [in] ŒŸõ‘ÎÛƒtƒ@ƒCƒ‹ƒpƒ^[ƒ“(!‚ÅœŠOw’è)
-		const TCHAR*			pszPath,			//!< [in] ŒŸõ‘ÎÛƒpƒX
-		BOOL					bGrepSubFolder,		//!< [in] TRUE: ƒTƒuƒtƒHƒ‹ƒ_‚ğÄ‹A“I‚É’Tõ‚·‚é / FALSE: ‚µ‚È‚¢
-		const SSearchOption&	sSearchOption,		//!< [in] ŒŸõƒIƒvƒVƒ‡ƒ“
-		ECodeType				nGrepCharSet,		//!< [in] •¶šƒR[ƒhƒZƒbƒg (0:©“®”F¯)`
-		BOOL					bGrepOutputLine,	//!< [in] TRUE: ƒqƒbƒgs‚ğo—Í / FALSE: ƒqƒbƒg•”•ª‚ğo—Í
-		int						nGrepOutputStyle,	//!< [in] o—ÍŒ`® 1: Normal, 2: WZ•—(ƒtƒ@ƒCƒ‹’PˆÊ)
-		CBregexp*				pRegexp,			//!< [in] ³‹K•\Œ»ƒRƒ“ƒpƒCƒ‹ƒf[ƒ^BŠù‚ÉƒRƒ“ƒpƒCƒ‹‚³‚ê‚Ä‚¢‚é•K—v‚ª‚ ‚é
-		int						nNest,				//!< [in] ƒlƒXƒgƒŒƒxƒ‹
-		int*					pnHitCount			//!< [i/o] ƒqƒbƒg”‚Ì‡Œv
+		CDlgCancel*				pcDlgCancel,		//!< [in] Cancelãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã¸ã®ãƒã‚¤ãƒ³ã‚¿
+		HWND					hwndCancel,			//!< [in] Cancelãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒãƒ³ãƒ‰ãƒ«
+		const wchar_t*			pszKey,				//!< [in] æ¤œç´¢ãƒ‘ã‚¿ãƒ¼ãƒ³
+		const TCHAR*			pszFile,			//!< [in] æ¤œç´¢å¯¾è±¡ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¿ãƒ¼ãƒ³(!ã§é™¤å¤–æŒ‡å®š)
+		const TCHAR*			pszPath,			//!< [in] æ¤œç´¢å¯¾è±¡ãƒ‘ã‚¹
+		BOOL					bGrepSubFolder,		//!< [in] TRUE: ã‚µãƒ–ãƒ•ã‚©ãƒ«ãƒ€ã‚’å†å¸°çš„ã«æ¢ç´¢ã™ã‚‹ / FALSE: ã—ãªã„
+		const SSearchOption&	sSearchOption,		//!< [in] æ¤œç´¢ã‚ªãƒ—ã‚·ãƒ§ãƒ³
+		ECodeType				nGrepCharSet,		//!< [in] æ–‡å­—ã‚³ãƒ¼ãƒ‰ã‚»ãƒƒãƒˆ (0:è‡ªå‹•èªè­˜)ã€œ
+		BOOL					bGrepOutputLine,	//!< [in] TRUE: ãƒ’ãƒƒãƒˆè¡Œã‚’å‡ºåŠ› / FALSE: ãƒ’ãƒƒãƒˆéƒ¨åˆ†ã‚’å‡ºåŠ›
+		int						nGrepOutputStyle,	//!< [in] å‡ºåŠ›å½¢å¼ 1: Normal, 2: WZé¢¨(ãƒ•ã‚¡ã‚¤ãƒ«å˜ä½)
+		CBregexp*				pRegexp,			//!< [in] æ­£è¦è¡¨ç¾ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ãƒ‡ãƒ¼ã‚¿ã€‚æ—¢ã«ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã•ã‚Œã¦ã„ã‚‹å¿…è¦ãŒã‚ã‚‹
+		int						nNest,				//!< [in] ãƒã‚¹ãƒˆãƒ¬ãƒ™ãƒ«
+		int*					pnHitCount			//!< [i/o] ãƒ’ãƒƒãƒˆæ•°ã®åˆè¨ˆ
 	);
 
-	// GrepÀs
+	// Grepå®Ÿè¡Œ
 	int DoGrepFile(
 		CEditView*				pcViewDst,
 		CDlgCancel*				pcDlgCancel,
@@ -81,37 +81,37 @@ private:
 		ECodeType				nGrepCharSet,
 		BOOL					bGrepOutputLine,
 		int						nGrepOutputStyle,
-		CBregexp*				pRegexp,		//	Jun. 27, 2001 genta	³‹K•\Œ»ƒ‰ƒCƒuƒ‰ƒŠ‚Ì·‚µ‘Ö‚¦
+		CBregexp*				pRegexp,		//	Jun. 27, 2001 genta	æ­£è¦è¡¨ç¾ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã®å·®ã—æ›¿ãˆ
 		int*					pnHitCount,
 		const TCHAR*			pszFullPath,
 		CNativeW&				cmemMessage
 	);
 
-	// GrepŒ‹‰Ê‚ğpszWork‚ÉŠi”[
+	// Grepçµæœã‚’pszWorkã«æ ¼ç´
 	void SetGrepResult(
-		// ƒf[ƒ^Ši”[æ
+		// ãƒ‡ãƒ¼ã‚¿æ ¼ç´å…ˆ
 		wchar_t*		pWork,
 		int*			pnWorkLen,
-		// ƒ}ƒbƒ`‚µ‚½ƒtƒ@ƒCƒ‹‚Ìî•ñ
-		const TCHAR*	pszFullPath,	//	ƒtƒ‹ƒpƒX
-		const TCHAR*	pszCodeName,	//	•¶šƒR[ƒhî•ñ"[SJIS]"‚Æ‚©
-		// ƒ}ƒbƒ`‚µ‚½s‚Ìî•ñ
-		int				nLine,			//	ƒ}ƒbƒ`‚µ‚½s”Ô†
-		int				nColumn,		//	ƒ}ƒbƒ`‚µ‚½Œ…”Ô†
-		const wchar_t*	pCompareData,	//	s‚Ì•¶š—ñ
-		int				nLineLen,		//	s‚Ì•¶š—ñ‚Ì’·‚³
-		int				nEolCodeLen,	//	EOL‚Ì’·‚³
-		// ƒ}ƒbƒ`‚µ‚½•¶š—ñ‚Ìî•ñ
-		const wchar_t*	pMatchData,		//	ƒ}ƒbƒ`‚µ‚½•¶š—ñ
-		int				nMatchLen,		//	ƒ}ƒbƒ`‚µ‚½•¶š—ñ‚Ì’·‚³
-		// ƒIƒvƒVƒ‡ƒ“
+		// ãƒãƒƒãƒã—ãŸãƒ•ã‚¡ã‚¤ãƒ«ã®æƒ…å ±
+		const TCHAR*	pszFullPath,	//	ãƒ•ãƒ«ãƒ‘ã‚¹
+		const TCHAR*	pszCodeName,	//	æ–‡å­—ã‚³ãƒ¼ãƒ‰æƒ…å ±"[SJIS]"ã¨ã‹
+		// ãƒãƒƒãƒã—ãŸè¡Œã®æƒ…å ±
+		int				nLine,			//	ãƒãƒƒãƒã—ãŸè¡Œç•ªå·
+		int				nColumn,		//	ãƒãƒƒãƒã—ãŸæ¡ç•ªå·
+		const wchar_t*	pCompareData,	//	è¡Œã®æ–‡å­—åˆ—
+		int				nLineLen,		//	è¡Œã®æ–‡å­—åˆ—ã®é•·ã•
+		int				nEolCodeLen,	//	EOLã®é•·ã•
+		// ãƒãƒƒãƒã—ãŸæ–‡å­—åˆ—ã®æƒ…å ±
+		const wchar_t*	pMatchData,		//	ãƒãƒƒãƒã—ãŸæ–‡å­—åˆ—
+		int				nMatchLen,		//	ãƒãƒƒãƒã—ãŸæ–‡å­—åˆ—ã®é•·ã•
+		// ã‚ªãƒ—ã‚·ãƒ§ãƒ³
 		BOOL			bGrepOutputLine,
 		int				nGrepOutputStyle
 	);
 
-public: //$$ ‰¼
-	bool	m_bGrepMode;		//!< Grepƒ‚[ƒh‚©
-	bool	m_bGrepRunning;		//!< Grepˆ—’†
+public: //$$ ä»®
+	bool	m_bGrepMode;		//!< Grepãƒ¢ãƒ¼ãƒ‰ã‹
+	bool	m_bGrepRunning;		//!< Grepå‡¦ç†ä¸­
 };
 
 #endif /* SAKURA_CGREPAGENT_89E8C8B7_433B_47F3_A389_75C91E00A4BA9_H_ */

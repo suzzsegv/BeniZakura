@@ -1,8 +1,8 @@
 /*!	@file
-	@brief ƒ^ƒCƒv•Êİ’èƒCƒ“ƒ|[ƒgŠm”Fƒ_ƒCƒAƒƒO
+	@brief ã‚¿ã‚¤ãƒ—åˆ¥è¨­å®šã‚¤ãƒ³ãƒãƒ¼ãƒˆç¢ºèªãƒ€ã‚¤ã‚¢ãƒ­ã‚°
 
 	@author Uchi
-	@date 2010/4/17 V‹Kì¬
+	@date 2010/4/17 æ–°è¦ä½œæˆ
 */
 /*
 	Copyright (C) 2010, Uchi
@@ -33,7 +33,7 @@
 #include "util/shell.h"
 #include "sakura_rc.h"
 
-//“à•”g—p’è”
+//å†…éƒ¨ä½¿ç”¨å®šæ•°
 static const int PROP_TEMPCHANGE_FLAG = 0x10000;
 
 //  Constructors
@@ -42,7 +42,7 @@ CDlgTypeAscertain::CDlgTypeAscertain()
 {
 }
 
-// ƒ‚[ƒ_ƒ‹ƒ_ƒCƒAƒƒO‚Ì•\¦
+// ãƒ¢ãƒ¼ãƒ€ãƒ«ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®è¡¨ç¤º
 int CDlgTypeAscertain::DoModal( HINSTANCE hInstance, HWND hwndParent, SAscertainInfo* psAscertainInfo )
 {
 	m_psi = psAscertainInfo;
@@ -52,7 +52,7 @@ int CDlgTypeAscertain::DoModal( HINSTANCE hInstance, HWND hwndParent, SAscertain
 	return (int)CDialog::DoModal( hInstance, hwndParent, IDD_TYPE_ASCERTAIN, (LPARAM)NULL );
 }
 
-// ƒ{ƒ^ƒ“ƒNƒŠƒbƒN
+// ãƒœã‚¿ãƒ³ã‚¯ãƒªãƒƒã‚¯
 BOOL CDlgTypeAscertain::OnBnClicked( int wID )
 {
 	switch( wID ){
@@ -74,15 +74,15 @@ BOOL CDlgTypeAscertain::OnBnClicked( int wID )
 		::EndDialog( GetHwnd(), FALSE );
 		return TRUE;
 	}
-	/* Šî’êƒNƒ‰ƒXƒƒ“ƒo */
+	/* åŸºåº•ã‚¯ãƒ©ã‚¹ãƒ¡ãƒ³ãƒ */
 	return CDialog::OnBnClicked( wID );
 }
 
 
-/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìİ’è */
+/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®è¨­å®š */
 void CDlgTypeAscertain::SetData( void )
 {
-	// ƒ^ƒCƒv–¼İ’è
+	// ã‚¿ã‚¤ãƒ—åè¨­å®š
 	::SetWindowText( ::GetDlgItem( GetHwnd(), IDC_STATIC_TYPE_TO   ), to_tchar(m_psi->sTypeNameTo.c_str()) );
 	::SetWindowText( ::GetDlgItem( GetHwnd(), IDC_STATIC_TYPE_FILE ), to_tchar(m_psi->sTypeNameFile.c_str()) );
 
@@ -90,28 +90,28 @@ void CDlgTypeAscertain::SetData( void )
 	HWND	hwndCombo;
 	TCHAR	szText[_MAX_PATH + 10];
 	hwndCombo = ::GetDlgItem( GetHwnd(), IDC_COMBO_COLORS );
-	/* ƒRƒ“ƒ{ƒ{ƒbƒNƒX‚ğ‹ó‚É‚·‚é */
+	/* ã‚³ãƒ³ãƒœãƒœãƒƒã‚¯ã‚¹ã‚’ç©ºã«ã™ã‚‹ */
 	Combo_ResetContent( hwndCombo );
-	/* ˆês–Ú‚Í‚»‚Ì‚Ü‚Ü */
-	Combo_AddString( hwndCombo, L"--‚»‚Ì‚Ü‚ÜƒCƒ“ƒ|[ƒg--" );
+	/* ä¸€è¡Œç›®ã¯ãã®ã¾ã¾ */
+	Combo_AddString( hwndCombo, L"--ãã®ã¾ã¾ã‚¤ãƒ³ãƒãƒ¼ãƒˆ--" );
 
-	// ƒGƒfƒBƒ^“à‚Ìİ’è
+	// ã‚¨ãƒ‡ã‚£ã‚¿å†…ã®è¨­å®š
 	for (nIdx = 0; nIdx < MAX_TYPES; ++nIdx) {
 		STypeConfig& types = CDocTypeManager().GetTypeSetting(CTypeConfig(nIdx));
-		if (types.m_szTypeExts[0] != _T('\0')) {		/* ƒ^ƒCƒv‘®«FŠg’£qƒŠƒXƒg */
+		if (types.m_szTypeExts[0] != _T('\0')) {		/* ã‚¿ã‚¤ãƒ—å±æ€§ï¼šæ‹¡å¼µå­ãƒªã‚¹ãƒˆ */
 			auto_sprintf( szText, _T("%ts (%ts)"),
-				types.m_szTypeName,	/* ƒ^ƒCƒv‘®«F–¼Ì */
-				types.m_szTypeExts	/* ƒ^ƒCƒv‘®«FŠg’£qƒŠƒXƒg */
+				types.m_szTypeName,	/* ã‚¿ã‚¤ãƒ—å±æ€§ï¼šåç§° */
+				types.m_szTypeExts	/* ã‚¿ã‚¤ãƒ—å±æ€§ï¼šæ‹¡å¼µå­ãƒªã‚¹ãƒˆ */
 			);
 		}
 		else{
 			auto_sprintf( szText, _T("%ts"),
-				types.m_szTypeName	/* ƒ^ƒCƒv‘®«FŠgÌ */
+				types.m_szTypeName	/* ã‚¿ã‚¤ãƒ—å±æ€§ï¼šæ‹¡ç§° */
 			);
 		}
 		::Combo_AddString( hwndCombo, szText );
 	}
-	// “ÇFİ’èƒtƒ@ƒCƒ‹İ’è
+	// èª­è¾¼è‰²è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«è¨­å®š
 	HANDLE	hFind;
 	WIN32_FIND_DATA	wf;
 	BOOL	bFind;
@@ -123,14 +123,14 @@ void CDlgTypeAscertain::SetData( void )
 		bFind;
 		bFind = FindNextFile( hFind, &wf )) {
 		if ( (wf.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == 0) {
-			// “ÇFİ’èƒtƒ@ƒCƒ‹”­Œ©
+			// èª­è¾¼è‰²è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ç™ºè¦‹
 			auto_sprintf( szText, _T("File -- %ts"), wf.cFileName );
 			::Combo_AddString( hwndCombo, szText );
 		}
 	}
 	FindClose( hFind );
 
-	// ƒRƒ“ƒ{ƒ{ƒbƒNƒX‚ÌƒfƒtƒHƒ‹ƒg‘I‘ğ
+	// ã‚³ãƒ³ãƒœãƒœãƒƒã‚¯ã‚¹ã®ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆé¸æŠ
 	Combo_SetCurSel( hwndCombo, 0 );
 	return;
 }

@@ -1,7 +1,7 @@
 /*!	@file
-@brief CViewCommanderƒNƒ‰ƒX‚ÌƒRƒ}ƒ“ƒh(‘}“üŒn)ŠÖ”ŒQ
+@brief CViewCommanderã‚¯ãƒ©ã‚¹ã®ã‚³ãƒãƒ³ãƒ‰(æŒ¿å…¥ç³»)é–¢æ•°ç¾¤
 
-	2012/12/15	CViewCommander.cpp,CViewCommander_New.cpp‚©‚ç•ª—£
+	2012/12/15	CViewCommander.cpp,CViewCommander_New.cppã‹ã‚‰åˆ†é›¢
 */
 /*
 	Copyright (C) 1998-2001, Norio Nakatani
@@ -15,41 +15,41 @@
 #include "CViewCommander.h"
 #include "CViewCommander_inline.h"
 
-#include "dlg/CDlgCtrlCode.h"	//ƒRƒ“ƒgƒ[ƒ‹ƒR[ƒh‚Ì“ü—Í(ƒ_ƒCƒAƒƒO)
+#include "dlg/CDlgCtrlCode.h"	//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã‚³ãƒ¼ãƒ‰ã®å…¥åŠ›(ãƒ€ã‚¤ã‚¢ãƒ­ã‚°)
 #include "env/CFormatManager.h"
 
-//“ú•t‘}“ü
+//æ—¥ä»˜æŒ¿å…¥
 void CViewCommander::Command_INS_DATE( void )
 {
-	// “ú•t‚ğƒtƒH[ƒ}ƒbƒg
+	// æ—¥ä»˜ã‚’ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆ
 	TCHAR szText[1024];
 	SYSTEMTIME systime;
 	::GetLocalTime( &systime );
 	CFormatManager().MyGetDateFormat( systime, szText, _countof( szText ) - 1 );
 
-	// ƒeƒLƒXƒg‚ğ“\‚è•t‚¯ ver1
+	// ãƒ†ã‚­ã‚¹ãƒˆã‚’è²¼ã‚Šä»˜ã‘ ver1
 	Command_INSTEXT( true, to_wchar(szText), CLogicInt(-1), TRUE );
 }
 
 
 
-//‘}“ü
+//æ™‚åˆ»æŒ¿å…¥
 void CViewCommander::Command_INS_TIME( void )
 {
-	// ‚ğƒtƒH[ƒ}ƒbƒg
+	// æ™‚åˆ»ã‚’ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆ
 	TCHAR szText[1024];
 	SYSTEMTIME systime;
 	::GetLocalTime( &systime );
 	CFormatManager().MyGetTimeFormat( systime, szText, _countof( szText ) - 1 );
 
-	// ƒeƒLƒXƒg‚ğ“\‚è•t‚¯ ver1
+	// ãƒ†ã‚­ã‚¹ãƒˆã‚’è²¼ã‚Šä»˜ã‘ ver1
 	Command_INSTEXT( true, to_wchar(szText), CLogicInt(-1), TRUE );
 }
 
 
 
 //	from CViewCommander_New.cpp
-/*!	ƒRƒ“ƒgƒ[ƒ‹ƒR[ƒh‚Ì“ü—Í(ƒ_ƒCƒAƒƒO)
+/*!	ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã‚³ãƒ¼ãƒ‰ã®å…¥åŠ›(ãƒ€ã‚¤ã‚¢ãƒ­ã‚°)
 	@author	MIK
 	@date	2002/06/02
 */
@@ -57,10 +57,10 @@ void CViewCommander::Command_CtrlCode_Dialog( void )
 {
 	CDlgCtrlCode	cDlgCtrlCode;
 
-	//ƒRƒ“ƒgƒ[ƒ‹ƒR[ƒh“ü—Íƒ_ƒCƒAƒƒO‚ğ•\¦‚·‚é
+	//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã‚³ãƒ¼ãƒ‰å…¥åŠ›ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’è¡¨ç¤ºã™ã‚‹
 	if( cDlgCtrlCode.DoModal( G_AppInstance(), m_pCommanderView->GetHwnd(), (LPARAM)GetDocument() ) )
 	{
-		//ƒRƒ“ƒgƒ[ƒ‹ƒR[ƒh‚ğ“ü—Í‚·‚é
+		//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã‚³ãƒ¼ãƒ‰ã‚’å…¥åŠ›ã™ã‚‹
 		Command_WCHAR( cDlgCtrlCode.GetCharCode() );
 	}
 }

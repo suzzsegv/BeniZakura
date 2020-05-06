@@ -11,32 +11,32 @@
 
 EDiffMark CDiffLineGetter::GetLineDiffMark() const{ return (EDiffMark)m_pcDocLine->m_sMark.m_cDiffmarked; }
 
-/*! s‚Ì·•ªƒ}[ƒN‚É‘Î‰‚µ‚½F‚ğ•Ô‚· -> pnColorIndex
+/*! è¡Œã®å·®åˆ†ãƒãƒ¼ã‚¯ã«å¯¾å¿œã—ãŸè‰²ã‚’è¿”ã™ -> pnColorIndex
 	
-	Fİ’è‚ª–³‚¢ê‡‚Í pnColorIndex ‚ğ•ÏX‚¹‚¸‚É false ‚ğ•Ô‚·B	
+	è‰²è¨­å®šãŒç„¡ã„å ´åˆã¯ pnColorIndex ã‚’å¤‰æ›´ã›ãšã« false ã‚’è¿”ã™ã€‚	
 */
 bool CDiffLineGetter::GetDiffColor(EColorIndexType* pnColorIndex) const
 {
 	EDiffMark type = GetLineDiffMark();
 	CEditView* pView = &CEditWnd::getInstance()->GetActiveView();
 
-	//DIFF·•ªƒ}[ƒN•\¦	//@@@ 2002.05.25 MIK
+	//DIFFå·®åˆ†ãƒãƒ¼ã‚¯è¡¨ç¤º	//@@@ 2002.05.25 MIK
 	if( type ){
 		switch( type ){
-		case MARK_DIFF_APPEND:	//’Ç‰Á
+		case MARK_DIFF_APPEND:	//è¿½åŠ 
 			if( CTypeSupport(pView,COLORIDX_DIFF_APPEND).IsDisp() ){
 				*pnColorIndex = COLORIDX_DIFF_APPEND;
 				return true;
 			}
 			break;
-		case MARK_DIFF_CHANGE:	//•ÏX
+		case MARK_DIFF_CHANGE:	//å¤‰æ›´
 			if( CTypeSupport(pView,COLORIDX_DIFF_CHANGE).IsDisp() ){
 				*pnColorIndex = COLORIDX_DIFF_CHANGE;
 				return true;
 			}
 			break;
-		case MARK_DIFF_DELETE:	//íœ
-		case MARK_DIFF_DEL_EX:	//íœ
+		case MARK_DIFF_DELETE:	//å‰Šé™¤
+		case MARK_DIFF_DEL_EX:	//å‰Šé™¤
 			if( CTypeSupport(pView,COLORIDX_DIFF_DELETE).IsDisp() ){
 				*pnColorIndex = COLORIDX_DIFF_DELETE;
 				return true;
@@ -48,15 +48,15 @@ bool CDiffLineGetter::GetDiffColor(EColorIndexType* pnColorIndex) const
 }
 
 
-/*! DIFFƒ}[ƒN•`‰æ
+/*! DIFFãƒãƒ¼ã‚¯æç”»
 
-	ˆø”‚Í‰¼Bi–³‘Ê‚Èˆø”‚ ‚è‚»‚¤j
+	å¼•æ•°ã¯ä»®ã€‚ï¼ˆç„¡é§„ãªå¼•æ•°ã‚ã‚Šãã†ï¼‰
 */
 bool CDiffLineGetter::DrawDiffMark(CGraphics& gr, int y, int nLineHeight, CTypeSupport& cColorType) const
 {
 	EDiffMark type = GetLineDiffMark();
 
-	if( type )	//DIFF·•ªƒ}[ƒN•\¦	//@@@ 2002.05.25 MIK
+	if( type )	//DIFFå·®åˆ†ãƒãƒ¼ã‚¯è¡¨ç¤º	//@@@ 2002.05.25 MIK
 	{
 		int	cy = y + nLineHeight / 2;
 
@@ -64,21 +64,21 @@ bool CDiffLineGetter::DrawDiffMark(CGraphics& gr, int y, int nLineHeight, CTypeS
 
 		switch( type )
 		{
-		case MARK_DIFF_APPEND:	//’Ç‰Á
+		case MARK_DIFF_APPEND:	//è¿½åŠ 
 			::MoveToEx( gr, 3, cy, NULL );
 			::LineTo  ( gr, 6, cy );
 			::MoveToEx( gr, 4, cy - 2, NULL );
 			::LineTo  ( gr, 4, cy + 3 );
 			break;
 
-		case MARK_DIFF_CHANGE:	//•ÏX
+		case MARK_DIFF_CHANGE:	//å¤‰æ›´
 			::MoveToEx( gr, 3, cy - 4, NULL );
 			::LineTo  ( gr, 3, cy );
 			::MoveToEx( gr, 3, cy + 2, NULL );
 			::LineTo  ( gr, 3, cy + 3 );
 			break;
 
-		case MARK_DIFF_DELETE:	//íœ
+		case MARK_DIFF_DELETE:	//å‰Šé™¤
 			cy -= 3;
 			::MoveToEx( gr, 3, cy, NULL );
 			::LineTo  ( gr, 5, cy );
@@ -87,7 +87,7 @@ bool CDiffLineGetter::DrawDiffMark(CGraphics& gr, int y, int nLineHeight, CTypeS
 			::LineTo  ( gr, 7, cy + 4 );
 			break;
 		
-		case MARK_DIFF_DEL_EX:	//íœ(EOF)
+		case MARK_DIFF_DEL_EX:	//å‰Šé™¤(EOF)
 			cy += 3;
 			::MoveToEx( gr, 3, cy, NULL );
 			::LineTo  ( gr, 5, cy );
@@ -115,7 +115,7 @@ void CDiffLineSetter::SetLineDiffMark(EDiffMark mark){ m_pcDocLine->m_sMark.m_cD
 //                       CDiffLineMgr                          //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
-/*!	·•ª•\¦‚Ì‘S‰ğœ
+/*!	å·®åˆ†è¡¨ç¤ºã®å…¨è§£é™¤
 	@author	MIK
 	@date	2002.05.25
 */
@@ -131,19 +131,19 @@ void CDiffLineMgr::ResetAllDiffMark()
 	CDiffManager::getInstance()->SetDiffUse(false);
 }
 
-/*! ·•ªŒŸõ
+/*! å·®åˆ†æ¤œç´¢
 	@author	MIK
 	@date	2002.05.25
 */
 bool CDiffLineMgr::SearchDiffMark(
-	CLogicInt			nLineNum,		//!< ŒŸõŠJns
-	ESearchDirection	bPrevOrNext,	//!< 0==‘O•ûŒŸõ 1==Œã•ûŒŸõ
-	CLogicInt*			pnLineNum 		//!< ƒ}ƒbƒ`s
+	CLogicInt			nLineNum,		//!< æ¤œç´¢é–‹å§‹è¡Œ
+	ESearchDirection	bPrevOrNext,	//!< 0==å‰æ–¹æ¤œç´¢ 1==å¾Œæ–¹æ¤œç´¢
+	CLogicInt*			pnLineNum 		//!< ãƒãƒƒãƒè¡Œ
 )
 {
 	CLogicInt	nLinePos = nLineNum;
 
-	//‘O•ûŒŸõ
+	//å‰æ–¹æ¤œç´¢
 	if( bPrevOrNext == SEARCH_BACKWARD )
 	{
 		nLinePos--;
@@ -152,14 +152,14 @@ bool CDiffLineMgr::SearchDiffMark(
 		{
 			if( CDiffLineGetter(pDocLine).GetLineDiffMark() != 0 )
 			{
-				*pnLineNum = nLinePos;				/* ƒ}ƒbƒ`s */
+				*pnLineNum = nLinePos;				/* ãƒãƒƒãƒè¡Œ */
 				return true;
 			}
 			nLinePos--;
 			pDocLine = pDocLine->GetPrevLine();
 		}
 	}
-	//Œã•ûŒŸõ
+	//å¾Œæ–¹æ¤œç´¢
 	else
 	{
 		nLinePos++;
@@ -168,7 +168,7 @@ bool CDiffLineMgr::SearchDiffMark(
 		{
 			if( CDiffLineGetter(pDocLine).GetLineDiffMark() != 0 )
 			{
-				*pnLineNum = nLinePos;				/* ƒ}ƒbƒ`s */
+				*pnLineNum = nLinePos;				/* ãƒãƒƒãƒè¡Œ */
 				return true;
 			}
 			nLinePos++;
@@ -178,7 +178,7 @@ bool CDiffLineMgr::SearchDiffMark(
 	return false;
 }
 
-/*!	·•ªî•ñ‚ğs”ÍˆÍw’è‚Å“o˜^‚·‚éB
+/*!	å·®åˆ†æƒ…å ±ã‚’è¡Œç¯„å›²æŒ‡å®šã§ç™»éŒ²ã™ã‚‹ã€‚
 	@author	MIK
 	@date	2002/05/25
 */
@@ -188,7 +188,7 @@ void CDiffLineMgr::SetDiffMarkRange( EDiffMark nMode, CLogicInt nStartLine, CLog
 
 	if( nStartLine < CLogicInt(0) ) nStartLine = CLogicInt(0);
 
-	//ÅIs‚æ‚èŒã‚Éíœs‚ ‚è
+	//æœ€çµ‚è¡Œã‚ˆã‚Šå¾Œã«å‰Šé™¤è¡Œã‚ã‚Š
 	CLogicInt	nLines = m_pcDocLineMgr->GetLineCount();
 	if( nLines <= nEndLine )
 	{
@@ -197,7 +197,7 @@ void CDiffLineMgr::SetDiffMarkRange( EDiffMark nMode, CLogicInt nStartLine, CLog
 		if( pCDocLine ) CDiffLineSetter(pCDocLine).SetLineDiffMark(MARK_DIFF_DEL_EX);
 	}
 
-	//s”ÍˆÍ‚Éƒ}[ƒN‚ğ‚Â‚¯‚é
+	//è¡Œç¯„å›²ã«ãƒãƒ¼ã‚¯ã‚’ã¤ã‘ã‚‹
 	for( CLogicInt i = nStartLine; i <= nEndLine; i++ )
 	{
 		CDocLine*	pCDocLine = m_pcDocLineMgr->GetLine( i );

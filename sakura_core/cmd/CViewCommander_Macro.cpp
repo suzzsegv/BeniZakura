@@ -1,7 +1,7 @@
 /*!	@file
-@brief CViewCommanderƒNƒ‰ƒX‚ÌƒRƒ}ƒ“ƒh(ƒ}ƒNƒŒn)ŠÖ”ŒQ
+@brief CViewCommanderã‚¯ãƒ©ã‚¹ã®ã‚³ãƒãƒ³ãƒ‰(ãƒã‚¯ãƒ­ç³»)é–¢æ•°ç¾¤
 
-	2012/12/20	CViewCommander.cpp‚©‚ç•ª—£
+	2012/12/20	CViewCommander.cppã‹ã‚‰åˆ†é›¢
 */
 /*
 	Copyright (C) 1998-2001, Norio Nakatani
@@ -22,7 +22,7 @@
 #include "CViewCommander.h"
 #include "CViewCommander_inline.h"
 
-//@@@ 2002.2.2 YAZAKI ƒ}ƒNƒ‚ÍCSMacroMgr‚É“ˆê
+//@@@ 2002.2.2 YAZAKI ãƒã‚¯ãƒ­ã¯CSMacroMgrã«çµ±ä¸€
 #include "macro/CSMacroMgr.h"
 #include "dlg/CDlgExec.h"
 #include "CEditApp.h"
@@ -32,75 +32,75 @@
 #include "env/CSakuraEnvironment.h"
 
 
-/* ƒL[ƒ}ƒNƒ‚Ì‹L˜^ŠJn^I—¹ */
+/* ã‚­ãƒ¼ãƒã‚¯ãƒ­ã®è¨˜éŒ²é–‹å§‹ï¼çµ‚äº† */
 void CViewCommander::Command_RECKEYMACRO( void )
 {
-	if( GetDllShareData().m_sFlags.m_bRecordingKeyMacro ){									/* ƒL[ƒ{[ƒhƒ}ƒNƒ‚Ì‹L˜^’† */
+	if( GetDllShareData().m_sFlags.m_bRecordingKeyMacro ){									/* ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ãƒã‚¯ãƒ­ã®è¨˜éŒ²ä¸­ */
 		GetDllShareData().m_sFlags.m_bRecordingKeyMacro = FALSE;
-		GetDllShareData().m_sFlags.m_hwndRecordingKeyMacro = NULL;							/* ƒL[ƒ{[ƒhƒ}ƒNƒ‚ğ‹L˜^’†‚ÌƒEƒBƒ“ƒhƒE */
-		//@@@ 2002.1.24 YAZAKI ƒL[ƒ}ƒNƒ‚ğƒ}ƒNƒ—pƒtƒHƒ‹ƒ_‚ÉuRecKey.macv‚Æ‚¢‚¤–¼‚Å•Û‘¶
+		GetDllShareData().m_sFlags.m_hwndRecordingKeyMacro = NULL;							/* ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ãƒã‚¯ãƒ­ã‚’è¨˜éŒ²ä¸­ã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ */
+		//@@@ 2002.1.24 YAZAKI ã‚­ãƒ¼ãƒã‚¯ãƒ­ã‚’ãƒã‚¯ãƒ­ç”¨ãƒ•ã‚©ãƒ«ãƒ€ã«ã€ŒRecKey.macã€ã¨ã„ã†åã§ä¿å­˜
 		TCHAR szInitDir[MAX_PATH];
 		int nRet;
-		// 2003.06.23 Moca ‹L˜^—pƒL[ƒ}ƒNƒ‚Ìƒtƒ‹ƒpƒX‚ğCShareDataŒo—R‚Åæ“¾
+		// 2003.06.23 Moca è¨˜éŒ²ç”¨ã‚­ãƒ¼ãƒã‚¯ãƒ­ã®ãƒ•ãƒ«ãƒ‘ã‚¹ã‚’CShareDataçµŒç”±ã§å–å¾—
 		nRet = CShareData::getInstance()->GetMacroFilename( -1, szInitDir, MAX_PATH ); 
 		if( nRet <= 0 ){
-			ErrorMessage( m_pCommanderView->GetHwnd(), _T("ƒ}ƒNƒƒtƒ@ƒCƒ‹‚ğì¬‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B\nƒtƒ@ƒCƒ‹–¼‚Ìæ“¾ƒGƒ‰[ nRet=%d"), nRet );
+			ErrorMessage( m_pCommanderView->GetHwnd(), _T("ãƒã‚¯ãƒ­ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ä½œæˆã§ãã¾ã›ã‚“ã§ã—ãŸã€‚\nãƒ•ã‚¡ã‚¤ãƒ«åã®å–å¾—ã‚¨ãƒ©ãƒ¼ nRet=%d"), nRet );
 			return;
 		}else{
 			_tcscpy( GetDllShareData().m_Common.m_sMacro.m_szKeyMacroFileName, szInitDir );
 		}
-		//@@@ 2002.2.2 YAZAKI ƒ}ƒNƒ‚ğCSMacroMgr‚É“ˆê
+		//@@@ 2002.2.2 YAZAKI ãƒã‚¯ãƒ­ã‚’CSMacroMgrã«çµ±ä¸€
 		int nSaveResult=CEditApp::getInstance()->m_pcSMacroMgr->Save(
 			STAND_KEYMACRO,
 			G_AppInstance(),
 			GetDllShareData().m_Common.m_sMacro.m_szKeyMacroFileName
 		);
 		if ( !nSaveResult ){
-			ErrorMessage(	m_pCommanderView->GetHwnd(), _T("ƒ}ƒNƒƒtƒ@ƒCƒ‹‚ğì¬‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B\n\n%ts"), GetDllShareData().m_Common.m_sMacro.m_szKeyMacroFileName );
+			ErrorMessage(	m_pCommanderView->GetHwnd(), _T("ãƒã‚¯ãƒ­ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ä½œæˆã§ãã¾ã›ã‚“ã§ã—ãŸã€‚\n\n%ts"), GetDllShareData().m_Common.m_sMacro.m_szKeyMacroFileName );
 		}
 	}else{
 		GetDllShareData().m_sFlags.m_bRecordingKeyMacro = TRUE;
-		GetDllShareData().m_sFlags.m_hwndRecordingKeyMacro = GetMainWindow();	/* ƒL[ƒ{[ƒhƒ}ƒNƒ‚ğ‹L˜^’†‚ÌƒEƒBƒ“ƒhƒE */
-		/* ƒL[ƒ}ƒNƒ‚Ìƒoƒbƒtƒ@‚ğƒNƒŠƒA‚·‚é */
-		//@@@ 2002.1.24 m_CKeyMacroMgr‚ğCEditDoc‚ÖˆÚ“®
-		//@@@ 2002.2.2 YAZAKI ƒ}ƒNƒ‚ğCSMacroMgr‚É“ˆê
+		GetDllShareData().m_sFlags.m_hwndRecordingKeyMacro = GetMainWindow();	/* ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ãƒã‚¯ãƒ­ã‚’è¨˜éŒ²ä¸­ã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ */
+		/* ã‚­ãƒ¼ãƒã‚¯ãƒ­ã®ãƒãƒƒãƒ•ã‚¡ã‚’ã‚¯ãƒªã‚¢ã™ã‚‹ */
+		//@@@ 2002.1.24 m_CKeyMacroMgrã‚’CEditDocã¸ç§»å‹•
+		//@@@ 2002.2.2 YAZAKI ãƒã‚¯ãƒ­ã‚’CSMacroMgrã«çµ±ä¸€
 		CEditApp::getInstance()->m_pcSMacroMgr->Clear(STAND_KEYMACRO);
 //		GetDocument()->m_CKeyMacroMgr.ClearAll();
 //		GetDllShareData().m_CKeyMacroMgr.Clear();
 	}
-	/* eƒEƒBƒ“ƒhƒE‚Ìƒ^ƒCƒgƒ‹‚ğXV */
+	/* è¦ªã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ã‚¿ã‚¤ãƒˆãƒ«ã‚’æ›´æ–° */
 	this->GetEditWindow()->UpdateCaption();
 
-	/* ƒLƒƒƒŒƒbƒg‚ÌsŒ…ˆÊ’u‚ğ•\¦‚·‚é */
+	/* ã‚­ãƒ£ãƒ¬ãƒƒãƒˆã®è¡Œæ¡ä½ç½®ã‚’è¡¨ç¤ºã™ã‚‹ */
 	GetCaret().ShowCaretPosInfo();
 }
 
 
 
-/* ƒL[ƒ}ƒNƒ‚Ì•Û‘¶ */
+/* ã‚­ãƒ¼ãƒã‚¯ãƒ­ã®ä¿å­˜ */
 void CViewCommander::Command_SAVEKEYMACRO( void )
 {
 	GetDllShareData().m_sFlags.m_bRecordingKeyMacro = FALSE;
-	GetDllShareData().m_sFlags.m_hwndRecordingKeyMacro = NULL;	/* ƒL[ƒ{[ƒhƒ}ƒNƒ‚ğ‹L˜^’†‚ÌƒEƒBƒ“ƒhƒE */
+	GetDllShareData().m_sFlags.m_hwndRecordingKeyMacro = NULL;	/* ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ãƒã‚¯ãƒ­ã‚’è¨˜éŒ²ä¸­ã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ */
 
 	//	Jun. 16, 2002 genta
 	if( !CEditApp::getInstance()->m_pcSMacroMgr->IsSaveOk() ){
-		//	•Û‘¶•s‰Â
-		ErrorMessage( m_pCommanderView->GetHwnd(), _T("•Û‘¶‰Â”\‚Èƒ}ƒNƒ‚ª‚ ‚è‚Ü‚¹‚ñDƒL[ƒ{[ƒhƒ}ƒNƒˆÈŠO‚Í•Û‘¶‚Å‚«‚Ü‚¹‚ñD") );
+		//	ä¿å­˜ä¸å¯
+		ErrorMessage( m_pCommanderView->GetHwnd(), _T("ä¿å­˜å¯èƒ½ãªãƒã‚¯ãƒ­ãŒã‚ã‚Šã¾ã›ã‚“ï¼ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ãƒã‚¯ãƒ­ä»¥å¤–ã¯ä¿å­˜ã§ãã¾ã›ã‚“ï¼") );
 	}
 
 	CDlgOpenFile	cDlgOpenFile;
 	TCHAR			szPath[_MAX_PATH + 1];
 	TCHAR			szInitDir[_MAX_PATH + 1];
 	_tcscpy( szPath, _T("") );
-	// 2003.06.23 Moca ‘Š‘ÎƒpƒX‚ÍÀsƒtƒ@ƒCƒ‹‚©‚ç‚ÌƒpƒX
-	// 2007.05.19 ryoji ‘Š‘ÎƒpƒX‚Íİ’èƒtƒ@ƒCƒ‹‚©‚ç‚ÌƒpƒX‚ğ—Dæ
+	// 2003.06.23 Moca ç›¸å¯¾ãƒ‘ã‚¹ã¯å®Ÿè¡Œãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ã®ãƒ‘ã‚¹
+	// 2007.05.19 ryoji ç›¸å¯¾ãƒ‘ã‚¹ã¯è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ã®ãƒ‘ã‚¹ã‚’å„ªå…ˆ
 	if( _IS_REL_PATH( GetDllShareData().m_Common.m_sMacro.m_szMACROFOLDER ) ){
 		GetInidirOrExedir( szInitDir, GetDllShareData().m_Common.m_sMacro.m_szMACROFOLDER );
 	}else{
-		_tcscpy( szInitDir, GetDllShareData().m_Common.m_sMacro.m_szMACROFOLDER );	/* ƒ}ƒNƒ—pƒtƒHƒ‹ƒ_ */
+		_tcscpy( szInitDir, GetDllShareData().m_Common.m_sMacro.m_szMACROFOLDER );	/* ãƒã‚¯ãƒ­ç”¨ãƒ•ã‚©ãƒ«ãƒ€ */
 	}
-	/* ƒtƒ@ƒCƒ‹ƒI[ƒvƒ“ƒ_ƒCƒAƒƒO‚Ì‰Šú‰» */
+	/* ãƒ•ã‚¡ã‚¤ãƒ«ã‚ªãƒ¼ãƒ—ãƒ³ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®åˆæœŸåŒ– */
 	cDlgOpenFile.Create(
 		G_AppInstance(),
 		m_pCommanderView->GetHwnd(),
@@ -110,29 +110,29 @@ void CViewCommander::Command_SAVEKEYMACRO( void )
 	if( !cDlgOpenFile.DoModal_GetSaveFileName( szPath ) ){
 		return;
 	}
-	/* ƒtƒ@ƒCƒ‹‚Ìƒtƒ‹ƒpƒX‚ğAƒtƒHƒ‹ƒ_‚Æƒtƒ@ƒCƒ‹–¼‚É•ªŠ„ */
-	/* [c:\work\test\aaa.txt] ¨ [c:\work\test] + [aaa.txt] */
+	/* ãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ•ãƒ«ãƒ‘ã‚¹ã‚’ã€ãƒ•ã‚©ãƒ«ãƒ€ã¨ãƒ•ã‚¡ã‚¤ãƒ«åã«åˆ†å‰² */
+	/* [c:\work\test\aaa.txt] â†’ [c:\work\test] + [aaa.txt] */
 //	::SplitPath_FolderAndFile( szPath, GetDllShareData().m_Common.m_sMacro.m_szMACROFOLDER, NULL );
 //	wcscat( GetDllShareData().m_Common.m_sMacro.m_szMACROFOLDER, L"\\" );
 
-	/* ƒL[ƒ{[ƒhƒ}ƒNƒ‚Ì•Û‘¶ */
-	//@@@ 2002.2.2 YAZAKI ƒ}ƒNƒ‚ğCSMacroMgr‚É“ˆê
+	/* ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ãƒã‚¯ãƒ­ã®ä¿å­˜ */
+	//@@@ 2002.2.2 YAZAKI ãƒã‚¯ãƒ­ã‚’CSMacroMgrã«çµ±ä¸€
 	//@@@ 2002.1.24 YAZAKI
 	if ( !CEditApp::getInstance()->m_pcSMacroMgr->Save( STAND_KEYMACRO, G_AppInstance(), szPath ) ){
-		ErrorMessage( m_pCommanderView->GetHwnd(), _T("ƒ}ƒNƒƒtƒ@ƒCƒ‹‚ğì¬‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B\n\n%ts"), szPath );
+		ErrorMessage( m_pCommanderView->GetHwnd(), _T("ãƒã‚¯ãƒ­ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ä½œæˆã§ãã¾ã›ã‚“ã§ã—ãŸã€‚\n\n%ts"), szPath );
 	}
 	return;
 }
 
 
 
-/*! ƒL[ƒ}ƒNƒ‚Ì“Ç‚İ‚İ
-	@date 2005.02.20 novice ƒfƒtƒHƒ‹ƒg‚ÌŠg’£q•ÏX
+/*! ã‚­ãƒ¼ãƒã‚¯ãƒ­ã®èª­ã¿è¾¼ã¿
+	@date 2005.02.20 novice ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®æ‹¡å¼µå­å¤‰æ›´
  */
 void CViewCommander::Command_LOADKEYMACRO( void )
 {
 	GetDllShareData().m_sFlags.m_bRecordingKeyMacro = FALSE;
-	GetDllShareData().m_sFlags.m_hwndRecordingKeyMacro = NULL;	/* ƒL[ƒ{[ƒhƒ}ƒNƒ‚ğ‹L˜^’†‚ÌƒEƒBƒ“ƒhƒE */
+	GetDllShareData().m_sFlags.m_hwndRecordingKeyMacro = NULL;	/* ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ãƒã‚¯ãƒ­ã‚’è¨˜éŒ²ä¸­ã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ */
 
 	CDlgOpenFile	cDlgOpenFile;
 	TCHAR			szPath[_MAX_PATH + 1];
@@ -140,19 +140,19 @@ void CViewCommander::Command_LOADKEYMACRO( void )
 	const TCHAR*		pszFolder;
 	_tcscpy( szPath, _T("") );
 	pszFolder = GetDllShareData().m_Common.m_sMacro.m_szMACROFOLDER;
-	// 2003.06.23 Moca ‘Š‘ÎƒpƒX‚ÍÀsƒtƒ@ƒCƒ‹‚©‚ç‚ÌƒpƒX
-	// 2007.05.19 ryoji ‘Š‘ÎƒpƒX‚Íİ’èƒtƒ@ƒCƒ‹‚©‚ç‚ÌƒpƒX‚ğ—Dæ
+	// 2003.06.23 Moca ç›¸å¯¾ãƒ‘ã‚¹ã¯å®Ÿè¡Œãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ã®ãƒ‘ã‚¹
+	// 2007.05.19 ryoji ç›¸å¯¾ãƒ‘ã‚¹ã¯è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ã®ãƒ‘ã‚¹ã‚’å„ªå…ˆ
 	if( _IS_REL_PATH( pszFolder ) ){
 		GetInidirOrExedir( szInitDir, pszFolder );
 	}else{
-		_tcscpy( szInitDir, pszFolder );	/* ƒ}ƒNƒ—pƒtƒHƒ‹ƒ_ */
+		_tcscpy( szInitDir, pszFolder );	/* ãƒã‚¯ãƒ­ç”¨ãƒ•ã‚©ãƒ«ãƒ€ */
 	}
-	/* ƒtƒ@ƒCƒ‹ƒI[ƒvƒ“ƒ_ƒCƒAƒƒO‚Ì‰Šú‰» */
+	/* ãƒ•ã‚¡ã‚¤ãƒ«ã‚ªãƒ¼ãƒ—ãƒ³ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®åˆæœŸåŒ– */
 	cDlgOpenFile.Create(
 		G_AppInstance(),
 		m_pCommanderView->GetHwnd(),
-// 2005/02/20 novice ƒfƒtƒHƒ‹ƒg‚ÌŠg’£q•ÏX
-// 2005/07/13 novice ‘½—l‚Èƒ}ƒNƒ‚ğƒTƒ|[ƒg‚µ‚Ä‚¢‚é‚Ì‚ÅƒfƒtƒHƒ‹ƒg‚Í‘S‚Ä•\¦‚É‚·‚é
+// 2005/02/20 novice ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®æ‹¡å¼µå­å¤‰æ›´
+// 2005/07/13 novice å¤šæ§˜ãªãƒã‚¯ãƒ­ã‚’ã‚µãƒãƒ¼ãƒˆã—ã¦ã„ã‚‹ã®ã§ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã¯å…¨ã¦è¡¨ç¤ºã«ã™ã‚‹
 		_T("*.*"),
 		szInitDir
 	);
@@ -160,8 +160,8 @@ void CViewCommander::Command_LOADKEYMACRO( void )
 		return;
 	}
 
-	/* ƒL[ƒ{[ƒhƒ}ƒNƒ‚Ì“Ç‚İ‚İ */
-	//@@@ 2002.1.24 YAZAKI “Ç‚İ‚İ‚Æ‚¢‚¢‚Â‚Â‚àAƒtƒ@ƒCƒ‹–¼‚ğƒRƒs[‚·‚é‚¾‚¯BÀs’¼‘O‚É“Ç‚İ‚Ş
+	/* ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ãƒã‚¯ãƒ­ã®èª­ã¿è¾¼ã¿ */
+	//@@@ 2002.1.24 YAZAKI èª­ã¿è¾¼ã¿ã¨ã„ã„ã¤ã¤ã‚‚ã€ãƒ•ã‚¡ã‚¤ãƒ«åã‚’ã‚³ãƒ”ãƒ¼ã™ã‚‹ã ã‘ã€‚å®Ÿè¡Œç›´å‰ã«èª­ã¿è¾¼ã‚€
 	_tcscpy(GetDllShareData().m_Common.m_sMacro.m_szKeyMacroFileName, szPath);
 //	GetDllShareData().m_CKeyMacroMgr.LoadKeyMacro( G_AppInstance(), m_pCommanderView->GetHwnd(), szPath );
 	return;
@@ -169,21 +169,21 @@ void CViewCommander::Command_LOADKEYMACRO( void )
 
 
 
-/* ƒL[ƒ}ƒNƒ‚ÌÀs */
+/* ã‚­ãƒ¼ãƒã‚¯ãƒ­ã®å®Ÿè¡Œ */
 void CViewCommander::Command_EXECKEYMACRO( void )
 {
-	//@@@ 2002.1.24 YAZAKI ‹L˜^’†‚ÍI—¹‚µ‚Ä‚©‚çÀs
+	//@@@ 2002.1.24 YAZAKI è¨˜éŒ²ä¸­ã¯çµ‚äº†ã—ã¦ã‹ã‚‰å®Ÿè¡Œ
 	if (GetDllShareData().m_sFlags.m_bRecordingKeyMacro){
 		Command_RECKEYMACRO();
 	}
 	GetDllShareData().m_sFlags.m_bRecordingKeyMacro = FALSE;
-	GetDllShareData().m_sFlags.m_hwndRecordingKeyMacro = NULL;	/* ƒL[ƒ{[ƒhƒ}ƒNƒ‚ğ‹L˜^’†‚ÌƒEƒBƒ“ƒhƒE */
+	GetDllShareData().m_sFlags.m_hwndRecordingKeyMacro = NULL;	/* ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ãƒã‚¯ãƒ­ã‚’è¨˜éŒ²ä¸­ã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ */
 
-	/* ƒL[ƒ{[ƒhƒ}ƒNƒ‚ÌÀs */
+	/* ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ãƒã‚¯ãƒ­ã®å®Ÿè¡Œ */
 	//@@@ 2002.1.24 YAZAKI
 	if ( GetDllShareData().m_Common.m_sMacro.m_szKeyMacroFileName[0] ){
-		//	ƒtƒ@ƒCƒ‹‚ª•Û‘¶‚³‚ê‚Ä‚¢‚½‚ç
-		//@@@ 2002.2.2 YAZAKI ƒ}ƒNƒ‚ğCSMacroMgr‚É“ˆê
+		//	ãƒ•ã‚¡ã‚¤ãƒ«ãŒä¿å­˜ã•ã‚Œã¦ã„ãŸã‚‰
+		//@@@ 2002.2.2 YAZAKI ãƒã‚¯ãƒ­ã‚’CSMacroMgrã«çµ±ä¸€
 		BOOL bLoadResult = CEditApp::getInstance()->m_pcSMacroMgr->Load(
 			STAND_KEYMACRO,
 			G_AppInstance(),
@@ -191,15 +191,15 @@ void CViewCommander::Command_EXECKEYMACRO( void )
 			NULL
 		);
 		if ( !bLoadResult ){
-			ErrorMessage( m_pCommanderView->GetHwnd(), _T("ƒtƒ@ƒCƒ‹‚ğŠJ‚¯‚Ü‚¹‚ñ‚Å‚µ‚½B\n\n%ts"), GetDllShareData().m_Common.m_sMacro.m_szKeyMacroFileName );
+			ErrorMessage( m_pCommanderView->GetHwnd(), _T("ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã‘ã¾ã›ã‚“ã§ã—ãŸã€‚\n\n%ts"), GetDllShareData().m_Common.m_sMacro.m_szKeyMacroFileName );
 		}
 		else {
-			//	2007.07.20 genta : flagsƒIƒvƒVƒ‡ƒ“’Ç‰Á
+			//	2007.07.20 genta : flagsã‚ªãƒ—ã‚·ãƒ§ãƒ³è¿½åŠ 
 			CEditApp::getInstance()->m_pcSMacroMgr->Exec( STAND_KEYMACRO, G_AppInstance(), m_pCommanderView, 0 );
 		}
 	}
 
-	/* ƒtƒH[ƒJƒXˆÚ“®‚ÌÄ•`‰æ */
+	/* ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ç§»å‹•æ™‚ã®å†æç”» */
 	m_pCommanderView->RedrawAll();
 
 	return;
@@ -207,39 +207,39 @@ void CViewCommander::Command_EXECKEYMACRO( void )
 
 
 
-/*! –¼‘O‚ğw’è‚µ‚Äƒ}ƒNƒÀs
-	@param pszPath	ƒ}ƒNƒ‚Ìƒtƒ@ƒCƒ‹ƒpƒXA‚Ü‚½‚Íƒ}ƒNƒ‚ÌƒR[ƒhB
-	@param pszType	í•ÊBNULL‚Ìê‡ƒtƒ@ƒCƒ‹w’èA‚»‚êˆÈŠO‚Ìê‡‚ÍŒ¾Œê‚ÌŠg’£q‚ğw’è
+/*! åå‰ã‚’æŒ‡å®šã—ã¦ãƒã‚¯ãƒ­å®Ÿè¡Œ
+	@param pszPath	ãƒã‚¯ãƒ­ã®ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã€ã¾ãŸã¯ãƒã‚¯ãƒ­ã®ã‚³ãƒ¼ãƒ‰ã€‚
+	@param pszType	ç¨®åˆ¥ã€‚NULLã®å ´åˆãƒ•ã‚¡ã‚¤ãƒ«æŒ‡å®šã€ãã‚Œä»¥å¤–ã®å ´åˆã¯è¨€èªã®æ‹¡å¼µå­ã‚’æŒ‡å®š
 
-	@date 2008.10.23 syat V‹Kì¬
-	@date 2008.12.21 syat ˆø”uí•Êv‚ğ’Ç‰Á
+	@date 2008.10.23 syat æ–°è¦ä½œæˆ
+	@date 2008.12.21 syat å¼•æ•°ã€Œç¨®åˆ¥ã€ã‚’è¿½åŠ 
  */
 void CViewCommander::Command_EXECEXTMACRO( const WCHAR* pszPathW, const WCHAR* pszTypeW )
 {
 	CDlgOpenFile	cDlgOpenFile;
 	TCHAR			szPath[_MAX_PATH + 1];
-	TCHAR			szInitDir[_MAX_PATH + 1];	//ƒtƒ@ƒCƒ‹‘I‘ğƒ_ƒCƒAƒƒO‚Ì‰ŠúƒtƒHƒ‹ƒ_
-	const TCHAR*	pszFolder;					//ƒ}ƒNƒƒtƒHƒ‹ƒ_
-	const TCHAR*	pszPath = NULL;				//‘æ1ˆø”‚ğTCHAR*‚É•ÏŠ·‚µ‚½•¶š—ñ
-	const TCHAR*	pszType = NULL;				//‘æ2ˆø”‚ğTCHAR*‚É•ÏŠ·‚µ‚½•¶š—ñ
+	TCHAR			szInitDir[_MAX_PATH + 1];	//ãƒ•ã‚¡ã‚¤ãƒ«é¸æŠãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®åˆæœŸãƒ•ã‚©ãƒ«ãƒ€
+	const TCHAR*	pszFolder;					//ãƒã‚¯ãƒ­ãƒ•ã‚©ãƒ«ãƒ€
+	const TCHAR*	pszPath = NULL;				//ç¬¬1å¼•æ•°ã‚’TCHAR*ã«å¤‰æ›ã—ãŸæ–‡å­—åˆ—
+	const TCHAR*	pszType = NULL;				//ç¬¬2å¼•æ•°ã‚’TCHAR*ã«å¤‰æ›ã—ãŸæ–‡å­—åˆ—
 	HWND			hwndRecordingKeyMacro = NULL;
 
 	if ( pszPathW != NULL ) {
-		//to_tchar()‚Åæ“¾‚µ‚½•¶š—ñ‚Ídelete‚µ‚È‚¢‚±‚ÆB
+		//to_tchar()ã§å–å¾—ã—ãŸæ–‡å­—åˆ—ã¯deleteã—ãªã„ã“ã¨ã€‚
 		pszPath = to_tchar( pszPathW );
 		pszType = to_tchar( pszTypeW );
 
 	} else {
-		// ƒtƒ@ƒCƒ‹‚ªw’è‚³‚ê‚Ä‚¢‚È‚¢ê‡Aƒ_ƒCƒAƒƒO‚ğ•\¦‚·‚é
+		// ãƒ•ã‚¡ã‚¤ãƒ«ãŒæŒ‡å®šã•ã‚Œã¦ã„ãªã„å ´åˆã€ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’è¡¨ç¤ºã™ã‚‹
 		_tcscpy( szPath, _T("") );
 		pszFolder = GetDllShareData().m_Common.m_sMacro.m_szMACROFOLDER;
 
 		if( _IS_REL_PATH( pszFolder ) ){
 			GetInidirOrExedir( szInitDir, pszFolder );
 		}else{
-			_tcscpy( szInitDir, pszFolder );	/* ƒ}ƒNƒ—pƒtƒHƒ‹ƒ_ */
+			_tcscpy( szInitDir, pszFolder );	/* ãƒã‚¯ãƒ­ç”¨ãƒ•ã‚©ãƒ«ãƒ€ */
 		}
-		/* ƒtƒ@ƒCƒ‹ƒI[ƒvƒ“ƒ_ƒCƒAƒƒO‚Ì‰Šú‰» */
+		/* ãƒ•ã‚¡ã‚¤ãƒ«ã‚ªãƒ¼ãƒ—ãƒ³ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®åˆæœŸåŒ– */
 		cDlgOpenFile.Create(
 			G_AppInstance(),
 			m_pCommanderView->GetHwnd(),
@@ -253,20 +253,20 @@ void CViewCommander::Command_EXECEXTMACRO( const WCHAR* pszPathW, const WCHAR* p
 		pszType = NULL;
 	}
 
-	//ƒL[ƒ}ƒNƒ‹L˜^’†‚Ìê‡A’Ç‰Á‚·‚é
-	if( GetDllShareData().m_sFlags.m_bRecordingKeyMacro &&									/* ƒL[ƒ{[ƒhƒ}ƒNƒ‚Ì‹L˜^’† */
-		GetDllShareData().m_sFlags.m_hwndRecordingKeyMacro == GetMainWindow()	/* ƒL[ƒ{[ƒhƒ}ƒNƒ‚ğ‹L˜^’†‚ÌƒEƒBƒ“ƒhƒE */
+	//ã‚­ãƒ¼ãƒã‚¯ãƒ­è¨˜éŒ²ä¸­ã®å ´åˆã€è¿½åŠ ã™ã‚‹
+	if( GetDllShareData().m_sFlags.m_bRecordingKeyMacro &&									/* ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ãƒã‚¯ãƒ­ã®è¨˜éŒ²ä¸­ */
+		GetDllShareData().m_sFlags.m_hwndRecordingKeyMacro == GetMainWindow()	/* ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ãƒã‚¯ãƒ­ã‚’è¨˜éŒ²ä¸­ã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ */
 	){
 		LPARAM lparams[] = {(LPARAM)pszPath, 0, 0, 0};
 		CEditApp::getInstance()->m_pcSMacroMgr->Append( STAND_KEYMACRO, F_EXECEXTMACRO, lparams, m_pCommanderView );
 
-		//ƒL[ƒ}ƒNƒ‚Ì‹L˜^‚ğˆê’â~‚·‚é
+		//ã‚­ãƒ¼ãƒã‚¯ãƒ­ã®è¨˜éŒ²ã‚’ä¸€æ™‚åœæ­¢ã™ã‚‹
 		GetDllShareData().m_sFlags.m_bRecordingKeyMacro = FALSE;
 		hwndRecordingKeyMacro = GetDllShareData().m_sFlags.m_hwndRecordingKeyMacro;
-		GetDllShareData().m_sFlags.m_hwndRecordingKeyMacro = NULL;	/* ƒL[ƒ{[ƒhƒ}ƒNƒ‚ğ‹L˜^’†‚ÌƒEƒBƒ“ƒhƒE */
+		GetDllShareData().m_sFlags.m_hwndRecordingKeyMacro = NULL;	/* ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ãƒã‚¯ãƒ­ã‚’è¨˜éŒ²ä¸­ã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ */
 	}
 
-	//ŒÃ‚¢ˆêƒ}ƒNƒ‚Ì‘Ş”ğ
+	//å¤ã„ä¸€æ™‚ãƒã‚¯ãƒ­ã®é€€é¿
 	CMacroManagerBase* oldMacro = CEditApp::getInstance()->m_pcSMacroMgr->SetTempMacro( NULL );
 
 	BOOL bLoadResult = CEditApp::getInstance()->m_pcSMacroMgr->Load(
@@ -276,25 +276,25 @@ void CViewCommander::Command_EXECEXTMACRO( const WCHAR* pszPathW, const WCHAR* p
 		pszType
 	);
 	if ( !bLoadResult ){
-		ErrorMessage( m_pCommanderView->GetHwnd(), _T("ƒ}ƒNƒ‚Ì“Ç‚İ‚İ‚É¸”s‚µ‚Ü‚µ‚½B\n\n%ts"), pszPath );
+		ErrorMessage( m_pCommanderView->GetHwnd(), _T("ãƒã‚¯ãƒ­ã®èª­ã¿è¾¼ã¿ã«å¤±æ•—ã—ã¾ã—ãŸã€‚\n\n%ts"), pszPath );
 	}
 	else {
 		CEditApp::getInstance()->m_pcSMacroMgr->Exec( TEMP_KEYMACRO, G_AppInstance(), m_pCommanderView, FA_NONRECORD | FA_FROMMACRO );
 	}
 
-	// I‚í‚Á‚½‚çŠJ•ú
+	// çµ‚ã‚ã£ãŸã‚‰é–‹æ”¾
 	CEditApp::getInstance()->m_pcSMacroMgr->Clear( TEMP_KEYMACRO );
 	if ( oldMacro != NULL ) {
 		CEditApp::getInstance()->m_pcSMacroMgr->SetTempMacro( oldMacro );
 	}
 
-	// ƒL[ƒ}ƒNƒ‹L˜^’†‚¾‚Á‚½ê‡‚ÍÄŠJ‚·‚é
+	// ã‚­ãƒ¼ãƒã‚¯ãƒ­è¨˜éŒ²ä¸­ã ã£ãŸå ´åˆã¯å†é–‹ã™ã‚‹
 	if ( hwndRecordingKeyMacro != NULL ) {
 		GetDllShareData().m_sFlags.m_bRecordingKeyMacro = TRUE;
-		GetDllShareData().m_sFlags.m_hwndRecordingKeyMacro = hwndRecordingKeyMacro;	/* ƒL[ƒ{[ƒhƒ}ƒNƒ‚ğ‹L˜^’†‚ÌƒEƒBƒ“ƒhƒE */
+		GetDllShareData().m_sFlags.m_hwndRecordingKeyMacro = hwndRecordingKeyMacro;	/* ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ãƒã‚¯ãƒ­ã‚’è¨˜éŒ²ä¸­ã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ */
 	}
 
-	/* ƒtƒH[ƒJƒXˆÚ“®‚ÌÄ•`‰æ */
+	/* ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ç§»å‹•æ™‚ã®å†æç”» */
 	m_pCommanderView->RedrawAll();
 
 	return;
@@ -302,14 +302,14 @@ void CViewCommander::Command_EXECEXTMACRO( const WCHAR* pszPathW, const WCHAR* p
 
 
 
-/*! ŠO•”ƒRƒ}ƒ“ƒhÀsƒ_ƒCƒAƒƒO•\¦
+/*! å¤–éƒ¨ã‚³ãƒãƒ³ãƒ‰å®Ÿè¡Œãƒ€ã‚¤ã‚¢ãƒ­ã‚°è¡¨ç¤º
 	@date 2002.02.02 YAZAKI.
 */
 void CViewCommander::Command_EXECCOMMAND_DIALOG( void )
 {
 	CDlgExec cDlgExec;
 
-	/* ƒ‚[ƒhƒŒƒXƒ_ƒCƒAƒƒO‚Ì•\¦ */
+	/* ãƒ¢ãƒ¼ãƒ‰ãƒ¬ã‚¹ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®è¡¨ç¤º */
 	if( !cDlgExec.DoModal( G_AppInstance(), m_pCommanderView->GetHwnd(), 0 ) ){
 		return;
 	}
@@ -326,26 +326,26 @@ void CViewCommander::Command_EXECCOMMAND_DIALOG( void )
 		cRecentCurDir.Terminate();
 	}
 
-	//HandleCommand( F_EXECMD, true, (LPARAM)cmd_string, 0, 0, 0);	//	ŠO•”ƒRƒ}ƒ“ƒhÀsƒRƒ}ƒ“ƒh‚Ì”­s
-	HandleCommand( F_EXECMD, true, (LPARAM)cmd_string, (LPARAM)(GetDllShareData().m_nExecFlgOpt), (LPARAM)pszDir, 0);	//	ŠO•”ƒRƒ}ƒ“ƒhÀsƒRƒ}ƒ“ƒh‚Ì”­s
+	//HandleCommand( F_EXECMD, true, (LPARAM)cmd_string, 0, 0, 0);	//	å¤–éƒ¨ã‚³ãƒãƒ³ãƒ‰å®Ÿè¡Œã‚³ãƒãƒ³ãƒ‰ã®ç™ºè¡Œ
+	HandleCommand( F_EXECMD, true, (LPARAM)cmd_string, (LPARAM)(GetDllShareData().m_nExecFlgOpt), (LPARAM)pszDir, 0);	//	å¤–éƒ¨ã‚³ãƒãƒ³ãƒ‰å®Ÿè¡Œã‚³ãƒãƒ³ãƒ‰ã®ç™ºè¡Œ
 }
 
 
 
-//ŠO•”ƒRƒ}ƒ“ƒhÀs
-//	Sept. 20, 2000 JEPRO  –¼ÌCMMAND‚ğCOMMAND‚É•ÏX
-//	Oct. 9, 2001   genta  ƒ}ƒNƒ‘Î‰‚Ì‚½‚ßˆø”’Ç‰Á
-//  2002.2.2       YAZAKI ƒ_ƒCƒAƒƒOŒÄ‚Ño‚µ•”‚ÆƒRƒ}ƒ“ƒhÀs•”‚ğ•ª—£
+//å¤–éƒ¨ã‚³ãƒãƒ³ãƒ‰å®Ÿè¡Œ
+//	Sept. 20, 2000 JEPRO  åç§°CMMANDã‚’COMMANDã«å¤‰æ›´
+//	Oct. 9, 2001   genta  ãƒã‚¯ãƒ­å¯¾å¿œã®ãŸã‚å¼•æ•°è¿½åŠ 
+//  2002.2.2       YAZAKI ãƒ€ã‚¤ã‚¢ãƒ­ã‚°å‘¼ã³å‡ºã—éƒ¨ã¨ã‚³ãƒãƒ³ãƒ‰å®Ÿè¡Œéƒ¨ã‚’åˆ†é›¢
 //void CEditView::Command_EXECCOMMAND( const char *cmd_string )
-void CViewCommander::Command_EXECCOMMAND( LPCWSTR cmd_string, const int nFlgOpt, LPCWSTR pszCurDir)	//	2006.12.03 maru ˆø”‚ÌŠg’£
+void CViewCommander::Command_EXECCOMMAND( LPCWSTR cmd_string, const int nFlgOpt, LPCWSTR pszCurDir)	//	2006.12.03 maru å¼•æ•°ã®æ‹¡å¼µ
 {
 	//	From Here Aug. 21, 2001 genta
-	//	ƒpƒ‰ƒ[ƒ^’uŠ· (’´b’è)
+	//	ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ç½®æ› (è¶…æš«å®š)
 	const int bufmax = 1024;
 	wchar_t buf[bufmax + 1];
 	CSakuraEnvironment::ExpandParameter(cmd_string, buf, bufmax);
 
-	// qƒvƒƒZƒX‚Ì•W€o—Í‚ğƒŠƒ_ƒCƒŒƒNƒg‚·‚é
+	// å­ãƒ—ãƒ­ã‚»ã‚¹ã®æ¨™æº–å‡ºåŠ›ã‚’ãƒªãƒ€ã‚¤ãƒ¬ã‚¯ãƒˆã™ã‚‹
 	std::tstring buf2 = to_tchar(buf);
 	std::tstring buf3;
 	if( pszCurDir ){
@@ -358,7 +358,7 @@ void CViewCommander::Command_EXECCOMMAND( LPCWSTR cmd_string, const int nFlgOpt,
 
 
 /*!
-	Calc ‚ğ‹N“®‚·‚é.
+	Calc ã‚’èµ·å‹•ã™ã‚‹.
  */
 void CViewCommander::Command_ExecCalc( void )
 {
@@ -397,7 +397,7 @@ void CViewCommander::Command_ExecCalc( void )
 
 
 /*!
-	Command Prompt ‚ğ‹N“®‚·‚é.
+	Command Prompt ã‚’èµ·å‹•ã™ã‚‹.
  */
 void CViewCommander::Command_ExecCommandPrompt( void )
 {
@@ -441,7 +441,7 @@ void CViewCommander::Command_ExecCommandPrompt( void )
 
 
 /*!
-	Explorer ‚ğ‹N“®‚·‚é.
+	Explorer ã‚’èµ·å‹•ã™ã‚‹.
  */
 void CViewCommander::Command_ExecExplorer( void )
 {
@@ -484,7 +484,7 @@ void CViewCommander::Command_ExecExplorer( void )
 
 
 /*!
-	TortoiseHg annotate ‚ğ‹N“®‚·‚é.
+	TortoiseHg annotate ã‚’èµ·å‹•ã™ã‚‹.
 */
 void CViewCommander::Command_ExecThgAnnotate( void )
 {

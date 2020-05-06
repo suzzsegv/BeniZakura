@@ -22,16 +22,16 @@
 class CDropTarget;
 class CYbInterfaceBase;
 class CEditWnd;	// 2008.06.20 ryoji
-class CEditView;// 2002/2/3 aroka ƒwƒbƒ_Œy—Ê‰»
+class CEditView;// 2002/2/3 aroka ãƒ˜ãƒƒãƒ€è»½é‡åŒ–
 
 /*-----------------------------------------------------------------------
-ƒNƒ‰ƒX‚ÌéŒ¾
+ã‚¯ãƒ©ã‚¹ã®å®£è¨€
 -----------------------------------------------------------------------*/
 class COleLibrary
 {
 	friend class CYbInterfaceBase;
 private:
-//	DWORD m_dwCount;	// 2009.01.08 ryoji m_dwCountíœ
+//	DWORD m_dwCount;	// 2009.01.08 ryoji m_dwCountå‰Šé™¤
 	COleLibrary();
 public:
 	~COleLibrary();
@@ -81,7 +81,7 @@ public:
 	/*
 	||  Attributes & Operations
 	*/
-private: // 2002/2/10 aroka ƒAƒNƒZƒXŒ •ÏX
+private: // 2002/2/10 aroka ã‚¢ã‚¯ã‚»ã‚¹æ¨©å¤‰æ›´
 	CEditWnd*		m_pCEditWnd;	// 2008.06.20 ryoji
 	HWND			m_hWnd_DropTarget;
 	CEditView*		m_pCEditView;
@@ -96,7 +96,7 @@ public:
 	STDMETHODIMP	Drop( LPDATAOBJECT, DWORD, POINTL, LPDWORD );
 protected:
 	/*
-	||  À‘•ƒwƒ‹ƒpŠÖ”
+	||  å®Ÿè£…ãƒ˜ãƒ«ãƒ‘é–¢æ•°
 	*/
 };
 
@@ -119,8 +119,8 @@ private:
 	typedef struct {
 		CLIPFORMAT cfFormat;
 		//Feb. 26, 2001, fixed by yebisuya sugoroku
-		LPBYTE			data;	//ƒf[ƒ^
-		unsigned int	size;	//ƒf[ƒ^ƒTƒCƒYBƒoƒCƒg’PˆÊB
+		LPBYTE			data;	//ãƒ‡ãƒ¼ã‚¿
+		unsigned int	size;	//ãƒ‡ãƒ¼ã‚¿ã‚µã‚¤ã‚ºã€‚ãƒã‚¤ãƒˆå˜ä½ã€‚
 	} DATA, *PDATA;
 
 	int m_nFormat;
@@ -149,8 +149,8 @@ public:
 };
 
 
-//! CEnumFORMATETC ƒNƒ‰ƒX
-//	2008.03.26 ryoji V‹Kì¬
+//! CEnumFORMATETC ã‚¯ãƒ©ã‚¹
+//	2008.03.26 ryoji æ–°è¦ä½œæˆ
 class CEnumFORMATETC : public CYbInterfaceImpl<IEnumFORMATETC> {
 private:
 	LONG m_lRef;
@@ -164,7 +164,7 @@ public:
 	{
 		if( ::InterlockedDecrement(&m_lRef) == 0 ){
 			delete this;
-			return 0;	// íœŒã‚È‚Ì‚Å m_lRef ‚Íg‚í‚È‚¢
+			return 0;	// å‰Šé™¤å¾Œãªã®ã§ m_lRef ã¯ä½¿ã‚ãªã„
 		}
 		return m_lRef;
 	}

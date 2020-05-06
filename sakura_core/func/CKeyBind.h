@@ -1,9 +1,9 @@
 /*!	@file
-	@brief ƒL[Š„‚è“–‚Ä‚ÉŠÖ‚·‚éƒNƒ‰ƒX
+	@brief ã‚­ãƒ¼å‰²ã‚Šå½“ã¦ã«é–¢ã™ã‚‹ã‚¯ãƒ©ã‚¹
 
 	@author Norio Nakatani
-	@date 1998/03/25 V‹Kì¬
-	@date 1998/05/16 ƒNƒ‰ƒX“à‚Éƒf[ƒ^‚ğ‚½‚È‚¢‚æ‚¤‚É•ÏX
+	@date 1998/03/25 æ–°è¦ä½œæˆ
+	@date 1998/05/16 ã‚¯ãƒ©ã‚¹å†…ã«ãƒ‡ãƒ¼ã‚¿ã‚’æŒãŸãªã„ã‚ˆã†ã«å¤‰æ›´
 */
 /*
 	Copyright (C) 1998-2001, Norio Nakatani
@@ -22,18 +22,18 @@ class CFuncLookup;
 
 extern "C" {
 
-//! ƒL[î•ñ‚ğ•Û‚·‚é
+//! ã‚­ãƒ¼æƒ…å ±ã‚’ä¿æŒã™ã‚‹
 struct KeyData {
-	/*! ƒL[ƒR[ƒh	*/
+	/*! ã‚­ãƒ¼ã‚³ãƒ¼ãƒ‰	*/
 	short			m_nKeyCode;
 	
-	/*!	ƒL[‚Ì–¼‘O	*/
+	/*!	ã‚­ãƒ¼ã®åå‰	*/
 	TCHAR			m_szKeyName[64];
 	
-	/*!	‘Î‰‚·‚é‹@”\”Ô†
+	/*!	å¯¾å¿œã™ã‚‹æ©Ÿèƒ½ç•ªå·
 
-		SHIFT, CTRL, ALT‚Ì‚R‚Â‚ÌƒVƒtƒgó‘Ô‚Ì‚»‚ê‚¼‚ê‚É‘Î‚µ‚Ä
-		‹@”\‚ğŠ„‚è“–‚Ä‚é‚½‚ßA”z—ñ‚É‚È‚Á‚Ä‚¢‚éB
+		SHIFT, CTRL, ALTã®ï¼“ã¤ã®ã‚·ãƒ•ãƒˆçŠ¶æ…‹ã®ãã‚Œãã‚Œã«å¯¾ã—ã¦
+		æ©Ÿèƒ½ã‚’å‰²ã‚Šå½“ã¦ã‚‹ãŸã‚ã€é…åˆ—ã«ãªã£ã¦ã„ã‚‹ã€‚
 	*/
 	EFunctionCode	m_nFuncCodeArr[8];
 };
@@ -41,12 +41,12 @@ struct KeyData {
 }	// extern "C"
 
 /*-----------------------------------------------------------------------
-ƒNƒ‰ƒX‚ÌéŒ¾
+ã‚¯ãƒ©ã‚¹ã®å®£è¨€
 -----------------------------------------------------------------------*/
 /*!
-	@brief ƒL[Š„‚è“–‚ÄŠÖ˜Aƒ‹[ƒ`ƒ“
+	@brief ã‚­ãƒ¼å‰²ã‚Šå½“ã¦é–¢é€£ãƒ«ãƒ¼ãƒãƒ³
 	
-	‚·‚×‚Ä‚ÌŠÖ”‚Ístatic‚Å•Û‚·‚éƒf[ƒ^‚Í‚È‚¢B
+	ã™ã¹ã¦ã®é–¢æ•°ã¯staticã§ä¿æŒã™ã‚‹ãƒ‡ãƒ¼ã‚¿ã¯ãªã„ã€‚
 */
 class CKeyBind
 {
@@ -58,18 +58,18 @@ public:
 	~CKeyBind();
 
 	/*
-	||  QÆŒnƒƒ“ƒoŠÖ”
+	||  å‚ç…§ç³»ãƒ¡ãƒ³ãƒé–¢æ•°
 	*/
 	static HACCEL CreateAccerelator( int, KeyData* );
 	static EFunctionCode GetFuncCode( WORD nAccelCmd, int nKeyNameArrNum, KeyData* pKeyNameArr, BOOL bGetDefFuncCode = TRUE );
-	static EFunctionCode GetFuncCodeAt( KeyData& rKeyData, int nState, BOOL bGetDefFuncCode = TRUE );	/* “Á’è‚ÌƒL[î•ñ‚©‚ç‹@”\ƒR[ƒh‚ğæ“¾‚·‚é */	// 2007.02.24 ryoji
-	static EFunctionCode GetDefFuncCode( int nKeyCode, int nState );	/* ƒL[‚ÌƒfƒtƒHƒ‹ƒg‹@”\‚ğæ“¾‚·‚é */	// 2007.02.22 ryoji
+	static EFunctionCode GetFuncCodeAt( KeyData& rKeyData, int nState, BOOL bGetDefFuncCode = TRUE );	/* ç‰¹å®šã®ã‚­ãƒ¼æƒ…å ±ã‹ã‚‰æ©Ÿèƒ½ã‚³ãƒ¼ãƒ‰ã‚’å–å¾—ã™ã‚‹ */	// 2007.02.24 ryoji
+	static EFunctionCode GetDefFuncCode( int nKeyCode, int nState );	/* ã‚­ãƒ¼ã®ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆæ©Ÿèƒ½ã‚’å–å¾—ã™ã‚‹ */	// 2007.02.22 ryoji
 
-	//! ƒL[Š„‚è“–‚Äˆê——‚ğì¬‚·‚é
+	//! ã‚­ãƒ¼å‰²ã‚Šå½“ã¦ä¸€è¦§ã‚’ä½œæˆã™ã‚‹
 	static int CreateKeyBindList( HINSTANCE hInstance, int nKeyNameArrNum, KeyData* pKeyNameArr, CNativeW& cMemList, CFuncLookup* pcFuncLookup, BOOL bGetDefFuncCode = TRUE );
-	static int GetKeyStr( HINSTANCE hInstance, int nKeyNameArrNum, KeyData* pKeyNameArr, CNativeT& cMemList, int nFuncId, BOOL bGetDefFuncCode = TRUE );	/* ‹@”\‚É‘Î‰‚·‚éƒL[–¼‚Ìæ“¾ */
-	static int GetKeyStrList( HINSTANCE	hInstance, int nKeyNameArrNum,KeyData* pKeyNameArr, CNativeT*** pppcMemList, int nFuncId, BOOL bGetDefFuncCode = TRUE );	/* ‹@”\‚É‘Î‰‚·‚éƒL[–¼‚Ìæ“¾(•¡”) */
-	static TCHAR* GetMenuLabel( HINSTANCE hInstance, int nKeyNameArrNum, KeyData* pKeyNameArr, int nFuncId, TCHAR* pszLabel, const TCHAR* pszKey, BOOL bKeyStr, BOOL bGetDefFuncCode = TRUE );	/* ƒƒjƒ…[ƒ‰ƒxƒ‹‚Ìì¬ */	// add pszKey	2010/5/17 Uchi
+	static int GetKeyStr( HINSTANCE hInstance, int nKeyNameArrNum, KeyData* pKeyNameArr, CNativeT& cMemList, int nFuncId, BOOL bGetDefFuncCode = TRUE );	/* æ©Ÿèƒ½ã«å¯¾å¿œã™ã‚‹ã‚­ãƒ¼åã®å–å¾— */
+	static int GetKeyStrList( HINSTANCE	hInstance, int nKeyNameArrNum,KeyData* pKeyNameArr, CNativeT*** pppcMemList, int nFuncId, BOOL bGetDefFuncCode = TRUE );	/* æ©Ÿèƒ½ã«å¯¾å¿œã™ã‚‹ã‚­ãƒ¼åã®å–å¾—(è¤‡æ•°) */
+	static TCHAR* GetMenuLabel( HINSTANCE hInstance, int nKeyNameArrNum, KeyData* pKeyNameArr, int nFuncId, TCHAR* pszLabel, const TCHAR* pszKey, BOOL bKeyStr, BOOL bGetDefFuncCode = TRUE );	/* ãƒ¡ãƒ‹ãƒ¥ãƒ¼ãƒ©ãƒ™ãƒ«ã®ä½œæˆ */	// add pszKey	2010/5/17 Uchi
 
 	static TCHAR* MakeMenuLabel(const TCHAR* sName, const TCHAR* sKey);
 	static bool CKeyBind::InitKeyAssign( DLLSHAREDATA* pShareData );
@@ -82,7 +82,7 @@ private:
 
 protected:
 	/*
-	||  À‘•ƒwƒ‹ƒpŠÖ”
+	||  å®Ÿè£…ãƒ˜ãƒ«ãƒ‘é–¢æ•°
 	*/
 	static bool GetKeyStrSub(int& nKeyNameArrBegin, int nKeyNameArrEnd, KeyData* pKeyNameArr,
 			int nShiftState, CNativeT& cMemList, int nFuncId, BOOL bGetDefFuncCode );

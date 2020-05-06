@@ -1,10 +1,10 @@
 /*!	@file
 	@brief WSH Manager
 
-	@date 2009.10.29 syat CWSH.cpp‚©‚çØ‚èo‚µ
+	@date 2009.10.29 syat CWSH.cppã‹ã‚‰åˆ‡ã‚Šå‡ºã—
 */
 /*
-	Copyright (C) 2002, ‹S, genta
+	Copyright (C) 2002, é¬¼, genta
 	Copyright (C) 2003, FILE
 	Copyright (C) 2004, genta
 	Copyright (C) 2005, FILE, zenryaku
@@ -54,11 +54,11 @@ CWSHMacroManager::~CWSHMacroManager()
 {
 }
 
-/** WSHƒ}ƒNƒ‚ÌÀs
+/** WSHãƒã‚¯ãƒ­ã®å®Ÿè¡Œ
 
-	@param EditView [in] ‘€ì‘ÎÛEditView
+	@param EditView [in] æ“ä½œå¯¾è±¡EditView
 	
-	@date 2007.07.20 genta : flags’Ç‰Á
+	@date 2007.07.20 genta : flagsè¿½åŠ 
 */
 void CWSHMacroManager::ExecKeyMacro(CEditView *EditView, int flags) const
 {
@@ -66,7 +66,7 @@ void CWSHMacroManager::ExecKeyMacro(CEditView *EditView, int flags) const
 	Engine = new CWSHClient(m_EngineName.c_str(), MacroError, EditView);
 	if(Engine->m_Valid)
 	{
-		//ƒCƒ“ƒ^ƒtƒF[ƒXƒIƒuƒWƒFƒNƒg‚Ì“o˜^
+		//ã‚¤ãƒ³ã‚¿ãƒ•ã‚§ãƒ¼ã‚¹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç™»éŒ²
 		CWSHIfObj* objEditor = new CEditorIfObj();
 		objEditor->ReadyMethods( EditView, flags );
 		Engine->AddInterfaceObject( objEditor );
@@ -84,14 +84,14 @@ void CWSHMacroManager::ExecKeyMacro(CEditView *EditView, int flags) const
 }
 
 /*!
-	WSHƒ}ƒNƒ‚Ì“Ç‚İ‚İiƒtƒ@ƒCƒ‹‚©‚çj
+	WSHãƒã‚¯ãƒ­ã®èª­ã¿è¾¼ã¿ï¼ˆãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ï¼‰
 
-	@param Instance [in] ƒCƒ“ƒXƒ^ƒ“ƒXƒnƒ“ƒhƒ‹(–¢g—p)
-	@param Path		[in] ƒtƒ@ƒCƒ‹‚ÌƒpƒX
+	@param Instance [in] ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ãƒãƒ³ãƒ‰ãƒ«(æœªä½¿ç”¨)
+	@param Path		[in] ãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ‘ã‚¹
 */
 BOOL CWSHMacroManager::LoadKeyMacro(HINSTANCE hInstance, const TCHAR* szPath)
 {
-	//ƒ\[ƒX“Ç‚İ‚İ -> m_Source
+	//ã‚½ãƒ¼ã‚¹èª­ã¿è¾¼ã¿ -> m_Source
 	m_Source=L"";
 	
 	CTextInputStream in(szPath);
@@ -105,21 +105,21 @@ BOOL CWSHMacroManager::LoadKeyMacro(HINSTANCE hInstance, const TCHAR* szPath)
 }
 
 /*!
-	WSHƒ}ƒNƒ‚Ì“Ç‚İ‚İi•¶š—ñ‚©‚çj
+	WSHãƒã‚¯ãƒ­ã®èª­ã¿è¾¼ã¿ï¼ˆæ–‡å­—åˆ—ã‹ã‚‰ï¼‰
 
-	@param Instance [in] ƒCƒ“ƒXƒ^ƒ“ƒXƒnƒ“ƒhƒ‹(–¢g—p)
-	@param szCode	[in] ƒ}ƒNƒƒR[ƒh
+	@param Instance [in] ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ãƒãƒ³ãƒ‰ãƒ«(æœªä½¿ç”¨)
+	@param szCode	[in] ãƒã‚¯ãƒ­ã‚³ãƒ¼ãƒ‰
 */
 BOOL CWSHMacroManager::LoadKeyMacroStr(HINSTANCE hInstance, const TCHAR* szCode)
 {
-	//ƒ\[ƒX“Ç‚İ‚İ -> m_Source
+	//ã‚½ãƒ¼ã‚¹èª­ã¿è¾¼ã¿ -> m_Source
 	m_Source = to_wchar( szCode );
 	return TRUE;
 }
 
 CMacroManagerBase* CWSHMacroManager::Creator(const TCHAR* FileExt)
 {
-	TCHAR FileExtWithDot[1024], FileType[1024], EngineName[1024]; //1024‚ğ’´‚¦‚½‚çŒã‚Í’m‚è‚Ü‚¹‚ñ
+	TCHAR FileExtWithDot[1024], FileType[1024], EngineName[1024]; //1024ã‚’è¶…ãˆãŸã‚‰å¾Œã¯çŸ¥ã‚Šã¾ã›ã‚“
 	
 	_tcscpy( FileExtWithDot, _T(".") );
 	_tcscat( FileExtWithDot, FileExt );
@@ -139,23 +139,23 @@ CMacroManagerBase* CWSHMacroManager::Creator(const TCHAR* FileExt)
 
 void CWSHMacroManager::declare()
 {
-	//b’è
+	//æš«å®š
 	CMacroFactory::getInstance()->RegisterCreator(Creator);
 }
 
-//ƒCƒ“ƒ^ƒtƒF[ƒXƒIƒuƒWƒFƒNƒg‚ğ’Ç‰Á‚·‚é
+//ã‚¤ãƒ³ã‚¿ãƒ•ã‚§ãƒ¼ã‚¹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¿½åŠ ã™ã‚‹
 void CWSHMacroManager::AddParam( CWSHIfObj* param )
 {
 	m_Params.push_back( param );
 }
 
-//ƒCƒ“ƒ^ƒtƒF[ƒXƒIƒuƒWƒFƒNƒg’B‚ğ’Ç‰Á‚·‚é
+//ã‚¤ãƒ³ã‚¿ãƒ•ã‚§ãƒ¼ã‚¹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆé”ã‚’è¿½åŠ ã™ã‚‹
 void CWSHMacroManager::AddParam( CWSHIfObj::List& params )
 {
 	m_Params.insert( m_Params.end(), params.begin(), params.end() );
 }
 
-//ƒCƒ“ƒ^ƒtƒF[ƒXƒIƒuƒWƒFƒNƒg‚ğíœ‚·‚é
+//ã‚¤ãƒ³ã‚¿ãƒ•ã‚§ãƒ¼ã‚¹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å‰Šé™¤ã™ã‚‹
 void CWSHMacroManager::ClearParam()
 {
 	m_Params.clear();

@@ -6,7 +6,7 @@
 
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//               ƒRƒ“ƒXƒgƒ‰ƒNƒ^EƒfƒXƒgƒ‰ƒNƒ^                  //
+//               ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ãƒ»ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿                  //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
 CDocLocker::CDocLocker()
@@ -15,32 +15,32 @@ CDocLocker::CDocLocker()
 }
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                        ƒ[ƒh‘OŒã                           //
+//                        ãƒ­ãƒ¼ãƒ‰å‰å¾Œ                           //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
 void CDocLocker::OnAfterLoad(const SLoadInfo& sLoadInfo)
 {
 	CEditDoc* pcDoc = GetListeningDoc();
 
-	//‘‚«‚ß‚é‚©ŒŸ¸
+	//æ›¸ãè¾¼ã‚ã‚‹ã‹æ¤œæŸ»
 	CheckWritable(!sLoadInfo.bViewMode);
 	if( !m_bIsDocWritable ){
 		return;
 	}
 
-	// ƒtƒ@ƒCƒ‹‚Ì”r‘¼ƒƒbƒN
+	// ãƒ•ã‚¡ã‚¤ãƒ«ã®æ’ä»–ãƒ­ãƒƒã‚¯
 	pcDoc->m_cDocFileOperation.DoFileLock();
 }
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                        ƒZ[ƒu‘OŒã                           //
+//                        ã‚»ãƒ¼ãƒ–å‰å¾Œ                           //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
 void CDocLocker::OnBeforeSave(const SSaveInfo& sSaveInfo)
 {
 	CEditDoc* pcDoc = GetListeningDoc();
 
-	// ƒtƒ@ƒCƒ‹‚Ì”r‘¼ƒƒbƒN‰ğœ
+	// ãƒ•ã‚¡ã‚¤ãƒ«ã®æ’ä»–ãƒ­ãƒƒã‚¯è§£é™¤
 	pcDoc->m_cDocFileOperation.DoFileUnlock();
 }
 
@@ -48,45 +48,45 @@ void CDocLocker::OnAfterSave(const SSaveInfo& sSaveInfo)
 {
 	CEditDoc* pcDoc = GetListeningDoc();
 
-	// ‘‚«‚ß‚é‚©ŒŸ¸
+	// æ›¸ãè¾¼ã‚ã‚‹ã‹æ¤œæŸ»
 	m_bIsDocWritable = true;
 
-	// ƒtƒ@ƒCƒ‹‚Ì”r‘¼ƒƒbƒN
+	// ãƒ•ã‚¡ã‚¤ãƒ«ã®æ’ä»–ãƒ­ãƒƒã‚¯
 	pcDoc->m_cDocFileOperation.DoFileLock();
 }
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                         ƒ`ƒFƒbƒN                            //
+//                         ãƒã‚§ãƒƒã‚¯                            //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
-//! ‘‚«‚ß‚é‚©ŒŸ¸
+//! æ›¸ãè¾¼ã‚ã‚‹ã‹æ¤œæŸ»
 void CDocLocker::CheckWritable(bool bMsg)
 {
 	CEditDoc* pcDoc = GetListeningDoc();
 
-	// ƒtƒ@ƒCƒ‹‚ª‘¶İ‚µ‚È‚¢ê‡ (uŠJ‚­v‚ÅV‚µ‚­ƒtƒ@ƒCƒ‹‚ğì¬‚µ‚½ˆµ‚¢) ‚ÍAˆÈ‰º‚Ìˆ—‚Ís‚í‚È‚¢
+	// ãƒ•ã‚¡ã‚¤ãƒ«ãŒå­˜åœ¨ã—ãªã„å ´åˆ (ã€Œé–‹ãã€ã§æ–°ã—ããƒ•ã‚¡ã‚¤ãƒ«ã‚’ä½œæˆã—ãŸæ‰±ã„) ã¯ã€ä»¥ä¸‹ã®å‡¦ç†ã¯è¡Œã‚ãªã„
 	if( !fexist(pcDoc->m_cDocFile.GetFilePath()) ){
 		m_bIsDocWritable = true;
 		return;
 	}
 
-	// “Ç‚İæ‚èê—pƒtƒ@ƒCƒ‹‚Ìê‡‚ÍAˆÈ‰º‚Ìˆ—‚Ís‚í‚È‚¢
+	// èª­ã¿å–ã‚Šå°‚ç”¨ãƒ•ã‚¡ã‚¤ãƒ«ã®å ´åˆã¯ã€ä»¥ä¸‹ã®å‡¦ç†ã¯è¡Œã‚ãªã„
 	if( !pcDoc->m_cDocFile.HasWritablePermission() ){
 		m_bIsDocWritable = false;
 		return;
 	}
 
-	// ‘‚«‚ß‚é‚©ŒŸ¸
+	// æ›¸ãè¾¼ã‚ã‚‹ã‹æ¤œæŸ»
 	CDocFile& cDocFile = pcDoc->m_cDocFile;
 	m_bIsDocWritable = cDocFile.IsFileWritable();
 	if(!m_bIsDocWritable && bMsg){
-		// ”r‘¼‚³‚ê‚Ä‚¢‚éê‡‚¾‚¯ƒƒbƒZ[ƒW‚ğo‚·
-		// ‚»‚Ì‘¼‚ÌŒ´ˆöiƒtƒ@ƒCƒ‹ƒVƒXƒeƒ€‚ÌƒZƒLƒ…ƒŠƒeƒBİ’è‚È‚Çj‚Å‚Í“Ç‚İæ‚èê—p‚Æ“¯—l‚ÉƒƒbƒZ[ƒW‚ğo‚³‚È‚¢
+		// æ’ä»–ã•ã‚Œã¦ã„ã‚‹å ´åˆã ã‘ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’å‡ºã™
+		// ãã®ä»–ã®åŸå› ï¼ˆãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã®ã‚»ã‚­ãƒ¥ãƒªãƒ†ã‚£è¨­å®šãªã©ï¼‰ã§ã¯èª­ã¿å–ã‚Šå°‚ç”¨ã¨åŒæ§˜ã«ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’å‡ºã•ãªã„
 		if( ::GetLastError() == ERROR_SHARING_VIOLATION ){
 			TopWarningMessage(
 				CEditWnd::getInstance()->GetHwnd(),
-				_T("%ts\n‚ÍŒ»İ‘¼‚ÌƒvƒƒZƒX‚É‚æ‚Á‚Ä‘‚İ‚ª‹Ö~‚³‚ê‚Ä‚¢‚Ü‚·B"),
-				cDocFile.GetFilePathClass().IsValidPath() ? cDocFile.GetFilePath() : _T("(–³‘è)")
+				_T("%ts\nã¯ç¾åœ¨ä»–ã®ãƒ—ãƒ­ã‚»ã‚¹ã«ã‚ˆã£ã¦æ›¸è¾¼ã¿ãŒç¦æ­¢ã•ã‚Œã¦ã„ã¾ã™ã€‚"),
+				cDocFile.GetFilePathClass().IsValidPath() ? cDocFile.GetFilePath() : _T("(ç„¡é¡Œ)")
 			);
 		}
 	}

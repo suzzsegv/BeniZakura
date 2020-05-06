@@ -1,7 +1,7 @@
 /*!	@file
-@brief CViewCommanderƒNƒ‰ƒX‚ÌƒRƒ}ƒ“ƒh(ƒJƒXƒ^ƒ€ƒƒjƒ…[)ŠÖ”ŒQ
+@brief CViewCommanderã‚¯ãƒ©ã‚¹ã®ã‚³ãƒãƒ³ãƒ‰(ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼)é–¢æ•°ç¾¤
 
-	2012/12/20	CViewCommander.cpp‚©‚ç•ª—£
+	2012/12/20	CViewCommander.cppã‹ã‚‰åˆ†é›¢
 */
 /*
 	Copyright (C) 1998-2001, Norio Nakatani
@@ -21,7 +21,7 @@
 #include "CViewCommander_inline.h"
 
 
-/* ‰EƒNƒŠƒbƒNƒƒjƒ…[ */
+/* å³ã‚¯ãƒªãƒƒã‚¯ãƒ¡ãƒ‹ãƒ¥ãƒ¼ */
 void CViewCommander::Command_MENU_RBUTTON( void )
 {
 	int			nId;
@@ -29,7 +29,7 @@ void CViewCommander::Command_MENU_RBUTTON( void )
 //	HGLOBAL		hgClip;
 //	char*		pszClip;
 	int			i;
-	/* ƒ|ƒbƒvƒAƒbƒvƒƒjƒ…[(‰EƒNƒŠƒbƒN) */
+	/* ãƒãƒƒãƒ—ã‚¢ãƒƒãƒ—ãƒ¡ãƒ‹ãƒ¥ãƒ¼(å³ã‚¯ãƒªãƒƒã‚¯) */
 	nId = m_pCommanderView->CreatePopUpMenu_R();
 	if( 0 == nId ){
 		return;
@@ -44,23 +44,23 @@ void CViewCommander::Command_MENU_RBUTTON( void )
 		auto_memcpy( pszWork, pszStr, nLength );
 		pszWork[nLength] = _T('\0');
 
-		// Œ©‚½–Ú‚Æ“¯‚¶‚æ‚¤‚ÉA\n ‚ğ CR+LF‚Ö•ÏŠ·‚·‚é
+		// è¦‹ãŸç›®ã¨åŒã˜ã‚ˆã†ã«ã€\n ã‚’ CR+LFã¸å¤‰æ›ã™ã‚‹
 		for( i = 0; i < nLength ; ++i){
 			if( pszWork[i] == _T('\\') && pszWork[i + 1] == _T('n')){
 				pszWork[i] =     WCODE::CR;
 				pszWork[i + 1] = WCODE::LF;
 			}
 		}
-		/* ƒNƒŠƒbƒvƒ{[ƒh‚Éƒf[ƒ^‚ğİ’è */
+		/* ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ã«ãƒ‡ãƒ¼ã‚¿ã‚’è¨­å®š */
 		m_pCommanderView->MySetClipboardData( pszWork, nLength, false );
 		delete[] pszWork;
 
 		break;
 
 	case IDM_JUMPDICT:
-		/* ƒL[ƒ[ƒh«‘ƒtƒ@ƒCƒ‹‚ğŠJ‚­ */
-		if(GetDocument()->m_cDocType.GetDocumentAttribute().m_bUseKeyWordHelp){		/* ƒL[ƒ[ƒh«‘ƒZƒŒƒNƒg‚ğg—p‚·‚é */	// 2006.04.10 fon
-			//	Feb. 17, 2007 genta ‘Š‘ÎƒpƒX‚ğÀsƒtƒ@ƒCƒ‹Šî€‚ÅŠJ‚­‚æ‚¤‚É
+		/* ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰è¾æ›¸ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã */
+		if(GetDocument()->m_cDocType.GetDocumentAttribute().m_bUseKeyWordHelp){		/* ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰è¾æ›¸ã‚»ãƒ¬ã‚¯ãƒˆã‚’ä½¿ç”¨ã™ã‚‹ */	// 2006.04.10 fon
+			//	Feb. 17, 2007 genta ç›¸å¯¾ãƒ‘ã‚¹ã‚’å®Ÿè¡Œãƒ•ã‚¡ã‚¤ãƒ«åŸºæº–ã§é–‹ãã‚ˆã†ã«
 			m_pCommanderView->TagJumpSub(
 				GetDocument()->m_cDocType.GetDocumentType()->m_KeyHelpArr[m_pCommanderView->m_cTipWnd.m_nSearchDict].m_szPath,
 				CMyPoint(1, m_pCommanderView->m_cTipWnd.m_nSearchLine),
@@ -71,7 +71,7 @@ void CViewCommander::Command_MENU_RBUTTON( void )
 		break;
 
 	default:
-		/* ƒRƒ}ƒ“ƒhƒR[ƒh‚É‚æ‚éˆ—U‚è•ª‚¯ */
+		/* ã‚³ãƒãƒ³ãƒ‰ã‚³ãƒ¼ãƒ‰ã«ã‚ˆã‚‹å‡¦ç†æŒ¯ã‚Šåˆ†ã‘ */
 //		HandleCommand( nId, true, 0, 0, 0, 0 );
 		::PostMessageCmd( GetMainWindow(), WM_COMMAND, MAKELONG( nId, 0 ),  (LPARAM)NULL );
 		break;
@@ -81,7 +81,7 @@ void CViewCommander::Command_MENU_RBUTTON( void )
 
 
 
-/* ƒJƒXƒ^ƒ€ƒƒjƒ…[•\¦ */
+/* ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼è¡¨ç¤º */
 int CViewCommander::Command_CUSTMENU( int nMenuIdx )
 {
 	HMENU		hMenu;
@@ -105,7 +105,7 @@ int CViewCommander::Command_CUSTMENU( int nMenuIdx )
 	hMenu = ::CreatePopupMenu();
 	for( i = 0; i < GetDllShareData().m_Common.m_sCustomMenu.m_nCustMenuItemNumArr[nMenuIdx]; ++i ){
 		if( F_0 == GetDllShareData().m_Common.m_sCustomMenu.m_nCustMenuItemFuncArr[nMenuIdx][i] ){
-			// 2010.07.24 ƒƒjƒ…[”z—ñ‚É“ü‚ê‚é
+			// 2010.07.24 ãƒ¡ãƒ‹ãƒ¥ãƒ¼é…åˆ—ã«å…¥ã‚Œã‚‹
 			pCEditWnd->GetMenuDrawer().MyAppendMenuSep( hMenu, MF_SEPARATOR, F_0 , _T("") );
 		}else{
 			//	Oct. 3, 2001 genta
@@ -113,7 +113,7 @@ int CViewCommander::Command_CUSTMENU( int nMenuIdx )
 			WCHAR		szLabel2[300];
 			const WCHAR*	pszMenuLabel = szLabel2;
 			FuncLookup.Funccode2Name( GetDllShareData().m_Common.m_sCustomMenu.m_nCustMenuItemFuncArr[nMenuIdx][i], szLabel, 256 );
-			/* ƒL[ */
+			/* ã‚­ãƒ¼ */
 			if( L'\0' == GetDllShareData().m_Common.m_sCustomMenu.m_nCustMenuItemKeyArr[nMenuIdx][i] ){
 				pszMenuLabel = szLabel;
 			}else{
@@ -122,7 +122,7 @@ int CViewCommander::Command_CUSTMENU( int nMenuIdx )
 					GetDllShareData().m_Common.m_sCustomMenu.m_nCustMenuItemKeyArr[nMenuIdx][i]
 				);
 			}
-			/* ‹@”\‚ª—˜—p‰Â”\‚©’²‚×‚é */
+			/* æ©Ÿèƒ½ãŒåˆ©ç”¨å¯èƒ½ã‹èª¿ã¹ã‚‹ */
 			if( IsFuncEnable( GetDocument(), &GetDllShareData(), GetDllShareData().m_Common.m_sCustomMenu.m_nCustMenuItemFuncArr[nMenuIdx][i] ) ){
 				uFlags = MF_STRING | MF_ENABLED;
 			}else{
@@ -135,9 +135,9 @@ int CViewCommander::Command_CUSTMENU( int nMenuIdx )
 	}
 
 	/*
-	 * ƒ^ƒuƒƒjƒ…[‚Æ‚µ‚Äg—p‚µ‚Ä‚¢‚éƒJƒXƒ^ƒ€ƒƒjƒ…[‚Ìê‡‚É‚Íƒ}ƒEƒXƒJ[ƒ\ƒ‹
-	 * ˆÊ’u‚ÉA‚»‚êˆÈŠO‚ÌƒJƒXƒ^ƒ€ƒƒjƒ…[‚Ìê‡‚É‚ÍAƒJ[ƒ\ƒ‹ˆÊ’u‚Éƒƒjƒ…[‚ğ
-	 * •\¦‚·‚é.
+	 * ã‚¿ãƒ–ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã¨ã—ã¦ä½¿ç”¨ã—ã¦ã„ã‚‹ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®å ´åˆã«ã¯ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«
+	 * ä½ç½®ã«ã€ãã‚Œä»¥å¤–ã®ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®å ´åˆã«ã¯ã€ã‚«ãƒ¼ã‚½ãƒ«ä½ç½®ã«ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’
+	 * è¡¨ç¤ºã™ã‚‹.
 	 */
 	if( nMenuIdx == CUSTMENU_INDEX_FOR_TABWND ){
 		po.x = 0;

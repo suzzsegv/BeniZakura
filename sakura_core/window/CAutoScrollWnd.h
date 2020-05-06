@@ -36,13 +36,13 @@ public:
 	void Close();
 
 private:
-	LPCTSTR	m_pszClassName;	/* ƒNƒ‰ƒX–¼ */
+	LPCTSTR	m_pszClassName;	/* ã‚¯ãƒ©ã‚¹å */
 	HBITMAP	m_hCenterImg;
 	CEditView*	m_cView;
 protected:
-	/* ‰¼‘zŠÖ” */
+	/* ä»®æƒ³é–¢æ•° */
 
-	/* ‰¼‘zŠÖ” ƒƒbƒZ[ƒWˆ— Ú‚µ‚­‚ÍŽÀ‘•‚ðŽQÆ */
+	/* ä»®æƒ³é–¢æ•° ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å‡¦ç† è©³ã—ãã¯å®Ÿè£…ã‚’å‚ç…§ */
 	LRESULT OnLButtonDown( HWND, UINT, WPARAM, LPARAM );
 	LRESULT OnRButtonDown( HWND, UINT, WPARAM, LPARAM );
 	LRESULT OnMButtonDown( HWND, UINT, WPARAM, LPARAM );

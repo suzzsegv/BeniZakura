@@ -1,8 +1,8 @@
 /*!	@file
-	@brief CEditViewƒNƒ‰ƒX‚ÌƒCƒ“ƒNƒŠƒƒ“ƒ^ƒ‹ƒT[ƒ`ŠÖ˜AƒRƒ}ƒ“ƒhˆ—ŒnŠÖ”ŒQ
+	@brief CEditViewã‚¯ãƒ©ã‚¹ã®ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ã‚¿ãƒ«ã‚µãƒ¼ãƒé–¢é€£ã‚³ãƒãƒ³ãƒ‰å‡¦ç†ç³»é–¢æ•°ç¾¤
 
 	@author genta
-	@date	2005/01/10 ì¬
+	@date	2005/01/10 ä½œæˆ
 */
 /*
 	Copyright (C) 2004, isearch
@@ -20,17 +20,17 @@
 #include "sakura_rc.h"
 
 /*!
-	ƒRƒ}ƒ“ƒhƒR[ƒh‚Ì•ÏŠ·(ISearch)‹y‚Ñ
-	ƒCƒ“ƒNƒŠƒƒ“ƒ^ƒ‹ƒT[ƒ`ƒ‚[ƒh‚ğ”²‚¯‚é”»’è
+	ã‚³ãƒãƒ³ãƒ‰ã‚³ãƒ¼ãƒ‰ã®å¤‰æ›(ISearchæ™‚)åŠã³
+	ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ã‚¿ãƒ«ã‚µãƒ¼ãƒãƒ¢ãƒ¼ãƒ‰ã‚’æŠœã‘ã‚‹åˆ¤å®š
 
-	@return true: ƒRƒ}ƒ“ƒhˆ—Ï‚İ / false: ƒRƒ}ƒ“ƒhˆ—Œp‘±
+	@return true: ã‚³ãƒãƒ³ãƒ‰å‡¦ç†æ¸ˆã¿ / false: ã‚³ãƒãƒ³ãƒ‰å‡¦ç†ç¶™ç¶š
 
-	@date 2004.09.14 isearch V‹Kì¬
-	@date 2005.01.10 genta ŠÖ”‰», UNINDENT’Ç‰Á
+	@date 2004.09.14 isearch æ–°è¦ä½œæˆ
+	@date 2005.01.10 genta é–¢æ•°åŒ–, UNINDENTè¿½åŠ 
 
-	@note UNINDENT‚ğ’Êí•¶š‚Æ‚µ‚Äˆµ‚¤‚Ì‚ÍC
-		SHIFT+•¶š‚ÌŒã‚ÅSPACE‚ğ“ü—Í‚·‚é‚æ‚¤‚ÈƒP[ƒX‚Å
-		SHIFT‚Ì‰ğ•ú‚ª’x‚ê‚Ä‚à•¶š‚ª“ü‚ç‚È‚­‚È‚é‚±‚Æ‚ğ–h‚®‚½‚ßD
+	@note UNINDENTã‚’é€šå¸¸æ–‡å­—ã¨ã—ã¦æ‰±ã†ã®ã¯ï¼Œ
+		SHIFT+æ–‡å­—ã®å¾Œã§SPACEã‚’å…¥åŠ›ã™ã‚‹ã‚ˆã†ãªã‚±ãƒ¼ã‚¹ã§
+		SHIFTã®è§£æ”¾ãŒé…ã‚Œã¦ã‚‚æ–‡å­—ãŒå…¥ã‚‰ãªããªã‚‹ã“ã¨ã‚’é˜²ããŸã‚ï¼
 */
 void CEditView::TranslateCommand_isearch(
 	EFunctionCode&	nCommand,
@@ -45,7 +45,7 @@ void CEditView::TranslateCommand_isearch(
 		return;
 
 	switch (nCommand){
-		//‚±‚ê‚ç‚Ì‹@”\‚Ì‚Æ‚«AƒCƒ“ƒNƒŠƒƒ“ƒ^ƒ‹ƒT[ƒ`‚É“ü‚é
+		//ã“ã‚Œã‚‰ã®æ©Ÿèƒ½ã®ã¨ãã€ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ã‚¿ãƒ«ã‚µãƒ¼ãƒã«å…¥ã‚‹
 		case F_ISEARCH_NEXT:
 		case F_ISEARCH_PREV:
 		case F_ISEARCH_REGEXP_NEXT:
@@ -54,7 +54,7 @@ void CEditView::TranslateCommand_isearch(
 		case F_ISEARCH_MIGEMO_PREV:
 			break;
 
-		//ˆÈ‰º‚Ì‹@”\‚Ì‚Æ‚«AƒCƒ“ƒNƒŠƒƒ“ƒ^ƒ‹ƒT[ƒ`’†‚ÍŒŸõ•¶š“ü—Í‚Æ‚µ‚Äˆ—
+		//ä»¥ä¸‹ã®æ©Ÿèƒ½ã®ã¨ãã€ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ã‚¿ãƒ«ã‚µãƒ¼ãƒä¸­ã¯æ¤œç´¢æ–‡å­—å…¥åŠ›ã¨ã—ã¦å‡¦ç†
 		case F_WCHAR:
 		case F_IME_CHAR:
 			nCommand = F_ISEARCH_ADD_CHAR;
@@ -63,13 +63,13 @@ void CEditView::TranslateCommand_isearch(
 			nCommand = F_ISEARCH_ADD_STR;
 			break;
 
-		case F_INDENT_TAB:	// TAB‚ÍƒCƒ“ƒfƒ“ƒg‚Å‚Í‚È‚­’P‚È‚éTAB•¶š‚ÆŒ©‚È‚·
-		case F_UNINDENT_TAB:	// genta’Ç‰Á
+		case F_INDENT_TAB:	// TABã¯ã‚¤ãƒ³ãƒ‡ãƒ³ãƒˆã§ã¯ãªãå˜ãªã‚‹TABæ–‡å­—ã¨è¦‹ãªã™
+		case F_UNINDENT_TAB:	// gentaè¿½åŠ 
 			nCommand = F_ISEARCH_ADD_CHAR;
 			lparam1 = '\t';
 			break;
-		case F_INDENT_SPACE:	// ƒXƒy[ƒX‚ÍƒCƒ“ƒfƒ“ƒg‚Å‚Í‚È‚­’P‚È‚éTAB•¶š‚ÆŒ©‚È‚·
-		case F_UNINDENT_SPACE:	// genta’Ç‰Á
+		case F_INDENT_SPACE:	// ã‚¹ãƒšãƒ¼ã‚¹ã¯ã‚¤ãƒ³ãƒ‡ãƒ³ãƒˆã§ã¯ãªãå˜ãªã‚‹TABæ–‡å­—ã¨è¦‹ãªã™
+		case F_UNINDENT_SPACE:	// gentaè¿½åŠ 
 			nCommand = F_ISEARCH_ADD_CHAR;
 			lparam1 = ' ';
 			break;
@@ -78,15 +78,15 @@ void CEditView::TranslateCommand_isearch(
 			break;
 
 		default:
-			//ã‹LˆÈŠO‚ÌƒRƒ}ƒ“ƒh‚Ìê‡‚ÍƒCƒ“ƒNƒŠƒƒ“ƒ^ƒ‹ƒT[ƒ`‚ğ”²‚¯‚é
+			//ä¸Šè¨˜ä»¥å¤–ã®ã‚³ãƒãƒ³ãƒ‰ã®å ´åˆã¯ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ã‚¿ãƒ«ã‚µãƒ¼ãƒã‚’æŠœã‘ã‚‹
 			ISearchExit();
 	}
 }
 
 /*!
-	ISearch ƒRƒ}ƒ“ƒhˆ—
+	ISearch ã‚³ãƒãƒ³ãƒ‰å‡¦ç†
 
-	@date 2005.01.10 genta ŠeƒRƒ}ƒ“ƒh‚É“ü‚Á‚Ä‚¢‚½ˆ—‚ğ1ƒJŠ‚ÉˆÚ“®
+	@date 2005.01.10 genta å„ã‚³ãƒãƒ³ãƒ‰ã«å…¥ã£ã¦ã„ãŸå‡¦ç†ã‚’1ã‚«æ‰€ã«ç§»å‹•
 */
 bool CEditView::ProcessCommand_isearch(
 	int	nCommand,
@@ -98,7 +98,7 @@ bool CEditView::ProcessCommand_isearch(
 )
 {
 	switch( nCommand ){
-		//	ŒŸõ•¶š—ñ‚Ì•ÏX‘€ì
+		//	æ¤œç´¢æ–‡å­—åˆ—ã®å¤‰æ›´æ“ä½œ
 		case F_ISEARCH_ADD_CHAR:
 			ISearchExec((DWORD)lparam1);
 			return true;
@@ -111,93 +111,93 @@ bool CEditView::ProcessCommand_isearch(
 			ISearchExec((LPCWSTR)lparam1);
 			return true;
 
-		//	ŒŸõƒ‚[ƒh‚Ö‚ÌˆÚs
+		//	æ¤œç´¢ãƒ¢ãƒ¼ãƒ‰ã¸ã®ç§»è¡Œ
 		case F_ISEARCH_NEXT:
-			ISearchEnter(1,SEARCH_FORWARD);	//‘O•ûƒCƒ“ƒNƒŠƒƒ“ƒ^ƒ‹ƒT[ƒ` //2004.10.13 isearch
+			ISearchEnter(1,SEARCH_FORWARD);	//å‰æ–¹ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ã‚¿ãƒ«ã‚µãƒ¼ãƒ //2004.10.13 isearch
 			return true;
 		case F_ISEARCH_PREV:
-			ISearchEnter(1,SEARCH_BACKWARD); //Œã•ûƒCƒ“ƒNƒŠƒƒ“ƒ^ƒ‹ƒT[ƒ` //2004.10.13 isearch
+			ISearchEnter(1,SEARCH_BACKWARD); //å¾Œæ–¹ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ã‚¿ãƒ«ã‚µãƒ¼ãƒ //2004.10.13 isearch
 			return true;
 		case F_ISEARCH_REGEXP_NEXT:
-			ISearchEnter(2,SEARCH_FORWARD);	//‘O•û³‹K•\Œ»ƒCƒ“ƒNƒŠƒƒ“ƒ^ƒ‹ƒT[ƒ`  //2004.10.13 isearch
+			ISearchEnter(2,SEARCH_FORWARD);	//å‰æ–¹æ­£è¦è¡¨ç¾ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ã‚¿ãƒ«ã‚µãƒ¼ãƒ  //2004.10.13 isearch
 			return true;
 		case F_ISEARCH_REGEXP_PREV:
-			ISearchEnter(2,SEARCH_BACKWARD);	//Œã•û³‹K•\Œ»ƒCƒ“ƒNƒŠƒƒ“ƒ^ƒ‹ƒT[ƒ`  //2004.10.13 isearch
+			ISearchEnter(2,SEARCH_BACKWARD);	//å¾Œæ–¹æ­£è¦è¡¨ç¾ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ã‚¿ãƒ«ã‚µãƒ¼ãƒ  //2004.10.13 isearch
 			return true;
 		case F_ISEARCH_MIGEMO_NEXT:
-			ISearchEnter(3,SEARCH_FORWARD);	//‘O•ûMIGEMOƒCƒ“ƒNƒŠƒƒ“ƒ^ƒ‹ƒT[ƒ`    //2004.10.13 isearch
+			ISearchEnter(3,SEARCH_FORWARD);	//å‰æ–¹MIGEMOã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ã‚¿ãƒ«ã‚µãƒ¼ãƒ    //2004.10.13 isearch
 			return true;
 		case F_ISEARCH_MIGEMO_PREV:
-			ISearchEnter(3,SEARCH_BACKWARD); //Œã•ûMIGEMOƒCƒ“ƒNƒŠƒƒ“ƒ^ƒ‹ƒT[ƒ`    //2004.10.13 isearch
+			ISearchEnter(3,SEARCH_BACKWARD); //å¾Œæ–¹MIGEMOã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ã‚¿ãƒ«ã‚µãƒ¼ãƒ    //2004.10.13 isearch
 			return true;
 	}
 	return false;
 }
 
 /*!
-	ƒCƒ“ƒNƒŠƒƒ“ƒ^ƒ‹ƒT[ƒ`ƒ‚[ƒh‚É“ü‚é
+	ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ã‚¿ãƒ«ã‚µãƒ¼ãƒãƒ¢ãƒ¼ãƒ‰ã«å…¥ã‚‹
 
-	@param mode [in] ŒŸõ•û–@ 1:’Êí, 2:³‹K•\Œ», 3:MIGEMO
-	@param direction [in] ŒŸõ•ûŒü 0:Œã•û(ã•û), 1:‘O•û(‰º•û)
+	@param mode [in] æ¤œç´¢æ–¹æ³• 1:é€šå¸¸, 2:æ­£è¦è¡¨ç¾, 3:MIGEMO
+	@param direction [in] æ¤œç´¢æ–¹å‘ 0:å¾Œæ–¹(ä¸Šæ–¹), 1:å‰æ–¹(ä¸‹æ–¹)
 
 	@author isearch
-	@date 2011.12.15 Moca m_sCurSearchOption/m_sSearchOption‚Æ“¯Šú‚ğ‚Æ‚é
-	@date 2012.10.11 novice m_sCurSearchOption/m_sSearchOption‚Ì“¯Šú‚ğswitch‚Ì‘O‚É•ÏX
-	@date 2012.10.11 novice MIGEMO‚Ìˆ—‚ğcase“à‚ÉˆÚ“®
+	@date 2011.12.15 Moca m_sCurSearchOption/m_sSearchOptionã¨åŒæœŸã‚’ã¨ã‚‹
+	@date 2012.10.11 novice m_sCurSearchOption/m_sSearchOptionã®åŒæœŸã‚’switchã®å‰ã«å¤‰æ›´
+	@date 2012.10.11 novice MIGEMOã®å‡¦ç†ã‚’caseå†…ã«ç§»å‹•
 */
 void CEditView::ISearchEnter( int mode, ESearchDirection direction)
 {
 
 	if (m_nISearchMode == mode ) {
-		//ÄÀs
+		//å†å®Ÿè¡Œ
 		m_nISearchDirection =  direction;
 		
 		if ( m_bISearchFirst ){
 			m_bISearchFirst = false;
 		}
-		//‚¿‚å‚Á‚ÆC³
+		//ã¡ã‚‡ã£ã¨ä¿®æ­£
 		ISearchExec(true);
 
 	}else{
-		//ƒCƒ“ƒNƒŠƒƒ“ƒ^ƒ‹ƒT[ƒ`ƒ‚[ƒh‚É“ü‚é‚¾‚¯.		
-		//‘I‘ğ”ÍˆÍ‚Ì‰ğœ
+		//ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ã‚¿ãƒ«ã‚µãƒ¼ãƒãƒ¢ãƒ¼ãƒ‰ã«å…¥ã‚‹ã ã‘.		
+		//é¸æŠç¯„å›²ã®è§£é™¤
 		if(GetSelectionInfo().IsTextSelected())	
 			GetSelectionInfo().DisableSelectArea( true );
 
 		m_sCurSearchOption = GetDllShareData().m_Common.m_sSearch.m_sSearchOption;
 		switch( mode ) {
-			case 1: // ’ÊíƒCƒ“ƒNƒŠƒƒ“ƒ^ƒ‹ƒT[ƒ`
+			case 1: // é€šå¸¸ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ã‚¿ãƒ«ã‚µãƒ¼ãƒ
 				m_sCurSearchOption.bRegularExp = false;
 				m_sCurSearchOption.bLoHiCase = false;
 				m_sCurSearchOption.bWordOnly = false;
 				//SendStatusMessage(_T("I-Search: "));
 				break;
-			case 2: // ³‹K•\Œ»ƒCƒ“ƒNƒŠƒƒ“ƒ^ƒ‹ƒT[ƒ`
+			case 2: // æ­£è¦è¡¨ç¾ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ã‚¿ãƒ«ã‚µãƒ¼ãƒ
 				if (!m_CurRegexp.IsAvailable()){
 					WarningBeep();
-					SendStatusMessage(_T("³‹K•\Œ»ƒ‰ƒCƒuƒ‰ƒŠ‚ªg—p‚Å‚«‚Ü‚¹‚ñB"));
+					SendStatusMessage(_T("æ­£è¦è¡¨ç¾ãƒ©ã‚¤ãƒ–ãƒ©ãƒªãŒä½¿ç”¨ã§ãã¾ã›ã‚“ã€‚"));
 					return;
 				}
 				m_sCurSearchOption.bRegularExp = true;
 				m_sCurSearchOption.bLoHiCase = false;
 				//SendStatusMessage(_T("[RegExp] I-Search: "));
 				break;
-			case 3: // MIGEMOƒCƒ“ƒNƒŠƒƒ“ƒ^ƒ‹ƒT[ƒ`
+			case 3: // MIGEMOã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ã‚¿ãƒ«ã‚µãƒ¼ãƒ
 				if (!m_CurRegexp.IsAvailable()){
 					WarningBeep();
-					SendStatusMessage(_T("³‹K•\Œ»ƒ‰ƒCƒuƒ‰ƒŠ‚ªg—p‚Å‚«‚Ü‚¹‚ñB"));
+					SendStatusMessage(_T("æ­£è¦è¡¨ç¾ãƒ©ã‚¤ãƒ–ãƒ©ãƒªãŒä½¿ç”¨ã§ãã¾ã›ã‚“ã€‚"));
 					return;
 				}
 				if(m_pcmigemo==NULL){
 					m_pcmigemo = CMigemo::getInstance();
 					m_pcmigemo->InitDll();
 				}
-				//migemo dll ƒ`ƒFƒbƒN
-				//	Jan. 10, 2005 genta İ’è•ÏX‚Åg‚¦‚é‚æ‚¤‚É‚È‚Á‚Ä‚¢‚é
-				//	‰Â”\«‚ª‚ ‚é‚Ì‚ÅCg—p‰Â”\‚Å‚È‚¯‚ê‚Îˆê‰‰Šú‰»‚ğ‚İ‚é
+				//migemo dll ãƒã‚§ãƒƒã‚¯
+				//	Jan. 10, 2005 genta è¨­å®šå¤‰æ›´ã§ä½¿ãˆã‚‹ã‚ˆã†ã«ãªã£ã¦ã„ã‚‹
+				//	å¯èƒ½æ€§ãŒã‚ã‚‹ã®ã§ï¼Œä½¿ç”¨å¯èƒ½ã§ãªã‘ã‚Œã°ä¸€å¿œåˆæœŸåŒ–ã‚’è©¦ã¿ã‚‹
 				if ( !m_pcmigemo->IsAvailable() && DLL_SUCCESS != m_pcmigemo->InitDll() ){
 					WarningBeep();
-					SendStatusMessage(_T("MIGEMO.DLL‚ªg—p‚Å‚«‚Ü‚¹‚ñB"));
+					SendStatusMessage(_T("MIGEMO.DLLãŒä½¿ç”¨ã§ãã¾ã›ã‚“ã€‚"));
 					return;
 				}
 				m_pcmigemo->migemo_load_all();
@@ -207,14 +207,14 @@ void CEditView::ISearchEnter( int mode, ESearchDirection direction)
 					//SendStatusMessage(_T("[MIGEMO] I-Search: "));
 				}else{
 					WarningBeep();
-					SendStatusMessage(_T("MIGEMO‚Íg—p‚Å‚«‚Ü‚¹‚ñB "));
+					SendStatusMessage(_T("MIGEMOã¯ä½¿ç”¨ã§ãã¾ã›ã‚“ã€‚ "));
 					return;
 				}
 				break;
 		}
 		
-		//	Feb. 04, 2005 genta	ŒŸõŠJnˆÊ’u‚ğ‹L˜^
-		//	ƒCƒ“ƒNƒŠƒƒ“ƒ^ƒ‹ƒT[ƒ`ŠÔ‚Åƒ‚[ƒh‚ğØ‚è‘Ö‚¦‚éê‡‚É‚ÍŠJn‚ÆŒ©‚È‚³‚È‚¢
+		//	Feb. 04, 2005 genta	æ¤œç´¢é–‹å§‹ä½ç½®ã‚’è¨˜éŒ²
+		//	ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ã‚¿ãƒ«ã‚µãƒ¼ãƒé–“ã§ãƒ¢ãƒ¼ãƒ‰ã‚’åˆ‡ã‚Šæ›¿ãˆã‚‹å ´åˆã«ã¯é–‹å§‹ã¨è¦‹ãªã•ãªã„
 		if( m_nISearchMode == 0 ){
 			m_ptSrchStartPos_PHY = GetCaret().GetCaretLogicPos();
 		}
@@ -236,7 +236,7 @@ void CEditView::ISearchEnter( int mode, ESearchDirection direction)
 		m_bISearchFirst = true;
 	}
 
-	//ƒ}ƒEƒXƒJ[ƒ\ƒ‹•ÏX
+	//ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«å¤‰æ›´
 	if (direction == 1){
 		::SetCursor( ::LoadCursor( G_AppInstance(),MAKEINTRESOURCE(IDC_CURSOR_ISEARCH_F)));
 	}else{
@@ -244,10 +244,10 @@ void CEditView::ISearchEnter( int mode, ESearchDirection direction)
 	}
 }
 
-//!	ƒCƒ“ƒNƒŠƒƒ“ƒ^ƒ‹ƒT[ƒ`ƒ‚[ƒh‚©‚ç”²‚¯‚é
+//!	ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ã‚¿ãƒ«ã‚µãƒ¼ãƒãƒ¢ãƒ¼ãƒ‰ã‹ã‚‰æŠœã‘ã‚‹
 void CEditView::ISearchExit()
 {
-	// ƒV[ƒPƒ“ƒX‚ğã‘‚«‚µ‚ÄŒ»İ‚ÌŒŸõƒL[‚ğˆÛ‚·‚é
+	// ã‚·ãƒ¼ã‚±ãƒ³ã‚¹ã‚’ä¸Šæ›¸ãã—ã¦ç¾åœ¨ã®æ¤œç´¢ã‚­ãƒ¼ã‚’ç¶­æŒã™ã‚‹
 	if( m_strCurSearchKey.size() < _MAX_PATH ){
 		CSearchKeywordManager().AddToSearchKeyArr( m_strCurSearchKey.c_str() );
 	}
@@ -261,24 +261,24 @@ void CEditView::ISearchExit()
 		m_strCurSearchKey.clear();
 	}
 
-	//ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ğŒ³‚É–ß‚·
+	//ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã‚’å…ƒã«æˆ»ã™
 	POINT point1;
 	GetCursorPos(&point1);
 	OnMOUSEMOVE(0,point1.x,point1.y);
 
-	//ƒXƒe[ƒ^ƒX•\¦ƒGƒŠƒA‚ğƒNƒŠƒA
+	//ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤ºã‚¨ãƒªã‚¢ã‚’ã‚¯ãƒªã‚¢
 	SendStatusMessage(_T(""));
 
 }
 
 /*!
-	@brief ƒCƒ“ƒNƒŠƒƒ“ƒ^ƒ‹ƒT[ƒ`‚ÌÀs(1•¶š’Ç‰Á)
+	@brief ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ã‚¿ãƒ«ã‚µãƒ¼ãƒã®å®Ÿè¡Œ(1æ–‡å­—è¿½åŠ )
 	
-	@param wChar [in] ’Ç‰Á‚·‚é•¶š (1byte or 2byte)
+	@param wChar [in] è¿½åŠ ã™ã‚‹æ–‡å­— (1byte or 2byte)
 */
 void CEditView::ISearchExec(DWORD wChar)
 {
-	//“Áê•¶š‚Íˆ—‚µ‚È‚¢
+	//ç‰¹æ®Šæ–‡å­—ã¯å‡¦ç†ã—ãªã„
 	switch ( wChar){
 		case L'\r':
 		case L'\n':
@@ -308,13 +308,13 @@ void CEditView::ISearchExec(DWORD wChar)
 }
 
 /*!
-	@brief ƒCƒ“ƒNƒŠƒƒ“ƒ^ƒ‹ƒT[ƒ`‚ÌÀs(•¶š—ñ’Ç‰Á)
+	@brief ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ã‚¿ãƒ«ã‚µãƒ¼ãƒã®å®Ÿè¡Œ(æ–‡å­—åˆ—è¿½åŠ )
 	
-	@param pszText [in] ’Ç‰Á‚·‚é•¶š—ñ
+	@param pszText [in] è¿½åŠ ã™ã‚‹æ–‡å­—åˆ—
 */
 void CEditView::ISearchExec(LPCWSTR pszText)
 {
-	//ˆê•¶š‚¸‚Â•ª‰ğ‚µ‚ÄÀs
+	//ä¸€æ–‡å­—ãšã¤åˆ†è§£ã—ã¦å®Ÿè¡Œ
 
 	const WCHAR* p;
 	DWORD c;
@@ -334,16 +334,16 @@ void CEditView::ISearchExec(LPCWSTR pszText)
 }
 
 /*!
-	@brief ƒCƒ“ƒNƒŠƒƒ“ƒ^ƒ‹ƒT[ƒ`‚ÌÀs
+	@brief ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ã‚¿ãƒ«ã‚µãƒ¼ãƒã®å®Ÿè¡Œ
 
-	@param bNext [in] true:Ÿ‚ÌŒó•â‚ğŒŸõ, false:Œ»İ‚ÌƒJ[ƒ\ƒ‹ˆÊ’u‚Ì‚Ü‚ÜŒŸõ
+	@param bNext [in] true:æ¬¡ã®å€™è£œã‚’æ¤œç´¢, false:ç¾åœ¨ã®ã‚«ãƒ¼ã‚½ãƒ«ä½ç½®ã®ã¾ã¾æ¤œç´¢
 */
 void CEditView::ISearchExec(bool bNext) 
 {
-	//ŒŸõ‚ğÀs‚·‚é.
+	//æ¤œç´¢ã‚’å®Ÿè¡Œã™ã‚‹.
 
 	if ( (m_strCurSearchKey.size() == 0) || (m_nISearchMode == 0)){
-		//ƒXƒe[ƒ^ƒX‚Ì•\¦
+		//ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã®è¡¨ç¤º
 		CNativeT msg;
 		ISearchSetStatusMsg(&msg);
 		SendStatusMessage(msg.GetStringPtr());
@@ -363,7 +363,7 @@ void CEditView::ISearchExec(bool bNext)
 			nIdx1 = CLayoutInt(0);
 			break;
 		case 0:
-			//ÅŒã‚©‚çŒŸõ
+			//æœ€å¾Œã‹ã‚‰æ¤œç´¢
 			CLogicInt nLineP;
 			int nIdxP;
 			nLineP =  m_pcEditDoc->m_cDocLineMgr.GetLineCount() - CLogicInt(1);
@@ -376,15 +376,15 @@ void CEditView::ISearchExec(bool bNext)
 		}
 	}else if (GetSelectionInfo().IsTextSelected()){
 		switch( m_nISearchDirection * 2 + (bNext ? 1: 0)){
-			case 2 : //‘O•ûŒŸõ‚ÅŒ»İˆÊ’u‚©‚çŒŸõ‚Ì‚Æ‚«
-			case 1 : //Œã•ûŒŸõ‚ÅŸ‚ğŒŸõ‚Ì‚Æ‚«
-				//‘I‘ğ”ÍˆÍ‚Ìæ“ª‚ğŒŸõŠJnˆÊ’u‚É
+			case 2 : //å‰æ–¹æ¤œç´¢ã§ç¾åœ¨ä½ç½®ã‹ã‚‰æ¤œç´¢ã®ã¨ã
+			case 1 : //å¾Œæ–¹æ¤œç´¢ã§æ¬¡ã‚’æ¤œç´¢ã®ã¨ã
+				//é¸æŠç¯„å›²ã®å…ˆé ­ã‚’æ¤œç´¢é–‹å§‹ä½ç½®ã«
 				nLine = GetSelectionInfo().m_sSelect.GetFrom().GetY2();
 				nIdx1 = GetSelectionInfo().m_sSelect.GetFrom().GetX2();
 				break;
-			case 0 : //‘O•ûŒŸõ‚ÅŸ‚ğŒŸõ
-			case 3 : //Œã•ûŒŸõ‚ÅŒ»İˆÊ’u‚©‚çŒŸõ
-				//‘I‘ğ”ÍˆÍ‚ÌŒã‚ë‚©‚ç
+			case 0 : //å‰æ–¹æ¤œç´¢ã§æ¬¡ã‚’æ¤œç´¢
+			case 3 : //å¾Œæ–¹æ¤œç´¢ã§ç¾åœ¨ä½ç½®ã‹ã‚‰æ¤œç´¢
+				//é¸æŠç¯„å›²ã®å¾Œã‚ã‹ã‚‰
 				nLine = GetSelectionInfo().m_sSelect.GetTo().GetY2();
 				nIdx1 = GetSelectionInfo().m_sSelect.GetTo().GetX2();
 				break;
@@ -394,7 +394,7 @@ void CEditView::ISearchExec(bool bNext)
 		nIdx1  = GetCaret().GetCaretLayoutPos().GetX2();
 	}
 
-	//Œ…ˆÊ’u‚©‚çindex‚É•ÏŠ·
+	//æ¡ä½ç½®ã‹ã‚‰indexã«å¤‰æ›
 	CLayout* pCLayout = m_pcEditDoc->m_cLayoutMgr.SearchLineByLayoutY( nLine );
 	CLogicInt nIdx = LineColumnToIndex( pCLayout, nIdx1 );
 
@@ -415,17 +415,17 @@ void CEditView::ISearchExec(bool bNext)
 	CLayoutRange sMatchRange;
 
 	int nSearchResult = m_pcEditDoc->m_cLayoutMgr.SearchWord(
-		nLine,						// ŒŸõŠJnƒŒƒCƒAƒEƒgs
-		nIdx,						// ŒŸõŠJnƒf[ƒ^ˆÊ’u
-		m_strCurSearchKey.c_str(),	// ŒŸõğŒ
-		m_nISearchDirection,		// 0==‘O•ûŒŸõ 1==Œã•ûŒŸõ
-		m_sCurSearchOption,			// 2011.12.15 Moca F•ª‚¯uŸŒŸõv‚Æ“¯Šú‚ğ‚Æ‚é‚½‚ßm_sCurSearchOption‚ğ‚»‚Ì‚Ü‚Üw’è
-		&sMatchRange,				// ƒ}ƒbƒ`ƒŒƒCƒAƒEƒg”ÍˆÍ
+		nLine,						// æ¤œç´¢é–‹å§‹ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆè¡Œ
+		nIdx,						// æ¤œç´¢é–‹å§‹ãƒ‡ãƒ¼ã‚¿ä½ç½®
+		m_strCurSearchKey.c_str(),	// æ¤œç´¢æ¡ä»¶
+		m_nISearchDirection,		// 0==å‰æ–¹æ¤œç´¢ 1==å¾Œæ–¹æ¤œç´¢
+		m_sCurSearchOption,			// 2011.12.15 Moca è‰²åˆ†ã‘ã€Œæ¬¡æ¤œç´¢ã€ã¨åŒæœŸã‚’ã¨ã‚‹ãŸã‚m_sCurSearchOptionã‚’ãã®ã¾ã¾æŒ‡å®š
+		&sMatchRange,				// ãƒãƒƒãƒãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆç¯„å›²
 		&m_CurRegexp
 	);
 	if( nSearchResult == 0 ){
-		/*ŒŸõŒ‹‰Ê‚ª‚È‚¢*/
-		msg.AppendString(_T(" (Œ©‚Â‚©‚è‚Ü‚¹‚ñ)"));
+		/*æ¤œç´¢çµæœãŒãªã„*/
+		msg.AppendString(_T(" (è¦‹ã¤ã‹ã‚Šã¾ã›ã‚“)"));
 		SendStatusMessage(msg.GetStringPtr());
 		
 		if (bNext) 	m_bISearchWrap = true;
@@ -435,8 +435,8 @@ void CEditView::ISearchExec(bool bNext)
 			m_sISearchHistory[m_nISearchHistoryCount].Set(GetCaret().GetCaretLayoutPos());
 		}
 	}else{
-		//ŒŸõŒ‹‰Ê‚ ‚è
-		//ƒLƒƒƒŒƒbƒgˆÚ“®
+		//æ¤œç´¢çµæœã‚ã‚Š
+		//ã‚­ãƒ£ãƒ¬ãƒƒãƒˆç§»å‹•
 		GetCaret().MoveCursor( sMatchRange.GetFrom(), true, _CARETMARGINRATE / 3 );
 		
 		//	2005.06.24 Moca
@@ -453,7 +453,7 @@ void CEditView::ISearchExec(bool bNext)
 	return ;
 }
 
-//!	ƒoƒbƒNƒXƒy[ƒX‚ğ‰Ÿ‚³‚ê‚½‚Æ‚«‚Ìˆ—
+//!	ãƒãƒƒã‚¯ã‚¹ãƒšãƒ¼ã‚¹ã‚’æŠ¼ã•ã‚ŒãŸã¨ãã®å‡¦ç†
 void CEditView::ISearchBack(void) {
 	if(m_nISearchHistoryCount==0) return;
 	
@@ -461,10 +461,10 @@ void CEditView::ISearchBack(void) {
 		m_bCurSrchKeyMark = false;
 		m_bISearchFirst = true;
 	}else if( m_bISearchFlagHistory[m_nISearchHistoryCount] == false){
-		//ŒŸõ•¶š‚ğ‚Ö‚ç‚·
+		//æ¤œç´¢æ–‡å­—ã‚’ã¸ã‚‰ã™
 		size_t l = m_strCurSearchKey.size();
 		if (l > 0 ){
-			//ÅŒã‚Ì•¶š‚Ìˆê‚Â‘O
+			//æœ€å¾Œã®æ–‡å­—ã®ä¸€ã¤å‰
 			wchar_t* p = (wchar_t*)CNativeW::GetCharPrev( m_strCurSearchKey.c_str(), l, &m_strCurSearchKey.c_str()[l] );
 			size_t new_len = p - m_strCurSearchKey.c_str();
 			m_strCurSearchKey.resize( new_len );
@@ -496,39 +496,39 @@ void CEditView::ISearchBack(void) {
 
 	Redraw();
 
-	//ƒXƒe[ƒ^ƒX•\¦
+	//ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤º
 	CNativeT msg;
 	ISearchSetStatusMsg(&msg);
 	SendStatusMessage(msg.GetStringPtr());
 	
 }
 
-//!	“ü—Í•¶š‚©‚çAŒŸõ•¶š‚ğ¶¬‚·‚éB
+//!	å…¥åŠ›æ–‡å­—ã‹ã‚‰ã€æ¤œç´¢æ–‡å­—ã‚’ç”Ÿæˆã™ã‚‹ã€‚
 void CEditView::ISearchWordMake(void)
 {
 	int nFlag = 0x00;
 	switch ( m_nISearchMode ) {
-	case 1: // ’ÊíƒCƒ“ƒNƒŠƒƒ“ƒ^ƒ‹ƒT[ƒ`
+	case 1: // é€šå¸¸ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ã‚¿ãƒ«ã‚µãƒ¼ãƒ
 		break;
-	case 2: // ³‹K•\Œ»ƒCƒ“ƒNƒŠƒƒ“ƒ^ƒ‹ƒT[ƒ`
+	case 2: // æ­£è¦è¡¨ç¾ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ã‚¿ãƒ«ã‚µãƒ¼ãƒ
 		if( !InitRegexp( this->GetHwnd(), m_CurRegexp, true ) ){
 			return ;
 		}
 		nFlag |= m_sCurSearchOption.bLoHiCase ? CBregexp::optCaseSensitive : 0;
-		/* ŒŸõƒpƒ^[ƒ“‚ÌƒRƒ“ƒpƒCƒ‹ */
+		/* æ¤œç´¢ãƒ‘ã‚¿ãƒ¼ãƒ³ã®ã‚³ãƒ³ãƒ‘ã‚¤ãƒ« */
 		m_CurRegexp.Compile(m_strCurSearchKey.c_str() , nFlag );
 		break;
-	case 3: // MIGEMOƒCƒ“ƒNƒŠƒƒ“ƒ^ƒ‹ƒT[ƒ`
+	case 3: // MIGEMOã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ã‚¿ãƒ«ã‚µãƒ¼ãƒ
 		if( !InitRegexp( this->GetHwnd(), m_CurRegexp, true ) ){
 			return ;
 		}
 		nFlag |= m_sCurSearchOption.bLoHiCase ? CBregexp::optCaseSensitive : 0;
 
 		{
-			//migemo‚Å‘{‚·
+			//migemoã§æœã™
 			std::wstring strMigemoWord = m_pcmigemo->migemo_query_w(m_strCurSearchKey.c_str());
 			
-			/* ŒŸõƒpƒ^[ƒ“‚ÌƒRƒ“ƒpƒCƒ‹ */
+			/* æ¤œç´¢ãƒ‘ã‚¿ãƒ¼ãƒ³ã®ã‚³ãƒ³ãƒ‘ã‚¤ãƒ« */
 			m_CurRegexp.Compile(strMigemoWord.c_str(), nFlag );
 
 		}
@@ -536,16 +536,16 @@ void CEditView::ISearchWordMake(void)
 	}
 }
 
-/*!	@brief ISearchƒƒbƒZ[ƒW\’z
+/*!	@brief ISearchãƒ¡ãƒƒã‚»ãƒ¼ã‚¸æ§‹ç¯‰
 
-	Œ»İ‚ÌƒT[ƒ`ƒ‚[ƒh‹y‚ÑŒŸõ’†•¶š—ñ‚©‚ç
-	ƒƒbƒZ[ƒWƒGƒŠƒA‚É•\¦‚·‚é•¶š—ñ‚ğ\’z‚·‚é
+	ç¾åœ¨ã®ã‚µãƒ¼ãƒãƒ¢ãƒ¼ãƒ‰åŠã³æ¤œç´¢ä¸­æ–‡å­—åˆ—ã‹ã‚‰
+	ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¨ãƒªã‚¢ã«è¡¨ç¤ºã™ã‚‹æ–‡å­—åˆ—ã‚’æ§‹ç¯‰ã™ã‚‹
 	
-	@param msg [out] ƒƒbƒZ[ƒWƒoƒbƒtƒ@
+	@param msg [out] ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãƒãƒƒãƒ•ã‚¡
 	
 	@author isearch
 	@date 2004/10/13
-	@date 2005.01.13 genta •¶š—ñC³
+	@date 2005.01.13 genta æ–‡å­—åˆ—ä¿®æ­£
 */
 void CEditView::ISearchSetStatusMsg(CNativeT* msg) const
 {
@@ -576,14 +576,14 @@ void CEditView::ISearchSetStatusMsg(CNativeT* msg) const
 }
 
 /*!
-	ISearchó‘Ô‚ğƒc[ƒ‹ƒo[‚É”½‰f‚³‚¹‚éD
+	ISearchçŠ¶æ…‹ã‚’ãƒ„ãƒ¼ãƒ«ãƒãƒ¼ã«åæ˜ ã•ã›ã‚‹ï¼
 	
 	@sa CEditWnd::IsFuncChecked()
 
-	@param nCommand [in] ’²‚×‚½‚¢ƒRƒ}ƒ“ƒh‚ÌID
-	@return true:ƒ`ƒFƒbƒN—L‚è / false: ƒ`ƒFƒbƒN–³‚µ
+	@param nCommand [in] èª¿ã¹ãŸã„ã‚³ãƒãƒ³ãƒ‰ã®ID
+	@return true:ãƒã‚§ãƒƒã‚¯æœ‰ã‚Š / false: ãƒã‚§ãƒƒã‚¯ç„¡ã—
 	
-	@date 2005.01.10 genta V‹Kì¬
+	@date 2005.01.10 genta æ–°è¦ä½œæˆ
 */
 bool CEditView::IsISearchEnabled(int nCommand) const
 {

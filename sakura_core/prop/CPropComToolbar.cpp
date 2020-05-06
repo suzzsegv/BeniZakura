@@ -1,5 +1,5 @@
 /*!	@file
-	@brief ‹¤’Êİ’èƒ_ƒCƒAƒƒOƒ{ƒbƒNƒXAuƒc[ƒ‹ƒo[vƒy[ƒW
+	@brief å…±é€šè¨­å®šãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒœãƒƒã‚¯ã‚¹ã€ã€Œãƒ„ãƒ¼ãƒ«ãƒãƒ¼ã€ãƒšãƒ¼ã‚¸
 
 	@author Norio Nakatani
 */
@@ -26,10 +26,10 @@
 
 //	From Here Jun. 2, 2001 genta
 /*!
-	@param hwndDlg ƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX‚ÌWindow Handle
-	@param uMsg ƒƒbƒZ[ƒW
-	@param wParam ƒpƒ‰ƒ[ƒ^1
-	@param lParam ƒpƒ‰ƒ[ƒ^2
+	@param hwndDlg ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒœãƒƒã‚¯ã‚¹ã®Window Handle
+	@param uMsg ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+	@param wParam ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿1
+	@param lParam ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿2
 */
 INT_PTR CALLBACK CPropToolbar::DlgProc_page(
 	HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam )
@@ -40,16 +40,16 @@ INT_PTR CALLBACK CPropToolbar::DlgProc_page(
 
 //	From Here Apr. 13, 2002 genta
 /*!
-	Owner Draw List Box‚Éw’è‚Ì’l‚ğ‘}“ü‚·‚é (Windows XP‚Ì–â‘è‰ñ”ğ—p)
+	Owner Draw List Boxã«æŒ‡å®šã®å€¤ã‚’æŒ¿å…¥ã™ã‚‹ (Windows XPã®å•é¡Œå›é¿ç”¨)
 	
-	Windows XP + manifest‚Ì‚ÉLB_INSERTSTRING‚ª’l0‚ğó‚¯•t‚¯‚È‚¢‚Ì‚Å
-	‚Æ‚è‚ ‚¦‚¸0ˆÈŠO‚Ì’l‚ğ“ü‚ê‚Ä‚©‚ç0‚Éİ’è‚µ’¼‚µ‚Ä‰ñ”ğ‚·‚éB
-	1‰ñ–Ú‚Ì‘}“ü‚Í0‚Å‚È‚¯‚ê‚Î‰½‚Å‚à‚¢‚¢‚Í‚¸B
+	Windows XP + manifestã®æ™‚ã«LB_INSERTSTRINGãŒå€¤0ã‚’å—ã‘ä»˜ã‘ãªã„ã®ã§
+	ã¨ã‚Šã‚ãˆãš0ä»¥å¤–ã®å€¤ã‚’å…¥ã‚Œã¦ã‹ã‚‰0ã«è¨­å®šã—ç›´ã—ã¦å›é¿ã™ã‚‹ã€‚
+	1å›ç›®ã®æŒ¿å…¥ã¯0ã§ãªã‘ã‚Œã°ä½•ã§ã‚‚ã„ã„ã¯ãšã€‚
 	
-	@param hWnd [in] ƒŠƒXƒgƒ{ƒbƒNƒX‚ÌƒEƒBƒ“ƒhƒEƒnƒ“ƒhƒ‹
-	@param index [in] ‘}“üˆÊ’u
-	@param value [in] ‘}“ü‚·‚é’l
-	@return ‘}“üˆÊ’uBƒGƒ‰[‚Ì‚ÍLB_ERR‚Ü‚½‚ÍLB_ERRSPACE
+	@param hWnd [in] ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒãƒ³ãƒ‰ãƒ«
+	@param index [in] æŒ¿å…¥ä½ç½®
+	@param value [in] æŒ¿å…¥ã™ã‚‹å€¤
+	@return æŒ¿å…¥ä½ç½®ã€‚ã‚¨ãƒ©ãƒ¼ã®æ™‚ã¯LB_ERRã¾ãŸã¯LB_ERRSPACE
 	
 	@date 2002.04.13 genta 
 */
@@ -61,11 +61,11 @@ int Listbox_INSERTDATA(
 {
 	int nIndex1 = List_InsertItemData( hWnd, index, 1 );
 	if( nIndex1 == LB_ERR || nIndex1 == LB_ERRSPACE ){
-		TopErrorMessage( NULL, _T("Toolbar Dialog: —v‘f‚Ì‘}“ü‚É¸”s‚µ‚Ü‚µ‚½B(%d:%d)"), index, nIndex1 );
+		TopErrorMessage( NULL, _T("Toolbar Dialog: è¦ç´ ã®æŒ¿å…¥ã«å¤±æ•—ã—ã¾ã—ãŸã€‚(%d:%d)"), index, nIndex1 );
 		return nIndex1;
 	}
 	else if( List_SetItemData( hWnd, nIndex1, value ) == LB_ERR ){
-		TopErrorMessage( NULL, _T("Toolbar Dialog: INS: ’l‚Ìİ’è‚É¸”s‚µ‚Ü‚µ‚½B:%d"), nIndex1 );
+		TopErrorMessage( NULL, _T("Toolbar Dialog: INS: å€¤ã®è¨­å®šã«å¤±æ•—ã—ã¾ã—ãŸã€‚:%d"), nIndex1 );
 		return LB_ERR;
 	}
 	return nIndex1;
@@ -73,16 +73,16 @@ int Listbox_INSERTDATA(
 
 //	From Here Apr. 13, 2002 genta
 /*!
-	Owner Draw List Box‚Éw’è‚Ì’l‚ğ’Ç‰Á‚·‚é (Windows XP‚Ì–â‘è‰ñ”ğ—p)
+	Owner Draw List Boxã«æŒ‡å®šã®å€¤ã‚’è¿½åŠ ã™ã‚‹ (Windows XPã®å•é¡Œå›é¿ç”¨)
 	
-	Windows XP + manifest‚Ì‚ÉLB_ADDSTRING‚ª’l0‚ğó‚¯•t‚¯‚È‚¢‚Ì‚Å
-	‚Æ‚è‚ ‚¦‚¸0ˆÈŠO‚Ì’l‚ğ“ü‚ê‚Ä‚©‚ç0‚Éİ’è‚µ’¼‚µ‚Ä‰ñ”ğ‚·‚éB
-	1‰ñ–Ú‚Ì‘}“ü‚Í0‚Å‚È‚¯‚ê‚Î‰½‚Å‚à‚¢‚¢‚Í‚¸B
+	Windows XP + manifestã®æ™‚ã«LB_ADDSTRINGãŒå€¤0ã‚’å—ã‘ä»˜ã‘ãªã„ã®ã§
+	ã¨ã‚Šã‚ãˆãš0ä»¥å¤–ã®å€¤ã‚’å…¥ã‚Œã¦ã‹ã‚‰0ã«è¨­å®šã—ç›´ã—ã¦å›é¿ã™ã‚‹ã€‚
+	1å›ç›®ã®æŒ¿å…¥ã¯0ã§ãªã‘ã‚Œã°ä½•ã§ã‚‚ã„ã„ã¯ãšã€‚
 	
-	@param hWnd [in] ƒŠƒXƒgƒ{ƒbƒNƒX‚ÌƒEƒBƒ“ƒhƒEƒnƒ“ƒhƒ‹
-	@param index [in] ‘}“üˆÊ’u
-	@param value [in] ‘}“ü‚·‚é’l
-	@return ‘}“üˆÊ’uBƒGƒ‰[‚Ì‚ÍLB_ERR‚Ü‚½‚ÍLB_ERRSPACE
+	@param hWnd [in] ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒãƒ³ãƒ‰ãƒ«
+	@param index [in] æŒ¿å…¥ä½ç½®
+	@param value [in] æŒ¿å…¥ã™ã‚‹å€¤
+	@return æŒ¿å…¥ä½ç½®ã€‚ã‚¨ãƒ©ãƒ¼ã®æ™‚ã¯LB_ERRã¾ãŸã¯LB_ERRSPACE
 	
 	@date 2002.04.13 genta 
 */
@@ -93,17 +93,17 @@ int Listbox_ADDDATA(
 {
 	int nIndex1 = List_AddItemData( hWnd, 1 );
 	if( nIndex1 == LB_ERR || nIndex1 == LB_ERRSPACE ){
-		TopErrorMessage( NULL, _T("Toolbar Dialog: —v‘f‚Ì’Ç‰Á‚É¸”s‚µ‚Ü‚µ‚½B(%d)"), nIndex1 );
+		TopErrorMessage( NULL, _T("Toolbar Dialog: è¦ç´ ã®è¿½åŠ ã«å¤±æ•—ã—ã¾ã—ãŸã€‚(%d)"), nIndex1 );
 		return nIndex1;
 	}
 	else if( List_SetItemData( hWnd, nIndex1, value ) == LB_ERR ){
-		TopErrorMessage( NULL, _T("Toolbar Dialog: ADD: ’l‚Ìİ’è‚É¸”s‚µ‚Ü‚µ‚½B:%d"), nIndex1 );
+		TopErrorMessage( NULL, _T("Toolbar Dialog: ADD: å€¤ã®è¨­å®šã«å¤±æ•—ã—ã¾ã—ãŸã€‚:%d"), nIndex1 );
 		return LB_ERR;
 	}
 	return nIndex1;
 }
 
-/* Toolbar ƒƒbƒZ[ƒWˆ— */
+/* Toolbar ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å‡¦ç† */
 INT_PTR CPropToolbar::DispatchEvent(
 	HWND	hwndDlg,	// handle to dialog box
 	UINT	uMsg,		// message
@@ -135,12 +135,12 @@ INT_PTR CPropToolbar::DispatchEvent(
 
 	switch( uMsg ){
 	case WM_INITDIALOG:
-		/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìİ’è Toolbar */
+		/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®è¨­å®š Toolbar */
 		SetData( hwndDlg );
 		// Modified by KEITA for WIN64 2003.9.6
 		::SetWindowLongPtr( hwndDlg, DWLP_USER, lParam );
 
-		/* ƒRƒ“ƒgƒ[ƒ‹‚Ìƒnƒ“ƒhƒ‹‚ğæ“¾ */
+		/* ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã®ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾— */
 		hwndCombo = ::GetDlgItem( hwndDlg, IDC_COMBO_FUNCKIND );
 		hwndFuncList = ::GetDlgItem( hwndDlg, IDC_LIST_FUNC );
 		hwndResList = ::GetDlgItem( hwndDlg, IDC_LIST_RES );
@@ -148,14 +148,14 @@ INT_PTR CPropToolbar::DispatchEvent(
 		hdc = ::GetDC( hwndDlg );
 		::GetTextMetrics( hdc, &tm );
 		::ReleaseDC( hwndDlg, hdc );
-		nListItemHeight = 18/*18*/; //Oct. 18, 2000 JEPRO uƒc[ƒ‹ƒo[vƒ^ƒu‚Å‚Ì‹@”\ƒAƒCƒeƒ€‚ÌsŠÔ‚ğ­‚µ‹·‚­‚µ‚Ä•\¦s”‚ğ‘‚â‚µ‚½(20¨18 ‚±‚êˆÈã¬‚³‚­‚µ‚Ä‚àŒø‰Ê‚Í‚È‚¢‚æ‚¤‚¾)
+		nListItemHeight = 18/*18*/; //Oct. 18, 2000 JEPRO ã€Œãƒ„ãƒ¼ãƒ«ãƒãƒ¼ã€ã‚¿ãƒ–ã§ã®æ©Ÿèƒ½ã‚¢ã‚¤ãƒ†ãƒ ã®è¡Œé–“ã‚’å°‘ã—ç‹­ãã—ã¦è¡¨ç¤ºè¡Œæ•°ã‚’å¢—ã‚„ã—ãŸ(20â†’18 ã“ã‚Œä»¥ä¸Šå°ã•ãã—ã¦ã‚‚åŠ¹æœã¯ãªã„ã‚ˆã†ã )
 		if( nListItemHeight < tm.tmHeight ){
 			nListItemHeight = tm.tmHeight;
 		}
 //		nListItemHeight+=2;
 
-//	From Here Oct.14, 2000 JEPRO added	(Ref. CPropComCustmenu.cpp “à‚ÌWM_INITDIALOG‚ğQl‚É‚µ‚½)
-		/* ƒL[‘I‘ğ‚Ìˆ— */
+//	From Here Oct.14, 2000 JEPRO added	(Ref. CPropComCustmenu.cpp å†…ã®WM_INITDIALOGã‚’å‚è€ƒã«ã—ãŸ)
+		/* ã‚­ãƒ¼é¸æŠæ™‚ã®å‡¦ç† */
 		::SendMessageCmd( hwndDlg, WM_COMMAND, MAKELONG( IDC_COMBO_FUNCKIND, CBN_SELCHANGE ), (LPARAM)hwndCombo );
 //	To Here Oct. 14, 2000
 
@@ -164,12 +164,12 @@ INT_PTR CPropToolbar::DispatchEvent(
 		return TRUE;
 
 	case WM_DRAWITEM:
-		idCtrl = (UINT) wParam;	/* ƒRƒ“ƒgƒ[ƒ‹‚ÌID */
-		pDis = (LPDRAWITEMSTRUCT) lParam;	/* €–Ú•`‰æî•ñ */
+		idCtrl = (UINT) wParam;	/* ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã®ID */
+		pDis = (LPDRAWITEMSTRUCT) lParam;	/* é …ç›®æç”»æƒ…å ± */
 		switch( idCtrl ){
-		case IDC_LIST_RES:	/* ƒc[ƒ‹ƒo[ƒ{ƒ^ƒ“Œ‹‰ÊƒŠƒXƒg */
-		case IDC_LIST_FUNC:	/* ƒ{ƒ^ƒ“ˆê——ƒŠƒXƒg */
-			DrawToolBarItemList( pDis );	/* ƒc[ƒ‹ƒo[ƒ{ƒ^ƒ“ƒŠƒXƒg‚ÌƒAƒCƒeƒ€•`‰æ */
+		case IDC_LIST_RES:	/* ãƒ„ãƒ¼ãƒ«ãƒãƒ¼ãƒœã‚¿ãƒ³çµæœãƒªã‚¹ãƒˆ */
+		case IDC_LIST_FUNC:	/* ãƒœã‚¿ãƒ³ä¸€è¦§ãƒªã‚¹ãƒˆ */
+			DrawToolBarItemList( pDis );	/* ãƒ„ãƒ¼ãƒ«ãƒãƒ¼ãƒœã‚¿ãƒ³ãƒªã‚¹ãƒˆã®ã‚¢ã‚¤ãƒ†ãƒ æç”» */
 			return TRUE;
 		}
 		return TRUE;
@@ -181,10 +181,10 @@ INT_PTR CPropToolbar::DispatchEvent(
 		switch( pNMHDR->code ){
 		case PSN_KILLACTIVE:
 //			MYTRACE( _T("PROP_TOOLBAR PSN_KILLACTIVE\n") );
-			/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìæ“¾ Toolbar */
+			/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®å–å¾— Toolbar */
 			GetData( hwndDlg );
 			return TRUE;
-//@@@ 2002.01.03 YAZAKI ÅŒã‚É•\¦‚µ‚Ä‚¢‚½ƒV[ƒg‚ğ³‚µ‚­Šo‚¦‚Ä‚¢‚È‚¢ƒoƒOC³
+//@@@ 2002.01.03 YAZAKI æœ€å¾Œã«è¡¨ç¤ºã—ã¦ã„ãŸã‚·ãƒ¼ãƒˆã‚’æ­£ã—ãè¦šãˆã¦ã„ãªã„ãƒã‚°ä¿®æ­£
 		case PSN_SETACTIVE:
 			m_nPageNum = ID_PAGENUM_TOOLBAR;
 			return TRUE;
@@ -192,9 +192,9 @@ INT_PTR CPropToolbar::DispatchEvent(
 		break;
 
 	case WM_COMMAND:
-		wNotifyCode = HIWORD( wParam );	/* ’Ê’mƒR[ƒh */
-		wID = LOWORD( wParam );			/* €–ÚID¤ ƒRƒ“ƒgƒ[ƒ‹ID¤ ‚Ü‚½‚ÍƒAƒNƒZƒ‰ƒŒ[ƒ^ID */
-		hwndCtl = (HWND) lParam;		/* ƒRƒ“ƒgƒ[ƒ‹‚Ìƒnƒ“ƒhƒ‹ */
+		wNotifyCode = HIWORD( wParam );	/* é€šçŸ¥ã‚³ãƒ¼ãƒ‰ */
+		wID = LOWORD( wParam );			/* é …ç›®IDã€ ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«IDã€ ã¾ãŸã¯ã‚¢ã‚¯ã‚»ãƒ©ãƒ¬ãƒ¼ã‚¿ID */
+		hwndCtl = (HWND) lParam;		/* ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã®ãƒãƒ³ãƒ‰ãƒ« */
 
 		if( hwndResList == hwndCtl ){
 			switch( wNotifyCode ){
@@ -209,15 +209,15 @@ INT_PTR CPropToolbar::DispatchEvent(
 
 				List_ResetContent( hwndFuncList );
 
-				/* ‹@”\ˆê——‚É•¶š—ñ‚ğƒZƒbƒg (ƒŠƒXƒgƒ{ƒbƒNƒX) */
-				//	From Here Oct. 15, 2001 genta Lookup‚ğg‚¤‚æ‚¤‚É•ÏX
+				/* æ©Ÿèƒ½ä¸€è¦§ã«æ–‡å­—åˆ—ã‚’ã‚»ãƒƒãƒˆ (ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹) */
+				//	From Here Oct. 15, 2001 genta Lookupã‚’ä½¿ã†ã‚ˆã†ã«å¤‰æ›´
 				nNum = m_cLookup.GetItemCount( nIndex2 );
 				for( i = 0; i < nNum; ++i ){
 					nIndex1 = m_cLookup.Pos2FuncCode( nIndex2, i );
 					int nbarNo = m_pcMenuDrawer->FindToolbarNoFromCommandId( nIndex1 );
 
 					if( nbarNo >= 0 ){
-						/* ƒc[ƒ‹ƒo[ƒ{ƒ^ƒ“‚Ìî•ñ‚ğƒZƒbƒg (ƒŠƒXƒgƒ{ƒbƒNƒX) */
+						/* ãƒ„ãƒ¼ãƒ«ãƒãƒ¼ãƒœã‚¿ãƒ³ã®æƒ…å ±ã‚’ã‚»ãƒƒãƒˆ (ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹) */
 						lResult = ::Listbox_ADDDATA( hwndFuncList, (LPARAM)nbarNo );
 						if( lResult == LB_ERR || lResult == LB_ERRSPACE ){
 							break;
@@ -230,7 +230,7 @@ INT_PTR CPropToolbar::DispatchEvent(
 			}
 		}else{
 			switch( wNotifyCode ){
-			/* ƒ{ƒ^ƒ“^ƒ`ƒFƒbƒNƒ{ƒbƒNƒX‚ªƒNƒŠƒbƒN‚³‚ê‚½ */
+			/* ãƒœã‚¿ãƒ³ï¼ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹ãŒã‚¯ãƒªãƒƒã‚¯ã•ã‚ŒãŸ */
 			case BN_CLICKED:
 				switch( wID ){
 				case IDC_BUTTON_INSERTSEPARATOR:
@@ -248,7 +248,7 @@ INT_PTR CPropToolbar::DispatchEvent(
 					List_SetCurSel( hwndResList, nIndex1 );
 					break;
 
-// 2005/8/9 aroka Ü•Ôƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½‚çA‰E‚ÌƒŠƒXƒg‚Éuƒc[ƒ‹ƒo[Ü•Ôv‚ğ’Ç‰Á‚·‚éB
+// 2005/8/9 aroka æŠ˜è¿”ãƒœã‚¿ãƒ³ãŒæŠ¼ã•ã‚ŒãŸã‚‰ã€å³ã®ãƒªã‚¹ãƒˆã«ã€Œãƒ„ãƒ¼ãƒ«ãƒãƒ¼æŠ˜è¿”ã€ã‚’è¿½åŠ ã™ã‚‹ã€‚
 				case IDC_BUTTON_INSERTWRAP:
 					nIndex1 = List_GetCurSel( hwndResList );
 					if( LB_ERR == nIndex1 ){
@@ -256,7 +256,7 @@ INT_PTR CPropToolbar::DispatchEvent(
 						nIndex1 = 0;
 					}
 					//	From Here Apr. 13, 2002 genta
-					//	2010.06.25 Moca Ü‚è•Ô‚µ‚Ìƒc[ƒ‹ƒo[‚Ìƒ{ƒ^ƒ“”Ô†’è”–¼‚ğ•ÏXBÅŒã‚Å‚Í‚È‚­ŒÅ’è’l‚É‚·‚é
+					//	2010.06.25 Moca æŠ˜ã‚Šè¿”ã—ã®ãƒ„ãƒ¼ãƒ«ãƒãƒ¼ã®ãƒœã‚¿ãƒ³ç•ªå·å®šæ•°åã‚’å¤‰æ›´ã€‚æœ€å¾Œã§ã¯ãªãå›ºå®šå€¤ã«ã™ã‚‹
 					nIndex1 = ::Listbox_INSERTDATA( hwndResList, nIndex1, CMenuDrawer::TOOLBAR_BUTTON_F_TOOLBARWRAP );
 					if( nIndex1 == LB_ERR || nIndex1 == LB_ERRSPACE ){
 						break;
@@ -314,10 +314,10 @@ INT_PTR CPropToolbar::DispatchEvent(
 					}
 					i = List_GetItemData( hwndFuncList, nIndex2 );
 					//	From Here Apr. 13, 2002 genta
-					//	‚±‚±‚Å‚Í i != 0 ‚¾‚Æ‚Ív‚¤‚¯‚ÇAˆê‰•ÛŒ¯‚Å‚·B
+					//	ã“ã“ã§ã¯ i != 0 ã ã¨ã¯æ€ã†ã‘ã©ã€ä¸€å¿œä¿é™ºã§ã™ã€‚
 					nIndex1 = ::Listbox_INSERTDATA( hwndResList, nIndex1, i );
 					if( nIndex1 == LB_ERR || nIndex1 == LB_ERRSPACE ){
-						TopErrorMessage( NULL, _T("Toolbar Dialog: —v‘f‚Ì’Ç‰Á‚É¸”s‚µ‚Ü‚µ‚½B:%d"), nIndex1 );
+						TopErrorMessage( NULL, _T("Toolbar Dialog: è¦ç´ ã®è¿½åŠ ã«å¤±æ•—ã—ã¾ã—ãŸã€‚:%d"), nIndex1 );
 						break;
 					}
 					//	To Here Apr. 13, 2002 genta
@@ -338,7 +338,7 @@ INT_PTR CPropToolbar::DispatchEvent(
 					//	From Here Apr. 13, 2002 genta
 					nIndex1 = ::Listbox_INSERTDATA( hwndResList, nIndex1 - 1, i );
 					if( nIndex1 == LB_ERR || nIndex1 == LB_ERRSPACE ){
-						TopErrorMessage( NULL, _T("Toolbar Dialog: —v‘f‚Ì’Ç‰Á‚É¸”s‚µ‚Ü‚µ‚½B:%d"), nIndex1 );
+						TopErrorMessage( NULL, _T("Toolbar Dialog: è¦ç´ ã®è¿½åŠ ã«å¤±æ•—ã—ã¾ã—ãŸã€‚:%d"), nIndex1 );
 						break;
 					}
 					//	To Here Apr. 13, 2002 genta
@@ -360,7 +360,7 @@ INT_PTR CPropToolbar::DispatchEvent(
 					//	From Here Apr. 13, 2002 genta
 					nIndex1 = ::Listbox_INSERTDATA( hwndResList, nIndex1 + 1, i );
 					if( nIndex1 == LB_ERR || nIndex1 == LB_ERRSPACE ){
-						TopErrorMessage( NULL, _T("Toolbar Dialog: —v‘f‚Ì’Ç‰Á‚É¸”s‚µ‚Ü‚µ‚½B:%d"), nIndex1 );
+						TopErrorMessage( NULL, _T("Toolbar Dialog: è¦ç´ ã®è¿½åŠ ã«å¤±æ•—ã—ã¾ã—ãŸã€‚:%d"), nIndex1 );
 						break;
 					}
 					List_SetCurSel( hwndResList, nIndex1 );
@@ -417,7 +417,7 @@ INT_PTR CPropToolbar::DispatchEvent(
 
 
 
-/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìİ’è Toolbar */
+/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®è¨­å®š Toolbar */
 void CPropToolbar::SetData( HWND hwndDlg )
 {
 	HWND		hwndCombo;
@@ -428,28 +428,28 @@ void CPropToolbar::SetData( HWND hwndDlg )
 	LRESULT		lResult;
 	TEXTMETRIC	tm;
 
-	/* ‹@”\í•Êˆê——‚É•¶š—ñ‚ğƒZƒbƒg(ƒRƒ“ƒ{ƒ{ƒbƒNƒX) */
+	/* æ©Ÿèƒ½ç¨®åˆ¥ä¸€è¦§ã«æ–‡å­—åˆ—ã‚’ã‚»ãƒƒãƒˆ(ã‚³ãƒ³ãƒœãƒœãƒƒã‚¯ã‚¹) */
 	hwndCombo = ::GetDlgItem( hwndDlg, IDC_COMBO_FUNCKIND );
 	m_cLookup.SetCategory2Combo( hwndCombo );	//	Oct. 15, 2001 genta
 	
-	/* í•Ê‚Ìæ“ª‚Ì€–Ú‚ğ‘I‘ğ(ƒRƒ“ƒ{ƒ{ƒbƒNƒX) */
-	Combo_SetCurSel( hwndCombo, 0 );	//Oct. 14, 2000 JEPRO JEPRO u--–¢’è‹`--v‚ğ•\¦‚³‚¹‚È‚¢‚æ‚¤‚É‘åŒ³ Funcode.cpp ‚Å•ÏX‚µ‚Ä‚ ‚é
+	/* ç¨®åˆ¥ã®å…ˆé ­ã®é …ç›®ã‚’é¸æŠ(ã‚³ãƒ³ãƒœãƒœãƒƒã‚¯ã‚¹) */
+	Combo_SetCurSel( hwndCombo, 0 );	//Oct. 14, 2000 JEPRO JEPRO ã€Œ--æœªå®šç¾©--ã€ã‚’è¡¨ç¤ºã•ã›ãªã„ã‚ˆã†ã«å¤§å…ƒ Funcode.cpp ã§å¤‰æ›´ã—ã¦ã‚ã‚‹
 	::PostMessageCmd( hwndCombo, WM_COMMAND, MAKELONG( IDC_COMBO_FUNCKIND, CBN_SELCHANGE ), (LPARAM)hwndCombo );
 
-	/* ƒRƒ“ƒgƒ[ƒ‹‚Ìƒnƒ“ƒhƒ‹‚ğæ“¾ */
+	/* ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã®ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾— */
 	hwndResList = ::GetDlgItem( hwndDlg, IDC_LIST_RES );
 
 	hdc = ::GetDC( hwndDlg );
 	::GetTextMetrics( hdc, &tm );
 	::ReleaseDC( hwndDlg, hdc );
 
-	nListItemHeight = 18; //Oct. 18, 2000 JEPRO uƒc[ƒ‹ƒo[vƒ^ƒu‚Å‚Ìƒc[ƒ‹ƒo[ƒAƒCƒeƒ€‚ÌsŠÔ‚ğ­‚µ‹·‚­‚µ‚Ä•\¦s”‚ğ‘‚â‚µ‚½(20¨18 ‚±‚êˆÈã¬‚³‚­‚µ‚Ä‚àŒø‰Ê‚Í‚È‚¢‚æ‚¤‚¾)
+	nListItemHeight = 18; //Oct. 18, 2000 JEPRO ã€Œãƒ„ãƒ¼ãƒ«ãƒãƒ¼ã€ã‚¿ãƒ–ã§ã®ãƒ„ãƒ¼ãƒ«ãƒãƒ¼ã‚¢ã‚¤ãƒ†ãƒ ã®è¡Œé–“ã‚’å°‘ã—ç‹­ãã—ã¦è¡¨ç¤ºè¡Œæ•°ã‚’å¢—ã‚„ã—ãŸ(20â†’18 ã“ã‚Œä»¥ä¸Šå°ã•ãã—ã¦ã‚‚åŠ¹æœã¯ãªã„ã‚ˆã†ã )
 	if( nListItemHeight < tm.tmHeight ){
 		nListItemHeight = tm.tmHeight;
 	}
 //	nListItemHeight+=2;
 
-	/* ƒc[ƒ‹ƒo[ƒ{ƒ^ƒ“‚Ìî•ñ‚ğƒZƒbƒg(ƒŠƒXƒgƒ{ƒbƒNƒX)*/
+	/* ãƒ„ãƒ¼ãƒ«ãƒãƒ¼ãƒœã‚¿ãƒ³ã®æƒ…å ±ã‚’ã‚»ãƒƒãƒˆ(ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹)*/
 	for( i = 0; i < m_Common.m_sToolBar.m_nToolBarButtonNum; ++i ){
 		//	From Here Apr. 13, 2002 genta
 		lResult = ::Listbox_ADDDATA( hwndResList, (LPARAM)m_Common.m_sToolBar.m_nToolBarButtonIdxArr[i] );
@@ -459,17 +459,17 @@ void CPropToolbar::SetData( HWND hwndDlg )
 		//	To Here Apr. 13, 2002 genta
 		lResult = List_SetItemHeight( hwndResList, lResult, nListItemHeight );
 	}
-	/* ƒc[ƒ‹ƒo[‚Ìæ“ª‚Ì€–Ú‚ğ‘I‘ğ(ƒŠƒXƒgƒ{ƒbƒNƒX)*/
-	List_SetCurSel( hwndResList, 0 );	//Oct. 14, 2000 JEPRO ‚±‚±‚ğƒRƒƒ“ƒgƒAƒEƒg‚·‚é‚Ææ“ª€–Ú‚ª‘I‘ğ‚³‚ê‚È‚­‚È‚é
+	/* ãƒ„ãƒ¼ãƒ«ãƒãƒ¼ã®å…ˆé ­ã®é …ç›®ã‚’é¸æŠ(ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹)*/
+	List_SetCurSel( hwndResList, 0 );	//Oct. 14, 2000 JEPRO ã“ã“ã‚’ã‚³ãƒ¡ãƒ³ãƒˆã‚¢ã‚¦ãƒˆã™ã‚‹ã¨å…ˆé ­é …ç›®ãŒé¸æŠã•ã‚Œãªããªã‚‹
 
-	/* ƒtƒ‰ƒbƒgƒc[ƒ‹ƒo[‚É‚·‚é^‚µ‚È‚¢  */
+	/* ãƒ•ãƒ©ãƒƒãƒˆãƒ„ãƒ¼ãƒ«ãƒãƒ¼ã«ã™ã‚‹ï¼ã—ãªã„  */
 	::CheckDlgButton( hwndDlg, IDC_CHECK_TOOLBARISFLAT, m_Common.m_sToolBar.m_bToolBarIsFlat );
 	return;
 }
 
 
 
-/* ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ìæ“¾ Toolbar */
+/* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®å–å¾— Toolbar */
 int CPropToolbar::GetData( HWND hwndDlg )
 {
 	HWND	hwndResList;
@@ -477,16 +477,16 @@ int CPropToolbar::GetData( HWND hwndDlg )
 	int		j;
 	int		k;
 
-//@@@ 2002.01.03 YAZAKI ÅŒã‚É•\¦‚µ‚Ä‚¢‚½ƒV[ƒg‚ğ³‚µ‚­Šo‚¦‚Ä‚¢‚È‚¢ƒoƒOC³
+//@@@ 2002.01.03 YAZAKI æœ€å¾Œã«è¡¨ç¤ºã—ã¦ã„ãŸã‚·ãƒ¼ãƒˆã‚’æ­£ã—ãè¦šãˆã¦ã„ãªã„ãƒã‚°ä¿®æ­£
 //	m_nPageNum = ID_PAGENUM_TOOLBAR;
 
 
 	hwndResList = ::GetDlgItem( hwndDlg, IDC_LIST_RES );
 
-	/* ƒc[ƒ‹ƒo[ƒ{ƒ^ƒ“‚Ì” */
+	/* ãƒ„ãƒ¼ãƒ«ãƒãƒ¼ãƒœã‚¿ãƒ³ã®æ•° */
 	m_Common.m_sToolBar.m_nToolBarButtonNum = List_GetCount( hwndResList );
 
-	/* ƒc[ƒ‹ƒo[ƒ{ƒ^ƒ“‚Ìî•ñ‚ğæ“¾ */
+	/* ãƒ„ãƒ¼ãƒ«ãƒãƒ¼ãƒœã‚¿ãƒ³ã®æƒ…å ±ã‚’å–å¾— */
 	k = 0;
 	for( i = 0; i < m_Common.m_sToolBar.m_nToolBarButtonNum; ++i ){
 		j = List_GetItemData( hwndResList, i );
@@ -497,16 +497,16 @@ int CPropToolbar::GetData( HWND hwndDlg )
 	}
 	m_Common.m_sToolBar.m_nToolBarButtonNum = k;
 
-	/* ƒtƒ‰ƒbƒgƒc[ƒ‹ƒo[‚É‚·‚é^‚µ‚È‚¢  */
+	/* ãƒ•ãƒ©ãƒƒãƒˆãƒ„ãƒ¼ãƒ«ãƒãƒ¼ã«ã™ã‚‹ï¼ã—ãªã„  */
 	m_Common.m_sToolBar.m_bToolBarIsFlat = ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_TOOLBARISFLAT );
 
 	return TRUE;
 }
 
-/* ƒc[ƒ‹ƒo[ƒ{ƒ^ƒ“ƒŠƒXƒg‚ÌƒAƒCƒeƒ€•`‰æ
-	@date 2003.08.27 Moca ƒVƒXƒeƒ€ƒJƒ‰[‚Ìƒuƒ‰ƒV‚ÍCreateSolidBrush‚ğ‚â‚ßGetSysColorBrush‚É
-	@date 2005.08.09 aroka CPropCommon.cpp ‚©‚çˆÚ“®
-	@date 2007.11.02 ryoji ƒ{ƒ^ƒ“‚ÆƒZƒpƒŒ[ƒ^‚Æ‚Åˆ—‚ğ•ª‚¯‚é
+/* ãƒ„ãƒ¼ãƒ«ãƒãƒ¼ãƒœã‚¿ãƒ³ãƒªã‚¹ãƒˆã®ã‚¢ã‚¤ãƒ†ãƒ æç”»
+	@date 2003.08.27 Moca ã‚·ã‚¹ãƒ†ãƒ ã‚«ãƒ©ãƒ¼ã®ãƒ–ãƒ©ã‚·ã¯CreateSolidBrushã‚’ã‚„ã‚GetSysColorBrushã«
+	@date 2005.08.09 aroka CPropCommon.cpp ã‹ã‚‰ç§»å‹•
+	@date 2007.11.02 ryoji ãƒœã‚¿ãƒ³ã¨ã‚»ãƒ‘ãƒ¬ãƒ¼ã‚¿ã¨ã§å‡¦ç†ã‚’åˆ†ã‘ã‚‹
 */
 void CPropToolbar::DrawToolBarItemList( DRAWITEMSTRUCT* pDis )
 {
@@ -525,40 +525,40 @@ void CPropToolbar::DrawToolBarItemList( DRAWITEMSTRUCT* pDis )
 
 	rc  = pDis->rcItem;
 	rc0 = pDis->rcItem;
-	rc0.left += 18;//20 //Oct. 18, 2000 JEPRO sæ“ª‚ÌƒAƒCƒRƒ“‚Æ‚»‚ê‚É‘±‚­ƒLƒƒƒvƒVƒ‡ƒ“‚Æ‚ÌŠÔ‚ğ­‚µ‹l‚ß‚½(20¨18)
+	rc0.left += 18;//20 //Oct. 18, 2000 JEPRO è¡Œå…ˆé ­ã®ã‚¢ã‚¤ã‚³ãƒ³ã¨ãã‚Œã«ç¶šãã‚­ãƒ£ãƒ—ã‚·ãƒ§ãƒ³ã¨ã®é–“ã‚’å°‘ã—è©°ã‚ãŸ(20â†’18)
 	rc1 = rc0;
 	rc2 = rc0;
 
 	if( (int)pDis->itemID < 0 ){
 	}else{
 
-//@@@ 2002.01.03 YAZAKI m_tbMyButton‚È‚Ç‚ğCShareData‚©‚çCMenuDrawer‚ÖˆÚ“®‚µ‚½‚±‚Æ‚É‚æ‚éC³B
+//@@@ 2002.01.03 YAZAKI m_tbMyButtonãªã©ã‚’CShareDataã‹ã‚‰CMenuDrawerã¸ç§»å‹•ã—ãŸã“ã¨ã«ã‚ˆã‚‹ä¿®æ­£ã€‚
 //		tbb = m_cShareData.m_tbMyButton[pDis->itemData];
 //		tbb = m_pcMenuDrawer->m_tbMyButton[pDis->itemData];
 		tbb = m_pcMenuDrawer->getButton(pDis->itemData);
 
-		// ƒ{ƒ^ƒ“‚ÆƒZƒpƒŒ[ƒ^‚Æ‚Åˆ—‚ğ•ª‚¯‚é	2007.11.02 ryoji
+		// ãƒœã‚¿ãƒ³ã¨ã‚»ãƒ‘ãƒ¬ãƒ¼ã‚¿ã¨ã§å‡¦ç†ã‚’åˆ†ã‘ã‚‹	2007.11.02 ryoji
 		WCHAR	szLabel[256];
 		if( tbb.fsStyle & TBSTYLE_SEP ){
-			// ƒeƒLƒXƒg‚¾‚¯•\¦‚·‚é
+			// ãƒ†ã‚­ã‚¹ãƒˆã ã‘è¡¨ç¤ºã™ã‚‹
 			if( tbb.idCommand == F_SEPARATOR ){
-				auto_strcpy( szLabel, LTEXT("„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ") );	// nLength –¢g—p 2003/01/09 Moca
+				auto_strcpy( szLabel, LTEXT("â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€") );	// nLength æœªä½¿ç”¨ 2003/01/09 Moca
 			}else if( tbb.idCommand == F_MENU_NOT_USED_FIRST ){
 				if( ::LoadStringW_AnyBuild( G_AppInstance(), tbb.idCommand, szLabel, _countof( szLabel ) ) <= 0 ){
-					auto_strcpy( szLabel, LTEXT("\\ƒc[ƒ‹ƒo[Ü•Ô\\") );
+					auto_strcpy( szLabel, LTEXT("â€”â€”ãƒ„ãƒ¼ãƒ«ãƒãƒ¼æŠ˜è¿”â€”â€”") );
 				}
 			}else{
-				auto_strcpy( szLabel, LTEXT("„Ÿ„Ÿ„Ÿ„Ÿ•s@–¾„Ÿ„Ÿ„Ÿ„Ÿ") );
+				auto_strcpy( szLabel, LTEXT("â”€â”€â”€â”€ä¸ã€€æ˜â”€â”€â”€â”€") );
 			}
 		//	From Here Oct. 15, 2001 genta
 		}else{
-			// ƒAƒCƒRƒ“‚ÆƒeƒLƒXƒg‚ğ•\¦‚·‚é
+			// ã‚¢ã‚¤ã‚³ãƒ³ã¨ãƒ†ã‚­ã‚¹ãƒˆã‚’è¡¨ç¤ºã™ã‚‹
 			m_pcIcons->Draw( tbb.iBitmap, pDis->hDC, rc.left + 2, rc.top + 2, ILD_NORMAL );
 			m_cLookup.Funccode2Name( tbb.idCommand, szLabel, _countof( szLabel ) );
 		}
 		//	To Here Oct. 15, 2001 genta
 
-		/* ƒAƒCƒeƒ€‚ª‘I‘ğ‚³‚ê‚Ä‚¢‚é */
+		/* ã‚¢ã‚¤ãƒ†ãƒ ãŒé¸æŠã•ã‚Œã¦ã„ã‚‹ */
 		if( pDis->itemState & ODS_SELECTED ){
 //			hBrush = ::CreateSolidBrush( ::GetSysColor( COLOR_HIGHLIGHT ) );
 			hBrush = ::GetSysColorBrush( COLOR_HIGHLIGHT );
@@ -580,7 +580,7 @@ void CPropToolbar::DrawToolBarItemList( DRAWITEMSTRUCT* pDis )
 
 	}
 
-	/* ƒAƒCƒeƒ€‚ÉƒtƒH[ƒJƒX‚ª‚ ‚é */
+	/* ã‚¢ã‚¤ãƒ†ãƒ ã«ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ãŒã‚ã‚‹ */
 	if( pDis->itemState & ODS_FOCUS ){
 		::DrawFocusRect( pDis->hDC, &rc2 );
 	}

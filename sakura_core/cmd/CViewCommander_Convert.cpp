@@ -1,7 +1,7 @@
 /*!	@file
-@brief CViewCommander�N���X�̃R�}���h(�ϊ��n)�֐��Q
+@brief CViewCommanderクラスのコマンド(変換系)関数群
 
-	2012/12/20	CViewCommander.cpp���番��
+	2012/12/20	CViewCommander.cppから分離
 */
 /*
 	Copyright (C) 1998-2001, Norio Nakatani
@@ -22,270 +22,270 @@
 #include "io/CBinaryStream.h"
 
 
-/* ������ */
+/* 小文字 */
 void CViewCommander::Command_TOLOWER( void )
 {
-	/* �I���G���A�̃e�L�X�g���w����@�ŕϊ� */
+	/* 選択エリアのテキストを指定方法で変換 */
 	m_pCommanderView->ConvSelectedArea( F_TOLOWER );
 	return;
 }
 
 
 
-/* �啶�� */
+/* 大文字 */
 void CViewCommander::Command_TOUPPER( void )
 {
-	/* �I���G���A�̃e�L�X�g���w����@�ŕϊ� */
+	/* 選択エリアのテキストを指定方法で変換 */
 	m_pCommanderView->ConvSelectedArea( F_TOUPPER );
 	return;
 }
 
 
 
-/* �S�p�����p */
+/* 全角→半角 */
 void CViewCommander::Command_TOHANKAKU( void )
 {
-	/* �I���G���A�̃e�L�X�g���w����@�ŕϊ� */
+	/* 選択エリアのテキストを指定方法で変換 */
 	m_pCommanderView->ConvSelectedArea( F_TOHANKAKU );
 	return;
 }
 
 
 
-/* ���p�{�S�Ђ灨�S�p�E�J�^�J�i */	//Sept. 17, 2000 jepro �������u���p���S�p�J�^�J�i�v����ύX
+/* 半角＋全ひら→全角・カタカナ */	//Sept. 17, 2000 jepro 説明を「半角→全角カタカナ」から変更
 void CViewCommander::Command_TOZENKAKUKATA( void )
 {
-	/* �I���G���A�̃e�L�X�g���w����@�ŕϊ� */
+	/* 選択エリアのテキストを指定方法で変換 */
 	m_pCommanderView->ConvSelectedArea( F_TOZENKAKUKATA );
 	return;
 }
 
 
 
-/* ���p�{�S�J�^���S�p�E�Ђ炪�� */	//Sept. 17, 2000 jepro �������u���p���S�p�Ђ炪�ȁv����ύX
+/* 半角＋全カタ→全角・ひらがな */	//Sept. 17, 2000 jepro 説明を「半角→全角ひらがな」から変更
 void CViewCommander::Command_TOZENKAKUHIRA( void )
 {
-	/* �I���G���A�̃e�L�X�g���w����@�ŕϊ� */
+	/* 選択エリアのテキストを指定方法で変換 */
 	m_pCommanderView->ConvSelectedArea( F_TOZENKAKUHIRA );
 	return;
 }
 
 
 
-/*! ���p�p�����S�p�p�� */			//July. 30, 2001 Misaka
+/*! 半角英数→全角英数 */			//July. 30, 2001 Misaka
 void CViewCommander::Command_TOZENEI( void )
 {
-	/* �I���G���A�̃e�L�X�g���w����@�ŕϊ� */
+	/* 選択エリアのテキストを指定方法で変換 */
 	m_pCommanderView->ConvSelectedArea( F_TOZENEI );
 	return;
 }
 
 
 
-/*! �S�p�p�������p�p�� */
+/*! 全角英数→半角英数 */
 void CViewCommander::Command_TOHANEI( void )
 {
-	/* �I���G���A�̃e�L�X�g���w����@�ŕϊ� */
+	/* 選択エリアのテキストを指定方法で変換 */
 	m_pCommanderView->ConvSelectedArea( F_TOHANEI );
 	return;
 }
 
 
 
-/* �S�p�J�^�J�i�����p�J�^�J�i */		//Aug. 29, 2002 ai
+/* 全角カタカナ→半角カタカナ */		//Aug. 29, 2002 ai
 void CViewCommander::Command_TOHANKATA( void )
 {
-	/* �I���G���A�̃e�L�X�g���w����@�ŕϊ� */
+	/* 選択エリアのテキストを指定方法で変換 */
 	m_pCommanderView->ConvSelectedArea( F_TOHANKATA );
 	return;
 }
 
 
 
-/* ���p�J�^�J�i���S�p�J�^�J�i */
+/* 半角カタカナ→全角カタカナ */
 void CViewCommander::Command_HANKATATOZENKAKUKATA( void )
 {
-	/* �I���G���A�̃e�L�X�g���w����@�ŕϊ� */
+	/* 選択エリアのテキストを指定方法で変換 */
 	m_pCommanderView->ConvSelectedArea( F_HANKATATOZENKATA );
 	return;
 }
 
 
 
-/* ���p�J�^�J�i���S�p�Ђ炪�� */
+/* 半角カタカナ→全角ひらがな */
 void CViewCommander::Command_HANKATATOZENKAKUHIRA( void )
 {
-	/* �I���G���A�̃e�L�X�g���w����@�ŕϊ� */
+	/* 選択エリアのテキストを指定方法で変換 */
 	m_pCommanderView->ConvSelectedArea( F_HANKATATOZENHIRA );
 	return;
 }
 
 
 
-/* TAB���� */
+/* TAB→空白 */
 void CViewCommander::Command_TABTOSPACE( void )
 {
-	/* �I���G���A�̃e�L�X�g���w����@�ŕϊ� */
+	/* 選択エリアのテキストを指定方法で変換 */
 	m_pCommanderView->ConvSelectedArea( F_TABTOSPACE );
 	return;
 }
 
 
 
-/* �󔒁�TAB */ //---- Stonee, 2001/05/27
+/* 空白→TAB */ //---- Stonee, 2001/05/27
 void CViewCommander::Command_SPACETOTAB( void )
 {
-	/* �I���G���A�̃e�L�X�g���w����@�ŕϊ� */
+	/* 選択エリアのテキストを指定方法で変換 */
 	m_pCommanderView->ConvSelectedArea( F_SPACETOTAB );
 	return;
 }
 
 
 
-/* �������ʁ�SJIS�R�[�h�ϊ� */
+/* 自動判別→SJISコード変換 */
 void CViewCommander::Command_CODECNV_AUTO2SJIS( void )
 {
-	/* �I���G���A�̃e�L�X�g���w����@�ŕϊ� */
+	/* 選択エリアのテキストを指定方法で変換 */
 	m_pCommanderView->ConvSelectedArea( F_CODECNV_AUTO2SJIS );
 	return;
 }
 
 
 
-/* E-Mail(JIS��SJIS)�R�[�h�ϊ� */
+/* E-Mail(JIS→SJIS)コード変換 */
 void CViewCommander::Command_CODECNV_EMAIL( void )
 {
-	/* �I���G���A�̃e�L�X�g���w����@�ŕϊ� */
+	/* 選択エリアのテキストを指定方法で変換 */
 	m_pCommanderView->ConvSelectedArea( F_CODECNV_EMAIL );
 	return;
 }
 
 
 
-/* EUC��SJIS�R�[�h�ϊ� */
+/* EUC→SJISコード変換 */
 void CViewCommander::Command_CODECNV_EUC2SJIS( void )
 {
-	/* �I���G���A�̃e�L�X�g���w����@�ŕϊ� */
+	/* 選択エリアのテキストを指定方法で変換 */
 	m_pCommanderView->ConvSelectedArea( F_CODECNV_EUC2SJIS );
 	return;
 }
 
 
 
-/* Unicode��SJIS�R�[�h�ϊ� */
+/* Unicode→SJISコード変換 */
 void CViewCommander::Command_CODECNV_UNICODE2SJIS( void )
 {
-	/* �I���G���A�̃e�L�X�g���w����@�ŕϊ� */
+	/* 選択エリアのテキストを指定方法で変換 */
 	m_pCommanderView->ConvSelectedArea( F_CODECNV_UNICODE2SJIS );
 	return;
 }
 
 
 
-/* UnicodeBE��SJIS�R�[�h�ϊ� */
+/* UnicodeBE→SJISコード変換 */
 void CViewCommander::Command_CODECNV_UNICODEBE2SJIS( void )
 {
-	/* �I���G���A�̃e�L�X�g���w����@�ŕϊ� */
+	/* 選択エリアのテキストを指定方法で変換 */
 	m_pCommanderView->ConvSelectedArea( F_CODECNV_UNICODEBE2SJIS );
 	return;
 }
 
 
 
-/* UTF-8��SJIS�R�[�h�ϊ� */
+/* UTF-8→SJISコード変換 */
 void CViewCommander::Command_CODECNV_UTF82SJIS( void )
 {
-	/* �I���G���A�̃e�L�X�g���w����@�ŕϊ� */
+	/* 選択エリアのテキストを指定方法で変換 */
 	m_pCommanderView->ConvSelectedArea( F_CODECNV_UTF82SJIS );
 	return;
 }
 
 
 
-/* UTF-7��SJIS�R�[�h�ϊ� */
+/* UTF-7→SJISコード変換 */
 void CViewCommander::Command_CODECNV_UTF72SJIS( void )
 {
-	/* �I���G���A�̃e�L�X�g���w����@�ŕϊ� */
+	/* 選択エリアのテキストを指定方法で変換 */
 	m_pCommanderView->ConvSelectedArea( F_CODECNV_UTF72SJIS );
 	return;
 }
 
 
 
-/* SJIS��JIS�R�[�h�ϊ� */
+/* SJIS→JISコード変換 */
 void CViewCommander::Command_CODECNV_SJIS2JIS( void )
 {
-	/* �I���G���A�̃e�L�X�g���w����@�ŕϊ� */
+	/* 選択エリアのテキストを指定方法で変換 */
 	m_pCommanderView->ConvSelectedArea( F_CODECNV_SJIS2JIS );
 	return;
 }
 
 
 
-/* SJIS��EUC�R�[�h�ϊ� */
+/* SJIS→EUCコード変換 */
 void CViewCommander::Command_CODECNV_SJIS2EUC( void )
 {
-	/* �I���G���A�̃e�L�X�g���w����@�ŕϊ� */
+	/* 選択エリアのテキストを指定方法で変換 */
 	m_pCommanderView->ConvSelectedArea( F_CODECNV_SJIS2EUC );
 	return;
 }
 
 
 
-/* SJIS��UTF-8�R�[�h�ϊ� */
+/* SJIS→UTF-8コード変換 */
 void CViewCommander::Command_CODECNV_SJIS2UTF8( void )
 {
-	/* �I���G���A�̃e�L�X�g���w����@�ŕϊ� */
+	/* 選択エリアのテキストを指定方法で変換 */
 	m_pCommanderView->ConvSelectedArea( F_CODECNV_SJIS2UTF8 );
 	return;
 }
 
 
 
-/* SJIS��UTF-7�R�[�h�ϊ� */
+/* SJIS→UTF-7コード変換 */
 void CViewCommander::Command_CODECNV_SJIS2UTF7( void )
 {
-	/* �I���G���A�̃e�L�X�g���w����@�ŕϊ� */
+	/* 選択エリアのテキストを指定方法で変換 */
 	m_pCommanderView->ConvSelectedArea( F_CODECNV_SJIS2UTF7 );
 	return;
 }
 
 
 
-/* Base64�f�R�[�h���ĕۑ� */
+/* Base64デコードして保存 */
 void CViewCommander::Command_BASE64DECODE( void )
 {
-	/* �e�L�X�g���I������Ă��邩 */
+	/* テキストが選択されているか */
 	if( !m_pCommanderView->GetSelectionInfo().IsTextSelected() ){
 		ErrorBeep();
 		return;
 	}
-	/* �I��͈͂̃f�[�^���擾 */
-	/* ���펞��TRUE,�͈͖��I���̏ꍇ��FALSE��Ԃ� */
+	/* 選択範囲のデータを取得 */
+	/* 正常時はTRUE,範囲未選択の場合はFALSEを返す */
 	CNativeW	ctextBuf;
 	if( !m_pCommanderView->GetSelectedData( &ctextBuf, FALSE, NULL, FALSE, GetDllShareData().m_Common.m_sEdit.m_bAddCRLFWhenCopy ) ){
 		ErrorBeep();
 		return;
 	}
 
-	/* Base64�f�R�[�h */
+	/* Base64デコード */
 	CMemory cmemBuf;
 	bool bret = CDecode_Base64Decode().CallDecode(ctextBuf, &cmemBuf);
 	if( !bret ){
 		return;
 	}
 
-	/* �ۑ��_�C�A���O ���[�_���_�C�A���O�̕\�� */
+	/* 保存ダイアログ モーダルダイアログの表示 */
 	TCHAR		szPath[_MAX_PATH] = _T("");
 	if( !GetDocument()->m_cDocFileOperation.SaveFileDialog( szPath ) ){
 		return;
 	}
 
-	//�f�[�^
+	//データ
 	int nDataLen;
 	const void* pData = cmemBuf.GetRawPtr(&nDataLen);
 
-	//�J�L�R
+	//カキコ
 	CBinaryOutputStream out(szPath);
 	if(!out)goto err;
 	if( nDataLen != out.Write(pData, nDataLen) )goto err;
@@ -294,29 +294,29 @@ void CViewCommander::Command_BASE64DECODE( void )
 
 err:
 	ErrorBeep();
-	ErrorMessage( m_pCommanderView->GetHwnd(), _T("�t�@�C���̏������݂Ɏ��s���܂����B\n\n%ts"), szPath );
+	ErrorMessage( m_pCommanderView->GetHwnd(), _T("ファイルの書き込みに失敗しました。\n\n%ts"), szPath );
 }
 
 
 
-/* uudecode���ĕۑ� */
+/* uudecodeして保存 */
 void CViewCommander::Command_UUDECODE( void )
 {
-	/* �e�L�X�g���I������Ă��邩 */
+	/* テキストが選択されているか */
 	if( !m_pCommanderView->GetSelectionInfo().IsTextSelected() ){
 		ErrorBeep();
 		return;
 	}
 
-	// �I��͈͂̃f�[�^���擾 -> cmemBuf
-	// ���펞��TRUE,�͈͖��I���̏ꍇ��FALSE��Ԃ�
+	// 選択範囲のデータを取得 -> cmemBuf
+	// 正常時はTRUE,範囲未選択の場合はFALSEを返す
 	CNativeW	ctextBuf;
 	if( !m_pCommanderView->GetSelectedData( &ctextBuf, FALSE, NULL, FALSE, GetDllShareData().m_Common.m_sEdit.m_bAddCRLFWhenCopy ) ){
 		ErrorBeep();
 		return;
 	}
 
-	// uudecode(�f�R�[�h)  ctextBuf -> cmemBin, szPath
+	// uudecode(デコード)  ctextBuf -> cmemBin, szPath
 	CMemory cmemBin;
 	TCHAR szPath[_MAX_PATH]=_T("");
 	CDecode_UuDecode decoder;
@@ -325,24 +325,24 @@ void CViewCommander::Command_UUDECODE( void )
 	}
 	decoder.CopyFilename( szPath );
 
-	/* �ۑ��_�C�A���O ���[�_���_�C�A���O�̕\�� */
+	/* 保存ダイアログ モーダルダイアログの表示 */
 	if( !GetDocument()->m_cDocFileOperation.SaveFileDialog( szPath ) ){
 		return;
 	}
 
-	//�f�[�^
+	//データ
 	int nDataLen;
 	const void* pData = cmemBin.GetRawPtr(&nDataLen);
 
-	//�J�L�R
+	//カキコ
 	CBinaryOutputStream out(szPath);
 	if( !out )goto err;
 	if( nDataLen != out.Write(pData,nDataLen) )goto err;
 
-	//����
+	//完了
 	return;
 
 err:
 	ErrorBeep();
-	ErrorMessage( m_pCommanderView->GetHwnd(), _T("�t�@�C���̏������݂Ɏ��s���܂����B\n\n%ts"), szPath );
+	ErrorMessage( m_pCommanderView->GetHwnd(), _T("ファイルの書き込みに失敗しました。\n\n%ts"), szPath );
 }

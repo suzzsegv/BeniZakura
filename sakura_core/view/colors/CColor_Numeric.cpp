@@ -9,7 +9,7 @@
 static int IsNumber( const CStringRef& cStr, int offset );
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                         ”¼Šp”’l                            //
+//                         åŠè§’æ•°å€¤                            //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
 bool CColor_Numeric::BeginColor(const CStringRef& cStr, int nPos)
@@ -19,11 +19,11 @@ bool CColor_Numeric::BeginColor(const CStringRef& cStr, int nPos)
 	int	nnn;
 
 	if( _IsPosKeywordHead(cStr,nPos) && m_pTypeData->m_ColorInfoArr[COLORIDX_DIGIT].m_bDisp
-		&& (nnn = IsNumber(cStr, nPos)) > 0 )		/* ”¼Šp”š‚ğ•\¦‚·‚é */
+		&& (nnn = IsNumber(cStr, nPos)) > 0 )		/* åŠè§’æ•°å­—ã‚’è¡¨ç¤ºã™ã‚‹ */
 	{
-		/* ƒL[ƒ[ƒh•¶š—ñ‚ÌI’[‚ğƒZƒbƒg‚·‚é */
+		/* ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰æ–‡å­—åˆ—ã®çµ‚ç«¯ã‚’ã‚»ãƒƒãƒˆã™ã‚‹ */
 		this->m_nCOMMENTEND = nPos + nnn;
-		return true;	/* ”¼Šp”’l‚Å‚ ‚é */
+		return true;	/* åŠè§’æ•°å€¤ã§ã‚ã‚‹ */
 	}
 	return false;
 }
@@ -39,13 +39,13 @@ bool CColor_Numeric::EndColor(const CStringRef& cStr, int nPos)
 
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                         À‘••â•                            //
+//                         å®Ÿè£…è£œåŠ©                            //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
 /*
- * ”’l‚È‚ç’·‚³‚ğ•Ô‚·B
- * 10i”‚Ì®”‚Ü‚½‚Í¬”B16i”(³”)B
- * •¶š—ñ   ”’l(F•ª‚¯)
+ * æ•°å€¤ãªã‚‰é•·ã•ã‚’è¿”ã™ã€‚
+ * 10é€²æ•°ã®æ•´æ•°ã¾ãŸã¯å°æ•°ã€‚16é€²æ•°(æ­£æ•°)ã€‚
+ * æ–‡å­—åˆ—   æ•°å€¤(è‰²åˆ†ã‘)
  * ---------------------
  * 123      123
  * 0123     0123
@@ -60,10 +60,10 @@ bool CColor_Numeric::EndColor(const CStringRef& cStr, int nPos)
  * 0x567.8  0x567 , 8
  */
 /*
- * ”¼Šp”’l
+ * åŠè§’æ•°å€¤
  *   1, 1.2, 1.2.3, .1, 0xabc, -.1, -1
- *   10i”, 16i”, •‚“®¬”“_”, •‰•„†
- *   IPƒAƒhƒŒƒX‚Ìƒhƒbƒg˜AŒ‹(–{“–‚Í”’l‚¶‚á‚È‚¢‚ñ‚¾‚æ‚Ë)
+ *   10é€²æ•°, 16é€²æ•°, æµ®å‹•å°æ•°ç‚¹æ•°, è² ç¬¦å·
+ *   IPã‚¢ãƒ‰ãƒ¬ã‚¹ã®ãƒ‰ãƒƒãƒˆé€£çµ(æœ¬å½“ã¯æ•°å€¤ã˜ã‚ƒãªã„ã‚“ã ã‚ˆã­)
  */
 static int IsNumber(const CStringRef& cStr, int offset)
 {
@@ -75,10 +75,10 @@ static int IsNumber(const CStringRef& cStr, int offset)
 	p = cStr.GetPtr() + offset;
 	q = cStr.GetPtr() + cStr.GetLength();
 
-	if( *p == L'0' )  /* 10i”,C‚Ì16i” */
+	if( *p == L'0' )  /* 10é€²æ•°,Cã®16é€²æ•° */
 	{
 		p++; i++;
-		if( ( p < q ) && ( *p == L'x' ) )  /* C‚Ì16i” */
+		if( ( p < q ) && ( *p == L'x' ) )  /* Cã®16é€²æ•° */
 		{
 			p++; i++;
 			while( p < q )
@@ -94,7 +94,7 @@ static int IsNumber(const CStringRef& cStr, int offset)
 					break;
 				}
 			}
-			/* "0x" ‚È‚ç "0" ‚¾‚¯‚ª”’l */
+			/* "0x" ãªã‚‰ "0" ã ã‘ãŒæ•°å€¤ */
 			if( i == 2 ) return 1;
 			return i;
 		}
@@ -110,7 +110,7 @@ static int IsNumber(const CStringRef& cStr, int offset)
 						d++;
 						if( d > 1 )
 						{
-							if( *(p - 1) == L'.' ) break;  /* "." ‚ª˜A‘±‚È‚ç’†’f */
+							if( *(p - 1) == L'.' ) break;  /* "." ãŒé€£ç¶šãªã‚‰ä¸­æ–­ */
 						}
 					}
 					else
@@ -120,7 +120,7 @@ static int IsNumber(const CStringRef& cStr, int offset)
 				}
 				p++; i++;
 			}
-			if( *(p - 1)  == L'.' ) return i - 1;  /* ÅŒã‚ª "." ‚È‚çŠÜ‚ß‚È‚¢ */
+			if( *(p - 1)  == L'.' ) return i - 1;  /* æœ€å¾ŒãŒ "." ãªã‚‰å«ã‚ãªã„ */
 			return i;
 		}
 		else if( *p == L'.' )
@@ -134,7 +134,7 @@ static int IsNumber(const CStringRef& cStr, int offset)
 						d++;
 						if( d > 1 )
 						{
-							if( *(p - 1) == L'.' ) break;  /* "." ‚ª˜A‘±‚È‚ç’†’f */
+							if( *(p - 1) == L'.' ) break;  /* "." ãŒé€£ç¶šãªã‚‰ä¸­æ–­ */
 						}
 					}
 					else
@@ -144,14 +144,14 @@ static int IsNumber(const CStringRef& cStr, int offset)
 				}
 				p++; i++;
 			}
-			if( *(p - 1)  == L'.' ) return i - 1;  /* ÅŒã‚ª "." ‚È‚çŠÜ‚ß‚È‚¢ */
+			if( *(p - 1)  == L'.' ) return i - 1;  /* æœ€å¾ŒãŒ "." ãªã‚‰å«ã‚ãªã„ */
 			return i;
 		}
-		/* "0" ‚¾‚¯‚ª”’l */
+		/* "0" ã ã‘ãŒæ•°å€¤ */
 		return i;
 	}
 
-	else if( *p >= L'1' && *p <= L'9' )  /* 10i” */
+	else if( *p >= L'1' && *p <= L'9' )  /* 10é€²æ•° */
 	{
 		p++; i++;
 		while( p < q )
@@ -163,7 +163,7 @@ static int IsNumber(const CStringRef& cStr, int offset)
 					d++;
 					if( d > 1 )
 					{
-						if( *(p - 1) == L'.' ) break;  /* "." ‚ª˜A‘±‚È‚ç’†’f */
+						if( *(p - 1) == L'.' ) break;  /* "." ãŒé€£ç¶šãªã‚‰ä¸­æ–­ */
 					}
 				}
 				else
@@ -173,11 +173,11 @@ static int IsNumber(const CStringRef& cStr, int offset)
 			}
 			p++; i++;
 		}
-		if( *(p - 1) == L'.' ) return i - 1;  /* ÅŒã‚ª "." ‚È‚çŠÜ‚ß‚È‚¢ */
+		if( *(p - 1) == L'.' ) return i - 1;  /* æœ€å¾ŒãŒ "." ãªã‚‰å«ã‚ãªã„ */
 		return i;
 	}
 
-	else if( *p == L'-' )  /* ƒ}ƒCƒiƒX */
+	else if( *p == L'-' )  /* ãƒã‚¤ãƒŠã‚¹ */
 	{
 		p++; i++;
 		while( p < q )
@@ -189,7 +189,7 @@ static int IsNumber(const CStringRef& cStr, int offset)
 					d++;
 					if( d > 1 )
 					{
-						if( *(p - 1) == L'.' ) break;  /* "." ‚ª˜A‘±‚È‚ç’†’f */
+						if( *(p - 1) == L'.' ) break;  /* "." ãŒé€£ç¶šãªã‚‰ä¸­æ–­ */
 					}
 				}
 				else
@@ -199,7 +199,7 @@ static int IsNumber(const CStringRef& cStr, int offset)
 			}
 			p++; i++;
 		}
-		/* "-", "-." ‚¾‚¯‚È‚ç”’l‚Å‚È‚¢ */
+		/* "-", "-." ã ã‘ãªã‚‰æ•°å€¤ã§ãªã„ */
 		if( i == 1 ) return 0;
 		if( *(p - 1) == L'.' )
 		{
@@ -210,7 +210,7 @@ static int IsNumber(const CStringRef& cStr, int offset)
 		return i;
 	}
 
-	else if( *p == L'.' )  /* ¬”“_ */
+	else if( *p == L'.' )  /* å°æ•°ç‚¹ */
 	{
 		d++;
 		p++; i++;
@@ -223,7 +223,7 @@ static int IsNumber(const CStringRef& cStr, int offset)
 					d++;
 					if( d > 1 )
 					{
-						if( *(p - 1) == L'.' ) break;  /* "." ‚ª˜A‘±‚È‚ç’†’f */
+						if( *(p - 1) == L'.' ) break;  /* "." ãŒé€£ç¶šãªã‚‰ä¸­æ–­ */
 					}
 				}
 				else
@@ -233,12 +233,12 @@ static int IsNumber(const CStringRef& cStr, int offset)
 			}
 			p++; i++;
 		}
-		/* "." ‚¾‚¯‚È‚ç”’l‚Å‚È‚¢ */
+		/* "." ã ã‘ãªã‚‰æ•°å€¤ã§ãªã„ */
 		if( i == 1 ) return 0;
-		if( *(p - 1)  == L'.' ) return i - 1;  /* ÅŒã‚ª "." ‚È‚çŠÜ‚ß‚È‚¢ */
+		if( *(p - 1)  == L'.' ) return i - 1;  /* æœ€å¾ŒãŒ "." ãªã‚‰å«ã‚ãªã„ */
 		return i;
 	}
 
-	/* ”’l‚Å‚Í‚È‚¢ */
+	/* æ•°å€¤ã§ã¯ãªã„ */
 	return 0;
 }

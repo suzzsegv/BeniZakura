@@ -35,40 +35,40 @@ CDocType::CDocType(CEditDoc* pcDoc)
 : m_pcDocRef(pcDoc)
 , m_nSettingType( 0 )			// Sep. 11, 2002 genta
 , m_pType ( &CDocTypeManager().GetTypeSetting(m_nSettingType) )
-, m_nSettingTypeLocked( false )	//	�ݒ�l�ύX�\�t���O
+, m_nSettingTypeLocked( false )	//	設定値変更可能フラグ
 {
 }
 
-//! ������ʂ̐ݒ�
+//! 文書種別の設定
 void CDocType::SetDocumentType(CTypeConfig type, bool force, bool bTypeOnly )
 {
 	if( !m_nSettingTypeLocked || force ){
 		m_nSettingType = type;
 		m_pType = &CDocTypeManager().GetTypeSetting(m_nSettingType);
-		if( bTypeOnly ) return;	// bTypeOnly == true �͓���P�[�X�i�ꎞ���p�j�Ɍ���
+		if( bTypeOnly ) return;	// bTypeOnly == true は特殊ケース（一時利用）に限定
 		UnlockDocumentType();
 		CDocTypeManager().GetTypeSetting(m_nSettingType).m_nRegexKeyMagicNumber++;	//@@@ 2001.11.17 add MIK
 		this->SetDocumentIcon();	// Sep. 11, 2002 genta
 		m_pcDocRef->SetBackgroundImage();
 
-		// �^�C�v�ʐݒ�X�V�𔽉f
+		// タイプ別設定更新を反映
 		CColorStrategyPool::getInstance()->OnChangeSetting();
 		CFigureManager::getInstance()->OnChangeSetting();
 	}
 }
 
 /*!
-	�A�C�R���̐ݒ�
+	アイコンの設定
 	
-	�^�C�v�ʐݒ�ɉ����ăE�B���h�E�A�C�R�����t�@�C���Ɋ֘A�Â���ꂽ���C
-	�܂��͕W���̂��̂ɐݒ肷��D
+	タイプ別設定に応じてウィンドウアイコンをファイルに関連づけられた物，
+	または標準のものに設定する．
 	
 	@author genta
 	@date 2002.09.10
 */
 void CDocType::SetDocumentIcon()
 {
-	if( CEditApp::getInstance()->m_pcGrepAgent->m_bGrepMode )	// Grep���[�h�̎��̓A�C�R����ύX���Ȃ�
+	if( CEditApp::getInstance()->m_pcGrepAgent->m_bGrepMode )	// Grepモードの時はアイコンを変更しない
 		return;
 	
 	HICON	hIconBig, hIconSmall;

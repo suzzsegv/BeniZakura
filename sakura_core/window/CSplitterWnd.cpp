@@ -1,9 +1,9 @@
 /*!	@file
-	@brief •ªŠ„üƒEƒBƒ“ƒhƒEƒNƒ‰ƒX
+	@brief åˆ†å‰²ç·šã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹
 
 	@author Norio Nakatani
-	@date 1998/07/07 V‹Kì¬
-	@date 2002/2/3 aroka –¢g—pƒR[ƒhœ‹
+	@date 1998/07/07 æ–°è¦ä½œæˆ
+	@date 2002/2/3 aroka æœªä½¿ç”¨ã‚³ãƒ¼ãƒ‰é™¤å»
 */
 /*
 	Copyright (C) 1998-2001, Norio Nakatani
@@ -23,28 +23,28 @@
 #include "env/DLLSHAREDATA.h"
 
 
-//	@date 2002.2.17 YAZAKI CShareData‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ÍACProcess‚É‚Ğ‚Æ‚Â‚ ‚é‚Ì‚İB
+//	@date 2002.2.17 YAZAKI CShareDataã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã¯ã€CProcessã«ã²ã¨ã¤ã‚ã‚‹ã®ã¿ã€‚
 CSplitterWnd::CSplitterWnd()
 : CWnd(_T("::CSplitterWnd"))
-, m_pszClassName(_T("SplitterWndClass"))	/* ƒNƒ‰ƒX–¼ */
-, m_nActivePane(0)					/* ƒAƒNƒeƒBƒu‚ÈƒyƒCƒ“ 0-3 */
-, m_nAllSplitRows(1)					/* •ªŠ„s” */
-, m_nAllSplitCols(1)					/* •ªŠ„Œ…” */
-, m_nVSplitPos(0)					/* ‚’¼•ªŠ„ˆÊ’u */
-, m_nHSplitPos(0)					/* …•½•ªŠ„ˆÊ’u */
-, m_bDragging(0)						/* •ªŠ„ƒo[‚ğƒhƒ‰ƒbƒO’†‚© */
-, m_nDragPosX(0)						/* ƒhƒ‰ƒbƒOˆÊ’u‚w */
-, m_nDragPosY(0)						/* ƒhƒ‰ƒbƒOˆÊ’u‚x */
+, m_pszClassName(_T("SplitterWndClass"))	/* ã‚¯ãƒ©ã‚¹å */
+, m_nActivePane(0)					/* ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ãªãƒšã‚¤ãƒ³ 0-3 */
+, m_nAllSplitRows(1)					/* åˆ†å‰²è¡Œæ•° */
+, m_nAllSplitCols(1)					/* åˆ†å‰²æ¡æ•° */
+, m_nVSplitPos(0)					/* å‚ç›´åˆ†å‰²ä½ç½® */
+, m_nHSplitPos(0)					/* æ°´å¹³åˆ†å‰²ä½ç½® */
+, m_bDragging(0)						/* åˆ†å‰²ãƒãƒ¼ã‚’ãƒ‰ãƒ©ãƒƒã‚°ä¸­ã‹ */
+, m_nDragPosX(0)						/* ãƒ‰ãƒ©ãƒƒã‚°ä½ç½®ï¼¸ */
+, m_nDragPosY(0)						/* ãƒ‰ãƒ©ãƒƒã‚°ä½ç½®ï¼¹ */
 , m_nChildWndCount(0)
 , m_pCEditWnd(NULL)
 {
-	/* ‹¤—Lƒf[ƒ^\‘¢‘Ì‚ÌƒAƒhƒŒƒX‚ğ•Ô‚· */
+	/* å…±æœ‰ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“ã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’è¿”ã™ */
 	m_pShareData = &GetDllShareData();
 
-	m_hcurOld = NULL;						/* ‚à‚Æ‚Ìƒ}ƒEƒXƒJ[ƒ\ƒ‹ */
+	m_hcurOld = NULL;						/* ã‚‚ã¨ã®ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ« */
 
 	for( int v=0; v < MAXCOUNTOFVIEW; v++ ){
-		m_ChildWndArr[v] = NULL;				/* qƒEƒBƒ“ƒhƒE”z—ñ */
+		m_ChildWndArr[v] = NULL;				/* å­ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦é…åˆ— */
 	}
 	return;
 }
@@ -59,13 +59,13 @@ CSplitterWnd::~CSplitterWnd()
 
 
 
-/* ‰Šú‰» */
+/* åˆæœŸåŒ– */
 HWND CSplitterWnd::Create( HINSTANCE hInstance, HWND hwndParent, void* pCEditWnd )
 {
-	/* ‰Šú‰» */
+	/* åˆæœŸåŒ– */
 	m_pCEditWnd	= pCEditWnd;
 
-	/* ƒEƒBƒ“ƒhƒEƒNƒ‰ƒXì¬ */
+	/* ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ä½œæˆ */
 	ATOM atWork;
 	atWork = RegisterWC(
 		hInstance,
@@ -79,10 +79,10 @@ HWND CSplitterWnd::Create( HINSTANCE hInstance, HWND hwndParent, void* pCEditWnd
 		m_pszClassName// Pointer to a null-terminated string or is an atom.
 	);
 	if( 0 == atWork ){
-		ErrorMessage( NULL, _T("SplitterWndƒNƒ‰ƒX‚Ì“o˜^‚É¸”s‚µ‚Ü‚µ‚½B") );
+		ErrorMessage( NULL, _T("SplitterWndã‚¯ãƒ©ã‚¹ã®ç™»éŒ²ã«å¤±æ•—ã—ã¾ã—ãŸã€‚") );
 	}
 
-	/* Šî’êƒNƒ‰ƒXƒƒ“ƒoŒÄ‚Ño‚µ */
+	/* åŸºåº•ã‚¯ãƒ©ã‚¹ãƒ¡ãƒ³ãƒå‘¼ã³å‡ºã— */
 	return CWnd::Create(
 		hwndParent,
 		0, // extended window style
@@ -101,23 +101,23 @@ HWND CSplitterWnd::Create( HINSTANCE hInstance, HWND hwndParent, void* pCEditWnd
 
 
 
-/* qƒEƒBƒ“ƒhƒE‚Ìİ’è
-	@param hwndEditViewArr [in] HWND”z—ñ NULLI’[
+/* å­ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®è¨­å®š
+	@param hwndEditViewArr [in] HWNDé…åˆ— NULLçµ‚ç«¯
 */
 void CSplitterWnd::SetChildWndArr( HWND* hwndEditViewArr )
 {
 	int v=0;
 	for( ; v < MAXCOUNTOFVIEW && hwndEditViewArr[v]; v++ ){
-		m_ChildWndArr[v] = hwndEditViewArr[v];				/* qƒEƒBƒ“ƒhƒE”z—ñ */
+		m_ChildWndArr[v] = hwndEditViewArr[v];				/* å­ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦é…åˆ— */
 	}
 	m_nChildWndCount = v;
-	// c‚è‚ÍNULL‚Å–„‚ß‚é
+	// æ®‹ã‚Šã¯NULLã§åŸ‹ã‚ã‚‹
 	for( ; v < MAXCOUNTOFVIEW; v++ ){
 		m_ChildWndArr[v] = NULL;
 	}
 
-	// 2002/05/11 YAZAKI •s—v‚Èˆ—‚Æv‚í‚ê‚é
-	/* ƒEƒBƒ“ƒhƒE‚Ì•ªŠ„ */
+	// 2002/05/11 YAZAKI ä¸è¦ãªå‡¦ç†ã¨æ€ã‚ã‚Œã‚‹
+	/* ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®åˆ†å‰² */
 //	DoSplit( m_nHSplitPos, m_nVSplitPos );
 //	DoSplit( 0, 0 );
 	return;
@@ -126,7 +126,7 @@ void CSplitterWnd::SetChildWndArr( HWND* hwndEditViewArr )
 
 
 
-/* •ªŠ„ƒtƒŒ[ƒ€•`‰æ */
+/* åˆ†å‰²ãƒ•ãƒ¬ãƒ¼ãƒ æç”» */
 void CSplitterWnd::DrawFrame( HDC hdc, RECT* prc )
 {
 	CSplitBoxWnd::Draw3dRect( hdc, prc->left, prc->top, prc->right, prc->bottom,
@@ -143,7 +143,7 @@ void CSplitterWnd::DrawFrame( HDC hdc, RECT* prc )
 
 
 
-/* •ªŠ„ƒgƒ‰ƒbƒJ[‚Ì•\¦ */
+/* åˆ†å‰²ãƒˆãƒ©ãƒƒã‚«ãƒ¼ã®è¡¨ç¤º */
 void CSplitterWnd::DrawSplitter( int xPos, int yPos, int bEraseOld )
 {
 	HDC			hdc;
@@ -161,14 +161,14 @@ void CSplitterWnd::DrawSplitter( int xPos, int yPos, int bEraseOld )
 	::GetClientRect( GetHwnd(), &rc );
 
 	if( bEraseOld ){
-		if( m_bDragging & 1 ){	/* •ªŠ„ƒo[‚ğƒhƒ‰ƒbƒO’†‚© */
+		if( m_bDragging & 1 ){	/* åˆ†å‰²ãƒãƒ¼ã‚’ãƒ‰ãƒ©ãƒƒã‚°ä¸­ã‹ */
 			rc2.left = -1;
 			rc2.top = m_nDragPosY;
 			rc2.right = rc.right;
 			rc2.bottom = rc2.top + nTrackerWidth;
 			::Rectangle( hdc, rc2.left, rc2.top, rc2.right, rc2.bottom );
 		}
-		if( m_bDragging & 2 ){	/* •ªŠ„ƒo[‚ğƒhƒ‰ƒbƒO’†‚© */
+		if( m_bDragging & 2 ){	/* åˆ†å‰²ãƒãƒ¼ã‚’ãƒ‰ãƒ©ãƒƒã‚°ä¸­ã‹ */
 			rc2.left = m_nDragPosX;
 			rc2.top = 0;
 			rc2.right = rc2.left + nTrackerWidth;
@@ -179,14 +179,14 @@ void CSplitterWnd::DrawSplitter( int xPos, int yPos, int bEraseOld )
 
 	m_nDragPosX = xPos;
 	m_nDragPosY = yPos;
-	if( m_bDragging & 1 ){	/* •ªŠ„ƒo[‚ğƒhƒ‰ƒbƒO’†‚© */
+	if( m_bDragging & 1 ){	/* åˆ†å‰²ãƒãƒ¼ã‚’ãƒ‰ãƒ©ãƒƒã‚°ä¸­ã‹ */
 		rc2.left = -1;
 		rc2.top = m_nDragPosY;
 		rc2.right = rc.right;
 		rc2.bottom = rc2.top + nTrackerWidth;
 		::Rectangle( hdc, rc2.left, rc2.top, rc2.right, rc2.bottom );
 	}
-	if( m_bDragging & 2 ){	/* •ªŠ„ƒo[‚ğƒhƒ‰ƒbƒO’†‚© */
+	if( m_bDragging & 2 ){	/* åˆ†å‰²ãƒãƒ¼ã‚’ãƒ‰ãƒ©ãƒƒã‚°ä¸­ã‹ */
 		rc2.left = m_nDragPosX;
 		rc2.top = 0;
 		rc2.right = rc2.left + nTrackerWidth;
@@ -203,7 +203,7 @@ void CSplitterWnd::DrawSplitter( int xPos, int yPos, int bEraseOld )
 
 
 
-/* •ªŠ„ƒo[‚Ö‚ÌƒqƒbƒgƒeƒXƒg */
+/* åˆ†å‰²ãƒãƒ¼ã¸ã®ãƒ’ãƒƒãƒˆãƒ†ã‚¹ãƒˆ */
 int CSplitterWnd::HitTestSplitter( int xPos, int yPos )
 {
 	int			nFrameWidth = 3;
@@ -241,17 +241,17 @@ int CSplitterWnd::HitTestSplitter( int xPos, int yPos )
 	}
 }
 
-/*! ƒEƒBƒ“ƒhƒE‚Ì•ªŠ„
-	@param nHorizontal …•½ƒNƒ‰ƒCƒAƒ“ƒgÀ•W 1ˆÈã‚Å•ªŠ„ 0:•ªŠ„‚µ‚È‚¢  -1: ‘O‚Ìİ’è‚ğ•Û
-	@param nVertical   ‚’¼ƒNƒ‰ƒCƒAƒ“ƒgÀ•W 1ˆÈã‚Å•ªŠ„ 0:•ªŠ„‚µ‚È‚¢  -1: ‘O‚Ìİ’è‚ğ•Û
+/*! ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®åˆ†å‰²
+	@param nHorizontal æ°´å¹³ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆåº§æ¨™ 1ä»¥ä¸Šã§åˆ†å‰² 0:åˆ†å‰²ã—ãªã„  -1: å‰ã®è¨­å®šã‚’ä¿æŒ
+	@param nVertical   å‚ç›´ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆåº§æ¨™ 1ä»¥ä¸Šã§åˆ†å‰² 0:åˆ†å‰²ã—ãªã„  -1: å‰ã®è¨­å®šã‚’ä¿æŒ
 */
 void CSplitterWnd::DoSplit( int nHorizontal, int nVertical )
 {
 	int					nActivePane;
 	int					nLimit = 32;
 	RECT				rc;
-	int					nAllSplitRowsOld = m_nAllSplitRows;	/* •ªŠ„s” */
-	int					nAllSplitColsOld = m_nAllSplitCols;	/* •ªŠ„Œ…” */
+	int					nAllSplitRowsOld = m_nAllSplitRows;	/* åˆ†å‰²è¡Œæ•° */
+	int					nAllSplitColsOld = m_nAllSplitCols;	/* åˆ†å‰²æ¡æ•° */
 	CEditView*			pcViewArr[MAXCOUNTOFVIEW];
 //	int					i;
 	BOOL				bVUp;
@@ -262,28 +262,28 @@ void CSplitterWnd::DoSplit( int nHorizontal, int nVertical )
 	bHUp = FALSE;
 
 	if( -1 == nHorizontal && -1 == nVertical ){
-		nVertical = m_nVSplitPos;		/* ‚’¼•ªŠ„ˆÊ’u */
-		nHorizontal = m_nHSplitPos;		/* …•½•ªŠ„ˆÊ’u */
+		nVertical = m_nVSplitPos;		/* å‚ç›´åˆ†å‰²ä½ç½® */
+		nHorizontal = m_nHSplitPos;		/* æ°´å¹³åˆ†å‰²ä½ç½® */
 	}
 
 	if( 0 != nVertical || 0 != nHorizontal ){
-		// •ªŠ„w¦B‚Ü‚¾–¢ì¬‚È‚ç2‚Â–ÚˆÈ~‚Ìƒrƒ…[‚ğì¬‚µ‚Ü‚·
-		// ¡‚Ì‚Æ‚±‚ë‚Í•ªŠ„”‚ÉŠÖŒW‚È‚­4‚Â‚Ü‚Åˆê“x‚Éì‚è‚Ü‚·B
+		// åˆ†å‰²æŒ‡ç¤ºã€‚ã¾ã æœªä½œæˆãªã‚‰2ã¤ç›®ä»¥é™ã®ãƒ“ãƒ¥ãƒ¼ã‚’ä½œæˆã—ã¾ã™
+		// ä»Šã®ã¨ã“ã‚ã¯åˆ†å‰²æ•°ã«é–¢ä¿‚ãªã4ã¤ã¾ã§ä¸€åº¦ã«ä½œã‚Šã¾ã™ã€‚
 		pCEditWnd->CreateEditViewBySplit(2*2);
 	}
 	/*
-	|| ƒtƒ@ƒ“ƒNƒVƒ‡ƒ“ƒL[‚ğ‰º‚É•\¦‚µ‚Ä‚¢‚éê‡‚ÍƒTƒCƒYƒ{ƒbƒNƒX‚ğ•\¦‚µ‚È‚¢
-	|| ƒXƒe[ƒ^ƒXƒp[‚ğ•\¦‚µ‚Ä‚¢‚éê‡‚ÍƒTƒCƒYƒ{ƒbƒNƒX‚ğ•\¦‚µ‚È‚¢
+	|| ãƒ•ã‚¡ãƒ³ã‚¯ã‚·ãƒ§ãƒ³ã‚­ãƒ¼ã‚’ä¸‹ã«è¡¨ç¤ºã—ã¦ã„ã‚‹å ´åˆã¯ã‚µã‚¤ã‚ºãƒœãƒƒã‚¯ã‚¹ã‚’è¡¨ç¤ºã—ãªã„
+	|| ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ãƒ‘ãƒ¼ã‚’è¡¨ç¤ºã—ã¦ã„ã‚‹å ´åˆã¯ã‚µã‚¤ã‚ºãƒœãƒƒã‚¯ã‚¹ã‚’è¡¨ç¤ºã—ãªã„
 	*/
 	if( NULL == pCEditWnd
 	 ||( NULL != pCEditWnd->m_CFuncKeyWnd.GetHwnd()
-	  && 1 == m_pShareData->m_Common.m_sWindow.m_nFUNCKEYWND_Place	/* ƒtƒ@ƒ“ƒNƒVƒ‡ƒ“ƒL[•\¦ˆÊ’u^0:ã 1:‰º */
+	  && 1 == m_pShareData->m_Common.m_sWindow.m_nFUNCKEYWND_Place	/* ãƒ•ã‚¡ãƒ³ã‚¯ã‚·ãƒ§ãƒ³ã‚­ãƒ¼è¡¨ç¤ºä½ç½®ï¼0:ä¸Š 1:ä¸‹ */
 	  )
 	){
 		bSizeBox = FALSE;
 	}else{
 		bSizeBox = TRUE;
-		/* ƒXƒe[ƒ^ƒXƒp[‚ğ•\¦‚µ‚Ä‚¢‚éê‡‚ÍƒTƒCƒYƒ{ƒbƒNƒX‚ğ•\¦‚µ‚È‚¢ */
+		/* ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ãƒ‘ãƒ¼ã‚’è¡¨ç¤ºã—ã¦ã„ã‚‹å ´åˆã¯ã‚µã‚¤ã‚ºãƒœãƒƒã‚¯ã‚¹ã‚’è¡¨ç¤ºã—ãªã„ */
 		if( NULL != pCEditWnd->m_cStatusBar.GetStatusHwnd() ){
 			bSizeBox = FALSE;
 		}
@@ -295,7 +295,7 @@ void CSplitterWnd::DoSplit( int nHorizontal, int nVertical )
 		}
 	}
 
-	/* ƒƒCƒ“ƒEƒBƒ“ƒhƒE‚ªÅ‘å‰»‚³‚ê‚Ä‚¢‚éê‡‚ÍƒTƒCƒYƒ{ƒbƒNƒX‚ğ•\¦‚µ‚È‚¢ */
+	/* ãƒ¡ã‚¤ãƒ³ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãŒæœ€å¤§åŒ–ã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ã‚µã‚¤ã‚ºãƒœãƒƒã‚¯ã‚¹ã‚’è¡¨ç¤ºã—ãªã„ */
 	WINDOWPLACEMENT	wp;
 	wp.length = sizeof( wp );
 	::GetWindowPlacement( GetParentHwnd(), &wp );
@@ -326,21 +326,21 @@ void CSplitterWnd::DoSplit( int nHorizontal, int nVertical )
 	if( nVertical > rc.bottom - nLimit * 2 ){
 		nVertical = 0;
 	}
-	m_nVSplitPos = nVertical;		/* ‚’¼•ªŠ„ˆÊ’u */
-	m_nHSplitPos = nHorizontal;		/* …•½•ªŠ„ˆÊ’u */
+	m_nVSplitPos = nVertical;		/* å‚ç›´åˆ†å‰²ä½ç½® */
+	m_nHSplitPos = nHorizontal;		/* æ°´å¹³åˆ†å‰²ä½ç½® */
 
 	if( nVertical == 0 && nHorizontal == 0 ){
-		m_nAllSplitRows = 1;	/* •ªŠ„s” */
-		m_nAllSplitCols = 1;	/* •ªŠ„Œ…” */
+		m_nAllSplitRows = 1;	/* åˆ†å‰²è¡Œæ•° */
+		m_nAllSplitCols = 1;	/* åˆ†å‰²æ¡æ•° */
 		if( m_ChildWndArr[0] != NULL ) ::ShowWindow( m_ChildWndArr[0], SW_SHOW );
 		if( m_ChildWndArr[1] != NULL ) ::ShowWindow( m_ChildWndArr[1], SW_HIDE );
 		if( m_ChildWndArr[2] != NULL ) ::ShowWindow( m_ChildWndArr[2], SW_HIDE );
 		if( m_ChildWndArr[3] != NULL ) ::ShowWindow( m_ChildWndArr[3], SW_HIDE );
 
-		if( NULL != pcViewArr[0] ) pcViewArr[0]->SplitBoxOnOff( TRUE, TRUE, bSizeBox );		/* cE‰¡‚Ì•ªŠ„ƒ{ƒbƒNƒX‚Ì‚n‚m^‚n‚e‚e */
-//		if( NULL != pcViewArr[1] ) pcViewArr[1]->SplitBoxOnOff( FALSE, FALSE, FALSE );	/* cE‰¡‚Ì•ªŠ„ƒ{ƒbƒNƒX‚Ì‚n‚m^‚n‚e‚e */
-//		if( NULL != pcViewArr[2] ) pcViewArr[2]->SplitBoxOnOff( FALSE, FALSE, FALSE );	/* cE‰¡‚Ì•ªŠ„ƒ{ƒbƒNƒX‚Ì‚n‚m^‚n‚e‚e */
-//		if( NULL != pcViewArr[3] ) pcViewArr[3]->SplitBoxOnOff( FALSE, FALSE, FALSE );	/* cE‰¡‚Ì•ªŠ„ƒ{ƒbƒNƒX‚Ì‚n‚m^‚n‚e‚e */
+		if( NULL != pcViewArr[0] ) pcViewArr[0]->SplitBoxOnOff( TRUE, TRUE, bSizeBox );		/* ç¸¦ãƒ»æ¨ªã®åˆ†å‰²ãƒœãƒƒã‚¯ã‚¹ã®ï¼¯ï¼®ï¼ï¼¯ï¼¦ï¼¦ */
+//		if( NULL != pcViewArr[1] ) pcViewArr[1]->SplitBoxOnOff( FALSE, FALSE, FALSE );	/* ç¸¦ãƒ»æ¨ªã®åˆ†å‰²ãƒœãƒƒã‚¯ã‚¹ã®ï¼¯ï¼®ï¼ï¼¯ï¼¦ï¼¦ */
+//		if( NULL != pcViewArr[2] ) pcViewArr[2]->SplitBoxOnOff( FALSE, FALSE, FALSE );	/* ç¸¦ãƒ»æ¨ªã®åˆ†å‰²ãƒœãƒƒã‚¯ã‚¹ã®ï¼¯ï¼®ï¼ï¼¯ï¼¦ï¼¦ */
+//		if( NULL != pcViewArr[3] ) pcViewArr[3]->SplitBoxOnOff( FALSE, FALSE, FALSE );	/* ç¸¦ãƒ»æ¨ªã®åˆ†å‰²ãƒœãƒƒã‚¯ã‚¹ã®ï¼¯ï¼®ï¼ï¼¯ï¼¦ï¼¦ */
 
 		OnSize( 0, 0, 0, 0 );
 
@@ -348,12 +348,12 @@ void CSplitterWnd::DoSplit( int nHorizontal, int nVertical )
 		}else
 		if( nAllSplitRowsOld > 1 && nAllSplitColsOld == 1 ){
 			if( bVUp ){
-				/* ƒyƒCƒ“‚Ì•\¦ó‘Ô‚ğ‘¼‚Ìƒrƒ…[‚ÉƒRƒs[ */
+				/* ãƒšã‚¤ãƒ³ã®è¡¨ç¤ºçŠ¶æ…‹ã‚’ä»–ã®ãƒ“ãƒ¥ãƒ¼ã«ã‚³ãƒ”ãƒ¼ */
 				if( NULL != pcViewArr[2] && NULL != pcViewArr[0] ){
 					pcViewArr[2]->CopyViewStatus( pcViewArr[0] );
 				}
 			}else{
-				/* ƒyƒCƒ“‚Ì•\¦ó‘Ô‚ğ‘¼‚Ìƒrƒ…[‚ÉƒRƒs[ */
+				/* ãƒšã‚¤ãƒ³ã®è¡¨ç¤ºçŠ¶æ…‹ã‚’ä»–ã®ãƒ“ãƒ¥ãƒ¼ã«ã‚³ãƒ”ãƒ¼ */
 				if( m_nActivePane != 0 &&
 					NULL != pcViewArr[m_nActivePane] && NULL != pcViewArr[0] ){
 					pcViewArr[m_nActivePane]->CopyViewStatus( pcViewArr[0] );
@@ -362,12 +362,12 @@ void CSplitterWnd::DoSplit( int nHorizontal, int nVertical )
 		}else
 		if( nAllSplitRowsOld == 1 && nAllSplitColsOld > 1 ){
 			if( bHUp ){
-				/* ƒyƒCƒ“‚Ì•\¦ó‘Ô‚ğ‘¼‚Ìƒrƒ…[‚ÉƒRƒs[ */
+				/* ãƒšã‚¤ãƒ³ã®è¡¨ç¤ºçŠ¶æ…‹ã‚’ä»–ã®ãƒ“ãƒ¥ãƒ¼ã«ã‚³ãƒ”ãƒ¼ */
 				if( NULL != pcViewArr[1] && NULL != pcViewArr[0] ){
 					pcViewArr[1]->CopyViewStatus( pcViewArr[0] );
 				}
 			}else{
-				/* ƒyƒCƒ“‚Ì•\¦ó‘Ô‚ğ‘¼‚Ìƒrƒ…[‚ÉƒRƒs[ */
+				/* ãƒšã‚¤ãƒ³ã®è¡¨ç¤ºçŠ¶æ…‹ã‚’ä»–ã®ãƒ“ãƒ¥ãƒ¼ã«ã‚³ãƒ”ãƒ¼ */
 				if( m_nActivePane != 0 &&
 					NULL != pcViewArr[m_nActivePane] && NULL != pcViewArr[0] ){
 					pcViewArr[m_nActivePane]->CopyViewStatus( pcViewArr[0] );
@@ -375,25 +375,25 @@ void CSplitterWnd::DoSplit( int nHorizontal, int nVertical )
 			}
 		}else{
 			if( !bVUp && !bHUp ){
-				/* ƒyƒCƒ“‚Ì•\¦ó‘Ô‚ğ‘¼‚Ìƒrƒ…[‚ÉƒRƒs[ */
+				/* ãƒšã‚¤ãƒ³ã®è¡¨ç¤ºçŠ¶æ…‹ã‚’ä»–ã®ãƒ“ãƒ¥ãƒ¼ã«ã‚³ãƒ”ãƒ¼ */
 				if( m_nActivePane != 0 &&
 					NULL != pcViewArr[m_nActivePane] && NULL != pcViewArr[0] ){
 					pcViewArr[m_nActivePane]->CopyViewStatus( pcViewArr[0] );
 				}
 			}else
 			if( bVUp && !bHUp ){
-				/* ƒyƒCƒ“‚Ì•\¦ó‘Ô‚ğ‘¼‚Ìƒrƒ…[‚ÉƒRƒs[ */
+				/* ãƒšã‚¤ãƒ³ã®è¡¨ç¤ºçŠ¶æ…‹ã‚’ä»–ã®ãƒ“ãƒ¥ãƒ¼ã«ã‚³ãƒ”ãƒ¼ */
 				if( NULL != pcViewArr[2] && NULL != pcViewArr[0] ){
 					pcViewArr[2]->CopyViewStatus( pcViewArr[0] );
 				}
 			}else
 			if( !bVUp && bHUp ){
-				/* ƒyƒCƒ“‚Ì•\¦ó‘Ô‚ğ‘¼‚Ìƒrƒ…[‚ÉƒRƒs[ */
+				/* ãƒšã‚¤ãƒ³ã®è¡¨ç¤ºçŠ¶æ…‹ã‚’ä»–ã®ãƒ“ãƒ¥ãƒ¼ã«ã‚³ãƒ”ãƒ¼ */
 				if( NULL != pcViewArr[1] && NULL != pcViewArr[0] ){
 					pcViewArr[1]->CopyViewStatus( pcViewArr[0] );
 				}
 			}else{
-				/* ƒyƒCƒ“‚Ì•\¦ó‘Ô‚ğ‘¼‚Ìƒrƒ…[‚ÉƒRƒs[ */
+				/* ãƒšã‚¤ãƒ³ã®è¡¨ç¤ºçŠ¶æ…‹ã‚’ä»–ã®ãƒ“ãƒ¥ãƒ¼ã«ã‚³ãƒ”ãƒ¼ */
 				if( NULL != pcViewArr[3] && NULL != pcViewArr[0] ){
 					pcViewArr[3]->CopyViewStatus( pcViewArr[0] );
 				}
@@ -402,23 +402,23 @@ void CSplitterWnd::DoSplit( int nHorizontal, int nVertical )
 		nActivePane = 0;
 	}else
 	if( nVertical > 0 &&  nHorizontal == 0 ){
-		m_nAllSplitRows = 2;	/* •ªŠ„s” */
-		m_nAllSplitCols = 1;	/* •ªŠ„Œ…” */
+		m_nAllSplitRows = 2;	/* åˆ†å‰²è¡Œæ•° */
+		m_nAllSplitCols = 1;	/* åˆ†å‰²æ¡æ•° */
 
 		if( m_ChildWndArr[0] != NULL ) ::ShowWindow( m_ChildWndArr[0], SW_SHOW );
 		if( m_ChildWndArr[1] != NULL ) ::ShowWindow( m_ChildWndArr[1], SW_HIDE );
 		if( m_ChildWndArr[2] != NULL ) ::ShowWindow( m_ChildWndArr[2], SW_SHOW );
 		if( m_ChildWndArr[3] != NULL ) ::ShowWindow( m_ChildWndArr[3], SW_HIDE );
-		if( NULL != pcViewArr[0] ) pcViewArr[0]->SplitBoxOnOff( FALSE, FALSE, FALSE );	/* cE‰¡‚Ì•ªŠ„ƒ{ƒbƒNƒX‚Ì‚n‚m^‚n‚e‚e */
-//		if( NULL != pcViewArr[1] ) pcViewArr[1]->SplitBoxOnOff( FALSE, FALSE, FALSE );	/* cE‰¡‚Ì•ªŠ„ƒ{ƒbƒNƒX‚Ì‚n‚m^‚n‚e‚e */
-		if( NULL != pcViewArr[2] ) pcViewArr[2]->SplitBoxOnOff( FALSE, TRUE, bSizeBox );	/* cE‰¡‚Ì•ªŠ„ƒ{ƒbƒNƒX‚Ì‚n‚m^‚n‚e‚e */
-//		if( NULL != pcViewArr[3] ) pcViewArr[3]->SplitBoxOnOff( FALSE, FALSE, FALSE );	/* cE‰¡‚Ì•ªŠ„ƒ{ƒbƒNƒX‚Ì‚n‚m^‚n‚e‚e */
+		if( NULL != pcViewArr[0] ) pcViewArr[0]->SplitBoxOnOff( FALSE, FALSE, FALSE );	/* ç¸¦ãƒ»æ¨ªã®åˆ†å‰²ãƒœãƒƒã‚¯ã‚¹ã®ï¼¯ï¼®ï¼ï¼¯ï¼¦ï¼¦ */
+//		if( NULL != pcViewArr[1] ) pcViewArr[1]->SplitBoxOnOff( FALSE, FALSE, FALSE );	/* ç¸¦ãƒ»æ¨ªã®åˆ†å‰²ãƒœãƒƒã‚¯ã‚¹ã®ï¼¯ï¼®ï¼ï¼¯ï¼¦ï¼¦ */
+		if( NULL != pcViewArr[2] ) pcViewArr[2]->SplitBoxOnOff( FALSE, TRUE, bSizeBox );	/* ç¸¦ãƒ»æ¨ªã®åˆ†å‰²ãƒœãƒƒã‚¯ã‚¹ã®ï¼¯ï¼®ï¼ï¼¯ï¼¦ï¼¦ */
+//		if( NULL != pcViewArr[3] ) pcViewArr[3]->SplitBoxOnOff( FALSE, FALSE, FALSE );	/* ç¸¦ãƒ»æ¨ªã®åˆ†å‰²ãƒœãƒƒã‚¯ã‚¹ã®ï¼¯ï¼®ï¼ï¼¯ï¼¦ï¼¦ */
 
 		OnSize( 0, 0, 0, 0 );
 
 		if( nAllSplitRowsOld == 1 && nAllSplitColsOld == 1 ){
-			/* ã‰º‚É•ªŠ„‚µ‚½‚Æ‚« */
-			/* ƒyƒCƒ“‚Ì•\¦ó‘Ô‚ğ‘¼‚Ìƒrƒ…[‚ÉƒRƒs[ */
+			/* ä¸Šä¸‹ã«åˆ†å‰²ã—ãŸã¨ã */
+			/* ãƒšã‚¤ãƒ³ã®è¡¨ç¤ºçŠ¶æ…‹ã‚’ä»–ã®ãƒ“ãƒ¥ãƒ¼ã«ã‚³ãƒ”ãƒ¼ */
 			if( NULL != pcViewArr[0] && NULL != pcViewArr[2] ){
 				pcViewArr[0]->CopyViewStatus( pcViewArr[2] );
 			}
@@ -431,16 +431,16 @@ void CSplitterWnd::DoSplit( int nHorizontal, int nVertical )
 		}
 		else{
 			if( bHUp ){
-				/* ƒyƒCƒ“‚Ì•\¦ó‘Ô‚ğ‘¼‚Ìƒrƒ…[‚ÉƒRƒs[ */
+				/* ãƒšã‚¤ãƒ³ã®è¡¨ç¤ºçŠ¶æ…‹ã‚’ä»–ã®ãƒ“ãƒ¥ãƒ¼ã«ã‚³ãƒ”ãƒ¼ */
 				if( NULL != pcViewArr[1] && NULL != pcViewArr[0] ){
 					pcViewArr[1]->CopyViewStatus( pcViewArr[0] );
 				}
-				/* ƒyƒCƒ“‚Ì•\¦ó‘Ô‚ğ‘¼‚Ìƒrƒ…[‚ÉƒRƒs[ */
+				/* ãƒšã‚¤ãƒ³ã®è¡¨ç¤ºçŠ¶æ…‹ã‚’ä»–ã®ãƒ“ãƒ¥ãƒ¼ã«ã‚³ãƒ”ãƒ¼ */
 				if( NULL != pcViewArr[3] && NULL != pcViewArr[2] ){
 					pcViewArr[3]->CopyViewStatus( pcViewArr[2] );
 				}
 			}else{
-				/* ƒyƒCƒ“‚Ì•\¦ó‘Ô‚ğ‘¼‚Ìƒrƒ…[‚ÉƒRƒs[ */
+				/* ãƒšã‚¤ãƒ³ã®è¡¨ç¤ºçŠ¶æ…‹ã‚’ä»–ã®ãƒ“ãƒ¥ãƒ¼ã«ã‚³ãƒ”ãƒ¼ */
 				if( m_nActivePane != 0 &&
 					m_nActivePane != 2 &&
 					NULL != pcViewArr[0] &&
@@ -455,15 +455,15 @@ void CSplitterWnd::DoSplit( int nHorizontal, int nVertical )
 		}
 		if( m_nActivePane == 0 || m_nActivePane == 1 ){
 			// 2007.10.01 ryoji
-			// •ªŠ„–³‚µ‚©‚ç‚ÌØ‘Ö‚Ì‚İ]—ˆƒR[ƒh‚ğÀs‚µ‚ÄƒAƒNƒeƒBƒuƒyƒCƒ“‚ğŒˆ‚ß‚éB
-			// ‚»‚êˆÈŠO‚Ìê‡‚ÍƒyƒCƒ“0‚ğƒAƒNƒeƒBƒu‚É‚·‚éB
-			// ]—ˆ‚ÍAã‰º‚É•ªŠ„‚µ‚Ä‚¨‚¢‚ÄA
-			// Eã‰º•ªŠ„ƒo[‚ğ“®‚©‚·
-			// EƒXƒe[ƒ^ƒXƒo[‚È‚ÇŠeíƒo[‚Ì•\¦^”ñ•\¦‚ğØ‚è‘Ö‚¦‚é
-			// Eİ’è‰æ–Ê‚ğOK‚Å•Â‚¶‚é
-			// E¶‰E‚à•ªŠ„‚µ‚Ä¶‰E•ªŠ„‚ğ‰ğœ‚·‚é
-			// ‚Æ‚¢‚Á‚½‘€ì‚ğ‚·‚é‚¾‚¯‚Å‰º‚ÌƒyƒCƒ“‚ªƒAƒNƒeƒBƒu‰»‚³‚ê‚é‚±‚Æ‚ª‚ ‚Á‚½B
-			// iƒVƒ“ƒvƒ‹‚É0ŒÅ’è‚É‚µ‚Ä‚µ‚Ü‚Á‚Ä‚à—Ç‚¢‹C‚Í‚·‚é‚¯‚ê‚ÇDDDj
+			// åˆ†å‰²ç„¡ã—ã‹ã‚‰ã®åˆ‡æ›¿æ™‚ã®ã¿å¾“æ¥ã‚³ãƒ¼ãƒ‰ã‚’å®Ÿè¡Œã—ã¦ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ãƒšã‚¤ãƒ³ã‚’æ±ºã‚ã‚‹ã€‚
+			// ãã‚Œä»¥å¤–ã®å ´åˆã¯ãƒšã‚¤ãƒ³0ã‚’ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã«ã™ã‚‹ã€‚
+			// å¾“æ¥ã¯ã€ä¸Šä¸‹ã«åˆ†å‰²ã—ã¦ãŠã„ã¦ã€
+			// ãƒ»ä¸Šä¸‹åˆ†å‰²ãƒãƒ¼ã‚’å‹•ã‹ã™
+			// ãƒ»ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ãƒãƒ¼ãªã©å„ç¨®ãƒãƒ¼ã®è¡¨ç¤ºï¼éè¡¨ç¤ºã‚’åˆ‡ã‚Šæ›¿ãˆã‚‹
+			// ãƒ»è¨­å®šç”»é¢ã‚’OKã§é–‰ã˜ã‚‹
+			// ãƒ»å·¦å³ã‚‚åˆ†å‰²ã—ã¦å·¦å³åˆ†å‰²ã‚’è§£é™¤ã™ã‚‹
+			// ã¨ã„ã£ãŸæ“ä½œã‚’ã™ã‚‹ã ã‘ã§ä¸‹ã®ãƒšã‚¤ãƒ³ãŒã‚¢ã‚¯ãƒ†ã‚£ãƒ–åŒ–ã•ã‚Œã‚‹ã“ã¨ãŒã‚ã£ãŸã€‚
+			// ï¼ˆã‚·ãƒ³ãƒ—ãƒ«ã«0å›ºå®šã«ã—ã¦ã—ã¾ã£ã¦ã‚‚è‰¯ã„æ°—ã¯ã™ã‚‹ã‘ã‚Œã©ï¼ï¼ï¼ï¼‰
 			nActivePane = 0;
 			if( nAllSplitRowsOld == 1 && nAllSplitColsOld == 1 ){
 				if ( pcViewArr[2]->GetTextArea().GetViewTopLine() < pcViewArr[2]->GetCaret().GetCaretLayoutPos().y ){
@@ -479,22 +479,22 @@ void CSplitterWnd::DoSplit( int nHorizontal, int nVertical )
 		}
 	}
 	else if( nVertical == 0 &&  nHorizontal > 0 ){
-		m_nAllSplitRows = 1;	/* •ªŠ„s” */
-		m_nAllSplitCols = 2;	/* •ªŠ„Œ…” */
+		m_nAllSplitRows = 1;	/* åˆ†å‰²è¡Œæ•° */
+		m_nAllSplitCols = 2;	/* åˆ†å‰²æ¡æ•° */
 
 		if( m_ChildWndArr[0] != NULL ) ::ShowWindow( m_ChildWndArr[0], SW_SHOW );
 		if( m_ChildWndArr[1] != NULL ) ::ShowWindow( m_ChildWndArr[1], SW_SHOW );
 		if( m_ChildWndArr[2] != NULL ) ::ShowWindow( m_ChildWndArr[2], SW_HIDE );
 		if( m_ChildWndArr[3] != NULL ) ::ShowWindow( m_ChildWndArr[3], SW_HIDE );
-		if( NULL != pcViewArr[0] ) pcViewArr[0]->SplitBoxOnOff( FALSE, FALSE, FALSE );	/* cE‰¡‚Ì•ªŠ„ƒ{ƒbƒNƒX‚Ì‚n‚m^‚n‚e‚e */
-		if( NULL != pcViewArr[1] ) pcViewArr[1]->SplitBoxOnOff( TRUE, FALSE, bSizeBox );	/* cE‰¡‚Ì•ªŠ„ƒ{ƒbƒNƒX‚Ì‚n‚m^‚n‚e‚e */
-//		if( NULL != pcViewArr[2] ) pcViewArr[2]->SplitBoxOnOff( FALSE, FALSE );	/* cE‰¡‚Ì•ªŠ„ƒ{ƒbƒNƒX‚Ì‚n‚m^‚n‚e‚e */
-//		if( NULL != pcViewArr[3] ) pcViewArr[3]->SplitBoxOnOff( FALSE, FALSE );	/* cE‰¡‚Ì•ªŠ„ƒ{ƒbƒNƒX‚Ì‚n‚m^‚n‚e‚e */
+		if( NULL != pcViewArr[0] ) pcViewArr[0]->SplitBoxOnOff( FALSE, FALSE, FALSE );	/* ç¸¦ãƒ»æ¨ªã®åˆ†å‰²ãƒœãƒƒã‚¯ã‚¹ã®ï¼¯ï¼®ï¼ï¼¯ï¼¦ï¼¦ */
+		if( NULL != pcViewArr[1] ) pcViewArr[1]->SplitBoxOnOff( TRUE, FALSE, bSizeBox );	/* ç¸¦ãƒ»æ¨ªã®åˆ†å‰²ãƒœãƒƒã‚¯ã‚¹ã®ï¼¯ï¼®ï¼ï¼¯ï¼¦ï¼¦ */
+//		if( NULL != pcViewArr[2] ) pcViewArr[2]->SplitBoxOnOff( FALSE, FALSE );	/* ç¸¦ãƒ»æ¨ªã®åˆ†å‰²ãƒœãƒƒã‚¯ã‚¹ã®ï¼¯ï¼®ï¼ï¼¯ï¼¦ï¼¦ */
+//		if( NULL != pcViewArr[3] ) pcViewArr[3]->SplitBoxOnOff( FALSE, FALSE );	/* ç¸¦ãƒ»æ¨ªã®åˆ†å‰²ãƒœãƒƒã‚¯ã‚¹ã®ï¼¯ï¼®ï¼ï¼¯ï¼¦ï¼¦ */
 
 		OnSize( 0, 0, 0, 0 );
 
 		if( nAllSplitRowsOld == 1 && nAllSplitColsOld == 1 ){
-			/* ƒyƒCƒ“‚Ì•\¦ó‘Ô‚ğ‘¼‚Ìƒrƒ…[‚ÉƒRƒs[ */
+			/* ãƒšã‚¤ãƒ³ã®è¡¨ç¤ºçŠ¶æ…‹ã‚’ä»–ã®ãƒ“ãƒ¥ãƒ¼ã«ã‚³ãƒ”ãƒ¼ */
 			if( NULL != pcViewArr[0] && NULL != pcViewArr[1] ){
 				pcViewArr[0]->CopyViewStatus( pcViewArr[1] );
 			}
@@ -504,16 +504,16 @@ void CSplitterWnd::DoSplit( int nHorizontal, int nVertical )
 		if( nAllSplitRowsOld == 1 && nAllSplitColsOld > 1 ){
 		}else{
 			if( bVUp ){
-				/* ƒyƒCƒ“‚Ì•\¦ó‘Ô‚ğ‘¼‚Ìƒrƒ…[‚ÉƒRƒs[ */
+				/* ãƒšã‚¤ãƒ³ã®è¡¨ç¤ºçŠ¶æ…‹ã‚’ä»–ã®ãƒ“ãƒ¥ãƒ¼ã«ã‚³ãƒ”ãƒ¼ */
 				if( NULL != pcViewArr[2] && NULL != pcViewArr[0] ){
 					pcViewArr[2]->CopyViewStatus( pcViewArr[0] );
 				}
-				/* ƒyƒCƒ“‚Ì•\¦ó‘Ô‚ğ‘¼‚Ìƒrƒ…[‚ÉƒRƒs[ */
+				/* ãƒšã‚¤ãƒ³ã®è¡¨ç¤ºçŠ¶æ…‹ã‚’ä»–ã®ãƒ“ãƒ¥ãƒ¼ã«ã‚³ãƒ”ãƒ¼ */
 				if( NULL != pcViewArr[3] && NULL != pcViewArr[1] ){
 					pcViewArr[3]->CopyViewStatus( pcViewArr[1] );
 				}
 			}else{
-				/* ƒyƒCƒ“‚Ì•\¦ó‘Ô‚ğ‘¼‚Ìƒrƒ…[‚ÉƒRƒs[ */
+				/* ãƒšã‚¤ãƒ³ã®è¡¨ç¤ºçŠ¶æ…‹ã‚’ä»–ã®ãƒ“ãƒ¥ãƒ¼ã«ã‚³ãƒ”ãƒ¼ */
 				if( m_nActivePane != 0 &&
 					m_nActivePane != 1 &&
 					NULL != pcViewArr[0] &&
@@ -532,49 +532,49 @@ void CSplitterWnd::DoSplit( int nHorizontal, int nVertical )
 			nActivePane = 1;
 		}
 	}else{
-		m_nAllSplitRows = 2;	/* •ªŠ„s” */
-		m_nAllSplitCols = 2;	/* •ªŠ„Œ…” */
+		m_nAllSplitRows = 2;	/* åˆ†å‰²è¡Œæ•° */
+		m_nAllSplitCols = 2;	/* åˆ†å‰²æ¡æ•° */
 		if( m_ChildWndArr[0] != NULL ){ ::ShowWindow( m_ChildWndArr[0], SW_SHOW );}
 		if( m_ChildWndArr[1] != NULL ){ ::ShowWindow( m_ChildWndArr[1], SW_SHOW );}
 		if( m_ChildWndArr[2] != NULL ){ ::ShowWindow( m_ChildWndArr[2], SW_SHOW );}
 		if( m_ChildWndArr[3] != NULL ){ ::ShowWindow( m_ChildWndArr[3], SW_SHOW );}
-		if( NULL != pcViewArr[0] ){ pcViewArr[0]->SplitBoxOnOff( FALSE, FALSE, FALSE );}	/* cE‰¡‚Ì•ªŠ„ƒ{ƒbƒNƒX‚Ì‚n‚m^‚n‚e‚e */
-		if( NULL != pcViewArr[1] ){ pcViewArr[1]->SplitBoxOnOff( FALSE, FALSE, FALSE );}	/* cE‰¡‚Ì•ªŠ„ƒ{ƒbƒNƒX‚Ì‚n‚m^‚n‚e‚e */
-		if( NULL != pcViewArr[2] ){ pcViewArr[2]->SplitBoxOnOff( FALSE, FALSE, FALSE );}	/* cE‰¡‚Ì•ªŠ„ƒ{ƒbƒNƒX‚Ì‚n‚m^‚n‚e‚e */
-		if( NULL != pcViewArr[3] ){ pcViewArr[3]->SplitBoxOnOff( FALSE, FALSE, bSizeBox );}	/* cE‰¡‚Ì•ªŠ„ƒ{ƒbƒNƒX‚Ì‚n‚m^‚n‚e‚e */
+		if( NULL != pcViewArr[0] ){ pcViewArr[0]->SplitBoxOnOff( FALSE, FALSE, FALSE );}	/* ç¸¦ãƒ»æ¨ªã®åˆ†å‰²ãƒœãƒƒã‚¯ã‚¹ã®ï¼¯ï¼®ï¼ï¼¯ï¼¦ï¼¦ */
+		if( NULL != pcViewArr[1] ){ pcViewArr[1]->SplitBoxOnOff( FALSE, FALSE, FALSE );}	/* ç¸¦ãƒ»æ¨ªã®åˆ†å‰²ãƒœãƒƒã‚¯ã‚¹ã®ï¼¯ï¼®ï¼ï¼¯ï¼¦ï¼¦ */
+		if( NULL != pcViewArr[2] ){ pcViewArr[2]->SplitBoxOnOff( FALSE, FALSE, FALSE );}	/* ç¸¦ãƒ»æ¨ªã®åˆ†å‰²ãƒœãƒƒã‚¯ã‚¹ã®ï¼¯ï¼®ï¼ï¼¯ï¼¦ï¼¦ */
+		if( NULL != pcViewArr[3] ){ pcViewArr[3]->SplitBoxOnOff( FALSE, FALSE, bSizeBox );}	/* ç¸¦ãƒ»æ¨ªã®åˆ†å‰²ãƒœãƒƒã‚¯ã‚¹ã®ï¼¯ï¼®ï¼ï¼¯ï¼¦ï¼¦ */
 
 		OnSize( 0, 0, 0, 0 );
 
 		if( nAllSplitRowsOld == 1 && nAllSplitColsOld == 1 ){
-			/* ƒyƒCƒ“‚Ì•\¦ó‘Ô‚ğ‘¼‚Ìƒrƒ…[‚ÉƒRƒs[ */
+			/* ãƒšã‚¤ãƒ³ã®è¡¨ç¤ºçŠ¶æ…‹ã‚’ä»–ã®ãƒ“ãƒ¥ãƒ¼ã«ã‚³ãƒ”ãƒ¼ */
 			if( NULL != pcViewArr[0] && NULL != pcViewArr[1] ){
 				pcViewArr[0]->CopyViewStatus( pcViewArr[1] );
 			}
-			/* ƒyƒCƒ“‚Ì•\¦ó‘Ô‚ğ‘¼‚Ìƒrƒ…[‚ÉƒRƒs[ */
+			/* ãƒšã‚¤ãƒ³ã®è¡¨ç¤ºçŠ¶æ…‹ã‚’ä»–ã®ãƒ“ãƒ¥ãƒ¼ã«ã‚³ãƒ”ãƒ¼ */
 			if( NULL != pcViewArr[0] && NULL != pcViewArr[2] ){
 				pcViewArr[0]->CopyViewStatus( pcViewArr[2] );
 			}
-			/* ƒyƒCƒ“‚Ì•\¦ó‘Ô‚ğ‘¼‚Ìƒrƒ…[‚ÉƒRƒs[ */
+			/* ãƒšã‚¤ãƒ³ã®è¡¨ç¤ºçŠ¶æ…‹ã‚’ä»–ã®ãƒ“ãƒ¥ãƒ¼ã«ã‚³ãƒ”ãƒ¼ */
 			if( NULL != pcViewArr[0] && NULL != pcViewArr[3] ){
 				pcViewArr[0]->CopyViewStatus( pcViewArr[3] );
 			}
 		}else
 		if( nAllSplitRowsOld > 1 && nAllSplitColsOld == 1 ){
-			/* ƒyƒCƒ“‚Ì•\¦ó‘Ô‚ğ‘¼‚Ìƒrƒ…[‚ÉƒRƒs[ */
+			/* ãƒšã‚¤ãƒ³ã®è¡¨ç¤ºçŠ¶æ…‹ã‚’ä»–ã®ãƒ“ãƒ¥ãƒ¼ã«ã‚³ãƒ”ãƒ¼ */
 			if( NULL != pcViewArr[0] && NULL != pcViewArr[1] ){
 				pcViewArr[0]->CopyViewStatus( pcViewArr[1] );
 			}
-			/* ƒyƒCƒ“‚Ì•\¦ó‘Ô‚ğ‘¼‚Ìƒrƒ…[‚ÉƒRƒs[ */
+			/* ãƒšã‚¤ãƒ³ã®è¡¨ç¤ºçŠ¶æ…‹ã‚’ä»–ã®ãƒ“ãƒ¥ãƒ¼ã«ã‚³ãƒ”ãƒ¼ */
 			if( NULL != pcViewArr[2] && NULL != pcViewArr[3] ){
 				pcViewArr[2]->CopyViewStatus( pcViewArr[3] );
 			}
 		}else
 		if( nAllSplitRowsOld == 1 && nAllSplitColsOld > 1 ){
-			/* ƒyƒCƒ“‚Ì•\¦ó‘Ô‚ğ‘¼‚Ìƒrƒ…[‚ÉƒRƒs[ */
+			/* ãƒšã‚¤ãƒ³ã®è¡¨ç¤ºçŠ¶æ…‹ã‚’ä»–ã®ãƒ“ãƒ¥ãƒ¼ã«ã‚³ãƒ”ãƒ¼ */
 			if( NULL != pcViewArr[0] && NULL != pcViewArr[2] ){
 				pcViewArr[0]->CopyViewStatus( pcViewArr[2] );
 			}
-			/* ƒyƒCƒ“‚Ì•\¦ó‘Ô‚ğ‘¼‚Ìƒrƒ…[‚ÉƒRƒs[ */
+			/* ãƒšã‚¤ãƒ³ã®è¡¨ç¤ºçŠ¶æ…‹ã‚’ä»–ã®ãƒ“ãƒ¥ãƒ¼ã«ã‚³ãƒ”ãƒ¼ */
 			if( NULL != pcViewArr[1] && NULL != pcViewArr[3] ){
 				pcViewArr[1]->CopyViewStatus( pcViewArr[3] );
 			}
@@ -584,7 +584,7 @@ void CSplitterWnd::DoSplit( int nHorizontal, int nVertical )
 	}
 	OnSize( 0, 0, 0, 0 );
 
-	/* ƒAƒNƒeƒBƒu‚É‚È‚Á‚½‚±‚Æ‚ğƒyƒCƒ“‚É’Ê’m */
+	/* ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã«ãªã£ãŸã“ã¨ã‚’ãƒšã‚¤ãƒ³ã«é€šçŸ¥ */
 	if( m_ChildWndArr[nActivePane] != NULL ){
 		::PostMessageAny( m_ChildWndArr[nActivePane], MYWM_SETACTIVEPANE, 0, 0 );
 	}
@@ -592,7 +592,7 @@ void CSplitterWnd::DoSplit( int nHorizontal, int nVertical )
 	return;
 }
 
-/* ƒAƒNƒeƒBƒuƒyƒCƒ“‚Ìİ’è */
+/* ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ãƒšã‚¤ãƒ³ã®è¨­å®š */
 void CSplitterWnd::SetActivePane( int nIndex )
 {
 	assert( nIndex < MAXCOUNTOFVIEW );
@@ -601,7 +601,7 @@ void CSplitterWnd::SetActivePane( int nIndex )
 }
 
 
-/* c•ªŠ„‚n‚m^‚n‚e‚e */
+/* ç¸¦åˆ†å‰²ï¼¯ï¼®ï¼ï¼¯ï¼¦ï¼¦ */
 void CSplitterWnd::VSplitOnOff( void )
 {
 	RECT		rc;
@@ -623,7 +623,7 @@ void CSplitterWnd::VSplitOnOff( void )
 
 
 
-/* ‰¡•ªŠ„‚n‚m^‚n‚e‚e */
+/* æ¨ªåˆ†å‰²ï¼¯ï¼®ï¼ï¼¯ï¼¦ï¼¦ */
 void CSplitterWnd::HSplitOnOff( void )
 {
 	RECT		rc;
@@ -645,7 +645,7 @@ void CSplitterWnd::HSplitOnOff( void )
 
 
 
-/* c‰¡•ªŠ„‚n‚m^‚n‚e‚e */
+/* ç¸¦æ¨ªåˆ†å‰²ï¼¯ï¼®ï¼ï¼¯ï¼¦ï¼¦ */
 void CSplitterWnd::VHSplitOnOff( void )
 {
 	int		nX;
@@ -674,7 +674,7 @@ void CSplitterWnd::VHSplitOnOff( void )
 }
 
 
-/* ‘O‚ÌƒyƒCƒ“‚ğ•Ô‚· */
+/* å‰ã®ãƒšã‚¤ãƒ³ã‚’è¿”ã™ */
 int CSplitterWnd::GetPrevPane( void )
 {
 	int		nPane;
@@ -723,7 +723,7 @@ int CSplitterWnd::GetPrevPane( void )
 
 
 
-/* Ÿ‚ÌƒyƒCƒ“‚ğ•Ô‚· */
+/* æ¬¡ã®ãƒšã‚¤ãƒ³ã‚’è¿”ã™ */
 int CSplitterWnd::GetNextPane( void )
 {
 	int		nPane;
@@ -770,7 +770,7 @@ int CSplitterWnd::GetNextPane( void )
 }
 
 
-/* Å‰‚ÌƒyƒCƒ“‚ğ•Ô‚· */
+/* æœ€åˆã®ãƒšã‚¤ãƒ³ã‚’è¿”ã™ */
 int CSplitterWnd::GetFirstPane( void )
 {
 	return 0;
@@ -778,7 +778,7 @@ int CSplitterWnd::GetFirstPane( void )
 
 
 
-/* ÅŒã‚ÌƒyƒCƒ“‚ğ•Ô‚· */
+/* æœ€å¾Œã®ãƒšã‚¤ãƒ³ã‚’è¿”ã™ */
 int CSplitterWnd::GetLastPane( void )
 {
 	int		nPane;
@@ -799,7 +799,7 @@ int CSplitterWnd::GetLastPane( void )
 
 
 
-/* •`‰æˆ— */
+/* æç”»å‡¦ç† */
 LRESULT CSplitterWnd::OnPaint( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 {
 	HDC			hdc;
@@ -827,7 +827,7 @@ LRESULT CSplitterWnd::OnPaint( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
 
 
 
-/* ƒEƒBƒ“ƒhƒEƒTƒCƒY‚Ì•ÏXˆ— */
+/* ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚µã‚¤ã‚ºã®å¤‰æ›´å‡¦ç† */
 LRESULT CSplitterWnd::OnSize( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 {
 	CEditWnd*	pCEditWnd = (CEditWnd*)m_pCEditWnd;
@@ -841,18 +841,18 @@ LRESULT CSplitterWnd::OnSize( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 	}
 
 	/*
-	|| ƒtƒ@ƒ“ƒNƒVƒ‡ƒ“ƒL[‚ğ‰º‚É•\¦‚µ‚Ä‚¢‚éê‡‚ÍƒTƒCƒYƒ{ƒbƒNƒX‚ğ•\¦‚µ‚È‚¢
-	|| ƒXƒe[ƒ^ƒXƒp[‚ğ•\¦‚µ‚Ä‚¢‚éê‡‚ÍƒTƒCƒYƒ{ƒbƒNƒX‚ğ•\¦‚µ‚È‚¢
+	|| ãƒ•ã‚¡ãƒ³ã‚¯ã‚·ãƒ§ãƒ³ã‚­ãƒ¼ã‚’ä¸‹ã«è¡¨ç¤ºã—ã¦ã„ã‚‹å ´åˆã¯ã‚µã‚¤ã‚ºãƒœãƒƒã‚¯ã‚¹ã‚’è¡¨ç¤ºã—ãªã„
+	|| ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ãƒ‘ãƒ¼ã‚’è¡¨ç¤ºã—ã¦ã„ã‚‹å ´åˆã¯ã‚µã‚¤ã‚ºãƒœãƒƒã‚¯ã‚¹ã‚’è¡¨ç¤ºã—ãªã„
 	*/
 	if( NULL == pCEditWnd
 	 ||( NULL != pCEditWnd->m_CFuncKeyWnd.GetHwnd()
-	  && 1 == m_pShareData->m_Common.m_sWindow.m_nFUNCKEYWND_Place	/* ƒtƒ@ƒ“ƒNƒVƒ‡ƒ“ƒL[•\¦ˆÊ’u^0:ã 1:‰º */
+	  && 1 == m_pShareData->m_Common.m_sWindow.m_nFUNCKEYWND_Place	/* ãƒ•ã‚¡ãƒ³ã‚¯ã‚·ãƒ§ãƒ³ã‚­ãƒ¼è¡¨ç¤ºä½ç½®ï¼0:ä¸Š 1:ä¸‹ */
 	  )
 	){
 		bSizeBox = FALSE;
 	}else{
 		bSizeBox = TRUE;
-		/* ƒXƒe[ƒ^ƒXƒp[‚ğ•\¦‚µ‚Ä‚¢‚éê‡‚ÍƒTƒCƒYƒ{ƒbƒNƒX‚ğ•\¦‚µ‚È‚¢ */
+		/* ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ãƒ‘ãƒ¼ã‚’è¡¨ç¤ºã—ã¦ã„ã‚‹å ´åˆã¯ã‚µã‚¤ã‚ºãƒœãƒƒã‚¯ã‚¹ã‚’è¡¨ç¤ºã—ãªã„ */
 		if( NULL != pCEditWnd->m_cStatusBar.GetStatusHwnd() ){
 			bSizeBox = FALSE;
 		}
@@ -864,7 +864,7 @@ LRESULT CSplitterWnd::OnSize( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 		}
 	}
 
-	/* ƒƒCƒ“ƒEƒBƒ“ƒhƒE‚ªÅ‘å‰»‚³‚ê‚Ä‚¢‚éê‡‚ÍƒTƒCƒYƒ{ƒbƒNƒX‚ğ•\¦‚µ‚È‚¢ */
+	/* ãƒ¡ã‚¤ãƒ³ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãŒæœ€å¤§åŒ–ã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ã‚µã‚¤ã‚ºãƒœãƒƒã‚¯ã‚¹ã‚’è¡¨ç¤ºã—ãªã„ */
 	WINDOWPLACEMENT	wp;
 	wp.length = sizeof( wp );
 	::GetWindowPlacement( GetParentHwnd(), &wp );
@@ -876,61 +876,61 @@ LRESULT CSplitterWnd::OnSize( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 
 	if( m_nAllSplitRows == 1 && m_nAllSplitCols == 1 ){
 		if( m_ChildWndArr[0] != NULL ){
-			::MoveWindow( m_ChildWndArr[0], 0, 0, rcClient.right,  rcClient.bottom, TRUE );		/* qƒEƒBƒ“ƒhƒE”z—ñ */
+			::MoveWindow( m_ChildWndArr[0], 0, 0, rcClient.right,  rcClient.bottom, TRUE );		/* å­ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦é…åˆ— */
 
-			pcViewArr[0]->SplitBoxOnOff( TRUE, TRUE, bSizeBox );		/* cE‰¡‚Ì•ªŠ„ƒ{ƒbƒNƒX‚Ì‚n‚m^‚n‚e‚e */
+			pcViewArr[0]->SplitBoxOnOff( TRUE, TRUE, bSizeBox );		/* ç¸¦ãƒ»æ¨ªã®åˆ†å‰²ãƒœãƒƒã‚¯ã‚¹ã®ï¼¯ï¼®ï¼ï¼¯ï¼¦ï¼¦ */
 		}
 	}else
 	if( m_nAllSplitRows == 2 && m_nAllSplitCols == 1 ){
 		if( m_ChildWndArr[0] != NULL ){
-			::MoveWindow( m_ChildWndArr[0], 0, 0, rcClient.right,  m_nVSplitPos, TRUE );		/* qƒEƒBƒ“ƒhƒE”z—ñ */
-			pcViewArr[0]->SplitBoxOnOff( FALSE, FALSE, FALSE );	/* cE‰¡‚Ì•ªŠ„ƒ{ƒbƒNƒX‚Ì‚n‚m^‚n‚e‚e */
+			::MoveWindow( m_ChildWndArr[0], 0, 0, rcClient.right,  m_nVSplitPos, TRUE );		/* å­ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦é…åˆ— */
+			pcViewArr[0]->SplitBoxOnOff( FALSE, FALSE, FALSE );	/* ç¸¦ãƒ»æ¨ªã®åˆ†å‰²ãƒœãƒƒã‚¯ã‚¹ã®ï¼¯ï¼®ï¼ï¼¯ï¼¦ï¼¦ */
 		}
 		if( m_ChildWndArr[2] != NULL ){
-			::MoveWindow( m_ChildWndArr[2], 0, m_nVSplitPos + nFrameWidth, rcClient.right, rcClient.bottom - ( m_nVSplitPos + nFrameWidth ), TRUE );			/* qƒEƒBƒ“ƒhƒE”z—ñ */
-			pcViewArr[2]->SplitBoxOnOff( FALSE, TRUE, bSizeBox );	/* cE‰¡‚Ì•ªŠ„ƒ{ƒbƒNƒX‚Ì‚n‚m^‚n‚e‚e */
+			::MoveWindow( m_ChildWndArr[2], 0, m_nVSplitPos + nFrameWidth, rcClient.right, rcClient.bottom - ( m_nVSplitPos + nFrameWidth ), TRUE );			/* å­ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦é…åˆ— */
+			pcViewArr[2]->SplitBoxOnOff( FALSE, TRUE, bSizeBox );	/* ç¸¦ãƒ»æ¨ªã®åˆ†å‰²ãƒœãƒƒã‚¯ã‚¹ã®ï¼¯ï¼®ï¼ï¼¯ï¼¦ï¼¦ */
 		}
 	}else
 	if( m_nAllSplitRows == 1 && m_nAllSplitCols == 2 ){
 		if( m_ChildWndArr[0] != NULL ){
-			::MoveWindow( m_ChildWndArr[0], 0, 0, m_nHSplitPos, rcClient.bottom, TRUE );			/* qƒEƒBƒ“ƒhƒE”z—ñ */
-			pcViewArr[0]->SplitBoxOnOff( FALSE, FALSE, FALSE );	/* cE‰¡‚Ì•ªŠ„ƒ{ƒbƒNƒX‚Ì‚n‚m^‚n‚e‚e */
+			::MoveWindow( m_ChildWndArr[0], 0, 0, m_nHSplitPos, rcClient.bottom, TRUE );			/* å­ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦é…åˆ— */
+			pcViewArr[0]->SplitBoxOnOff( FALSE, FALSE, FALSE );	/* ç¸¦ãƒ»æ¨ªã®åˆ†å‰²ãƒœãƒƒã‚¯ã‚¹ã®ï¼¯ï¼®ï¼ï¼¯ï¼¦ï¼¦ */
 		}
 		if( m_ChildWndArr[1] != NULL ){
-			::MoveWindow( m_ChildWndArr[1], m_nHSplitPos + nFrameWidth, 0, rcClient.right - ( m_nHSplitPos + nFrameWidth ),  rcClient.bottom, TRUE );			/* qƒEƒBƒ“ƒhƒE”z—ñ */
-			pcViewArr[1]->SplitBoxOnOff( TRUE, FALSE, bSizeBox );	/* cE‰¡‚Ì•ªŠ„ƒ{ƒbƒNƒX‚Ì‚n‚m^‚n‚e‚e */
+			::MoveWindow( m_ChildWndArr[1], m_nHSplitPos + nFrameWidth, 0, rcClient.right - ( m_nHSplitPos + nFrameWidth ),  rcClient.bottom, TRUE );			/* å­ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦é…åˆ— */
+			pcViewArr[1]->SplitBoxOnOff( TRUE, FALSE, bSizeBox );	/* ç¸¦ãƒ»æ¨ªã®åˆ†å‰²ãƒœãƒƒã‚¯ã‚¹ã®ï¼¯ï¼®ï¼ï¼¯ï¼¦ï¼¦ */
 		}
 	}else{
 		if( m_ChildWndArr[0] != NULL ){
-			::MoveWindow( m_ChildWndArr[0], 0, 0, m_nHSplitPos,  m_nVSplitPos, TRUE );			/* qƒEƒBƒ“ƒhƒE”z—ñ */
-			pcViewArr[0]->SplitBoxOnOff( FALSE, FALSE, FALSE );	/* cE‰¡‚Ì•ªŠ„ƒ{ƒbƒNƒX‚Ì‚n‚m^‚n‚e‚e */
+			::MoveWindow( m_ChildWndArr[0], 0, 0, m_nHSplitPos,  m_nVSplitPos, TRUE );			/* å­ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦é…åˆ— */
+			pcViewArr[0]->SplitBoxOnOff( FALSE, FALSE, FALSE );	/* ç¸¦ãƒ»æ¨ªã®åˆ†å‰²ãƒœãƒƒã‚¯ã‚¹ã®ï¼¯ï¼®ï¼ï¼¯ï¼¦ï¼¦ */
 		}
 		if( m_ChildWndArr[1] != NULL ){
-			::MoveWindow( m_ChildWndArr[1], m_nHSplitPos + nFrameWidth, 0, rcClient.right - ( m_nHSplitPos + nFrameWidth ),  m_nVSplitPos, TRUE );			/* qƒEƒBƒ“ƒhƒE”z—ñ */
-			pcViewArr[1]->SplitBoxOnOff( FALSE, FALSE, FALSE );	/* cE‰¡‚Ì•ªŠ„ƒ{ƒbƒNƒX‚Ì‚n‚m^‚n‚e‚e */
+			::MoveWindow( m_ChildWndArr[1], m_nHSplitPos + nFrameWidth, 0, rcClient.right - ( m_nHSplitPos + nFrameWidth ),  m_nVSplitPos, TRUE );			/* å­ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦é…åˆ— */
+			pcViewArr[1]->SplitBoxOnOff( FALSE, FALSE, FALSE );	/* ç¸¦ãƒ»æ¨ªã®åˆ†å‰²ãƒœãƒƒã‚¯ã‚¹ã®ï¼¯ï¼®ï¼ï¼¯ï¼¦ï¼¦ */
 		}
 		if( m_ChildWndArr[2] != NULL ){
-			::MoveWindow( m_ChildWndArr[2], 0, m_nVSplitPos + nFrameWidth , m_nHSplitPos,  rcClient.bottom - ( m_nVSplitPos + nFrameWidth ), TRUE );			/* qƒEƒBƒ“ƒhƒE”z—ñ */
-			pcViewArr[2]->SplitBoxOnOff( FALSE, FALSE, FALSE );	/* cE‰¡‚Ì•ªŠ„ƒ{ƒbƒNƒX‚Ì‚n‚m^‚n‚e‚e */
+			::MoveWindow( m_ChildWndArr[2], 0, m_nVSplitPos + nFrameWidth , m_nHSplitPos,  rcClient.bottom - ( m_nVSplitPos + nFrameWidth ), TRUE );			/* å­ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦é…åˆ— */
+			pcViewArr[2]->SplitBoxOnOff( FALSE, FALSE, FALSE );	/* ç¸¦ãƒ»æ¨ªã®åˆ†å‰²ãƒœãƒƒã‚¯ã‚¹ã®ï¼¯ï¼®ï¼ï¼¯ï¼¦ï¼¦ */
 		}
 		if( m_ChildWndArr[3] != NULL ){
-			::MoveWindow( m_ChildWndArr[3], m_nHSplitPos + nFrameWidth, m_nVSplitPos + nFrameWidth, rcClient.right - ( m_nHSplitPos + nFrameWidth ),  rcClient.bottom - ( m_nVSplitPos + nFrameWidth ), TRUE );			/* qƒEƒBƒ“ƒhƒE”z—ñ */
-			pcViewArr[3]->SplitBoxOnOff( FALSE, FALSE, bSizeBox );	/* cE‰¡‚Ì•ªŠ„ƒ{ƒbƒNƒX‚Ì‚n‚m^‚n‚e‚e */
+			::MoveWindow( m_ChildWndArr[3], m_nHSplitPos + nFrameWidth, m_nVSplitPos + nFrameWidth, rcClient.right - ( m_nHSplitPos + nFrameWidth ),  rcClient.bottom - ( m_nVSplitPos + nFrameWidth ), TRUE );			/* å­ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦é…åˆ— */
+			pcViewArr[3]->SplitBoxOnOff( FALSE, FALSE, bSizeBox );	/* ç¸¦ãƒ»æ¨ªã®åˆ†å‰²ãƒœãƒƒã‚¯ã‚¹ã®ï¼¯ï¼®ï¼ï¼¯ï¼¦ï¼¦ */
 		}
 	}
-	//ƒfƒXƒNƒgƒbƒv‚ª‚¿‚ç‚Â‚­‚Ì‚Å‚¾‚ß!
-	//::InvalidateRect( GetHwnd(), NULL, TRUE );	//Ä•`‰æ‚µ‚Ä‚ËB	//@@@ 2003.06.11 MIK
+	//ãƒ‡ã‚¹ã‚¯ãƒˆãƒƒãƒ—ãŒã¡ã‚‰ã¤ãã®ã§ã ã‚!
+	//::InvalidateRect( GetHwnd(), NULL, TRUE );	//å†æç”»ã—ã¦ã­ã€‚	//@@@ 2003.06.11 MIK
 	return 0L;
 }
 
 
 
-/* ƒ}ƒEƒXˆÚ“®‚Ìˆ— */
+/* ãƒã‚¦ã‚¹ç§»å‹•æ™‚ã®å‡¦ç† */
 LRESULT CSplitterWnd::OnMouseMove( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 {
 
 	int		nHit;
-	HCURSOR	hcurOld;	/* ‚à‚Æ‚Ìƒ}ƒEƒXƒJ[ƒ\ƒ‹ */
+	HCURSOR	hcurOld;	/* ã‚‚ã¨ã®ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ« */
 	RECT	rc;
 	int		xPos;
 	int		yPos;
@@ -950,7 +950,7 @@ LRESULT CSplitterWnd::OnMouseMove( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
 		hcurOld = ::SetCursor( ::LoadCursor( NULL, IDC_SIZEALL ) );
 		break;
 	}
-	if( 0 != m_bDragging ){		/* •ªŠ„ƒo[‚ğƒhƒ‰ƒbƒO’†‚© */
+	if( 0 != m_bDragging ){		/* åˆ†å‰²ãƒãƒ¼ã‚’ãƒ‰ãƒ©ãƒƒã‚°ä¸­ã‹ */
 		::GetClientRect( GetHwnd(), &rc );
 		if( xPos < 1 ){
 			xPos = 1;
@@ -964,7 +964,7 @@ LRESULT CSplitterWnd::OnMouseMove( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
 		if( yPos > rc.bottom - 6 ){
 			yPos = rc.bottom - 6;
 		}
-		/* •ªŠ„ƒgƒ‰ƒbƒJ[‚Ì•\¦ */
+		/* åˆ†å‰²ãƒˆãƒ©ãƒƒã‚«ãƒ¼ã®è¡¨ç¤º */
 		DrawSplitter( xPos, yPos, TRUE );
 //		MYTRACE( _T("xPos=%d yPos=%d \n"), xPos, yPos );
 	}
@@ -973,7 +973,7 @@ LRESULT CSplitterWnd::OnMouseMove( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
 
 
 
-/* ƒ}ƒEƒX¶ƒ{ƒ^ƒ“‰Ÿ‰º‚Ìˆ— */
+/* ãƒã‚¦ã‚¹å·¦ãƒœã‚¿ãƒ³æŠ¼ä¸‹æ™‚ã®å‡¦ç† */
 LRESULT CSplitterWnd::OnLButtonDown( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 {
 	int		nHit;
@@ -984,13 +984,13 @@ LRESULT CSplitterWnd::OnLButtonDown( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM
 	yPos = (int)(short)HIWORD(lParam);
 
 	::SetFocus( GetParentHwnd() );
-	/* •ªŠ„ƒo[‚Ö‚ÌƒqƒbƒgƒeƒXƒg */
+	/* åˆ†å‰²ãƒãƒ¼ã¸ã®ãƒ’ãƒƒãƒˆãƒ†ã‚¹ãƒˆ */
 	nHit = HitTestSplitter( xPos, yPos );
 	if( 0 != nHit ){
-		m_bDragging = nHit;	/* •ªŠ„ƒo[‚ğƒhƒ‰ƒbƒO’†‚© */
+		m_bDragging = nHit;	/* åˆ†å‰²ãƒãƒ¼ã‚’ãƒ‰ãƒ©ãƒƒã‚°ä¸­ã‹ */
 		::SetCapture( GetHwnd() );
 	}
-	/* •ªŠ„ƒgƒ‰ƒbƒJ[‚Ì•\¦ */
+	/* åˆ†å‰²ãƒˆãƒ©ãƒƒã‚«ãƒ¼ã®è¡¨ç¤º */
 	DrawSplitter( xPos, yPos, FALSE );
 
 	return 0L;
@@ -999,7 +999,7 @@ LRESULT CSplitterWnd::OnLButtonDown( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM
 
 
 
-/* ƒ}ƒEƒX¶ƒ{ƒ^ƒ“‰ğ•ú‚Ìˆ— */
+/* ãƒã‚¦ã‚¹å·¦ãƒœã‚¿ãƒ³è§£æ”¾æ™‚ã®å‡¦ç† */
 LRESULT CSplitterWnd::OnLButtonUp( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 {
 
@@ -1008,7 +1008,7 @@ LRESULT CSplitterWnd::OnLButtonUp( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
 	int nY;
 
 	if( m_bDragging ){
-		/* •ªŠ„ƒgƒ‰ƒbƒJ[‚Ì•\¦ */
+		/* åˆ†å‰²ãƒˆãƒ©ãƒƒã‚«ãƒ¼ã®è¡¨ç¤º */
 		DrawSplitter( m_nDragPosX, m_nDragPosY, FALSE );
 		bDraggingOld = m_bDragging;
 		m_bDragging = 0;
@@ -1016,7 +1016,7 @@ LRESULT CSplitterWnd::OnLButtonUp( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
 		if( NULL != m_hcurOld ){
 			::SetCursor( m_hcurOld );
 		}
-		/* ƒEƒBƒ“ƒhƒE‚Ì•ªŠ„ */
+		/* ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®åˆ†å‰² */
 		if( m_nAllSplitRows == 1 ){
 			nY = 0;
 		}else{
@@ -1043,7 +1043,7 @@ LRESULT CSplitterWnd::OnLButtonUp( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
 
 
 
-/* ƒ}ƒEƒX¶ƒ{ƒ^ƒ“ƒ_ƒuƒ‹ƒNƒŠƒbƒN‚Ìˆ— */
+/* ãƒã‚¦ã‚¹å·¦ãƒœã‚¿ãƒ³ãƒ€ãƒ–ãƒ«ã‚¯ãƒªãƒƒã‚¯æ™‚ã®å‡¦ç† */
 LRESULT CSplitterWnd::OnLButtonDblClk( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 {
 	int nX;
@@ -1082,7 +1082,7 @@ LRESULT CSplitterWnd::OnLButtonDblClk( HWND hwnd, UINT uMsg, WPARAM wParam, LPAR
 
 
 
-/* ƒAƒvƒŠƒP[ƒVƒ‡ƒ“’è‹`‚ÌƒƒbƒZ[ƒW(WM_APP <= msg <= 0xBFFF) */
+/* ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³å®šç¾©ã®ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸(WM_APP <= msg <= 0xBFFF) */
 LRESULT CSplitterWnd::DispatchEvent_WM_APP( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 {
 	int nPosX;
@@ -1093,7 +1093,7 @@ LRESULT CSplitterWnd::DispatchEvent_WM_APP( HWND hwnd, UINT uMsg, WPARAM wParam,
 		nPosY = (int)lParam;
 //		MYTRACE( _T("MYWM_DOSPLIT nPosX=%d nPosY=%d\n"), nPosX, nPosY );
 
-		/* ƒEƒBƒ“ƒhƒE‚Ì•ªŠ„ */
+		/* ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®åˆ†å‰² */
 		if( 0 != m_nHSplitPos ){
 			nPosX = m_nHSplitPos;
 		}

@@ -3,13 +3,13 @@
 #include "convert_util.h"
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                     ƒCƒ“ƒ^[ƒtƒF[ƒX                        //
+//                     ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹                        //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
-//!‘SŠp‰p”¨”¼Šp‰p”
+//!å…¨è§’è‹±æ•°â†’åŠè§’è‹±æ•°
 bool CConvert_ZeneisuToHaneisu::DoConvert(CNativeW* pcData)
 {
-	//‘SŠp‰p”¨”¼Šp‰p”
+	//å…¨è§’è‹±æ•°â†’åŠè§’è‹±æ•°
 	Convert_ZeneisuToHaneisu(pcData->GetStringPtr(), pcData->GetStringLength());
 
 	return true;

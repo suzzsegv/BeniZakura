@@ -28,21 +28,21 @@
 
 class CUtf7 : public CCodeBase{
 public:
-	//CCodeBaseƒCƒ“ƒ^[ƒtƒF[ƒX
-	EConvertResult CodeToUnicode(const CMemory& cSrc, CNativeW* pDst){ *pDst->_GetMemory()=cSrc; return UTF7ToUnicode(pDst->_GetMemory()); }	//!< “Á’èƒR[ƒh ¨ UNICODE    •ÏŠ·
-	EConvertResult UnicodeToCode(const CNativeW& cSrc, CMemory* pDst){ *pDst=*cSrc._GetMemory(); return UnicodeToUTF7(pDst); }	//!< UNICODE    ¨ “Á’èƒR[ƒh •ÏŠ·
-	void GetBom(CMemory* pcmemBom);	//!< BOMƒf[ƒ^Žæ“¾
-// GetEol‚ÍCCodeBase‚ÉˆÚ“®	2010/6/13 Uchi
+	//CCodeBaseã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹
+	EConvertResult CodeToUnicode(const CMemory& cSrc, CNativeW* pDst){ *pDst->_GetMemory()=cSrc; return UTF7ToUnicode(pDst->_GetMemory()); }	//!< ç‰¹å®šã‚³ãƒ¼ãƒ‰ â†’ UNICODE    å¤‰æ›
+	EConvertResult UnicodeToCode(const CNativeW& cSrc, CMemory* pDst){ *pDst=*cSrc._GetMemory(); return UnicodeToUTF7(pDst); }	//!< UNICODE    â†’ ç‰¹å®šã‚³ãƒ¼ãƒ‰ å¤‰æ›
+	void GetBom(CMemory* pcmemBom);	//!< BOMãƒ‡ãƒ¼ã‚¿å–å¾—
+// GetEolã¯CCodeBaseã«ç§»å‹•	2010/6/13 Uchi
 
 public:
-	//ŽÀ‘•
-	static EConvertResult UTF7ToUnicode(CMemory* pMem);		// UTF-7     ¨ UnicodeƒR[ƒh•ÏŠ· //2007.08.13 kobake ’Ç‰Á
-	static EConvertResult UnicodeToUTF7(CMemory* pMem);		// Unicode   ¨ UTF-7ƒR[ƒh•ÏŠ·
-//	static int MemBASE64_Encode( const char*, int, char**, int, int );/* Base64ƒGƒ“ƒR[ƒh */  // convert/convert_util2.h ‚ÖˆÚ“®
+	//å®Ÿè£…
+	static EConvertResult UTF7ToUnicode(CMemory* pMem);		// UTF-7     â†’ Unicodeã‚³ãƒ¼ãƒ‰å¤‰æ› //2007.08.13 kobake è¿½åŠ 
+	static EConvertResult UnicodeToUTF7(CMemory* pMem);		// Unicode   â†’ UTF-7ã‚³ãƒ¼ãƒ‰å¤‰æ›
+//	static int MemBASE64_Encode( const char*, int, char**, int, int );/* Base64ã‚¨ãƒ³ã‚³ãƒ¼ãƒ‰ */  // convert/convert_util2.h ã¸ç§»å‹•
 
 protected:
 
-	// 2008.11.10 •ÏŠ·ƒƒWƒbƒN‚ð‘‚«’¼‚·
+	// 2008.11.10 å¤‰æ›ãƒ­ã‚¸ãƒƒã‚¯ã‚’æ›¸ãç›´ã™
 	static int _Utf7SetDToUni_block( const char*, const int, wchar_t* );
 	static int _Utf7SetBToUni_block( const char*, const int, wchar_t*, bool* );
 	static int Utf7ToUni( const char*, const int, wchar_t*, bool* pbError );

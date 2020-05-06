@@ -1,5 +1,5 @@
 /*!	@file	SessionStore.h
-	@brief	�I�����ɕҏW���̃t�@�C���Ɋւ�������L�^���A�ċN����ɕ�������.
+	@brief	終了時に編集中のファイルに関する情報を記録し、再起動後に復元する.
 
 	@author	Suzuki Satoshi
  */

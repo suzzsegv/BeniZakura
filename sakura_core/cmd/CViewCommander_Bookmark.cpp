@@ -1,7 +1,7 @@
 /*!	@file
-@brief CViewCommanderƒNƒ‰ƒX‚ÌƒRƒ}ƒ“ƒh(ƒWƒƒƒ“ƒv&ƒuƒbƒNƒ}[ƒN)ŠÖ”ŒQ
+@brief CViewCommanderã‚¯ãƒ©ã‚¹ã®ã‚³ãƒãƒ³ãƒ‰(ã‚¸ãƒ£ãƒ³ãƒ—&ãƒ–ãƒƒã‚¯ãƒãƒ¼ã‚¯)é–¢æ•°ç¾¤
 
-	2012/12/17	CViewCommander.cpp,CViewCommander_New.cpp‚©‚ç•ª—£
+	2012/12/17	CViewCommander.cpp,CViewCommander_New.cppã‹ã‚‰åˆ†é›¢
 */
 /*
 	Copyright (C) 1998-2001, Norio Nakatani
@@ -19,7 +19,7 @@
 
 
 //	from CViewCommander_New.cpp
-/*!	ŒŸõŠJnˆÊ’u‚Ö–ß‚é
+/*!	æ¤œç´¢é–‹å§‹ä½ç½®ã¸æˆ»ã‚‹
 	@author	ai
 	@date	02/06/26
 */
@@ -28,12 +28,12 @@ void CViewCommander::Command_JUMP_SRCHSTARTPOS(void)
 	if( m_pCommanderView->m_ptSrchStartPos_PHY.BothNatural() )
 	{
 		CLayoutPoint pt;
-		/* ”ÍˆÍ‘I‘ğ’†‚© */
+		/* ç¯„å›²é¸æŠä¸­ã‹ */
 		GetDocument()->m_cLayoutMgr.LogicToLayout(
 			m_pCommanderView->m_ptSrchStartPos_PHY,
 			&pt
 		);
-		//	2006.07.09 genta ‘I‘ğó‘Ô‚ğ•Û‚Â
+		//	2006.07.09 genta é¸æŠçŠ¶æ…‹ã‚’ä¿ã¤
 		m_pCommanderView->MoveCursorSelecting( pt, m_pCommanderView->GetSelectionInfo().m_bSelectingLock );
 	}
 	else
@@ -45,7 +45,7 @@ void CViewCommander::Command_JUMP_SRCHSTARTPOS(void)
 
 
 
-/*! w’ès‚ÖƒWƒƒƒ“ƒvƒ_ƒCƒAƒƒO‚Ì•\¦
+/*! æŒ‡å®šè¡Œã¸ã‚¸ãƒ£ãƒ³ãƒ—ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®è¡¨ç¤º
 	2002.2.2 YAZAKI
 */
 void CViewCommander::Command_JUMP_DIALOG( void )
@@ -59,7 +59,7 @@ void CViewCommander::Command_JUMP_DIALOG( void )
 
 
 
-/* w’èsƒwƒWƒƒƒ“ƒv */
+/* æŒ‡å®šè¡Œãƒ˜ã‚¸ãƒ£ãƒ³ãƒ— */
 void CViewCommander::Command_JUMP( void )
 {
 	if( 0 == GetDocument()->m_cLayoutMgr.GetLineCount() ){
@@ -67,20 +67,20 @@ void CViewCommander::Command_JUMP( void )
 		return;
 	}
 
-	/* s”Ô† */
-	int	nLineNum; //$$ ’PˆÊ¬İ
+	/* è¡Œç•ªå· */
+	int	nLineNum; //$$ å˜ä½æ··åœ¨
 	nLineNum = GetEditWindow()->m_cDlgJump.m_nLineNum;
 
-	/* s”Ô†‚Ì•\¦ FALSE=Ü‚è•Ô‚µ’PˆÊ^TRUE=‰üs’PˆÊ */
+	/* è¡Œç•ªå·ã®è¡¨ç¤º FALSE=æŠ˜ã‚Šè¿”ã—å˜ä½ï¼TRUE=æ”¹è¡Œå˜ä½ */
 	if( GetDllShareData().m_bLineNumIsCRLF_ForJump ){
 		if( CLogicInt(0) >= nLineNum ){
 			nLineNum = CLogicInt(1);
 		}
 		/*
-		  ƒJ[ƒ\ƒ‹ˆÊ’u•ÏŠ·
-		  ƒƒWƒbƒNˆÊ’u(s“ª‚©‚ç‚ÌƒoƒCƒg”AÜ‚è•Ô‚µ–³‚µsˆÊ’u)
-		  ¨
-		  ƒŒƒCƒAƒEƒgˆÊ’u(s“ª‚©‚ç‚Ì•\¦Œ…ˆÊ’uAÜ‚è•Ô‚µ‚ ‚èsˆÊ’u)
+		  ã‚«ãƒ¼ã‚½ãƒ«ä½ç½®å¤‰æ›
+		  ãƒ­ã‚¸ãƒƒã‚¯ä½ç½®(è¡Œé ­ã‹ã‚‰ã®ãƒã‚¤ãƒˆæ•°ã€æŠ˜ã‚Šè¿”ã—ç„¡ã—è¡Œä½ç½®)
+		  â†’
+		  ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆä½ç½®(è¡Œé ­ã‹ã‚‰ã®è¡¨ç¤ºæ¡ä½ç½®ã€æŠ˜ã‚Šè¿”ã—ã‚ã‚Šè¡Œä½ç½®)
 		*/
 		CLayoutPoint ptPosXY;
 		GetDocument()->m_cLayoutMgr.LogicToLayout(
@@ -104,7 +104,7 @@ void CViewCommander::Command_JUMP( void )
 
 
 //	from CViewCommander_New.cpp
-//! ƒuƒbƒNƒ}[ƒN‚Ìİ’èE‰ğœ‚ğs‚¤(ƒgƒOƒ‹“®ì)
+//! ãƒ–ãƒƒã‚¯ãƒãƒ¼ã‚¯ã®è¨­å®šãƒ»è§£é™¤ã‚’è¡Œã†(ãƒˆã‚°ãƒ«å‹•ä½œ)
 void CViewCommander::Command_BOOKMARK_SET(void)
 {
 	CDocLine*	pCDocLine;
@@ -131,14 +131,14 @@ void CViewCommander::Command_BOOKMARK_SET(void)
 		if(pCDocLine)cBookmark.SetBookmark(!cBookmark.IsBookmarked());
 	}
 
-	// 2002.01.16 hor •ªŠ„‚µ‚½ƒrƒ…[‚àXV
+	// 2002.01.16 hor åˆ†å‰²ã—ãŸãƒ“ãƒ¥ãƒ¼ã‚‚æ›´æ–°
 	GetEditWindow()->Views_Redraw();
 }
 
 
 
 //	from CViewCommander_New.cpp
-//! Ÿ‚ÌƒuƒbƒNƒ}[ƒN‚ğ’T‚µCŒ©‚Â‚©‚Á‚½‚çˆÚ“®‚·‚é
+//! æ¬¡ã®ãƒ–ãƒƒã‚¯ãƒãƒ¼ã‚¯ã‚’æ¢ã—ï¼Œè¦‹ã¤ã‹ã£ãŸã‚‰ç§»å‹•ã™ã‚‹
 void CViewCommander::Command_BOOKMARK_NEXT(void)
 {
 	int			nYOld;				// hor
@@ -156,23 +156,23 @@ re_do:;								// hor
 		bFound = TRUE;
 		CLayoutPoint ptLayout;
 		GetDocument()->m_cLayoutMgr.LogicToLayout(ptXY,&ptLayout);
-		//	2006.07.09 genta V‹KŠÖ”‚É‚Ü‚Æ‚ß‚½
+		//	2006.07.09 genta æ–°è¦é–¢æ•°ã«ã¾ã¨ã‚ãŸ
 		m_pCommanderView->MoveCursorSelecting( ptLayout, m_pCommanderView->GetSelectionInfo().m_bSelectingLock );
 	}
     // 2002.01.26 hor
 	if(GetDllShareData().m_Common.m_sSearch.m_bSearchAll){
-		if(!bFound	&&		// Œ©‚Â‚©‚ç‚È‚©‚Á‚½
-			bRedo			// Å‰‚ÌŒŸõ
+		if(!bFound	&&		// è¦‹ã¤ã‹ã‚‰ãªã‹ã£ãŸ
+			bRedo			// æœ€åˆã®æ¤œç´¢
 		){
 			ptXY.y=-1;	//	2002/06/01 MIK
 			bRedo=FALSE;
-			goto re_do;		// æ“ª‚©‚çÄŒŸõ
+			goto re_do;		// å…ˆé ­ã‹ã‚‰å†æ¤œç´¢
 		}
 	}
 	if(bFound){
-		if(nYOld >= ptXY.y)m_pCommanderView->SendStatusMessage(_T("¥æ“ª‚©‚çÄŒŸõ‚µ‚Ü‚µ‚½"));
+		if(nYOld >= ptXY.y)m_pCommanderView->SendStatusMessage(_T("â–¼å…ˆé ­ã‹ã‚‰å†æ¤œç´¢ã—ã¾ã—ãŸ"));
 	}else{
-		m_pCommanderView->SendStatusMessage(_T("¤Œ©‚Â‚©‚è‚Ü‚¹‚ñ‚Å‚µ‚½"));
+		m_pCommanderView->SendStatusMessage(_T("â–½è¦‹ã¤ã‹ã‚Šã¾ã›ã‚“ã§ã—ãŸ"));
 	}
 	return;
 }
@@ -180,7 +180,7 @@ re_do:;								// hor
 
 
 //	from CViewCommander_New.cpp
-//! ‘O‚ÌƒuƒbƒNƒ}[ƒN‚ğ’T‚µCŒ©‚Â‚©‚Á‚½‚çˆÚ“®‚·‚éD
+//! å‰ã®ãƒ–ãƒƒã‚¯ãƒãƒ¼ã‚¯ã‚’æ¢ã—ï¼Œè¦‹ã¤ã‹ã£ãŸã‚‰ç§»å‹•ã™ã‚‹ï¼
 void CViewCommander::Command_BOOKMARK_PREV(void)
 {
 	int			nYOld;				// hor
@@ -198,24 +198,24 @@ re_do:;								// hor
 		bFound = TRUE;				// hor
 		CLayoutPoint ptLayout;
 		GetDocument()->m_cLayoutMgr.LogicToLayout(ptXY,&ptLayout);
-		//	2006.07.09 genta V‹KŠÖ”‚É‚Ü‚Æ‚ß‚½
+		//	2006.07.09 genta æ–°è¦é–¢æ•°ã«ã¾ã¨ã‚ãŸ
 		m_pCommanderView->MoveCursorSelecting( ptLayout, m_pCommanderView->GetSelectionInfo().m_bSelectingLock );
 	}
     // 2002.01.26 hor
 	if(GetDllShareData().m_Common.m_sSearch.m_bSearchAll){
-		if(!bFound	&&	// Œ©‚Â‚©‚ç‚È‚©‚Á‚½
-			bRedo		// Å‰‚ÌŒŸõ
+		if(!bFound	&&	// è¦‹ã¤ã‹ã‚‰ãªã‹ã£ãŸ
+			bRedo		// æœ€åˆã®æ¤œç´¢
 		){
-			// 2011.02.02 m_cLayoutMgr¨m_cDocLineMgr
+			// 2011.02.02 m_cLayoutMgrâ†’m_cDocLineMgr
 			ptXY.y= GetDocument()->m_cDocLineMgr.GetLineCount();	// 2002/06/01 MIK
 			bRedo=FALSE;
-			goto re_do;	// ––”ö‚©‚çÄŒŸõ
+			goto re_do;	// æœ«å°¾ã‹ã‚‰å†æ¤œç´¢
 		}
 	}
 	if(bFound){
-		if(nYOld <= ptXY.y)m_pCommanderView->SendStatusMessage(_T("£––”ö‚©‚çÄŒŸõ‚µ‚Ü‚µ‚½"));
+		if(nYOld <= ptXY.y)m_pCommanderView->SendStatusMessage(_T("â–²æœ«å°¾ã‹ã‚‰å†æ¤œç´¢ã—ã¾ã—ãŸ"));
 	}else{
-		m_pCommanderView->SendStatusMessage(_T("¢Œ©‚Â‚©‚è‚Ü‚¹‚ñ‚Å‚µ‚½"));
+		m_pCommanderView->SendStatusMessage(_T("â–³è¦‹ã¤ã‹ã‚Šã¾ã›ã‚“ã§ã—ãŸ"));
 	}
 	return;
 }
@@ -223,29 +223,29 @@ re_do:;								// hor
 
 
 //	from CViewCommander_New.cpp
-//! ƒuƒbƒNƒ}[ƒN‚ğƒNƒŠƒA‚·‚é
+//! ãƒ–ãƒƒã‚¯ãƒãƒ¼ã‚¯ã‚’ã‚¯ãƒªã‚¢ã™ã‚‹
 void CViewCommander::Command_BOOKMARK_RESET(void)
 {
 	CBookmarkManager(&GetDocument()->m_cDocLineMgr).ResetAllBookMark();
-	// 2002.01.16 hor •ªŠ„‚µ‚½ƒrƒ…[‚àXV
+	// 2002.01.16 hor åˆ†å‰²ã—ãŸãƒ“ãƒ¥ãƒ¼ã‚‚æ›´æ–°
 	GetEditWindow()->Views_Redraw();
 }
 
 
 
 //	from CViewCommander_New.cpp
-//w’èƒpƒ^[ƒ“‚Éˆê’v‚·‚és‚ğƒ}[ƒN 2002.01.16 hor
-//ƒL[ƒ}ƒNƒ‚Å‹L˜^‚Å‚«‚é‚æ‚¤‚É	2002.02.08 hor
+//æŒ‡å®šãƒ‘ã‚¿ãƒ¼ãƒ³ã«ä¸€è‡´ã™ã‚‹è¡Œã‚’ãƒãƒ¼ã‚¯ 2002.01.16 hor
+//ã‚­ãƒ¼ãƒã‚¯ãƒ­ã§è¨˜éŒ²ã§ãã‚‹ã‚ˆã†ã«	2002.02.08 hor
 void CViewCommander::Command_BOOKMARK_PATTERN( void )
 {
-	//ŒŸõor’uŠ·ƒ_ƒCƒAƒƒO‚©‚çŒÄ‚Ño‚³‚ê‚½
+	//æ¤œç´¢orç½®æ›ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‹ã‚‰å‘¼ã³å‡ºã•ã‚ŒãŸ
 	if( !m_pCommanderView->ChangeCurRegexp(false) ) return;
 	
 	CBookmarkManager(&GetDocument()->m_cDocLineMgr).MarkSearchWord(
-		m_pCommanderView->m_strCurSearchKey.c_str(),		// ŒŸõğŒ
-		m_pCommanderView->m_sCurSearchOption,	// ŒŸõğŒ
-		&m_pCommanderView->m_CurRegexp							// ³‹K•\Œ»ƒRƒ“ƒpƒCƒ‹ƒf[ƒ^
+		m_pCommanderView->m_strCurSearchKey.c_str(),		// æ¤œç´¢æ¡ä»¶
+		m_pCommanderView->m_sCurSearchOption,	// æ¤œç´¢æ¡ä»¶
+		&m_pCommanderView->m_CurRegexp							// æ­£è¦è¡¨ç¾ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ãƒ‡ãƒ¼ã‚¿
 	);
-	// 2002.01.16 hor •ªŠ„‚µ‚½ƒrƒ…[‚àXV
+	// 2002.01.16 hor åˆ†å‰²ã—ãŸãƒ“ãƒ¥ãƒ¼ã‚‚æ›´æ–°
 	GetEditWindow()->Views_Redraw();
 }

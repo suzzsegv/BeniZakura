@@ -3,7 +3,7 @@
 #include "CColor_Quote.h"
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                     ƒNƒH[ƒe[ƒVƒ‡ƒ“                        //
+//                     ã‚¯ã‚©ãƒ¼ãƒ†ãƒ¼ã‚·ãƒ§ãƒ³                        //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
 bool CColor_Quote::BeginColor(const CStringRef& cStr, int nPos)
@@ -11,8 +11,8 @@ bool CColor_Quote::BeginColor(const CStringRef& cStr, int nPos)
 	if(!cStr.IsValid())return false;
 
 	if( cStr.At(nPos) == m_cQuote ){
-		if( m_pTypeData->m_ColorInfoArr[this->GetStrategyColor()].m_bDisp ){	/* ƒNƒH[ƒe[ƒVƒ‡ƒ“•¶Žš—ñ‚ð•\Ž¦‚·‚é */
-			/* ƒNƒH[ƒe[ƒVƒ‡ƒ“•¶Žš—ñ‚ÌI’[‚ª‚ ‚é‚© */
+		if( m_pTypeData->m_ColorInfoArr[this->GetStrategyColor()].m_bDisp ){	/* ã‚¯ã‚©ãƒ¼ãƒ†ãƒ¼ã‚·ãƒ§ãƒ³æ–‡å­—åˆ—ã‚’è¡¨ç¤ºã™ã‚‹ */
+			/* ã‚¯ã‚©ãƒ¼ãƒ†ãƒ¼ã‚·ãƒ§ãƒ³æ–‡å­—åˆ—ã®çµ‚ç«¯ãŒã‚ã‚‹ã‹ */
 			this->m_nCOMMENTEND = m_pCEditDoc->m_cLayoutMgr.Match_Quote( m_cQuote, nPos + 1, cStr );
 			return true;
 		}
@@ -23,7 +23,7 @@ bool CColor_Quote::BeginColor(const CStringRef& cStr, int nPos)
 bool CColor_Quote::EndColor(const CStringRef& cStr, int nPos)
 {
 	if( 0 == this->m_nCOMMENTEND ){
-		/* ƒNƒH[ƒe[ƒVƒ‡ƒ“•¶Žš—ñ‚ÌI’[‚ª‚ ‚é‚© */
+		/* ã‚¯ã‚©ãƒ¼ãƒ†ãƒ¼ã‚·ãƒ§ãƒ³æ–‡å­—åˆ—ã®çµ‚ç«¯ãŒã‚ã‚‹ã‹ */
 		this->m_nCOMMENTEND = m_pCEditDoc->m_cLayoutMgr.Match_Quote( m_cQuote, nPos, cStr );
 	}
 	else if( nPos == this->m_nCOMMENTEND ){
