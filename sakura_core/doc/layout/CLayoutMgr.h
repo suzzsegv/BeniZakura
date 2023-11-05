@@ -122,7 +122,7 @@ public:
 
 	/*! 次のTAB位置までの幅
 		@param pos [in] 現在の位置
-		@return 次のTAB位置までの文字数．1〜TAB幅
+		@return 次のTAB位置までの文字数．1～TAB幅
 	 */
 	CLayoutInt GetActualTabSpace(CLayoutInt pos) const { return m_sTypeConfig.m_nTabSpace - pos % m_sTypeConfig.m_nTabSpace; }
 

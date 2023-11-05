@@ -62,13 +62,13 @@ CShareData::CShareData()
 }
 
 /*!
-	共有メモリ領域がある場合はプロセスのアドレス空間から、
+	共有メモリ領域がある場合はプロセスのアドレス空間から､
 	すでにマップされているファイル ビューをアンマップする。
 */
 CShareData::~CShareData()
 {
 	if( m_pShareData ){
-		/* プロセスのアドレス空間から、 すでにマップされているファイル ビューをアンマップします */
+		/* プロセスのアドレス空間から､ すでにマップされているファイル ビューをアンマップします */
 		::UnmapViewOfFile( m_pShareData );
 		m_pShareData = NULL;
 	}
@@ -118,7 +118,7 @@ bool CShareData::InitShareData()
 	}
 	if( GetLastError() != ERROR_ALREADY_EXISTS ){
 		/* オブジェクトが存在していなかった場合 */
-		/* ファイルのビューを、 呼び出し側プロセスのアドレス空間にマップします */
+		/* ファイルのビューを､ 呼び出し側プロセスのアドレス空間にマップします */
 		m_pShareData = (DLLSHAREDATA*)::MapViewOfFile(
 			m_hFileMap,
 			FILE_MAP_ALL_ACCESS,
@@ -193,7 +193,7 @@ bool CShareData::InitShareData()
 		_tcscpy( m_pShareData->m_Common.m_sFileName.m_szTransformFileNameTo[6],   _T("アプリデータ\\") );	// 2007.05.19 ryoji 追加
 		m_pShareData->m_Common.m_sFileName.m_nTransformFileNameArrNum = 7;
 		
-		/* m_PrintSettingArr[0]を設定して、残りの1〜7にコピーする。
+		/* m_PrintSettingArr[0]を設定して、残りの1～7にコピーする。
 			必要になるまで遅らせるために、CPrintに、CShareDataを操作する権限を与える。
 			YAZAKI.
 		*/
@@ -549,7 +549,7 @@ bool CShareData::InitShareData()
 		}
 	}else{
 		/* オブジェクトがすでに存在する場合 */
-		/* ファイルのビューを、 呼び出し側プロセスのアドレス空間にマップします */
+		/* ファイルのビューを､ 呼び出し側プロセスのアドレス空間にマップします */
 		m_pShareData = (DLLSHAREDATA*)::MapViewOfFile(
 			m_hFileMap,
 			FILE_MAP_ALL_ACCESS,

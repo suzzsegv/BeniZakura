@@ -34,7 +34,7 @@ namespace WCODE
 			|| (wc>=0xFF61 && wc<=0xFF9f)	// 半角カタカナ
 		)return true;
 
-		//0x7F 〜 0xA0 も半角とみなす
+		//0x7F ～ 0xA0 も半角とみなす
 		//http://ja.wikipedia.org/wiki/Unicode%E4%B8%80%E8%A6%A7_0000-0FFF を見て、なんとなく
 		if(wc>=0x007F && wc<=0x00A0)return true;	// Control Code ISO/IEC 6429
 
@@ -88,7 +88,7 @@ namespace WCODE
 	{
 		//句読点定義
 		static const wchar_t *KUTOTEN=
-			L"。、,."
+			L"｡､,."
 			L"。、，．"
 		;
 

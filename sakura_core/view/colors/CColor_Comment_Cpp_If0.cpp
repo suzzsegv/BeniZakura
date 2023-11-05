@@ -1,5 +1,5 @@
 /*!	@file	CColor_Comment_Cpp.cpp
-	@brief	C++ #if 0 〜 #else 〜 #endif コメント判定クラス
+	@brief	C++ #if 0 ～ #else ～ #endif コメント判定クラス
 
 	@author	Suzuki Satoshi
 */

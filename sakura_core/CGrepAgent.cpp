@@ -433,7 +433,7 @@ int CGrepAgent::DoGrepTree(
 	const TCHAR*			pszPath,			//!< [in] 検索対象パス
 	BOOL					bGrepSubFolder,		//!< [in] TRUE: サブフォルダを再帰的に探索する / FALSE: しない
 	const SSearchOption&	sSearchOption,		//!< [in] 検索オプション
-	ECodeType				nGrepCharSet,		//!< [in] 文字コードセット (0:自動認識)〜
+	ECodeType				nGrepCharSet,		//!< [in] 文字コードセット (0:自動認識)～
 	BOOL					bGrepOutputLine,	//!< [in] TRUE: ヒット行を出力 / FALSE: ヒット部分を出力
 	int						nGrepOutputStyle,	//!< [in] 出力形式 1: Normal, 2: WZ風(ファイル単位)
 	CBregexp*				pRegexp,			//!< [in] 正規表現コンパイルデータ。既にコンパイルされている必要がある
@@ -850,8 +850,8 @@ void CGrepAgent::SetGrepResult(
 	const TCHAR*		pszFullPath,	/*!< [in] フルパス */
 	const TCHAR*		pszCodeName,	/*!< [in] 文字コード情報．" [SJIS]"とか */
 	/* マッチした行の情報 */
-	int			nLine,				/*!< [in] マッチした行番号(1〜) */
-	int			nColumn,			/*!< [in] マッチした桁番号(1〜) */
+	int			nLine,				/*!< [in] マッチした行番号(1～) */
+	int			nColumn,			/*!< [in] マッチした桁番号(1～) */
 	const wchar_t*	pCompareData,	/*!< [in] 行の文字列 */
 	int			nLineLen,			/*!< [in] 行の文字列の長さ */
 	int			nEolCodeLen,		/*!< [in] EOLの長さ */
@@ -929,7 +929,7 @@ int CGrepAgent::DoGrepFile(
 	const wchar_t*			pszKey,				//!< [in] 検索パターン
 	const TCHAR*			pszFile,			//!< [in] 処理対象ファイル名(表示用)
 	const SSearchOption&	sSearchOption,		//!< [in] 検索オプション
-	ECodeType				nGrepCharSet,		//!< [in] 文字コードセット (0:自動認識)〜
+	ECodeType				nGrepCharSet,		//!< [in] 文字コードセット (0:自動認識)～
 	BOOL					bGrepOutputLine,	//!< [in] TRUE: ヒット行を出力 / FALSE: ヒット部分を出力
 	int						nGrepOutputStyle,	//!< [in] 出力形式 1: Normal, 2: WZ風(ファイル単位)
 	CBregexp*				pRegexp,			//!< [in] 正規表現コンパイルデータ。既にコンパイルされている必要がある

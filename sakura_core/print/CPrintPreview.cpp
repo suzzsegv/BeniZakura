@@ -1147,7 +1147,7 @@ void CPrintPreview::OnPrint( void )
 }
 
 
-/*! 印刷/印刷プレビュー ヘッダ・フッタの描画
+/*! 印刷/印刷プレビュー ヘッダ･フッタの描画
 */
 void CPrintPreview::DrawHeaderFooter( HDC hdc, const CMyRect& rect, bool bHeader )
 {

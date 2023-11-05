@@ -800,7 +800,7 @@ void CMacro::HandleCommand(
 		//		0x00	ノーマル
 		//		0x40	ファイル毎
 		//		**********************************
-		//		0x0100 〜 0xff00	文字コードセット番号 * 0x100
+		//		0x0100 ～ 0xff00	文字コードセット番号 * 0x100
 		if( Argument[0] == NULL ){
 			::MYMESSAGEBOX( NULL, MB_OK | MB_ICONSTOP | MB_TOPMOST, EXEC_ERROR_TITLE,
 				_T("GREPパターンが指定されていません．"));

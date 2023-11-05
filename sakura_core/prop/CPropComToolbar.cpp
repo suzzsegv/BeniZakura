@@ -193,7 +193,7 @@ INT_PTR CPropToolbar::DispatchEvent(
 
 	case WM_COMMAND:
 		wNotifyCode = HIWORD( wParam );	/* 通知コード */
-		wID = LOWORD( wParam );			/* 項目ID、 コントロールID、 またはアクセラレータID */
+		wID = LOWORD( wParam );			/* 項目ID､ コントロールID､ またはアクセラレータID */
 		hwndCtl = (HWND) lParam;		/* コントロールのハンドル */
 
 		if( hwndResList == hwndCtl ){
@@ -545,7 +545,7 @@ void CPropToolbar::DrawToolBarItemList( DRAWITEMSTRUCT* pDis )
 				auto_strcpy( szLabel, LTEXT("───────────") );	// nLength 未使用 2003/01/09 Moca
 			}else if( tbb.idCommand == F_MENU_NOT_USED_FIRST ){
 				if( ::LoadStringW_AnyBuild( G_AppInstance(), tbb.idCommand, szLabel, _countof( szLabel ) ) <= 0 ){
-					auto_strcpy( szLabel, LTEXT("——ツールバー折返——") );
+					auto_strcpy( szLabel, LTEXT("――ツールバー折返――") );
 				}
 			}else{
 				auto_strcpy( szLabel, LTEXT("────不　明────") );

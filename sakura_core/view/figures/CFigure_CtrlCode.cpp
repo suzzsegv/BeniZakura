@@ -32,7 +32,7 @@ void CFigure_CtrlCode::DispSpace( CGraphics& gr, DispPos* pDispPos, CEditView* p
 			pDispPos->GetDrawPos().y,
 			ExtTextOutOption() & ~(bTrans? ETO_OPAQUE: 0),
 			&rc,
-			L"・",
+			L"･",
 			1,
 			pcView->GetTextMetrics().GetDxArray_AllHankaku()
 		);

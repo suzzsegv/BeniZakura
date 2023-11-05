@@ -40,7 +40,7 @@ using std::wstring;
 
 // TreeView 表示固定初期値
 const WCHAR	DEFAULT_NODE[]	= L"編集してください";
-const WCHAR	DEFAULT_SEPA[]	= L"——————————";
+const WCHAR	DEFAULT_SEPA[]	= L"――――――――――";
 
 // 内部使用変数
 // 機能格納(Work)
@@ -361,7 +361,7 @@ INT_PTR CPropMainMenu::DispatchEvent(
 
 	case WM_COMMAND:
 		wNotifyCode = HIWORD(wParam);	/* 通知コード */
-		wID = LOWORD(wParam);			/* 項目ID、 コントロールID、 またはアクセラレータID */
+		wID = LOWORD(wParam);			/* 項目ID､ コントロールID､ またはアクセラレータID */
 		hwndCtl = (HWND) lParam;		/* コントロールのハンドル */
 
 		if (hwndComboFunkKind == hwndCtl) {
@@ -1141,7 +1141,7 @@ static HTREEITEM TreeCopy( HWND hwndTree, HTREEITEM dst, HTREEITEM src, bool fCh
 	return td;
 }
 
-// TreeView 全開・全閉
+// TreeView 全開･全閉
 static void TreeView_ExpandAll( HWND hwndTree, bool bExpand )
 {
 	std::map<int, HTREEITEM>	htiStack;

@@ -332,7 +332,7 @@ INT_PTR CPropTypesColor::DispatchEvent(
 
 	case WM_COMMAND:
 		wNotifyCode	= HIWORD( wParam );	/* 通知コード */
-		wID			= LOWORD( wParam );	/* 項目ID、 コントロールID、 またはアクセラレータID */
+		wID			= LOWORD( wParam );	/* 項目ID､ コントロールID､ またはアクセラレータID */
 		hwndCtl		= (HWND) lParam;	/* コントロールのハンドル */
 		if( hwndListColor == hwndCtl ){
 			switch( wNotifyCode ){
@@ -719,7 +719,7 @@ void CPropTypesColor::SetData( HWND hwndDlg )
 		}
 	}
 
-	//強調キーワード1〜10の設定
+	//強調キーワード1～10の設定
 	for( i = 0; i < MAX_KEYWORDSET_PER_TYPE; i++ ){
 		m_nSet[ i ] = m_Types.m_nKeyWordSetIdx[i];
 	}
@@ -848,7 +848,7 @@ int CPropTypesColor::GetData( HWND hwndDlg )
 
 	}
 
-	//強調キーワード2〜10の取得(1は別)
+	//強調キーワード2～10の取得(1は別)
 	for( nIdx = 1; nIdx < MAX_KEYWORDSET_PER_TYPE; nIdx++ ){
 		m_Types.m_nKeyWordSetIdx[nIdx] = m_nSet[nIdx];
 	}

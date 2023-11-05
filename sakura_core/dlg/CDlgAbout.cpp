@@ -160,7 +160,7 @@ BOOL CDlgAbout::OnInitDialog( HWND hwndDlg, WPARAM wParam, LPARAM lParam )
 	auto_sprintf( szMsg, L"  %s %s  Built with %s\r\n", _T(__DATE__), _T(__TIME__), vcVersion );
 	cmemMsg.AppendString( szMsg );
 	cmemMsg.AppendString( _T("\r\n") );
-	cmemMsg.AppendString( _T("  Copyright (C) 2012-2020 by Satoshi Suzuki\r\n") );
+	cmemMsg.AppendString( _T("  Copyright (C) 2012-2023 by Satoshi Suzuki\r\n") );
 	cmemMsg.AppendString( _T("\r\n") );
 	cmemMsg.AppendString( _T("\r\n") );
 

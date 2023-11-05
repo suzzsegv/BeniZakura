@@ -62,7 +62,7 @@ private:
 		const TCHAR*			pszPath,			//!< [in] 検索対象パス
 		BOOL					bGrepSubFolder,		//!< [in] TRUE: サブフォルダを再帰的に探索する / FALSE: しない
 		const SSearchOption&	sSearchOption,		//!< [in] 検索オプション
-		ECodeType				nGrepCharSet,		//!< [in] 文字コードセット (0:自動認識)〜
+		ECodeType				nGrepCharSet,		//!< [in] 文字コードセット (0:自動認識)～
 		BOOL					bGrepOutputLine,	//!< [in] TRUE: ヒット行を出力 / FALSE: ヒット部分を出力
 		int						nGrepOutputStyle,	//!< [in] 出力形式 1: Normal, 2: WZ風(ファイル単位)
 		CBregexp*				pRegexp,			//!< [in] 正規表現コンパイルデータ。既にコンパイルされている必要がある
