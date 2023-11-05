@@ -1302,9 +1302,9 @@ LRESULT CTabWnd::OnDrawItem( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam 
 				if( !bSelected ){
 					::InflateRect( &rcFullItem, DpiScaleX(2), DpiScaleY(2) );
 					if( nTabIndex == nSelIndex - 1 ){
-						rcFullItem.right -= DpiScaleX(1);
+						rcFullItem.right -= DpiScaleX(2);
 					}else if( nTabIndex == nSelIndex + 1 ){
-						rcFullItem.left += DpiScaleX(1);
+						rcFullItem.left += DpiScaleX(2);
 					}
 				}
 				bool bHotTracked = ::GetTextColor(hdc) == GetSysColor(COLOR_HOTLIGHT);
@@ -1510,12 +1510,6 @@ LRESULT CTabWnd::OnTimer( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 }
 
 /*!	WM_PAINT処理
-
-	@date 2005.09.01 ryoji タブの上に境界線を追加
-	@date 2006.01.30 ryoji 背景描画処理を追加（背景ブラシは NULL に変更）
-	@date 2006.02.01 ryoji 一覧ボタンの描画処理を追加
-	@date 2006.10.21 ryoji 閉じるボタンの描画処理を追加
-	@date 2007.03.27 ryoji Windowsクラシックスタイルの場合はアクティブタブの上部にトップバンドを描画する
 */
 LRESULT CTabWnd::OnPaint( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 {
@@ -1538,48 +1532,44 @@ LRESULT CTabWnd::OnPaint( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 	// 上側に境界線を描画する
 	::DrawEdge(gr, &rc, EDGE_ETCHED, BF_TOP);
 
-	// Windowsクラシックスタイルの場合はアクティブタブの上部にトップバンドを描画する	// 2006.03.27 ryoji
-	if( !m_bVisualStyle )
+	// アクティブタブの上部にトップバンドを描画する
+	int nCurSel = TabCtrl_GetCurSel(m_hwndTab);
+	if (nCurSel >= 0)
 	{
-		int nCurSel = TabCtrl_GetCurSel( m_hwndTab );
-		if( nCurSel >= 0 )
+		POINT pt;
+		RECT rcCurSel;
+
+		TabCtrl_GetItemRect(m_hwndTab, nCurSel, &rcCurSel);
+		pt.x = rcCurSel.left;
+		pt.y = 0;
+		::ClientToScreen(m_hwndTab, &pt);
+		::ScreenToClient(GetHwnd(), &pt);
+		rcCurSel.right = pt.x + (rcCurSel.right - rcCurSel.left) - 1;
+		rcCurSel.left = pt.x + 1;
+		rcCurSel.top = rc.top + TAB_MARGIN_TOP - 2;
+		rcCurSel.bottom = rc.top + TAB_MARGIN_TOP;
+
+		if (rcCurSel.left < rc.left + TAB_MARGIN_LEFT)
 		{
-			POINT pt;
-			RECT rcCurSel;
+			rcCurSel.left = rc.left + TAB_MARGIN_LEFT; // 左端限界値
+		}
+		HWND hwndUpDown = ::FindWindowEx(m_hwndTab, NULL, UPDOWN_CLASS, 0); // タブ内の Up-Down コントロール
+		if (hwndUpDown && ::IsWindowVisible(hwndUpDown))
+		{
+			POINT ptREnd;
+			RECT rcUpDown;
 
-			TabCtrl_GetItemRect( m_hwndTab, nCurSel, &rcCurSel );
-			pt.x = rcCurSel.left;
-			pt.y = 0;
-			::ClientToScreen( m_hwndTab, &pt );
-			::ScreenToClient( GetHwnd(), &pt );
-			rcCurSel.right = pt.x + (rcCurSel.right - rcCurSel.left) - 1;
-			rcCurSel.left = pt.x + 1;
-			rcCurSel.top = rc.top + TAB_MARGIN_TOP - 2;
-			rcCurSel.bottom = rc.top + TAB_MARGIN_TOP;
+			::GetWindowRect(hwndUpDown, &rcUpDown);
+			ptREnd.x = rcUpDown.left;
+			ptREnd.y = 0;
+			::ScreenToClient(GetHwnd(), &ptREnd);
+			if (rcCurSel.right > ptREnd.x)
+				rcCurSel.right = ptREnd.x; // 右端限界値
+		}
 
-			if( rcCurSel.left < rc.left + TAB_MARGIN_LEFT )
-				rcCurSel.left = rc.left + TAB_MARGIN_LEFT;	// 左端限界値
-
-			HWND hwndUpDown = ::FindWindowEx( m_hwndTab, NULL, UPDOWN_CLASS, 0 );	// タブ内の Up-Down コントロール
-			if( hwndUpDown && ::IsWindowVisible( hwndUpDown ) )
-			{
-				POINT ptREnd;
-				RECT rcUpDown;
-
-				::GetWindowRect( hwndUpDown, &rcUpDown );
-				ptREnd.x = rcUpDown.left;
-				ptREnd.y = 0;
-				::ScreenToClient( GetHwnd(), &ptREnd );
-				if( rcCurSel.right > ptREnd.x )
-					rcCurSel.right = ptREnd.x;	// 右端限界値
-			}
-
-			if( rcCurSel.left < rcCurSel.right )
-			{
-				HBRUSH hBr = ::CreateSolidBrush( RGB( 255, 128, 0 ) );
-				::FillRect( gr, &rcCurSel, hBr );
-				::DeleteObject( hBr );
-			}
+		if (rcCurSel.left < rcCurSel.right)
+		{
+			::FillRect(gr, &rcCurSel, ::GetSysColorBrush(COLOR_HIGHLIGHT));
 		}
 	}
 
