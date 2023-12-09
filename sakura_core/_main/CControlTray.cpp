@@ -1259,13 +1259,16 @@ BOOL CControlTray::CloseAllEditor(
 	EditNode*	pWndArr;
 	int		n;
 
-	SessionStore::getInstance()->save();
-
 	n = CAppNodeManager::getInstance()->GetOpenedWindowArr( &pWndArr, FALSE );
 	if( 0 == n ){
 		return TRUE;
 	}
-	
+
+	int groupNum = CAppNodeManager::getInstance()->GetGroupNumber();
+	if (groupNum == 1) {
+		SessionStore::getInstance()->save();
+	}
+
 	/* 全編集ウィンドウへ終了要求を出す */
 	BOOL	bRes = CAppNodeGroupHandle(nGroup).RequestCloseEditor( pWndArr, n, bExit, bCheckConfirm, hWndFrom );	// 2007.02.13 ryoji bExitを引き継ぐ
 	delete []pWndArr;

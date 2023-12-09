@@ -872,3 +872,59 @@ HWND CAppNodeManager::GetNextTab(HWND hWndCur)
 
 	return hWnd;
 }
+
+/*!
+ * グループ数を返す
+ */
+int CAppNodeManager::GetGroupNumber(void)
+{
+	int i;
+
+	LockGuard<CMutex> guard(g_cEditArrMutex); // ミューテックス取得(自動解放)
+
+	DLLSHAREDATA* pShare = &GetDllShareData();
+
+	if (pShare->m_sNodes.m_nEditArrNum <= 0) {
+		return 0;
+	}
+
+	EditNodeEx* pEditNodeTmp = new EditNodeEx[pShare->m_sNodes.m_nEditArrNum];
+	if (pEditNodeTmp == NULL) {
+		return 0;
+	}
+
+	// グループ数の集計用に編集ウィンドウノード情報を取得する
+	int winNum = 0;
+	for (i = 0; i < pShare->m_sNodes.m_nEditArrNum; i++) {
+		if (IsSakuraMainWindow(pShare->m_sNodes.m_pEditArr[i].m_hWnd)) {
+			pEditNodeTmp[winNum].p = &pShare->m_sNodes.m_pEditArr[i];
+			pEditNodeTmp[winNum].nGroupMru = -1;
+			winNum++;
+		}
+	}
+	if (winNum == 0) {
+		delete[] pEditNodeTmp;
+		return 0;
+	}
+
+	int groupMru = 0;
+	int currentGroup = -1;
+	for (i = 0; i < winNum; i++) {
+		if ((pEditNodeTmp[i].nGroupMru == -1)
+		 && (pEditNodeTmp[i].p->m_nGroup != currentGroup)) {
+			groupMru++;
+			currentGroup = pEditNodeTmp[i].p->m_nGroup;
+			pEditNodeTmp[i].nGroupMru = groupMru;
+
+			for (int j = i + 1; j < winNum; j++) {
+				if (pEditNodeTmp[j].p->m_nGroup == currentGroup) {
+					pEditNodeTmp[j].nGroupMru = groupMru;
+				}
+			}
+		}
+	}
+
+	delete[] pEditNodeTmp;
+
+	return groupMru;
+}
