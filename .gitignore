@@ -10,3 +10,4 @@ Release*
 *.suo
 *.iobj
 *.ipdb
+sakura_core/gitrev.h
