@@ -66,6 +66,17 @@ BOOL CDlgTagsMake::OnBnClicked( int wID )
 		SelectFolder( GetHwnd() );
 		return TRUE;
 
+	case IDC_BUTTON_FOLDER_UP:
+		{
+			TCHAR szDir[_MAX_PATH];
+			HWND hwnd = GetItemHwnd( IDC_EDIT_TAG_MAKE_FOLDER );
+			::GetWindowText( hwnd, szDir, _countof(szDir) );
+			if( DirectoryUp( szDir ) ){
+				::SetWindowText( hwnd, szDir );
+			}
+		}
+		return TRUE;
+
 	case IDOK:
 		/* ダイアログデータの取得 */
 		::EndDialog( GetHwnd(), GetData() );

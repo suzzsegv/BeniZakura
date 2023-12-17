@@ -10,6 +10,7 @@
 #include "io/CFileLoad.h"
 #include "util/window.h"
 #include "util/module.h"
+#include "util/other_util.h"
 #include "debug/CRunningTimer.h"
 #include "sakura_rc.h"
 
@@ -41,6 +42,40 @@ void CGrepAgent::OnAfterSave(const SSaveInfo& sSaveInfo)
 	wcscpy( CAppMode::getInstance()->m_szGrepKey, L"" );
 }
 
+void CGrepAgent::CreateFolders( const TCHAR* pszPath, std::vector<std::tstring>& vPaths )
+{
+	const int nPathLen = auto_strlen( pszPath );
+	auto_array_ptr<TCHAR> szPath(new TCHAR[nPathLen + 1]);
+	auto_array_ptr<TCHAR> szTmp(new TCHAR[nPathLen + 1]);
+	auto_strcpy( &szPath[0], pszPath );
+	TCHAR* token;
+	int nPathPos = 0;
+	while( NULL != (token = my_strtok<TCHAR>( &szPath[0], nPathLen, &nPathPos, _T(";"))) ){
+		auto_strcpy( &szTmp[0], token );
+		TCHAR* p;
+		TCHAR* q;
+		p = q = &szTmp[0];
+		while( *p ){
+			if( *p != _T('"') ){
+				if( p != q ){
+					*q = *p;
+				}
+				q++;
+			}
+			p++;
+		}
+		*q = _T('\0');
+		// 2011.12.25 仕様変更。最後の\\は取り除く
+		int	nFolderLen = q - &szTmp[0];
+		if( 0 < nFolderLen ){
+			int nCharChars = &szTmp[nFolderLen] - CNativeT::GetCharPrev( &szTmp[0], nFolderLen, &szTmp[nFolderLen] );
+			if( 1 == nCharChars && (_T('\\') == szTmp[nFolderLen - 1] || _T('/') == szTmp[nFolderLen - 1]) ){
+				szTmp[nFolderLen - 1] = _T('\0');
+			}
+		}
+		vPaths.push_back( &szTmp[0] );
+	}
+}
 
 
 /*! Grep実行

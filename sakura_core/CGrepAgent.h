@@ -38,6 +38,8 @@ public:
 	ECallbackResult OnBeforeClose();
 	void OnAfterSave(const SSaveInfo& sSaveInfo);
 
+	static void CreateFolders( const TCHAR* pszPath, std::vector<std::tstring>& vPaths );
+
 	// Grep実行
 	DWORD DoGrep(
 		CEditView*				pcViewDst,
