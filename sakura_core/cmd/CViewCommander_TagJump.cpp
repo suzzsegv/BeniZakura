@@ -277,10 +277,10 @@ bool CViewCommander::Command_TagsMake( void )
 	//	To Here Dec. 28, 2002 MIK
 
 	TCHAR	options[1024];
-	_tcscpy( options, _T("--excmd=n --extra=+f") );	//デフォルトのオプション
+	_tcscpy( options, _T("--excmd=n --extras=+f") );	//デフォルトのオプション
 	if( cDlgTagsMake.m_nTagsOpt & 0x0001 ) _tcscat( options, _T(" -R") );	//サブフォルダも対象
-	if( cDlgTagsMake.m_nTagsOpt & 0x0002 ) _tcscat( options, _T(" --c-kinds=+px") );
-	if( cDlgTagsMake.m_nTagsOpt & 0x0004 ) _tcscat( options, _T(" --jcode=utf8") );
+	if( cDlgTagsMake.m_nTagsOpt & 0x0002 ) _tcscat( options, _T(" --kinds-C=+px") );
+	if( cDlgTagsMake.m_nTagsOpt & 0x0004 ) _tcscat( options, _T(" --input-encoding=cp932") );
 	if( cDlgTagsMake.m_szTagsCmdLine[0] != _T('\0') )	//個別指定のコマンドライン
 	{
 		_tcscat( options, _T(" ") );
