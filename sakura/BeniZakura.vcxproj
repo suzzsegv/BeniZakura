@@ -601,6 +601,7 @@
     <ClCompile Include="..\sakura_core\types\CType_Cpp.cpp" />
     <ClCompile Include="..\sakura_core\types\CType_Ini.cpp" />
     <ClCompile Include="..\sakura_core\types\CType_Java.cpp" />
+    <ClCompile Include="..\sakura_core\types\CType_JavaScript.cpp" />
     <ClCompile Include="..\sakura_core\types\CType_Others.cpp" />
     <ClCompile Include="..\sakura_core\types\CType_Python.cpp" />
     <ClCompile Include="..\sakura_core\types\CType_Text.cpp" />

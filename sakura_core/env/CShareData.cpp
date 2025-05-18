@@ -952,6 +952,7 @@ void CShareData::InitTypeConfigs(DLLSHAREDATA* pShareData)
 		new CType_Text(),	//テキスト
 		new CType_Cpp(),	//C/C++
 		new CType_Java(),	//Java
+		new CType_JavaScript(), //JavaScript
 		new CType_Asm(),	//アセンブラ
 		new CType_Ini(),	//設定ファイル
 		new CType_Markdown(),	//Markdown

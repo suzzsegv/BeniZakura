@@ -274,6 +274,10 @@ GEN_CTYPE(CType_Text)
 GEN_CTYPE(CType_Other)
 GEN_CTYPE(CType_Markdown)
 
+class CType_JavaScript : public CType {
+protected:
+	void InitTypeConfigImp(STypeConfig* pType);
+};
 
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
