@@ -97,6 +97,7 @@ inline bool isCSymbol(wchar_t c)
 	return (c<128 && gm_keyword_char[c]==CK_CSYM);
 }
 
+#ifdef DETECT_ZENKAKU_CHAR_TYPE
 //! 全角版、識別子に使用可能な文字かどうか
 inline bool isCSymbolZen(wchar_t c)
 {
@@ -106,117 +107,150 @@ inline bool isCSymbolZen(wchar_t c)
 		(c>=L'Ａ' && c<=L'Ｚ') ||
 		(c>=L'ａ' && c<=L'ｚ');
 }
-
+#endif
 
 
 //! 現在位置の文字の種類を調べる
-ECharKind CWordParse::WhatKindOfChar(
-	const wchar_t*	pData,
-	int				pDataLen,
-	int				nIdx
-)
+ECharKind CWordParse::WhatKindOfChar(const wchar_t* pData, int pDataLen, int nIdx)
 {
 	using namespace WCODE;
 
-	int nCharChars = CNativeW::GetSizeOfChar( pData, pDataLen, nIdx );
-	if( nCharChars == 0 ){
-		return CK_NULL;	// NULL
-	}
-	else if( nCharChars == 1 ){
-		wchar_t c=pData[nIdx];
+	int nCharChars = CNativeW::GetSizeOfChar(pData, pDataLen, nIdx);
+	if (nCharChars == 0) {
+		return CK_NULL; // NULL
+	} else if (nCharChars == 1) {
+		wchar_t c = pData[nIdx];
 
 		//今までの半角
-		if( IsBracket(c)         )return CK_BRACKET;
-		if( c<128                ) return (ECharKind)gm_keyword_char[c];
-		if( IsHankakuKatakana(c) )return CK_KATA;	// 半角のカタカナ
-		if( 0x00C0 <= c && c < 0x0180 && c != 0x00D7 && c != 0x00F7 )return CK_LATIN;
-													// ラテン１補助、ラテン拡張のうちアルファベット風のもの（×÷を除く）
+		if (IsBracket(c))
+			return CK_BRACKET;
+		if (c < 128)
+			return (ECharKind)gm_keyword_char[c];
+		if (IsHankakuKatakana(c))
+			return CK_KATA; // 半角のカタカナ
+		if (0x00C0 <= c && c < 0x0180 && c != 0x00D7 && c != 0x00F7)
+			return CK_LATIN;
+		// ラテン１補助、ラテン拡張のうちアルファベット風のもの（×÷を除く）
 		//その他
-		if( IsZenkakuSpace(c)    )return CK_ZEN_SPACE;	// 全角スペース
-		if( c==L'ー'             )return CK_ZEN_NOBASU;	// 伸ばす記号 'ー'
-		if( c==L'゛' || c==L'゜' )return CK_ZEN_DAKU;	// 全角濁点 「゛゜」
-		if( isCSymbolZen(c)      )return CK_ZEN_CSYM;	// 全角版、識別子に使用可能な文字 
-		if( IsZenkakuKigou(c)    )return CK_ZEN_KIGO;	// 全角の記号
-		if( IsHiragana(c)        )return CK_HIRA;		// ひらがな
-		if( IsZenkakuKatakana(c) )return CK_ZEN_KATA;	// 全角カタカナ
-		if( IsGreek(c)           )return CK_GREEK;		// ギリシャ文字
-		if( IsCyrillic(c)        )return CK_ZEN_ROS;	// ロシア文字
-		if( IsBoxDrawing(c)      )return CK_ZEN_SKIGO;	// 全角の特殊記号
+		if (IsZenkakuSpace(c))
+			return CK_ZEN_SPACE; // 全角スペース
+#ifdef DETECT_ZENKAKU_CHAR_TYPE
+		if (c == L'ー')
+			return CK_ZEN_NOBASU; // 伸ばす記号 'ー'
+		if (c == L'゛' || c == L'゜')
+			return CK_ZEN_DAKU; // 全角濁点 「゛゜」
+		if (isCSymbolZen(c))
+			return CK_ZEN_CSYM; // 全角版、識別子に使用可能な文字
+		if (IsZenkakuKigou(c))
+			return CK_ZEN_KIGO; // 全角の記号
+		if (IsHiragana(c))
+			return CK_HIRA; // ひらがな
+		if (IsZenkakuKatakana(c))
+			return CK_ZEN_KATA; // 全角カタカナ
+		if (IsGreek(c))
+			return CK_GREEK; // ギリシャ文字
+		if (IsCyrillic(c))
+			return CK_ZEN_ROS; // ロシア文字
+		if (IsBoxDrawing(c))
+			return CK_ZEN_SKIGO; // 全角の特殊記号
 
 		//未分類
-		if( IsHankaku(c) )return CK_ETC;	// 半角のその他
-		else return CK_ZEN_ETC;				// 全角のその他(漢字など)
-	}
-	else if( nCharChars == 2 ){
+		if (IsHankaku(c))
+			return CK_ETC; // 半角のその他
+		else
+			return CK_ZEN_ETC; // 全角のその他(漢字など)
+#else
+		return CK_ZEN_ETC; // 全角のその他(漢字など)
+#endif
+	} else if (nCharChars == 2) {
 		// サロゲートペア 2008/7/8 Uchi
-		if (IsUTF16High(pData[nIdx]) && IsUTF16Low(pData[nIdx+1])) {
-			int		nCode = 0x10000 + ((pData[nIdx] & 0x3FF)<<10) + (pData[nIdx+1] & 0x3FF);	// コードポイント
-			if (nCode >= 0x20000 && nCode <= 0x2FFFF) {	// CJKV 拡張予約域 Ext-B/Ext-C...
-				return CK_ZEN_ETC;				// 全角のその他(漢字など)
+		if (IsUTF16High(pData[nIdx]) && IsUTF16Low(pData[nIdx + 1])) {
+			int nCode = 0x10000 + ((pData[nIdx] & 0x3FF) << 10) + (pData[nIdx + 1] & 0x3FF); // コードポイント
+			if (nCode >= 0x20000 && nCode <= 0x2FFFF) { // CJKV 拡張予約域 Ext-B/Ext-C...
+				return CK_ZEN_ETC; // 全角のその他(漢字など)
 			}
 		}
-		return CK_ETC;	// 半角のその他
-	}
-	else{
-		return CK_NULL;	// NULL
+		return CK_ETC; // 半角のその他
+	} else {
+		return CK_NULL; // NULL
 	}
 }
 
 
-
 //! 二つの文字を結合したものの種類を調べる
-ECharKind CWordParse::WhatKindOfTwoChars( ECharKind kindPre, ECharKind kindCur )
+ECharKind CWordParse::WhatKindOfTwoChars(ECharKind kindPre, ECharKind kindCur)
 {
-	if( kindCur == CK_BRACKET )return CK_NULL;		// 括弧はデリミタとして扱うため、直前の文字が何であれ別種として返す
+	if (kindCur == CK_BRACKET)
+		return CK_NULL; // 括弧はデリミタとして扱うため、直前の文字が何であれ別種として返す
 
-	if( kindPre == kindCur )return kindCur;			// 同種ならその種別を返す
+	if (kindPre == kindCur)
+		return kindCur; // 同種ならその種別を返す
 
+#ifdef DETECT_ZENKAKU_CHAR_TYPE
 	// 全角長音・全角濁点は前後の全角ひらがな・全角カタカナに引きずられる
-	if( ( kindPre == CK_ZEN_NOBASU || kindPre == CK_ZEN_DAKU ) &&
-		( kindCur == CK_ZEN_KATA   || kindCur == CK_HIRA     ) )return kindCur;
-	if( ( kindCur == CK_ZEN_NOBASU || kindCur == CK_ZEN_DAKU ) &&
-		( kindPre == CK_ZEN_KATA   || kindPre == CK_HIRA     ) )return kindPre;
+	if ((kindPre == CK_ZEN_NOBASU || kindPre == CK_ZEN_DAKU) && (kindCur == CK_ZEN_KATA || kindCur == CK_HIRA))
+		return kindCur;
+	if ((kindCur == CK_ZEN_NOBASU || kindCur == CK_ZEN_DAKU) && (kindPre == CK_ZEN_KATA || kindPre == CK_HIRA))
+		return kindPre;
 	// 全角濁点、全角長音の連続は、とりあえず同種の文字とみなす
-	if( ( kindPre == CK_ZEN_NOBASU || kindPre == CK_ZEN_DAKU ) &&
-		( kindCur == CK_ZEN_NOBASU || kindCur == CK_ZEN_DAKU ) )return kindCur;
+	if ((kindPre == CK_ZEN_NOBASU || kindPre == CK_ZEN_DAKU) && (kindCur == CK_ZEN_NOBASU || kindCur == CK_ZEN_DAKU))
+		return kindCur;
+#endif
 
-	if( kindPre == CK_LATIN )kindPre = CK_CSYM;		// ラテン系文字はアルファベットとみなす
-	if( kindCur == CK_LATIN )kindCur = CK_CSYM;
-	if( kindPre == CK_UDEF )kindPre = CK_ETC;		// ユーザ定義文字はその他の半角とみなす
-	if( kindCur == CK_UDEF )kindCur = CK_ETC;
-	if( kindPre == CK_CTRL )kindPre = CK_ETC;		// 制御文字はその他の半角とみなす
-	if( kindCur == CK_CTRL )kindCur = CK_ETC;
+	if (kindPre == CK_LATIN)
+		kindPre = CK_CSYM; // ラテン系文字はアルファベットとみなす
+	if (kindCur == CK_LATIN)
+		kindCur = CK_CSYM;
+	if (kindPre == CK_UDEF)
+		kindPre = CK_ETC; // ユーザ定義文字はその他の半角とみなす
+	if (kindCur == CK_UDEF)
+		kindCur = CK_ETC;
+	if (kindPre == CK_CTRL)
+		kindPre = CK_ETC; // 制御文字はその他の半角とみなす
+	if (kindCur == CK_CTRL)
+		kindCur = CK_ETC;
 
-	if( kindPre == kindCur )return kindCur;			// 同種ならその種別を返す
+	if (kindPre == kindCur)
+		return kindCur; // 同種ならその種別を返す
 
-	return CK_NULL;									// それ以外なら二つの文字は別種
+	return CK_NULL; // それ以外なら二つの文字は別種
 }
 
 
 //! 二つの文字を結合したものの種類を調べる
-ECharKind CWordParse::WhatKindOfTwoChars4KW( ECharKind kindPre, ECharKind kindCur )
+ECharKind CWordParse::WhatKindOfTwoChars4KW(ECharKind kindPre, ECharKind kindCur)
 {
-	if( kindPre == kindCur )return kindCur;			// 同種ならその種別を返す
+	if (kindPre == kindCur)
+		return kindCur; // 同種ならその種別を返す
 
+#ifdef DETECT_ZENKAKU_CHAR_TYPE
 	// 全角長音・全角濁点は前後の全角ひらがな・全角カタカナに引きずられる
-	if( ( kindPre == CK_ZEN_NOBASU || kindPre == CK_ZEN_DAKU ) &&
-		( kindCur == CK_ZEN_KATA   || kindCur == CK_HIRA     ) )return kindCur;
-	if( ( kindCur == CK_ZEN_NOBASU || kindCur == CK_ZEN_DAKU ) &&
-		( kindPre == CK_ZEN_KATA   || kindPre == CK_HIRA     ) )return kindPre;
+	if ((kindPre == CK_ZEN_NOBASU || kindPre == CK_ZEN_DAKU) && (kindCur == CK_ZEN_KATA || kindCur == CK_HIRA))
+		return kindCur;
+	if ((kindCur == CK_ZEN_NOBASU || kindCur == CK_ZEN_DAKU) && (kindPre == CK_ZEN_KATA || kindPre == CK_HIRA))
+		return kindPre;
 	// 全角濁点、全角長音の連続は、とりあえず同種の文字とみなす
-	if( ( kindPre == CK_ZEN_NOBASU || kindPre == CK_ZEN_DAKU ) &&
-		( kindCur == CK_ZEN_NOBASU || kindCur == CK_ZEN_DAKU ) )return kindCur;
+	if ((kindPre == CK_ZEN_NOBASU || kindPre == CK_ZEN_DAKU) && (kindCur == CK_ZEN_NOBASU || kindCur == CK_ZEN_DAKU))
+		return kindCur;
+#endif
 
-	if( kindPre == CK_LATIN )kindPre = CK_CSYM;		// ラテン系文字はアルファベットとみなす
-	if( kindCur == CK_LATIN )kindCur = CK_CSYM;
-	if( kindPre == CK_UDEF )kindPre = CK_CSYM;		// ユーザ定義文字はアルファベットとみなす
-	if( kindCur == CK_UDEF )kindCur = CK_CSYM;
-	if( kindPre == CK_CTRL )kindPre = CK_CTRL;		// 制御文字はそのまま制御文字とみなす
-	if( kindCur == CK_CTRL )kindCur = CK_CTRL;
+	if (kindPre == CK_LATIN)
+		kindPre = CK_CSYM; // ラテン系文字はアルファベットとみなす
+	if (kindCur == CK_LATIN)
+		kindCur = CK_CSYM;
+	if (kindPre == CK_UDEF)
+		kindPre = CK_CSYM; // ユーザ定義文字はアルファベットとみなす
+	if (kindCur == CK_UDEF)
+		kindCur = CK_CSYM;
+	if (kindPre == CK_CTRL)
+		kindPre = CK_CTRL; // 制御文字はそのまま制御文字とみなす
+	if (kindCur == CK_CTRL)
+		kindCur = CK_CTRL;
 
-	if( kindPre == kindCur )return kindCur;			// 同種ならその種別を返す
+	if (kindPre == kindCur)
+		return kindCur; // 同種ならその種別を返す
 
-	return CK_NULL;									// それ以外なら二つの文字は別種
+	return CK_NULL; // それ以外なら二つの文字は別種
 }
 
 
