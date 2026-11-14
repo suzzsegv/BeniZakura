@@ -293,15 +293,12 @@
 #define IDC_EDIT_HEAD3                  1240
 #define IDC_BUTTON_CURRENTFOLDER        1241
 #define IDC_EDIT_FOOT2                  1243
-#define IDC_CHECK_USETRAYICON           1244
 #define IDC_EDIT_FOOT3                  1245
-#define IDC_CHECK_STAYTASKTRAY          1246
 #define IDC_CHECK_DispSTATUSBAR         1247
 #define IDC_RADIO_OUTPUTSTYLE2          1248
 #define IDC_CHECK_DispTabWnd            1249
 #define IDC_STATIC_ENABLECOLUMNS        1250
 #define IDC_STATIC_ENABLELINES          1251
-#define IDC_HOTKEY_TRAYMENU             1252
 #define IDC_CHECK_ENABLEUNMODIFIEDOVERWRITE 1253
 #define IDC_CHECK_DRAGDROP              1254
 #define IDC_CHECK_DROPSOURCE            1255

@@ -1,13 +1,13 @@
 /*!	@file
 	@brief 常駐部
 
-	タスクトレイアイコンの管理，タスクトレイメニューのアクション，
-	MRU、キー割り当て、共通設定、編集ウィンドウの管理など
+	キー割り当て、共有データの保存、編集ウィンドウの管理など
 
 	@author Norio Nakatani
 	@date 1998/05/13 新規作成
 	@date 2001/06/03 N.Nakatani grep単語単位で検索を実装するときのためにコマンドラインオプションの処理追加
 	@date 2007/10/23 kobake     クラス名、ファイル名変更: CEditApp→CControlTray
+	@date 2026/11/14 タスクトレイのアイコンとメニュー (および、そのホットキー) を削除
 */
 /*
 	Copyright (C) 1998-2001, Norio Nakatani
@@ -26,19 +26,16 @@
 #define _CCONTROLTRAY_H_
 
 #include <Windows.h>
-#include "uiparts/CMenuDrawer.h"
-#include "uiparts/CImageListMgr.h" // 2002/2/10 aroka
 #include "dlg/CDlgGrep.h" // 2002/2/10 aroka
 
 struct SLoadInfo;
 struct EditInfo;
 struct DLLSHAREDATA;
-class CPropertyManager;
 
 //!	常駐部の管理
 /*!
-	タスクトレイアイコンの管理，タスクトレイメニューのアクション，
-	MRU、キー割り当て、共通設定、編集ウィンドウの管理など
+	キー割り当て、共有データの保存、編集ウィンドウの管理など
+	（タスクトレイのアイコンとメニューは 2026/11/14 に削除）
 	
 	@date 2002.2.17 YAZAKI CShareDataのインスタンスは、CProcessにひとつあるのみ。
 */
@@ -55,12 +52,9 @@ public:
 	|| メンバ関数
 	*/
 	HWND Create( HINSTANCE );	/* 作成 */
-	bool CreateTrayIcon( HWND );	// 20010412 by aroka
 	LRESULT DispatchEvent( HWND, UINT, WPARAM, LPARAM );	/* メッセージ処理 */
 	void MessageLoop( void );	/* メッセージループ */
 	void OnDestroy( void );		/* WM_DESTROY 処理 */	// 2006.07.09 ryoji
-	int	CreatePopUpMenu_L( void );	/* ポップアップメニュー(トレイ左ボタン) */
-	int	CreatePopUpMenu_R( void );	/* ポップアップメニュー(トレイ右ボタン) */
 	void CreateAccelTbl( void ); // アクセラレータテーブル作成
 	void DeleteAccelTbl( void ); // アクセラレータテーブル破棄
 
@@ -96,10 +90,7 @@ public:
 	*/
 	static void DoGrepCreateWindow(HINSTANCE hinst, HWND, CDlgGrep& cDlgGrep);
 protected:
-	void	DoGrep();	//Stonee, 2001/03/21
-	BOOL TrayMessage(HWND , DWORD , UINT , HICON , const TCHAR* );	/*!< タスクトレイのアイコンに関する処理 */
 	void OnCommand( WORD , WORD  , HWND );	/*!< WM_COMMANDメッセージ処理 */
-	void OnNewEditor( bool ); //!< 2003.05.30 genta 新規ウィンドウ作成処理を切り出し
 
 	static INT_PTR CALLBACK ExitingDlgProc(	/*!< 終了ダイアログ用プロシージャ */	// 2006.07.02 ryoji CControlProcess から移動
 		HWND	hwndDlg,	// handle to dialog box
@@ -113,20 +104,11 @@ protected:
 	|| メンバ変数
 	*/
 private:
-	CMenuDrawer		m_CMenuDrawer;
-	CPropertyManager*	m_pcPropertyManager;
-	bool			m_bUseTrayMenu;			//トレイメニュー表示中
 	HINSTANCE		m_hInstance;
 	HWND			m_hWnd;
-	BOOL			m_bCreatedTrayIcon;		//!< トレイにアイコンを作った
 
 	DLLSHAREDATA*	m_pShareData;
-	CDlgGrep		m_cDlgGrep;				// Jul. 2, 2001 genta
-	int				m_nCurSearchKeySequence;
 
-	CImageListMgr	m_hIcons;
-
-	UINT			m_uCreateTaskBarMsg;	//!< RegisterMessageで得られるMessage IDの保管場所。Apr. 24, 2001 genta
 };
 
 

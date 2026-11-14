@@ -438,7 +438,7 @@
 	-- バージョン1000以降を本家統合までの間、使わせてください。かなり頻繁に構成が変更されると思われるので。by kobake 2008.03.02
 
 */
-#define N_SHAREDATA_VERSION		20261114
+#define N_SHAREDATA_VERSION		2026111402
 #define STR_SHAREDATA_VERSION	NUM_TO_STR(N_SHAREDATA_VERSION)
 #define	GSTR_SHAREDATA	(_T("BeniZakuraShareData") _T(CON_SKR_MACHINE_SUFFIX_) _T(_CODE_SUFFIX_) _T(_DEBUG_SUFFIX_) _T(STR_SHAREDATA_VERSION))
 
@@ -534,8 +534,6 @@ enum e_PM_CHANGESETTING_SELECT {
 	PM_CHANGESETTING_FONT		= 1, //!< フォント変更
 };
 
-//! タスクトレイからの通知メッセージ
-#define MYWM_NOTIFYICON		(WM_APP+100)
 
 
 
