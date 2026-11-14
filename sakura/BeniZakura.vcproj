@@ -2638,6 +2638,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\sakura_core\_main\CEditorManager.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\sakura_core\_main\CEditorManager.h"
+					>
+				</File>
+				<File
 					RelativePath="..\sakura_core\_main\CMutex.h"
 					>
 				</File>

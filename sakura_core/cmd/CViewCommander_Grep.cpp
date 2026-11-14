@@ -15,7 +15,7 @@
 #include "CViewCommander.h"
 #include "CViewCommander_inline.h"
 
-#include "_main/CControlTray.h"
+#include "_main/CEditorManager.h"
 #include "CEditApp.h"
 #include "CGrepAgent.h"
 
@@ -98,7 +98,7 @@ void CViewCommander::Command_GREP( void )
 
 		/*======= Grepの実行 =============*/
 		/* Grep結果ウィンドウの表示 */
-		CControlTray::DoGrepCreateWindow(G_AppInstance(), m_pCommanderView->GetHwnd(), GetEditWindow()->m_cDlgGrep);
+		CEditorManager::DoGrepCreateWindow(G_AppInstance(), m_pCommanderView->GetHwnd(), GetEditWindow()->m_cDlgGrep);
 	}
 	return;
 }

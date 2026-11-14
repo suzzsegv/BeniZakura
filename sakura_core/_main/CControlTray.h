@@ -1,7 +1,7 @@
 /*!	@file
 	@brief 常駐部
 
-	キー割り当て、共有データの保存、編集ウィンドウの管理など
+	キー割り当て、共有データの保存、Windows 終了時の処理など (編集ウィンドウの起動・終了は CEditorManager)
 
 	@author Norio Nakatani
 	@date 1998/05/13 新規作成
@@ -26,15 +26,12 @@
 #define _CCONTROLTRAY_H_
 
 #include <Windows.h>
-#include "dlg/CDlgGrep.h" // 2002/2/10 aroka
 
-struct SLoadInfo;
-struct EditInfo;
 struct DLLSHAREDATA;
 
 //!	常駐部の管理
 /*!
-	キー割り当て、共有データの保存、編集ウィンドウの管理など
+	キー割り当て、共有データの保存、Windows 終了時の処理など (編集ウィンドウの起動・終了は CEditorManager)
 	（タスクトレイのアイコンとメニューは 2026/11/14 に削除）
 	
 	@date 2002.2.17 YAZAKI CShareDataのインスタンスは、CProcessにひとつあるのみ。
@@ -58,37 +55,9 @@ public:
 	void CreateAccelTbl( void ); // アクセラレータテーブル作成
 	void DeleteAccelTbl( void ); // アクセラレータテーブル破棄
 
-	//ウィンドウ管理
-	static bool OpenNewEditor(							//!< 新規編集ウィンドウの追加 ver 0
-		HINSTANCE			hInstance,					//!< [in] インスタンスID (実は未使用)
-		HWND				hWndParent,					//!< [in] 親ウィンドウハンドル．エラーメッセージ表示用
-		const SLoadInfo&	sLoadInfo,					//!< [in]
-		const TCHAR*		szCmdLineOption	= NULL,		//!< [in] 追加のコマンドラインオプション
-		bool				sync			= false,	//!< [in] trueなら新規エディタの起動まで待機する
-		const TCHAR*		szCurDir		= NULL,		//!< [in] 新規エディタのカレントディレクトリ
-		bool				bNewWindow		= false		//!< [in] 新規エディタをウインドウで開く
-	);
-	static bool OpenNewEditor2(						//!< 新規編集ウィンドウの追加 ver 1
-		HINSTANCE		hInstance,
-		HWND			hWndParent,
-		const EditInfo*	pfi,
-		bool			bViewMode,
-		bool			sync		= false,
-		bool			bNewWindow	= false
-	);
-	static void ActiveNextWindow();
-	static void ActivePrevWindow();
-
-	static BOOL CloseAllEditor( BOOL bCheckConfirm, HWND hWndFrom, BOOL bExit, int nGroup );	/* すべてのウィンドウを閉じる */	//Oct. 7, 2000 jepro 「編集ウィンドウの全終了」という説明を左記のように変更	// 2006.12.25, 2007.02.13 ryoji 引数追加
-	static void TerminateApplication( HWND hWndFrom );	/* サクラエディタの全終了 */	// 2006.12.25 ryoji 引数追加
-
 public:
 	HWND GetTrayHwnd() const{ return m_hWnd; }
 
-	/*
-	|| 実装ヘルパ系
-	*/
-	static void DoGrepCreateWindow(HINSTANCE hinst, HWND, CDlgGrep& cDlgGrep);
 protected:
 	void OnCommand( WORD , WORD  , HWND );	/*!< WM_COMMANDメッセージ処理 */
 

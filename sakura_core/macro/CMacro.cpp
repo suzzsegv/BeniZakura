@@ -41,7 +41,7 @@
 #include "StdAfx.h"
 #include "func/Funccode.h"
 #include "CMacro.h"
-#include "_main/CControlTray.h"
+#include "_main/CEditorManager.h"
 #include "view/CEditView.h" //2002/2/10 aroka
 #include "macro/CSMacroMgr.h" //2002/2/10 aroka
 #include "doc/CEditDoc.h"	//	2002/5/13 YAZAKI ヘッダ整理
@@ -871,7 +871,7 @@ void CMacro::HandleCommand(
 			sLoadInfo.cFilePath = _T("");
 			sLoadInfo.eCharCode = CODE_NONE;
 			sLoadInfo.bViewMode = false;
-			CControlTray::OpenNewEditor(
+			CEditorManager::OpenNewEditor(
 				G_AppInstance(),
 				pcEditView->GetHwnd(),
 				sLoadInfo,

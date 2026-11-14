@@ -29,7 +29,7 @@
 #include "recent/CMRUFile.h"
 #include "recent/CMRUFolder.h"
 #include "_main/CAppMode.h" 
-#include "_main/CControlTray.h"
+#include "_main/CEditorManager.h"
 #include "CEditApp.h"
 #include "window/CEditWnd.h"
 #include "uiparts/CWaitCursor.h"
@@ -543,7 +543,7 @@ void CDocFileOperation::FileCloseOpen( const SLoadInfo& _sLoadInfo )
 		for( size_t i = 1; i < nSize; i++ ){
 			SLoadInfo sFilesLoadInfo = sLoadInfo;
 			sFilesLoadInfo.cFilePath = files[i].c_str();
-			CControlTray::OpenNewEditor(
+			CEditorManager::OpenNewEditor(
 				G_AppInstance(),
 				CEditWnd::getInstance()->GetHwnd(),
 				sFilesLoadInfo,

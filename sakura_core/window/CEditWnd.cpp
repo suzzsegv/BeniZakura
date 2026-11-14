@@ -44,7 +44,7 @@
 #include <ShlObj.h>
 
 #include "window/CEditWnd.h"
-#include "_main/CControlTray.h"
+#include "_main/CEditorManager.h"
 #include "_main/CCommandLine.h"	/// 2003/1/26 aroka
 #include "_main/CAppMode.h"
 #include "_os/CDropTarget.h"
@@ -647,7 +647,7 @@ HWND CEditWnd::Create(
 
 	// 初回アイドリング検出用のゼロ秒タイマーをセットする	// 2008.04.19 ryoji
 	// ゼロ秒タイマーが発動（初回アイドリング検出）したら MYWM_FIRST_IDLE を起動元プロセスにポストする。
-	// ※起動元での起動先アイドリング検出については CControlTray::OpenNewEditor を参照
+	// ※起動元での起動先アイドリング検出については CEditorManager::OpenNewEditor を参照
 	::SetTimer( GetHwnd(), IDT_FIRST_IDLE, 0, NULL );
 
 	/* 編集ウィンドウリストへの登録 */
@@ -1470,7 +1470,7 @@ LRESULT CEditWnd::DispatchEvent(
 		return 0L;
 	case WM_QUERYENDSESSION:	//OSの終了
 		if( OnClose( NULL ) ){
-			CControlTray::TerminateApplication( GetHwnd() );
+			CEditorManager::TerminateApplication( GetHwnd() );
 			return TRUE;
 		}
 		return FALSE;
@@ -1549,7 +1549,7 @@ LRESULT CEditWnd::DispatchEvent(
 						sLoadInfo.cFilePath = _T("");
 						sLoadInfo.eCharCode = CODE_NONE;
 						sLoadInfo.bViewMode = false;
-						CControlTray::OpenNewEditor(
+						CEditorManager::OpenNewEditor(
 							G_AppInstance(),
 							GetHwnd(),
 							sLoadInfo,
@@ -2073,7 +2073,7 @@ void CEditWnd::OnCommand( WORD wNotifyCode, WORD wID , HWND hwndCtl )
 				cDocOp.FileLoad( &sLoadInfo );
 				for( size_t f = 1; f < files.size(); f++ ){
 					sLoadInfo.cFilePath = files[f].c_str();
-					CControlTray::OpenNewEditor( G_AppInstance(), GetHwnd(), sLoadInfo, NULL, true );
+					CEditorManager::OpenNewEditor( G_AppInstance(), GetHwnd(), sLoadInfo, NULL, true );
 				}
 			}
 		}
@@ -2618,7 +2618,7 @@ void CEditWnd::OnDropFiles( HDROP hDrop )
 					sLoadInfo.cFilePath = szFile;
 					sLoadInfo.eCharCode = CODE_NONE;
 					sLoadInfo.bViewMode = false;
-					CControlTray::OpenNewEditor(
+					CEditorManager::OpenNewEditor(
 						G_AppInstance(),
 						GetHwnd(),
 						sLoadInfo

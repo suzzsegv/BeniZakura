@@ -33,7 +33,7 @@
 #include "EditInfo.h"
 #include "CAppNodeManager.h"
 #include "window/CEditWnd.h"
-#include "_main/CControlTray.h"
+#include "_main/CEditorManager.h"
 #include "_main/CMutex.h"
 #include "_main/CProcess.h"
 #include "util/file.h"
@@ -138,7 +138,7 @@ void SessionStore::restore(CEditWnd* pEditWnd, EditInfo* pEditInfo)
 		}
 		else if(IsFileExists(fullPathFileName, true) == true){
 			wcscpy_s(resoreFileInfo.m_szPath, _MAX_PATH, fullPathFileName);
-			CControlTray::OpenNewEditor2(
+			CEditorManager::OpenNewEditor2(
 										CProcess::getInstance()->GetProcessInstance(), pEditWnd->GetHwnd(),
 										&resoreFileInfo, false, true, false
 										);

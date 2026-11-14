@@ -361,6 +361,7 @@ _main/CAppMode.o \
 _main/CCommandLine.o \
 _main/CControlProcess.o \
 _main/CControlTray.o \
+_main/CEditorManager.o \
 _main/CNormalProcess.o \
 _main/CProcess.o \
 _main/CProcessFactory.o \

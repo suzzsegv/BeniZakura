@@ -25,7 +25,7 @@
 #include "CLoadAgent.h"
 #include "CReadManager.h"
 #include "_main/CAppMode.h"
-#include "_main/CControlTray.h"
+#include "_main/CEditorManager.h"
 #include "CEditApp.h"
 #include "env/CDocTypeManager.h"
 #include "env/CShareData.h"
@@ -62,7 +62,7 @@ ECallbackResult CLoadAgent::OnCheckLoad(SLoadInfo* pLoadInfo)
 			for( size_t i = 1; i < nSize; i++ ){
 				SLoadInfo sFilesLoadInfo = sLoadInfo;
 				sFilesLoadInfo.cFilePath = files[i].c_str();
-				CControlTray::OpenNewEditor(
+				CEditorManager::OpenNewEditor(
 					G_AppInstance(),
 					CEditWnd::getInstance()->GetHwnd(),
 					sFilesLoadInfo,
@@ -83,7 +83,7 @@ ECallbackResult CLoadAgent::OnCheckLoad(SLoadInfo* pLoadInfo)
 
 	// 現在のウィンドウに対してファイルを読み込めない場合は、新たなウィンドウを開き、そこにファイルを読み込ませる
 	if(!pcDoc->IsAcceptLoad()){
-		CControlTray::OpenNewEditor(
+		CEditorManager::OpenNewEditor(
 			G_AppInstance(),
 			CEditWnd::getInstance()->GetHwnd(),
 			*pLoadInfo
