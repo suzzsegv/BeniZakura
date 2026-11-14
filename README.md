@@ -61,11 +61,38 @@ https://github.com/suzzsegv/BeniZakura
 
 ## ビルド方法
 
-Visual Studio Community 2022 を用いてビルドしています。sakura/BeniZakura\_vs2022.sln をダブルクリックして
+Visual Studio Community 2026 を用いてビルドしています。sakura/BeniZakura\_vs2026.sln をダブルクリックして
 IDE を起動後、ターゲットとして Release\_Unicode を選択、ビルドメニューからビルドを行ってください。
 
 ---
 ## 変更点
+
+### 未リリース (Ver.2025.5.18.36 以降)
+
+ * 単語の検出時に、全角文字を同一の文字種別として扱うように変更  
+   ひらがな、カタカナ、漢字、全角記号などの文字種別の境界で単語を区切らないように変更。  
+   （全角スペースは従来通り区切り文字として扱います。）  
+
+ * ビルド環境を「Visual Studio Community 2022」から「Visual Studio Community 2026」に変更  
+   ソリューションファイル名を BeniZakura\_vs2022.sln から BeniZakura\_vs2026.sln に変更。  
+
+
+### 2025/05/18 - Ver.2025.5.18.36
+
+ * タグファイル作成に使用する ctags の実行ファイルを exuberant-ctags から universal-ctags に変更  
+   Vector のオンラインソフト作者向けホームページサービスが 2024/12/20 で終了したことに伴い、
+   「exuberant ctags 日本語対応版」の実行ファイルが入手できなくなったため。  
+   universal-ctags に合わせて、ctags の実行時オプションを以下のように変更した。  
+    - --extra=+f → --extras=+f  
+    - --c-kinds=+px → --kinds-C=+px  
+    - --jcode=utf8 → --input-encoding=cp932  
+
+ * タグファイル作成ダイアログ: 「UTF-8 指定を追加する」チェックボックスを「CP932 (SJIS) 指定を追加する」に変更  
+   universal-ctags では、デフォルトのエンコーディングが UTF-8 に変更されたため。  
+
+ * タイプ別設定: JavaScript を追加  
+   ファイルの拡張子は ".js"。  
+
 
 ### 2023/12/17 - Ver.2023.12.17.35
 
