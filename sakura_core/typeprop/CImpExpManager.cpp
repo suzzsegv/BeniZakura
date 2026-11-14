@@ -708,6 +708,14 @@ bool CImpExpKeyHelp::Import( const wstring& sFileName, wstring& sErrMsg )
 			b_enable_flag = 1;
 		}
 		//Path
+		//	辞書ファイルのパスが長すぎる場合は不正な行として扱う
+		//	(m_szPath へのコピー時のバッファオーバーフロー防止)
+		if( wcslen(p3) >= _countof2(m_Types.m_KeyHelpArr[i].m_szPath) ){
+			auto_sprintf_s( msgBuff, _countof(msgBuff), L"辞書ファイルのパスは%d文字以内にしてください。", _countof2(m_Types.m_KeyHelpArr[i].m_szPath) - 1 );
+			sErrMsg = msgBuff;
+			++invalid_record;
+			continue;
+		}
 		FILE* fp2;
 		const WCHAR* p4 = p2;
 		if( (fp2=_tfopen_absini(to_tchar(p3),_T("r"))) == NULL ){	// 2007.02.03 genta 相対パスはsakura.exe基準で開く	// 2007.05.19 ryoji 相対パスは設定ファイルからのパスを優先
@@ -719,8 +727,10 @@ bool CImpExpKeyHelp::Import( const wstring& sFileName, wstring& sErrMsg )
 			fclose(fp2);
 
 		//About
-		if (wcslen(p2) > DICT_ABOUT_LEN) {
-			auto_sprintf( msgBuff, L"辞書の説明は%d文字以内にしてください。", DICT_ABOUT_LEN );
+		//	m_szAbout は終端の NUL を含めて DICT_ABOUT_LEN 文字のため、
+		//	DICT_ABOUT_LEN 文字ちょうどの場合も不正とする
+		if (wcslen(p2) >= DICT_ABOUT_LEN) {
+			auto_sprintf_s( msgBuff, _countof(msgBuff), L"辞書の説明は%d文字以内にしてください。", DICT_ABOUT_LEN - 1 );
 			sErrMsg = msgBuff;
 			++invalid_record;
 			continue;
@@ -728,8 +738,8 @@ bool CImpExpKeyHelp::Import( const wstring& sFileName, wstring& sErrMsg )
 
 		//良さそうなら
 		m_Types.m_KeyHelpArr[i].m_bUse = (b_enable_flag!=0);	// 2007.02.03 genta
-		_tcscpy(m_Types.m_KeyHelpArr[i].m_szAbout, to_tchar(p4));
-		_tcscpy(m_Types.m_KeyHelpArr[i].m_szPath,  to_tchar(p3));
+		_tcsncpy_s(m_Types.m_KeyHelpArr[i].m_szAbout, _countof(m_Types.m_KeyHelpArr[i].m_szAbout), to_tchar(p4), _TRUNCATE);
+		_tcsncpy_s(m_Types.m_KeyHelpArr[i].m_szPath, _countof2(m_Types.m_KeyHelpArr[i].m_szPath), to_tchar(p3), _TRUNCATE);
 		i++;
 	}
 	in.Close();
