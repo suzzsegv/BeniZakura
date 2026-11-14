@@ -506,17 +506,78 @@ void CViewCommander::Command_ExecThgAnnotate( void )
 	BOOL succeeded;
 	STARTUPINFO si;
 	PROCESS_INFORMATION pi;
-	const int CommandLineMax = 1024;
-	wchar_t CommandLine[CommandLineMax+1];
 
-	CSakuraEnvironment::ExpandParameter( L"thg.exe annotate $F --line $y", CommandLine, CommandLineMax );
+	// 無題の場合は何もしない
+	if( !GetDocument()->m_cDocFile.GetFilePathClass().IsValidPath() ){
+		return;
+	}
+
+	// thg.exe を PATH 環境変数に指定された絶対パスのフォルダからのみ検索する。
+	// (CreateProcess に "thg.exe" を相対名で渡すと、カレントディレクトリなどに
+	//  置かれた同名の実行ファイルが起動されてしまう恐れがあるため)
+	std::wstring ThgPath;
+	{
+		DWORD EnvLen = ::GetEnvironmentVariableW( L"PATH", NULL, 0 );
+		std::vector<wchar_t> EnvPath( EnvLen + 1, L'\0' );
+		if( EnvLen != 0 ){
+			::GetEnvironmentVariableW( L"PATH", &EnvPath[0], EnvLen );
+		}
+		const wchar_t* p = &EnvPath[0];
+		while( *p != L'\0' && ThgPath.empty() ){
+			const wchar_t* pEnd = wcschr( p, L';' );
+			if( pEnd == NULL ){
+				pEnd = p + wcslen( p );
+			}
+			std::wstring Dir( p, pEnd );
+			p = ( *pEnd == L';' ) ? pEnd + 1 : pEnd;
+
+			// 前後の " を取り除く
+			if( 2 <= Dir.length() && Dir[0] == L'"' && Dir[Dir.length() - 1] == L'"' ){
+				Dir = Dir.substr( 1, Dir.length() - 2 );
+			}
+			// 相対パス(".", 空文字列など)は対象外
+			if( Dir.empty() || _IS_REL_PATH( Dir.c_str() ) ){
+				continue;
+			}
+			if( Dir[Dir.length() - 1] != L'\\' ){
+				Dir += L'\\';
+			}
+			std::wstring Candidate = Dir + L"thg.exe";
+			DWORD Attr = ::GetFileAttributesW( Candidate.c_str() );
+			if( Attr != INVALID_FILE_ATTRIBUTES && ( Attr & FILE_ATTRIBUTE_DIRECTORY ) == 0 ){
+				ThgPath = Candidate;
+			}
+		}
+	}
+	if( ThgPath.empty() ){
+		WarningMessage( m_pCommanderView->GetHwnd(), _T("TortoiseHg annotate の起動に失敗しました。\n\nthg.exe が見つかりません。") );
+		return;
+	}
+
+	// コマンドライン作成
+	//   "<thg.exeのフルパス>" annotate --line <行番号> -- "<ファイルのフルパス>"
+	// ファイルパスは " で囲み、直前に -- を置いてオプションとして解釈されないようにする。
+	wchar_t LineNumber[32];
+	CSakuraEnvironment::ExpandParameter( L"$y", LineNumber, _countof(LineNumber) - 1 );
+
+	std::wstring CmdLineStr;
+	CmdLineStr += L"\"";
+	CmdLineStr += ThgPath;
+	CmdLineStr += L"\" annotate --line ";
+	CmdLineStr += LineNumber;
+	CmdLineStr += L" -- \"";
+	CmdLineStr += GetDocument()->m_cDocFile.GetFilePath();
+	CmdLineStr += L"\"";
+	std::vector<wchar_t> CommandLine( CmdLineStr.begin(), CmdLineStr.end() );
+	CommandLine.push_back( L'\0' );	// CreateProcessW はコマンドライン文字列を書き換えるため、書き込み可能なバッファを渡す
+
 	ZeroMemory( &si, sizeof(si) );
 	si.cb = sizeof(si);
 
 	succeeded = CreateProcessW
 		(
-			NULL,
-			CommandLine,
+			ThgPath.c_str(),
+			&CommandLine[0],
 			NULL,
 			NULL,
 			FALSE,
