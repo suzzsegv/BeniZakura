@@ -199,7 +199,13 @@ void CEditView::ExecCmd( const TCHAR* pszCmd, int nFlgOpt, const TCHAR* pszCurDi
 
 	//コマンドライン実行
 	TCHAR	cmdline[1024];
-	_tcscpy( cmdline, pszCmd );
+	//	コマンドが長すぎる場合は実行しない (cmdline のバッファオーバーフロー防止)
+	//	※切り詰めて実行すると意図しないコマンドが実行される恐れがあるため、エラーとする
+	if( _tcslen( pszCmd ) >= _countof(cmdline) ){
+		ErrorMessage( GetHwnd(), _T("コマンドが長すぎるため実行できません。\n(%d 文字以内にしてください)"), (int)( _countof(cmdline) - 1 ) );
+		goto finish;
+	}
+	_tcscpy_s( cmdline, _countof(cmdline), pszCmd );
 	if( CreateProcess( NULL, cmdline, NULL, NULL, TRUE,
 				CREATE_NEW_CONSOLE, NULL, bCurDir ? pszCurDir : NULL, &sui, &pi ) == FALSE ) {
 		//実行に失敗した場合、コマンドラインベースのアプリケーションと判断して
@@ -214,15 +220,23 @@ void CEditView::ExecCmd( const TCHAR* pszCmd, int nFlgOpt, const TCHAR* pszCurDi
 		}
 
 		//コマンドライン文字列作成
-		auto_sprintf(
-			cmdline,
-			_T("\"%ts\\%ts\" %ts%ts%ts"),
-			szCmdDir,
-			( IsWin32NT() ? _T("cmd.exe") : _T("command.com") ),
-			( outputEncoding == CODE_UNICODE ? _T("/U") : _T("") ),		// Unicdeモードでコマンド実行	2008/6/17 Uchi
-			( bGetStdout ? _T("/C ") : _T("/K ") ),
-			pszCmd
-		);
+		//	"<szCmdDir>\cmd.exe" [/U]/C|/K <pszCmd>
+		//	cmdline に収まらない場合は実行しない (バッファオーバーフロー防止)
+		std::tstring sCmdLine;
+		sCmdLine += _T("\"");
+		sCmdLine += szCmdDir;
+		sCmdLine += _T("\\");
+		sCmdLine += ( IsWin32NT() ? _T("cmd.exe") : _T("command.com") );
+		sCmdLine += _T("\" ");
+		sCmdLine += ( outputEncoding == CODE_UNICODE ? _T("/U") : _T("") );	// Unicdeモードでコマンド実行	2008/6/17 Uchi
+		sCmdLine += ( bGetStdout ? _T("/C ") : _T("/K ") );
+		sCmdLine += pszCmd;
+		if( sCmdLine.length() >= _countof(cmdline) ){
+			ErrorMessage( GetHwnd(), _T("コマンドが長すぎるため実行できません。\n(%d 文字以内にしてください)"),
+				(int)( _countof(cmdline) - 1 - ( sCmdLine.length() - _tcslen( pszCmd ) ) ) );
+			goto finish;
+		}
+		_tcscpy_s( cmdline, _countof(cmdline), sCmdLine.c_str() );
 		if( CreateProcess( NULL, cmdline, NULL, NULL, TRUE,
 					CREATE_NEW_CONSOLE, NULL, bCurDir ? pszCurDir : NULL, &sui, &pi ) == FALSE ) {
 			MessageBox( NULL, cmdline, _T("コマンド実行は失敗しました。"), MB_OK | MB_ICONEXCLAMATION );
