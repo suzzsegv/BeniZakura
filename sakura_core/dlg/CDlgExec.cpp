@@ -22,6 +22,7 @@
 #include "func/Funccode.h"	//Stonee, 2001/03/12  コメントアウトされてたのを有効にした
 #include "util/shell.h"
 #include "util/window.h"
+#include "config/maxdata.h"	// MAX_CMDLEN
 #include "_main/CAppMode.h"
 #include "doc/CEditDoc.h"
 #include "sakura_rc.h"
@@ -76,7 +77,8 @@ void CDlgExec::SetData( void )
 	*           初期             *
 	*****************************/
 	/* ユーザーがコンボ ボックスのエディット コントロールに入力できるテキストの長さを制限する */
-	Combo_LimitText( ::GetDlgItem( GetHwnd(), IDC_COMBO_m_szCommand ), _countof( m_szCommand ) - 1 );
+	//	外部コマンド履歴(MAX_CMDLEN)に終端 NUL を含めて格納できる長さに制限する
+	Combo_LimitText( ::GetDlgItem( GetHwnd(), IDC_COMBO_m_szCommand ), MAX_CMDLEN - 1 );
 	Combo_LimitText( ::GetDlgItem( GetHwnd(), IDC_COMBO_CUR_DIR ), _countof2( m_szCurDir ) - 1 );
 	/* コンボボックスのユーザー インターフェイスを拡張インターフェースにする */
 	Combo_SetExtendedUI( ::GetDlgItem( GetHwnd(), IDC_COMBO_m_szCommand ), TRUE );
@@ -153,7 +155,7 @@ void CDlgExec::SetData( void )
 /* ダイアログデータの取得 */
 int CDlgExec::GetData( void )
 {
-	DlgItem_GetText( GetHwnd(), IDC_COMBO_m_szCommand, m_szCommand, _countof( m_szCommand ));
+	DlgItem_GetText( GetHwnd(), IDC_COMBO_m_szCommand, m_szCommand, MAX_CMDLEN );	// 外部コマンド履歴に格納できる長さまで
 	if( IsDlgButtonCheckedBool( GetHwnd(), IDC_CHECK_CUR_DIR ) ){
 		DlgItem_GetText( GetHwnd(), IDC_COMBO_CUR_DIR, &m_szCurDir[0], _countof2( m_szCurDir ));
 	}else{

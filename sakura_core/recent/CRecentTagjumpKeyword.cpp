@@ -52,5 +52,6 @@ int CRecentTagjumpKeyword::CompareItem( const CTagjumpKeywordString* p1, LPCWSTR
 
 void CRecentTagjumpKeyword::CopyItem( CTagjumpKeywordString* dst, LPCWSTR src ) const
 {
-	wcscpy(*dst,src);
+	//	バッファに収まらない場合は切り詰める (バッファオーバーフロー防止)
+	wcsncpy_s( dst->GetBufferPointer(), dst->GetBufferCount(), src, _TRUNCATE );
 }

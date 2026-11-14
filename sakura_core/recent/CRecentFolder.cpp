@@ -55,5 +55,6 @@ int CRecentFolder::CompareItem( const CPathString* p1, LPCTSTR p2 ) const
 
 void CRecentFolder::CopyItem( CPathString* dst, LPCTSTR src ) const
 {
-	_tcscpy(*dst,src);
+	//	バッファに収まらない場合は切り詰める (バッファオーバーフロー防止)
+	_tcsncpy_s( dst->GetBufferPointer(), dst->GetBufferCount(), src, _TRUNCATE );
 }

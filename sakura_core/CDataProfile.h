@@ -160,7 +160,8 @@ protected:
 	//StringBufferW
 	void profile_to_value(const wstring& profile, StringBufferW* value)
 	{
-		wcscpy_s(value->pData,value->nDataCount,profile.c_str());
+		//	バッファに収まらない値は切り詰める (不正な ini で異常終了しないように)
+		wcsncpy_s(value->pData,value->nDataCount,profile.c_str(),_TRUNCATE);
 	}
 	void value_to_profile(const StringBufferW& value, wstring* profile)
 	{
@@ -169,7 +170,8 @@ protected:
 	//StringBufferA
 	void profile_to_value(const wstring& profile, StringBufferA* value)
 	{
-		strcpy_s(value->pData,value->nDataCount,to_achar(profile.c_str()));
+		//	バッファに収まらない値は切り詰める (不正な ini で異常終了しないように)
+		strncpy_s(value->pData,value->nDataCount,to_achar(profile.c_str()),_TRUNCATE);
 	}
 	void value_to_profile(const StringBufferA& value, wstring* profile)
 	{
@@ -179,7 +181,8 @@ protected:
 	template <int N>
 	void profile_to_value(const wstring& profile, StaticString<WCHAR, N>* value)
 	{
-		wcscpy_s(value->GetBufferPointer(),value->GetBufferCount(),profile.c_str());
+		//	バッファに収まらない値は切り詰める (不正な ini で異常終了しないように)
+		wcsncpy_s(value->GetBufferPointer(),value->GetBufferCount(),profile.c_str(),_TRUNCATE);
 	}
 	template <int N>
 	void value_to_profile(const StaticString<WCHAR, N>& value, wstring* profile)
@@ -190,7 +193,8 @@ protected:
 	template <int N>
 	void profile_to_value(const wstring& profile, StaticString<ACHAR, N>* value)
 	{
-		strcpy_s(value->GetBufferPointer(),value->GetBufferCount(),to_achar(profile.c_str()));
+		//	バッファに収まらない値は切り詰める (不正な ini で異常終了しないように)
+		strncpy_s(value->GetBufferPointer(),value->GetBufferCount(),to_achar(profile.c_str()),_TRUNCATE);
 	}
 	template <int N>
 	void value_to_profile(const StaticString<ACHAR, N>& value, wstring* profile)

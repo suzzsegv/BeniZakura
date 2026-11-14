@@ -53,5 +53,6 @@ int CRecentReplace::CompareItem( const CReplaceString* p1, LPCWSTR p2 ) const
 
 void CRecentReplace::CopyItem( CReplaceString* dst, LPCWSTR src ) const
 {
-	wcscpy(*dst,src);
+	//	バッファに収まらない場合は切り詰める (バッファオーバーフロー防止)
+	wcsncpy_s( dst->GetBufferPointer(), dst->GetBufferCount(), src, _TRUNCATE );
 }

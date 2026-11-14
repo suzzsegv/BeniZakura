@@ -53,5 +53,6 @@ int CRecentCmd::CompareItem( const CCmdString* p1, LPCTSTR p2 ) const
 
 void CRecentCmd::CopyItem( CCmdString* dst, LPCTSTR src ) const
 {
-	_tcscpy(*dst,src);
+	//	バッファに収まらない場合は切り詰める (バッファオーバーフロー防止)
+	_tcsncpy_s( dst->GetBufferPointer(), dst->GetBufferCount(), src, _TRUNCATE );
 }
