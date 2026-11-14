@@ -30,6 +30,12 @@ bool GetVcsRepositoryRootDir(
 	const WCHAR* pSearchPath	//!< [in] 検索対象パス
 );
 
+bool GetGitRepositoryRootDir(
+	WCHAR*	pszRootDir,			//!< [out] ルートフォルダのパス (末尾に '\\' を付けない)
+	size_t	nRootDirCount,		//!< [in] pszRootDir のバッファサイズ (文字数)
+	const WCHAR* pszDirPath		//!< [in] 検索を始めるフォルダのパス
+);
+
 bool IsFilePath( const wchar_t*, int*, int*, bool = true );
 bool IsUncPath( const WCHAR* pszPath );	//!< UNC パス (ネットワーク上のパス) かどうか
 bool IsFileExists(const TCHAR* path, bool bFileOnly = false);
