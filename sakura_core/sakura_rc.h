@@ -142,11 +142,8 @@
 #define IDC_LIST_FL                     1084
 #define IDC_CHECK_DispTOOLBAR           1085
 #define IDC_EDIT_AUTOBACKUP_INTERVAL    1086
-#define IDC_BUTTON_OPENHELP1            1087
-#define IDC_BUTTON_OPENEXTHTMLHELP      1088
 #define IDC_EDIT_REPEATEDSCROLLLINENUM  1089
 #define IDC_BUTTON_KEYWORDHELPFONT      1090
-#define IDC_BUTTON_HELP                 1091
 #define IDC_BUTTON_OPENMDLL             1092
 #define IDC_BUTTON_OPENMDICT            1093
 #define IDC_EDIT_BLOCKCOMMENT_TO        1095
@@ -241,7 +238,6 @@
 #define IDC_STATIC_MYICON               1184
 #define IDC_EDIT_HOKANFILE              1185
 #define IDC_BUTTON_HOKANFILE_REF        1186
-#define IDC_COMBO_HOKAN_TYPE            1187
 #define IDC_LIST_COLORS                 1188
 #define IDC_CHECK_DISP                  1189
 #define IDC_CHECK_BOLD                  1190
@@ -606,12 +602,6 @@
 #define IDC_CHECK_MacroOnOpened         1562
 #define IDC_CHECK_MacroOnTypeChanged    1563
 #define IDC_CHECK_MacroOnSave           1564
-#define IDC_LIST_PLUGIN_OPTIONS         1573
-#define IDC_EDIT_PLUGIN_OPTION          1574
-#define IDC_EDIT_PLUGIN_OPTION_NUM      1575
-#define IDC_SPIN_PLUGIN_OPTION          1576
-#define IDC_CHECK_PLUGIN_OPTION         1577
-#define IDC_COMBO_PLUGIN_OPTION         1578
 #define IDC_BUTTON_INITIALIZE           1578
 #define IDC_STATIC_TYPE_TO              1579
 #define IDC_STATIC_TYPE_FILE            1580
@@ -656,7 +646,6 @@
 #define IDC_EDIT_AUTOLOAD_DELAY         1621
 #define IDC_SPIN_AUTOLOAD_DELAY         1622
 #define IDC_CHECK_KINSOKUHIDE           1623
-#define IDC_PLUGIN_README               1624
 #define IDC_CHECK_HOKANBYKEYWORD        1626
 #define IDC_RADIO_CURDIR                1627
 #define IDC_RADIO_MRUDIR                1628
@@ -681,8 +670,6 @@
 #define IDC_COMBO_CUR_DIR               1647
 #define IDC_BUTTON_REFERENCE2           1648
 #define IDC_LIST_FAVORITE_CUR_DIR       1649
-#define IDC_EDIT_PLUGIN_OPTION_DIR      1650
-#define IDC_BUTTON_PLUGIN_OPTION_DIR    1651
 #define IDC_CHECK_STRINGENDLINE         1652
 #define IDC_CHECK_DispTabClose          1653
 #define IDC_COMBO_THEME                 1654
@@ -718,7 +705,6 @@
 #define IDD_PROP_MACRO                  5215
 #define IDD_PROP_MAINMENU               5217
 #define IDD_WINPOSSIZE                  5220
-#define IDD_PLUGIN_OPTION               5221
 #define IDC_CHECK_TAG_MAKE_EXTRA_KINDS  9000
 #define IDC_CHECK_TAG_MAKE_UTF8         9001
 #define IDC_STATIC                      -1

@@ -214,7 +214,6 @@
     <ClInclude Include="..\sakura_core\io\CIoBridge.h" />
     <ClInclude Include="..\sakura_core\io\CStream.h" />
     <ClInclude Include="..\sakura_core\io\CTextStream.h" />
-    <ClInclude Include="..\sakura_core\io\CZipFile.h" />
     <ClInclude Include="..\sakura_core\mem\CMemory.h" />
     <ClInclude Include="..\sakura_core\mem\CMemoryIterator.h" />
     <ClInclude Include="..\sakura_core\mem\CNative.h" />
@@ -415,7 +414,6 @@
     <ClInclude Include="..\sakura_core\extmodule\CBregexp.h" />
     <ClInclude Include="..\sakura_core\extmodule\CBregexpDll2.h" />
     <ClInclude Include="..\sakura_core\extmodule\CDllHandler.h" />
-    <ClInclude Include="..\sakura_core\extmodule\CHtmlHelp.h" />
     <ClInclude Include="..\sakura_core\extmodule\CMigemo.h" />
     <ClInclude Include="..\sakura_core\extmodule\CUxTheme.h" />
     <ClInclude Include="..\sakura_core\print\CPrint.h" />
@@ -537,7 +535,6 @@
     <ClCompile Include="..\sakura_core\io\CIoBridge.cpp" />
     <ClCompile Include="..\sakura_core\io\CStream.cpp" />
     <ClCompile Include="..\sakura_core\io\CTextStream.cpp" />
-    <ClCompile Include="..\sakura_core\io\CZipFile.cpp" />
     <ClCompile Include="..\sakura_core\mem\CMemory.cpp" />
     <ClCompile Include="..\sakura_core\mem\CNative.cpp" />
     <ClCompile Include="..\sakura_core\mem\CNativeA.cpp" />
@@ -548,7 +545,6 @@
     <ClCompile Include="..\sakura_core\env\CDocTypeManager.cpp" />
     <ClCompile Include="..\sakura_core\env\CFileNameManager.cpp" />
     <ClCompile Include="..\sakura_core\env\CFormatManager.cpp" />
-    <ClCompile Include="..\sakura_core\env\CommonSetting.cpp" />
     <ClCompile Include="..\sakura_core\env\CSakuraEnvironment.cpp" />
     <ClCompile Include="..\sakura_core\env\CSearchKeywordManager.cpp" />
     <ClCompile Include="..\sakura_core\env\CShareData.cpp" />
@@ -795,7 +791,6 @@
     <ClCompile Include="..\sakura_core\extmodule\CBregexp.cpp" />
     <ClCompile Include="..\sakura_core\extmodule\CBregexpDll2.cpp" />
     <ClCompile Include="..\sakura_core\extmodule\CDllHandler.cpp" />
-    <ClCompile Include="..\sakura_core\extmodule\CHtmlHelp.cpp" />
     <ClCompile Include="..\sakura_core\extmodule\CMigemo.cpp" />
     <ClCompile Include="..\sakura_core\extmodule\CUxTheme.cpp" />
     <ClCompile Include="..\sakura_core\print\CPrint.cpp" />

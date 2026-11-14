@@ -61,7 +61,6 @@
 
 #ifndef SAKURA_PCH_MODE_MIN
 // 2010.04.19 重そうなので追加
-#include <HtmlHelp.h>
 #include <ObjIdl.h>
 #include <ShlObj.h>
 #include <ShellAPI.h>

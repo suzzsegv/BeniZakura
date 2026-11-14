@@ -38,7 +38,6 @@
 //	オフセット値
 const int LUOFFSET_MACRO = 0;
 const int LUOFFSET_CUSTMENU = 1;
-const int LUOFFSET_PLUGIN = 2;
 
 //! 動的に内容が変わる分類の名前
 const TCHAR *DynCategory[] = {

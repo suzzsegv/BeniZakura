@@ -739,9 +739,7 @@ void CShareData_IO::ShareData_IO_Toolbar( CDataProfile& cProfile, CMenuDrawer* p
 	WCHAR	szKeyName[64];
 	CommonSetting_ToolBar& toolbar = pShare->m_Common.m_sToolBar;
 
-	EFunctionCode	eFunc;
-	WCHAR			szText[MAX_PLUGIN_ID+20];
-	int				nInvalid = -1;
+	WCHAR			szText[64];
 
 	cProfile.IOProfileData( pszSecName, LTEXT("bToolBarIsFlat"), toolbar.m_bToolBarIsFlat );
 
@@ -750,7 +748,6 @@ void CShareData_IO::ShareData_IO_Toolbar( CDataProfile& cProfile, CMenuDrawer* p
 	int	nSize = toolbar.m_nToolBarButtonNum;
 	for( i = 0; i < nSize; ++i ){
 		auto_sprintf( szKeyName, LTEXT("nTBB[%03d]"), i );
-		// Plugin String Parametor
 		if( cProfile.IsReadingMode() ){
 			//読み込み
 			cProfile.IOProfileData( pszSecName, szKeyName, MakeStringBufferW(szText) );
@@ -759,24 +756,14 @@ void CShareData_IO::ShareData_IO_Toolbar( CDataProfile& cProfile, CMenuDrawer* p
 				toolbar.m_nToolBarButtonIdxArr[i] = _wtoi( szText );
 			}
 			else {
-				toolbar.m_nToolBarButtonIdxArr[i] = pcMenuDrawer->FindToolbarNoFromCommandId( eFunc, false );
+				// 旧バージョンのプラグインコマンド ("プラグインID/番号" 形式) は無効なボタンとする
+				// (プラグイン機能は削除済み)
+				toolbar.m_nToolBarButtonIdxArr[i] = -1;
 			}
 		}
 		else {
 			//書き込み
-			if (toolbar.m_nToolBarButtonIdxArr[i] <= MAX_TOOLBAR_ICON_COUNT + 1) {	// +1はセパレータ分
-				cProfile.IOProfileData( pszSecName, szKeyName, toolbar.m_nToolBarButtonIdxArr[i] );	
-			}
-			else {
-				// Plugin
-				eFunc = (EFunctionCode)toolbar.m_nToolBarButtonIdxArr[i];
-				if (eFunc == F_DEFAULT) {
-					cProfile.IOProfileData( pszSecName, szKeyName, nInvalid );	
-				}
-				else {
-					cProfile.IOProfileData( pszSecName, szKeyName, toolbar.m_nToolBarButtonIdxArr[i] );	
-				}
-			}
+			cProfile.IOProfileData( pszSecName, szKeyName, toolbar.m_nToolBarButtonIdxArr[i] );
 		}
 	}
 	//読み込み時は残りを初期化
@@ -1406,7 +1393,6 @@ void CShareData_IO::ShareData_IO_Type_One( CDataProfile& cProfile, int nType, co
 	//	Oct. 5, 2002 genta _countof()で誤ってポインタのサイズを取得していたのを修正
 	cProfile.IOProfileData( pszSecName, LTEXT("szHokanFile")		, types.m_szHokanFile );		//	補完ファイル
 	//	2001/06/14 End
-	cProfile.IOProfileData( pszSecName, LTEXT("nHokanType")			, types.m_nHokanType );		//	補完種別
 
 	//	2001/06/19 asa-o
 	cProfile.IOProfileData( pszSecName, LTEXT("bHokanLoHiCase")		, types.m_bHokanLoHiCase );

@@ -98,7 +98,6 @@ void _DefaultConfig(STypeConfig* pType)
 	_tcscpy( pType->m_szHokanFile, _T("") );		/* 入力補完 単語ファイル */
 	// 2001/06/14 End
 
-	pType->m_nHokanType = 0;
 
 	// 2001/06/19 asa-o
 	pType->m_bHokanLoHiCase = false;			// 入力補完機能：英大文字小文字を同一視する

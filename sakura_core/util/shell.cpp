@@ -1,5 +1,4 @@
 #include "StdAfx.h"
-#include <HtmlHelp.h>
 #include <ShlObj.h>
 #include <ShellAPI.h>
 #include <CdErr.h> // Nov. 3, 2005 genta	//CDERR_FINDRESFAILURE等
@@ -11,7 +10,6 @@
 #include "_os/COsVersionInfo.h"
 #include "env/CShareData.h"
 #include "env/DLLSHAREDATA.h"
-#include "extmodule/CHtmlHelp.h"
 
 int CALLBACK MYBrowseCallbackProc(
 	HWND hwnd,

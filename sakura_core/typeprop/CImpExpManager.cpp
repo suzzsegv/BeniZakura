@@ -59,10 +59,6 @@ static const wchar_t	szSecTypes[]			= L"Types";
 static const wchar_t	szKeyKeywordTemp[]				= L"szKeyword[%d]";
 static const wchar_t	szKeyKeywordFileTemp[]			= L"szKeywordFile[%d]";
 static const wchar_t	szKeyKeywordCaseTemp[]			= L"szKeywordCase[%d]";
-static const wchar_t	szKeyPluginOutlineName[]		= L"szPluginOutlineName";
-static const wchar_t	szKeyPluginOutlineId[]			= L"szPluginOutlineId";
-static const wchar_t	szKeyPluginSmartIndentName[]	= L"szPluginSmartIndentName";
-static const wchar_t	szKeyPluginSmartIndentId[]		= L"szPluginSmartIndentId";
 static const wchar_t	szKeyVersion[]					= L"szVersion";
 static const wchar_t	szKeyStructureVersion[]			= L"vStructureVersion";
 

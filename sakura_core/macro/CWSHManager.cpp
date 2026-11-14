@@ -70,10 +70,6 @@ void CWSHMacroManager::ExecKeyMacro(CEditView *EditView, int flags) const
 		CWSHIfObj* objEditor = new CEditorIfObj();
 		objEditor->ReadyMethods( EditView, flags );
 		Engine->AddInterfaceObject( objEditor );
-		for( CWSHIfObj::ListIter it = m_Params.begin(); it != m_Params.end(); it++ ) {
-			(*it)->ReadyMethods( EditView, flags );
-			Engine->AddInterfaceObject(*it);
-		}
 
 		Engine->Execute(m_Source.c_str());
 		
@@ -141,22 +137,4 @@ void CWSHMacroManager::declare()
 {
 	//暫定
 	CMacroFactory::getInstance()->RegisterCreator(Creator);
-}
-
-//インタフェースオブジェクトを追加する
-void CWSHMacroManager::AddParam( CWSHIfObj* param )
-{
-	m_Params.push_back( param );
-}
-
-//インタフェースオブジェクト達を追加する
-void CWSHMacroManager::AddParam( CWSHIfObj::List& params )
-{
-	m_Params.insert( m_Params.end(), params.begin(), params.end() );
-}
-
-//インタフェースオブジェクトを削除する
-void CWSHMacroManager::ClearParam()
-{
-	m_Params.clear();
 }

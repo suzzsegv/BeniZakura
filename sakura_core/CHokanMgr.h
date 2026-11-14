@@ -44,7 +44,6 @@ public:
 		const TCHAR*	pszHokanFile,
 		bool			bHokanLoHiCase,			// 入力補完機能：英大文字小文字を同一視する 2001/06/19 asa-o
 		bool			bHokanByFile,			// 編集中データから候補を探す。 2003.06.23 Moca
-		int				nHokanType,
 		bool			bHokanByKeyword,
 		CNativeW*		pcmemHokanWord = NULL	// 補完候補が１つのときこれに格納 2001/06/19 asa-o
 	);

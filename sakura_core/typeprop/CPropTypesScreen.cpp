@@ -77,7 +77,7 @@ std::vector<TYPE_NAME<ESmartIndentType> > CPropTypes::m_SIndentArr;	//!<スマ�
 //スクリーンタブの初期化
 void CPropTypesScreen::CPropTypes_Screen()
 {
-	//プラグイン無効の場合、ここで静的メンバを初期化する。プラグイン有効の場合はAddXXXMethod内で初期化する。
+	//静的メンバを初期化する
 	if( m_OlmArr.empty() ){
 		m_OlmArr.insert(m_OlmArr.end(), OlmArr, &OlmArr[_countof(OlmArr)]);	//アウトライン解析ルール
 	}
@@ -577,58 +577,4 @@ int CPropTypesScreen::GetData( HWND hwndDlg )
 	}
 
 	return TRUE;
-}
-
-//アウトライン解析ルールの追加
-void CPropTypesScreen::AddOutlineMethod(int nMethod, const WCHAR* szName)
-{
-	if( m_OlmArr.empty() ){
-		m_OlmArr.insert(m_OlmArr.end(), OlmArr, &OlmArr[_countof(OlmArr)]);	//アウトライン解析ルール
-	}
-	TYPE_NAME<EOutlineType> method;
-	method.nMethod = (EOutlineType)nMethod;
-	const TCHAR* tszName = to_tchar( szName );
-	TCHAR* pszName = new TCHAR[ _tcslen(tszName) + 1 ];
-	_tcscpy( pszName, tszName );
-	method.pszName = pszName;
-	m_OlmArr.push_back(method);
-}
-
-void CPropTypesScreen::RemoveOutlineMethod(int nMethod, const WCHAR* szName)
-{
-	int nSize = (int)m_OlmArr.size();
-	for(int i = 0; i < nSize; i++ ){
-		if( m_OlmArr[i].nMethod == (EOutlineType)nMethod ){
-			delete [] m_OlmArr[i].pszName;
-			m_OlmArr.erase( m_OlmArr.begin() + i );
-			break;
-		}
-	}
-}
-
-//スマートインデントルールの追加
-void CPropTypesScreen::AddSIndentMethod(int nMethod, const WCHAR* szName)
-{
-	if( m_SIndentArr.empty() ){
-		m_SIndentArr.insert(m_SIndentArr.end(), SmartIndentArr, &SmartIndentArr[_countof(SmartIndentArr)]);	//スマートインデントルール
-	}
-	TYPE_NAME<ESmartIndentType> method;
-	method.nMethod = (ESmartIndentType)nMethod;
-	const TCHAR* tszName = to_tchar( szName );
-	TCHAR* pszName = new TCHAR[ _tcslen(tszName) + 1 ];
-	_tcscpy( pszName, tszName );
-	method.pszName = pszName;
-	m_SIndentArr.push_back(method);
-}
-
-void CPropTypesScreen::RemoveSIndentMethod(int nMethod, const WCHAR* szName)
-{
-	int nSize = (int)m_SIndentArr.size();
-	for(int i = 0; i < nSize; i++ ){
-		if( m_SIndentArr[i].nMethod == (EOutlineType)nMethod ){
-			delete [] m_SIndentArr[i].pszName;
-			m_SIndentArr.erase( m_SIndentArr.begin() + i );
-			break;
-		}
-	}
 }

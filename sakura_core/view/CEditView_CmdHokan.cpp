@@ -138,7 +138,6 @@ void CEditView::ShowHokanMgr( CNativeW& cmemData, BOOL bAutoDecided )
 		m_pTypeData->m_szHokanFile,
 		m_pTypeData->m_bHokanLoHiCase,
 		m_pTypeData->m_bUseHokanByFile, // 2003.06.22 Moca
-		m_pTypeData->m_nHokanType,
 		m_pTypeData->m_bUseHokanByKeyword,
 		pcmemHokanWord
 	);

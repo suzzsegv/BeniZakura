@@ -160,7 +160,6 @@ struct STypeConfig{
 
 	//	2001/06/14 asa-o 補完のタイプ別設定
 	SFilePath			m_szHokanFile;					/*!< 入力補完 単語ファイル */
-	int					m_nHokanType;					/*!< 入力補完 種別(プラグイン) */
 	//	2003.06.23 Moca ファイル内からの入力補完機能
 	bool				m_bUseHokanByFile;				//!< 入力補完 開いているファイル内から候補を探す
 	bool				m_bUseHokanByKeyword;			// 強調キーワードから入力補完

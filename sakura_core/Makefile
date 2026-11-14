@@ -179,8 +179,6 @@ env/CAppNodeManager.o \
 env/CDocTypeManager.o \
 env/CFileNameManager.o \
 env/CFormatManager.o \
-env/CHelpManager.o \
-env/CommonSetting.o \
 env/CSakuraEnvironment.o \
 env/CSearchKeywordManager.o \
 env/CShareData.o \
@@ -191,7 +189,6 @@ env/SessionStore.o \
 extmodule/CBregexp.o \
 extmodule/CBregexpDll2.o \
 extmodule/CDllHandler.o \
-extmodule/CHtmlHelp.o \
 extmodule/CMigemo.o \
 extmodule/CUxTheme.o \
 func/CFuncKeyWnd.o \
@@ -204,7 +201,6 @@ io/CFileLoad.o \
 io/CIoBridge.o \
 io/CStream.o \
 io/CTextStream.o \
-io/CZipFile.o \
 macro/CCookieManager.o \
 macro/CEditorIfObj.o \
 macro/CIfObj.o \

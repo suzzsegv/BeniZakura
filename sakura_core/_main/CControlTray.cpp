@@ -27,7 +27,6 @@
 #include "StdAfx.h"
 #define ID_HOTKEY_TRAYMENU	0x1234
 
-#include <HtmlHelp.h>
 #include "CControlTray.h"
 #include "CEditApp.h"
 #include "CPropertyManager.h"
@@ -43,7 +42,6 @@
 #include "env/CShareData.h"
 #include "env/CShareData_IO.h"
 #include "env/CSakuraEnvironment.h"
-#include "env/CHelpManager.h"
 #include "env/SessionStore.h"
 #include "doc/CDocListener.h" // SLoadInfo,EditInfo
 #include "recent/CMRUFile.h"
@@ -366,7 +364,6 @@ LRESULT CControlTray::DispatchEvent(
 
 	int			nRowNum;
 	EditNode*	pEditNodeArr;
-	static HWND	hwndHtmlHelp;
 
 	static WORD		wHotKeyMods;
 	static WORD		wHotKeyCode;
@@ -458,7 +455,6 @@ LRESULT CControlTray::DispatchEvent(
 
 	case WM_CREATE:
 		m_hWnd = hwnd;
-		hwndHtmlHelp = NULL;
 		// Modified by KEITA for WIN64 2003.9.6
 		::SetWindowLongPtr( GetTrayHwnd(), GWLP_USERDATA, (LONG_PTR)this );
 

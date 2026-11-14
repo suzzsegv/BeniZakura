@@ -45,13 +45,9 @@ public:
 	static CMacroManagerBase* Creator(const TCHAR* FileExt);
 	static void declare();
 
-	void AddParam( CWSHIfObj* param );				//インタフェースオブジェクトを追加する
-	void AddParam( CWSHIfObj::List& params );		//インタフェースオブジェクト達を追加する
-	void ClearParam();								//インタフェースオブジェクトを削除する
 protected:
 	std::wstring m_Source;
 	std::wstring m_EngineName;
-	CWSHIfObj::List m_Params;
 	//2009.10.29 syat CWSHIfObjへ移動
 	////	2007.07.20 genta : flags追加
 	//static void ReadyCommands(CIfObj *Object, MacroFuncInfo *Info, int flags);
