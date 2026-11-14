@@ -329,7 +329,14 @@ void CDlgGrep::SetData( void )
 	/* 検索フォルダ */
 	::DlgItem_SetText( GetHwnd(), IDC_COMBO_FOLDER, m_szFolder );
 	if( m_pShareData->m_Common.m_sSearch.m_bGrepDefaultFolder ){
-		if( SetVcsRepositoryRootFolderToFolderComboBox() == false ){
+		// 編集中ファイルが UNC パス (ネットワーク上のファイル) の場合は、VCS リポジトリの
+		// ディレクトリを探さずに、編集中ファイルのフォルダを使用する。
+		// (親フォルダを順にさかのぼって .git などの存在を確認するたびにネットワークへの
+		//  アクセスが発生し、サーバーの応答が遅い場合はダイアログの表示が遅くなるため)
+		if( IsUncPath( m_szCurrentFilePath ) ){
+			SetCurrentFolderToFolderComboBox();
+		}
+		else if( SetVcsRepositoryRootFolderToFolderComboBox() == false ){
 			SetCurrentFolderToFolderComboBox();
 		}
 	}

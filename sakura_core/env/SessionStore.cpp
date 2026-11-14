@@ -47,29 +47,6 @@
 SessionStore* SessionStore::pUniqInstance = NULL;
 
 /*!
- * UNC パス (ネットワーク上のパス) かどうかを判定する.
- *
- * 以下を UNC パスとみなす。
- *   - \\server\share\...  (区切り文字は '/' でもよい)
- *   - \\?\UNC\server\share\...  (拡張長パス形式)
- * 以下は UNC パスとみなさない。
- *   - \\?\C:\... (ローカルの拡張長パス)、\\.\... (デバイスパス)
- */
-static bool isUncPath(const wchar_t* path)
-{
-	auto isSep = [](wchar_t c){ return c == L'\\' || c == L'/'; };
-
-	if(!isSep(path[0]) || !isSep(path[1])){
-		return false;
-	}
-	if((path[2] == L'?' || path[2] == L'.') && isSep(path[3])){
-		// \\?\UNC\... / \\.\UNC\... のみ UNC パス
-		return _wcsnicmp(&path[4], L"UNC", 3) == 0 && isSep(path[7]);
-	}
-	return true;
-}
-
-/*!
  * SessionStore クラスの唯一のインスタンスを生成する.
  */
 void SessionStore::createUniqInstance()
@@ -156,7 +133,7 @@ void SessionStore::restore(CEditWnd* pEditWnd, EditInfo* pEditInfo)
 		// UNC パス (ネットワーク上のファイル) は復元しない。
 		// 起動時にネットワークへのアクセスが発生し、サーバーに接続できない場合は
 		// 応答待ちで起動が遅くなるため。(存在確認の前に除外する)
-		if(isUncPath(fullPathFileName)){
+		if(IsUncPath(fullPathFileName)){
 			// 何もしない
 		}
 		else if(IsFileExists(fullPathFileName, true) == true){

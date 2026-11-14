@@ -210,9 +210,15 @@ bool CViewCommander::Command_TagsMake( void )
 		_tcscpy( szTargetPath, GetDocument()->m_cDocFile.GetFilePath() );
 		szTargetPath[ _tcslen( szTargetPath ) - _tcslen( GetDocument()->m_cDocFile.GetFileName() ) ] = _T('\0');
 
-		vcsRepositoryDetected = GetVcsRepositoryRootDir( vcsDirectoryPathName, szTargetPath );
-		if( vcsRepositoryDetected == true ){
-			wcscpy( szTargetPath, vcsDirectoryPathName );
+		// UNC パス (ネットワーク上のファイル) の場合は、VCS リポジトリのディレクトリを探さない。
+		// 親フォルダを順にさかのぼって .git などの存在を確認するたびにネットワークへの
+		// アクセスが発生し、サーバーの応答が遅い場合はダイアログの表示が遅くなるため。
+		// (編集中ファイルのフォルダを、タグ作成フォルダの初期値とする)
+		if( !IsUncPath( szTargetPath ) ){
+			vcsRepositoryDetected = GetVcsRepositoryRootDir( vcsDirectoryPathName, szTargetPath );
+			if( vcsRepositoryDetected == true ){
+				wcscpy( szTargetPath, vcsDirectoryPathName );
+			}
 		}
 	}
 	else
