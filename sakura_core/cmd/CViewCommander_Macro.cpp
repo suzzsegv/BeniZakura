@@ -462,23 +462,39 @@ void CViewCommander::Command_ExecExplorer( void )
 	BOOL succeeded;
 	STARTUPINFO si;
 	PROCESS_INFORMATION pi;
-	const int CommandLineMax = 1024;
-	wchar_t CommandLine[CommandLineMax];
-	wchar_t CurrentFileName[_MAX_PATH];
+	wchar_t WindowsDir[_MAX_PATH];
 
-	GetWindowsDirectory(CommandLine, CommandLineMax);
-	wcscat_s(CommandLine, CommandLineMax, L"\\explorer.exe /select,");
+	UINT len = ::GetWindowsDirectory( WindowsDir, _countof(WindowsDir) );
+	if( len == 0 || len >= _countof(WindowsDir) ){
+		return;
+	}
+	std::wstring ExplorerPath = WindowsDir;
+	ExplorerPath += L"\\explorer.exe";
 
-	CSakuraEnvironment::ExpandParameter( L"$F", CurrentFileName, (_MAX_PATH - 1) );
-	wcscat_s(CommandLine, CommandLineMax, CurrentFileName);
+	// コマンドライン作成
+	//   "<Windowsフォルダ>\explorer.exe" /select,"<ファイルのフルパス>"
+	// パスは " で囲む。(パスに "," や空白が含まれていると、explorer が
+	// 正しく解釈できないため)
+	// 無題の場合は、選択するファイルを指定せずに起動する。
+	std::wstring CmdLineStr;
+	CmdLineStr += L"\"";
+	CmdLineStr += ExplorerPath;
+	CmdLineStr += L"\"";
+	if( GetDocument()->m_cDocFile.GetFilePathClass().IsValidPath() ){
+		CmdLineStr += L" /select,\"";
+		CmdLineStr += GetDocument()->m_cDocFile.GetFilePath();
+		CmdLineStr += L"\"";
+	}
+	std::vector<wchar_t> CommandLine( CmdLineStr.begin(), CmdLineStr.end() );
+	CommandLine.push_back( L'\0' );	// CreateProcessW はコマンドライン文字列を書き換えるため、書き込み可能なバッファを渡す
 
 	ZeroMemory( &si, sizeof(si) );
 	si.cb = sizeof(si);
 
 	succeeded = CreateProcessW
 		(
-			NULL,
-			CommandLine,
+			ExplorerPath.c_str(),
+			&CommandLine[0],
 			NULL,
 			NULL,
 			FALSE,
