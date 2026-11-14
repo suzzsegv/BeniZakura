@@ -440,7 +440,6 @@ void CViewCommander::Command_PLSQL_COMPILE_ON_SQLPLUS( void )
 	HWND		hwndSQLPLUS;
 	int			nRet;
 	BOOL		nBool;
-	TCHAR		szPath[MAX_PATH + 2];
 	BOOL		bResult;
 
 	hwndSQLPLUS = ::FindWindow( _T("SqlplusWClass"), _T("Oracle SQL*Plus") );
@@ -480,13 +479,19 @@ void CViewCommander::Command_PLSQL_COMPILE_ON_SQLPLUS( void )
 	if( GetDocument()->m_cDocFile.GetFilePathClass().IsValidPath() ){
 		/* ファイルパスに空白が含まれている場合はダブルクォーテーションで囲む */
 		//	2003.10.20 MIK コード簡略化
-		if( _tcschr( GetDocument()->m_cDocFile.GetFilePath(), TCODE::SPACE ) ? TRUE : FALSE ){
-			auto_sprintf( szPath, _T("@\"%ts\"\r\n"), GetDocument()->m_cDocFile.GetFilePath() );
+		//	固定長バッファ (MAX_PATH + 2) では長いパスで溢れるため、std::tstring で組み立てる
+		const TCHAR* pszFilePath = GetDocument()->m_cDocFile.GetFilePath();
+		std::tstring sPath = _T("@");
+		if( _tcschr( pszFilePath, TCODE::SPACE ) ){
+			sPath += _T("\"");
+			sPath += pszFilePath;
+			sPath += _T("\"");
 		}else{
-			auto_sprintf( szPath, _T("@%ts\r\n"), GetDocument()->m_cDocFile.GetFilePath() );
+			sPath += pszFilePath;
 		}
+		sPath += _T("\r\n");
 		/* クリップボードにデータを設定 */
-		m_pCommanderView->MySetClipboardData( szPath, _tcslen( szPath ), false );
+		m_pCommanderView->MySetClipboardData( sPath.c_str(), (int)sPath.length(), false );
 
 		/* Oracle SQL*Plusをアクティブにする */
 		/* アクティブにする */

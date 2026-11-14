@@ -222,7 +222,7 @@ wchar_t* CBregexp::MakePattern( const wchar_t* szPattern, const wchar_t* szPatte
 	int nLen;									//!< szPatternの長さ
 	BREGEXP_W*	sReg = NULL;					//!< コンパイル構造体
 	wchar_t szMsg[80] = L"";						//!< エラーメッセージ
-	wchar_t szAdd2[5] = L"";						//!< 行末あり置換の $数字 格納用
+	wchar_t szAdd2[16] = L"";						//!< 行末あり置換の $数字 格納用 ("$" + int の最大桁数 + 終端)
 	int nParens = 0;							//!< 検索パターン(szPattern)中の括弧の数(行末時に使用)
 	wchar_t *szNPattern;							//!< 検索パターン
 
@@ -263,7 +263,7 @@ wchar_t* CBregexp::MakePattern( const wchar_t* szPattern, const wchar_t* szPatte
 				szPattern = sReg->outp;
 				if( szPattern2 != NULL ) {
 					// 置換パターンもあるので、置換パターンの最後に $(nParens+1)を追加
-					auto_sprintf( szAdd2, L"$%d", nParens + 1 );
+					auto_sprintf_s( szAdd2, _countof(szAdd2), L"$%d", nParens + 1 );
 				}
 			}
 			// sReg->outp のポインタを参照しているので、sRegを解放するのは最後に

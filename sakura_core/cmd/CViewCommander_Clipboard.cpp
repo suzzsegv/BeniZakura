@@ -1134,16 +1134,20 @@ void CViewCommander::Command_COPYPATH( void )
 void CViewCommander::Command_COPYTAG( void )
 {
 	if( GetDocument()->m_cDocFile.GetFilePathClass().IsValidPath() ){
-		wchar_t	buf[ MAX_PATH + 20 ];
-
 		CLogicPoint ptColLine;
 
 		//	論理行番号を得る
 		GetDocument()->m_cLayoutMgr.LayoutToLogic( GetCaret().GetCaretLayoutPos(), &ptColLine );
 
+		//	"<ファイルパス> (<行>,<桁>): " を作成する
+		//	固定長バッファ (MAX_PATH + 20) では長いパスと大きな行・桁で溢れるため、std::wstring で組み立てる
+		wchar_t	szPos[32];	// " (%d,%d): " の最大長 (2 + 11 + 1 + 11 + 3 = 28) + 終端
+		auto_sprintf_s( szPos, _countof(szPos), L" (%d,%d): ", (Int)ptColLine.y + 1, (Int)ptColLine.x + 1 );
+		std::wstring sTag = to_wchar( GetDocument()->m_cDocFile.GetFilePath() );
+		sTag += szPos;
+
 		/* クリップボードにデータを設定 */
-		auto_sprintf( buf, L"%ts (%d,%d): ", GetDocument()->m_cDocFile.GetFilePath(), ptColLine.y+1, ptColLine.x+1 );
-		m_pCommanderView->MySetClipboardData( buf, wcslen( buf ), false );
+		m_pCommanderView->MySetClipboardData( sTag.c_str(), (int)sTag.length(), false );
 	}
 	else{
 		ErrorBeep();

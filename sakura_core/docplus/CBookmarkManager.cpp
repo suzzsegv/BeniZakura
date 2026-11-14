@@ -92,13 +92,13 @@ LPCWSTR CBookmarkManager::GetBookMarks()
 {
 	CDocLine*	pCDocLine;
 	static wchar_t szText[MAX_MARKLINES_LEN + 1];	//2002.01.17 // Feb. 17, 2003 genta staticに
-	wchar_t szBuff[10];
+	wchar_t szBuff[16];	// int の最大桁数 (符号含め 11) + "," + 終端
 	CLogicInt	nLinePos=CLogicInt(0);
 	pCDocLine = m_pcDocLineMgr->GetLine( nLinePos );
 	wcscpy( szText, L"" );
 	while( pCDocLine ){
 		if(CBookmarkGetter(pCDocLine).IsBookmarked()){
-			auto_sprintf( szBuff, L"%d,",nLinePos );
+			auto_sprintf_s( szBuff, _countof(szBuff), L"%d,", (Int)nLinePos );
 			if(wcslen(szBuff)+wcslen(szText)>MAX_MARKLINES_LEN)break;	//2002.01.17
 			wcscat( szText, szBuff);
 		}

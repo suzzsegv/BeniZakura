@@ -343,7 +343,7 @@ void __stdcall CPPA::stdError( int Err_CD, const char* Err_Mes )
 		if( CSMacroMgr::m_MacroFuncInfoArr[i].m_nFuncID != -1 ){
 			char szFuncDec[1024];
 			GetDeclarations( CSMacroMgr::m_MacroFuncInfoArr[i], szFuncDec );
-			auto_sprintf( szMes, "関数の実行エラー\n%hs", szFuncDec );
+			auto_snprintf_s( szMes, _countof(szMes), "関数の実行エラー\n%hs", szFuncDec );
 		}else{
 			auto_sprintf( szMes, "不明な関数の実行エラー(バグです)\nFunc_ID=%d", FuncID );
 		}
@@ -357,7 +357,9 @@ void __stdcall CPPA::stdError( int Err_CD, const char* Err_Mes )
 			}
 			break;
 		default:
-			auto_sprintf( szMes, "未定義のエラー\nError_CD=%d\n%hs", Err_CD, Err_Mes );
+			//	Err_Mes は PPA.DLL から渡される文字列で長さの上限がないため、
+			//	szMes に収まらない場合は切り詰める (バッファオーバーフロー防止)
+			auto_snprintf_s( szMes, _countof(szMes), "未定義のエラー\nError_CD=%d\n%hs", Err_CD, Err_Mes );
 		}
 	}
 	//	2007.07.26 genta : ネスト実行した場合にPPAが不正なポインタを渡す可能性を考慮．
