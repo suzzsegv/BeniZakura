@@ -235,8 +235,15 @@ void CutLastYenFromDirectoryPath( TCHAR* pszFolder )
 
 
 
-/* フォルダの最後が半角かつ'\\'でない場合は、付加する */
-void AddLastYenFromDirectoryPath( TCHAR* pszFolder )
+/*!
+	フォルダの最後が半角かつ'\\'でない場合は、付加する
+
+	@param[in,out]	pszFolder	フォルダのパス
+	@param[in]		nBufCount	pszFolder のバッファサイズ (終端 NUL を含む文字数)
+	@retval true	成功 (付加した、または付加する必要がなかった)
+	@retval false	バッファに '\\' を付加する余裕がないため、付加しなかった
+*/
+bool AddLastYenFromDirectoryPath( TCHAR* pszFolder, size_t nBufCount )
 {
 	if( 3 == _tcslen( pszFolder )
 	 && pszFolder[1] == _T(':')
@@ -252,12 +259,16 @@ void AddLastYenFromDirectoryPath( TCHAR* pszFolder )
 			nCharChars = &pszFolder[nFolderLen] - CNativeT::GetCharPrev( pszFolder, nFolderLen, &pszFolder[nFolderLen] );
 			if( 1 == nCharChars && _T('\\') == pszFolder[nFolderLen - 1] ){
 			}else{
+				// '\\' と終端 NUL の 2 文字分の空きがない場合は付加しない (バッファオーバーフロー防止)
+				if( (size_t)nFolderLen + 2 > nBufCount ){
+					return false;
+				}
 				pszFolder[nFolderLen] = _T('\\');
 				pszFolder[nFolderLen + 1] = _T('\0');
 			}
 		}
 	}
-	return;
+	return true;
 }
 
 

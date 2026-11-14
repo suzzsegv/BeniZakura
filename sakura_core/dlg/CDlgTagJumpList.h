@@ -142,7 +142,6 @@ private:
 	//! depthから完全パス名(相対パス/絶対パス)を作成する
 	static TCHAR* GetFullPathFromDepth( TCHAR*, int, TCHAR*, const TCHAR*, int );
 	static int CalcMaxUpDirectory( const TCHAR* );
-	static TCHAR* CopyDirDir( TCHAR* dest, const TCHAR* target, const TCHAR* base );
 	static TCHAR* DirUp( TCHAR* dir );
 
 private:

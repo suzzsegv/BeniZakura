@@ -637,7 +637,7 @@ bool CDlgTagJumpList::GetSelectedFullPathAndLine( TCHAR *fullPath, int count, in
 	TCHAR dirFileName[1024];
 	int tempDepth = 0;
 	SplitPath_FolderAndFile( GetFilePath(), path, NULL );
-	AddLastYenFromDirectoryPath( path );
+	AddLastYenFromDirectoryPath( path, _countof(path) );
 	
 	if( false == GetSelectedParam( NULL, fileName, lineNum, NULL, NULL, &tempDepth, dirFileName ) ){
 		return false;
@@ -648,7 +648,7 @@ bool CDlgTagJumpList::GetSelectedFullPathAndLine( TCHAR *fullPath, int count, in
 	const TCHAR* fileNamePath;
 	// ファイル名、ディレクトリ指定、基準ファイルパス、の順に適用。途中でフルパスならそのまま。
 	if( dirFileName[0] ){
-		AddLastYenFromDirectoryPath( dirFileName );
+		AddLastYenFromDirectoryPath( dirFileName, _countof(dirFileName) );
 		const TCHAR	*p = fileName;
 		if( p[0] == _T('\\') ){
 			if( p[1] == _T('\\') ){
@@ -1291,22 +1291,6 @@ TCHAR* CDlgTagJumpList::GetFullPathFromDepth( TCHAR* pszOutput, int count,
 		}
 	}
 	return pszOutput;
-}
-
-/*!
-	ディレクトリとディレクトリを連結する
-*/
-TCHAR* CDlgTagJumpList::CopyDirDir( TCHAR* dest, const TCHAR* target, const TCHAR* base )
-{
-	if( _IS_REL_PATH( target ) ){
-		auto_strcpy( dest, base );
-		AddLastYenFromDirectoryPath( dest );
-		auto_strcat( dest, target );
-	}else{
-		auto_strcpy( dest, target );
-	}
-	AddLastYenFromDirectoryPath( dest );
-	return dest;
 }
 
 /*

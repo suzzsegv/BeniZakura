@@ -346,7 +346,7 @@ bool CBackupAgent::FormatBackUpPath(
 			_tcscpy( szNewPath, selDir );
 		}
 		/* フォルダの最後が半角かつ'\\'でない場合は、付加する */
-		AddLastYenFromDirectoryPath( szNewPath );
+		AddLastYenFromDirectoryPath( szNewPath, newPathCount );
 	}
 	else{
 		auto_sprintf( szNewPath, _T("%ts%ts"), szDrive, szDir );

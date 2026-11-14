@@ -110,6 +110,14 @@ DWORD CGrepAgent::DoGrep(
 		return 0xffffffff;
 	}
 
+	// 検索フォルダが長すぎる場合は実行しない
+	// (szPath[_MAX_PATH] へのコピーと '\\' の付加でバッファオーバーフローしないように。
+	//  切り詰めると別のフォルダを検索してしまう恐れがあるため、エラーとする)
+	if( pcmGrepFolder->GetStringLength() + 2 > _MAX_PATH ){
+		ErrorMessage( pcViewDst->GetHwnd(), _T("検索するフォルダのパスが長すぎます。\n(%d 文字以内にしてください)"), _MAX_PATH - 2 );
+		return 0xffffffff;
+	}
+
 	this->m_bGrepRunning = true;
 
 	int			nHitCount = 0;
@@ -220,10 +228,10 @@ DWORD CGrepAgent::DoGrep(
 	pCEditWnd->SetWindowIcon( hIconBig, ICON_BIG );
 
 	TCHAR szPath[_MAX_PATH];
-	_tcscpy( szPath, pcmGrepFolder->GetStringPtr() );
+	_tcscpy_s( szPath, _countof(szPath), pcmGrepFolder->GetStringPtr() );
 
 	/* フォルダの最後が「半角かつ'\\'」でない場合は、付加する */
-	AddLastYenFromDirectoryPath( szPath );
+	AddLastYenFromDirectoryPath( szPath, _countof(szPath) );
 
 	nWork = pcmGrepFile->GetStringLength(); // 2003.06.10 Moca あらかじめ長さを計算しておく
 
