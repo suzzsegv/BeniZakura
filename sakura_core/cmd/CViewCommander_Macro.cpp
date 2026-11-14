@@ -406,16 +406,29 @@ void CViewCommander::Command_ExecCommandPrompt( void )
 	PROCESS_INFORMATION pi;
 	const int CommandLineMax = 1024;
 	wchar_t CommandLine[CommandLineMax];
-	wchar_t CurrentFilePathName[_MAX_PATH];
+	wchar_t SystemDir[_MAX_PATH];
+	wchar_t CurrentDir[_MAX_PATH];
 
-	CSakuraEnvironment::ExpandParameter( L"$e", CurrentFilePathName, (_MAX_PATH - 1) );
+	// 編集中ファイルのフォルダは、コマンドライン文字列には含めず、
+	// CreateProcess の lpCurrentDirectory で指定する。
+	// (フォルダ名に & などの文字が含まれていた場合に、cmd.exe によって
+	//  コマンドとして解釈されてしまう OS コマンドインジェクションを防ぐため)
+	// 無題の場合 $e は "(無題)" に展開されるため、カレントディレクトリは指定しない。
+	CurrentDir[0] = L'\0';
+	if( GetDocument()->m_cDocFile.GetFilePathClass().IsValidPath() ){
+		CSakuraEnvironment::ExpandParameter( L"$e", CurrentDir, (_MAX_PATH - 1) );
+	}
 
-	GetSystemDirectory(CommandLine, CommandLineMax);
-	wcscat_s(CommandLine, CommandLineMax, L"\\cmd.exe /K \"cd ");
-	wcscat_s(CommandLine, CommandLineMax, CurrentFilePathName);
-	wcscat_s(CommandLine, CommandLineMax, L"\"");
+	UINT len = ::GetSystemDirectory( SystemDir, _countof(SystemDir) );
+	if( len == 0 || len >= _countof(SystemDir) ){
+		return;
+	}
+	if( auto_sprintf_s( CommandLine, _countof(CommandLine), L"\"%ls\\cmd.exe\" /K", SystemDir ) < 0 ){
+		return;
+	}
 
 	ZeroMemory( &si, sizeof(si) );
+	si.cb = sizeof(si);
 
 	succeeded = CreateProcessW
 		(
@@ -426,7 +439,7 @@ void CViewCommander::Command_ExecCommandPrompt( void )
 			FALSE,
 			0,
 			NULL,
-			NULL,
+			( CurrentDir[0] != L'\0' ) ? CurrentDir : NULL,
 			&si,
 			&pi
 		);
