@@ -11,8 +11,84 @@
 #include "util/window.h"
 #include "util/module.h"
 #include "util/other_util.h"
+#include "util/CGitIgnore.h"
 #include "debug/CRunningTimer.h"
 #include "sakura_rc.h"
+
+
+// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+//            .gitignore の除外指定 (Grep 用の補助関数)          //
+// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+// 検索フォルダが Git リポジトリの中にある場合、.gitignore で除外されたファイル・フォルダを検索しない。
+// 除外されたフォルダの中は列挙せず、入れ子のリポジトリ (サブモジュールなど) の中には親リポジトリの
+// .gitignore を適用しない。リポジトリ外と UNC パスのフォルダでは適用しない。
+
+/*!
+ * JoinGitRelPath - リポジトリのルートからの相対パス ('/' 区切り) に、名前を 1 つ連結する
+ *
+ *	@return 連結した相対パス
+ */
+static std::wstring JoinGitRelPath(
+	const std::wstring&	strGitRelDir,	//!< [in] フォルダの、リポジトリのルートからの相対パス (ルートは空文字列)
+	const wchar_t*		pszName			//!< [in] ファイル名・フォルダ名
+)
+{
+	if( strGitRelDir.empty() ){
+		return pszName;
+	}
+	return strGitRelDir + L"/" + pszName;
+}
+
+/*!
+ * IsGitIgnored - フォルダの中のファイル・フォルダが、適用中の .gitignore で除外されているかを返す
+ *
+ *	@return true: 除外されている / false: 除外されていない (pcGitIgnore が NULL の場合は常に false)
+ */
+static bool IsGitIgnored(
+	const CGitIgnoreMatcher*	pcGitIgnore,	//!< [in] 適用中の .gitignore (.gitignore を適用しない場合は NULL)
+	const std::wstring&			strGitRelDir,	//!< [in] フォルダの、リポジトリのルートからの相対パス
+	const wchar_t*				pszName,		//!< [in] ファイル名・フォルダ名
+	bool						isDirectory		//!< [in] フォルダか
+)
+{
+	if( pcGitIgnore == NULL ){
+		return false;
+	}
+	return pcGitIgnore->IsIgnored( JoinGitRelPath( strGitRelDir, pszName ), isDirectory );
+}
+
+/*!
+ * IsGitRepositoryRootDir - フォルダが Git リポジトリのルートかを返す
+ *
+ * ".git" (フォルダ、またはサブモジュール等の ".git" ファイル) があるフォルダをルートとする。
+ *
+ *	@return true: リポジトリのルート / false: リポジトリのルートではない
+ */
+static bool IsGitRepositoryRootDir(
+	const std::wstring&	strDirPath		//!< [in] フォルダのパス (末尾に '\\' あり)
+)
+{
+	return fexist( ( strDirPath + L".git" ).c_str() );
+}
+
+/*!
+ * PushGitIgnoreFile - フォルダに .gitignore があれば読み込んで、適用中の .gitignore に積む
+ *
+ *	@return true: 積んだ / false: .gitignore がない (積んでいない)
+ */
+static bool PushGitIgnoreFile(
+	CGitIgnoreMatcher*	pcGitIgnore,	//!< [i/o] 適用中の .gitignore
+	const std::wstring&	strDirPath,		//!< [in] フォルダのパス (末尾に '\\' あり)
+	const std::wstring&	strGitRelDir	//!< [in] フォルダの、リポジトリのルートからの相対パス
+)
+{
+	CGitIgnoreFile cFile( strGitRelDir );
+	if( !cFile.LoadFromFile( ( strDirPath + L".gitignore" ).c_str() ) ){
+		return false;
+	}
+	pcGitIgnore->PushFile( cFile );
+	return true;
+}
 
 CGrepAgent::CGrepAgent()
 : m_bGrepMode( false )			/* Grepモードか */
@@ -94,6 +170,7 @@ DWORD CGrepAgent::DoGrep(
 	const CNativeT*			pcmGrepFile,
 	const CNativeT*			pcmGrepFolder,
 	BOOL					bGrepSubFolder,
+	BOOL					bGrepUseGitIgnore,	// .gitignore の除外指定に従う
 	const SSearchOption&	sSearchOption,
 	ECodeType				nGrepCharSet,	// 2002/09/21 Moca 文字コードセット選択
 	BOOL					bGrepOutputLine,
@@ -233,6 +310,59 @@ DWORD CGrepAgent::DoGrep(
 	/* フォルダの最後が「半角かつ'\\'」でない場合は、付加する */
 	AddLastYenFromDirectoryPath( szPath, _countof(szPath) );
 
+	/*
+		.gitignore の除外指定
+		検索フォルダからさかのぼって Git リポジトリのルートを探し、ルートから検索フォルダまでの
+		各フォルダの .gitignore を上位から順に積む。
+		途中のフォルダ (検索フォルダを含む) が除外されている場合は、git と同じく中をすべて除外する。
+		UNC パスの場合は、ネットワークへのアクセスを避けるためルートを探さない (.gitignore を適用しない)。
+	*/
+	CGitIgnoreMatcher	cGitIgnore;
+	CGitIgnoreMatcher*	pcGitIgnore = NULL;			// 適用しない場合は NULL
+	std::wstring		strGitRelDir;				// 検索フォルダの、リポジトリのルートからの相対パス
+	bool				bSearchFolderGitIgnored = false;	// 検索フォルダが除外されている
+	const wchar_t*		pszGitIgnoreNote = NULL;	// .gitignore を適用しない理由
+	if( bGrepUseGitIgnore ){
+		WCHAR szFullPath[_MAX_PATH];
+		WCHAR szRootDir[_MAX_PATH];
+		DWORD nFullPathLen = ::GetFullPathName( szPath, _countof(szFullPath), szFullPath, NULL );
+		if( IsUncPath( szPath ) ){
+			pszGitIgnoreNote = L"UNC パスのため適用しない";
+		}else if( nFullPathLen == 0 || _countof(szFullPath) <= nFullPathLen
+			   || !GetGitRepositoryRootDir( szRootDir, _countof(szRootDir), szFullPath ) ){
+			pszGitIgnoreNote = L"Git リポジトリ外のため適用しない";
+		}else{
+			pcGitIgnore = &cGitIgnore;
+
+			std::wstring strDir = szRootDir;
+			strDir += L"\\";
+			PushGitIgnoreFile( &cGitIgnore, strDir, strGitRelDir );
+
+			// szFullPath は「ルート + '\\' + 相対パス + '\\'」の形
+			const std::wstring strSearchDir = szFullPath;
+			std::wstring::size_type pos = strDir.size();
+			while( pos < strSearchDir.size() ){
+				std::wstring::size_type posEnd = strSearchDir.find( L'\\', pos );
+				if( posEnd == std::wstring::npos ){
+					posEnd = strSearchDir.size();
+				}
+				const std::wstring strName = strSearchDir.substr( pos, posEnd - pos );
+				pos = posEnd + 1;
+				if( strName.empty() ){
+					continue;
+				}
+				if( IsGitIgnored( &cGitIgnore, strGitRelDir, strName.c_str(), true ) ){
+					bSearchFolderGitIgnored = true;
+					break;
+				}
+				strGitRelDir = JoinGitRelPath( strGitRelDir, strName.c_str() );
+				strDir += strName;
+				strDir += L"\\";
+				PushGitIgnoreFile( &cGitIgnore, strDir, strGitRelDir );
+			}
+		}
+	}
+
 	nWork = pcmGrepFile->GetStringLength(); // 2003.06.10 Moca あらかじめ長さを計算しておく
 
 	/* 最後にテキストを追加 */
@@ -285,6 +415,18 @@ DWORD CGrepAgent::DoGrep(
 		pszWork = L"    (サブフォルダを検索しない)\r\n";
 	}
 	cmemMessage.AppendString( pszWork );
+
+	if( bGrepUseGitIgnore ){
+		if( pszGitIgnoreNote != NULL ){
+			cmemMessage.AppendString( L"    (.gitignore の除外指定に従う: " );
+			cmemMessage.AppendString( pszGitIgnoreNote );
+			cmemMessage.AppendString( L")\r\n" );
+		}else if( bSearchFolderGitIgnored ){
+			cmemMessage.AppendString( L"    (.gitignore の除外指定に従う: 検索フォルダが除外されているため検索しない)\r\n" );
+		}else{
+			cmemMessage.AppendString( L"    (.gitignore の除外指定に従う)\r\n" );
+		}
+	}
 
 	if( 0 < nWork ){ // 2003.06.10 Moca ファイル検索の場合は表示しない // 2004.09.26 条件誤り修正
 		if( sSearchOption.bWordOnly ){
@@ -349,22 +491,27 @@ DWORD CGrepAgent::DoGrep(
 	pcViewDst->SetDrawSwitch(0 != GetDllShareData().m_Common.m_sSearch.m_bGrepRealTimeView);
 
 
-	int nGrepTreeResult = DoGrepTree(
-		pcViewDst,
-		&cDlgCancel,
-		hwndCancel,
-		pcmGrepKey->GetStringPtr(),
-		pcmGrepFile->GetStringPtr(),
-		szPath,
-		bGrepSubFolder,
-		sSearchOption,
-		nGrepCharSet,
-		bGrepOutputLine,
-		nGrepOutputStyle,
-		&cRegexp,
-		0,
-		&nHitCount
-	);
+	int nGrepTreeResult = 0;
+	if( !bSearchFolderGitIgnored ){
+		nGrepTreeResult = DoGrepTree(
+			pcViewDst,
+			&cDlgCancel,
+			hwndCancel,
+			pcmGrepKey->GetStringPtr(),
+			pcmGrepFile->GetStringPtr(),
+			szPath,
+			bGrepSubFolder,
+			sSearchOption,
+			nGrepCharSet,
+			bGrepOutputLine,
+			nGrepOutputStyle,
+			&cRegexp,
+			pcGitIgnore,
+			strGitRelDir,
+			0,
+			&nHitCount
+		);
+	}
 	if( -1 == nGrepTreeResult ){
 		const wchar_t* p = L"中断しました。\r\n";
 		pcViewDst->GetCommander().Command_ADDTAIL( p, -1 );
@@ -480,6 +627,8 @@ int CGrepAgent::DoGrepTree(
 	BOOL					bGrepOutputLine,	//!< [in] TRUE: ヒット行を出力 / FALSE: ヒット部分を出力
 	int						nGrepOutputStyle,	//!< [in] 出力形式 1: Normal, 2: WZ風(ファイル単位)
 	CBregexp*				pRegexp,			//!< [in] 正規表現コンパイルデータ。既にコンパイルされている必要がある
+	CGitIgnoreMatcher*		pcGitIgnore,		//!< [i/o] 適用中の .gitignore (適用しない場合は NULL)
+	const std::wstring&		strGitRelDir,		//!< [in] pszPath の、適用中のリポジトリのルートからの相対パス ('/' 区切り、ルートは空文字列)
 	int						nNest,				//!< [in] ネストレベル
 	int*					pnHitCount			//!< [i/o] ヒット数の合計
 )
@@ -622,7 +771,8 @@ int CGrepAgent::DoGrepTree(
 				0 != ::IsDlgButtonChecked( pcDlgCancel->GetHwnd(), IDC_CHECK_REALTIMEVIEW )
 			);
 
-			if( ! (w32fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) )	//フォルダでない場合
+			if( ! (w32fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)	//フォルダでない場合
+			 && ! IsGitIgnored( pcGitIgnore, strGitRelDir, w32fd.cFileName, false ) )	// .gitignore で除外されていない場合
 			{
 				/*
 				 * リストにあるか調べる。
@@ -795,13 +945,30 @@ int CGrepAgent::DoGrepTree(
 			 && 0 != _tcscmp( w32fd.cFileName, _T(".hg"))
 			 && 0 != _tcscmp( w32fd.cFileName, _T(".svn"))
 			 && 0 != _tcscmp( w32fd.cFileName, _T("."))
-			 && 0 != _tcscmp( w32fd.cFileName, _T("..")) )
+			 && 0 != _tcscmp( w32fd.cFileName, _T(".."))
+			 && ! IsGitIgnored( pcGitIgnore, strGitRelDir, w32fd.cFileName, true ) )	// .gitignore で除外されていない場合
 			{
 				//フォルダ名を作成する。
 				// 2010.08.01 キャンセルでメモリーリークしてました
 				std::tstring currentPath  = pszPath;
 				currentPath += w32fd.cFileName;
 				currentPath += _T("\\");
+
+				// .gitignore: 入れ子のリポジトリ (サブモジュールなど) では、git と同じく親リポジトリの
+				// .gitignore を適用しない (退避し、そのフォルダをルートとする)。
+				// そのフォルダに .gitignore があれば積む。
+				std::wstring	strSubGitRelDir;
+				bool			bNestedRepository = false;
+				bool			bPushedGitIgnore = false;
+				if( pcGitIgnore != NULL ){
+					bNestedRepository = IsGitRepositoryRootDir( currentPath );
+					if( bNestedRepository ){
+						pcGitIgnore->BeginRepository();
+					}else{
+						strSubGitRelDir = JoinGitRelPath( strGitRelDir, w32fd.cFileName );
+					}
+					bPushedGitIgnore = PushGitIgnoreFile( pcGitIgnore, currentPath, strSubGitRelDir );
+				}
 
 				int nGrepTreeResult = DoGrepTree(
 					pcViewDst,
@@ -816,9 +983,17 @@ int CGrepAgent::DoGrepTree(
 					bGrepOutputLine,
 					nGrepOutputStyle,
 					pRegexp,
+					pcGitIgnore,
+					strSubGitRelDir,
 					nNest + 1,
 					pnHitCount
 				);
+				if( bPushedGitIgnore ){
+					pcGitIgnore->PopFile();
+				}
+				if( bNestedRepository ){
+					pcGitIgnore->EndRepository();
+				}
 				if( -1 == nGrepTreeResult ){
 					goto cancel_return;
 				}

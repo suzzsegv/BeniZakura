@@ -402,6 +402,9 @@ void CCommandLine::ParseCommandLine( LPCTSTR pszCmdLineSrc, bool bResponse )
 					case 'S':
 						// サブフォルダからも検索する
 						m_gi.bGrepSubFolder = true;	break;
+					case 'G':
+						// .gitignore の除外指定に従う
+						m_gi.bGrepUseGitIgnore = true;	break;
 					case 'L':
 						// 英大文字と英小文字を区別する
 						m_gi.sGrepSearchOption.bLoHiCase = true;	break;
@@ -485,6 +488,7 @@ CCommandLine::CCommandLine()
 	m_bNoWindow				= false;
 	m_bWriteQuit			= false;
 	m_gi.bGrepSubFolder		= false;
+	m_gi.bGrepUseGitIgnore	= false;
 	m_gi.sGrepSearchOption.Reset();
 	/*
 	m_gi.sGrepSearchOption.bLoHiCase	= false;

@@ -34,6 +34,7 @@ struct GrepInfo {
 	CNativeT		cmGrepFolder;		//!< 検索対象フォルダ
 	SSearchOption	sGrepSearchOption;	//!< 検索オプション
 	bool			bGrepSubFolder;		//!< サブフォルダを検索する
+	bool			bGrepUseGitIgnore;	//!< .gitignore の除外指定に従う
 	bool			bGrepOutputLine;	//!< 結果出力で該当行を出力する
 	int				nGrepOutputStyle;	//!< 結果出力形式
 	ECodeType		nGrepCharSet;		//!< 文字コードセット

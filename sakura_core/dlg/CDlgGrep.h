@@ -38,6 +38,7 @@ public:
 
 
 	BOOL		m_bSubFolder;/*!< サブフォルダからも検索する */
+	BOOL		m_bUseGitIgnore;/*!< .gitignore の除外指定に従う */
 	BOOL		m_bFromThisText;/*!< この編集中のテキストから検索する */
 
 	SSearchOption	m_sSearchOption;	//!< 検索オプション

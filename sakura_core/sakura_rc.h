@@ -176,6 +176,7 @@
 #define IDC_CHK_SUBFOLDER               1122
 #define IDC_STATIC_CURPATH              1123
 #define IDC_CHK_DEFAULTFOLDER           1124
+#define IDC_CHK_GITIGNORE               1660
 #define IDC_STATIC_HITCOUNT             1125
 #define IDC_EDIT_VER                    1126
 #define IDC_LIST_ASSIGNEDKEYS           1127
@@ -712,7 +713,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        230
 #define _APS_NEXT_COMMAND_VALUE         4057
-#define _APS_NEXT_CONTROL_VALUE         1660
+#define _APS_NEXT_CONTROL_VALUE         1661
 #define _APS_NEXT_SYMED_VALUE           104
 #endif
 #endif
