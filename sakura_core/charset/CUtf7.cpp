@@ -238,7 +238,10 @@ int CUtf7::UniToUtf7( const wchar_t* pSrc, const int nSrcLen, char* pDst )
 		pw += _UniToUtf7SetD_block( pr_base, pr-pr_base, pw );
 		pr_base = pr;
 
-		if( *pr == L'+' ){
+		//	pr == pr_end (末尾まで Set D の文字だった) の場合に *pr を読むと
+		//	変換元バッファの範囲外を 1 文字読み出してしまうため、先に範囲を確認する
+		//	(サクラエディタ PR #1869 で指摘された範囲チェック漏れに相当)
+		if( pr < pr_end && *pr == L'+' ){
 			// '+' → "+-"
 			pw[0] = '+';
 			pw[1] = '-';
