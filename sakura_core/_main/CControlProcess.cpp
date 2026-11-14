@@ -100,7 +100,7 @@ bool CControlProcess::InitializeProcess()
 
 	MY_TRACETIME( cRunningTimer, "Before new CControlProcessWnd" );
 
-	/* タスクトレイにアイコン作成 */
+	/* コントロールプロセスのウィンドウを作成 */
 	m_pcControlProcessWnd = new CControlProcessWnd;
 
 	MY_TRACETIME( cRunningTimer, "After new CControlProcessWnd" );

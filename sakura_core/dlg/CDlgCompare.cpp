@@ -131,7 +131,7 @@ void CDlgCompare::SetData( void )
 		HFONT hFontOld = (HFONT)::SelectObject(hDC, hFont);
 		int nExtent = 0;	// 文字列の横幅
 		for( i = 0; i < nRowNum; ++i ){
-			/* トレイからエディタへの編集ファイル名要求通知 */
+			/* エディタへの編集ファイル情報要求通知 */
 			::SendMessageAny( pEditNodeArr[i].GetHwnd(), MYWM_GETFILEINFO, 0, 0 );
 			pfi = (EditInfo*)&m_pShareData->m_sWorkBuffer.m_EditInfo_MYWM_GETFILEINFO;
 
@@ -191,7 +191,7 @@ int CDlgCompare::GetData( void )
 		return FALSE;
 	}else{
 		*m_phwndCompareWnd = (HWND)List_GetItemData( hwndList, nItem );
-		/* トレイからエディタへの編集ファイル名要求通知 */
+		/* エディタへの編集ファイル情報要求通知 */
 		::SendMessageAny( *m_phwndCompareWnd, MYWM_GETFILEINFO, 0, 0 );
 		pfi = (EditInfo*)&m_pShareData->m_sWorkBuffer.m_EditInfo_MYWM_GETFILEINFO;
 

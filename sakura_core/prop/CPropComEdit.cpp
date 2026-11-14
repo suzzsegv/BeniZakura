@@ -76,7 +76,7 @@ INT_PTR CPropEdit::DispatchEvent(
 		/* ボタン／チェックボックスがクリックされた */
 		case BN_CLICKED:
 			switch( wID ){
-			case IDC_CHECK_DRAGDROP:	/* タスクトレイを使う */
+			case IDC_CHECK_DRAGDROP:	/* ドラッグ & ドロップ編集する */
 				if( ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_DRAGDROP ) ){
 					::EnableWindow( ::GetDlgItem( hwndDlg, IDC_CHECK_DROPSOURCE ), TRUE );
 				}

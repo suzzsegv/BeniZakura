@@ -721,7 +721,7 @@ HWND CEditWnd::Create(
 	//アクティブ情報
 	m_bIsActiveApp = ( ::GetActiveWindow() == GetHwnd() );	// 2007.03.08 ryoji
 
-	// エディタ－トレイ間でのUI特権分離の確認（Vista UIPI機能） 2007.06.07 ryoji
+	// エディタ－コントロールプロセス間でのUI特権分離の確認（Vista UIPI機能） 2007.06.07 ryoji
 	if( IsWinVista_or_later() ){
 		m_bUIPI = FALSE;
 		::SendMessage( m_pShareData->m_sHandles.m_hwndControlProcessWnd, MYWM_UIPI_CHECK,  (WPARAM)0, (LPARAM)GetHwnd() );
@@ -1525,8 +1525,8 @@ LRESULT CEditWnd::DispatchEvent(
 		return 0L;
 
 	case MYWM_UIPI_CHECK:
-		/* エディタ－トレイ間でのUI特権分離の確認メッセージ */	// 2007.06.07 ryoji
-		m_bUIPI = TRUE;	// トレイからの返事を受け取った
+		/* エディタ－コントロールプロセス間でのUI特権分離の確認メッセージ */	// 2007.06.07 ryoji
+		m_bUIPI = TRUE;	// コントロールプロセスからの返事を受け取った
 		return 0L;
 
 	case MYWM_CLOSE:
@@ -1580,7 +1580,7 @@ LRESULT CEditWnd::DispatchEvent(
 		return 0L;
 
 	case MYWM_GETFILEINFO:
-		/* トレイからエディタへの編集ファイル名要求通知 */
+		/* エディタへの編集ファイル情報要求通知 */
 		pfi = (EditInfo*)&m_pShareData->m_sWorkBuffer.m_EditInfo_MYWM_GETFILEINFO;
 
 		/* 編集ファイル情報を格納 */
@@ -1942,7 +1942,7 @@ int	CEditWnd::OnClose(HWND hWndActive)
 		if( IsSakuraMainWindow(hWndActive) ){
 			ActivateFrameWindow(hWndActive);	// エディタ
 		}else{
-			::SetForegroundWindow(hWndActive);	// タスクトレイ
+			::SetForegroundWindow(hWndActive);	// コントロールプロセスのウィンドウ
 		}
 	}
 
@@ -3892,7 +3892,7 @@ LRESULT CEditWnd::WinListMenu( HMENU hMenu, EditNode* pEditNodeArr, int nRowNum,
 	if( nRowNum > 0 ){
 		CFileNameManager::getInstance()->TransformFileName_MakeCache();
 		for( i = 0; i < nRowNum; ++i ){
-			/* トレイからエディタへの編集ファイル名要求通知 */
+			/* エディタへの編集ファイル情報要求通知 */
 			::SendMessage( pEditNodeArr[i].GetHwnd(), MYWM_GETFILEINFO, 0, 0 );
 ////	From Here Oct. 4, 2000 JEPRO commented out & modified	開いているファイル数がわかるように履歴とは違って1から数える
 			pfi = (EditInfo*)&m_pShareData->m_sWorkBuffer.m_EditInfo_MYWM_GETFILEINFO;

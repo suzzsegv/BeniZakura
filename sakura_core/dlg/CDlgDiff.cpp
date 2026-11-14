@@ -225,7 +225,7 @@ void CDlgDiff::SetData( void )
 			int nExtent = 0;	// 文字列の横幅
 			for( i = 0; i < nRowNum; i++ )
 			{
-				/* トレイからエディタへの編集ファイル名要求通知 */
+				/* エディタへの編集ファイル情報要求通知 */
 				::SendMessageAny( pEditNode[i].GetHwnd(), MYWM_GETFILEINFO, 0, 0 );
 				pFileInfo = (EditInfo*)&m_pShareData->m_sWorkBuffer.m_EditInfo_MYWM_GETFILEINFO;
 
@@ -339,7 +339,7 @@ int CDlgDiff::GetData( void )
 		{
 			m_hWnd_Dst = (HWND)List_GetItemData( hwndList, nItem );
 
-			/* トレイからエディタへの編集ファイル名要求通知 */
+			/* エディタへの編集ファイル情報要求通知 */
 			::SendMessageAny( m_hWnd_Dst, MYWM_GETFILEINFO, 0, 0 );
 			pFileInfo = (EditInfo*)&m_pShareData->m_sWorkBuffer.m_EditInfo_MYWM_GETFILEINFO;
 
