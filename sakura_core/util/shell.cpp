@@ -265,50 +265,6 @@ int MyPropertySheet( LPPROPSHEETHEADER lppsph )
 
 
 
-// Stonee, 2001/12/21
-// NetWork上のリソースに接続するためのダイアログを出現させる
-// NO_ERROR:成功 ERROR_CANCELLED:キャンセル それ以外:失敗
-// プロジェクトの設定でリンクモジュールにMpr.libを追加のこと
-DWORD NetConnect ( const TCHAR strNetWorkPass[] )
-{
-	//char sPassWord[] = "\0";	//パスワード
-	//char sUser[] = "\0";		//ユーザー名
-	DWORD dwRet;				//戻り値　エラーコードはWINERROR.Hを参照
-	TCHAR sTemp[256];
-	TCHAR sDrive[] = _T("");
-    int i;
-
-	if (_tcslen(strNetWorkPass) < 3)	return ERROR_BAD_NET_NAME;  //UNCではない。
-	if (strNetWorkPass[0] != _T('\\') && strNetWorkPass[1] != _T('\\'))	return ERROR_BAD_NET_NAME;  //UNCではない。
-
-	//3文字目から数えて最初の\の直前までを切り出す
-	sTemp[0] = _T('\\');
-	sTemp[1] = _T('\\');
-	for (i = 2; strNetWorkPass[i] != _T('\0'); i++) {
-		if (strNetWorkPass[i] == _T('\\')) break;
-		sTemp[i] = strNetWorkPass[i];
-	}
-	sTemp[i] = _T('\0');	//終端
-
-	//NETRESOURCE作成
-	NETRESOURCE nr;
-	ZeroMemory( &nr, sizeof( nr ) );
-	nr.dwScope       = RESOURCE_GLOBALNET;
-	nr.dwType        = RESOURCETYPE_DISK;
-	nr.dwDisplayType = RESOURCEDISPLAYTYPE_SHARE;
-	nr.dwUsage       = RESOURCEUSAGE_CONNECTABLE;
-	nr.lpLocalName   = sDrive;
-	nr.lpRemoteName  = sTemp;
-
-	//ユーザー認証ダイアログを表示
-	dwRet = WNetAddConnection3(0, &nr, NULL, NULL, CONNECT_UPDATE_PROFILE | CONNECT_INTERACTIVE);
-
-	return dwRet;
-}
-
-
-
-
 /*! ショートカット(.lnk)の解決
 	@date 2009.01.08 ryoji CoInitialize/CoUninitializeを削除（WinMainにOleInitialize/OleUninitializeを追加）
 */

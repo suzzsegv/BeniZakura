@@ -2063,9 +2063,6 @@ void CEditWnd::OnCommand( WORD wNotifyCode, WORD wID , HWND hwndCtl )
 			const CMRUFolder cMRUFolder;
 			LPCTSTR pszFolderPath = cMRUFolder.GetPath( wID - IDM_SELOPENFOLDER );
 
-			//Stonee, 2001/12/21 UNCであれば接続を試みる
-			NetConnect( pszFolderPath );
-
 			//「ファイルを開く」ダイアログ
 			SLoadInfo sLoadInfo(_T(""), CODE_AUTODETECT, false);
 			CDocFileOperation& cDocOp = GetDocument().m_cDocFileOperation;

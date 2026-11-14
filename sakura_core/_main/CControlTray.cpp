@@ -707,9 +707,6 @@ LRESULT CControlTray::DispatchEvent(
 						const CMRUFolder cMRUFolder;
 						std::vector<LPCTSTR> vOPENFOLDER = cMRUFolder.GetPathList();
 
-						//Stonee, 2001/12/21 UNCであれば接続を試みる
-						NetConnect( cMRUFolder.GetPath( nId - IDM_SELOPENFOLDER ) );
-
 						/* ファイルオープンダイアログの初期化 */
 						CDlgOpenFile	cDlgOpenFile;
 						cDlgOpenFile.Create(
