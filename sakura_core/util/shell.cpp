@@ -38,7 +38,9 @@ BOOL SelectDir( HWND hWnd, const TCHAR* pszTitle, const TCHAR* pszInitFolder, TC
 	BOOL	bRes;
 	TCHAR	szInitFolder[MAX_PATH];
 
-	_tcscpy( szInitFolder, pszInitFolder );
+	//	初期フォルダがバッファに収まらない場合は切り詰める (バッファオーバーフロー防止)
+	//	※初期選択位置にのみ使用するため、切り詰めても実害はない
+	_tcsncpy_s( szInitFolder, _countof(szInitFolder), pszInitFolder, _TRUNCATE );
 	/* フォルダの最後が半角かつ'\\'の場合は、取り除く "c:\\"等のルートは取り除かない*/
 	CutLastYenFromDirectoryPath( szInitFolder );
 

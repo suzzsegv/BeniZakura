@@ -564,7 +564,8 @@ void CDlgOpenFile::Create(
 
 	/* ユーザー定義ワイルドカード（保存時の拡張子補完でも使用される） */
 	if( NULL != pszUserWildCard ){
-		_tcscpy( m_szDefaultWildCard, pszUserWildCard );
+		//	バッファに収まらない場合は切り詰める (バッファオーバーフロー防止)
+		_tcsncpy_s( m_szDefaultWildCard.GetBufferPointer(), m_szDefaultWildCard.GetBufferCount(), pszUserWildCard, _TRUNCATE );
 	}
 
 	/* 「開く」での初期フォルダ */

@@ -1434,15 +1434,21 @@ bool CMacro::HandleFunction(CEditView *View, EFunctionCode ID, const VARIANT *Ar
 				delete[] Source;
 			}
 
+			bool bRet;
+			TCHAR szPath[ _MAX_PATH ];
+			//	既定のファイル名、フィルタ文字列が長すぎる場合はエラーとする
+			//	(szPath, CDlgOpenFile::m_szDefaultWildCard のバッファオーバーフロー防止)
+			if( sDefault.length() >= _countof(szPath) || sFilter.length() >= _MAX_PATH ){
+				return false;
+			}
+
 			CDlgOpenFile cDlgOpenFile;
 			cDlgOpenFile.Create(
 				G_AppInstance(), View->GetHwnd(),
 				sFilter.c_str(),
 				sDefault.c_str()
 			);
-			bool bRet;
-			TCHAR szPath[ _MAX_PATH ];
-			_tcscpy( szPath, sDefault.c_str() );
+			_tcscpy_s( szPath, _countof(szPath), sDefault.c_str() );
 			if( LOWORD(ID) == F_FILEOPENDIALOG ){
 				bRet = cDlgOpenFile.DoModal_GetOpenFileName( szPath );
 			}else{
