@@ -26,7 +26,7 @@
 
 #include "StdAfx.h"
 
-#include "CControlTray.h"
+#include "CControlProcessWnd.h"
 #include "CEditorManager.h"
 #include "CEditApp.h"
 #include "debug/CRunningTimer.h"
@@ -42,27 +42,27 @@
 #include "sakura_rc.h"
 
 /////////////////////////////////////////////////////////////////////////
-static LRESULT CALLBACK CControlTrayWndProc( HWND, UINT, WPARAM, LPARAM );
+static LRESULT CALLBACK CControlProcessWndProc( HWND, UINT, WPARAM, LPARAM );
 
-static CControlTray*	g_m_pCControlTray;
+static CControlProcessWnd*	g_pcControlProcessWnd;
 
 /* ウィンドウプロシージャじゃ */
-static LRESULT CALLBACK CControlTrayWndProc(
+static LRESULT CALLBACK CControlProcessWndProc(
 	HWND	hwnd,	// handle of window
 	UINT	uMsg,	// message identifier
 	WPARAM	wParam,	// first message parameter
 	LPARAM	lParam 	// second message parameter
 )
 {
-	CControlTray* pSApp;
+	CControlProcessWnd* pSApp;
 	switch( uMsg ){
 	case WM_CREATE:
-		pSApp = ( CControlTray* )g_m_pCControlTray;
+		pSApp = ( CControlProcessWnd* )g_pcControlProcessWnd;
 		return pSApp->DispatchEvent( hwnd, uMsg, wParam, lParam );
 	default:
 		// Modified by KEITA for WIN64 2003.9.6
 		//RELPRINT( _T("dispatch\n") );
-		pSApp = ( CControlTray* )::GetWindowLongPtr( hwnd, GWLP_USERDATA );
+		pSApp = ( CControlProcessWnd* )::GetWindowLongPtr( hwnd, GWLP_USERDATA );
 		if( NULL != pSApp ){
 			return pSApp->DispatchEvent( hwnd, uMsg, wParam, lParam );
 		}
@@ -74,9 +74,9 @@ static LRESULT CALLBACK CControlTrayWndProc(
 
 
 /////////////////////////////////////////////////////////////////////////////
-// CControlTray
+// CControlProcessWnd
 //	@date 2002.2.17 YAZAKI CShareDataのインスタンスは、CProcessにひとつあるのみ。
-CControlTray::CControlTray()
+CControlProcessWnd::CControlProcessWnd()
 : m_hInstance( NULL )
 , m_hWnd( NULL )
 {
@@ -90,25 +90,25 @@ CControlTray::CControlTray()
 }
 
 
-CControlTray::~CControlTray()
+CControlProcessWnd::~CControlProcessWnd()
 {
 	return;
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// CControlTray メンバ関数
+// CControlProcessWnd メンバ関数
 
 
 
 
 /* 作成 */
-HWND CControlTray::Create( HINSTANCE hInstance )
+HWND CControlProcessWnd::Create( HINSTANCE hInstance )
 {
-	MY_RUNNINGTIMER( cRunningTimer, "CControlTray::Create" );
+	MY_RUNNINGTIMER( cRunningTimer, "CControlProcessWnd::Create" );
 
 	//同名同クラスのウィンドウが既に存在していたら、失敗
 	m_hInstance = hInstance;
-	HWND hwndWork = ::FindWindow( GSTR_CEDITAPP, GSTR_CEDITAPP );
+	HWND hwndWork = ::FindWindow( GSTR_CONTROL_PROCESS_WND, GSTR_CONTROL_PROCESS_WND );
 	if( NULL != hwndWork ){
 		return NULL;
 	}
@@ -121,7 +121,7 @@ HWND CControlTray::Create( HINSTANCE hInstance )
 								CS_DBLCLKS |
 								CS_BYTEALIGNCLIENT |
 								CS_BYTEALIGNWINDOW;
-		wc.lpfnWndProc		= CControlTrayWndProc;
+		wc.lpfnWndProc		= CControlProcessWndProc;
 		wc.cbClsExtra		= 0;
 		wc.cbWndExtra		= 0;
 		wc.hInstance		= m_hInstance;
@@ -129,18 +129,18 @@ HWND CControlTray::Create( HINSTANCE hInstance )
 		wc.hCursor			= LoadCursor( NULL, IDC_ARROW );
 		wc.hbrBackground	= (HBRUSH)(COLOR_WINDOW + 1);
 		wc.lpszMenuName		= NULL;
-		wc.lpszClassName	= GSTR_CEDITAPP;
+		wc.lpszClassName	= GSTR_CONTROL_PROCESS_WND;
 		ATOM	atom = RegisterClass( &wc );
 		if( 0 == atom ){
-			ErrorMessage( NULL, _T("CControlTray::Create()\nウィンドウクラスを登録できませんでした。") );
+			ErrorMessage( NULL, _T("CControlProcessWnd::Create()\nウィンドウクラスを登録できませんでした。") );
 		}
 	}
-	g_m_pCControlTray = this;
+	g_pcControlProcessWnd = this;
 
 	// ウィンドウ作成 (WM_CREATEで、GetHwnd() に HWND が格納される)
 	::CreateWindow(
-		GSTR_CEDITAPP,						// pointer to registered class name
-		GSTR_CEDITAPP,						// pointer to window name
+		GSTR_CONTROL_PROCESS_WND,						// pointer to registered class name
+		GSTR_CONTROL_PROCESS_WND,						// pointer to window name
 		WS_OVERLAPPEDWINDOW/*WS_VISIBLE *//*| WS_CHILD *//* | WS_CLIPCHILDREN*/	,	// window style
 		CW_USEDEFAULT,						// horizontal position of window
 		0,									// vertical position of window
@@ -155,23 +155,23 @@ HWND CControlTray::Create( HINSTANCE hInstance )
 	// 最前面にする
 	// (このウィンドウを親とするダイアログやメッセージボックス (Windows 終了時の保存確認、
 	//  終了中ダイアログなど) が最前面に表示されるように)
-	::SetWindowPos( GetTrayHwnd(), HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE );
+	::SetWindowPos( GetHwnd(), HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE );
 
-	return GetTrayHwnd();
+	return GetHwnd();
 }
 
 
 
 
 /* メッセージループ */
-void CControlTray::MessageLoop( void )
+void CControlProcessWnd::MessageLoop( void )
 {
 //複数プロセス版
 	MSG	msg;
 	int ret;
 	
 	//2004.02.17 Moca GetMessageのエラーチェック
-	while ( GetTrayHwnd() != NULL && (ret = ::GetMessage(&msg, NULL, 0, 0 )) != 0 ){
+	while ( GetHwnd() != NULL && (ret = ::GetMessage(&msg, NULL, 0, 0 )) != 0 ){
 		if( ret == -1 ){
 			break;
 		}
@@ -187,7 +187,7 @@ void CControlTray::MessageLoop( void )
 
 /* メッセージ処理 */
 //@@@ 2001.12.26 YAZAKI MRUリストは、CMRUに依頼する
-LRESULT CControlTray::DispatchEvent(
+LRESULT CControlProcessWnd::DispatchEvent(
 	HWND	hwnd,	// handle of window
 	UINT	uMsg,	// message identifier
 	WPARAM	wParam,	// first message parameter
@@ -219,7 +219,7 @@ LRESULT CControlTray::DispatchEvent(
 	case WM_CREATE:
 		m_hWnd = hwnd;
 		// Modified by KEITA for WIN64 2003.9.6
-		::SetWindowLongPtr( GetTrayHwnd(), GWLP_USERDATA, (LONG_PTR)this );
+		::SetWindowLongPtr( GetHwnd(), GWLP_USERDATA, (LONG_PTR)this );
 
 		// 2006.07.09 ryoji 最後の方でシャットダウンするアプリケーションにする
 		BOOL (WINAPI *pfnSetProcessShutdownParameters)( DWORD dwLevel, DWORD dwFlags );
@@ -259,7 +259,7 @@ LRESULT CControlTray::DispatchEvent(
 
 		case WM_QUERYENDSESSION:
 			/* すべてのウィンドウを閉じる */	//Oct. 7, 2000 jepro 「編集ウィンドウの全終了」という説明を左記のように変更
-			if( CEditorManager::CloseAllEditor( FALSE, GetTrayHwnd(), TRUE, 0 ) ){	// 2006.12.25, 2007.02.13 ryoji 引数追加
+			if( CEditorManager::CloseAllEditor( FALSE, GetHwnd(), TRUE, 0 ) ){	// 2006.12.25, 2007.02.13 ryoji 引数追加
 				//	Jan. 31, 2000 genta
 				//	この時点ではWindowsの終了が確定していないので常駐解除すべきではない．
 				//	::DestroyWindow( hwnd );
@@ -269,7 +269,7 @@ LRESULT CControlTray::DispatchEvent(
 			}
 		case WM_CLOSE:
 			/* すべてのウィンドウを閉じる */	//Oct. 7, 2000 jepro 「編集ウィンドウの全終了」という説明を左記のように変更
-			if( CEditorManager::CloseAllEditor( FALSE, GetTrayHwnd(), TRUE, 0 ) ){	// 2006.12.25, 2007.02.13 ryoji 引数追加
+			if( CEditorManager::CloseAllEditor( FALSE, GetHwnd(), TRUE, 0 ) ){	// 2006.12.25, 2007.02.13 ryoji 引数追加
 				::DestroyWindow( hwnd );
 			}
 			return 0L;
@@ -304,7 +304,7 @@ LRESULT CControlTray::DispatchEvent(
 
 
 /* WM_COMMANDメッセージ処理 */
-void CControlTray::OnCommand( WORD wNotifyCode, WORD wID , HWND hwndCtl )
+void CControlProcessWnd::OnCommand( WORD wNotifyCode, WORD wID , HWND hwndCtl )
 {
 	switch( wNotifyCode ){
 	/* メニューからのメッセージ */
@@ -317,7 +317,7 @@ void CControlTray::OnCommand( WORD wNotifyCode, WORD wID , HWND hwndCtl )
 /*! アクセラレータテーブル作成
 	@date 2013.04.20 novice 共通処理を関数化
 */
-void CControlTray::CreateAccelTbl( void )
+void CControlProcessWnd::CreateAccelTbl( void )
 {
 	m_pShareData->m_sHandles.m_hAccel = CKeyBind::CreateAccerelator(
 		m_pShareData->m_Common.m_sKeyBind.m_nKeyNameArrNum,
@@ -327,7 +327,7 @@ void CControlTray::CreateAccelTbl( void )
 	if( NULL == m_pShareData->m_sHandles.m_hAccel ){
 		ErrorMessage(
 			NULL,
-			_T("CControlTray::CreateAccelTbl()\n")
+			_T("CControlProcessWnd::CreateAccelTbl()\n")
 			_T("アクセラレータ テーブルが作成できません。\n")
 			_T("システムリソースが不足しています。")
 		);
@@ -337,7 +337,7 @@ void CControlTray::CreateAccelTbl( void )
 /*! アクセラレータテーブル破棄
 	@date 2013.04.20 novice 共通処理を関数化
 */
-void CControlTray::DeleteAccelTbl( void )
+void CControlProcessWnd::DeleteAccelTbl( void )
 {
 	if( m_pShareData->m_sHandles.m_hAccel ){
 		::DestroyAcceleratorTable( m_pShareData->m_sHandles.m_hAccel );
@@ -349,11 +349,11 @@ void CControlTray::DeleteAccelTbl( void )
 	@brief WM_DESTROY 処理
 	@date 2006.07.09 ryoji 新規作成
 */
-void CControlTray::OnDestroy()
+void CControlProcessWnd::OnDestroy()
 {
 	HWND hwndExitingDlg = 0;
 
-	if (GetTrayHwnd() == NULL)
+	if (GetHwnd() == NULL)
 		return;	// 既に破棄されている
 
 	// 2006.07.09 ryoji 共有データ保存を CControlProcess::Terminate() から移動
@@ -369,7 +369,7 @@ void CControlTray::OnDestroy()
 		hwndExitingDlg = ::CreateDialog(
 			m_hInstance,
 			MAKEINTRESOURCE( IDD_EXITING ),
-			GetTrayHwnd()/*::GetDesktopWindow()*/,
+			GetHwnd()/*::GetDesktopWindow()*/,
 			ExitingDlgProc
 		);
 		::ShowWindow( hwndExitingDlg, SW_SHOW );
@@ -396,7 +396,7 @@ void CControlTray::OnDestroy()
 	@brief 終了ダイアログ用プロシージャ
 	@date 2006.07.02 ryoji CControlProcess から移動
 */
-INT_PTR CALLBACK CControlTray::ExitingDlgProc(
+INT_PTR CALLBACK CControlProcessWnd::ExitingDlgProc(
 	HWND	hwndDlg,	// handle to dialog box
 	UINT	uMsg,		// message
 	WPARAM	wParam,		// first message parameter

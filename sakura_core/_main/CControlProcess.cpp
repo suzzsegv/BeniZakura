@@ -17,7 +17,7 @@
 
 #include "StdAfx.h"
 #include "CControlProcess.h"
-#include "CControlTray.h"
+#include "CControlProcessWnd.h"
 #include "env/DLLSHAREDATA.h"
 #include "CCommandLine.h"
 #include "env/CShareData_IO.h"
@@ -33,7 +33,7 @@
 	@brief コントロールプロセスを初期化する
 	
 	MutexCPを作成・ロックする。
-	CControlTrayを作成する。
+	CControlProcessWndを作成する。
 	
 	@author aroka
 	@date 2002/01/07
@@ -98,21 +98,21 @@ bool CControlProcess::InitializeProcess()
 		}
 	}
 
-	MY_TRACETIME( cRunningTimer, "Before new CControlTray" );
+	MY_TRACETIME( cRunningTimer, "Before new CControlProcessWnd" );
 
 	/* タスクトレイにアイコン作成 */
-	m_pcTray = new CControlTray;
+	m_pcControlProcessWnd = new CControlProcessWnd;
 
-	MY_TRACETIME( cRunningTimer, "After new CControlTray" );
+	MY_TRACETIME( cRunningTimer, "After new CControlProcessWnd" );
 
-	HWND hwnd = m_pcTray->Create( GetProcessInstance() );
+	HWND hwnd = m_pcControlProcessWnd->Create( GetProcessInstance() );
 	if( !hwnd ){
 		ErrorBeep();
 		TopErrorMessage( NULL, _T("ウィンドウの作成に失敗しました。\n起動できません。") );
 		return false;
 	}
 	SetMainWindow(hwnd);
-	GetDllShareData().m_sHandles.m_hwndTray = hwnd;
+	GetDllShareData().m_sHandles.m_hwndControlProcessWnd = hwnd;
 
 	// 初期化完了イベントをシグナル状態にする
 	if( !::SetEvent( m_hEventCPInitialized ) ){
@@ -132,8 +132,8 @@ bool CControlProcess::InitializeProcess()
 */
 bool CControlProcess::MainLoop()
 {
-	if( m_pcTray && GetMainWindow() ){
-		m_pcTray->MessageLoop();	/* メッセージループ */
+	if( m_pcControlProcessWnd && GetMainWindow() ){
+		m_pcControlProcessWnd->MessageLoop();	/* メッセージループ */
 		return true;
 	}
 	return false;
@@ -148,12 +148,12 @@ bool CControlProcess::MainLoop()
 */
 void CControlProcess::OnExitProcess()
 {
-	GetDllShareData().m_sHandles.m_hwndTray = NULL;
+	GetDllShareData().m_sHandles.m_hwndControlProcessWnd = NULL;
 }
 
 CControlProcess::~CControlProcess()
 {
-	delete m_pcTray;
+	delete m_pcControlProcessWnd;
 
 	if( m_hEventCPInitialized ){
 		::ResetEvent( m_hEventCPInitialized );

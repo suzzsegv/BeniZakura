@@ -39,7 +39,7 @@ BOOL CPropertyManager::OpenPropertySheet( int nPageNum )
 		}
 
 		/* アクセラレータテーブルの再作成 */
-		::SendMessageAny( GetDllShareData().m_sHandles.m_hwndTray, MYWM_CHANGESETTING,  (WPARAM)0, (LPARAM)PM_CHANGESETTING_ALL );
+		::SendMessageAny( GetDllShareData().m_sHandles.m_hwndControlProcessWnd, MYWM_CHANGESETTING,  (WPARAM)0, (LPARAM)PM_CHANGESETTING_ALL );
 
 
 		/* 設定変更を反映させる */
@@ -90,7 +90,7 @@ BOOL CPropertyManager::OpenPropertySheetTypes( int nPageNum, CTypeConfig nSettin
 		}
 
 		/* アクセラレータテーブルの再作成 */
-		::SendMessageAny( GetDllShareData().m_sHandles.m_hwndTray, MYWM_CHANGESETTING,  (WPARAM)0, (LPARAM)PM_CHANGESETTING_ALL );
+		::SendMessageAny( GetDllShareData().m_sHandles.m_hwndControlProcessWnd, MYWM_CHANGESETTING,  (WPARAM)0, (LPARAM)PM_CHANGESETTING_ALL );
 
 		/* 設定変更を反映させる */
 		/* 全編集ウィンドウへメッセージをポストする */

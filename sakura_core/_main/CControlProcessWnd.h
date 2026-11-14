@@ -22,8 +22,8 @@
 	Please contact the copyright holder to use this code for other purpose.
 */
 
-#ifndef _CCONTROLTRAY_H_
-#define _CCONTROLTRAY_H_
+#ifndef _CCONTROLPROCESSWND_H_
+#define _CCONTROLPROCESSWND_H_
 
 #include <Windows.h>
 
@@ -36,14 +36,14 @@ struct DLLSHAREDATA;
 	
 	@date 2002.2.17 YAZAKI CShareDataのインスタンスは、CProcessにひとつあるのみ。
 */
-class CControlTray
+class CControlProcessWnd
 {
 public:
 	/*
 	||  Constructors
 	*/
-	CControlTray();
-	~CControlTray();
+	CControlProcessWnd();
+	~CControlProcessWnd();
 
 	/*
 	|| メンバ関数
@@ -56,7 +56,7 @@ public:
 	void DeleteAccelTbl( void ); // アクセラレータテーブル破棄
 
 public:
-	HWND GetTrayHwnd() const{ return m_hWnd; }
+	HWND GetHwnd() const{ return m_hWnd; }
 
 protected:
 	void OnCommand( WORD , WORD  , HWND );	/*!< WM_COMMANDメッセージ処理 */
@@ -82,7 +82,7 @@ private:
 
 
 ///////////////////////////////////////////////////////////////////////
-#endif /* _CCONTROLTRAY_H_ */
+#endif /* _CCONTROLPROCESSWND_H_ */
 
 
 

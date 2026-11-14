@@ -294,7 +294,7 @@ BOOL CAppNodeGroupHandle::RequestCloseEditor( EditNode* pWndArr, int nArrCnt, BO
 	if( bTabGroup ){
 		hWndActive = hWndLast;	// 最後に閉じるウィンドウが担当
 	}else{
-		hWndActive = GetDllShareData().m_sHandles.m_hwndTray;	// タスクトレイが担当
+		hWndActive = GetDllShareData().m_sHandles.m_hwndControlProcessWnd;	// タスクトレイが担当
 	}
 
 	// アクティブ化制御ウインドウをアクティブにしておく

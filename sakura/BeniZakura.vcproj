@@ -2630,11 +2630,11 @@
 					>
 				</File>
 				<File
-					RelativePath="..\sakura_core\_main\CControlTray.cpp"
+					RelativePath="..\sakura_core\_main\CControlProcessWnd.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\sakura_core\_main\CControlTray.h"
+					RelativePath="..\sakura_core\_main\CControlProcessWnd.h"
 					>
 				</File>
 				<File

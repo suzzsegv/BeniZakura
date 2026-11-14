@@ -724,7 +724,7 @@ HWND CEditWnd::Create(
 	// エディタ－トレイ間でのUI特権分離の確認（Vista UIPI機能） 2007.06.07 ryoji
 	if( IsWinVista_or_later() ){
 		m_bUIPI = FALSE;
-		::SendMessage( m_pShareData->m_sHandles.m_hwndTray, MYWM_UIPI_CHECK,  (WPARAM)0, (LPARAM)GetHwnd() );
+		::SendMessage( m_pShareData->m_sHandles.m_hwndControlProcessWnd, MYWM_UIPI_CHECK,  (WPARAM)0, (LPARAM)GetHwnd() );
 		if( !m_bUIPI ){	// 返事が返らない
 			TopErrorMessage( GetHwnd(), 
 				_T("エディタ間の対話に失敗しました。\n")
@@ -1504,7 +1504,7 @@ LRESULT CEditWnd::DispatchEvent(
 
 
 		/* 編集ウィンドウオブジェクトからのオブジェクト削除要求 */
-		::PostMessageAny( m_pShareData->m_sHandles.m_hwndTray, MYWM_DELETE_ME, 0, 0 );
+		::PostMessageAny( m_pShareData->m_sHandles.m_hwndControlProcessWnd, MYWM_DELETE_ME, 0, 0 );
 
 		/* Windows にスレッドの終了を要求します */
 		::PostQuitMessage( 0 );

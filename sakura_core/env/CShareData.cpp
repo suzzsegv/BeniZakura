@@ -144,7 +144,7 @@ bool CShareData::InitShareData()
 		// 2004.05.13 Moca リソースから製品バージョンの取得
 		GetAppVersionInfo( NULL, VS_VERSION_INFO,
 			&m_pShareData->m_sVersion.m_dwProductVersionMS, &m_pShareData->m_sVersion.m_dwProductVersionLS );
-		m_pShareData->m_sHandles.m_hwndTray = NULL;
+		m_pShareData->m_sHandles.m_hwndControlProcessWnd = NULL;
 		m_pShareData->m_sHandles.m_hAccel = NULL;
 		m_pShareData->m_sHandles.m_hwndDebug = NULL;
 		m_pShareData->m_sNodes.m_nSequences = 0;					/* ウィンドウ連番 */

@@ -88,7 +88,7 @@ public:
 
 //共有ハンドル
 struct SShare_Handles{
-	HWND				m_hwndTray;
+	HWND				m_hwndControlProcessWnd;
 	HWND				m_hwndDebug;
 	HACCEL				m_hAccel;
 };
