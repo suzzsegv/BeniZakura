@@ -169,31 +169,6 @@ const wchar_t* CSearchAgent::SearchString(
 	return NULL;
 }
 
-/* 検索条件の情報(キー文字列の全角か半角かの配列)作成 */
-void CSearchAgent::CreateCharCharsArr(
-	const wchar_t*	pszPattern,
-	int				nSrcLen,
-	int**			ppnCharCharsArr
-)
-{
-	int		i;
-	int*	pnCharCharsArr;
-	pnCharCharsArr = new int[nSrcLen];
-	for( i = 0; i < nSrcLen; /*i++*/ ){
-		// 2005-09-02 D.S.Koba GetSizeOfChar
-		pnCharCharsArr[i] = CNativeW::GetSizeOfChar( pszPattern, nSrcLen, i );
-		if( 0 == pnCharCharsArr[i] ){
-			pnCharCharsArr[i] = 1;
-		}
-		if( 2 == pnCharCharsArr[i] ){
-			pnCharCharsArr[i + 1] = pnCharCharsArr[i];
-		}
-		i+= pnCharCharsArr[i];
-	}
-	*ppnCharCharsArr = pnCharCharsArr;
-	return;
-}
-
 /*!	単語単位の単語リスト作成
 */
 void CSearchAgent::CreateWordList(

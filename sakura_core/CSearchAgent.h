@@ -84,13 +84,6 @@ public:
 	);
 
 	
-	// 検索条件の情報
-	static void CreateCharCharsArr(
-		const wchar_t*	pszPattern,
-		int				nSrcLen,
-		int**			ppnCharCharsArr
-	);
-	
 	static void CreateWordList(
 		std::vector<std::pair<const wchar_t*, CLogicInt> >&	searchWords,
 		const wchar_t*	pszPattern,
