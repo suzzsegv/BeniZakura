@@ -40,6 +40,8 @@
 */
 
 #include "util/tchar_printf.h"
+#include <type_traits>	// std::is_array, std::remove_reference (auto_sprintf)
+#include <utility>		// std::forward (auto_sprintf)
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 //                          メモリ                             //
@@ -252,8 +254,49 @@ TCHAR* strtotcs( TCHAR* dest, const WCHAR* src, size_t count );
 //印字系
 inline int auto_snprintf_s(ACHAR* buf, size_t count, const ACHAR* format, ...)   { va_list v; va_start(v,format); int ret=tchar_vsnprintf_s (buf,count,format,v); va_end(v); return ret; }
 inline int auto_snprintf_s(WCHAR* buf, size_t count, const WCHAR* format, ...)   { va_list v; va_start(v,format); int ret=tchar_vsnwprintf_s(buf,count,format,v); va_end(v); return ret; }
-inline int auto_sprintf(ACHAR* buf, const ACHAR* format, ...)                    { va_list v; va_start(v,format); int ret=tchar_vsprintf (buf,format,v); va_end(v); return ret; }
-inline int auto_sprintf(WCHAR* buf, const WCHAR* format, ...)                    { va_list v; va_start(v,format); int ret=tchar_vswprintf(buf,format,v); va_end(v); return ret; }
+/*
+	auto_sprintf の実装
+	書き込み先が配列の場合は、配列の要素数を書き込み先のサイズとして渡し、
+	収まらない場合は切り詰めて -1 を返す (バッファオーバーフロー防止)。
+	書き込み先がポインタの場合はサイズが分からないため、従来どおりサイズの確認を行わない。
+	ポインタを書き込み先とする場合は、auto_sprintf_s / auto_snprintf_s を使用すること。
+
+	※ 配列版を非テンプレートのポインタ版と並べて定義すると、オーバーロード解決で
+	   ポインタ版が優先されてしまうため、1 つのテンプレートで受けて振り分ける。
+*/
+namespace auto_sprintf_detail {
+	inline int vsnprintf_trunc(ACHAR* buf, size_t count, const ACHAR* format, va_list& v){ return tchar_vsnprintf_s (buf,count,format,v); }
+	inline int vsnprintf_trunc(WCHAR* buf, size_t count, const WCHAR* format, va_list& v){ return tchar_vsnwprintf_s(buf,count,format,v); }
+	inline int vsprintf_nolimit(ACHAR* buf, const ACHAR* format, va_list& v){ return tchar_vsprintf (buf,format,v); }
+	inline int vsprintf_nolimit(WCHAR* buf, const WCHAR* format, va_list& v){ return tchar_vswprintf(buf,format,v); }
+
+	//! 書き込み先が配列: 要素数を渡して切り詰め付きで書式化する
+	template <class C, size_t N>
+	inline int dispatch(C (&buf)[N], const C* format, va_list& v, std::true_type /*is_array*/)
+	{
+		return vsnprintf_trunc(buf, N, format, v);
+	}
+
+	//! 書き込み先がポインタ (または C* に変換できる型): サイズの確認なし
+	template <class P, class C>
+	inline int dispatch(P&& buf, const C* format, va_list& v, std::false_type /*is_array*/)
+	{
+		return vsprintf_nolimit(static_cast<C*>(buf), format, v);
+	}
+}
+
+template <class B, class C>
+inline int auto_sprintf(B&& buf, const C* format, ...)
+{
+	va_list v;
+	va_start(v, format);
+	int ret = auto_sprintf_detail::dispatch(
+		std::forward<B>(buf), format, v,
+		std::is_array<typename std::remove_reference<B>::type>()
+	);
+	va_end(v);
+	return ret;
+}
 inline int auto_sprintf_s(ACHAR* buf, size_t nBufCount, const ACHAR* format, ...){ va_list v; va_start(v,format); int ret=tchar_vsprintf_s (buf,nBufCount,format,v); va_end(v); return ret; }
 inline int auto_sprintf_s(WCHAR* buf, size_t nBufCount, const WCHAR* format, ...){ va_list v; va_start(v,format); int ret=tchar_vswprintf_s(buf,nBufCount,format,v); va_end(v); return ret; }
 inline int auto_vsprintf(ACHAR* buf, const ACHAR* format, va_list& v){ return tchar_vsprintf (buf,format,v); }
