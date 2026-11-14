@@ -29,7 +29,7 @@
 #include "env/CommonSetting.h"
 #include "env/CSakuraEnvironment.h"
 #include "doc/CDocListener.h" // SLoadInfo
-#include "_main/CControlTray.h"
+#include "_main/CEditorManager.h"
 #include "debug/CRunningTimer.h"
 #include "recent/CMRUFile.h"
 #include "recent/CMRUFolder.h"
@@ -144,7 +144,7 @@ bool CShareData::InitShareData()
 		// 2004.05.13 Moca リソースから製品バージョンの取得
 		GetAppVersionInfo( NULL, VS_VERSION_INFO,
 			&m_pShareData->m_sVersion.m_dwProductVersionMS, &m_pShareData->m_sVersion.m_dwProductVersionLS );
-		m_pShareData->m_sHandles.m_hwndTray = NULL;
+		m_pShareData->m_sHandles.m_hwndControlProcessWnd = NULL;
 		m_pShareData->m_sHandles.m_hAccel = NULL;
 		m_pShareData->m_sHandles.m_hwndDebug = NULL;
 		m_pShareData->m_sNodes.m_nSequences = 0;					/* ウィンドウ連番 */
@@ -349,14 +349,6 @@ bool CShareData::InitShareData()
 		m_pShareData->m_Common.m_sWindow.m_nWinPosX = CW_USEDEFAULT;
 		m_pShareData->m_Common.m_sWindow.m_nWinPosY = 0;
 
-		m_pShareData->m_Common.m_sGeneral.m_bUseTaskTray = FALSE;				/* タスクトレイのアイコンを使う */
-#ifdef _DEBUG
-		m_pShareData->m_Common.m_sGeneral.m_bStayTaskTray = FALSE;				/* タスクトレイのアイコンを常駐 */
-#else
-		m_pShareData->m_Common.m_sGeneral.m_bStayTaskTray = TRUE;				/* タスクトレイのアイコンを常駐 */
-#endif
-		m_pShareData->m_Common.m_sGeneral.m_wTrayMenuHotKeyCode = L'Z';		/* タスクトレイ左クリックメニュー キー */
-		m_pShareData->m_Common.m_sGeneral.m_wTrayMenuHotKeyMods = HOTKEYF_ALT | HOTKEYF_CONTROL;	/* タスクトレイ左クリックメニュー キー */
 		m_pShareData->m_Common.m_sEdit.m_bUseOLE_DragDrop = TRUE;			/* OLEによるドラッグ & ドロップを使う */
 		m_pShareData->m_Common.m_sEdit.m_bUseOLE_DropSource = TRUE;			/* OLEによるドラッグ元にするか */
 		m_pShareData->m_Common.m_sGeneral.m_bDispExitingDialog = FALSE;		/* 終了ダイアログを表示する */
@@ -613,7 +605,7 @@ BOOL CShareData::IsPathOpened( const TCHAR* pszPath, HWND* phwndOwner )
 	
 	for( int i = 0; i < m_pShareData->m_sNodes.m_nEditArrNum; ++i ){
 		if( IsSakuraMainWindow( m_pShareData->m_sNodes.m_pEditArr[i].m_hWnd ) ){
-			// トレイからエディタへの編集ファイル名要求通知
+			// エディタへの編集ファイル情報要求通知
 			::SendMessageAny( m_pShareData->m_sNodes.m_pEditArr[i].m_hWnd, MYWM_GETFILEINFO, 1, 0 );
 			pfi = (EditInfo*)&m_pShareData->m_sWorkBuffer.m_EditInfo_MYWM_GETFILEINFO;
 
@@ -819,7 +811,7 @@ bool CShareData::OpenDebugWindow( HWND hwnd, bool bAllwaysActive )
 		// CODE_UNICODE->CODE_NONE	2010.05.11 Moca デフォルト文字コードで設定できるように無指定に変更
 		sLoadInfo.eCharCode = CODE_NONE;
 		sLoadInfo.bViewMode = false;
-		ret = CControlTray::OpenNewEditor( NULL, hwnd, sLoadInfo, _T("-DEBUGMODE"), true );
+		ret = CEditorManager::OpenNewEditor( NULL, hwnd, sLoadInfo, _T("-DEBUGMODE"), true );
 		//	2001/06/23 N.Nakatani 窓が出るまでウエイトをかけるように修正
 		//アウトプットウインドウが出来るまで5秒ぐらい待つ。
 		//	Jun. 25, 2001 genta OpenNewEditorの同期機能を利用するように変更

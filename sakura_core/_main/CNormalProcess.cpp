@@ -23,7 +23,7 @@
 #include "StdAfx.h"
 #include "CNormalProcess.h"
 #include "CCommandLine.h"
-#include "CControlTray.h"
+#include "CEditorManager.h"
 #include "window/CEditWnd.h" // 2002/2/3 aroka
 #include "CGrepAgent.h"
 #include "doc/CEditDoc.h"
@@ -403,7 +403,7 @@ bool CNormalProcess::InitializeProcess()
 		for( i = 0; i < fileNum; i++ ){
 			// ファイル名差し替え
 			_tcscpy(openFileInfo.m_szPath, CCommandLine::getInstance()->GetFileName(i));
-			bool ret = CControlTray::OpenNewEditor2( GetProcessInstance(), pEditWnd->GetHwnd(), &openFileInfo, bViewMode );
+			bool ret = CEditorManager::OpenNewEditor2( GetProcessInstance(), pEditWnd->GetHwnd(), &openFileInfo, bViewMode );
 			if( ret == false ){
 				break;
 			}

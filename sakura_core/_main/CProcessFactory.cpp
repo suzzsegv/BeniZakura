@@ -21,7 +21,7 @@
 #include "CControlProcess.h"
 #include "CNormalProcess.h"
 #include "CCommandLine.h"
-#include "CControlTray.h"
+#include "CEditorManager.h"
 #include "_os/COsVersionInfo.h"
 #include "debug/CRunningTimer.h"
 #include "util/os.h"
@@ -188,7 +188,7 @@ bool CProcessFactory::IsExistControlProcess()
 	@brief コントロールプロセスを起動する
 	
 	自分自身に -NOWIN オプションを付けて起動する．
-	共有メモリをチェックしてはいけないので，残念ながらCControlTray::OpenNewEditorは使えない．
+	共有メモリをチェックしてはいけないので，残念ながらCEditorManager::OpenNewEditorは使えない．
 	
 	@author genta
 	@date Aug. 28, 2001

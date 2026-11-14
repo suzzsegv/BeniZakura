@@ -33,7 +33,7 @@
 #include "EditInfo.h"
 #include "CAppNodeManager.h"
 #include "window/CEditWnd.h"
-#include "_main/CControlTray.h"
+#include "_main/CEditorManager.h"
 #include "_main/CMutex.h"
 #include "_main/CProcess.h"
 #include "util/file.h"
@@ -130,9 +130,15 @@ void SessionStore::restore(CEditWnd* pEditWnd, EditInfo* pEditInfo)
 	bool succeeded;
 	succeeded = fileOneRecordRead(fullPathFileName);
 	while(succeeded == true){
-		if(IsFileExists(fullPathFileName, true) == true){
+		// UNC パス (ネットワーク上のファイル) は復元しない。
+		// 起動時にネットワークへのアクセスが発生し、サーバーに接続できない場合は
+		// 応答待ちで起動が遅くなるため。(存在確認の前に除外する)
+		if(IsUncPath(fullPathFileName)){
+			// 何もしない
+		}
+		else if(IsFileExists(fullPathFileName, true) == true){
 			wcscpy_s(resoreFileInfo.m_szPath, _MAX_PATH, fullPathFileName);
-			CControlTray::OpenNewEditor2(
+			CEditorManager::OpenNewEditor2(
 										CProcess::getInstance()->GetProcessInstance(), pEditWnd->GetHwnd(),
 										&resoreFileInfo, false, true, false
 										);

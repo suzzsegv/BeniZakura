@@ -31,6 +31,7 @@ bool GetVcsRepositoryRootDir(
 );
 
 bool IsFilePath( const wchar_t*, int*, int*, bool = true );
+bool IsUncPath( const WCHAR* pszPath );	//!< UNC パス (ネットワーク上のパス) かどうか
 bool IsFileExists(const TCHAR* path, bool bFileOnly = false);
 bool IsBinaryFile(
 	const TCHAR* path	//!< [in] 調べるパス名

@@ -44,7 +44,7 @@
 #include <ShlObj.h>
 
 #include "window/CEditWnd.h"
-#include "_main/CControlTray.h"
+#include "_main/CEditorManager.h"
 #include "_main/CCommandLine.h"	/// 2003/1/26 aroka
 #include "_main/CAppMode.h"
 #include "_os/CDropTarget.h"
@@ -647,7 +647,7 @@ HWND CEditWnd::Create(
 
 	// 初回アイドリング検出用のゼロ秒タイマーをセットする	// 2008.04.19 ryoji
 	// ゼロ秒タイマーが発動（初回アイドリング検出）したら MYWM_FIRST_IDLE を起動元プロセスにポストする。
-	// ※起動元での起動先アイドリング検出については CControlTray::OpenNewEditor を参照
+	// ※起動元での起動先アイドリング検出については CEditorManager::OpenNewEditor を参照
 	::SetTimer( GetHwnd(), IDT_FIRST_IDLE, 0, NULL );
 
 	/* 編集ウィンドウリストへの登録 */
@@ -721,10 +721,10 @@ HWND CEditWnd::Create(
 	//アクティブ情報
 	m_bIsActiveApp = ( ::GetActiveWindow() == GetHwnd() );	// 2007.03.08 ryoji
 
-	// エディタ－トレイ間でのUI特権分離の確認（Vista UIPI機能） 2007.06.07 ryoji
+	// エディタ－コントロールプロセス間でのUI特権分離の確認（Vista UIPI機能） 2007.06.07 ryoji
 	if( IsWinVista_or_later() ){
 		m_bUIPI = FALSE;
-		::SendMessage( m_pShareData->m_sHandles.m_hwndTray, MYWM_UIPI_CHECK,  (WPARAM)0, (LPARAM)GetHwnd() );
+		::SendMessage( m_pShareData->m_sHandles.m_hwndControlProcessWnd, MYWM_UIPI_CHECK,  (WPARAM)0, (LPARAM)GetHwnd() );
 		if( !m_bUIPI ){	// 返事が返らない
 			TopErrorMessage( GetHwnd(), 
 				_T("エディタ間の対話に失敗しました。\n")
@@ -1470,7 +1470,7 @@ LRESULT CEditWnd::DispatchEvent(
 		return 0L;
 	case WM_QUERYENDSESSION:	//OSの終了
 		if( OnClose( NULL ) ){
-			CControlTray::TerminateApplication( GetHwnd() );
+			CEditorManager::TerminateApplication( GetHwnd() );
 			return TRUE;
 		}
 		return FALSE;
@@ -1504,7 +1504,7 @@ LRESULT CEditWnd::DispatchEvent(
 
 
 		/* 編集ウィンドウオブジェクトからのオブジェクト削除要求 */
-		::PostMessageAny( m_pShareData->m_sHandles.m_hwndTray, MYWM_DELETE_ME, 0, 0 );
+		::PostMessageAny( m_pShareData->m_sHandles.m_hwndControlProcessWnd, MYWM_DELETE_ME, 0, 0 );
 
 		/* Windows にスレッドの終了を要求します */
 		::PostQuitMessage( 0 );
@@ -1525,8 +1525,8 @@ LRESULT CEditWnd::DispatchEvent(
 		return 0L;
 
 	case MYWM_UIPI_CHECK:
-		/* エディタ－トレイ間でのUI特権分離の確認メッセージ */	// 2007.06.07 ryoji
-		m_bUIPI = TRUE;	// トレイからの返事を受け取った
+		/* エディタ－コントロールプロセス間でのUI特権分離の確認メッセージ */	// 2007.06.07 ryoji
+		m_bUIPI = TRUE;	// コントロールプロセスからの返事を受け取った
 		return 0L;
 
 	case MYWM_CLOSE:
@@ -1549,7 +1549,7 @@ LRESULT CEditWnd::DispatchEvent(
 						sLoadInfo.cFilePath = _T("");
 						sLoadInfo.eCharCode = CODE_NONE;
 						sLoadInfo.bViewMode = false;
-						CControlTray::OpenNewEditor(
+						CEditorManager::OpenNewEditor(
 							G_AppInstance(),
 							GetHwnd(),
 							sLoadInfo,
@@ -1580,7 +1580,7 @@ LRESULT CEditWnd::DispatchEvent(
 		return 0L;
 
 	case MYWM_GETFILEINFO:
-		/* トレイからエディタへの編集ファイル名要求通知 */
+		/* エディタへの編集ファイル情報要求通知 */
 		pfi = (EditInfo*)&m_pShareData->m_sWorkBuffer.m_EditInfo_MYWM_GETFILEINFO;
 
 		/* 編集ファイル情報を格納 */
@@ -1942,7 +1942,7 @@ int	CEditWnd::OnClose(HWND hWndActive)
 		if( IsSakuraMainWindow(hWndActive) ){
 			ActivateFrameWindow(hWndActive);	// エディタ
 		}else{
-			::SetForegroundWindow(hWndActive);	// タスクトレイ
+			::SetForegroundWindow(hWndActive);	// コントロールプロセスのウィンドウ
 		}
 	}
 
@@ -2063,9 +2063,6 @@ void CEditWnd::OnCommand( WORD wNotifyCode, WORD wID , HWND hwndCtl )
 			const CMRUFolder cMRUFolder;
 			LPCTSTR pszFolderPath = cMRUFolder.GetPath( wID - IDM_SELOPENFOLDER );
 
-			//Stonee, 2001/12/21 UNCであれば接続を試みる
-			NetConnect( pszFolderPath );
-
 			//「ファイルを開く」ダイアログ
 			SLoadInfo sLoadInfo(_T(""), CODE_AUTODETECT, false);
 			CDocFileOperation& cDocOp = GetDocument().m_cDocFileOperation;
@@ -2076,7 +2073,7 @@ void CEditWnd::OnCommand( WORD wNotifyCode, WORD wID , HWND hwndCtl )
 				cDocOp.FileLoad( &sLoadInfo );
 				for( size_t f = 1; f < files.size(); f++ ){
 					sLoadInfo.cFilePath = files[f].c_str();
-					CControlTray::OpenNewEditor( G_AppInstance(), GetHwnd(), sLoadInfo, NULL, true );
+					CEditorManager::OpenNewEditor( G_AppInstance(), GetHwnd(), sLoadInfo, NULL, true );
 				}
 			}
 		}
@@ -2621,7 +2618,7 @@ void CEditWnd::OnDropFiles( HDROP hDrop )
 					sLoadInfo.cFilePath = szFile;
 					sLoadInfo.eCharCode = CODE_NONE;
 					sLoadInfo.bViewMode = false;
-					CControlTray::OpenNewEditor(
+					CEditorManager::OpenNewEditor(
 						G_AppInstance(),
 						GetHwnd(),
 						sLoadInfo
@@ -3895,7 +3892,7 @@ LRESULT CEditWnd::WinListMenu( HMENU hMenu, EditNode* pEditNodeArr, int nRowNum,
 	if( nRowNum > 0 ){
 		CFileNameManager::getInstance()->TransformFileName_MakeCache();
 		for( i = 0; i < nRowNum; ++i ){
-			/* トレイからエディタへの編集ファイル名要求通知 */
+			/* エディタへの編集ファイル情報要求通知 */
 			::SendMessage( pEditNodeArr[i].GetHwnd(), MYWM_GETFILEINFO, 0, 0 );
 ////	From Here Oct. 4, 2000 JEPRO commented out & modified	開いているファイル数がわかるように履歴とは違って1から数える
 			pfi = (EditInfo*)&m_pShareData->m_sWorkBuffer.m_EditInfo_MYWM_GETFILEINFO;

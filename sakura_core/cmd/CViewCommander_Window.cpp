@@ -24,7 +24,7 @@
 #include "CViewCommander.h"
 #include "CViewCommander_inline.h"
 
-#include "_main/CControlTray.h"
+#include "_main/CEditorManager.h"
 #include "util/os.h"
 #include "env/CSakuraEnvironment.h"
 #include "env/CShareData.h"
@@ -72,7 +72,7 @@ void CViewCommander::Command_WINCLOSE( void )
 void CViewCommander::Command_FILECLOSEALL( void )
 {
 	int nGroup = CAppNodeManager::getInstance()->GetEditNode( GetMainWindow() )->GetGroup();
-	CControlTray::CloseAllEditor( TRUE, GetMainWindow(), FALSE, nGroup );	// 2006.12.25, 2007.02.13 ryoji 引数追加
+	CEditorManager::CloseAllEditor( TRUE, GetMainWindow(), FALSE, nGroup );	// 2006.12.25, 2007.02.13 ryoji 引数追加
 	return;
 }
 
@@ -449,7 +449,7 @@ void CViewCommander::Command_GROUPCLOSE( void )
 {
 	if( GetDllShareData().m_Common.m_sTabBar.m_bDispTabWnd && !GetDllShareData().m_Common.m_sTabBar.m_bDispTabWndMultiWin ){
 		int nGroup = CAppNodeManager::getInstance()->GetEditNode( GetMainWindow() )->GetGroup();
-		CControlTray::CloseAllEditor( TRUE, GetMainWindow(), TRUE, nGroup );
+		CEditorManager::CloseAllEditor( TRUE, GetMainWindow(), TRUE, nGroup );
 	}
 	return;
 }

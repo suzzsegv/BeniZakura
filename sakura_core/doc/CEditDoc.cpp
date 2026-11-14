@@ -50,7 +50,7 @@
 #include "docplus/CModifyManager.h"
 #include "_main/global.h"
 #include "_main/CAppMode.h"
-#include "_main/CControlTray.h"
+#include "_main/CEditorManager.h"
 #include "_main/CNormalProcess.h"
 #include "window/CEditWnd.h"
 #include "_os/CClipboard.h"
@@ -563,7 +563,7 @@ BOOL CEditDoc::HandleCommand( EFunctionCode nCommand )
 			if( -1 != nPane ){
 				m_pcEditWnd->SetActivePane( nPane );
 			}else{
-				CControlTray::ActiveNextWindow();
+				CEditorManager::ActiveNextWindow();
 			}
 		}
 		return TRUE;
@@ -574,7 +574,7 @@ BOOL CEditDoc::HandleCommand( EFunctionCode nCommand )
 				m_pcEditWnd->SetActivePane( nPane );
 			}
 			else{
-				CControlTray::ActivePrevWindow();
+				CEditorManager::ActivePrevWindow();
 			}
 		}
 		return TRUE;

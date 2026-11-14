@@ -74,12 +74,6 @@ struct CommonSetting_General
 	int		m_nPageScrollByWheel;			// キー/マウスボタン + ホイールスクロールでページUP/DOWNする	// 2009.01.17 nasukoji
 	int		m_nHorizontalScrollByWheel;		// キー/マウスボタン + ホイールスクロールで横スクロールする		// 2009.01.17 nasukoji
 
-	//タスクトレイ
-	BOOL	m_bUseTaskTray;					// タスクトレイのアイコンを使う
-	BOOL	m_bStayTaskTray;				// タスクトレイのアイコンを常駐
-	WORD	m_wTrayMenuHotKeyCode;			// タスクトレイ左クリックメニュー キー
-	WORD	m_wTrayMenuHotKeyMods;			// タスクトレイ左クリックメニュー キー
-
 	//履歴
 	int		m_nMRUArrNum_MAX;				// ファイルの履歴MAX
 	int		m_nOPENFOLDERArrNum_MAX;		// フォルダの履歴MAX

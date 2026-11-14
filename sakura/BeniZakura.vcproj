@@ -68,7 +68,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="comctl32.lib Imm32.lib mpr.lib imagehlp.lib"
+				AdditionalDependencies="comctl32.lib Imm32.lib imagehlp.lib"
 				LinkIncremental="1"
 				GenerateManifest="true"
 				GenerateMapFile="true"
@@ -154,7 +154,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="comctl32.lib Imm32.lib mpr.lib imagehlp.lib"
+				AdditionalDependencies="comctl32.lib Imm32.lib imagehlp.lib"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -2630,11 +2630,19 @@
 					>
 				</File>
 				<File
-					RelativePath="..\sakura_core\_main\CControlTray.cpp"
+					RelativePath="..\sakura_core\_main\CControlProcessWnd.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\sakura_core\_main\CControlTray.h"
+					RelativePath="..\sakura_core\_main\CControlProcessWnd.h"
+					>
+				</File>
+				<File
+					RelativePath="..\sakura_core\_main\CEditorManager.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\sakura_core\_main\CEditorManager.h"
 					>
 				</File>
 				<File

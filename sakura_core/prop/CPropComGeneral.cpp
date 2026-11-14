@@ -80,21 +80,6 @@ INT_PTR CPropGeneral::DispatchEvent(
 		case BN_CLICKED:
 			switch( wID ){
 
-			case IDC_CHECK_USETRAYICON:	/* タスクトレイを使う */
-			// From Here 2001.12.03 hor
-			//		操作しにくいって評判だったのでタスクトレイ関係のEnable制御をやめました
-			//@@@ YAZAKI 2001.12.31 IDC_CHECKSTAYTASKTRAYのアクティブ、非アクティブのみ制御。
-				if( ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_USETRAYICON ) ){
-					::EnableWindow( ::GetDlgItem( hwndDlg, IDC_CHECK_STAYTASKTRAY ), TRUE );
-				}else{
-					::EnableWindow( ::GetDlgItem( hwndDlg, IDC_CHECK_STAYTASKTRAY ), FALSE );
-				}
-			// To Here 2001.12.03 hor
-				return TRUE;
-
-			case IDC_CHECK_STAYTASKTRAY:	/* タスクトレイに常駐 */
-				return TRUE;
-
 			case IDC_BUTTON_CLEAR_MRU_FILE:
 				/* ファイルの履歴をクリア */
 				if( IDCANCEL == ::MYMESSAGEBOX( hwndDlg, MB_OKCANCEL | MB_ICONQUESTION, GSTR_APPNAME,
@@ -319,22 +304,6 @@ void CPropGeneral::SetData( HWND hwndDlg )
 	/* フォルダの履歴MAX */
 	bRet = ::SetDlgItemInt( hwndDlg, IDC_EDIT_MAX_MRU_FOLDER, m_Common.m_sGeneral.m_nOPENFOLDERArrNum_MAX, FALSE );
 
-	/* タスクトレイを使う */
-	::CheckDlgButton( hwndDlg, IDC_CHECK_USETRAYICON, m_Common.m_sGeneral.m_bUseTaskTray );
-// From Here 2001.12.03 hor
-//@@@ YAZAKI 2001.12.31 ここは制御する。
-	if( m_Common.m_sGeneral.m_bUseTaskTray ){
-		::EnableWindow( ::GetDlgItem( hwndDlg, IDC_CHECK_STAYTASKTRAY ), TRUE );
-	}else{
-		::EnableWindow( ::GetDlgItem( hwndDlg, IDC_CHECK_STAYTASKTRAY ), FALSE );
-	}
-// To Here 2001.12.03 hor
-	/* タスクトレイに常駐 */
-	::CheckDlgButton( hwndDlg, IDC_CHECK_STAYTASKTRAY, m_Common.m_sGeneral.m_bStayTaskTray );
-
-	/* タスクトレイ左クリックメニューのショートカット */
-	HotKey_SetHotKey( ::GetDlgItem( hwndDlg, IDC_HOTKEY_TRAYMENU ), m_Common.m_sGeneral.m_wTrayMenuHotKeyCode, m_Common.m_sGeneral.m_wTrayMenuHotKeyMods );
-
 	return;
 }
 
@@ -428,23 +397,6 @@ int CPropGeneral::GetData( HWND hwndDlg )
 		cRecentFolder.UpdateView();
 		cRecentFolder.Terminate();
 	}
-
-	/* タスクトレイを使う */
-	m_Common.m_sGeneral.m_bUseTaskTray = ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_USETRAYICON );
-//@@@ YAZAKI 2001.12.31 m_bUseTaskTrayに引きづられるように。
-	if( m_Common.m_sGeneral.m_bUseTaskTray ){
-		::EnableWindow( ::GetDlgItem( hwndDlg, IDC_CHECK_STAYTASKTRAY ), TRUE );
-	}else{
-		::EnableWindow( ::GetDlgItem( hwndDlg, IDC_CHECK_STAYTASKTRAY ), FALSE );
-	}
-	/* タスクトレイに常駐 */
-	m_Common.m_sGeneral.m_bStayTaskTray = ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_STAYTASKTRAY );
-
-	/* タスクトレイ左クリックメニューのショートカット */
-	LRESULT	lResult;
-	lResult = HotKey_GetHotKey( ::GetDlgItem( hwndDlg, IDC_HOTKEY_TRAYMENU ) );
-	m_Common.m_sGeneral.m_wTrayMenuHotKeyCode = LOBYTE( lResult );
-	m_Common.m_sGeneral.m_wTrayMenuHotKeyMods = HIBYTE( lResult );
 
 	return TRUE;
 }

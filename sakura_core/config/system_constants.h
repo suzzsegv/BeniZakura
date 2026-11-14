@@ -438,7 +438,7 @@
 	-- バージョン1000以降を本家統合までの間、使わせてください。かなり頻繁に構成が変更されると思われるので。by kobake 2008.03.02
 
 */
-#define N_SHAREDATA_VERSION		20261114
+#define N_SHAREDATA_VERSION		2026111402
 #define STR_SHAREDATA_VERSION	NUM_TO_STR(N_SHAREDATA_VERSION)
 #define	GSTR_SHAREDATA	(_T("BeniZakuraShareData") _T(CON_SKR_MACHINE_SUFFIX_) _T(_CODE_SUFFIX_) _T(_DEBUG_SUFFIX_) _T(STR_SHAREDATA_VERSION))
 
@@ -472,8 +472,8 @@
 //                     ウィンドウクラス                        //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
-//! コントロールトレイ
-#define	GSTR_CEDITAPP (_T("BeniZakuraControlProcess") _T(CON_SKR_MACHINE_SUFFIX_) _T(_CODE_SUFFIX_) _T(_DEBUG_SUFFIX_) _T(STR_SHAREDATA_VERSION))
+//! コントロールプロセスのウィンドウのクラス名 (兼ウィンドウ名)
+#define	GSTR_CONTROL_PROCESS_WND (_T("BeniZakuraControlProcess") _T(CON_SKR_MACHINE_SUFFIX_) _T(_CODE_SUFFIX_) _T(_DEBUG_SUFFIX_) _T(STR_SHAREDATA_VERSION))
 
 //! メインウィンドウ
 #define	GSTR_EDITWINDOWNAME (_T("BeniZakuraEditorWindow") _T(CON_SKR_MACHINE_SUFFIX_) _T(_CODE_SUFFIX_) _T(_DEBUG_SUFFIX_) _T(STR_SHAREDATA_VERSION))
@@ -534,17 +534,15 @@ enum e_PM_CHANGESETTING_SELECT {
 	PM_CHANGESETTING_FONT		= 1, //!< フォント変更
 };
 
-//! タスクトレイからの通知メッセージ
-#define MYWM_NOTIFYICON		(WM_APP+100)
 
 
 
-/*! トレイからエディタへの終了要求 */
+/*! エディタへの終了要求 (すべてのウィンドウを閉じる処理などから送る) */
 #define	MYWM_CLOSE			(WM_APP+200)
 #define	MYWM_ALLOWACTIVATE	(WM_APP+201)
 #define	MYWM_GREP_CLOSE		(WM_APP+202)
 
-/*! トレイからエディタへの編集ファイル情報 要求通知 */
+/*! エディタへの編集ファイル情報 要求通知 (比較・DIFF ダイアログ、ウィンドウ一覧などから送る) */
 #define	MYWM_GETFILEINFO	(WM_APP+203)
 
 /*! カーソル位置変更通知 */
@@ -583,7 +581,7 @@ enum e_PM_SETCARETPOS_SELECTSTATE {
 /*! バーの表示・非表示変更メッセージ */
 #define	MYWM_BAR_CHANGE_NOTIFY	(WM_APP+214)	//@@@ 2003.06.10 MIK
 
-/*! エディタ－トレイ間でのUI特権分離の確認メッセージ */
+/*! エディタ－コントロールプロセス間でのUI特権分離の確認メッセージ */
 #define	MYWM_UIPI_CHECK	(WM_APP+215)	//@@@ 2007.06.07 ryoji
 
 /*! ポップアップウィンドウの表示切替指示 */

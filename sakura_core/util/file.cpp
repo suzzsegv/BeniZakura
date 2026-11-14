@@ -552,6 +552,36 @@ void GetInidirOrExedir(
 
 
 /*!
+ * IsUncPath - UNC パス (ネットワーク上のパス) かどうかを判定する
+ *
+ * 以下を UNC パスとみなす。
+ *   - \\server\share\...  (区切り文字は '/' でもよい)
+ *   - \\?\UNC\server\share\...  (拡張長パス形式)
+ * 以下は UNC パスとみなさない。
+ *   - \\?\C:\... (ローカルの拡張長パス)、\\.\... (デバイスパス)
+ *
+ * パス文字列を調べるだけで、ネットワークへのアクセスは行わない。
+ *
+ *	@return true: UNC パス / false: UNC パスではない
+ */
+bool IsUncPath(
+	const WCHAR* pszPath	//!< [in] 調べるパス
+)
+{
+	auto isSep = [](WCHAR c){ return c == L'\\' || c == L'/'; };
+
+	if( !isSep(pszPath[0]) || !isSep(pszPath[1]) ){
+		return false;
+	}
+	if( (pszPath[2] == L'?' || pszPath[2] == L'.') && isSep(pszPath[3]) ){
+		// \\?\UNC\... / \\.\UNC\... のみ UNC パス
+		return _wcsnicmp( &pszPath[4], L"UNC", 3 ) == 0 && isSep(pszPath[7]);
+	}
+	return true;
+}
+
+
+/*!
  * GetVcsRepositoryRootDir - VCSルートディレクトリのパスを返す
  *
  *	@return true: VCSルートディレクトリを返却 / false: VCSルートディレクトリを検出できず

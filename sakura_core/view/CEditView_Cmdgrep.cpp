@@ -17,7 +17,6 @@
 #include "StdAfx.h"
 #include "view/CEditView.h"
 #include "doc/CEditDoc.h"
-#include "_main/CControlTray.h"
 #include "charset/charcode.h"
 #include "CEditApp.h"
 #include "CGrepAgent.h"

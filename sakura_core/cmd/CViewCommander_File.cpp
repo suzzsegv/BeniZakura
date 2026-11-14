@@ -38,7 +38,7 @@
 #include "CViewCommander.h"
 #include "CViewCommander_inline.h"
 
-#include "_main/CControlTray.h"
+#include "_main/CEditorManager.h"
 #include "uiparts/CWaitCursor.h"
 #include "dlg/CDlgProperty.h"
 #include "dlg/CDlgCancel.h"// 2002/2/8 hor
@@ -63,7 +63,7 @@ void CViewCommander::Command_FILENEW( void )
 	sLoadInfo.cFilePath = _T("");
 	sLoadInfo.eCharCode = CODE_NONE;
 	sLoadInfo.bViewMode = false;
-	CControlTray::OpenNewEditor( G_AppInstance(), m_pCommanderView->GetHwnd(), sLoadInfo, NULL, true, NULL, false );
+	CEditorManager::OpenNewEditor( G_AppInstance(), m_pCommanderView->GetHwnd(), sLoadInfo, NULL, true, NULL, false );
 	return;
 }
 
@@ -77,7 +77,7 @@ void CViewCommander::Command_FILENEW_NEWWINDOW( void )
 	sLoadInfo.cFilePath = _T("");
 	sLoadInfo.eCharCode = CODE_DEFAULT;
 	sLoadInfo.bViewMode = false;
-	CControlTray::OpenNewEditor( G_AppInstance(), m_pCommanderView->GetHwnd(), sLoadInfo,
+	CEditorManager::OpenNewEditor( G_AppInstance(), m_pCommanderView->GetHwnd(), sLoadInfo,
 		NULL,
 		false,
 		NULL,
@@ -115,7 +115,7 @@ void CViewCommander::Command_FILEOPEN( const WCHAR* filename, ECodeType nCharCod
 		for( int i = 1; i < nSize; i++ ){
 			SLoadInfo sFilesLoadInfo = sLoadInfo;
 			sFilesLoadInfo.cFilePath = files[i].c_str();
-			CControlTray::OpenNewEditor(
+			CEditorManager::OpenNewEditor(
 				G_AppInstance(),
 				CEditWnd::getInstance()->GetHwnd(),
 				sFilesLoadInfo,
@@ -606,7 +606,7 @@ void CViewCommander::Command_PROPERTY_FILE( void )
 /* 編集の全終了 */	// 2007.02.13 ryoji 追加
 void CViewCommander::Command_EXITALLEDITORS( void )
 {
-	CControlTray::CloseAllEditor( TRUE, GetMainWindow(), TRUE, 0 );
+	CEditorManager::CloseAllEditor( TRUE, GetMainWindow(), TRUE, 0 );
 	return;
 }
 
@@ -615,7 +615,7 @@ void CViewCommander::Command_EXITALLEDITORS( void )
 /* サクラエディタの全終了 */	//Dec. 27, 2000 JEPRO 追加
 void CViewCommander::Command_EXITALL( void )
 {
-	CControlTray::TerminateApplication( GetMainWindow() );	// 2006.12.25 ryoji 引数追加
+	CEditorManager::TerminateApplication( GetMainWindow() );	// 2006.12.25 ryoji 引数追加
 	return;
 }
 

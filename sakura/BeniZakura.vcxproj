@@ -78,7 +78,7 @@
       <Culture>0x0411</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>comctl32.lib;Imm32.lib;mpr.lib;imagehlp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>comctl32.lib;Imm32.lib;imagehlp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateMapFile>true</GenerateMapFile>
       <SubSystem>Windows</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
@@ -117,7 +117,7 @@
       <Culture>0x0411</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>comctl32.lib;Imm32.lib;mpr.lib;imagehlp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>comctl32.lib;Imm32.lib;imagehlp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
@@ -391,7 +391,8 @@
     <ClInclude Include="..\sakura_core\_main\CAppMode.h" />
     <ClInclude Include="..\sakura_core\_main\CCommandLine.h" />
     <ClInclude Include="..\sakura_core\_main\CControlProcess.h" />
-    <ClInclude Include="..\sakura_core\_main\CControlTray.h" />
+    <ClInclude Include="..\sakura_core\_main\CControlProcessWnd.h" />
+    <ClInclude Include="..\sakura_core\_main\CEditorManager.h" />
     <ClInclude Include="..\sakura_core\_main\CMutex.h" />
     <ClInclude Include="..\sakura_core\_main\CNormalProcess.h" />
     <ClInclude Include="..\sakura_core\_main\CProcess.h" />
@@ -750,7 +751,8 @@
     <ClCompile Include="..\sakura_core\_main\CAppMode.cpp" />
     <ClCompile Include="..\sakura_core\_main\CCommandLine.cpp" />
     <ClCompile Include="..\sakura_core\_main\CControlProcess.cpp" />
-    <ClCompile Include="..\sakura_core\_main\CControlTray.cpp" />
+    <ClCompile Include="..\sakura_core\_main\CControlProcessWnd.cpp" />
+    <ClCompile Include="..\sakura_core\_main\CEditorManager.cpp" />
     <ClCompile Include="..\sakura_core\_main\CNormalProcess.cpp" />
     <ClCompile Include="..\sakura_core\_main\CProcess.cpp" />
     <ClCompile Include="..\sakura_core\_main\CProcessFactory.cpp" />

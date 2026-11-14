@@ -294,14 +294,14 @@ BOOL CAppNodeGroupHandle::RequestCloseEditor( EditNode* pWndArr, int nArrCnt, BO
 	if( bTabGroup ){
 		hWndActive = hWndLast;	// 最後に閉じるウィンドウが担当
 	}else{
-		hWndActive = GetDllShareData().m_sHandles.m_hwndTray;	// タスクトレイが担当
+		hWndActive = GetDllShareData().m_sHandles.m_hwndControlProcessWnd;	// コントロールプロセスのウィンドウが担当
 	}
 
 	// アクティブ化制御ウインドウをアクティブにしておく
 	if( IsSakuraMainWindow(hWndActive) ){
 		ActivateFrameWindow(hWndActive);	// エディタウィンドウ
 	}else{
-		::SetForegroundWindow(hWndActive);	// タスクトレイ
+		::SetForegroundWindow(hWndActive);	// コントロールプロセスのウィンドウ
 	}
 
 	// エディタへの終了要求

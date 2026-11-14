@@ -33,7 +33,7 @@
 #include "util/file.h"
 #include "util/module.h"
 #include "util/window.h"
-#include "_main/CControlTray.h"
+#include "_main/CEditorManager.h"
 #include "charset/charcode.h"
 #include "recent/CRecent.h"
 
@@ -126,7 +126,7 @@ bool CEditView::TagJumpSub(
 		inf.m_nViewTopLine = CLayoutInt(-1);
 		inf.m_nCharCode    = CODE_AUTODETECT;
 
-		bSuccess = CControlTray::OpenNewEditor2(
+		bSuccess = CEditorManager::OpenNewEditor2(
 			G_AppInstance(),
 			this->GetHwnd(),
 			&inf,
@@ -226,7 +226,7 @@ open_c:;
 		sLoadInfo.cFilePath = szPath;
 		sLoadInfo.eCharCode = GetDocument()->GetDocumentEncoding();
 		sLoadInfo.bViewMode = false;
-		CControlTray::OpenNewEditor(
+		CEditorManager::OpenNewEditor(
 			G_AppInstance(),
 			this->GetHwnd(),
 			sLoadInfo,
