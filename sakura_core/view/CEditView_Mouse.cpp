@@ -23,7 +23,6 @@
 */
 
 #include "StdAfx.h"
-#include <process.h> // _beginthreadex
 #include <limits.h>
 #include "CEditView.h"
 #include "_main/CAppMode.h"
@@ -35,8 +34,6 @@
 #include "COpeBlk.h"
 #include "doc/layout/CLayout.h"
 #include "cmd/CViewCommander_inline.h"
-#include "uiparts/CWaitCursor.h"
-#include "uiparts/HandCursor.h"
 #include "util/input.h"
 #include "util/os.h"
 #include "sakura_rc.h"
@@ -981,8 +978,6 @@ void CEditView::OnMOUSEMOVE( WPARAM fwKeys, int xPos_, int yPos_ )
 		CLayoutPoint ptNew;
 		GetTextArea().ClientToLayout(ptMouse, &ptNew);
 
-		CLogicRange	cUrlRange;	//URL範囲
-
 		/* 選択テキストのドラッグ中か */
 		if( m_bDragMode ){
 			if( GetDllShareData().m_Common.m_sEdit.m_bUseOLE_DragDrop ){	/* OLEによるドラッグ & ドロップを使う */
@@ -1008,17 +1003,8 @@ void CEditView::OnMOUSEMOVE( WPARAM fwKeys, int xPos_, int yPos_ )
 				/* 矢印カーソル */
 				::SetCursor( ::LoadCursor( NULL, IDC_ARROW ) );
 			}
-			/* カーソル位置にURLが有る場合 */
-			else if(
-				IsCurrentPositionURL(
-					ptNew,			// カーソル位置
-					&cUrlRange,		// URL範囲
-					NULL			// URL受け取り先
-				)
-			){
-				/* 手カーソル */
-				SetHandCursor();		// Hand Cursorを設定 2013/1/29 Uchi
-			}else{
+			// 2026.11.14 URL をダブルクリックで開く機能を削除したため、URL 上で手カーソルを表示する処理も削除
+			else{
 				//migemo isearch 2004.10.22
 				if( m_nISearchMode > 0 ){
 					if (m_nISearchDirection == 1){
@@ -1407,79 +1393,17 @@ void CEditView::OnLBUTTONUP( WPARAM fwKeys, int xPos , int yPos )
 
 
 
-/* ShellExecuteを呼び出すプロシージャ */
-/*   呼び出し前に lpParameter を new しておくこと */
-static unsigned __stdcall ShellExecuteProc( LPVOID lpParameter )
-{
-	LPTSTR pszFile = (LPTSTR)lpParameter;
-	::ShellExecute( NULL, _T("open"), pszFile, NULL, NULL, SW_SHOW );
-	delete []pszFile;
-	return 0;
-}
-
-
 // マウス左ボタンダブルクリック
 // 2007.01.18 kobake IsCurrentPositionURL仕様変更に伴い、処理の書き換え
+// 2026.11.14 URL をダブルクリックした場合に ShellExecute で開く機能を削除
+//            (テキスト中の file:// やファイルパスをダブルクリックするだけで、プログラムが
+//             実行されたり、外部のサーバーへ接続したりする恐れがあるため)
 void CEditView::OnLBUTTONDBLCLK( WPARAM fwKeys, int _xPos , int _yPos )
 {
 	CMyPoint ptMouse(_xPos,_yPos);
 
-	CLogicRange		cUrlRange;	// URL範囲
-	std::wstring	wstrURL;
-	const wchar_t*	pszMailTo = L"mailto:";
-
 	// 2007.10.06 nasukoji	クアドラプルクリック時はチェックしない
 	if(! m_dwTripleClickCheck){
-		/* カーソル位置にURLが有る場合のその範囲を調べる */
-		if(
-			IsCurrentPositionURL(
-				GetCaret().GetCaretLayoutPos(),	// カーソル位置
-				&cUrlRange,				// URL範囲
-				&wstrURL				// URL受け取り先
-			)
-		){
-			std::wstring wstrOPEN;
-
-			// URLを開く
-		 	// 現在位置がメールアドレスならば、NULL以外と、その長さを返す
-			if( IsMailAddress( wstrURL.c_str(), wstrURL.length(), NULL ) ){
-				wstrOPEN = pszMailTo + wstrURL;
-			}
-			else{
-				if( wcsnicmp( wstrURL.c_str(), L"ttp://", 6 ) == 0 ){	//抑止URL
-					wstrOPEN = L"h" + wstrURL;
-				}
-				else if( wcsnicmp( wstrURL.c_str(), L"tp://", 5 ) == 0 ){	//抑止URL
-					wstrOPEN = L"ht" + wstrURL;
-				}
-				else{
-					wstrOPEN = wstrURL;
-				}
-			}
-			{
-				// URLを開く
-				// 2009.05.21 syat UNCパスだと1分以上無応答になることがあるのでスレッド化
-				CWaitCursor cWaitCursor( GetHwnd() );	// カーソルを砂時計にする
-
-				unsigned int nThreadId;
-				LPCTSTR szUrl = to_tchar(wstrOPEN.c_str());
-				LPTSTR szUrlDup = new TCHAR[_tcslen( szUrl ) + 1];
-				_tcscpy( szUrlDup, szUrl );
-				HANDLE hThread = (HANDLE)_beginthreadex( NULL, 0, ShellExecuteProc, (LPVOID)szUrlDup, 0, &nThreadId );
-				if( hThread != INVALID_HANDLE_VALUE ){
-					// ユーザーのURL起動指示に反応した目印としてちょっとの時間だけ砂時計カーソルを表示しておく
-					// ShellExecute は即座にエラー終了することがちょくちょくあるので WaitForSingleObject ではなく Sleep を使用（ex.存在しないパスの起動）
-					// 【補足】いずれの API でも待ちを長め（2～3秒）にするとなぜか Web ブラウザ未起動からの起動が重くなる模様（PCタイプ, XP/Vista, IE/FireFox に関係なく）
-					::Sleep(200);
-					::CloseHandle(hThread);
-				}else{
-					//スレッド作成失敗
-					delete[] szUrlDup;
-				}
-			}
-			return;
-		}
-
 		/* GREP出力モードまたはデバッグモード かつ マウス左ボタンダブルクリックでタグジャンプ の場合 */
 		//	2004.09.20 naoh 外部コマンドの出力からTagjumpできるように
 		if( (CEditApp::getInstance()->m_pcGrepAgent->m_bGrepMode || CAppMode::getInstance()->IsDebugMode()) && GetDllShareData().m_Common.m_sSearch.m_bGTJW_LDBLCLK ){
