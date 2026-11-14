@@ -165,32 +165,35 @@ void CEditView::ViewDiffInfo(
 		TCHAR szCmdDir[_MAX_PATH];
 
 		//コマンドライン文字列作成(MAX:1024)
-		if (IsWin32NT()){
+		//	NT    : "<szCmdDir>\cmd.exe" /C ""<szExeFolder>\diff.exe" <szOption> "<旧ファイル>" "<新ファイル>""
+		//	9x    : "<szCmdDir>\command.com" /C "<szExeFolder>\diff.exe" <szOption> "<旧ファイル>" "<新ファイル>"
+		//	cmdline に収まらない場合は実行しない (バッファオーバーフロー防止)
+		const bool bNT = IsWin32NT() ? true : false;
+		if( bNT ){
 			::GetSystemDirectory(szCmdDir, _countof(szCmdDir));
-			auto_sprintf(
-				cmdline,
-				_T("\"%ts\\cmd.exe\" /C \"\"%ts\\%ts\" %ts \"%ts\" \"%ts\"\""),
-				szCmdDir,
-				szExeFolder,	//sakura.exeパス
-				_T("diff.exe"),		//diff.exe
-				szOption,		//diffオプション
-				( nFlgFile12 ? pszFile2 : pszFile1 ),
-				( nFlgFile12 ? pszFile1 : pszFile2 )
-			);
 		}
 		else{
 			::GetWindowsDirectory(szCmdDir, _countof(szCmdDir));
-			auto_sprintf(
-				cmdline,
-				_T("\"%ts\\command.com\" /C \"%ts\\%ts\" %ts \"%ts\" \"%ts\""),
-				szCmdDir,
-				szExeFolder,	//sakura.exeパス
-				_T("diff.exe"),		//diff.exe
-				szOption,		//diffオプション
-				( nFlgFile12 ? pszFile2 : pszFile1 ),
-				( nFlgFile12 ? pszFile1 : pszFile2 )
-			);
 		}
+		std::tstring sCmdLine;
+		sCmdLine += _T("\"");
+		sCmdLine += szCmdDir;
+		sCmdLine += ( bNT ? _T("\\cmd.exe\" /C \"\"") : _T("\\command.com\" /C \"") );
+		sCmdLine += szExeFolder;	//sakura.exeパス
+		sCmdLine += _T("\\");
+		sCmdLine += _T("diff.exe");	//diff.exe
+		sCmdLine += _T("\" ");
+		sCmdLine += szOption;		//diffオプション
+		sCmdLine += _T(" \"");
+		sCmdLine += ( nFlgFile12 ? pszFile2 : pszFile1 );
+		sCmdLine += _T("\" \"");
+		sCmdLine += ( nFlgFile12 ? pszFile1 : pszFile2 );
+		sCmdLine += ( bNT ? _T("\"\"") : _T("\"") );
+		if( sCmdLine.length() >= _countof(cmdline) ){
+			WarningMessage( GetHwnd(), _T("差分コマンド実行は失敗しました。\n\nファイルのパスが長すぎます。") );
+			goto finish;
+		}
+		_tcscpy_s( cmdline, _countof(cmdline), sCmdLine.c_str() );
 	}
 
 	//コマンドライン実行
