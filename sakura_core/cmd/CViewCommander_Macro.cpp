@@ -372,6 +372,7 @@ void CViewCommander::Command_ExecCalc( void )
 	wcscat_s(CommandLine, CommandLineMax, L"\\calc.exe");
 
 	ZeroMemory( &si, sizeof(si) );
+	si.cb = sizeof(si);
 
 	succeeded = CreateProcessW
 		(
@@ -472,6 +473,7 @@ void CViewCommander::Command_ExecExplorer( void )
 	wcscat_s(CommandLine, CommandLineMax, CurrentFileName);
 
 	ZeroMemory( &si, sizeof(si) );
+	si.cb = sizeof(si);
 
 	succeeded = CreateProcessW
 		(
@@ -509,6 +511,7 @@ void CViewCommander::Command_ExecThgAnnotate( void )
 
 	CSakuraEnvironment::ExpandParameter( L"thg.exe annotate $F --line $y", CommandLine, CommandLineMax );
 	ZeroMemory( &si, sizeof(si) );
+	si.cb = sizeof(si);
 
 	succeeded = CreateProcessW
 		(
