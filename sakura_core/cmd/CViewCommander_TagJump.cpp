@@ -239,6 +239,50 @@ bool CViewCommander::Command_TagsMake( void )
 		return false;
 	}
 
+	//ctagsオプション作成
+	std::tstring sOptions;
+	sOptions = _T("--excmd=n --extras=+f");	//デフォルトのオプション
+	if( cDlgTagsMake.m_nTagsOpt & 0x0001 ) sOptions += _T(" -R");	//サブフォルダも対象
+	if( cDlgTagsMake.m_nTagsOpt & 0x0002 ) sOptions += _T(" --kinds-C=+px");
+	if( cDlgTagsMake.m_nTagsOpt & 0x0004 ) sOptions += _T(" --input-encoding=cp932");
+	if( cDlgTagsMake.m_szTagsCmdLine[0] != _T('\0') )	//個別指定のコマンドライン
+	{
+		sOptions += _T(" ");
+		sOptions += cDlgTagsMake.m_szTagsCmdLine;
+	}
+	sOptions += _T(" *");	//配下のすべてのファイル
+
+	//コマンドライン文字列作成(MAX:1024)
+	//	NT : "<szCmdDir>\cmd.exe" /D /C ""<szExeFolder>\ctags.exe" <options>"
+	//	9x : "<szCmdDir>\command.com" /C "<szExeFolder>\ctags.exe" <options>
+	//	cmdline に収まらない場合は実行しない (バッファオーバーフロー防止)
+	{
+		// 2010.08.28 Moca システムディレクトリ付加
+		TCHAR szCmdDir[_MAX_PATH];
+		const bool bNT = IsWin32NT() ? true : false;
+		if( bNT ){
+			::GetSystemDirectory(szCmdDir, _countof(szCmdDir));
+		}else{
+			::GetWindowsDirectory(szCmdDir, _countof(szCmdDir));
+		}
+		std::tstring sCmdLine;
+		sCmdLine += _T("\"");
+		sCmdLine += szCmdDir;
+		//	2006.08.04 genta add /D to disable autorun
+		sCmdLine += ( bNT ? _T("\\cmd.exe\" /D /C \"\"") : _T("\\command.com\" /C \"") );
+		sCmdLine += szExeFolder;	//sakura.exeパス
+		sCmdLine += _T("\\");
+		sCmdLine += CTAGS_COMMAND;	//ctags.exe
+		sCmdLine += _T("\" ");
+		sCmdLine += sOptions;		//ctagsオプション
+		if( bNT ) sCmdLine += _T("\"");
+		if( sCmdLine.length() >= _countof(cmdline) ){
+			WarningMessage( m_pCommanderView->GetHwnd(), _T("タグ作成コマンド実行は失敗しました。\n\nコマンドラインが長すぎます。") );
+			return false;
+		}
+		_tcscpy_s( cmdline, _countof(cmdline), sCmdLine.c_str() );
+	}
+
 	HANDLE	hStdOutWrite, hStdOutRead;
 	CDlgCancel	cDlgCancel;
 	CWaitCursor	cWaitCursor( m_pCommanderView->GetHwnd() );
@@ -275,45 +319,6 @@ bool CViewCommander::Command_TagsMake( void )
 	sui.hStdError   = hStdOutWrite;
 
 	//	To Here Dec. 28, 2002 MIK
-
-	TCHAR	options[1024];
-	_tcscpy( options, _T("--excmd=n --extras=+f") );	//デフォルトのオプション
-	if( cDlgTagsMake.m_nTagsOpt & 0x0001 ) _tcscat( options, _T(" -R") );	//サブフォルダも対象
-	if( cDlgTagsMake.m_nTagsOpt & 0x0002 ) _tcscat( options, _T(" --kinds-C=+px") );
-	if( cDlgTagsMake.m_nTagsOpt & 0x0004 ) _tcscat( options, _T(" --input-encoding=cp932") );
-	if( cDlgTagsMake.m_szTagsCmdLine[0] != _T('\0') )	//個別指定のコマンドライン
-	{
-		_tcscat( options, _T(" ") );
-		_tcscat( options, cDlgTagsMake.m_szTagsCmdLine );
-	}
-	_tcscat( options, _T(" *") );	//配下のすべてのファイル
-
-	//コマンドライン文字列作成(MAX:1024)
-	if (IsWin32NT())
-	{
-		// 2010.08.28 Moca システムディレクトリ付加
-		TCHAR szCmdDir[_MAX_PATH];
-		::GetSystemDirectory(szCmdDir, _countof(szCmdDir));
-		//	2006.08.04 genta add /D to disable autorun
-		auto_sprintf( cmdline, _T("\"%ts\\cmd.exe\" /D /C \"\"%ts\\%ts\" %ts\""),
-				szCmdDir,
-				szExeFolder,	//sakura.exeパス
-				CTAGS_COMMAND,	//ctags.exe
-				options			//ctagsオプション
-			);
-	}
-	else
-	{
-		// 2010.08.28 Moca システムディレクトリ付加
-		TCHAR szCmdDir[_MAX_PATH];
-		::GetWindowsDirectory(szCmdDir, _countof(szCmdDir));
-		auto_sprintf( cmdline, _T("\"%ts\\command.com\" /C \"%ts\\%ts\" %ts"),
-				szCmdDir,
-				szExeFolder,	//sakura.exeパス
-				CTAGS_COMMAND,	//ctags.exe
-				options			//ctagsオプション
-			);
-	}
 
 	//コマンドライン実行
 	BOOL bProcessResult = CreateProcess(
