@@ -195,6 +195,9 @@ struct CommonSetting_Edit
 	EOpenDialogDir	m_eOpenDialogDir;	// ファイルダイアログの初期位置
 	SFilePath	m_OpenDialogSelDir;		// 指定フォルダ
 
+	//単語の判定
+	bool	m_bWordZenkakuSameKind;		// 単語の判定で全角文字を同じ文字種として扱う
+
 	// (ダイアログ項目無し)
 	BOOL	m_bAutoColumnPaste;			// 矩形コピーのテキストは常に矩形貼り付け
 };

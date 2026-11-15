@@ -652,6 +652,7 @@
 #define IDC_EDIT_FILEOPENDIR            1630
 #define IDC_BUTTON_FILEOPENDIR          1631
 #define IDC_CHECK_bOverWriteFixMode     1632
+#define IDC_CHECK_WORD_ZENKAKU_SAME_KIND 1662
 #define IDC_STATIC_MOZI                 1633
 #define IDC_BUTTON_TYPEFONT             1634
 #define IDC_CHECK_CHKENTERATEND         1635
@@ -714,7 +715,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        230
 #define _APS_NEXT_COMMAND_VALUE         4057
-#define _APS_NEXT_CONTROL_VALUE         1662
+#define _APS_NEXT_CONTROL_VALUE         1663
 #define _APS_NEXT_SYMED_VALUE           104
 #endif
 #endif

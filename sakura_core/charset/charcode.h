@@ -204,7 +204,6 @@ namespace WCODE
 		return c>=0xFF61 && c<=0xFF9F;
 	}
 
-#ifdef DETECT_ZENKAKU_CHAR_TYPE
 	//! 全角記号かどうか
 	inline bool IsZenkakuKigou(wchar_t c)
 	{
@@ -246,7 +245,6 @@ namespace WCODE
 	{
 		return c>=0x2500 && c<=0x257F;
 	}
-#endif
 
 	//! 句読点か
 	//bool IsKutoten( wchar_t wc );

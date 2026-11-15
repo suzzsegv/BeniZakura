@@ -169,6 +169,9 @@ void CPropEdit::SetData( HWND hwndDlg )
 	/*	改行コードを変換して貼り付ける */	// 2009.02.28 salarm
 	::CheckDlgButton( hwndDlg, IDC_CHECK_CONVERTEOLPASTE, m_Common.m_sEdit.m_bConvertEOLPaste ? BST_CHECKED : BST_UNCHECKED );
 
+	// 単語の判定で全角文字を同じ文字種として扱う
+	CheckDlgButtonBool( hwndDlg, IDC_CHECK_WORD_ZENKAKU_SAME_KIND, m_Common.m_sEdit.m_bWordZenkakuSameKind );
+
 	// ファイルダイアログの初期位置
 	if( m_Common.m_sEdit.m_eOpenDialogDir == OPENDIALOGDIR_CUR ){
 		::CheckDlgButton( hwndDlg, IDC_RADIO_CURDIR, TRUE );
@@ -220,6 +223,9 @@ int CPropEdit::GetData( HWND hwndDlg )
 
 	//	改行コードを変換して貼り付ける */	// 2009.02.28 salarm
 	m_Common.m_sEdit.m_bConvertEOLPaste = (0 != ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_CONVERTEOLPASTE ));
+
+	// 単語の判定で全角文字を同じ文字種として扱う
+	m_Common.m_sEdit.m_bWordZenkakuSameKind = IsDlgButtonCheckedBool( hwndDlg, IDC_CHECK_WORD_ZENKAKU_SAME_KIND );
 
 	if( ::IsDlgButtonChecked(hwndDlg, IDC_RADIO_CURDIR) ){
 		m_Common.m_sEdit.m_eOpenDialogDir = OPENDIALOGDIR_CUR;

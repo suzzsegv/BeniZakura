@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 #include "CWordParse.h"
 #include "charset/charcode.h"
+#include "env/DLLSHAREDATA.h"
 
 
 //@@@ 2001.06.23 N.Nakatani
@@ -97,7 +98,6 @@ inline bool isCSymbol(wchar_t c)
 	return (c<128 && gm_keyword_char[c]==CK_CSYM);
 }
 
-#ifdef DETECT_ZENKAKU_CHAR_TYPE
 //! 全角版、識別子に使用可能な文字かどうか
 inline bool isCSymbolZen(wchar_t c)
 {
@@ -107,7 +107,6 @@ inline bool isCSymbolZen(wchar_t c)
 		(c>=L'Ａ' && c<=L'Ｚ') ||
 		(c>=L'ａ' && c<=L'ｚ');
 }
-#endif
 
 
 //! 現在位置の文字の種類を調べる
@@ -134,7 +133,12 @@ ECharKind CWordParse::WhatKindOfChar(const wchar_t* pData, int pDataLen, int nId
 		//その他
 		if (IsZenkakuSpace(c))
 			return CK_ZEN_SPACE; // 全角スペース
-#ifdef DETECT_ZENKAKU_CHAR_TYPE
+
+		// 共通設定「単語の判定で全角文字を同じ文字種として扱う」の場合は、
+		// 半角幅の文字 (ASCII・半角カタカナ・ラテン文字を除く) も含めて、全角のその他とする
+		if (GetDllShareData().m_Common.m_sEdit.m_bWordZenkakuSameKind)
+			return CK_ZEN_ETC; // 全角のその他(漢字など)
+
 		if (c == L'ー')
 			return CK_ZEN_NOBASU; // 伸ばす記号 'ー'
 		if (c == L'゛' || c == L'゜')
@@ -159,9 +163,6 @@ ECharKind CWordParse::WhatKindOfChar(const wchar_t* pData, int pDataLen, int nId
 			return CK_ETC; // 半角のその他
 		else
 			return CK_ZEN_ETC; // 全角のその他(漢字など)
-#else
-		return CK_ZEN_ETC; // 全角のその他(漢字など)
-#endif
 	} else if (nCharChars == 2) {
 		// サロゲートペア 2008/7/8 Uchi
 		if (IsUTF16High(pData[nIdx]) && IsUTF16Low(pData[nIdx + 1])) {
@@ -186,7 +187,6 @@ ECharKind CWordParse::WhatKindOfTwoChars(ECharKind kindPre, ECharKind kindCur)
 	if (kindPre == kindCur)
 		return kindCur; // 同種ならその種別を返す
 
-#ifdef DETECT_ZENKAKU_CHAR_TYPE
 	// 全角長音・全角濁点は前後の全角ひらがな・全角カタカナに引きずられる
 	if ((kindPre == CK_ZEN_NOBASU || kindPre == CK_ZEN_DAKU) && (kindCur == CK_ZEN_KATA || kindCur == CK_HIRA))
 		return kindCur;
@@ -195,7 +195,6 @@ ECharKind CWordParse::WhatKindOfTwoChars(ECharKind kindPre, ECharKind kindCur)
 	// 全角濁点、全角長音の連続は、とりあえず同種の文字とみなす
 	if ((kindPre == CK_ZEN_NOBASU || kindPre == CK_ZEN_DAKU) && (kindCur == CK_ZEN_NOBASU || kindCur == CK_ZEN_DAKU))
 		return kindCur;
-#endif
 
 	if (kindPre == CK_LATIN)
 		kindPre = CK_CSYM; // ラテン系文字はアルファベットとみなす
@@ -223,7 +222,6 @@ ECharKind CWordParse::WhatKindOfTwoChars4KW(ECharKind kindPre, ECharKind kindCur
 	if (kindPre == kindCur)
 		return kindCur; // 同種ならその種別を返す
 
-#ifdef DETECT_ZENKAKU_CHAR_TYPE
 	// 全角長音・全角濁点は前後の全角ひらがな・全角カタカナに引きずられる
 	if ((kindPre == CK_ZEN_NOBASU || kindPre == CK_ZEN_DAKU) && (kindCur == CK_ZEN_KATA || kindCur == CK_HIRA))
 		return kindCur;
@@ -232,7 +230,6 @@ ECharKind CWordParse::WhatKindOfTwoChars4KW(ECharKind kindPre, ECharKind kindCur
 	// 全角濁点、全角長音の連続は、とりあえず同種の文字とみなす
 	if ((kindPre == CK_ZEN_NOBASU || kindPre == CK_ZEN_DAKU) && (kindCur == CK_ZEN_NOBASU || kindCur == CK_ZEN_DAKU))
 		return kindCur;
-#endif
 
 	if (kindPre == CK_LATIN)
 		kindPre = CK_CSYM; // ラテン系文字はアルファベットとみなす
