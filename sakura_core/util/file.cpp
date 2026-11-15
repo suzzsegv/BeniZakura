@@ -665,6 +665,47 @@ bool GetGitRepositoryRootDir(
 }
 
 
+/*!
+ * GetHgRepositoryRootDir - Mercurial リポジトリのルートフォルダのパスを返す
+ *
+ * 指定フォルダ自身から親フォルダへ順に、".hg" フォルダがあるフォルダを探す。
+ * 返すパスの末尾に '\\' は付けない。
+ *
+ *	@return true: ルートフォルダを返却 / false: Mercurial リポジトリの中ではない
+ */
+bool GetHgRepositoryRootDir(
+	WCHAR*	pszRootDir,			//!< [out] ルートフォルダのパス
+	size_t	nRootDirCount,		//!< [in] pszRootDir のバッファサイズ (文字数)
+	const WCHAR* pszDirPath		//!< [in] 検索を始めるフォルダのパス
+)
+{
+	if( pszDirPath[0] == L'\0' ){
+		return false;
+	}
+
+	std::wstring dir = pszDirPath;
+	while( 1 < dir.size() && ( dir[dir.size() - 1] == L'\\' || dir[dir.size() - 1] == L'/' ) ){
+		dir.erase( dir.size() - 1 );
+	}
+
+	for(;;){
+		const std::wstring hgPath = dir + L"\\.hg";
+		if( IsDirectoryExists( hgPath.c_str() ) ){
+			if( nRootDirCount <= dir.size() ){
+				return false;
+			}
+			wcscpy_s( pszRootDir, nRootDirCount, dir.c_str() );
+			return true;
+		}
+		const std::wstring::size_type pos = dir.find_last_of( L"\\/" );
+		if( pos == std::wstring::npos || pos == 0 ){
+			return false;
+		}
+		dir.erase( pos );
+	}
+}
+
+
 /**	ファイルの存在チェック
 
 	指定されたパスのファイルが存在するかどうかを確認する。
