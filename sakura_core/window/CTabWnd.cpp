@@ -41,6 +41,7 @@
 #include <vsstyle.h>
 #include "CTabWnd.h"
 #include "window/CEditWnd.h"
+#include "doc/CEditDoc.h"
 #include "_main/global.h"
 #include "_os/COSVersionInfo.h"
 #include "charset/charcode.h"
@@ -1351,6 +1352,20 @@ LRESULT CTabWnd::OnDrawItem( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam 
 			}
 		}
 
+		// アクティブタブは、編集画面と同じ背景色・文字色で描画する
+		const ColorInfo& cTextColor = CEditDoc::GetInstance(0)->m_cDocType.GetDocumentAttribute().m_ColorInfoArr[COLORIDX_TEXT];
+		if( bSelected ){
+			RECT rcSelBk = lpdis->rcItem;
+			if( IsVisualStyle() ){
+				// テーマで描いたタブの枠線 (左右と上) は残す
+				::InflateRect( &rcSelBk, -1, 0 );
+				rcSelBk.top += 1;
+			}
+			HBRUSH hBrush = ::CreateSolidBrush( cTextColor.m_colBACK );
+			::FillRect( gr, &rcSelBk, hBrush );
+			::DeleteObject( hBrush );
+		}
+
 		rcItem.left += DpiScaleX(4) + (bSelected ? DpiScaleX(4) : 0);
 
 		// アイコン描画
@@ -1370,7 +1385,7 @@ LRESULT CTabWnd::OnDrawItem( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam 
 
 		// テキスト描画
 		COLORREF clrText;
-		clrText = ::GetSysColor(COLOR_MENUTEXT);
+		clrText = bSelected ? cTextColor.m_colTEXT : ::GetSysColor(COLOR_MENUTEXT);
 		gr.PushTextForeColor( clrText );
 		gr.SetTextBackTransparent(true);
 		RECT rcText = rcItem;
@@ -1385,7 +1400,7 @@ LRESULT CTabWnd::OnDrawItem( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam 
 
 		// タブを閉じるボタンを描画
 		if( m_pShareData->m_Common.m_sTabBar.m_bDispTabClose ){
-			DrawTabCloseBtn( gr, &rcItem, bSelected );
+			DrawTabCloseBtn( gr, &rcItem, bSelected, bSelected ? cTextColor.m_colTEXT : ::GetSysColor(COLOR_BTNTEXT) );
 		}
 
 		// Vista以降ではオーナードロータブに自動で3D枠が描画されてしまうため、
@@ -2284,7 +2299,7 @@ void CTabWnd::LayoutTab( void )
 
 	// オーナードロー状態を共通設定に追随させる
 	BOOL bDispTabClose = m_pShareData->m_Common.m_sTabBar.m_bDispTabClose;
-	BOOL bOwnerDraw = bDispTabClose;
+	BOOL bOwnerDraw = TRUE;	// アクティブタブを編集画面の配色で描画するため、閉じるボタンの表示によらず常にオーナードローにする
 	if( bOwnerDraw && !(lStyle & TCS_OWNERDRAWFIXED) ){
 		lStyle |= TCS_OWNERDRAWFIXED;
 	}else if( !bOwnerDraw && (lStyle & TCS_OWNERDRAWFIXED) ){
@@ -2643,7 +2658,7 @@ void CTabWnd::DrawCloseBtn( CGraphics& gr, const LPRECT lprcClient )
 /*! タブを閉じるボタン描画処理
 	@date 2012.04.08 syat 新規作成
 */
-void CTabWnd::DrawTabCloseBtn( CGraphics& gr, const LPRECT lprcClient, bool selected )
+void CTabWnd::DrawTabCloseBtn( CGraphics& gr, const LPRECT lprcClient, bool selected, COLORREF clrBtn )
 {
 	RECT rcBtn;
 	GetTabCloseBtnRect( lprcClient, &rcBtn, selected );
@@ -2654,9 +2669,8 @@ void CTabWnd::DrawTabCloseBtn( CGraphics& gr, const LPRECT lprcClient, bool sele
 	rcBtn.right = rcBtn.left + (rcBtnBase.right - rcBtnBase.left);
 	rcBtn.bottom = rcBtn.top + (rcBtnBase.bottom - rcBtnBase.left);
 
-	int nIndex = COLOR_BTNTEXT;
-	gr.SetPen( ::GetSysColor(nIndex) );
-	gr.SetBrushColor( ::GetSysColor(nIndex) );
+	gr.SetPen( clrBtn );
+	gr.SetBrushColor( clrBtn );
 	DrawCloseFigure( gr, rcBtn );
 }
 

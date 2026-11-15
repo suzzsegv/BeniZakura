@@ -134,7 +134,7 @@ protected:
 	void DrawListBtn( CGraphics& gr, const LPRECT lprcClient );			/*!< 一覧ボタン描画処理 */
 	void DrawCloseFigure( CGraphics& gr, const RECT &btnRect );			/*!< 閉じるマーク描画処理 */
 	void DrawCloseBtn( CGraphics& gr, const LPRECT lprcClient );			/*!< 閉じるボタン描画処理 */		// 2006.10.21 ryoji
-	void DrawTabCloseBtn( CGraphics& gr, const LPRECT lprcClient, bool selected );	/*!< タブを閉じるボタン描画処理 */		// 2012.04.14 syat
+	void DrawTabCloseBtn( CGraphics& gr, const LPRECT lprcClient, bool selected, COLORREF clrBtn );	/*!< タブを閉じるボタン描画処理 (clrBtn: ボタンの色) */		// 2012.04.14 syat
 	void GetListBtnRect( const LPRECT lprcClient, LPRECT lprc );	/*!< 一覧ボタンの矩形取得処理 */
 	void GetCloseBtnRect( const LPRECT lprcClient, LPRECT lprc );	/*!< 閉じるボタンの矩形取得処理 */	// 2006.10.21 ryoji
 	void GetTabCloseBtnRect( const LPRECT lprcClient, LPRECT lprc, bool selected );	/*!< タブを閉じるボタンの矩形取得処理 */	// 2012.04.14 syat
