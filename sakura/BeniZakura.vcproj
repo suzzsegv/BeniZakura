@@ -1150,6 +1150,30 @@
 					>
 				</File>
 				<File
+					RelativePath="..\sakura_core\util\CVcsIgnore.cpp"
+					>
+					<FileConfiguration
+						Name="Debug_Unicode|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release_Unicode|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\sakura_core\util\CVcsIgnore.h"
+					>
+				</File>
+				<File
 					RelativePath="..\sakura_core\util\container.h"
 					>
 				</File>

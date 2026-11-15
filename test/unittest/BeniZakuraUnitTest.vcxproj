@@ -80,10 +80,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\sakura_core\util\CGitIgnore.cpp" />
+    <ClCompile Include="..\..\sakura_core\util\CVcsIgnore.cpp" />
     <ClCompile Include="CGitIgnoreTest.cpp" />
+    <ClCompile Include="CVcsIgnoreTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\sakura_core\util\CGitIgnore.h" />
+    <ClInclude Include="..\..\sakura_core\util\CVcsIgnore.h" />
+    <ClInclude Include="TestTempDir.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

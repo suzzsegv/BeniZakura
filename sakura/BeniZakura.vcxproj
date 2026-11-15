@@ -234,6 +234,7 @@
     <ClInclude Include="..\sakura_core\env\CTagJumpManager.h" />
     <ClInclude Include="..\sakura_core\env\DLLSHAREDATA.h" />
     <ClInclude Include="..\sakura_core\util\CGitIgnore.h" />
+    <ClInclude Include="..\sakura_core\util\CVcsIgnore.h" />
     <ClInclude Include="..\sakura_core\util\container.h" />
     <ClInclude Include="..\sakura_core\util\design_template.h" />
     <ClInclude Include="..\sakura_core\util\file.h" />
@@ -555,6 +556,9 @@
     <ClCompile Include="..\sakura_core\env\DLLSHAREDATA.cpp" />
     <ClCompile Include="..\sakura_core\types\CType_Markdown.cpp" />
     <ClCompile Include="..\sakura_core\util\CGitIgnore.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\sakura_core\util\CVcsIgnore.cpp">
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\sakura_core\util\file.cpp" />
