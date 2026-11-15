@@ -67,6 +67,8 @@ void CEditorManager::DoGrepCreateWindow(HINSTANCE hinst, HWND msgParent, CDlgGre
 	//GOPTオプション
 	TCHAR pOpt[64] = _T("");
 	if( cDlgGrep.m_bSubFolder					)_tcscat( pOpt, _T("S") );	// サブフォルダからも検索する
+	if( cDlgGrep.m_bUseGitIgnore				)_tcscat( pOpt, _T("G") );	// .gitignore の除外指定に従う
+	if( cDlgGrep.m_bUseHgIgnore				)_tcscat( pOpt, _T("H") );	// .hgignore の除外指定に従う
 	if( cDlgGrep.m_sSearchOption.bLoHiCase		)_tcscat( pOpt, _T("L") );	// 英大文字と英小文字を区別する
 	if( cDlgGrep.m_sSearchOption.bRegularExp	)_tcscat( pOpt, _T("R") );	// 正規表現
 	if( cDlgGrep.m_bGrepOutputLine				)_tcscat( pOpt, _T("P") );	// 行を出力するか該当部分だけ出力するか

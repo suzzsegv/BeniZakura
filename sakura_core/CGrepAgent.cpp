@@ -11,8 +11,39 @@
 #include "util/window.h"
 #include "util/module.h"
 #include "util/other_util.h"
+#include "util/CVcsIgnore.h"
 #include "debug/CRunningTimer.h"
 #include "sakura_rc.h"
+#include <algorithm>
+
+
+/*!
+ * FormatVcsIgnoreWarning - VCS の除外指定の警告を、Grep 結果に出力する形式の文字列にする
+ *
+ * ファイルのパスは、検索フォルダの中にあれば検索フォルダからの相対パス、そうでなければフルパスで表示する。
+ *
+ *	@return "<種類> の警告: <パス>(<行番号>): <内容>" の形式の文字列 (行番号が 0 の場合は "(<行番号>)" を省く)
+ */
+static std::wstring FormatVcsIgnoreWarning(
+	const SVcsIgnoreWarning&	warning,		//!< [in] 警告
+	const std::wstring&			strSearchDir	//!< [in] 検索フォルダのフルパス (末尾に '\\' あり)
+)
+{
+	std::wstring strPath = warning.strFilePath;
+	if( strSearchDir.size() < strPath.size()
+	 && _wcsnicmp( strPath.c_str(), strSearchDir.c_str(), strSearchDir.size() ) == 0 ){
+		strPath = strPath.substr( strSearchDir.size() );
+	}
+	std::wstring strResult = warning.strSource + L" の警告: " + strPath;
+	if( 0 < warning.nLine ){
+		WCHAR szLine[32];
+		auto_sprintf( szLine, L"(%d)", warning.nLine );
+		strResult += szLine;
+	}
+	strResult += L": " + warning.strMessage;
+	return strResult;
+}
+
 
 CGrepAgent::CGrepAgent()
 : m_bGrepMode( false )			/* Grepモードか */
@@ -94,6 +125,8 @@ DWORD CGrepAgent::DoGrep(
 	const CNativeT*			pcmGrepFile,
 	const CNativeT*			pcmGrepFolder,
 	BOOL					bGrepSubFolder,
+	BOOL					bGrepUseGitIgnore,	// .gitignore の除外指定に従う
+	BOOL					bGrepUseHgIgnore,	// .hgignore の除外指定に従う
 	const SSearchOption&	sSearchOption,
 	ECodeType				nGrepCharSet,	// 2002/09/21 Moca 文字コードセット選択
 	BOOL					bGrepOutputLine,
@@ -233,6 +266,74 @@ DWORD CGrepAgent::DoGrep(
 	/* フォルダの最後が「半角かつ'\\'」でない場合は、付加する */
 	AddLastYenFromDirectoryPath( szPath, _countof(szPath) );
 
+	/*
+		VCS の除外指定 (.gitignore / .hgignore)
+		VCS ごとに、検索フォルダからさかのぼってリポジトリのルートを探し、ルートから検索フォルダまでの
+		除外指定を適用する。ルートが見つからない (検索フォルダがリポジトリの外) 場合は、サブフォルダの
+		リポジトリに入ってから適用する。どれか 1 つの VCS で除外されれば除外する。
+		途中のフォルダ (検索フォルダを含む) が除外されている場合は、中をすべて除外する (検索しない)。
+		UNC パスの場合は、ネットワークへのアクセスを避けるためルートを探さない (適用しない)。
+	*/
+	CVcsIgnore		cVcsIgnore;
+	std::wstring	strSearchDirFull = szPath;	// 検索フォルダのフルパス (末尾に '\\' あり。警告の表示用)
+	const wchar_t*	pszGitIgnoreNote = NULL;	// .gitignore の適用状況 (NULL: 適用)
+	const wchar_t*	pszHgIgnoreNote = NULL;		// .hgignore の適用状況 (NULL: 適用)
+	bool			bSearchFolderVcsIgnored = false;	// 検索フォルダが除外されている (検索しない)
+	{
+		WCHAR szFullPath[_MAX_PATH];
+		const DWORD nFullPathLen = ::GetFullPathName( szPath, _countof(szFullPath), szFullPath, NULL );
+		const bool bFullPathValid = ( 0 < nFullPathLen && nFullPathLen < _countof(szFullPath) );
+		const bool bUncPath = IsUncPath( szPath );
+		if( bFullPathValid ){
+			strSearchDirFull = szFullPath;
+		}
+
+		for( int nVcs = 0; nVcs < 2; ++nVcs ){
+			const bool bGit = ( nVcs == 0 );
+			if( !( bGit ? bGrepUseGitIgnore : bGrepUseHgIgnore ) ){
+				continue;
+			}
+			const wchar_t*& pszNote = bGit ? pszGitIgnoreNote : pszHgIgnoreNote;
+			if( bUncPath ){
+				pszNote = L"UNC パスのため適用しない";
+				continue;
+			}
+			std::unique_ptr<CVcsIgnoreScope> pcScope;
+			if( bGit ){
+				pcScope.reset( new CGitIgnoreScope() );
+			}else{
+				pcScope.reset( new CHgIgnoreScope() );
+			}
+			WCHAR szRootDir[_MAX_PATH];
+			const bool bRootFound = bFullPathValid
+				&& ( bGit ? GetGitRepositoryRootDir( szRootDir, _countof(szRootDir), szFullPath )
+				          : GetHgRepositoryRootDir( szRootDir, _countof(szRootDir), szFullPath ) );
+			if( !bRootFound ){
+				pszNote = bGit ? L"検索フォルダは Git リポジトリ外のため、サブフォルダのリポジトリにのみ適用"
+				               : L"検索フォルダは Mercurial リポジトリ外のため、サブフォルダのリポジトリにのみ適用";
+				pcScope->StartOutsideRepository();
+			}else if( !pcScope->Start( szRootDir, szFullPath ) ){
+				pszNote = L"検索フォルダが除外されているため検索しない";
+				bSearchFolderVcsIgnored = true;
+			}
+			cVcsIgnore.AddScope( std::move( pcScope ) );
+		}
+	}
+	// 検索開始時に判定できる警告 (検索フォルダのリポジトリの .hgignore など)
+	std::vector<std::wstring>	vecOutputWarnings;		// 出力済みの警告 (同じ警告は 1 回だけ出力する)
+	std::vector<std::wstring>	vecStartWarnings;		// 検索条件に出力する警告
+	{
+		std::vector<SVcsIgnoreWarning> warnings;
+		cVcsIgnore.TakeWarnings( &warnings );
+		for( size_t i = 0; i < warnings.size(); ++i ){
+			const std::wstring strWarning = FormatVcsIgnoreWarning( warnings[i], strSearchDirFull );
+			if( std::find( vecOutputWarnings.begin(), vecOutputWarnings.end(), strWarning ) == vecOutputWarnings.end() ){
+				vecOutputWarnings.push_back( strWarning );
+				vecStartWarnings.push_back( strWarning );
+			}
+		}
+	}
+
 	nWork = pcmGrepFile->GetStringLength(); // 2003.06.10 Moca あらかじめ長さを計算しておく
 
 	/* 最後にテキストを追加 */
@@ -285,6 +386,26 @@ DWORD CGrepAgent::DoGrep(
 		pszWork = L"    (サブフォルダを検索しない)\r\n";
 	}
 	cmemMessage.AppendString( pszWork );
+
+	// VCS の除外指定の適用状況と、検索開始時に判定できる警告
+	for( int nVcs = 0; nVcs < 2; ++nVcs ){
+		const bool bGit = ( nVcs == 0 );
+		if( !( bGit ? bGrepUseGitIgnore : bGrepUseHgIgnore ) ){
+			continue;
+		}
+		const wchar_t* pszNote = bGit ? pszGitIgnoreNote : pszHgIgnoreNote;
+		cmemMessage.AppendString( bGit ? L"    (.gitignore の除外指定に従う" : L"    (.hgignore の除外指定に従う" );
+		if( pszNote != NULL ){
+			cmemMessage.AppendString( L": " );
+			cmemMessage.AppendString( pszNote );
+		}
+		cmemMessage.AppendString( L")\r\n" );
+	}
+	for( size_t i = 0; i < vecStartWarnings.size(); ++i ){
+		cmemMessage.AppendString( L"    (" );
+		cmemMessage.AppendString( vecStartWarnings[i].c_str() );
+		cmemMessage.AppendString( L")\r\n" );
+	}
 
 	if( 0 < nWork ){ // 2003.06.10 Moca ファイル検索の場合は表示しない // 2004.09.26 条件誤り修正
 		if( sSearchOption.bWordOnly ){
@@ -349,25 +470,41 @@ DWORD CGrepAgent::DoGrep(
 	pcViewDst->SetDrawSwitch(0 != GetDllShareData().m_Common.m_sSearch.m_bGrepRealTimeView);
 
 
-	int nGrepTreeResult = DoGrepTree(
-		pcViewDst,
-		&cDlgCancel,
-		hwndCancel,
-		pcmGrepKey->GetStringPtr(),
-		pcmGrepFile->GetStringPtr(),
-		szPath,
-		bGrepSubFolder,
-		sSearchOption,
-		nGrepCharSet,
-		bGrepOutputLine,
-		nGrepOutputStyle,
-		&cRegexp,
-		0,
-		&nHitCount
-	);
+	int nGrepTreeResult = 0;
+	if( !bSearchFolderVcsIgnored ){
+		nGrepTreeResult = DoGrepTree(
+			pcViewDst,
+			&cDlgCancel,
+			hwndCancel,
+			pcmGrepKey->GetStringPtr(),
+			pcmGrepFile->GetStringPtr(),
+			szPath,
+			bGrepSubFolder,
+			sSearchOption,
+			nGrepCharSet,
+			bGrepOutputLine,
+			nGrepOutputStyle,
+			&cRegexp,
+			cVcsIgnore.IsEmpty() ? NULL : &cVcsIgnore,
+			0,
+			&nHitCount
+		);
+	}
 	if( -1 == nGrepTreeResult ){
 		const wchar_t* p = L"中断しました。\r\n";
 		pcViewDst->GetCommander().Command_ADDTAIL( p, -1 );
+	}
+	// 検索を開始してからでないと判定できない警告 (入れ子のリポジトリの .hgignore など) を、結果の末尾に出力する
+	{
+		std::vector<SVcsIgnoreWarning> warnings;
+		cVcsIgnore.TakeWarnings( &warnings );
+		for( size_t i = 0; i < warnings.size(); ++i ){
+			const std::wstring strWarning = FormatVcsIgnoreWarning( warnings[i], strSearchDirFull );
+			if( std::find( vecOutputWarnings.begin(), vecOutputWarnings.end(), strWarning ) == vecOutputWarnings.end() ){
+				vecOutputWarnings.push_back( strWarning );
+				pcViewDst->GetCommander().Command_ADDTAIL( ( strWarning + L"\r\n" ).c_str(), -1 );
+			}
+		}
 	}
 	{
 		WCHAR szBuffer[128];
@@ -480,6 +617,7 @@ int CGrepAgent::DoGrepTree(
 	BOOL					bGrepOutputLine,	//!< [in] TRUE: ヒット行を出力 / FALSE: ヒット部分を出力
 	int						nGrepOutputStyle,	//!< [in] 出力形式 1: Normal, 2: WZ風(ファイル単位)
 	CBregexp*				pRegexp,			//!< [in] 正規表現コンパイルデータ。既にコンパイルされている必要がある
+	CVcsIgnore*				pcVcsIgnore,		//!< [i/o] 適用中の VCS の除外指定 (pszPath のフォルダの状態。適用しない場合は NULL)
 	int						nNest,				//!< [in] ネストレベル
 	int*					pnHitCount			//!< [i/o] ヒット数の合計
 )
@@ -622,7 +760,8 @@ int CGrepAgent::DoGrepTree(
 				0 != ::IsDlgButtonChecked( pcDlgCancel->GetHwnd(), IDC_CHECK_REALTIMEVIEW )
 			);
 
-			if( ! (w32fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) )	//フォルダでない場合
+			if( ! (w32fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)	//フォルダでない場合
+			 && ! ( pcVcsIgnore != NULL && pcVcsIgnore->IsIgnored( w32fd.cFileName, false ) ) )	// VCS の除外指定で除外されていない場合
 			{
 				/*
 				 * リストにあるか調べる。
@@ -795,13 +934,19 @@ int CGrepAgent::DoGrepTree(
 			 && 0 != _tcscmp( w32fd.cFileName, _T(".hg"))
 			 && 0 != _tcscmp( w32fd.cFileName, _T(".svn"))
 			 && 0 != _tcscmp( w32fd.cFileName, _T("."))
-			 && 0 != _tcscmp( w32fd.cFileName, _T("..")) )
+			 && 0 != _tcscmp( w32fd.cFileName, _T(".."))
+			 && ! ( pcVcsIgnore != NULL && pcVcsIgnore->IsIgnored( w32fd.cFileName, true ) ) )	// VCS の除外指定で除外されていない場合
 			{
 				//フォルダ名を作成する。
 				// 2010.08.01 キャンセルでメモリーリークしてました
 				std::tstring currentPath  = pszPath;
 				currentPath += w32fd.cFileName;
 				currentPath += _T("\\");
+
+				// VCS の除外指定: サブフォルダに入る (入れ子のリポジトリの切り替え、そのフォルダの除外指定の読み込み)
+				if( pcVcsIgnore != NULL ){
+					pcVcsIgnore->EnterDirectory( currentPath, w32fd.cFileName );
+				}
 
 				int nGrepTreeResult = DoGrepTree(
 					pcViewDst,
@@ -816,9 +961,13 @@ int CGrepAgent::DoGrepTree(
 					bGrepOutputLine,
 					nGrepOutputStyle,
 					pRegexp,
+					pcVcsIgnore,
 					nNest + 1,
 					pnHitCount
 				);
+				if( pcVcsIgnore != NULL ){
+					pcVcsIgnore->LeaveDirectory();
+				}
 				if( -1 == nGrepTreeResult ){
 					goto cancel_return;
 				}

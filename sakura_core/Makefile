@@ -290,6 +290,9 @@ uiparts/CMenuDrawer.o \
 uiparts/CSoundSet.o \
 uiparts/CVisualProgress.o \
 uiparts/CWaitCursor.o \
+util/CGitIgnore.o \
+util/CHgIgnore.o \
+util/CVcsIgnore.o \
 util/file.o \
 util/format.o \
 util/input.o \

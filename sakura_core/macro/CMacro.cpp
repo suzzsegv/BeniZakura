@@ -163,6 +163,8 @@ void CMacro::AddLParam( const LPARAM* lParams, const CEditView* pcEditView )
 			lFlag |= (GetDllShareData().m_Common.m_sSearch.m_nGrepCharSet == CODE_AUTODETECT) ? 0x10 : 0x00;	//	2002/09/21 Moca 下位互換性のための処理
 			lFlag |= GetDllShareData().m_Common.m_sSearch.m_bGrepOutputLine				? 0x20 : 0x00;
 			lFlag |= (GetDllShareData().m_Common.m_sSearch.m_nGrepOutputStyle == 2)		? 0x40 : 0x00;	//	CShareDataに入れなくていいの？
+			lFlag |= GetDllShareData().m_Common.m_sSearch.m_bGrepUseGitIgnore			? 0x80 : 0x00;
+			lFlag |= GetDllShareData().m_Common.m_sSearch.m_bGrepUseHgIgnore			? 0x10000 : 0x00;
 			lFlag |= GetDllShareData().m_Common.m_sSearch.m_nGrepCharSet << 8;
 			AddIntParam( lFlag );
 		}
@@ -800,7 +802,9 @@ void CMacro::HandleCommand(
 		//		0x00	ノーマル
 		//		0x40	ファイル毎
 		//		**********************************
+		//		0x80	.gitignore の除外指定に従う
 		//		0x0100 ～ 0xff00	文字コードセット番号 * 0x100
+		//		0x10000	.hgignore の除外指定に従う
 		if( Argument[0] == NULL ){
 			::MYMESSAGEBOX( NULL, MB_OK | MB_ICONSTOP | MB_TOPMOST, EXEC_ERROR_TITLE,
 				_T("GREPパターンが指定されていません．"));
@@ -856,6 +860,8 @@ void CMacro::HandleCommand(
 			//GOPTオプション
 			pOpt[0] = '\0';
 			if( lFlag & 0x01 )_tcscat( pOpt, _T("S") );	/* サブフォルダからも検索する */
+			if( lFlag & 0x80 )_tcscat( pOpt, _T("G") );	/* .gitignore の除外指定に従う */
+			if( lFlag & 0x10000 )_tcscat( pOpt, _T("H") );	/* .hgignore の除外指定に従う */
 			if( lFlag & 0x04 )_tcscat( pOpt, _T("L") );	/* 英大文字と英小文字を区別する */
 			if( lFlag & 0x08 )_tcscat( pOpt, _T("R") );	/* 正規表現 */
 			if( lFlag & 0x20 )_tcscat( pOpt, _T("P") );	/* 行を出力するか該当部分だけ出力するか */

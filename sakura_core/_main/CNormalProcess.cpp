@@ -193,6 +193,8 @@ bool CNormalProcess::InitializeProcess()
 				&gi.cmGrepFile,
 				&gi.cmGrepFolder,
 				gi.bGrepSubFolder,
+				gi.bGrepUseGitIgnore,
+				gi.bGrepUseHgIgnore,
 				gi.sGrepSearchOption,
 				gi.nGrepCharSet,	//	2002/09/21 Moca
 				gi.bGrepOutputLine,
@@ -222,6 +224,8 @@ bool CNormalProcess::InitializeProcess()
 				}
 			}
 			GetDllShareData().m_Common.m_sSearch.m_bGrepSubFolder = gi.bGrepSubFolder;
+			GetDllShareData().m_Common.m_sSearch.m_bGrepUseGitIgnore = gi.bGrepUseGitIgnore;
+			GetDllShareData().m_Common.m_sSearch.m_bGrepUseHgIgnore = gi.bGrepUseHgIgnore;
 			GetDllShareData().m_Common.m_sSearch.m_sSearchOption = gi.sGrepSearchOption;
 			GetDllShareData().m_Common.m_sSearch.m_nGrepCharSet = gi.nGrepCharSet;
 			GetDllShareData().m_Common.m_sSearch.m_bGrepOutputLine = gi.bGrepOutputLine;

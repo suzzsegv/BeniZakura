@@ -26,6 +26,7 @@
 
 #include "doc/CDocListener.h"
 class CDlgCancel;
+class CVcsIgnore;
 class CEditView;
 
 //	Jun. 26, 2001 genta	正規表現ライブラリの差し替え
@@ -47,6 +48,8 @@ public:
 		const CNativeT*			pcmGrepFile,
 		const CNativeT*			pcmGrepFolder,
 		BOOL					bGrepSubFolder,
+		BOOL					bGrepUseGitIgnore,	// .gitignore の除外指定に従う
+	BOOL					bGrepUseHgIgnore,	// .hgignore の除外指定に従う
 		const SSearchOption&	sSearchOption,
 		ECodeType				nGrepCharSet,	// 2002/09/21 Moca 文字コードセット選択
 		BOOL					bGrepOutputLine,
@@ -68,6 +71,7 @@ private:
 		BOOL					bGrepOutputLine,	//!< [in] TRUE: ヒット行を出力 / FALSE: ヒット部分を出力
 		int						nGrepOutputStyle,	//!< [in] 出力形式 1: Normal, 2: WZ風(ファイル単位)
 		CBregexp*				pRegexp,			//!< [in] 正規表現コンパイルデータ。既にコンパイルされている必要がある
+		CVcsIgnore*				pcVcsIgnore,		//!< [i/o] 適用中の VCS の除外指定 (pszPath のフォルダの状態。適用しない場合は NULL)
 		int						nNest,				//!< [in] ネストレベル
 		int*					pnHitCount			//!< [i/o] ヒット数の合計
 	);
