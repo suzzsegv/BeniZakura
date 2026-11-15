@@ -67,14 +67,18 @@
 
 // 2006.01.30 ryoji タブのサイズ／位置に関する定義
 // 2009.10.01 ryoji 高DPI対応スケーリング
-#define TAB_MARGIN_TOP		DpiScaleY(3)
+#define TAB_EDGE_HEIGHT		2							// 上側の境界線の高さ (DrawEdge の EDGE_ETCHED は表示倍率によらず 2px)
+#define TAB_TOPBAND_HEIGHT	DpiScaleY(4)				// アクティブタブの上部のトップバンドの高さ
+#define TAB_MARGIN_TOP		(TAB_EDGE_HEIGHT + TAB_TOPBAND_HEIGHT)	// 上側の境界線とトップバンドの分
+#define TAB_BUTTON_MARGIN_TOP	DpiScaleY(3)			// タブ一覧・閉じるボタン、タブ内の閉じるボタンの上側の余白 (トップバンドを太くする前の TAB_MARGIN_TOP と同じ位置)
+#define TAB_ITEM_MARGIN_TOP	2							// タブコントロール内のタブの上側の隙間 (選択中のタブはこの分せり上がって描かれる)
 #define TAB_MARGIN_LEFT		DpiScaleX(1)
 #define TAB_MARGIN_RIGHT	DpiScaleX(47)
 
 //#define TAB_FONT_HEIGHT		DpiPointsToPixels(9)
 #define TAB_FONT_HEIGHT		abs(CShareData::getInstance()->GetShareData()->m_Common.m_sTabBar.m_lf.lfHeight)
 #define TAB_ITEM_HEIGHT		(TAB_FONT_HEIGHT + DpiScaleY(7))
-#define TAB_WINDOW_HEIGHT	(TAB_ITEM_HEIGHT + TAB_MARGIN_TOP + 2)
+#define TAB_WINDOW_HEIGHT	(TAB_ITEM_HEIGHT + TAB_MARGIN_TOP + TAB_ITEM_MARGIN_TOP)
 
 #define MAX_TABITEM_WIDTH	DpiScaleX(200)
 #define MIN_TABITEM_WIDTH	DpiScaleX(60)
@@ -1546,7 +1550,7 @@ LRESULT CTabWnd::OnPaint( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 		::ScreenToClient(GetHwnd(), &pt);
 		rcCurSel.right = pt.x + (rcCurSel.right - rcCurSel.left) - 1;
 		rcCurSel.left = pt.x + 1;
-		rcCurSel.top = rc.top + TAB_MARGIN_TOP - 2;
+		rcCurSel.top = rc.top + TAB_MARGIN_TOP - TAB_TOPBAND_HEIGHT;
 		rcCurSel.bottom = rc.top + TAB_MARGIN_TOP;
 
 		if (rcCurSel.left < rc.left + TAB_MARGIN_LEFT)
@@ -2663,7 +2667,7 @@ void CTabWnd::GetListBtnRect( const LPRECT lprcClient, LPRECT lprc )
 {
 	*lprc = rcBtnBase;
 	DpiScaleRect(lprc);	// 2009.10.01 ryoji 高DPI対応スケーリング
-	::OffsetRect(lprc, lprcClient->right - TAB_MARGIN_RIGHT + DpiScaleX(4), lprcClient->top + TAB_MARGIN_TOP + DpiScaleX(2) );
+	::OffsetRect(lprc, lprcClient->right - TAB_MARGIN_RIGHT + DpiScaleX(4), lprcClient->top + TAB_BUTTON_MARGIN_TOP + DpiScaleX(2) );
 }
 
 /*! 閉じるボタンの矩形取得処理
@@ -2675,7 +2679,7 @@ void CTabWnd::GetCloseBtnRect( const LPRECT lprcClient, LPRECT lprc )
 	DpiScaleRect(lprc);	// 2009.10.01 ryoji 高DPI対応スケーリング
 	::OffsetRect(lprc,
 		lprcClient->right - TAB_MARGIN_RIGHT + DpiScaleX(4) + (DpiScaleX(rcBtnBase.right) - DpiScaleX(rcBtnBase.left)) + DpiScaleX(7),
-		lprcClient->top + TAB_MARGIN_TOP + DpiScaleY(2) );
+		lprcClient->top + TAB_BUTTON_MARGIN_TOP + DpiScaleY(2) );
 }
 
 /*! タブを閉じるボタンの矩形取得処理
@@ -2688,7 +2692,7 @@ void CTabWnd::GetTabCloseBtnRect( const LPRECT lprcTab, LPRECT lprc, bool select
 	::OffsetRect(lprc,
 		lprcTab->right - TAB_MARGIN_RIGHT + DpiScaleX(4) + (DpiScaleX(rcBtnBase.right) - DpiScaleX(rcBtnBase.left))
 			+ DpiScaleX(6) + (selected ? 0 : DpiScaleX(4)),
-		lprcTab->top + TAB_MARGIN_TOP );
+		lprcTab->top + TAB_BUTTON_MARGIN_TOP );
 }
 
 
