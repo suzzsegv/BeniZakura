@@ -49,6 +49,7 @@ public:
 		const CNativeT*			pcmGrepFolder,
 		BOOL					bGrepSubFolder,
 		BOOL					bGrepUseGitIgnore,	// .gitignore の除外指定に従う
+	BOOL					bGrepUseHgIgnore,	// .hgignore の除外指定に従う
 		const SSearchOption&	sSearchOption,
 		ECodeType				nGrepCharSet,	// 2002/09/21 Moca 文字コードセット選択
 		BOOL					bGrepOutputLine,

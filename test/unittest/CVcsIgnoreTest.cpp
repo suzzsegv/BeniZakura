@@ -113,6 +113,81 @@ namespace BeniZakuraUnitTest
 	}
 
 	/*!
+	 * FindRootInTempDir - 検索フォルダから一時フォルダのルートまでさかのぼり、目印 (".git" など) のあるフォルダを探す
+	 *
+	 *	@return 見つかったフォルダのパス (末尾に '\\' を付けない)。見つからない場合は空文字列
+	 */
+	static std::wstring FindRootInTempDir(
+		const CTestTempDir&	cDir,			//!< [in] 一時フォルダ
+		const wchar_t*		pszSearchDir,	//!< [in] 検索フォルダ (一時フォルダからの相対パス、'\\' 区切り)
+		const wchar_t*		pszMarker		//!< [in] 目印の名前 (".git" / ".hg")
+	)
+	{
+		std::wstring strRel = pszSearchDir;
+		for(;;){
+			const std::wstring strDir = cDir.GetPath( strRel.c_str() );
+			if( ::GetFileAttributesW( ( strDir + L"\\" + pszMarker ).c_str() ) != INVALID_FILE_ATTRIBUTES ){
+				return strDir;
+			}
+			if( strRel.empty() ){
+				return std::wstring();
+			}
+			const std::wstring::size_type pos = strRel.rfind( L'\\' );
+			strRel = ( pos == std::wstring::npos ) ? std::wstring() : strRel.substr( 0, pos );
+		}
+	}
+
+	/*!
+	 * CollectVcsFiles - Grep と同じく VCS の除外指定を適用して検索フォルダの中をたどり、除外されていないファイルを集める
+	 *
+	 * 検索フォルダからさかのぼってリポジトリのルートを探し、見つかれば Start()、見つからなければ
+	 * StartOutsideRepository() で開始する (CGrepAgent::DoGrep() と同じ)。
+	 *
+	 *	@return 除外されていないファイル (検索フォルダからの相対パス、昇順)。検索フォルダが除外されている場合は "(ignored)" のみ
+	 */
+	static std::vector<std::wstring> CollectVcsFiles(
+		const CTestTempDir&	cDir,			//!< [in] 一時フォルダ
+		const wchar_t*		pszSearchDir,	//!< [in] 検索フォルダ (一時フォルダからの相対パス、'\\' 区切り。一時フォルダは空文字列)
+		bool				bGit,			//!< [in] .gitignore を適用する
+		bool				bHg,			//!< [in] .hgignore を適用する
+		std::vector<SVcsIgnoreWarning>*	pWarnings = NULL	//!< [out] 検索後に取り出した警告
+	)
+	{
+		const std::wstring strSearchDir = cDir.GetPath( pszSearchDir ) + L"\\";
+		std::vector<std::wstring> files;
+		CVcsIgnore cVcsIgnore;
+		bool bIgnored = false;
+		for( int i = 0; i < 2; ++i ){
+			if( ( i == 0 && !bGit ) || ( i == 1 && !bHg ) ){
+				continue;
+			}
+			std::unique_ptr<CVcsIgnoreScope> pcScope;
+			if( i == 0 ){
+				pcScope.reset( new CGitIgnoreScope() );
+			}else{
+				pcScope.reset( new CHgIgnoreScope() );
+			}
+			const std::wstring strRoot = FindRootInTempDir( cDir, pszSearchDir, i == 0 ? L".git" : L".hg" );
+			if( strRoot.empty() ){
+				pcScope->StartOutsideRepository();
+			}else if( !pcScope->Start( strRoot, strSearchDir ) ){
+				bIgnored = true;
+			}
+			cVcsIgnore.AddScope( std::move( pcScope ) );
+		}
+		if( bIgnored ){
+			files.push_back( L"(ignored)" );
+			return files;
+		}
+		CollectFiles( &cVcsIgnore, strSearchDir, L"", &files );
+		std::sort( files.begin(), files.end() );
+		if( pWarnings != NULL ){
+			cVcsIgnore.TakeWarnings( pWarnings );
+		}
+		return files;
+	}
+
+	/*!
 	 * JoinLines - 文字列の一覧を、比較・表示用に 1 つの文字列 (';' 区切り) にする
 	 *
 	 *	@return 連結した文字列
@@ -226,6 +301,62 @@ namespace BeniZakuraUnitTest
 	};
 
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+	//                       CHgIgnoreScope                        //
+	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+	TEST_CLASS( CHgIgnoreScopeTest )
+	{
+	public:
+		TEST_METHOD( AppliesRootHgIgnore )
+		{
+			CTestTempDir cDir;
+			cDir.MakeDir( L".hg" );
+			cDir.MakeFile( L".hgignore", "syntax: glob\n*.o\nbuild\n" );
+			cDir.MakeFile( L"a.o" );
+			cDir.MakeFile( L"a.c" );
+			cDir.MakeFile( L"build\\x.c" );
+			cDir.MakeFile( L"src\\b.o" );
+			cDir.MakeFile( L"src\\b.c" );
+			cDir.MakeFile( L"src\\build\\y.c" );
+
+			Assert::AreEqual( std::wstring( L".hgignore;a.c;src/b.c" ), JoinLines( CollectVcsFiles( cDir, L"", false, true ) ) );
+			// 検索フォルダより上の .hgignore を、ルートからの相対パスで適用する
+			Assert::AreEqual( std::wstring( L"b.c" ), JoinLines( CollectVcsFiles( cDir, L"src", false, true ) ) );
+		}
+
+		TEST_METHOD( SearchFolderIgnored )
+		{
+			CTestTempDir cDir;
+			cDir.MakeDir( L".hg" );
+			cDir.MakeFile( L".hgignore", "^out/\n" );
+			cDir.MakeFile( L"out\\x\\a.c" );
+			Assert::AreEqual( std::wstring( L"(ignored)" ), JoinLines( CollectVcsFiles( cDir, L"out\\x", false, true ) ) );
+		}
+
+		TEST_METHOD( NestedRepository )
+		{
+			// 入れ子のリポジトリ (".hg" フォルダ) には、親リポジトリの .hgignore を適用しない
+			CTestTempDir cDir;
+			cDir.MakeDir( L".hg" );
+			cDir.MakeFile( L".hgignore", "\\.o$\n" );
+			cDir.MakeFile( L"a.o" );
+			cDir.MakeFile( L"c.tmp" );
+			cDir.MakeDir( L"sub\\.hg" );
+			cDir.MakeFile( L"sub\\.hgignore", "\\.tmp$\n(?i)bad\n" );
+			cDir.MakeFile( L"sub\\b.o" );
+			cDir.MakeFile( L"sub\\b.tmp" );
+
+			std::vector<SVcsIgnoreWarning> warnings;
+			Assert::AreEqual(
+				std::wstring( L".hgignore;c.tmp;sub/.hgignore;sub/b.o" ),
+				JoinLines( CollectVcsFiles( cDir, L"", false, true, &warnings ) ) );
+			// 入れ子のリポジトリの .hgignore の警告は、検索後に取り出せる
+			Assert::AreEqual( (size_t)1, warnings.size() );
+			Assert::AreEqual( 2, warnings[0].nLine );
+			Assert::AreEqual( std::wstring( L".hgignore" ), warnings[0].strSource );
+		}
+	};
+
+	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 	//                         CVcsIgnore                          //
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 	TEST_CLASS( CVcsIgnoreTest )
@@ -236,6 +367,65 @@ namespace BeniZakuraUnitTest
 			CVcsIgnore cVcsIgnore;
 			Assert::IsTrue( cVcsIgnore.IsEmpty() );
 			Assert::IsFalse( cVcsIgnore.IsIgnored( L"a.o", false ) );
+		}
+
+		TEST_METHOD( BothGitAndHgInSameFolder )
+		{
+			// 同じフォルダに .git と .hg の両方がある場合は、どちらかで除外されれば除外する
+			CTestTempDir cDir;
+			cDir.MakeDir( L".git" );
+			cDir.MakeDir( L".hg" );
+			cDir.MakeFile( L".gitignore", "*.log\n" );
+			cDir.MakeFile( L".hgignore", "\\.o$\n" );
+			cDir.MakeFile( L"a.log" );
+			cDir.MakeFile( L"a.o" );
+			cDir.MakeFile( L"a.c" );
+
+			Assert::AreEqual( std::wstring( L".gitignore;.hgignore;a.c" ), JoinLines( CollectVcsFiles( cDir, L"", true, true ) ) );
+			Assert::AreEqual( std::wstring( L".gitignore;.hgignore;a.c;a.o" ), JoinLines( CollectVcsFiles( cDir, L"", true, false ) ) );
+			Assert::AreEqual( std::wstring( L".gitignore;.hgignore;a.c;a.log" ), JoinLines( CollectVcsFiles( cDir, L"", false, true ) ) );
+		}
+
+		TEST_METHOD( GitInsideHgAreIndependent )
+		{
+			// hg のリポジトリ R の中の git のリポジトリ R/lib には、R/.hgignore と R/lib/.gitignore の両方を適用する
+			// (Mercurial は .git を、git は .hg をリポジトリの境界としない)
+			CTestTempDir cDir;
+			cDir.MakeDir( L".hg" );
+			cDir.MakeFile( L".hgignore", "syntax: glob\n*.o\n" );
+			cDir.MakeDir( L"lib\\.git" );
+			cDir.MakeFile( L"lib\\.gitignore", "*.tmp\n" );
+			cDir.MakeFile( L"lib\\a.o" );
+			cDir.MakeFile( L"lib\\a.tmp" );
+			cDir.MakeFile( L"lib\\a.c" );
+			cDir.MakeFile( L"b.tmp" );
+
+			// R から検索 (git はリポジトリの外から開始し、lib に入ってから適用)
+			Assert::AreEqual(
+				std::wstring( L".hgignore;b.tmp;lib/.gitignore;lib/a.c" ),
+				JoinLines( CollectVcsFiles( cDir, L"", true, true ) ) );
+			// R/lib から検索
+			Assert::AreEqual(
+				std::wstring( L".gitignore;a.c" ),
+				JoinLines( CollectVcsFiles( cDir, L"lib", true, true ) ) );
+		}
+
+		TEST_METHOD( RepositoriesUnderOutsideFolder )
+		{
+			// 検索フォルダがリポジトリの外でも、サブフォルダのリポジトリの除外指定を適用する
+			CTestTempDir cDir;
+			cDir.MakeFile( L"top.o" );
+			cDir.MakeDir( L"g\\.git" );
+			cDir.MakeFile( L"g\\.gitignore", "*.o\n" );
+			cDir.MakeFile( L"g\\a.o" );
+			cDir.MakeDir( L"h\\.hg" );
+			cDir.MakeFile( L"h\\.hgignore", "\\.o$\n" );
+			cDir.MakeFile( L"h\\b.o" );
+			cDir.MakeFile( L"h\\b.c" );
+
+			Assert::AreEqual(
+				std::wstring( L"g/.gitignore;h/.hgignore;h/b.c;top.o" ),
+				JoinLines( CollectVcsFiles( cDir, L"", true, true ) ) );
 		}
 	};
 }

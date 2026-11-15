@@ -14,6 +14,35 @@
 #include "util/CVcsIgnore.h"
 #include "debug/CRunningTimer.h"
 #include "sakura_rc.h"
+#include <algorithm>
+
+
+/*!
+ * FormatVcsIgnoreWarning - VCS の除外指定の警告を、Grep 結果に出力する形式の文字列にする
+ *
+ * ファイルのパスは、検索フォルダの中にあれば検索フォルダからの相対パス、そうでなければフルパスで表示する。
+ *
+ *	@return "<種類> の警告: <パス>(<行番号>): <内容>" の形式の文字列 (行番号が 0 の場合は "(<行番号>)" を省く)
+ */
+static std::wstring FormatVcsIgnoreWarning(
+	const SVcsIgnoreWarning&	warning,		//!< [in] 警告
+	const std::wstring&			strSearchDir	//!< [in] 検索フォルダのフルパス (末尾に '\\' あり)
+)
+{
+	std::wstring strPath = warning.strFilePath;
+	if( strSearchDir.size() < strPath.size()
+	 && _wcsnicmp( strPath.c_str(), strSearchDir.c_str(), strSearchDir.size() ) == 0 ){
+		strPath = strPath.substr( strSearchDir.size() );
+	}
+	std::wstring strResult = warning.strSource + L" の警告: " + strPath;
+	if( 0 < warning.nLine ){
+		WCHAR szLine[32];
+		auto_sprintf( szLine, L"(%d)", warning.nLine );
+		strResult += szLine;
+	}
+	strResult += L": " + warning.strMessage;
+	return strResult;
+}
 
 
 CGrepAgent::CGrepAgent()
@@ -97,6 +126,7 @@ DWORD CGrepAgent::DoGrep(
 	const CNativeT*			pcmGrepFolder,
 	BOOL					bGrepSubFolder,
 	BOOL					bGrepUseGitIgnore,	// .gitignore の除外指定に従う
+	BOOL					bGrepUseHgIgnore,	// .hgignore の除外指定に従う
 	const SSearchOption&	sSearchOption,
 	ECodeType				nGrepCharSet,	// 2002/09/21 Moca 文字コードセット選択
 	BOOL					bGrepOutputLine,
@@ -237,33 +267,72 @@ DWORD CGrepAgent::DoGrep(
 	AddLastYenFromDirectoryPath( szPath, _countof(szPath) );
 
 	/*
-		VCS の除外指定 (.gitignore)
-		検索フォルダからさかのぼってリポジトリのルートを探し、ルートから検索フォルダまでの除外指定を適用する。
+		VCS の除外指定 (.gitignore / .hgignore)
+		VCS ごとに、検索フォルダからさかのぼってリポジトリのルートを探し、ルートから検索フォルダまでの
+		除外指定を適用する。ルートが見つからない (検索フォルダがリポジトリの外) 場合は、サブフォルダの
+		リポジトリに入ってから適用する。どれか 1 つの VCS で除外されれば除外する。
 		途中のフォルダ (検索フォルダを含む) が除外されている場合は、中をすべて除外する (検索しない)。
 		UNC パスの場合は、ネットワークへのアクセスを避けるためルートを探さない (適用しない)。
 	*/
 	CVcsIgnore		cVcsIgnore;
-	const wchar_t*	pszGitIgnoreNote = NULL;			// .gitignore を適用しない理由
-	bool			bSearchFolderGitIgnored = false;	// 検索フォルダが .gitignore で除外されている
+	std::wstring	strSearchDirFull = szPath;	// 検索フォルダのフルパス (末尾に '\\' あり。警告の表示用)
+	const wchar_t*	pszGitIgnoreNote = NULL;	// .gitignore の適用状況 (NULL: 適用)
+	const wchar_t*	pszHgIgnoreNote = NULL;		// .hgignore の適用状況 (NULL: 適用)
+	bool			bSearchFolderVcsIgnored = false;	// 検索フォルダが除外されている (検索しない)
 	{
 		WCHAR szFullPath[_MAX_PATH];
 		const DWORD nFullPathLen = ::GetFullPathName( szPath, _countof(szFullPath), szFullPath, NULL );
 		const bool bFullPathValid = ( 0 < nFullPathLen && nFullPathLen < _countof(szFullPath) );
 		const bool bUncPath = IsUncPath( szPath );
-		if( bGrepUseGitIgnore ){
-			WCHAR szRootDir[_MAX_PATH];
+		if( bFullPathValid ){
+			strSearchDirFull = szFullPath;
+		}
+
+		for( int nVcs = 0; nVcs < 2; ++nVcs ){
+			const bool bGit = ( nVcs == 0 );
+			if( !( bGit ? bGrepUseGitIgnore : bGrepUseHgIgnore ) ){
+				continue;
+			}
+			const wchar_t*& pszNote = bGit ? pszGitIgnoreNote : pszHgIgnoreNote;
 			if( bUncPath ){
-				pszGitIgnoreNote = L"UNC パスのため適用しない";
-			}else if( !bFullPathValid || !GetGitRepositoryRootDir( szRootDir, _countof(szRootDir), szFullPath ) ){
-				pszGitIgnoreNote = L"Git リポジトリ外のため適用しない";
+				pszNote = L"UNC パスのため適用しない";
+				continue;
+			}
+			std::unique_ptr<CVcsIgnoreScope> pcScope;
+			if( bGit ){
+				pcScope.reset( new CGitIgnoreScope() );
 			}else{
-				std::unique_ptr<CVcsIgnoreScope> pcScope( new CGitIgnoreScope() );
-				bSearchFolderGitIgnored = !pcScope->Start( szRootDir, szFullPath );
-				cVcsIgnore.AddScope( std::move( pcScope ) );
+				pcScope.reset( new CHgIgnoreScope() );
+			}
+			WCHAR szRootDir[_MAX_PATH];
+			const bool bRootFound = bFullPathValid
+				&& ( bGit ? GetGitRepositoryRootDir( szRootDir, _countof(szRootDir), szFullPath )
+				          : GetHgRepositoryRootDir( szRootDir, _countof(szRootDir), szFullPath ) );
+			if( !bRootFound ){
+				pszNote = bGit ? L"検索フォルダは Git リポジトリ外のため、サブフォルダのリポジトリにのみ適用"
+				               : L"検索フォルダは Mercurial リポジトリ外のため、サブフォルダのリポジトリにのみ適用";
+				pcScope->StartOutsideRepository();
+			}else if( !pcScope->Start( szRootDir, szFullPath ) ){
+				pszNote = L"検索フォルダが除外されているため検索しない";
+				bSearchFolderVcsIgnored = true;
+			}
+			cVcsIgnore.AddScope( std::move( pcScope ) );
+		}
+	}
+	// 検索開始時に判定できる警告 (検索フォルダのリポジトリの .hgignore など)
+	std::vector<std::wstring>	vecOutputWarnings;		// 出力済みの警告 (同じ警告は 1 回だけ出力する)
+	std::vector<std::wstring>	vecStartWarnings;		// 検索条件に出力する警告
+	{
+		std::vector<SVcsIgnoreWarning> warnings;
+		cVcsIgnore.TakeWarnings( &warnings );
+		for( size_t i = 0; i < warnings.size(); ++i ){
+			const std::wstring strWarning = FormatVcsIgnoreWarning( warnings[i], strSearchDirFull );
+			if( std::find( vecOutputWarnings.begin(), vecOutputWarnings.end(), strWarning ) == vecOutputWarnings.end() ){
+				vecOutputWarnings.push_back( strWarning );
+				vecStartWarnings.push_back( strWarning );
 			}
 		}
 	}
-	const bool bSearchFolderVcsIgnored = bSearchFolderGitIgnored;	// 検索フォルダが除外されている (検索しない)
 
 	nWork = pcmGrepFile->GetStringLength(); // 2003.06.10 Moca あらかじめ長さを計算しておく
 
@@ -318,16 +387,24 @@ DWORD CGrepAgent::DoGrep(
 	}
 	cmemMessage.AppendString( pszWork );
 
-	if( bGrepUseGitIgnore ){
-		if( pszGitIgnoreNote != NULL ){
-			cmemMessage.AppendString( L"    (.gitignore の除外指定に従う: " );
-			cmemMessage.AppendString( pszGitIgnoreNote );
-			cmemMessage.AppendString( L")\r\n" );
-		}else if( bSearchFolderGitIgnored ){
-			cmemMessage.AppendString( L"    (.gitignore の除外指定に従う: 検索フォルダが除外されているため検索しない)\r\n" );
-		}else{
-			cmemMessage.AppendString( L"    (.gitignore の除外指定に従う)\r\n" );
+	// VCS の除外指定の適用状況と、検索開始時に判定できる警告
+	for( int nVcs = 0; nVcs < 2; ++nVcs ){
+		const bool bGit = ( nVcs == 0 );
+		if( !( bGit ? bGrepUseGitIgnore : bGrepUseHgIgnore ) ){
+			continue;
 		}
+		const wchar_t* pszNote = bGit ? pszGitIgnoreNote : pszHgIgnoreNote;
+		cmemMessage.AppendString( bGit ? L"    (.gitignore の除外指定に従う" : L"    (.hgignore の除外指定に従う" );
+		if( pszNote != NULL ){
+			cmemMessage.AppendString( L": " );
+			cmemMessage.AppendString( pszNote );
+		}
+		cmemMessage.AppendString( L")\r\n" );
+	}
+	for( size_t i = 0; i < vecStartWarnings.size(); ++i ){
+		cmemMessage.AppendString( L"    (" );
+		cmemMessage.AppendString( vecStartWarnings[i].c_str() );
+		cmemMessage.AppendString( L")\r\n" );
 	}
 
 	if( 0 < nWork ){ // 2003.06.10 Moca ファイル検索の場合は表示しない // 2004.09.26 条件誤り修正
@@ -416,6 +493,18 @@ DWORD CGrepAgent::DoGrep(
 	if( -1 == nGrepTreeResult ){
 		const wchar_t* p = L"中断しました。\r\n";
 		pcViewDst->GetCommander().Command_ADDTAIL( p, -1 );
+	}
+	// 検索を開始してからでないと判定できない警告 (入れ子のリポジトリの .hgignore など) を、結果の末尾に出力する
+	{
+		std::vector<SVcsIgnoreWarning> warnings;
+		cVcsIgnore.TakeWarnings( &warnings );
+		for( size_t i = 0; i < warnings.size(); ++i ){
+			const std::wstring strWarning = FormatVcsIgnoreWarning( warnings[i], strSearchDirFull );
+			if( std::find( vecOutputWarnings.begin(), vecOutputWarnings.end(), strWarning ) == vecOutputWarnings.end() ){
+				vecOutputWarnings.push_back( strWarning );
+				pcViewDst->GetCommander().Command_ADDTAIL( ( strWarning + L"\r\n" ).c_str(), -1 );
+			}
+		}
 	}
 	{
 		WCHAR szBuffer[128];

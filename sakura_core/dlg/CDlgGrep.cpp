@@ -33,6 +33,7 @@ CDlgGrep::CDlgGrep()
 {
 	m_bSubFolder = FALSE;				// サブフォルダからも検索する
 	m_bUseGitIgnore = TRUE;				// .gitignore の除外指定に従う
+	m_bUseHgIgnore = TRUE;				// .hgignore の除外指定に従う
 	m_bFromThisText = FALSE;			// この編集中のテキストから検索する
 	m_sSearchOption.Reset();			// 検索オプション
 	m_nGrepCharSet = CODE_SJIS;			// 文字コードセット
@@ -84,6 +85,7 @@ int CDlgGrep::DoModal( HINSTANCE hInstance, HWND hwndParent, const TCHAR* pszCur
 {
 	m_bSubFolder = m_pShareData->m_Common.m_sSearch.m_bGrepSubFolder;			// Grep: サブフォルダも検索
 	m_bUseGitIgnore = m_pShareData->m_Common.m_sSearch.m_bGrepUseGitIgnore;	// Grep: .gitignore の除外指定に従う
+	m_bUseHgIgnore = m_pShareData->m_Common.m_sSearch.m_bGrepUseHgIgnore;		// Grep: .hgignore の除外指定に従う
 	m_sSearchOption = m_pShareData->m_sSearchOptionForGrepDialog;		// 検索オプション
 	m_nGrepCharSet = m_pShareData->m_Common.m_sSearch.m_nGrepCharSet;			// 文字コードセット
 	m_bGrepOutputLine = m_pShareData->m_Common.m_sSearch.m_bGrepOutputLine;	// 行を出力するか該当部分だけ出力するか
@@ -349,6 +351,9 @@ void CDlgGrep::SetData( void )
 	/* .gitignore の除外指定に従う */
 	::CheckDlgButton( GetHwnd(), IDC_CHK_GITIGNORE, m_bUseGitIgnore );
 
+	/* .hgignore の除外指定に従う */
+	::CheckDlgButton( GetHwnd(), IDC_CHK_HGIGNORE, m_bUseHgIgnore );
+
 	// この編集中のテキストから検索する
 	::CheckDlgButton( GetHwnd(), IDC_CHK_FROMTHISTEXT, m_bFromThisText );
 	// 2010.05.30 関数化
@@ -474,6 +479,10 @@ int CDlgGrep::GetData( void )
 	/* .gitignore の除外指定に従う */
 	m_bUseGitIgnore = ::IsDlgButtonChecked( GetHwnd(), IDC_CHK_GITIGNORE );
 	m_pShareData->m_Common.m_sSearch.m_bGrepUseGitIgnore = m_bUseGitIgnore;	/* Grep：.gitignore の除外指定に従う */
+
+	/* .hgignore の除外指定に従う */
+	m_bUseHgIgnore = ::IsDlgButtonChecked( GetHwnd(), IDC_CHK_HGIGNORE );
+	m_pShareData->m_Common.m_sSearch.m_bGrepUseHgIgnore = m_bUseHgIgnore;	/* Grep：.hgignore の除外指定に従う */
 
 	/* この編集中のテキストから検索する */
 	m_bFromThisText = ::IsDlgButtonChecked( GetHwnd(), IDC_CHK_FROMTHISTEXT );

@@ -420,6 +420,7 @@ bool CShareData::InitShareData()
 
 			m_pShareData->m_Common.m_sSearch.m_bGrepSubFolder = TRUE;			/* Grep: サブフォルダも検索 */
 			m_pShareData->m_Common.m_sSearch.m_bGrepUseGitIgnore = TRUE;		/* Grep: .gitignore の除外指定に従う */
+			m_pShareData->m_Common.m_sSearch.m_bGrepUseHgIgnore = TRUE;		/* Grep: .hgignore の除外指定に従う */
 			m_pShareData->m_Common.m_sSearch.m_bGrepOutputLine = TRUE;			/* Grep: 行を出力するか該当部分だけ出力するか */
 			m_pShareData->m_Common.m_sSearch.m_nGrepOutputStyle = 1;			/* Grep: 出力形式 */
 			m_pShareData->m_Common.m_sSearch.m_bGrepDefaultFolder = true;		/* Grep: フォルダの初期値をカレントフォルダにする */

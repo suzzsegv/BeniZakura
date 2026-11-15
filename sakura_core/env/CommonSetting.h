@@ -355,6 +355,7 @@ struct CommonSetting_Search
 
 	int				m_bGrepSubFolder;			// Grep: サブフォルダも検索
 	BOOL			m_bGrepUseGitIgnore;		// Grep: .gitignore の除外指定に従う
+	BOOL			m_bGrepUseHgIgnore;		// Grep: .hgignore の除外指定に従う
 	BOOL			m_bGrepOutputLine;			// Grep: 行を出力するか該当部分だけ出力するか
 	int				m_nGrepOutputStyle;			// Grep: 出力形式
 	int				m_bGrepDefaultFolder;		// Grep: フォルダの初期値をカレントフォルダにする
