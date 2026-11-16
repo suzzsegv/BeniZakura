@@ -1352,8 +1352,8 @@ LRESULT CTabWnd::OnDrawItem( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam 
 			}
 		}
 
-		// アクティブタブは、編集画面と同じ背景色・文字色で描画する
-		const ColorInfo& cTextColor = CEditDoc::GetInstance(0)->m_cDocType.GetDocumentAttribute().m_ColorInfoArr[COLORIDX_TEXT];
+		// アクティブタブは、ルーラーと同じ背景色・文字色で描画する
+		const ColorInfo& cTabColor = CEditDoc::GetInstance(0)->m_cDocType.GetDocumentAttribute().m_ColorInfoArr[COLORIDX_RULER];
 		if( bSelected ){
 			RECT rcSelBk = lpdis->rcItem;
 			if( IsVisualStyle() ){
@@ -1361,7 +1361,7 @@ LRESULT CTabWnd::OnDrawItem( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam 
 				::InflateRect( &rcSelBk, -1, 0 );
 				rcSelBk.top += 1;
 			}
-			HBRUSH hBrush = ::CreateSolidBrush( cTextColor.m_colBACK );
+			HBRUSH hBrush = ::CreateSolidBrush( cTabColor.m_colBACK );
 			::FillRect( gr, &rcSelBk, hBrush );
 			::DeleteObject( hBrush );
 		}
@@ -1385,7 +1385,7 @@ LRESULT CTabWnd::OnDrawItem( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam 
 
 		// テキスト描画
 		COLORREF clrText;
-		clrText = bSelected ? cTextColor.m_colTEXT : ::GetSysColor(COLOR_MENUTEXT);
+		clrText = bSelected ? cTabColor.m_colTEXT : ::GetSysColor(COLOR_MENUTEXT);
 		gr.PushTextForeColor( clrText );
 		gr.SetTextBackTransparent(true);
 		RECT rcText = rcItem;
@@ -1400,7 +1400,7 @@ LRESULT CTabWnd::OnDrawItem( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam 
 
 		// タブを閉じるボタンを描画
 		if( m_pShareData->m_Common.m_sTabBar.m_bDispTabClose ){
-			DrawTabCloseBtn( gr, &rcItem, bSelected, bSelected ? cTextColor.m_colTEXT : ::GetSysColor(COLOR_BTNTEXT) );
+			DrawTabCloseBtn( gr, &rcItem, bSelected, bSelected ? cTabColor.m_colTEXT : ::GetSysColor(COLOR_BTNTEXT) );
 		}
 
 		// Vista以降ではオーナードロータブに自動で3D枠が描画されてしまうため、
@@ -2299,7 +2299,7 @@ void CTabWnd::LayoutTab( void )
 
 	// オーナードロー状態を共通設定に追随させる
 	BOOL bDispTabClose = m_pShareData->m_Common.m_sTabBar.m_bDispTabClose;
-	BOOL bOwnerDraw = TRUE;	// アクティブタブを編集画面の配色で描画するため、閉じるボタンの表示によらず常にオーナードローにする
+	BOOL bOwnerDraw = TRUE;	// アクティブタブをルーラーの配色で描画するため、閉じるボタンの表示によらず常にオーナードローにする
 	if( bOwnerDraw && !(lStyle & TCS_OWNERDRAWFIXED) ){
 		lStyle |= TCS_OWNERDRAWFIXED;
 	}else if( !bOwnerDraw && (lStyle & TCS_OWNERDRAWFIXED) ){

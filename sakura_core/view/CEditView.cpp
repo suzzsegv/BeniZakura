@@ -314,7 +314,7 @@ BOOL CEditView::Create(
 	g_m_pcEditView = this;
 	SetHwnd(
 		::CreateWindowEx(
-			WS_EX_STATICEDGE,		// extended window style
+			0,
 			GSTR_VIEWNAME,			// pointer to registered class name
 			GSTR_VIEWNAME,			// pointer to window name
 			0						// window style
