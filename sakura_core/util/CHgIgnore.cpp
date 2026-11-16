@@ -138,6 +138,46 @@ static std::wstring GetDirOfFile(
 }
 
 /*!
+ * IsAbsolutePath - パスが絶対パス (ドライブ名付き、または '\\' / '/' で始まる) かを返す
+ *
+ *	@return true: 絶対パス / false: 相対パス
+ */
+static bool IsAbsolutePath(
+	const std::wstring&	strPath		//!< [in] パス
+)
+{
+	if( 2 <= strPath.size() && strPath[1] == L':' ){
+		return true;
+	}
+	return !strPath.empty() && ( strPath[0] == L'\\' || strPath[0] == L'/' );
+}
+
+/*!
+ * JoinPath - フォルダのパスと、そこからの相対パスを連結する
+ *
+ * 相対パスがドライブ名付きの場合はそのまま、'\\' / '/' で始まる場合はフォルダのドライブ名を付けて返す
+ * (Python の os.path.join (Windows) と同じ考え方)。
+ *
+ *	@return 連結したパス
+ */
+static std::wstring JoinPath(
+	const std::wstring&	strDir,		//!< [in] フォルダのパス (末尾に '\\' を付けない)
+	const std::wstring&	strRelPath	//!< [in] 相対パス
+)
+{
+	if( !IsAbsolutePath( strRelPath ) ){
+		return strDir + L"\\" + strRelPath;
+	}
+	if( 2 <= strRelPath.size() && strRelPath[1] == L':' ){
+		return strRelPath;
+	}
+	if( 2 <= strDir.size() && strDir[1] == L':' ){
+		return strDir.substr( 0, 2 ) + strRelPath;
+	}
+	return strRelPath;
+}
+
+/*!
  * IsRegexSpecialChar - 正規表現 (ECMAScript) で特別な意味を持つ文字かを返す
  *
  *	@return true: 特別な意味を持つ (エスケープが必要) / false: 持たない
@@ -290,6 +330,95 @@ CHgIgnoreFile::CHgIgnoreFile()
 }
 
 /*!
+ * CHgIgnoreFile::NormalizeGlobPath - glob / rootglob のパターンをパスとして正規化する
+ *
+ * Windows 版の Mercurial (match.py の _donormalize → util.normpath = ntpath.normpath + '\\' を '/' に変換) と同じ規則。
+ * '/' の連続をまとめ、"." を取り除き、".." を直前の要素と打ち消し、末尾の '/' を取り除く。
+ * 先頭の '/' (ドライブ名がない場合は連続していてもすべて)、先頭の ".."、ドライブ名 ("c:")、UNC の "//server/share" は残す。
+ * 結果が空になる場合は "." を返す。"//./" と "//?/" で始まるパターンは変更しない。
+ *
+ *	@return 正規化したパターン
+ */
+std::wstring CHgIgnoreFile::NormalizeGlobPath(
+	const std::wstring&	strGlob		//!< [in] パターン ('\\' は '/' に変換済みのもの)
+)
+{
+	if( strGlob.compare( 0, 4, L"//./" ) == 0 || strGlob.compare( 0, 4, L"//?/" ) == 0 ){
+		return strGlob;
+	}
+
+	// ドライブ名、UNC の "//server/share" を取り出す (Python 2.7 の ntpath.splitdrive と同じ)
+	std::wstring strPrefix;
+	std::wstring strPath = strGlob;
+	if( 2 <= strGlob.size() ){
+		if( strGlob[0] == L'/' && strGlob[1] == L'/' && ( strGlob.size() < 3 || strGlob[2] != L'/' ) ){
+			const std::wstring::size_type nServerEnd = strGlob.find( L'/', 2 );
+			if( nServerEnd != std::wstring::npos ){
+				std::wstring::size_type nShareEnd = strGlob.find( L'/', nServerEnd + 1 );
+				if( nShareEnd != nServerEnd + 1 ){
+					if( nShareEnd == std::wstring::npos ){
+						nShareEnd = strGlob.size();
+					}
+					strPrefix = strGlob.substr( 0, nShareEnd );
+					strPath = strGlob.substr( nShareEnd );
+				}
+			}
+		}else if( strGlob[1] == L':' ){
+			strPrefix = strGlob.substr( 0, 2 );
+			strPath = strGlob.substr( 2 );
+		}
+	}
+
+	// 先頭の '/' は残す (ドライブ名がない場合は、連続していてもすべて残す)
+	std::wstring::size_type nStart = 0;
+	while( nStart < strPath.size() && strPath[nStart] == L'/' ){
+		++nStart;
+	}
+	if( strPrefix.empty() ){
+		strPrefix = strPath.substr( 0, nStart );
+	}else if( 0 < nStart ){
+		strPrefix += L'/';
+	}
+	const bool bRooted = !strPrefix.empty() && strPrefix[strPrefix.size() - 1] == L'/';
+
+	// 要素ごとに "." と空の要素を取り除き、".." を直前の要素と打ち消す
+	std::vector<std::wstring> comps;
+	std::wstring::size_type pos = nStart;
+	while( pos <= strPath.size() ){
+		std::wstring::size_type end = strPath.find( L'/', pos );
+		if( end == std::wstring::npos ){
+			end = strPath.size();
+		}
+		const std::wstring strComp = strPath.substr( pos, end - pos );
+		pos = end + 1;
+		if( strComp.empty() || strComp == L"." ){
+			continue;
+		}
+		if( strComp == L".." ){
+			if( !comps.empty() && comps.back() != L".." ){
+				comps.pop_back();
+				continue;
+			}
+			if( comps.empty() && bRooted ){
+				continue;	// ルートより上には行けない
+			}
+		}
+		comps.push_back( strComp );
+	}
+	if( strPrefix.empty() && comps.empty() ){
+		return L".";
+	}
+	std::wstring res = strPrefix;
+	for( size_t i = 0; i < comps.size(); ++i ){
+		if( i ){
+			res += L'/';
+		}
+		res += comps[i];
+	}
+	return res;
+}
+
+/*!
  * CHgIgnoreFile::GlobToRegex - glob を正規表現に変換する (前後の付加なし)
  *
  * Mercurial (match.py の _globre) と同じ規則で変換する。
@@ -389,7 +518,8 @@ std::wstring CHgIgnoreFile::GlobToRegex(
  *   regexp:   '^' で始まればそのまま、そうでなければ先頭に ".*" を付ける (パスの途中に一致すればよい)
  *   glob:     "(?:|.*\/)" + glob の変換 + "(?:\/|$)" (どの階層からでも一致し、一致したフォルダの中も除外)
  *   rootglob: glob の変換 + "(?:\/|$)" (ルートからのパスで一致)
- * glob と rootglob の '\\' は、Windows 版の Mercurial と同じく '/' に変換する。
+ * glob と rootglob の '\\' は、Windows 版の Mercurial と同じく '/' に変換し、NormalizeGlobPath() で正規化する
+ * (末尾の '/' も取り除くため、"build/" は "build" と同じく、フォルダとファイルの両方に一致する)。
  *
  *	@return 変換した正規表現 (照合はパスの先頭からの一致で行う)。include / subinclude の場合は空文字列
  */
@@ -414,7 +544,7 @@ std::wstring CHgIgnoreFile::PatternToRegex(
 			strGlob[i] = L'/';
 		}
 	}
-	const std::wstring strGlobRe = GlobToRegex( strGlob );
+	const std::wstring strGlobRe = GlobToRegex( NormalizeGlobPath( strGlob ) );
 	static const wchar_t GLOB_SUFFIX[] = L"(?:/|$)";
 	if( eSyntax == HGIGNORE_ROOTGLOB ){
 		return strGlobRe + GLOB_SUFFIX;
@@ -569,7 +699,8 @@ void CHgIgnoreFile::ParseContent(
 /*!
  * CHgIgnoreFile::IncludeFile - include: / subinclude: の行を処理する
  *
- * ファイルのパスは、その行を書いたファイルのあるフォルダからの相対パスとする。
+ * include: のパスは、適用範囲のフォルダ (ルート、または subinclude: で読み込んだファイルのフォルダ) からの相対パス、
+ * subinclude: のパスは、その行を書いたファイルのあるフォルダからの相対パスとする (Mercurial と同じ)。
  * include: は読み込み元と同じ適用範囲に、subinclude: は読み込むファイルのあるフォルダを適用範囲として追加する。
  */
 void CHgIgnoreFile::IncludeFile(
@@ -580,11 +711,17 @@ void CHgIgnoreFile::IncludeFile(
 	size_t				nScope			//!< [in] その行を書いたファイルの適用範囲
 )
 {
-	const std::wstring strIncludePath = GetFullPath( GetDirOfFile( strFilePath ) + L"\\" + strPattern );
 	if( eSyntax == HGIGNORE_INCLUDE ){
-		ReadPatternFile( strIncludePath, nScope, strFilePath, nLine, strPattern );
+		// include: 適用範囲のフォルダを基準にする (match.py の _donormalize: os.path.join(root, pat))
+		std::wstring strScopeDir = m_strRootDir;
+		if( !m_scopes[nScope].strBaseDir.empty() ){
+			strScopeDir += L"\\" + m_scopes[nScope].strBaseDir;
+		}
+		ReadPatternFile( GetFullPath( JoinPath( strScopeDir, strPattern ) ), nScope, strFilePath, nLine, strPattern );
 		return;
 	}
+
+	const std::wstring strIncludePath = GetFullPath( JoinPath( GetDirOfFile( strFilePath ), strPattern ) );
 
 	// subinclude: 読み込むファイルのあるフォルダ (ルートからの相対パス) を適用範囲とする
 	const std::wstring strDir = GetDirOfFile( strIncludePath );

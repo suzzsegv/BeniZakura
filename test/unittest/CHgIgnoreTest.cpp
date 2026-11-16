@@ -120,6 +120,32 @@ namespace BeniZakuraUnitTest
 				{ HGIGNORE_GLOB,		L"fo\\*o",			L"(?:|.*/)fo/[^/]*o(?:/|$)" },	// Windows では '\\' は '/'
 				{ HGIGNORE_GLOB,		L"r*.md",			L"(?:|.*/)r[^/]*\\.md(?:/|$)" },
 				{ HGIGNORE_GLOB,		L"*.bak",			L".*\\.bak(?:/|$)" },
+				// glob / rootglob はパスとして正規化する (末尾の '/' も取り除く)
+				{ HGIGNORE_GLOB,		L"build/",			L"(?:|.*/)build(?:/|$)" },
+				{ HGIGNORE_GLOB,		L"a//b",			L"(?:|.*/)a/b(?:/|$)" },
+				{ HGIGNORE_GLOB,		L"./c",				L"(?:|.*/)c(?:/|$)" },
+				{ HGIGNORE_GLOB,		L"d/./e",			L"(?:|.*/)d/e(?:/|$)" },
+				{ HGIGNORE_GLOB,		L"f/../g",			L"(?:|.*/)g(?:/|$)" },
+				{ HGIGNORE_GLOB,		L"*.o/",			L".*\\.o(?:/|$)" },
+				{ HGIGNORE_GLOB,		L"../x",			L"(?:|.*/)\\.\\./x(?:/|$)" },
+				{ HGIGNORE_GLOB,		L"x/..",			L"(?:|.*/)\\.(?:/|$)" },
+				{ HGIGNORE_GLOB,		L".",				L"(?:|.*/)\\.(?:/|$)" },
+				{ HGIGNORE_GLOB,		L"./",				L"(?:|.*/)\\.(?:/|$)" },
+				{ HGIGNORE_GLOB,		L"//a",				L"(?:|.*/)//a(?:/|$)" },
+				{ HGIGNORE_GLOB,		L"///a",			L"(?:|.*/)///a(?:/|$)" },
+				{ HGIGNORE_GLOB,		L"/a",				L"(?:|.*/)/a(?:/|$)" },
+				{ HGIGNORE_GLOB,		L"a/b/../../c",		L"(?:|.*/)c(?:/|$)" },
+				{ HGIGNORE_GLOB,		L"a/../../b",		L"(?:|.*/)\\.\\./b(?:/|$)" },
+				{ HGIGNORE_GLOB,		L"c:x",				L"(?:|.*/)c:x(?:/|$)" },
+				{ HGIGNORE_GLOB,		L"c:/x/",			L"(?:|.*/)c:/x(?:/|$)" },
+				{ HGIGNORE_GLOB,		L"\\a",				L"(?:|.*/)/a(?:/|$)" },
+				{ HGIGNORE_GLOB,		L"x\\y/",			L"(?:|.*/)x/y(?:/|$)" },
+				{ HGIGNORE_ROOTGLOB,	L"r//s/",			L"r/s(?:/|$)" },
+				{ HGIGNORE_ROOTGLOB,	L"out/./*.o",		L"out/[^/]*\\.o(?:/|$)" },
+				{ HGIGNORE_ROOTGLOB,	L"../y",			L"\\.\\./y(?:/|$)" },
+				{ HGIGNORE_ROOTGLOB,	L"q/..",			L"\\.(?:/|$)" },
+				// regexp は正規化しない
+				{ HGIGNORE_REGEXP,		L"re/",				L".*re/" },
 			};
 			for( size_t i = 0; i < _countof(cases); ++i ){
 				Assert::AreEqual( std::wstring( cases[i].expected ), CHgIgnoreFile::PatternToRegex( cases[i].eSyntax, cases[i].pattern ), cases[i].pattern );
@@ -171,6 +197,25 @@ namespace BeniZakuraUnitTest
 			Assert::IsTrue( cFile.IsIgnored( L"x/doc/a.tmp" ) );	// '/' を含んでも、どの階層からでも一致
 			Assert::IsFalse( cFile.IsIgnored( L"doc/x/a.tmp" ) );
 			Assert::IsTrue( cFile.IsIgnored( L"a/c" ) );			// '?' は '/' にも一致する
+		}
+
+		/*!
+		 * GlobTrailingSlash - glob の末尾の '/' はフォルダのみの指定にならないことを確認する
+		 *
+		 * hg status -i の結果: build/a.txt, logs, sub/build/b.txt, sub2/build, d/logs/c.txt が除外される。
+		 * (末尾の '/' は正規化で取り除かれ、同じ名前のファイルにも一致する)
+		 */
+		TEST_METHOD( GlobTrailingSlash )
+		{
+			CHgIgnoreFile cFile;
+			LoadHgIgnore( &cFile, L"syntax: glob\nbuild/\nlogs/\n" );
+			Assert::IsTrue( cFile.IsIgnored( L"build" ) );
+			Assert::IsTrue( cFile.IsIgnored( L"build/a.txt" ) );
+			Assert::IsTrue( cFile.IsIgnored( L"sub/build/b.txt" ) );
+			Assert::IsTrue( cFile.IsIgnored( L"sub2/build" ) );		// ファイル build
+			Assert::IsTrue( cFile.IsIgnored( L"logs" ) );			// ファイル logs
+			Assert::IsTrue( cFile.IsIgnored( L"d/logs/c.txt" ) );
+			Assert::IsFalse( cFile.IsIgnored( L"keep.txt" ) );
 		}
 
 		TEST_METHOD( RootGlob )
@@ -296,6 +341,40 @@ namespace BeniZakuraUnitTest
 				Assert::AreEqual( cases[i].ignored, cFile.IsIgnored( cases[i].path ), cases[i].path );
 			}
 			Assert::AreEqual( std::wstring( L"2:不明な書式 'foo' を無視" ), WarningMessages( &cFile ) );
+		}
+
+		/*!
+		 * IncludeBaseDir - include: のパスの基準フォルダが Mercurial と同じになることを確認する
+		 *
+		 * include: のパスは、その行を書いたファイルのフォルダではなく、適用範囲のフォルダ
+		 * (ルート、または subinclude: で読み込んだファイルのフォルダ) からの相対パスとなる。
+		 * hg status -i の結果: root_b, sub/sub_inc2, sub/x/sub_inc2 が除外される。
+		 */
+		TEST_METHOD( IncludeBaseDir )
+		{
+			CTestTempDir cDir;
+			cDir.MakeFile( L".hgignore", "include:conf/a.txt\nsubinclude:sub/.hgignore\n" );
+			cDir.MakeFile( L"conf\\a.txt", "include:b.txt\n" );
+			cDir.MakeFile( L"b.txt", "syntax: glob\nroot_b\n" );
+			cDir.MakeFile( L"conf\\b.txt", "syntax: glob\nconf_b\n" );
+			cDir.MakeFile( L"sub\\.hgignore", "include:x/inc1.txt\n" );
+			cDir.MakeFile( L"sub\\x\\inc1.txt", "include:inc2.txt\n" );
+			cDir.MakeFile( L"sub\\inc2.txt", "syntax: glob\nsub_inc2\n" );
+			cDir.MakeFile( L"sub\\x\\inc2.txt", "syntax: glob\nsubx_inc2\n" );
+			CHgIgnoreFile cFile;
+			Assert::IsTrue( cFile.LoadFromFile( cDir.GetRootPath() ) );
+
+			struct { const wchar_t* path; bool ignored; } cases[] = {
+				{ L"root_b",			true  },	// ルートの b.txt (conf/b.txt ではない)
+				{ L"conf_b",			false },
+				{ L"sub/sub_inc2",		true  },	// sub/inc2.txt (sub/x/inc2.txt ではない)
+				{ L"sub/x/sub_inc2",	true  },
+				{ L"sub/subx_inc2",		false },
+			};
+			for( size_t i = 0; i < _countof(cases); ++i ){
+				Assert::AreEqual( cases[i].ignored, cFile.IsIgnored( cases[i].path ), cases[i].path );
+			}
+			Assert::AreEqual( std::wstring(), WarningMessages( &cFile ) );
 		}
 
 		TEST_METHOD( IncludeWarnings )

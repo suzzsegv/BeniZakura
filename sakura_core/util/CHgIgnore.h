@@ -8,12 +8,18 @@
  *
  * リポジトリのルートの .hgignore を読み込み、syntax: 行 (regexp / glob / rootglob)、行頭の書式指定、
  * include: / subinclude: を解釈する。パターンは Mercurial と同じ規則で正規表現に変換し、std::wregex で
- * ルートからの相対パス ('/' 区切り) の先頭からの一致を判定する。否定やディレクトリのみの指定はない。
+ * ルートからの相対パス ('/' 区切り) の先頭からの一致を判定する。否定やディレクトリのみの指定はない
+ * (glob / rootglob の末尾の '/' は、Mercurial と同じく正規化で取り除く)。
  *
  * Mercurial との主な違い:
  *   - .hgignore を UTF-8 として読む (日本語 Windows の Mercurial は CP932 として読む)
  *   - 正規表現は std::wregex (ECMAScript 形式)。解釈できないパターンは無視して警告する (Mercurial は中止する)
  *   - Mercurial で管理されているファイルでも、パターンに一致すれば除外とする
+ *   - 次の Mercurial の不具合と思われる動作には合わせない
+ *     - ':' のない "include" / "subinclude" で始まる行を、ルートからの glob として扱う
+ *     - "syntax: include" / "syntax: subinclude" の以降の行を、ルートからの glob として扱う
+ *     - 同じフォルダのファイルを 2 回 subinclude: すると、2 つ目以降のパターンを適用しない
+ *     - include: で読み込んだファイルの中の subinclude: のパスを正しく解決しない
  *
  *	@author	Claude Opus 5.5
  *	@date	2026/11/15 新規作成
@@ -80,6 +86,7 @@ public:
 
 	static std::wstring PatternToRegex( EHgIgnoreSyntax eSyntax, const std::wstring& strPattern );
 	static std::wstring GlobToRegex( const std::wstring& strGlob );
+	static std::wstring NormalizeGlobPath( const std::wstring& strGlob );
 
 private:
 	//! 適用範囲ごとのパターン
