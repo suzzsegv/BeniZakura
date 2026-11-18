@@ -495,8 +495,13 @@ bool CShareData::InitShareData()
 		m_pShareData->m_sHistory.m_aCommands.clear();
 		m_pShareData->m_sHistory.m_aCurDirs.clear();
 
+		// カラーテーマ (既定は紅桜。カスタムの色も紅桜の配色にしておく)	// 2026.11.18
+		m_pShareData->m_Common.m_sColorTheme.m_nColorTheme = COLOR_THEME_BENIZAKURA;
+		SetPresetColorInfo( m_pShareData->m_Common.m_sColorTheme.m_CustomColorInfoArr, COLOR_THEME_BENIZAKURA );
+
 		InitKeyword( m_pShareData );
 		InitTypeConfigs( m_pShareData );
+		ApplyColorThemeToAllTypes( m_pShareData );
 		InitPopupMenu( m_pShareData );
 
 		//	Apr. 05, 2003 genta ウィンドウキャプションの初期値
@@ -964,6 +969,22 @@ void CShareData::InitTypeConfigs(DLLSHAREDATA* pShareData)
 		for( int i = _countof(table); i < MAX_TYPES; i++ ){
 			other.InitTypeConfig(i);
 		}
+	}
+}
+
+/*!
+ * CShareData::ApplyColorThemeToAllTypes - カラーテーマを、すべてのタイプ別設定に適用する
+ *
+ * 共通設定のテーマ (プリセット、またはカスタムの色) を、各タイプ別設定の色設定に適用する。
+ * 各タイプの「色分け/表示」のうち、タイプごとの設定の項目は変更しない (ApplyColorTheme を参照)。
+ */
+void CShareData::ApplyColorThemeToAllTypes(
+	DLLSHAREDATA*	pShareData	//!< [i/o] 共有データ
+)
+{
+	const CommonSetting_ColorTheme& sColorTheme = pShareData->m_Common.m_sColorTheme;
+	for( int i = 0; i < MAX_TYPES; i++ ){
+		ApplyColorTheme( pShareData->m_Types[i].m_ColorInfoArr, sColorTheme.m_nColorTheme, sColorTheme.m_CustomColorInfoArr );
 	}
 }
 

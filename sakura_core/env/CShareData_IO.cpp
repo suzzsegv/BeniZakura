@@ -142,6 +142,7 @@ bool CShareData_IO::ShareData_IO_2( bool bRead )
 	ShareData_IO_KeyBind( cProfile );
 	ShareData_IO_Print( cProfile );
 	ShareData_IO_Types( cProfile );
+	ShareData_IO_ColorTheme( cProfile );		// 2026.11.18 タイプ別設定の後 (移行で基本タイプの色を使うため)
 	ShareData_IO_KeyWords( cProfile );
 	ShareData_IO_Macro( cProfile );
 	ShareData_IO_Statusbar( cProfile );		// 2008/6/21 Uchi
@@ -1186,6 +1187,39 @@ void CShareData_IO::ShareData_IO_Types( CDataProfile& cProfile )
 	for( i = 0; i < MAX_TYPES; ++i ){
 		auto_sprintf( szKey, LTEXT("Types(%d)"), i );
 		ShareData_IO_Type_One( cProfile, i, szKey);
+	}
+}
+
+/*!
+ * CShareData_IO::ShareData_IO_ColorTheme - カラーテーマの入出力
+ *
+ * [Common] の szColorTheme にテーマの名前を、[ColorTheme.Custom] にカスタムテーマの色を保存する。
+ * 読み込み時に szColorTheme がない場合 (カラーテーマの導入前の ini) は、基本タイプの色をカスタムの色にして
+ * カスタムを選ぶ。読み込みの後、テーマをすべてのタイプ別設定に適用する。
+ */
+void CShareData_IO::ShareData_IO_ColorTheme(
+	CDataProfile&	cProfile	//!< [i/o] INI ファイル入出力クラス
+)
+{
+	DLLSHAREDATA* pShare = &GetDllShareData();
+	CommonSetting_ColorTheme& sColorTheme = pShare->m_Common.m_sColorTheme;
+	const WCHAR* pszSecName = LTEXT("Common");
+	const WCHAR* pszCustomSecName = LTEXT("ColorTheme.Custom");
+	WCHAR szThemeName[64];
+
+	if( cProfile.IsReadingMode() ){
+		if( cProfile.IOProfileData( pszSecName, LTEXT("szColorTheme"), MakeStringBufferW(szThemeName) ) ){
+			sColorTheme.m_nColorTheme = GetColorThemeFromKeyName( szThemeName );
+			IO_ColorSet( &cProfile, pszCustomSecName, sColorTheme.m_CustomColorInfoArr );
+		}else{
+			// カラーテーマの導入前の ini: 基本タイプの色をカスタムの色にする
+			SetCustomColorThemeFromType( &sColorTheme.m_nColorTheme, sColorTheme.m_CustomColorInfoArr, pShare->m_Types[0].m_ColorInfoArr );
+		}
+		CShareData::ApplyColorThemeToAllTypes( pShare );
+	}else{
+		wcscpy_s( szThemeName, _countof(szThemeName), GetColorThemeKeyName( sColorTheme.m_nColorTheme ) );
+		cProfile.IOProfileData( pszSecName, LTEXT("szColorTheme"), MakeStringBufferW(szThemeName) );
+		IO_ColorSet( &cProfile, pszCustomSecName, sColorTheme.m_CustomColorInfoArr );
 	}
 }
 

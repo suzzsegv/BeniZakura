@@ -153,6 +153,7 @@ dlg/CDlgTagJumpList.o \
 dlg/CDlgTagsMake.o \
 dlg/CDlgWinSize.o \
 doc/CBlockComment.o \
+doc/CColorTheme.o \
 doc/CDocEditor.o \
 doc/CDocFile.o \
 doc/CDocFileOperation.o \
@@ -227,6 +228,7 @@ parse/CWordParse.o \
 print/CPrint.o \
 print/CPrintPreview.o \
 prop/CPropComBackup.o \
+prop/CPropComColor.o \
 prop/CPropComCustmenu.o \
 prop/CPropComEdit.o \
 prop/CPropComFile.o \
@@ -260,6 +262,7 @@ recent/CRecentImp.o \
 recent/CRecentReplace.o \
 recent/CRecentSearch.o \
 recent/CRecentTagjumpKeyword.o \
+typeprop/CColorListUi.o \
 typeprop/CDlgKeywordSelect.o \
 typeprop/CDlgSameColor.o \
 typeprop/CDlgTypeAscertain.o \

@@ -114,8 +114,6 @@ private:
 
 	// 内部使用
 	DLLSHAREDATA*	m_pShareData;
-	int				m_nColorType;
-	wstring 		m_sColorFile;
 	CDataProfile	m_cProfile;
 };
 

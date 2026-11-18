@@ -1498,6 +1498,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\sakura_core\typeprop\CColorListUi.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\sakura_core\typeprop\CColorListUi.h"
+					>
+				</File>
+				<File
 					RelativePath="..\sakura_core\typeprop\CPropTypesColor.cpp"
 					>
 				</File>
@@ -1894,6 +1902,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\sakura_core\prop\CPropComColor.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\sakura_core\prop\CPropComFormat.cpp"
 					>
 				</File>
@@ -2159,6 +2171,30 @@
 				</File>
 				<File
 					RelativePath="..\sakura_core\doc\CDocType.h"
+					>
+				</File>
+				<File
+					RelativePath="..\sakura_core\doc\CColorTheme.cpp"
+					>
+					<FileConfiguration
+						Name="Debug_Unicode|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release_Unicode|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\sakura_core\doc\CColorTheme.h"
 					>
 				</File>
 				<File

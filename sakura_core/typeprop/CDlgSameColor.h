@@ -33,7 +33,7 @@
 
 #include "dlg/CDialog.h"
 
-struct STypeConfig;
+struct ColorInfo;
 
 /*!	@brief 文字色／背景色統一ダイアログ
 
@@ -45,7 +45,7 @@ class CDlgSameColor : public CDialog
 public:
 	CDlgSameColor();
 	~CDlgSameColor();
-	int DoModal( HINSTANCE, HWND, WORD, STypeConfig*, COLORREF );		//!< モーダルダイアログの表示
+	int DoModal( HINSTANCE, HWND, WORD, ColorInfo*, COLORREF );		//!< モーダルダイアログの表示
 
 protected:
 
@@ -62,7 +62,7 @@ protected:
 	WNDPROC m_wpColorListProc;		//!< サブクラス化以前の色選択リストのウィンドウプロシージャ
 
 	WORD m_wID;			//!< タイプ別設定ダイアログ（親ダイアログ）で押されたボタンID
-	STypeConfig* m_pTypes;	//!< タイプ別設定データ
+	ColorInfo* m_pColorInfoArr;	//!< 色設定 (COLORIDX_LAST 個)	// 2026.11.18 タイプ別設定から色設定に変更
 	COLORREF m_cr;		//!< 指定色
 };
 

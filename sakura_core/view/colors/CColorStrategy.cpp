@@ -277,7 +277,7 @@ void CColorStrategyPool::OnChangeSetting(void)
   配列の順番は共有メモリ中のデータの順番と一致している。
 
   @note 数値による内部的対応は EColorIndexType CColorStrategy.h
-  日本語名などは  ColorInfo_DEFAULT CDocTypeSetting.cpp
+  日本語名などは  ColorInfo_DEFAULT doc/CColorTheme.cpp
   CShareDataからglobalに移動
 */
 const SColorAttributeData g_ColorAttributeArr[] =

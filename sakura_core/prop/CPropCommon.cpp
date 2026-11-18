@@ -134,6 +134,10 @@ CPropCommon::CPropCommon()
 	m_hwndThis  = NULL;		/* このダイアログのハンドル */
 	m_nPageNum = ID_PAGENUM_GENERAL;
 	m_nKeywordSet1 = -1;
+	m_nCurrentColorIdx = 0;	// 2026.11.18 カラーページ
+	for( int i = 0; i < _countof(m_dwColorCustColors); i++ ){
+		m_dwColorCustColors[i] = RGB( 0xff, 0xff, 0xff );
+	}
 
 	return;
 }
@@ -212,6 +216,7 @@ int CPropCommon::DoPropertySheet( int nPageNum/*, int nActiveItem*/ )
 		{ _T("ファイル名表示"),		IDD_PROP_FNAME,		CPropFileName::DlgProc_page },
 		{ _T("バックアップ"),		IDD_PROP_BACKUP,	CPropBackup::DlgProc_page },
 		{ _T("書式"),				IDD_PROP_FORMAT,	CPropFormat::DlgProc_page },
+		{ _T("カラー"),				IDD_PROP_COMMON_COLOR,	CPropColor::DlgProc_page },	// 2026.11.18
 		{ _T("検索"),				IDD_PROP_GREP,		CPropGrep::DlgProc_page },	// 2006.08.23 ryoji タイトル変更（Grep -> 検索）
 		{ _T("キー割り当て"),		IDD_PROP_KEYBIND,	CPropKeybind::DlgProc_page },
 		{ _T("カスタムメニュー"),	IDD_PROP_CUSTMENU,	CPropCustmenu::DlgProc_page },

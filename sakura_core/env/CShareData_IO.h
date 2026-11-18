@@ -63,6 +63,7 @@ protected:
 	static void ShareData_IO_KeyBind( CDataProfile& );
 	static void ShareData_IO_Print( CDataProfile& );
 	static void ShareData_IO_Types( CDataProfile& );
+	static void ShareData_IO_ColorTheme( CDataProfile& );	// 2026.11.18
 	static void ShareData_IO_KeyWords( CDataProfile& );
 	static void ShareData_IO_Macro( CDataProfile& );
 	static void ShareData_IO_Statusbar( CDataProfile& );	// 2008/6/21 Uchi

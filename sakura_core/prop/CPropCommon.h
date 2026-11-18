@@ -41,6 +41,7 @@
 
 #include "func/CFuncLookup.h"
 #include "env/CommonSetting.h"
+#include "typeprop/CColorListUi.h"	// 2026.11.18 カラーページ
 
 struct DLLSHAREDATA;
 class CImageListMgr;
@@ -61,6 +62,7 @@ enum ComPropSheetOrder {
 	ID_PAGENUM_FILENAME,		// ファイル名表示
 	ID_PAGENUM_BACKUP,			// バックアップ
 	ID_PAGENUM_FORMAT,			// 書式
+	ID_PAGENUM_COLOR,			// カラー	// 2026.11.18
 	ID_PAGENUM_GREP,			// 検索
 	ID_PAGENUM_KEYBOARD,		// キー割り当て
 	ID_PAGENUM_CUSTMENU,		// カスタムメニュー
@@ -129,6 +131,12 @@ public:
 
 	// 2005.01.13 MIK セット数増加
 	int				m_Types_nKeyWordSetIdx[MAX_TYPES][MAX_KEYWORDSET_PER_TYPE];
+
+	// カラーページ用データ	// 2026.11.18
+	CColorListUi	m_cColorListUi;							//!< 色設定の一覧の描画・操作
+	ColorInfo		m_PresetColorInfoArr[COLORIDX_LAST];	//!< 表示中のプリセットの配色 (プリセット選択中に一覧に表示する)
+	int				m_nCurrentColorIdx;						//!< 一覧で選択中の色の項目
+	DWORD			m_dwColorCustColors[16];				//!< 色選択ダイアログのカスタムパレット
 
 protected:
 	/*
@@ -314,6 +322,31 @@ private:
 
 	//	Sept. 10, 2000 JEPRO	次行を追加
 	void EnableFormatPropInput( HWND hwndDlg );	//	書式設定のON/OFF
+};
+
+//==============================================================
+//!	カラーページ	// 2026.11.18
+class CPropColor : CPropCommon
+{
+public:
+	//!	Dialog Procedure
+	static INT_PTR CALLBACK DlgProc_page(
+		HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam );
+protected:
+	//! Message Handler
+	INT_PTR DispatchEvent( HWND, UINT, WPARAM, LPARAM );
+	void SetData( HWND );	//!< ダイアログデータの設定
+	int  GetData( HWND );	//!< ダイアログデータの取得
+
+private:
+	bool IsCustomTheme() const;
+	ColorInfo* GetDispColorInfoArr();
+	void SetColorList( HWND hwndDlg );
+	void UpdateControls( HWND hwndDlg );
+	void CopyFromPreset( HWND hwndDlg );
+	void Import( HWND hwndDlg );
+	void Export( HWND hwndDlg );
+	static bool CanEditColor( void* pParam, int nColorIdx, EColorListEdit eEdit );
 };
 
 //==============================================================

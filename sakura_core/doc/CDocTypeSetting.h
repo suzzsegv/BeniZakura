@@ -27,36 +27,11 @@
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 //                          色設定                             //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-enum ColorTheme {
-	COLOR_THEME_BENIZAKURA = 0,
-	COLOR_THEME_SAKURA,
-	COLOR_THEME_VS2012DARK,
-	COLOR_THEME_MONOKAI,
-	COLOR_THEME_MIFES_BLUE,
-	COLOR_THEME_HIDEMARU_BLACK,
-
-	COLOR_THEME_MAX
-};
-
-//! 色設定
-struct ColorInfoBase{
-	bool		m_bDisp;			//!< 表示
-	bool		m_bBoldFont;		//!< 太字
-	bool		m_bUnderLine;		//!< 下線
-	COLORREF	m_colTEXT;			//!< 文字色
-	COLORREF	m_colBACK;			//!< 背景色
-};
-
-//! 名前とインデックス付き色設定
-struct ColorInfo : public ColorInfoBase{
-	int			m_nColorIdx;		//!< インデックス
-	TCHAR		m_szName[64];		//!< 名前
-};
+#include "doc/CColorTheme.h"	// ColorTheme, ColorInfo (2026.11.18 CColorTheme.h に移動)
 
 
 //デフォルト色設定
 void SetDefaultColorInfo(ColorInfo* pColorInfo, ColorTheme nIndex);
-void SetColorTheme(ColorInfo* pColorInfo, ColorTheme presetNum);
 
 
 

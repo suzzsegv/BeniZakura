@@ -275,6 +275,7 @@
     <ClInclude Include="..\sakura_core\typeprop\CDlgTypeList.h" />
     <ClInclude Include="..\sakura_core\typeprop\CImpExpManager.h" />
     <ClInclude Include="..\sakura_core\typeprop\CPropTypes.h" />
+    <ClInclude Include="..\sakura_core\typeprop\CColorListUi.h" />
     <ClInclude Include="..\sakura_core\types\CType.h" />
     <ClInclude Include="..\sakura_core\types\CTypeSupport.h" />
     <ClInclude Include="..\sakura_core\view\CCaret.h" />
@@ -334,6 +335,7 @@
     <ClInclude Include="..\sakura_core\doc\CDocReader.h" />
     <ClInclude Include="..\sakura_core\doc\CDocType.h" />
     <ClInclude Include="..\sakura_core\doc\CDocTypeSetting.h" />
+    <ClInclude Include="..\sakura_core\doc\CColorTheme.h" />
     <ClInclude Include="..\sakura_core\doc\CDocVisitor.h" />
     <ClInclude Include="..\sakura_core\doc\CEditDoc.h" />
     <ClInclude Include="..\sakura_core\doc\CLineComment.h" />
@@ -599,6 +601,7 @@
     <ClCompile Include="..\sakura_core\typeprop\CImpExpManager.cpp" />
     <ClCompile Include="..\sakura_core\typeprop\CPropTypes.cpp" />
     <ClCompile Include="..\sakura_core\typeprop\CPropTypesColor.cpp" />
+    <ClCompile Include="..\sakura_core\typeprop\CColorListUi.cpp" />
     <ClCompile Include="..\sakura_core\typeprop\CPropTypesKeyHelp.cpp" />
     <ClCompile Include="..\sakura_core\typeprop\CPropTypesRegex.cpp" />
     <ClCompile Include="..\sakura_core\typeprop\CPropTypesScreen.cpp" />
@@ -662,6 +665,7 @@
     <ClCompile Include="..\sakura_core\prop\CPropComFile.cpp" />
     <ClCompile Include="..\sakura_core\prop\CPropComFileName.cpp" />
     <ClCompile Include="..\sakura_core\prop\CPropComFormat.cpp" />
+    <ClCompile Include="..\sakura_core\prop\CPropComColor.cpp" />
     <ClCompile Include="..\sakura_core\prop\CPropComGeneral.cpp" />
     <ClCompile Include="..\sakura_core\prop\CPropComGrep.cpp" />
     <ClCompile Include="..\sakura_core\prop\CPropComHelper.cpp" />
@@ -700,6 +704,9 @@
     <ClCompile Include="..\sakura_core\doc\CDocReader.cpp" />
     <ClCompile Include="..\sakura_core\doc\CDocType.cpp" />
     <ClCompile Include="..\sakura_core\doc\CDocTypeSetting.cpp" />
+    <ClCompile Include="..\sakura_core\doc\CColorTheme.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="..\sakura_core\doc\CDocVisitor.cpp" />
     <ClCompile Include="..\sakura_core\doc\CEditDoc.cpp" />
     <ClCompile Include="..\sakura_core\doc\CLineComment.cpp" />

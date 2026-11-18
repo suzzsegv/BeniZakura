@@ -40,7 +40,7 @@ CDlgSameColor::CDlgSameColor() :
 	m_wpColorStaticProc(NULL),
 	m_wpColorListProc(NULL),
 	m_wID(0),
-	m_pTypes(NULL),
+	m_pColorInfoArr(NULL),
 	m_cr(0)
 {
 	return;
@@ -87,15 +87,15 @@ INT_PTR CDlgSameColor::DispatchEvent( HWND hWnd, UINT wMsg, WPARAM wParam, LPARA
 
 /*! モーダルダイアログの表示
 	@param wID [in] タイプ別設定ダイアログで押されたボタンID
-	@param pTypes  [in/out] タイプ別設定データ
+	@param pColorInfoArr  [in/out] 色設定 (COLORIDX_LAST 個。2026.11.18 タイプ別設定データから変更)
 	@param cr [in] 指定色
 
 	@date 2006.04.26 ryoji 新規作成
 */
-int CDlgSameColor::DoModal( HINSTANCE hInstance, HWND hwndParent, WORD wID, STypeConfig* pTypes, COLORREF cr )
+int CDlgSameColor::DoModal( HINSTANCE hInstance, HWND hwndParent, WORD wID, ColorInfo* pColorInfoArr, COLORREF cr )
 {
 	m_wID = wID;
-	m_pTypes = pTypes;
+	m_pColorInfoArr = pColorInfoArr;
 	m_cr = cr;
 
 	(void)CDialog::DoModal( hInstance, hwndParent, IDD_SAMECOLOR, (LPARAM)NULL );
@@ -132,8 +132,8 @@ BOOL CDlgSameColor::OnInitDialog( HWND hwndDlg, WPARAM wParam, LPARAM lParam )
 		for( i = 0; i < COLORIDX_LAST; ++i ){
 			if( 0 != (g_ColorAttributeArr[i].fAttribute & COLOR_ATTRIB_NO_TEXT) )
 				continue;
-			if( m_cr != m_pTypes->m_ColorInfoArr[i].m_colTEXT ){
-				_ultow( m_pTypes->m_ColorInfoArr[i].m_colTEXT, szText, 10 );
+			if( m_cr != m_pColorInfoArr[i].m_colTEXT ){
+				_ultow( m_pColorInfoArr[i].m_colTEXT, szText, 10 );
 				if( LB_ERR == List_FindStringExact( hwndList, -1, szText ) ){
 					nItem = ::List_AddString( hwndList, szText );
 					List_SetItemData( hwndList, nItem, FALSE ); 
@@ -148,8 +148,8 @@ BOOL CDlgSameColor::OnInitDialog( HWND hwndDlg, WPARAM wParam, LPARAM lParam )
 		for( i = 0; i < COLORIDX_LAST; ++i ){
 			if( 0 != (g_ColorAttributeArr[i].fAttribute & COLOR_ATTRIB_NO_BACK) )	// 2006.12.18 ryoji フラグ利用で簡素化
 				continue;
-			if( m_cr != m_pTypes->m_ColorInfoArr[i].m_colBACK ){
-				_ultow( m_pTypes->m_ColorInfoArr[i].m_colBACK, szText, 10 );
+			if( m_cr != m_pColorInfoArr[i].m_colBACK ){
+				_ultow( m_pColorInfoArr[i].m_colBACK, szText, 10 );
 				if( LB_ERR == List_FindStringExact( hwndList, -1, szText ) ){
 					nItem = ::List_AddString( hwndList, szText );
 					List_SetItemData( hwndList, nItem, FALSE ); 
@@ -209,16 +209,16 @@ BOOL CDlgSameColor::OnBnClicked( int wID )
 				{
 				case IDC_BUTTON_SAMETEXTCOLOR:
 					for( j = 0; j < COLORIDX_LAST; ++j ){
-						if( cr == m_pTypes->m_ColorInfoArr[j].m_colTEXT ){
-							m_pTypes->m_ColorInfoArr[j].m_colTEXT = m_cr;
+						if( cr == m_pColorInfoArr[j].m_colTEXT ){
+							m_pColorInfoArr[j].m_colTEXT = m_cr;
 						}
 					}
 					break;
 
 				case IDC_BUTTON_SAMEBKCOLOR:
 					for( j = 0; j < COLORIDX_LAST; ++j ){
-						if( cr == m_pTypes->m_ColorInfoArr[j].m_colBACK ){
-							m_pTypes->m_ColorInfoArr[j].m_colBACK = m_cr;
+						if( cr == m_pColorInfoArr[j].m_colBACK ){
+							m_pColorInfoArr[j].m_colBACK = m_cr;
 						}
 					}
 					break;
@@ -328,8 +328,8 @@ BOOL CDlgSameColor::OnSelChangeListColors( HWND hwndCtl )
 			for( j = 0; j < COLORIDX_LAST; ++j ){
 			if( 0 != (g_ColorAttributeArr[i].fAttribute & COLOR_ATTRIB_NO_TEXT) )
 				continue;
-				if( cr == m_pTypes->m_ColorInfoArr[j].m_colTEXT ){
-					::List_AddString( hwndListInfo, m_pTypes->m_ColorInfoArr[j].m_szName);
+				if( cr == m_pColorInfoArr[j].m_colTEXT ){
+					::List_AddString( hwndListInfo, m_pColorInfoArr[j].m_szName);
 				}
 			}
 			break;
@@ -338,8 +338,8 @@ BOOL CDlgSameColor::OnSelChangeListColors( HWND hwndCtl )
 			for( j = 0; j < COLORIDX_LAST; ++j ){
 			if( 0 != (g_ColorAttributeArr[j].fAttribute & COLOR_ATTRIB_NO_BACK) )	// 2006.12.18 ryoji フラグ利用で簡素化
 					continue;
-				if( cr == m_pTypes->m_ColorInfoArr[j].m_colBACK ){
-					::List_AddString( hwndListInfo, m_pTypes->m_ColorInfoArr[j].m_szName);
+				if( cr == m_pColorInfoArr[j].m_colBACK ){
+					::List_AddString( hwndListInfo, m_pColorInfoArr[j].m_szName);
 				}
 			}
 			break;

@@ -79,14 +79,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\sakura_core\doc\CColorTheme.cpp" />
     <ClCompile Include="..\..\sakura_core\util\CGitIgnore.cpp" />
     <ClCompile Include="..\..\sakura_core\util\CHgIgnore.cpp" />
     <ClCompile Include="..\..\sakura_core\util\CVcsIgnore.cpp" />
+    <ClCompile Include="CColorThemeTest.cpp" />
     <ClCompile Include="CGitIgnoreTest.cpp" />
     <ClCompile Include="CHgIgnoreTest.cpp" />
     <ClCompile Include="CVcsIgnoreTest.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\sakura_core\doc\CColorTheme.h" />
     <ClInclude Include="..\..\sakura_core\util\CGitIgnore.h" />
     <ClInclude Include="..\..\sakura_core\util\CHgIgnore.h" />
     <ClInclude Include="..\..\sakura_core\util\CVcsIgnore.h" />

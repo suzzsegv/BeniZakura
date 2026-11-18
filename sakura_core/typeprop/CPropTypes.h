@@ -22,6 +22,7 @@
 #define SAKURA_TYPES_CPROPTYPES_H_
 
 #include "types/CType.h" // STypeConfig
+#include "typeprop/CColorListUi.h"	// 2026.11.18
 
 class CPropTypes;
 class CKeyWordSetMgr;
@@ -77,6 +78,7 @@ protected:
 	DWORD			m_dwCustColors[16];						//!< フォントDialogカスタムパレット
 	int				m_nSet[ MAX_KEYWORDSET_PER_TYPE ];		//!< keyword set index  2005.01.13 MIK
 	int				m_nCurrentColorType;					//!< 現在選択されている色タイプ
+	CColorListUi	m_cColorListUi;						//!< 色設定の一覧の描画・操作	// 2026.11.18
 	CKeyWordSetMgr*	m_pCKeyWordSetMgr;						//!< メモリ削減のためポインタに  Mar. 31, 2003 genta
 
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
@@ -141,21 +143,11 @@ public:
 protected:
 	void SetData( HWND );											//!< ダイアログデータの設定
 	int  GetData( HWND );											//!< ダイアログデータの取得
-	bool Import( HWND );											//!< インポート
-	bool Export( HWND );											//!< エクスポート
 
 protected:
-	void DrawColorListItem( DRAWITEMSTRUCT* );				//!< 色種別リスト オーナー描画
 	void EnableTypesPropInput( HWND hwndDlg );				//!< タイプ別設定のカラー設定のON/OFF
 	void RearrangeKeywordSet( HWND );						//!< キーワードセット再配置  Jan. 23, 2005 genta
-	void DrawColorButton( DRAWITEMSTRUCT* , COLORREF );		//!< 色ボタンの描画
-public:
-	static BOOL SelectColor( HWND , COLORREF*, DWORD* );	//!< 色選択ダイアログ
-private:
-	#undef __COLOR_INFO_DUMP_TO_TEXT_AT_EXPORT__
-	#ifdef __COLOR_INFO_DUMP_TO_TEXT_AT_EXPORT__
-		void ColorInfoDumpToTextFile(void);
-	#endif
+	static bool CanEditColor( void* pParam, int nColorIdx, EColorListEdit eEdit );	//!< 色設定の一覧で変更してよいかの判定	// 2026.11.18
 };
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //

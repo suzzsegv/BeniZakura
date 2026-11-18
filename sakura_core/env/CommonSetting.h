@@ -29,6 +29,7 @@
 #include "func/CKeyBind.h"
 #include "func/CFuncLookup.h" //MacroRec
 #include "io/CFile.h" //EShareMode
+#include "doc/CColorTheme.h" //ColorInfo
 
 // Apr. 05, 2003 genta WindowCaption用領域（変換前）の長さ
 static const int MAX_CAPTION_CONF_LEN = 256;
@@ -600,6 +601,17 @@ struct CommonSetting_MainMenu
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
 //! 共通設定
+// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+//                         カラー                              //
+// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+//! カラーテーマ (全タイプ共通)
+struct CommonSetting_ColorTheme
+{
+	int			m_nColorTheme;							//!< 選択中のテーマ (ColorTheme の値、または COLOR_THEME_CUSTOM)
+	ColorInfo	m_CustomColorInfoArr[COLORIDX_LAST];	//!< カスタムテーマの色 (テーマが決める値だけを使う)
+};
+
+
 struct CommonSetting
 {
 	CommonSetting_General			m_sGeneral;			// 全般
@@ -626,6 +638,7 @@ struct CommonSetting
 	//
 	CommonSetting_Statusbar			m_sStatusbar;		// ステータスバー		// 2008/6/21 Uchi
 	CommonSetting_MainMenu			m_sMainMenu;		// メインメニュー		// 2010/5/15 Uchi
+	CommonSetting_ColorTheme		m_sColorTheme;		// カラーテーマ	// 2026.11.18
 };
 
 #endif /* SAKURA_COMMONSETTING_7C01A3F3_AD50_4AEA_84D6_0798DB67F40C_H_ */

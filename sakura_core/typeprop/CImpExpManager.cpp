@@ -263,14 +263,13 @@ bool CImpExpType::ImportAscertain( HINSTANCE hInstance, HWND hwndParent, const w
 		}
 	}
 
-	// 確認＆色指定
+	// 確認
 	CDlgTypeAscertain::SAscertainInfo	sAscertainInfo;
 	CDlgTypeAscertain	cDlgTypeAscertain;
 	wchar_t wszLabel[1024];
 	STypeConfig TmpType;
 
 	// パラメータの設定
-	sAscertainInfo.sImportFile = sPath;
 	List_GetText( m_hwndList, m_nIdx, wszLabel );
 	sAscertainInfo.sTypeNameTo = wszLabel;
 	wszLabel[0] = L'\0';
@@ -282,9 +281,6 @@ bool CImpExpType::ImportAscertain( HINSTANCE hInstance, HWND hwndParent, const w
 		return false;
 	}
 
-	m_nColorType = sAscertainInfo.nColorType;
-	m_sColorFile = sAscertainInfo.sColorFile;
-
 	return true;
 }
 
@@ -293,26 +289,7 @@ bool CImpExpType::Import( const wstring& sFileName, wstring& sErrMsg )
 {
 	wstring	files = L"";
 	wstring TmpMsg;
-	ColorInfo	colorInfoArr[_countof(m_Types.m_ColorInfoArr)];				// 色設定配列(バックアップ)
 	int		i;
-
-	// 色の変更
-	if (m_nColorType >= MAX_TYPES) {
-		// 色設定インポート
-		CImpExpColors	cImpExpColors( colorInfoArr );
-		if (cImpExpColors.Import( cImpExpColors.MakeFullPath( m_sColorFile ), TmpMsg)) {
-			files += wstring(L"\n") + m_sColorFile;
-		}
-		else {
-			// 失敗したら基本をコピー(メッセージは出さない)
-			memcpy( &colorInfoArr, &CDocTypeManager().GetTypeSetting(CTypeConfig(0)).m_ColorInfoArr, sizeof(colorInfoArr) );
-			files += wstring(L"\n× ") + m_sColorFile;	// 失敗
-		}
-	}
-	else if (m_nColorType >= 0 ) {
-		// 色指定(内部)
-		memcpy( &colorInfoArr, &CDocTypeManager().GetTypeSetting(CTypeConfig(m_nColorType)).m_ColorInfoArr, sizeof(colorInfoArr) );
-	}
 
 	// 読み込み
 	CShareData_IO::ShareData_IO_Type_One( m_cProfile, m_nIdx, szSecTypes );
@@ -324,15 +301,8 @@ bool CImpExpType::Import( const wstring& sFileName, wstring& sErrMsg )
 		_tcscpy( m_Types.m_szTypeExts, _T("") );
 	}
 
-	// 色の設定
-	if (m_nColorType >= 0 ) {
-		// 色指定あり
-		for (i = 0; i < _countof(colorInfoArr); i++) {
-			bool bDisp = m_Types.m_ColorInfoArr[i].m_bDisp;
-			m_Types.m_ColorInfoArr[i] = colorInfoArr[i];
-			m_Types.m_ColorInfoArr[i].m_bDisp = bDisp;		// 表示フラグはファイルのものを使用する
-		}
-	}
+	// 色はカラーテーマの色にする (ファイルの色設定は「色分け/表示」のうちタイプごとの設定だけを使う)	// 2026.11.18
+	ApplyColorTheme( m_Types.m_ColorInfoArr, m_pShareData->m_Common.m_sColorTheme.m_nColorTheme, m_pShareData->m_Common.m_sColorTheme.m_CustomColorInfoArr );
 
 	// 共通設定との連結部
 	wchar_t	szKeyName[64];
