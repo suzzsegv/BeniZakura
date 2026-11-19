@@ -400,11 +400,7 @@ UINT_PTR CALLBACK OFNHookProc(
 			{
 				// OFNの再設定はNT系ではUnicode版APIのみ有効
 				if( pcDlgOpenFile->m_ofn.Flags & OFN_ALLOWMULTISELECT &&
-#ifdef _UNICODE
 						IsWin32NT()
-#else
-						!IsWin32NT()
-#endif
 				){
 					DWORD nLength = CommDlg_OpenSave_GetSpec( hwndOpenDlg, NULL, 0 );
 					nLength += _MAX_PATH + 2;

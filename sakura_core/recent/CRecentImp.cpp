@@ -549,6 +549,6 @@ template class CRecentImp<CSearchString, LPCWSTR>;
 template class CRecentImp<CTagjumpKeywordString, LPCWSTR>;
 template class CRecentImp<CCurDirString, LPCTSTR>;
 #endif
-#if !defined(__MINGW32__) || (defined(__MINGW32__) && !defined(UNICODE))
+#if !defined(__MINGW32__)
 template class CRecentImp<CReplaceString, LPCWSTR>;
 #endif

@@ -53,11 +53,9 @@
 //#define USE_UNFIXED_FONT
 
 
-//UNICODE BOOL定数
-#ifdef _UNICODE
-static const bool UNICODE_BOOL=true;
-#else
-static const bool UNICODE_BOOL=false;
+//Unicode 版のみビルドできる (ANSI 版のビルド用の処理は削除済み)	// 2026.11.19
+#if !defined(_UNICODE) || !defined(UNICODE)
+#error "紅桜は Unicode 版のみビルドできます。_UNICODE と UNICODE を定義してください。"
 #endif
 
 

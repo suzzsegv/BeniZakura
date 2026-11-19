@@ -424,18 +424,6 @@ CEditView::~CEditView()
 //                         イベント                            //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
-//TCHAR→WCHAR変換。
-inline wchar_t tchar_to_wchar(TCHAR tc)
-{
-#ifdef _UNICODE
-	return tc;
-#else
-	WCHAR wc=0;
-	mbtowc(&wc,&tc,sizeof(tc));
-	return wc;
-#endif
-}
-
 /*
 || メッセージディスパッチャ
 */
@@ -490,35 +478,12 @@ LRESULT CEditView::DispatchEvent(
 
 		return 0L;
 	case WM_CHAR:
-#ifdef _UNICODE
 		// コントロールコード入力禁止
 		if( WCODE::IsControlCode((wchar_t)wParam) ){
 			ErrorBeep();
 		}else{
 			GetCommander().HandleCommand( F_WCHAR, true, WCHAR(wParam), 0, 0, 0 );
 		}
-#else
-		// SJIS固有
-		{
-			static BYTE preChar = 0;
-			if( preChar == 0 && ! _IS_SJIS_1((unsigned char)wParam) ){
-				// ASCII , 半角カタカナ
-				if( ACODE::IsControlCode((char)wParam) ){
-					ErrorBeep();
-				}else{
-					GetCommander().HandleCommand( F_WCHAR, true, tchar_to_wchar((ACHAR)wParam), 0, 0, 0 );
-				}
-			}else{
-				if( preChar ){
-					WORD wordData = MAKEWORD((BYTE)wParam, preChar);
-					GetCommander().HandleCommand( F_IME_CHAR, true, wordData, 0, 0, 0 );
-					preChar = 0;
-				}else{
-					preChar = (BYTE)wParam;
-				}
-			}
-		}
-#endif
 		return 0L;
 
 	case WM_IME_NOTIFY:	// Nov. 26, 2006 genta
@@ -805,14 +770,14 @@ LRESULT CEditView::DispatchEvent(
 		// 2002.04.09 switch case に変更  minfu 
 		switch ( wParam ){
 		case IMR_RECONVERTSTRING:
-			return SetReconvertStruct((PRECONVERTSTRING)lParam, UNICODE_BOOL);
+			return SetReconvertStruct((PRECONVERTSTRING)lParam, true);
 			
 		case IMR_CONFIRMRECONVERTSTRING:
-			return SetSelectionFromReonvert((PRECONVERTSTRING)lParam, UNICODE_BOOL);
+			return SetSelectionFromReonvert((PRECONVERTSTRING)lParam, true);
 			
 		// 2010.03.16 MS-IME 2002 だと「カーソル位置の前後の内容を参照して変換を行う」の機能
 		case IMR_DOCUMENTFEED:
-			return SetReconvertStruct((PRECONVERTSTRING)lParam, UNICODE_BOOL, true);
+			return SetReconvertStruct((PRECONVERTSTRING)lParam, true, true);
 			
 		//default:
 		}
@@ -873,12 +838,7 @@ LRESULT CEditView::DispatchEvent(
 	{
 		// wParam RedoUndoフラグは無視する
 		if( lParam ){
-#ifdef _UNICODE
 			GetCommander().HandleCommand( F_INSTEXT_W, true, lParam, TRUE, 0, 0 );
-#else
-			std::wstring text = to_wchar((LPCTSTR)lParam);
-			GetCommander().HandleCommand( F_INSTEXT_W, true, (LPARAM)text.c_str(), TRUE, 0, 0 );
-#endif
 		}
 		return 0L; // not use.
 	}

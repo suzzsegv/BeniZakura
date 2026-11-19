@@ -32,11 +32,7 @@ wchar_t *wcs_pushW(wchar_t *dst, size_t dst_count, const wchar_t* src, size_t sr
 wchar_t *wcs_pushW(wchar_t *dst, size_t dst_count, const wchar_t* src);
 wchar_t *wcs_pushA(wchar_t *dst, size_t dst_count, const char* src, size_t src_count);
 wchar_t *wcs_pushA(wchar_t *dst, size_t dst_count, const char* src);
-#ifdef _UNICODE
 #define wcs_pushT wcs_pushW
-#else
-#define wcs_pushT wcs_pushA
-#endif
 
 int AddLastChar( TCHAR*, int, TCHAR );/* 2003.06.24 Moca 最後の文字が指定された文字でないときは付加する */
 int LimitStringLengthA( const ACHAR*, int, int, CNativeA& );/* データを指定「文字数」以内に切り詰める */

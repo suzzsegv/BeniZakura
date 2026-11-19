@@ -873,7 +873,7 @@ void CViewCommander::Command_Reconvert(void)
 	const int ATRECONVERTSTRING_SET = 1;
 
 	//サイズを取得
-	int nSize = m_pCommanderView->SetReconvertStruct(NULL,UNICODE_BOOL);
+	int nSize = m_pCommanderView->SetReconvertStruct(NULL,true);
 	if( 0 == nSize )  // サイズ０の時は何もしない
 		return ;
 
@@ -906,13 +906,6 @@ void CViewCommander::Command_Reconvert(void)
 		}
 	}
 
-	//サイズ取得し直し
-	if (!UNICODE_BOOL && bUseUnicodeATOK) {
-		nSize = m_pCommanderView->SetReconvertStruct(NULL,UNICODE_BOOL || bUseUnicodeATOK);
-		if( 0 == nSize )  // サイズ０の時は何もしない
-			return ;
-	}
-
 	//IMEのコンテキスト取得
 	HIMC hIMC = ::ImmGetContext( m_pCommanderView->GetHwnd() );
 	
@@ -927,7 +920,7 @@ void CViewCommander::Command_Reconvert(void)
 	// Sizeはバッファ確保側が設定
 	pReconv->dwSize = nSize;
 	pReconv->dwVersion = 0;
-	m_pCommanderView->SetReconvertStruct( pReconv, UNICODE_BOOL || bUseUnicodeATOK);
+	m_pCommanderView->SetReconvertStruct( pReconv, true);
 	
 	//変換範囲の調整
 	if(bUseUnicodeATOK){
@@ -937,7 +930,7 @@ void CViewCommander::Command_Reconvert(void)
 	}
 
 	//調整した変換範囲を選択する
-	m_pCommanderView->SetSelectionFromReonvert(pReconv, UNICODE_BOOL || bUseUnicodeATOK);
+	m_pCommanderView->SetSelectionFromReonvert(pReconv, true);
 	
 	//再変換実行
 	if(bUseUnicodeATOK){

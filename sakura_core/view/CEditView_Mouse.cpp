@@ -1952,11 +1952,7 @@ void CEditView::OnMyDropFiles( HDROP hDrop )
 				_tsplitpath( szWork, NULL, NULL, szPath, szExt );
 				::lstrcat( szPath, szExt );
 			}
-#ifdef _UNICODE
 			cmemBuf.AppendString( szPath );
-#else
-			cmemBuf.AppendStringOld( szPath );
-#endif
 			if( nFiles > 1 ){
 				cmemBuf.AppendString( m_pcEditDoc->m_cDocEditor.GetNewLineCode().GetValue2() );
 			}

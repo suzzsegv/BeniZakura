@@ -67,11 +67,7 @@ int VMessageBoxF(
 	hwndOwner=GetMessageBoxOwner(hwndOwner);
 	//整形
 	static TCHAR szBuf[16000];
-#ifdef _UNICODE
 	tchar_vsnwprintf_s(szBuf,_countof(szBuf),lpText,v);
-#else
-	tchar_vsnprintf_s(szBuf,_countof(szBuf),lpText,v);
-#endif
 	//API呼び出し
 	return ::MessageBox( hwndOwner, szBuf, lpCaption, uType);
 }

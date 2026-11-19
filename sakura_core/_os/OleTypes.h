@@ -52,11 +52,7 @@ struct SysString
 		*L = Len;
 		wcscpy(*S, Data);
 	}
-#ifdef _UNICODE
 	void GetT(TCHAR **S, int *L){GetW(S, L);}
-#else
-	void GetT(TCHAR **S, int *L){Get(S, L);}
-#endif
 };
 
 /*! VARIANTのWrapper class

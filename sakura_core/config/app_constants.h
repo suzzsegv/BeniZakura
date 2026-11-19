@@ -29,11 +29,7 @@
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
 // アプリ名。2007.09.21 kobake 整理
-#ifdef _UNICODE
-	#define _APP_NAME_(TYPE) TYPE("紅桜")
-#else
-	#define _APP_NAME_(TYPE) TYPE("Beni Zakura")
-#endif
+#define _APP_NAME_(TYPE) TYPE("紅桜")
 
 #ifdef _DEBUG
 	#define _APP_NAME_2_(TYPE) TYPE("(Debug Build)")

@@ -119,30 +119,13 @@ LPCTSTR CFileNameManager::GetFilePathFormat( LPCTSTR pszSrc, LPTSTR pszDest, int
 	nDestLen--;
 
 	for( i = 0, j = 0; i < nSrcLen && j < nDestLen; i++ ){
-#if defined(_MBCS)
-		if( 0 == strnicmp( &pszSrc[i], pszFrom, nFromLen ) )
-#else
 		if( 0 == _tcsncicmp( &pszSrc[i], pszFrom, nFromLen ) )
-#endif
 		{
 			nCopy = t_min( nToLen, nDestLen - j );
 			memcpy( &pszDest[j], pszTo, nCopy * sizeof( TCHAR ) );
 			j += nCopy;
 			i += nFromLen - 1;
 		}else{
-#if defined(_MBCS)
-// SJIS 専用処理
-			if( _IS_SJIS_1( (unsigned char)pszSrc[i] ) && i + 1 < nSrcLen && _IS_SJIS_2( (unsigned char)pszSrc[i + 1] ) ){
-				if( j + 1 < nDestLen ){
-					pszDest[j] = pszSrc[i];
-					j++;
-					i++;
-				}else{
-					// SJISの先行バイトだけコピーされるのを防ぐ
-					break;// goto end_of_func;
-				}
-			}
-#endif
 			pszDest[j] = pszSrc[i];
 			j++;
 		}
@@ -309,12 +292,6 @@ bool CFileNameManager::ExpandMetaToFolder( LPCTSTR pszSrc, LPTSTR pszDes, int nD
 			// 最後のフォルダ区切り記号を削除する
 			// [A:\]などのルートであっても削除
 			for(nPathLen = 0; pStr2[nPathLen] != _T('\0'); nPathLen++ ){
-#ifdef _MBCS
-				if( _IS_SJIS_1( (unsigned char)pStr2[nPathLen] ) && _IS_SJIS_2( (unsigned char)pStr2[nPathLen + 1] ) ){
-					// SJIS読み飛ばし
-					nPathLen++; // 2003/01/17 sui
-				}else
-#endif
 				if( _T('\\') == pStr2[nPathLen] && _T('\0') == pStr2[nPathLen + 1] ){
 					pStr2[nPathLen] = _T('\0');
 					break;

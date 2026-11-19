@@ -51,11 +51,7 @@
 #endif
 
 //! ビルドコード判別、定数サフィックス 2007.09.20 kobake
-#ifdef _UNICODE
-	#define _CODE_SUFFIX_ "W"
-#else
-	#define _CODE_SUFFIX_ "A"
-#endif
+#define _CODE_SUFFIX_ "W"
 
 //! ターゲットマシン判別 2010.08.21 Moca 追加
 #ifdef _WIN64

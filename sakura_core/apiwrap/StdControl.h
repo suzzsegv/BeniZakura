@@ -28,7 +28,6 @@
 2007.09.17 kobake
 内部コードがWCHARなので、検索キーワードなどもWCHARで保持する。
 そのため、検索ダイアログのコンボボックスなどに、WCHARを設定する場面が出てくる。
-UNICODE版では問題無いが、ANSI版では設定の前にコード変換する必要がある。
 呼び出し側で変換しても良いが、頻度が多いので、WCHARを直接受け取るAPIラップ関数を提供する。
 
 また、SendMessageの直接呼び出しは、どうしてもWPARAM,LPARAMへの強制キャストが生じるため、
@@ -49,11 +48,7 @@ namespace ApiWrap{
 	}
 	inline BOOL Wnd_SetText(HWND hwnd, const WCHAR* str)
 	{
-#ifdef _UNICODE
 		return SetWindowTextW(hwnd, str);
-#else
-		return SetWindowTextA(hwnd, to_achar(str));
-#endif
 	}
 
 

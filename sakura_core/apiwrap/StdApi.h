@@ -42,11 +42,7 @@ namespace ApiWrap
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 	//W版が無いので、自作
 	BOOL MakeSureDirectoryPathExistsW(LPCWSTR wszDirPath);
-#ifdef _UNICODE
 	#define MakeSureDirectoryPathExistsT MakeSureDirectoryPathExistsW
-#else
-	#define MakeSureDirectoryPathExistsT MakeSureDirectoryPathExists
-#endif
 
 
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
@@ -57,7 +53,6 @@ namespace ApiWrap
 		ANSI版でも使えるExtTextOutW_AnyBuild。
 		文字数制限1024半角文字。(文字間隔配列を1024半角文字分しか用意していないため)
 	*/
-#ifdef _UNICODE
 	inline BOOL ExtTextOutW_AnyBuild(
 		HDC				hdc,
 		int				x,
@@ -73,20 +68,7 @@ namespace ApiWrap
 		DEBUG_SETPIXEL(hdc);
 		return ret;
 	}
-#else
-	BOOL ExtTextOutW_AnyBuild(
-		HDC				hdc,
-		int				x,
-		int				y,
-		UINT			fuOptions,
-		const RECT*		lprc,
-		LPCWSTR			lpwString,
-		UINT			cbCount,
-		const int*		lpDx
-	);
-#endif
 
-#ifdef _UNICODE
 	inline BOOL TextOutW_AnyBuild(
 		HDC		hdc,
 		int		nXStart,
@@ -99,15 +81,6 @@ namespace ApiWrap
 		DEBUG_SETPIXEL(hdc);
 		return ret;
 	}
-#else
-	BOOL TextOutW_AnyBuild(
-		HDC		hdc,
-		int		nXStart,
-		int		nYStart,
-		LPCWSTR	lpwString,
-		int		cbString
-	);
-#endif
 
 	LPWSTR CharNextW_AnyBuild(
 		LPCWSTR lpsz
@@ -118,16 +91,7 @@ namespace ApiWrap
 		LPCWSTR lpszCurrent
 	);
 
-#ifdef _UNICODE
 	#define GetTextExtentPoint32W_AnyBuild GetTextExtentPoint32
-#else
-	BOOL GetTextExtentPoint32W_AnyBuild(
-		HDC		hdc, 
-		LPCWSTR	lpString, 
-		int		cbString, 
-		LPSIZE	lpSize
-	);
-#endif
 
 
 
@@ -135,7 +99,6 @@ namespace ApiWrap
 	//             その他W系API (ANSI版でも利用可能)               //
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
-#ifdef _UNICODE
 	inline int LoadStringW_AnyBuild(
 		HINSTANCE	hInstance,
 		UINT		uID,
@@ -145,14 +108,6 @@ namespace ApiWrap
 	{
 		return ::LoadStringW(hInstance, uID, lpBuffer, nBufferCount);
 	}
-#else
-	int LoadStringW_AnyBuild(
-		HINSTANCE	hInstance,
-		UINT		uID,
-		LPWSTR		lpBuffer,
-		int			nBufferCount	//!< バッファのサイズ。文字単位。
-	);
-#endif
 
 
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
@@ -200,20 +155,12 @@ namespace ApiWrap
 
 	//	Jun. 29, 2002 こおり
 	//	Windows 95対策．Property SheetのサイズをWindows95が認識できる物に固定する．
-	#if defined(_WIN64) || defined(_UNICODE)
-		static const size_t sizeof_old_PROPSHEETHEADER = sizeof(PROPSHEETHEADER);
-	#else
-		static const size_t sizeof_old_PROPSHEETHEADER = 40;
-	#endif
+	static const size_t sizeof_old_PROPSHEETHEADER = sizeof(PROPSHEETHEADER);
 
 	//	Jan. 29, 2002 genta
 	//	Win95/NTが納得するsizeof( MENUITEMINFO )
 	//	これ以外の値を与えると古いOSでちゃんと動いてくれない．
-	#if defined(_WIN64) || defined(_UNICODE)
-		static const int SIZEOF_MENUITEMINFO = sizeof(MENUITEMINFO);
-	#else
-		static const int SIZEOF_MENUITEMINFO = 44;
-	#endif
+	static const int SIZEOF_MENUITEMINFO = sizeof(MENUITEMINFO);
 
 
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
