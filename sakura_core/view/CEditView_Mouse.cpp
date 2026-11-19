@@ -327,7 +327,7 @@ normal_action:;
 
 		/******* この時点で必ず true == GetSelectionInfo().IsTextSelected() の状態になる ****:*/
 		if( !GetSelectionInfo().IsTextSelected() ){
-			WarningMessage( GetHwnd(), _T("バグってる") );
+			WarningMessage( GetHwnd(), L"バグってる" );
 			return;
 		}
 
@@ -1214,7 +1214,7 @@ LRESULT CEditView::OnMOUSEWHEEL( WPARAM wParam, LPARAM lParam )
 	zDelta = (short) HIWORD(wParam);	// wheel rotation
 	xPos = (short) LOWORD(lParam);		// horizontal position of pointer
 	yPos = (short) HIWORD(lParam);		// vertical position of pointer
-//	MYTRACE( _T("CEditView::DispatchEvent() WM_MOUSEWHEEL fwKeys=%xh zDelta=%d xPos=%d yPos=%d \n"), fwKeys, zDelta, xPos, yPos );
+//	MYTRACE( L"CEditView::DispatchEvent() WM_MOUSEWHEEL fwKeys=%xh zDelta=%d xPos=%d yPos=%d \n", fwKeys, zDelta, xPos, yPos );
 
 	if( 0 < zDelta ){
 		nScrollCode = SB_LINEUP;
@@ -1234,10 +1234,10 @@ LRESULT CEditView::OnMOUSEWHEEL( WPARAM wParam, LPARAM lParam )
 		/* レジストリの存在チェック */
 		// 2006.06.03 Moca ReadRegistry に書き換え
 		unsigned int uDataLen;	// size of value data
-		TCHAR szValStr[256];
+		WCHAR szValStr[256];
 		uDataLen = _countof(szValStr) - 1;
-		if( ReadRegistry( HKEY_CURRENT_USER, _T("Control Panel\\desktop"), _T("WheelScrollLines"), szValStr, uDataLen ) ){
-			nRollLineNum = ::_ttoi( szValStr );
+		if( ReadRegistry( HKEY_CURRENT_USER, L"Control Panel\\desktop", L"WheelScrollLines", szValStr, uDataLen ) ){
+			nRollLineNum = ::_wtoi( szValStr );
 		}
 
 		if( -1 == nRollLineNum || bKeyPageScroll ){
@@ -1369,7 +1369,7 @@ bool CEditView::IsSpecialScrollMode( int nSelect )
 /* マウス左ボタン開放のメッセージ処理 */
 void CEditView::OnLBUTTONUP( WPARAM fwKeys, int xPos , int yPos )
 {
-//	MYTRACE( _T("OnLBUTTONUP()\n") );
+//	MYTRACE( L"OnLBUTTONUP()\n" );
 
 	/* 範囲選択終了 & マウスキャプチャーおわり */
 	if( GetSelectionInfo().IsMouseSelecting() ){	/* 範囲選択中 */
@@ -1498,7 +1498,7 @@ void CEditView::OnLBUTTONDBLCLK( WPARAM fwKeys, int _xPos , int _yPos )
 
 STDMETHODIMP CEditView::DragEnter( LPDATAOBJECT pDataObject, DWORD dwKeyState, POINTL pt, LPDWORD pdwEffect )
 {
-	DEBUG_TRACE( _T("CEditView::DragEnter()\n") );
+	DEBUG_TRACE( L"CEditView::DragEnter()\n" );
 	//「OLEによるドラッグ & ドロップを使う」オプションが無効の場合にはドロップを受け付けない
 	if(!GetDllShareData().m_Common.m_sEdit.m_bUseOLE_DragDrop)return E_UNEXPECTED;
 
@@ -1526,7 +1526,7 @@ STDMETHODIMP CEditView::DragEnter( LPDATAOBJECT pDataObject, DWORD dwKeyState, P
 	m_nCaretPosX_Prev_DragEnter = GetCaret().m_nCaretPosX_Prev;
 
 	// ドラッグデータは矩形か
-	m_bDragBoxData = IsDataAvailable( pDataObject, (CLIPFORMAT)::RegisterClipboardFormat( _T("MSDEVColumnSelect") ) );
+	m_bDragBoxData = IsDataAvailable( pDataObject, (CLIPFORMAT)::RegisterClipboardFormat( L"MSDEVColumnSelect" ) );
 
 	/* 選択テキストのドラッグ中か */
 	_SetDragMode( TRUE );
@@ -1537,7 +1537,7 @@ STDMETHODIMP CEditView::DragEnter( LPDATAOBJECT pDataObject, DWORD dwKeyState, P
 
 STDMETHODIMP CEditView::DragOver( DWORD dwKeyState, POINTL pt, LPDWORD pdwEffect )
 {
-	DEBUG_TRACE( _T("CEditView::DragOver()\n") );
+	DEBUG_TRACE( L"CEditView::DragOver()\n" );
 
 	/* マウス移動のメッセージ処理 */
 	::ScreenToClient( GetHwnd(), (LPPOINT)&pt );
@@ -1563,7 +1563,7 @@ STDMETHODIMP CEditView::DragOver( DWORD dwKeyState, POINTL pt, LPDWORD pdwEffect
 
 STDMETHODIMP CEditView::DragLeave( void )
 {
-	DEBUG_TRACE( _T("CEditView::DragLeave()\n") );
+	DEBUG_TRACE( L"CEditView::DragLeave()\n" );
 	/* 選択テキストのドラッグ中か */
 	_SetDragMode( FALSE );
 
@@ -1582,7 +1582,7 @@ STDMETHODIMP CEditView::DragLeave( void )
 
 STDMETHODIMP CEditView::Drop( LPDATAOBJECT pDataObject, DWORD dwKeyState, POINTL pt, LPDWORD pdwEffect )
 {
-	DEBUG_TRACE( _T("CEditView::Drop()\n") );
+	DEBUG_TRACE( L"CEditView::Drop()\n" );
 	BOOL		bBoxData;
 	BOOL		bMove;
 	BOOL		bMoveToPrev = FALSE;
@@ -1900,7 +1900,7 @@ void CEditView::OnMyDropFiles( HDROP hDrop )
 	if( nTid1 != nTid2 ) ::AttachThreadInput( nTid1, nTid2, TRUE );
 
 	// ダミーの STATIC を作ってフォーカスを当てる（エディタが前面に出ないように）
-	HWND hwnd = ::CreateWindow(_T("STATIC"), _T(""), 0, 0, 0, 0, 0, NULL, NULL, G_AppInstance(), NULL );
+	HWND hwnd = ::CreateWindow(L"STATIC", L"", 0, 0, 0, 0, 0, NULL, NULL, G_AppInstance(), NULL );
 	::SetFocus(hwnd);
 
 	// メニューを作成する
@@ -1909,12 +1909,12 @@ void CEditView::OnMyDropFiles( HDROP hDrop )
 	RECT rcWork;
 	GetMonitorWorkRect( pt, &rcWork );	// モニタのワークエリア
 	HMENU hMenu = ::CreatePopupMenu();
-	::InsertMenu( hMenu, 0, MF_BYPOSITION | MF_STRING, 100, _T("パス名貼り付け(&P)") );
-	::InsertMenu( hMenu, 1, MF_BYPOSITION | MF_STRING, 101, _T("ファイル名貼り付け(&F)") );
+	::InsertMenu( hMenu, 0, MF_BYPOSITION | MF_STRING, 100, L"パス名貼り付け(&P)" );
+	::InsertMenu( hMenu, 1, MF_BYPOSITION | MF_STRING, 101, L"ファイル名貼り付け(&F)" );
 	::InsertMenu( hMenu, 2, MF_BYPOSITION | MF_SEPARATOR, 0, NULL);	// セパレータ
-	::InsertMenu( hMenu, 3, MF_BYPOSITION | MF_STRING, 110, _T("ファイルを開く(&O)") );
+	::InsertMenu( hMenu, 3, MF_BYPOSITION | MF_STRING, 110, L"ファイルを開く(&O)" );
 	::InsertMenu( hMenu, 4, MF_BYPOSITION | MF_SEPARATOR, 0, NULL);	// セパレータ
-	::InsertMenu( hMenu, 5, MF_BYPOSITION | MF_STRING, IDCANCEL, _T("キャンセル") );
+	::InsertMenu( hMenu, 5, MF_BYPOSITION | MF_STRING, IDCANCEL, L"キャンセル" );
 	int nId = ::TrackPopupMenu( hMenu, TPM_LEFTALIGN | TPM_TOPALIGN | TPM_LEFTBUTTON | TPM_RETURNCMD,
 									( pt.x > rcWork.left )? pt.x: rcWork.left,
 									( pt.y < rcWork.bottom )? pt.y: rcWork.bottom,
@@ -1937,19 +1937,19 @@ void CEditView::OnMyDropFiles( HDROP hDrop )
 	case 101:	// ファイル名を貼り付ける
 		CNativeW cmemBuf;
 		UINT nFiles;
-		TCHAR szPath[_MAX_PATH];
-		TCHAR szExt[_MAX_EXT];
-		TCHAR szWork[_MAX_PATH];
+		WCHAR szPath[_MAX_PATH];
+		WCHAR szExt[_MAX_EXT];
+		WCHAR szWork[_MAX_PATH];
 
 		nFiles = ::DragQueryFile( hDrop, 0xFFFFFFFF, NULL, 0 );
 		for( UINT i = 0; i < nFiles; i++ ){
-			::DragQueryFile( hDrop, i, szPath, sizeof(szPath)/sizeof(TCHAR) );
+			::DragQueryFile( hDrop, i, szPath, sizeof(szPath)/sizeof(WCHAR) );
 			if( !::GetLongFileName( szPath, szWork ) )
 				continue;
 			if( nId == 100 ){	// パス名
 				::lstrcpy( szPath, szWork );
 			}else if( nId == 101 ){	// ファイル名
-				_tsplitpath( szWork, NULL, NULL, szPath, szExt );
+				_wsplitpath( szWork, NULL, NULL, szPath, szExt );
 				::lstrcat( szPath, szExt );
 			}
 			cmemBuf.AppendString( szPath );

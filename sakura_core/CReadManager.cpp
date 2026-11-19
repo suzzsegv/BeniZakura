@@ -45,7 +45,7 @@ EConvertResult CReadManager::ReadFile_To_CDocLineMgr(
 	SFileInfo*			pFileInfo		//!< [out]
 )
 {
-	LPCTSTR pszPath = sLoadInfo.cFilePath.c_str();
+	LPCWSTR pszPath = sLoadInfo.cFilePath.c_str();
 
 	// 文字コード種別
 	STypeConfig& type = CDocTypeManager().GetTypeSetting( sLoadInfo.nType );
@@ -128,22 +128,22 @@ EConvertResult CReadManager::ReadFile_To_CDocLineMgr(
 			// ファイルがない
 			ErrorMessage(
 				CEditWnd::getInstance()->GetHwnd(),
-				_T("%ls\nというファイルを開けません。\nファイルが存在しません。"),	//Mar. 24, 2001 jepro 若干修正
+				L"%ls\nというファイルを開けません。\nファイルが存在しません。",	//Mar. 24, 2001 jepro 若干修正
 				pszPath
 			);
 		}
-		else if( -1 == _taccess( pszPath, 4 )){
+		else if( -1 == _waccess( pszPath, 4 )){
 			// 読み込みアクセス権がない
 			ErrorMessage(
 				CEditWnd::getInstance()->GetHwnd(),
-				_T("\'%ts\'\nというファイルを開けません。\n読み込みアクセス権がありません。"),
+				L"\'%ts\'\nというファイルを開けません。\n読み込みアクセス権がありません。",
 				pszPath
 			 );
 		}
 		else{
 			ErrorMessage(
 				CEditWnd::getInstance()->GetHwnd(),
-				_T("\'%ts\'\nというファイルを開けません。\n他のアプリケーションで使用されている可能性があります。"),
+				L"\'%ts\'\nというファイルを開けません。\n他のアプリケーションで使用されている可能性があります。",
 				pszPath
 			 );
 		}
@@ -152,7 +152,7 @@ EConvertResult CReadManager::ReadFile_To_CDocLineMgr(
 		eRet = RESULT_FAILURE;
 		ErrorMessage(
 			CEditWnd::getInstance()->GetHwnd(),
-			_T("\'%ts\'というファイルの読み込み中にエラーが発生しました。\nファイルの読み込みを中止します。"),
+			L"\'%ts\'というファイルの読み込み中にエラーが発生しました。\nファイルの読み込みを中止します。",
 			pszPath
 		 );
 		/* 既存データのクリア */

@@ -276,7 +276,7 @@ void CViewCommander::Command_BASE64DECODE( void )
 	}
 
 	/* 保存ダイアログ モーダルダイアログの表示 */
-	TCHAR		szPath[_MAX_PATH] = _T("");
+	WCHAR		szPath[_MAX_PATH] = L"";
 	if( !GetDocument()->m_cDocFileOperation.SaveFileDialog( szPath ) ){
 		return;
 	}
@@ -294,7 +294,7 @@ void CViewCommander::Command_BASE64DECODE( void )
 
 err:
 	ErrorBeep();
-	ErrorMessage( m_pCommanderView->GetHwnd(), _T("ファイルの書き込みに失敗しました。\n\n%ts"), szPath );
+	ErrorMessage( m_pCommanderView->GetHwnd(), L"ファイルの書き込みに失敗しました。\n\n%ts", szPath );
 }
 
 
@@ -318,7 +318,7 @@ void CViewCommander::Command_UUDECODE( void )
 
 	// uudecode(デコード)  ctextBuf -> cmemBin, szPath
 	CMemory cmemBin;
-	TCHAR szPath[_MAX_PATH]=_T("");
+	WCHAR szPath[_MAX_PATH]=L"";
 	CDecode_UuDecode decoder;
 	if( !decoder.CallDecode(ctextBuf, &cmemBin) ){
 		return;
@@ -344,5 +344,5 @@ void CViewCommander::Command_UUDECODE( void )
 
 err:
 	ErrorBeep();
-	ErrorMessage( m_pCommanderView->GetHwnd(), _T("ファイルの書き込みに失敗しました。\n\n%ts"), szPath );
+	ErrorMessage( m_pCommanderView->GetHwnd(), L"ファイルの書き込みに失敗しました。\n\n%ts", szPath );
 }

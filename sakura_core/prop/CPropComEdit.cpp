@@ -91,13 +91,13 @@ INT_PTR CPropEdit::DispatchEvent(
 				return TRUE;
 			case IDC_BUTTON_FILEOPENDIR:
 				{
-					TCHAR szMetaPath[_MAX_PATH];
-					TCHAR szPath[_MAX_PATH];
+					WCHAR szMetaPath[_MAX_PATH];
+					WCHAR szPath[_MAX_PATH];
 					::DlgItem_GetText( hwndDlg, IDC_EDIT_FILEOPENDIR, szMetaPath, _countof(szMetaPath) );
 					CFileNameManager::ExpandMetaToFolder( szMetaPath, szPath, _countof(szPath) );
-					if( SelectDir( hwndDlg, _T("ファイルダイアログの指定フォルダの選択"), szPath, szPath ) ){
-						CNativeT cmem(szPath);
-						cmem.Replace(_T("%"), _T("%%"));
+					if( SelectDir( hwndDlg, L"ファイルダイアログの指定フォルダの選択", szPath, szPath ) ){
+						CNativeW cmem(szPath);
+						cmem.Replace(L"%", L"%%");
 						::DlgItem_SetText( hwndDlg, IDC_EDIT_FILEOPENDIR, cmem.GetStringPtr() );
 					}
 				}
@@ -113,7 +113,7 @@ INT_PTR CPropEdit::DispatchEvent(
 		pMNUD  = (NM_UPDOWN*)lParam;
 		switch( pNMHDR->code ){
 		case PSN_KILLACTIVE:
-			DEBUG_TRACE( _T("Edit PSN_KILLACTIVE\n") );
+			DEBUG_TRACE( L"Edit PSN_KILLACTIVE\n" );
 
 			/* ダイアログデータの取得 Edit */
 			GetData( hwndDlg );

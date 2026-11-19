@@ -31,25 +31,25 @@
 
 //アウトライン解析方法・標準ルール
 TYPE_NAME<EOutlineType> OlmArr[] = {
-//	{ OUTLINE_C,		_T("C") },
-	{ OUTLINE_CPP,		_T("C/C++") },
-	{ OUTLINE_PLSQL,	_T("PL/SQL") },
-	{ OUTLINE_JAVA,		_T("Java") },
-	{ OUTLINE_COBOL,	_T("COBOL") },
-	{ OUTLINE_PERL,		_T("Perl") },				//Sep. 8, 2000 genta
-	{ OUTLINE_ASM,		_T("アセンブラ") },
-	{ OUTLINE_VB,		_T("Visual Basic") },		// 2001/06/23 N.Nakatani
-	{ OUTLINE_PYTHON,	_T("Python") },				//	2007.02.08 genta
-	{ OUTLINE_ERLANG,	_T("Erlang") },				//	2009.08.10 genta
-	{ OUTLINE_WZTXT,	_T("WZ階層付テキスト") },	// 2003.05.20 zenryaku, 2003.06.23 Moca 名称変更
-	{ OUTLINE_HTML,		_T("HTML") },				// 2003.05.20 zenryaku
-	{ OUTLINE_TEX,		_T("TeX") },				// 2003.07.20 naoh
-	{ OUTLINE_TEXT,		_T("テキスト") }			//Jul. 08, 2001 JEPRO 常に最後尾におく
+//	{ OUTLINE_C,		L"C" },
+	{ OUTLINE_CPP,		L"C/C++" },
+	{ OUTLINE_PLSQL,	L"PL/SQL" },
+	{ OUTLINE_JAVA,		L"Java" },
+	{ OUTLINE_COBOL,	L"COBOL" },
+	{ OUTLINE_PERL,		L"Perl" },				//Sep. 8, 2000 genta
+	{ OUTLINE_ASM,		L"アセンブラ" },
+	{ OUTLINE_VB,		L"Visual Basic" },		// 2001/06/23 N.Nakatani
+	{ OUTLINE_PYTHON,	L"Python" },				//	2007.02.08 genta
+	{ OUTLINE_ERLANG,	L"Erlang" },				//	2009.08.10 genta
+	{ OUTLINE_WZTXT,	L"WZ階層付テキスト" },	// 2003.05.20 zenryaku, 2003.06.23 Moca 名称変更
+	{ OUTLINE_HTML,		L"HTML" },				// 2003.05.20 zenryaku
+	{ OUTLINE_TEX,		L"TeX" },				// 2003.07.20 naoh
+	{ OUTLINE_TEXT,		L"テキスト" }			//Jul. 08, 2001 JEPRO 常に最後尾におく
 };
 
 TYPE_NAME<ESmartIndentType> SmartIndentArr[] = {
-	{ SMARTINDENT_NONE,	_T("なし") },
-	{ SMARTINDENT_CPP,	_T("C/C++") }
+	{ SMARTINDENT_NONE,	L"なし" },
+	{ SMARTINDENT_CPP,	L"C/C++" }
 };
 
 /*!	2行目以降のインデント方法
@@ -58,16 +58,16 @@ TYPE_NAME<ESmartIndentType> SmartIndentArr[] = {
 	@date Oct. 1, 2002 genta 
 */
 TYPE_NAME<int> IndentTypeArr[] = {
-	{ 0, _T("なし") },
-	{ 1, _T("tx2x") },
-	{ 2, _T("論理行先頭") },
+	{ 0, L"なし" },
+	{ 1, L"tx2x" },
+	{ 2, L"論理行先頭" },
 };
 
 // 2008.05.30 nasukoji	テキストの折り返し方法
 TYPE_NAME<int> WrapMethodArr[] = {
-	{ WRAP_NO_TEXT_WRAP,	_T("折り返さない") },
-	{ WRAP_SETTING_WIDTH,	_T("指定桁で折り返す") },
-	{ WRAP_WINDOW_WIDTH,	_T("右端で折り返す") },
+	{ WRAP_NO_TEXT_WRAP,	L"折り返さない" },
+	{ WRAP_SETTING_WIDTH,	L"指定桁で折り返す" },
+	{ WRAP_WINDOW_WIDTH,	L"右端で折り返す" },
 };
 
 //静的メンバ
@@ -151,23 +151,23 @@ INT_PTR CPropTypesScreen::DispatchEvent(
 			case IDC_BUTTON_RULEFILE_REF:	/* アウトライン解析→ルールファイルの「参照...」ボタン */
 				{
 					CDlgOpenFile	cDlgOpenFile;
-					TCHAR			szPath[_MAX_PATH + 1];
+					WCHAR			szPath[_MAX_PATH + 1];
 					// 2003.06.23 Moca 相対パスは実行ファイルからのパスとして開く
 					// 2007.05.19 ryoji 相対パスは設定ファイルからのパスを優先
 					if( _IS_REL_PATH( m_Types.m_szOutlineRuleFilename ) ){
 						GetInidirOrExedir( szPath, m_Types.m_szOutlineRuleFilename );
 					}else{
-						_tcscpy( szPath, m_Types.m_szOutlineRuleFilename );
+						wcscpy( szPath, m_Types.m_szOutlineRuleFilename );
 					}
 					/* ファイルオープンダイアログの初期化 */
 					cDlgOpenFile.Create(
 						m_hInstance,
 						hwndDlg,
-						_T("*.*"),
+						L"*.*",
 						szPath
 					);
 					if( cDlgOpenFile.DoModal_GetOpenFileName( szPath ) ){
-						_tcscpy( m_Types.m_szOutlineRuleFilename, szPath );
+						wcscpy( m_Types.m_szOutlineRuleFilename, szPath );
 						::DlgItem_SetText( hwndDlg, IDC_EDIT_OUTLINERULEFILE, m_Types.m_szOutlineRuleFilename );
 					}
 				}
@@ -217,7 +217,7 @@ INT_PTR CPropTypesScreen::DispatchEvent(
 			return TRUE;
 		case IDC_SPIN_CHARSPACE:
 			/* 文字の隙間 */
-//			MYTRACE( _T("IDC_SPIN_CHARSPACE\n") );
+//			MYTRACE( L"IDC_SPIN_CHARSPACE\n" );
 			nVal = ::GetDlgItemInt( hwndDlg, IDC_EDIT_CHARSPACE, NULL, FALSE );
 			if( pMNUD->iDelta < 0 ){
 				++nVal;
@@ -235,7 +235,7 @@ INT_PTR CPropTypesScreen::DispatchEvent(
 			return TRUE;
 		case IDC_SPIN_LINESPACE:
 			/* 行の隙間 */
-//			MYTRACE( _T("IDC_SPIN_LINESPACE\n") );
+//			MYTRACE( L"IDC_SPIN_LINESPACE\n" );
 			nVal = ::GetDlgItemInt( hwndDlg, IDC_EDIT_LINESPACE, NULL, FALSE );
 			if( pMNUD->iDelta < 0 ){
 				++nVal;
@@ -259,7 +259,7 @@ INT_PTR CPropTypesScreen::DispatchEvent(
 		case IDC_SPIN_TABSPACE:
 			//	Sep. 22, 2002 genta
 			/* TAB幅 */
-//			MYTRACE( _T("IDC_SPIN_CHARSPACE\n") );
+//			MYTRACE( L"IDC_SPIN_CHARSPACE\n" );
 			nVal = ::GetDlgItemInt( hwndDlg, IDC_EDIT_TABSPACE, NULL, FALSE );
 			if( pMNUD->iDelta < 0 ){
 				++nVal;
@@ -291,11 +291,11 @@ INT_PTR CPropTypesScreen::DispatchEvent(
 			break;
 		}
 
-//		MYTRACE( _T("pNMHDR->hwndFrom	=%xh\n"),	pNMHDR->hwndFrom );
-//		MYTRACE( _T("pNMHDR->idFrom	=%xh\n"),	pNMHDR->idFrom );
-//		MYTRACE( _T("pNMHDR->code		=%xh\n"),	pNMHDR->code );
-//		MYTRACE( _T("pMNUD->iPos		=%d\n"),		pMNUD->iPos );
-//		MYTRACE( _T("pMNUD->iDelta		=%d\n"),		pMNUD->iDelta );
+//		MYTRACE( L"pNMHDR->hwndFrom	=%xh\n",	pNMHDR->hwndFrom );
+//		MYTRACE( L"pNMHDR->idFrom	=%xh\n",	pNMHDR->idFrom );
+//		MYTRACE( L"pNMHDR->code		=%xh\n",	pNMHDR->code );
+//		MYTRACE( L"pMNUD->iPos		=%d\n",		pMNUD->iPos );
+//		MYTRACE( L"pMNUD->iDelta		=%d\n",		pMNUD->iDelta );
 		break;
 
 	}
@@ -495,11 +495,11 @@ int CPropTypesScreen::GetData( HWND hwndDlg )
 		}
 
 		/* TAB表示文字列 */
-		WIN_CHAR szTab[8+1]; /* +1. happy */
+		WCHAR szTab[8+1]; /* +1. happy */
 		::DlgItem_GetText( hwndDlg, IDC_EDIT_TABVIEWSTRING, szTab, _countof( szTab ) );
 		wcscpy( m_Types.m_szTabViewString, L"o......." );
 		for( int i = 0; i < 8; i++ ){
-			if( !TCODE::IsTabAvailableCode(szTab[i]) )break;
+			if( !WCODE::IsTabAvailableCode(szTab[i]) )break;
 			m_Types.m_szTabViewString[i] = szTab[i];
 		}
 

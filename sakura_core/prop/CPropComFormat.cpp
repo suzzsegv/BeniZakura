@@ -73,7 +73,7 @@ void CPropFormat::ChangeDateExample( HWND hwndDlg )
 	GetData( hwndDlg );
 
 	/* 日付をフォーマット */
-	TCHAR szText[1024];
+	WCHAR szText[1024];
 	SYSTEMTIME systime;
 	::GetLocalTime( &systime );
 	CFormatManager().MyGetDateFormat( systime, szText, _countof( szText ) - 1, m_Common.m_sFormat.m_nDateFormatType, m_Common.m_sFormat.m_szDateFormat );
@@ -86,7 +86,7 @@ void CPropFormat::ChangeTimeExample( HWND hwndDlg )
 	GetData( hwndDlg );
 
 	/* 時刻をフォーマット */
-	TCHAR szText[1024];
+	WCHAR szText[1024];
 	SYSTEMTIME systime;
 	::GetLocalTime( &systime );
 	CFormatManager().MyGetTimeFormat( systime, szText, _countof( szText ) - 1, m_Common.m_sFormat.m_nTimeFormatType, m_Common.m_sFormat.m_szTimeFormat );
@@ -191,7 +191,7 @@ INT_PTR CPropFormat::DispatchEvent(
 //		default:
 			switch( pNMHDR->code ){
 			case PSN_KILLACTIVE:
-//				MYTRACE( _T("Format PSN_KILLACTIVE\n") );
+//				MYTRACE( L"Format PSN_KILLACTIVE\n" );
 				/* ダイアログデータの取得 Format */
 				GetData( hwndDlg );
 				return TRUE;
@@ -203,11 +203,11 @@ INT_PTR CPropFormat::DispatchEvent(
 //			break;	/* default */
 //		}
 
-//		MYTRACE( _T("pNMHDR->hwndFrom=%xh\n"), pNMHDR->hwndFrom );
-//		MYTRACE( _T("pNMHDR->idFrom  =%xh\n"), pNMHDR->idFrom );
-//		MYTRACE( _T("pNMHDR->code    =%xh\n"), pNMHDR->code );
-//		MYTRACE( _T("pMNUD->iPos    =%d\n"), pMNUD->iPos );
-//		MYTRACE( _T("pMNUD->iDelta  =%d\n"), pMNUD->iDelta );
+//		MYTRACE( L"pNMHDR->hwndFrom=%xh\n", pNMHDR->hwndFrom );
+//		MYTRACE( L"pNMHDR->idFrom  =%xh\n", pNMHDR->idFrom );
+//		MYTRACE( L"pNMHDR->code    =%xh\n", pNMHDR->code );
+//		MYTRACE( L"pMNUD->iPos    =%d\n", pMNUD->iPos );
+//		MYTRACE( L"pMNUD->iDelta  =%d\n", pMNUD->iDelta );
 		break;	/* WM_NOTIFY */
 
 	}

@@ -38,9 +38,9 @@ public:
 	//オーバーライド
 	int				CompareItem( const CReplaceString* p1, LPCWSTR p2 ) const;
 	void			CopyItem( CReplaceString* dst, LPCWSTR src ) const;
-	const TCHAR*	GetItemText( int nIndex ) const;
+	const WCHAR*	GetItemText( int nIndex ) const;
 	bool			DataToReceiveType( LPCWSTR* dst, const CReplaceString* src ) const;
-	bool			TextToDataType( CReplaceString* dst, LPCTSTR pszText ) const;
+	bool			TextToDataType( CReplaceString* dst, LPCWSTR pszText ) const;
 };
 
 #endif /* SAKURA_CRECENTREPLACE_0597B923_7C40_4B6A_BCCE_C35E043E7577_H_ */

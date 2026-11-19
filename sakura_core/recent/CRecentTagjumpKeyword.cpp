@@ -28,9 +28,9 @@ CRecentTagjumpKeyword::CRecentTagjumpKeyword()
 
 	@note	取得後のポインタはユーザ管理の構造体にキャストして参照してください。
 */
-const TCHAR* CRecentTagjumpKeyword::GetItemText( int nIndex ) const
+const WCHAR* CRecentTagjumpKeyword::GetItemText( int nIndex ) const
 {
-	return to_tchar(*GetItem(nIndex));
+	return to_wchar(*GetItem(nIndex));
 }
 
 bool CRecentTagjumpKeyword::DataToReceiveType( LPCWSTR* dst, const CTagjumpKeywordString* src ) const
@@ -39,7 +39,7 @@ bool CRecentTagjumpKeyword::DataToReceiveType( LPCWSTR* dst, const CTagjumpKeywo
 	return true;
 }
 
-bool CRecentTagjumpKeyword::TextToDataType( CTagjumpKeywordString* dst, LPCTSTR pszText ) const
+bool CRecentTagjumpKeyword::TextToDataType( CTagjumpKeywordString* dst, LPCWSTR pszText ) const
 {
 	CopyItem(dst, to_wchar(pszText));
 	return true;

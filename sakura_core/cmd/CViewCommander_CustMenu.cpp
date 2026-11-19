@@ -36,17 +36,17 @@ void CViewCommander::Command_MENU_RBUTTON( void )
 	}
 	switch( nId ){
 	case IDM_COPYDICINFO:
-		const TCHAR*	pszStr;
+		const WCHAR*	pszStr;
 		pszStr = m_pCommanderView->m_cTipWnd.m_cInfo.GetStringPtr( &nLength );
 
-		TCHAR*		pszWork;
-		pszWork = new TCHAR[nLength + 1];
+		WCHAR*		pszWork;
+		pszWork = new WCHAR[nLength + 1];
 		auto_memcpy( pszWork, pszStr, nLength );
-		pszWork[nLength] = _T('\0');
+		pszWork[nLength] = L'\0';
 
 		// 見た目と同じように、\n を CR+LFへ変換する
 		for( i = 0; i < nLength ; ++i){
-			if( pszWork[i] == _T('\\') && pszWork[i + 1] == _T('n')){
+			if( pszWork[i] == L'\\' && pszWork[i + 1] == L'n'){
 				pszWork[i] =     WCODE::CR;
 				pszWork[i + 1] = WCODE::LF;
 			}
@@ -106,7 +106,7 @@ int CViewCommander::Command_CUSTMENU( int nMenuIdx )
 	for( i = 0; i < GetDllShareData().m_Common.m_sCustomMenu.m_nCustMenuItemNumArr[nMenuIdx]; ++i ){
 		if( F_0 == GetDllShareData().m_Common.m_sCustomMenu.m_nCustMenuItemFuncArr[nMenuIdx][i] ){
 			// 2010.07.24 メニュー配列に入れる
-			pCEditWnd->GetMenuDrawer().MyAppendMenuSep( hMenu, MF_SEPARATOR, F_0 , _T("") );
+			pCEditWnd->GetMenuDrawer().MyAppendMenuSep( hMenu, MF_SEPARATOR, F_0 , L"" );
 		}else{
 			//	Oct. 3, 2001 genta
 			WCHAR		szLabel[300];

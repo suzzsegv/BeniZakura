@@ -77,8 +77,8 @@ ECallbackResult CCodeChecker::OnCheckSave(SSaveInfo* pSaveInfo)
 			CEditWnd::getInstance()->GetHwnd(),
 			MB_YESNOCANCEL | MB_ICONWARNING,
 			GSTR_APPNAME,
-			_T("改行コードが混在しています。\r\n")
-			_T("現在の入力改行コード %ts に統一しますか？"),
+			L"改行コードが混在しています。\r\n"
+			L"現在の入力改行コード %ts に統一しますか？",
 			pcDoc->m_cDocEditor.GetNewLineCode().GetName()
 		);
 		switch(nDlgResult){
@@ -99,9 +99,9 @@ ECallbackResult CCodeChecker::OnCheckSave(SSaveInfo* pSaveInfo)
 			CEditWnd::getInstance()->GetHwnd(),
 			MB_YESNO | MB_ICONWARNING,
 			GSTR_APPNAME,
-			_T("文字エンコード %ts で保存しようとしていますが、\r\n")
-			_T("文字コード変換により一部の文字情報が失われます。\r\n")
-			_T("保存処理を続行しますか？"),
+			L"文字エンコード %ts で保存しようとしていますが、\r\n"
+			L"文字コード変換により一部の文字情報が失われます。\r\n"
+			L"保存処理を続行しますか？",
 			CCodeTypeName(pSaveInfo->eCharCode).Normal()
 		);
 		switch(nDlgResult){
@@ -117,7 +117,7 @@ void CCodeChecker::OnFinalSave(ESaveResult eSaveResult)
 {
 	//カキコ結果
 	if(eSaveResult==SAVED_LOSESOME){
-		ErrorMessage(CEditWnd::getInstance()->GetHwnd(), _T("一部の文字情報が、セーブ時の変換により失われました"));
+		ErrorMessage(CEditWnd::getInstance()->GetHwnd(), L"一部の文字情報が、セーブ時の変換により失われました");
 	}
 }
 
@@ -130,7 +130,7 @@ void CCodeChecker::OnFinalLoad(ELoadResult eLoadResult)
 	if(eLoadResult==LOADED_LOSESOME){
 		ErrorMessage(
 			CEditWnd::getInstance()->GetHwnd(),
-			_T("一部の文字情報が、ロード時の変換により失われました")
+			L"一部の文字情報が、ロード時の変換により失われました"
 		);
 	}
 }

@@ -28,20 +28,20 @@
 #include "util/StaticType.h"
 #include "config/maxdata.h" //MAX_CMDLEN
 
-typedef StaticString<TCHAR, MAX_CMDLEN> CCmdString;
+typedef StaticString<WCHAR, MAX_CMDLEN> CCmdString;
 
 //! コマンドの履歴を管理 (RECENT_FOR_CMD)
-class CRecentCmd : public CRecentImp<CCmdString, LPCTSTR>{
+class CRecentCmd : public CRecentImp<CCmdString, LPCWSTR>{
 public:
 	//生成
 	CRecentCmd();
 
 	//オーバーライド
-	int				CompareItem( const CCmdString* p1, LPCTSTR p2 ) const;
-	void			CopyItem( CCmdString* dst, LPCTSTR src ) const;
-	const TCHAR*	GetItemText( int nIndex ) const;
-	bool			DataToReceiveType( LPCTSTR* dst, const CCmdString* src ) const;
-	bool			TextToDataType( CCmdString* dst, LPCTSTR pszText ) const;
+	int				CompareItem( const CCmdString* p1, LPCWSTR p2 ) const;
+	void			CopyItem( CCmdString* dst, LPCWSTR src ) const;
+	const WCHAR*	GetItemText( int nIndex ) const;
+	bool			DataToReceiveType( LPCWSTR* dst, const CCmdString* src ) const;
+	bool			TextToDataType( CCmdString* dst, LPCWSTR pszText ) const;
 };
 
 #endif /* SAKURA_CRECENTCMD_606E7B7E_F285_423C_9EB8_C472B010280B_H_ */

@@ -49,7 +49,7 @@ ECallbackResult CSaveAgent::OnCheckSave(SSaveInfo* pSaveInfo)
 	//	同名で上書きされるのを防ぐ
 	if( CAppMode::getInstance()->IsViewMode() && pSaveInfo->IsSamePath(pcDoc->m_cDocFile.GetFilePath()) ){
 		ErrorBeep();
-		TopErrorMessage( CEditWnd::getInstance()->GetHwnd(), _T("ビューモードでは同一ファイルへの保存はできません。") );
+		TopErrorMessage( CEditWnd::getInstance()->GetHwnd(), L"ビューモードでは同一ファイルへの保存はできません。" );
 		return CALLBACK_INTERRUPT;
 	}
 
@@ -59,10 +59,10 @@ ECallbackResult CSaveAgent::OnCheckSave(SSaveInfo* pSaveInfo)
 		if( CShareData::getInstance()->IsPathOpened( pSaveInfo->cFilePath, &hwndOwner ) ){
 			ErrorMessage(
 				CEditWnd::getInstance()->GetHwnd(),
-				_T("\'%ts\'\n")
-				_T("ファイルを保存できません。\n")
-				_T("他のウィンドウで使用中です。"),
-				(LPCTSTR)pSaveInfo->cFilePath
+				L"\'%ts\'\n"
+				L"ファイルを保存できません。\n"
+				L"他のウィンドウで使用中です。",
+				(LPCWSTR)pSaveInfo->cFilePath
 			);
 			return CALLBACK_INTERRUPT;
 		}
@@ -76,7 +76,7 @@ ECallbackResult CSaveAgent::OnCheckSave(SSaveInfo* pSaveInfo)
 		if( bLock ) pcDoc->m_cDocFileOperation.DoFileUnlock();
 		try{
 			bool bExist = fexist(pSaveInfo->cFilePath);
-			CStream out(pSaveInfo->cFilePath, _T("ab"), true);	// 実際の保存は "wb" だがここは "ab"（ファイル内容は破棄しない）でチェックする	// 2009.08.21 ryoji
+			CStream out(pSaveInfo->cFilePath, L"ab", true);	// 実際の保存は "wb" だがここは "ab"（ファイル内容は破棄しない）でチェックする	// 2009.08.21 ryoji
 			out.Close();
 			if(!bExist){
 				::DeleteFile(pSaveInfo->cFilePath);
@@ -87,9 +87,9 @@ ECallbackResult CSaveAgent::OnCheckSave(SSaveInfo* pSaveInfo)
 			if( bLock ) pcDoc->m_cDocFileOperation.DoFileLock(false);
 			ErrorMessage(
 				CEditWnd::getInstance()->GetHwnd(),
-				_T("\'%ts\'\n")
-				_T("ファイルを保存できません。\n")
-				_T("パスが存在しないか、他のアプリケーションで使用されている可能性があります。"),
+				L"\'%ts\'\n"
+				L"ファイルを保存できません。\n"
+				L"パスが存在しないか、他のアプリケーションで使用されている可能性があります。",
 				pSaveInfo->cFilePath.c_str()
 			);
 			return CALLBACK_INTERRUPT;

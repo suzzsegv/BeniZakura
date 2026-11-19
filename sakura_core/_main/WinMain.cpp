@@ -46,10 +46,10 @@ int WINAPI WinMain(
 	int			nCmdShow		//!< show state of window
 )
 #else
-int WINAPI _tWinMain(
+int WINAPI wWinMain(
 	HINSTANCE	hInstance,		//!< handle to current instance
 	HINSTANCE	hPrevInstance,	//!< handle to previous instance
-	LPTSTR		lpCmdLine,		//!< pointer to command line
+	LPWSTR		lpCmdLine,		//!< pointer to command line
 	int			nCmdShow		//!< show state of window
 )
 #endif
@@ -70,33 +70,33 @@ int WINAPI _tWinMain(
 	}
 	
 	//開発情報
-	DEBUG_TRACE(_T("-- -- WinMain -- --\n"));
-	DEBUG_TRACE(_T("sizeof(DLLSHAREDATA) = %d\n"),sizeof(DLLSHAREDATA));
+	DEBUG_TRACE(L"-- -- WinMain -- --\n");
+	DEBUG_TRACE(L"sizeof(DLLSHAREDATA) = %d\n",sizeof(DLLSHAREDATA));
 
 	//プロセスの生成とメッセージループ
 	CProcessFactory aFactory;
 	CProcess *process = 0;
 	try{
 #ifdef __MINGW32__
-		LPTSTR pszCommandLine;
+		LPWSTR pszCommandLine;
 		pszCommandLine = ::GetCommandLine();
 		// 実行ファイル名をスキップする
-		if( _T('\"') == *pszCommandLine ){
+		if( L'\"' == *pszCommandLine ){
 			pszCommandLine++;
-			while( _T('\"') != *pszCommandLine && _T('\0') != *pszCommandLine ){
+			while( L'\"' != *pszCommandLine && L'\0' != *pszCommandLine ){
 				pszCommandLine++;
 			}
-			if( _T('\"') == *pszCommandLine ){
+			if( L'\"' == *pszCommandLine ){
 				pszCommandLine++;
 			}
 		}else{
-			while( _T(' ') != *pszCommandLine && _T('\t') != *pszCommandLine
-				&& _T('\0') != *pszCommandLine ){
+			while( L' ' != *pszCommandLine && L'\t' != *pszCommandLine
+				&& L'\0' != *pszCommandLine ){
 				pszCommandLine++;
 			}
 		}
 		// 次のトークンまで進める
-		while( _T(' ') == *pszCommandLine || _T('\t') == *pszCommandLine ){
+		while( L' ' == *pszCommandLine || L'\t' == *pszCommandLine ){
 			pszCommandLine++;
 		}
 		process = aFactory.Create( hInstance, pszCommandLine );

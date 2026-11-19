@@ -72,7 +72,7 @@ private:
 
 	TODO:	標準入力・標準エラーの取込選択。カレントディレクトリ。UTF-8等への対応
 */
-void CEditView::ExecCmd( const TCHAR* pszCmd, int nFlgOpt, const TCHAR* pszCurDir )
+void CEditView::ExecCmd( const WCHAR* pszCmd, int nFlgOpt, const WCHAR* pszCurDir )
 {
 	HANDLE				hStdOutWrite, hStdOutRead, hStdIn;
 	PROCESS_INFORMATION	pi;
@@ -140,13 +140,13 @@ void CEditView::ExecCmd( const TCHAR* pszCmd, int nFlgOpt, const TCHAR* pszCurDi
 	// 一時ファイル属性でオープンすることに。
 	hStdIn = NULL;
 	if(bSendStdin){	/* 現在編集中のファイルを子プロセスの標準入力へ */
-		TCHAR		szPathName[MAX_PATH];
-		TCHAR		szTempFileName[MAX_PATH];
+		WCHAR		szPathName[MAX_PATH];
+		WCHAR		szTempFileName[MAX_PATH];
 		int			nFlgOpt;
 
 		GetTempPath( MAX_PATH, szPathName );
-		GetTempFileName( szPathName, TEXT("skr_"), 0, szTempFileName );
-		DEBUG_TRACE( _T("CEditView::ExecCmd() TempFilename=[%ts]\n"), szTempFileName );
+		GetTempFileName( szPathName, L"skr_", 0, szTempFileName );
+		DEBUG_TRACE( L"CEditView::ExecCmd() TempFilename=[%ts]\n", szTempFileName );
 
 		nFlgOpt = bBeforeTextSelected ? 0x01 : 0x00;		/* 選択範囲を出力 */
 
@@ -198,21 +198,21 @@ void CEditView::ExecCmd( const TCHAR* pszCmd, int nFlgOpt, const TCHAR* pszCurDi
 	}
 
 	//コマンドライン実行
-	TCHAR	cmdline[1024];
+	WCHAR	cmdline[1024];
 	//	コマンドが長すぎる場合は実行しない (cmdline のバッファオーバーフロー防止)
 	//	※切り詰めて実行すると意図しないコマンドが実行される恐れがあるため、エラーとする
-	if( _tcslen( pszCmd ) >= _countof(cmdline) ){
-		ErrorMessage( GetHwnd(), _T("コマンドが長すぎるため実行できません。\n(%d 文字以内にしてください)"), (int)( _countof(cmdline) - 1 ) );
+	if( wcslen( pszCmd ) >= _countof(cmdline) ){
+		ErrorMessage( GetHwnd(), L"コマンドが長すぎるため実行できません。\n(%d 文字以内にしてください)", (int)( _countof(cmdline) - 1 ) );
 		goto finish;
 	}
-	_tcscpy_s( cmdline, _countof(cmdline), pszCmd );
+	wcscpy_s( cmdline, _countof(cmdline), pszCmd );
 	if( CreateProcess( NULL, cmdline, NULL, NULL, TRUE,
 				CREATE_NEW_CONSOLE, NULL, bCurDir ? pszCurDir : NULL, &sui, &pi ) == FALSE ) {
 		//実行に失敗した場合、コマンドラインベースのアプリケーションと判断して
 		// command(9x) か cmd(NT) を呼び出す
 
 		// 2010.08.27 Moca システムディレクトリ付加
-		TCHAR szCmdDir[_MAX_PATH];
+		WCHAR szCmdDir[_MAX_PATH];
 		if( IsWin32NT() ){
 			::GetSystemDirectory(szCmdDir, _countof(szCmdDir));
 		}else{
@@ -222,24 +222,24 @@ void CEditView::ExecCmd( const TCHAR* pszCmd, int nFlgOpt, const TCHAR* pszCurDi
 		//コマンドライン文字列作成
 		//	"<szCmdDir>\cmd.exe" [/U]/C|/K <pszCmd>
 		//	cmdline に収まらない場合は実行しない (バッファオーバーフロー防止)
-		std::tstring sCmdLine;
-		sCmdLine += _T("\"");
+		std::wstring sCmdLine;
+		sCmdLine += L"\"";
 		sCmdLine += szCmdDir;
-		sCmdLine += _T("\\");
-		sCmdLine += ( IsWin32NT() ? _T("cmd.exe") : _T("command.com") );
-		sCmdLine += _T("\" ");
-		sCmdLine += ( outputEncoding == CODE_UNICODE ? _T("/U") : _T("") );	// Unicdeモードでコマンド実行	2008/6/17 Uchi
-		sCmdLine += ( bGetStdout ? _T("/C ") : _T("/K ") );
+		sCmdLine += L"\\";
+		sCmdLine += ( IsWin32NT() ? L"cmd.exe" : L"command.com" );
+		sCmdLine += L"\" ";
+		sCmdLine += ( outputEncoding == CODE_UNICODE ? L"/U" : L"" );	// Unicdeモードでコマンド実行	2008/6/17 Uchi
+		sCmdLine += ( bGetStdout ? L"/C " : L"/K " );
 		sCmdLine += pszCmd;
 		if( sCmdLine.length() >= _countof(cmdline) ){
-			ErrorMessage( GetHwnd(), _T("コマンドが長すぎるため実行できません。\n(%d 文字以内にしてください)"),
-				(int)( _countof(cmdline) - 1 - ( sCmdLine.length() - _tcslen( pszCmd ) ) ) );
+			ErrorMessage( GetHwnd(), L"コマンドが長すぎるため実行できません。\n(%d 文字以内にしてください)",
+				(int)( _countof(cmdline) - 1 - ( sCmdLine.length() - wcslen( pszCmd ) ) ) );
 			goto finish;
 		}
-		_tcscpy_s( cmdline, _countof(cmdline), sCmdLine.c_str() );
+		wcscpy_s( cmdline, _countof(cmdline), sCmdLine.c_str() );
 		if( CreateProcess( NULL, cmdline, NULL, NULL, TRUE,
 					CREATE_NEW_CONSOLE, NULL, bCurDir ? pszCurDir : NULL, &sui, &pi ) == FALSE ) {
-			MessageBox( NULL, cmdline, _T("コマンド実行は失敗しました。"), MB_OK | MB_ICONEXCLAMATION );
+			MessageBox( NULL, cmdline, L"コマンド実行は失敗しました。", MB_OK | MB_ICONEXCLAMATION );
 			goto finish;
 		}
 	}
@@ -282,7 +282,7 @@ void CEditView::ExecCmd( const TCHAR* pszCmd, int nFlgOpt, const TCHAR* pszCurDi
 		// 2006.12.03 maru アウトプットウィンドウにのみ出力
 		if (bOutputExtInfo)
 		{
-			TCHAR szTextDate[1024], szTextTime[1024];
+			WCHAR szTextDate[1024], szTextTime[1024];
 			SYSTEMTIME systime;
 			::GetLocalTime( &systime );
 			CFormatManager().MyGetDateFormat( systime, szTextDate, _countof( szTextDate ) - 1 );
@@ -384,12 +384,12 @@ void CEditView::ExecCmd( const TCHAR* pszCmd, int nFlgOpt, const TCHAR* pszCurDi
 							if (bCarry) {
 								workw[0] = L'\r'; // 2010.04.12 'r' -> '\r'
 								bufidx = sizeof(wchar_t);
-								DEBUG_TRACE( _T("ExecCmd: Carry last character [CR]\n") );
+								DEBUG_TRACE( L"ExecCmd: Carry last character [CR]\n" );
 							}
 						}
 						if( read_cnt % (int)sizeof(wchar_t) ){
 							// 高確率で0だと思うが1だと困る
-							DEBUG_TRACE( _T("ExecCmd: Carry Unicode 1byte [%x]\n"), byteCarry );
+							DEBUG_TRACE( L"ExecCmd: Carry Unicode 1byte [%x]\n", byteCarry );
 							work[bufidx] = byteCarry;
 							bufidx += 1;
 						}
@@ -438,7 +438,7 @@ void CEditView::ExecCmd( const TCHAR* pszCmd, int nFlgOpt, const TCHAR* pszCurDi
 							oa.OutputA( work, read_cnt-1 );
 							work[0] = tmp;
 							bufidx = 1;
-							DEBUG_TRACE( _T("ExecCmd: Carry last character [%x]\n"), tmp );
+							DEBUG_TRACE( L"ExecCmd: Carry last character [%x]\n", tmp );
 						}
 					}
 					else if (outputEncoding == CODE_UTF8) {
@@ -464,7 +464,7 @@ void CEditView::ExecCmd( const TCHAR* pszCmd, int nFlgOpt, const TCHAR* pszCurDi
 							bufidx = 0;
 						}
 						else {
-							DEBUG_TRACE(_T("read_cnt %d j %d\n"), read_cnt, j);
+							DEBUG_TRACE(L"read_cnt %d j %d\n", read_cnt, j);
 							char tmp[5];
 							int len = read_cnt - j;
 							memcpy(tmp, &work[j], len);
@@ -473,7 +473,7 @@ void CEditView::ExecCmd( const TCHAR* pszCmd, int nFlgOpt, const TCHAR* pszCurDi
 							oa.OutputUTF8(work, j);
 							memcpy(work, tmp, len);
 							bufidx = len;
-							DEBUG_TRACE(_T("ExecCmd: Carry last character [%x]\n"), tmp[0]);
+							DEBUG_TRACE(L"ExecCmd: Carry last character [%x]\n", tmp[0]);
 						}
 					}
 					// Jan. 23, 2004 genta
@@ -512,7 +512,7 @@ user_cancel:
 		if( 0 < bufidx ){
 			if( outputEncoding == CODE_UNICODE ){
 				if( bufidx % (int)sizeof(wchar_t) ){
-					DEBUG_TRACE( _T("ExecCmd: Carry last Unicode byte [%x]\n"), work[bufidx-1] );
+					DEBUG_TRACE( L"ExecCmd: Carry last Unicode byte [%x]\n", work[bufidx-1] );
 					// UTF-16なのに奇数バイトだった
 					work[bufidx] = 0x00; // 上位バイトを0にしてごまかす
 					bufidx += 1;

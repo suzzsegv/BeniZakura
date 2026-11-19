@@ -21,12 +21,12 @@
 
 
 TYPE_NAME<int> SpecialScrollModeArr[] = {
-	{ 0,						_T("組み合わせなし") },
-	{ MOUSEFUNCTION_CENTER,		_T("マウス中ボタン") },
-	{ MOUSEFUNCTION_LEFTSIDE,	_T("マウスサイドボタン1") },
-	{ MOUSEFUNCTION_RIGHTSIDE,	_T("マウスサイドボタン2") },
-	{ VK_CONTROL,				_T("CONTROLキー") },
-	{ VK_SHIFT,					_T("SHIFTキー") },
+	{ 0,						L"組み合わせなし" },
+	{ MOUSEFUNCTION_CENTER,		L"マウス中ボタン" },
+	{ MOUSEFUNCTION_LEFTSIDE,	L"マウスサイドボタン1" },
+	{ MOUSEFUNCTION_RIGHTSIDE,	L"マウスサイドボタン2" },
+	{ VK_CONTROL,				L"CONTROLキー" },
+	{ VK_SHIFT,					L"SHIFTキー" },
 };
 
 
@@ -83,7 +83,7 @@ INT_PTR CPropGeneral::DispatchEvent(
 			case IDC_BUTTON_CLEAR_MRU_FILE:
 				/* ファイルの履歴をクリア */
 				if( IDCANCEL == ::MYMESSAGEBOX( hwndDlg, MB_OKCANCEL | MB_ICONQUESTION, GSTR_APPNAME,
-					_T("最近使ったファイルの履歴を削除します。\nよろしいですか？\n") ) ){
+					L"最近使ったファイルの履歴を削除します。\nよろしいですか？\n" ) ){
 					return TRUE;
 				}
 //@@@ 2001.12.26 YAZAKI MRUリストは、CMRUに依頼する
@@ -92,12 +92,12 @@ INT_PTR CPropGeneral::DispatchEvent(
 					CMRUFile cMRU;
 					cMRU.ClearAll();
 				}
-				InfoMessage( hwndDlg, _T("最近使ったファイルの履歴を削除しました。\n") );
+				InfoMessage( hwndDlg, L"最近使ったファイルの履歴を削除しました。\n" );
 				return TRUE;
 			case IDC_BUTTON_CLEAR_MRU_FOLDER:
 				/* フォルダの履歴をクリア */
 				if( IDCANCEL == ::MYMESSAGEBOX( hwndDlg, MB_OKCANCEL | MB_ICONQUESTION, GSTR_APPNAME,
-					_T("最近使ったフォルダの履歴を削除します。\nよろしいですか？\n") ) ){
+					L"最近使ったフォルダの履歴を削除します。\nよろしいですか？\n" ) ){
 					return TRUE;
 				}
 //@@@ 2001.12.26 YAZAKI OPENFOLDERリストは、CMRUFolderにすべて依頼する
@@ -106,7 +106,7 @@ INT_PTR CPropGeneral::DispatchEvent(
 					CMRUFolder cMRUFolder;	//	MRUリストの初期化。ラベル内だと問題あり？
 					cMRUFolder.ClearAll();
 				}
-				InfoMessage( hwndDlg, _T("最近使ったフォルダの履歴を削除しました。\n") );
+				InfoMessage( hwndDlg, L"最近使ったフォルダの履歴を削除しました。\n" );
 				return TRUE;
 
 			}
@@ -146,7 +146,7 @@ INT_PTR CPropGeneral::DispatchEvent(
 		switch( idCtrl ){
 		case IDC_SPIN_REPEATEDSCROLLLINENUM:
 			/* キーリピート時のスクロール行数 */
-//			MYTRACE( _T("IDC_SPIN_REPEATEDSCROLLLINENUM\n") );
+//			MYTRACE( L"IDC_SPIN_REPEATEDSCROLLLINENUM\n" );
 			nVal = ::GetDlgItemInt( hwndDlg, IDC_EDIT_REPEATEDSCROLLLINENUM, NULL, FALSE );
 			if( pMNUD->iDelta < 0 ){
 				++nVal;
@@ -164,7 +164,7 @@ INT_PTR CPropGeneral::DispatchEvent(
 			return TRUE;
 		case IDC_SPIN_MAX_MRU_FILE:
 			/* ファイルの履歴MAX */
-//			MYTRACE( _T("IDC_SPIN_MAX_MRU_FILE\n") );
+//			MYTRACE( L"IDC_SPIN_MAX_MRU_FILE\n" );
 			nVal = ::GetDlgItemInt( hwndDlg, IDC_EDIT_MAX_MRU_FILE, NULL, FALSE );
 			if( pMNUD->iDelta < 0 ){
 				++nVal;
@@ -182,7 +182,7 @@ INT_PTR CPropGeneral::DispatchEvent(
 			return TRUE;
 		case IDC_SPIN_MAX_MRU_FOLDER:
 			/* フォルダの履歴MAX */
-//			MYTRACE( _T("IDC_SPIN_MAX_MRU_FOLDER\n") );
+//			MYTRACE( L"IDC_SPIN_MAX_MRU_FOLDER\n" );
 			nVal = ::GetDlgItemInt( hwndDlg, IDC_EDIT_MAX_MRU_FOLDER, NULL, FALSE );
 			if( pMNUD->iDelta < 0 ){
 				++nVal;
@@ -201,7 +201,7 @@ INT_PTR CPropGeneral::DispatchEvent(
 		default:
 			switch( pNMHDR->code ){
 			case PSN_KILLACTIVE:
-//				MYTRACE( _T("General PSN_KILLACTIVE\n") );
+//				MYTRACE( L"General PSN_KILLACTIVE\n" );
 				/* ダイアログデータの取得 General */
 				GetData( hwndDlg );
 				return TRUE;
@@ -213,11 +213,11 @@ INT_PTR CPropGeneral::DispatchEvent(
 			break;
 		}
 
-//		MYTRACE( _T("pNMHDR->hwndFrom=%xh\n"), pNMHDR->hwndFrom );
-//		MYTRACE( _T("pNMHDR->idFrom  =%xh\n"), pNMHDR->idFrom );
-//		MYTRACE( _T("pNMHDR->code    =%xh\n"), pNMHDR->code );
-//		MYTRACE( _T("pMNUD->iPos    =%d\n"), pMNUD->iPos );
-//		MYTRACE( _T("pMNUD->iDelta  =%d\n"), pMNUD->iDelta );
+//		MYTRACE( L"pNMHDR->hwndFrom=%xh\n", pNMHDR->hwndFrom );
+//		MYTRACE( L"pNMHDR->idFrom  =%xh\n", pNMHDR->idFrom );
+//		MYTRACE( L"pNMHDR->code    =%xh\n", pNMHDR->code );
+//		MYTRACE( L"pMNUD->iPos    =%d\n", pMNUD->iPos );
+//		MYTRACE( L"pMNUD->iDelta  =%d\n", pMNUD->iDelta );
 		break;
 	}
 	return FALSE;

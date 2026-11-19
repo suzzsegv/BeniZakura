@@ -65,7 +65,7 @@ INT_PTR CPropStatusbar::DispatchEvent(
 		pMNUD  = (NM_UPDOWN*)lParam;
 		switch( pNMHDR->code ){
 		case PSN_KILLACTIVE:
-			DEBUG_TRACE( _T("statusbar PSN_KILLACTIVE\n") );
+			DEBUG_TRACE( L"statusbar PSN_KILLACTIVE\n" );
 
 			/* ダイアログデータの取得 */
 			GetData( hwndDlg );

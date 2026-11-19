@@ -70,7 +70,7 @@ public:
 	void OnOutlineNotify( WPARAM wParam, LPARAM lParam );
 	void SyncFont( void );
 	void SyncColor( void );
-	void SetWindowText( const TCHAR* szTitle );		//ダイアログタイトルの設定
+	void SetWindowText( const WCHAR* szTitle );		//ダイアログタイトルの設定
 	bool m_bInChangeLayout;
 
 	CFuncInfoArr*	m_pcFuncInfoArr;	/* 関数情報配列 */

@@ -218,7 +218,7 @@ reconfigure:
 
 
 template <class T, class S>
-bool CRecentImp<T, S>::AppendItemText( LPCTSTR pText )
+bool CRecentImp<T, S>::AppendItemText( LPCWSTR pText )
 {
 	DataType data;
 	ReceiveType receiveData;
@@ -236,7 +236,7 @@ bool CRecentImp<T, S>::AppendItemText( LPCTSTR pText )
 }
 
 template <class T, class S>
-bool CRecentImp<T, S>::EditItemText( int nIndex, LPCTSTR pText )
+bool CRecentImp<T, S>::EditItemText( int nIndex, LPCWSTR pText )
 {
 	DataType data;
 	ReceiveType receiveData;
@@ -537,17 +537,17 @@ bool CRecentImp<T, S>::UpdateView()
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 //                      インスタンス化                         //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-template class CRecentImp<CCmdString, LPCTSTR>;
+template class CRecentImp<CCmdString, LPCWSTR>;
 template class CRecentImp<EditNode>;
 template class CRecentImp<EditInfo>;
-template class CRecentImp<CPathString, LPCTSTR>;
+template class CRecentImp<CPathString, LPCWSTR>;
 #ifndef __MINGW32__
-template class CRecentImp<CMetaPath, LPCTSTR>;
-template class CRecentImp<CGrepFileString, LPCTSTR>;
-template class CRecentImp<CGrepFolderString, LPCTSTR>;
+template class CRecentImp<CMetaPath, LPCWSTR>;
+template class CRecentImp<CGrepFileString, LPCWSTR>;
+template class CRecentImp<CGrepFolderString, LPCWSTR>;
 template class CRecentImp<CSearchString, LPCWSTR>;
 template class CRecentImp<CTagjumpKeywordString, LPCWSTR>;
-template class CRecentImp<CCurDirString, LPCTSTR>;
+template class CRecentImp<CCurDirString, LPCWSTR>;
 #endif
 #if !defined(__MINGW32__)
 template class CRecentImp<CReplaceString, LPCWSTR>;

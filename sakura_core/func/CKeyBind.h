@@ -28,7 +28,7 @@ struct KeyData {
 	short			m_nKeyCode;
 	
 	/*!	キーの名前	*/
-	TCHAR			m_szKeyName[64];
+	WCHAR			m_szKeyName[64];
 	
 	/*!	対応する機能番号
 
@@ -67,11 +67,11 @@ public:
 
 	//! キー割り当て一覧を作成する
 	static int CreateKeyBindList( HINSTANCE hInstance, int nKeyNameArrNum, KeyData* pKeyNameArr, CNativeW& cMemList, CFuncLookup* pcFuncLookup, BOOL bGetDefFuncCode = TRUE );
-	static int GetKeyStr( HINSTANCE hInstance, int nKeyNameArrNum, KeyData* pKeyNameArr, CNativeT& cMemList, int nFuncId, BOOL bGetDefFuncCode = TRUE );	/* 機能に対応するキー名の取得 */
-	static int GetKeyStrList( HINSTANCE	hInstance, int nKeyNameArrNum,KeyData* pKeyNameArr, CNativeT*** pppcMemList, int nFuncId, BOOL bGetDefFuncCode = TRUE );	/* 機能に対応するキー名の取得(複数) */
-	static TCHAR* GetMenuLabel( HINSTANCE hInstance, int nKeyNameArrNum, KeyData* pKeyNameArr, int nFuncId, TCHAR* pszLabel, const TCHAR* pszKey, BOOL bKeyStr, BOOL bGetDefFuncCode = TRUE );	/* メニューラベルの作成 */	// add pszKey	2010/5/17 Uchi
+	static int GetKeyStr( HINSTANCE hInstance, int nKeyNameArrNum, KeyData* pKeyNameArr, CNativeW& cMemList, int nFuncId, BOOL bGetDefFuncCode = TRUE );	/* 機能に対応するキー名の取得 */
+	static int GetKeyStrList( HINSTANCE	hInstance, int nKeyNameArrNum,KeyData* pKeyNameArr, CNativeW*** pppcMemList, int nFuncId, BOOL bGetDefFuncCode = TRUE );	/* 機能に対応するキー名の取得(複数) */
+	static WCHAR* GetMenuLabel( HINSTANCE hInstance, int nKeyNameArrNum, KeyData* pKeyNameArr, int nFuncId, WCHAR* pszLabel, const WCHAR* pszKey, BOOL bKeyStr, BOOL bGetDefFuncCode = TRUE );	/* メニューラベルの作成 */	// add pszKey	2010/5/17 Uchi
 
-	static TCHAR* MakeMenuLabel(const TCHAR* sName, const TCHAR* sKey);
+	static WCHAR* MakeMenuLabel(const WCHAR* sName, const WCHAR* sKey);
 	static bool CKeyBind::InitKeyAssign( DLLSHAREDATA* pShareData );
 	static void SetDefaultKeyBindToBenizakura(struct CommonSetting_KeyBind* pKeyBind);
 	static void SetDefaultKeyBindToSakura(struct CommonSetting_KeyBind* pKeyBind);
@@ -85,7 +85,7 @@ protected:
 	||  実装ヘルパ関数
 	*/
 	static bool GetKeyStrSub(int& nKeyNameArrBegin, int nKeyNameArrEnd, KeyData* pKeyNameArr,
-			int nShiftState, CNativeT& cMemList, int nFuncId, BOOL bGetDefFuncCode );
+			int nShiftState, CNativeW& cMemList, int nFuncId, BOOL bGetDefFuncCode );
 };
 
 ///////////////////////////////////////////////////////////////////////

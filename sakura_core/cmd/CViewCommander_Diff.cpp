@@ -32,7 +32,7 @@
 void CViewCommander::Command_COMPARE( void )
 {
 	HWND		hwndCompareWnd;
-	TCHAR		szPath[_MAX_PATH + 1];
+	WCHAR		szPath[_MAX_PATH + 1];
 	CMyPoint	poDes;
 	CDlgCompare	cDlgCompare;
 	BOOL		bDefferent;
@@ -106,8 +106,8 @@ void CViewCommander::Command_COMPARE( void )
 		}
 		if( nLineLenDes > (int)GetDllShareData().m_sWorkBuffer.GetWorkBufferCount<EDIT_CHAR>() ){
 			TopErrorMessage( m_pCommanderView->GetHwnd(),
-				_T("比較先のファイル\n%ts\n%d文字を超える行があります。\n")
-				_T("比較できません。"),
+				L"比較先のファイル\n%ts\n%d文字を超える行があります。\n"
+				L"比較できません。",
 				szPath,
 				GetDllShareData().m_sWorkBuffer.GetWorkBufferCount<EDIT_CHAR>()
 			);
@@ -170,10 +170,10 @@ end_of_compare:;
 
 	//	2002/05/11 YAZAKI 親ウィンドウをうまく設定してみる。
 	if( !bDefferent ){
-		TopInfoMessage( hwndMsgBox, _T("異なる箇所は見つかりませんでした。") );
+		TopInfoMessage( hwndMsgBox, L"異なる箇所は見つかりませんでした。" );
 	}
 	else{
-//		TopInfoMessage( hwndMsgBox, _T("異なる箇所が見つかりました。") );
+//		TopInfoMessage( hwndMsgBox, L"異なる箇所が見つかりました。" );
 		/* カーソルを移動させる
 			比較相手は、別プロセスなのでメッセージを飛ばす。
 		*/
@@ -183,7 +183,7 @@ end_of_compare:;
 		/* カーソルを移動させる */
 		memcpy_raw( GetDllShareData().m_sWorkBuffer.GetWorkBuffer<void>(), &poSrc, sizeof( poSrc ) );
 		::PostMessageAny( GetMainWindow(), MYWM_SETCARETPOS, 0, 0 );
-		TopWarningMessage( hwndMsgBox, _T("異なる箇所が見つかりました。") );	// 位置を変更してからメッセージ	2008/4/27 Uchi
+		TopWarningMessage( hwndMsgBox, L"異なる箇所が見つかりました。" );	// 位置を変更してからメッセージ	2008/4/27 Uchi
 	}
 
 	/* 開いているウィンドウをアクティブにする */
@@ -201,19 +201,19 @@ end_of_compare:;
 */
 void CViewCommander::Command_Diff( const WCHAR* _szTmpFile2, int nFlgOpt )
 {
-	const TCHAR* szTmpFile2 = to_tchar(_szTmpFile2);
+	const WCHAR* szTmpFile2 = to_wchar(_szTmpFile2);
 
 	bool	bTmpFile1 = false;
-	TCHAR	szTmpFile1[_MAX_PATH * 2];
+	WCHAR	szTmpFile1[_MAX_PATH * 2];
 
 	if( -1 == ::GetFileAttributes( szTmpFile2 ) )
 	{
-		WarningMessage( m_pCommanderView->GetHwnd(), _T("差分コマンド実行は失敗しました。\n\n比較するファイルが見つかりません。") );
+		WarningMessage( m_pCommanderView->GetHwnd(), L"差分コマンド実行は失敗しました。\n\n比較するファイルが見つかりません。" );
 		return;
 	}
 
 	//自ファイル
-	if (!GetDocument()->m_cDocEditor.IsModified()) _tcscpy( szTmpFile1, GetDocument()->m_cDocFile.GetFilePath());
+	if (!GetDocument()->m_cDocEditor.IsModified()) wcscpy( szTmpFile1, GetDocument()->m_cDocFile.GetFilePath());
 	else if (m_pCommanderView->MakeDiffTmpFile ( szTmpFile1, NULL )) bTmpFile1 = true;
 	else return;
 
@@ -221,7 +221,7 @@ void CViewCommander::Command_Diff( const WCHAR* _szTmpFile2, int nFlgOpt )
 	m_pCommanderView->ViewDiffInfo(szTmpFile1, szTmpFile2, nFlgOpt);
 
 	//一時ファイルを削除する
-	if( bTmpFile1 ) _tunlink( szTmpFile1 );
+	if( bTmpFile1 ) _wunlink( szTmpFile1 );
 
 	return;
 
@@ -254,18 +254,18 @@ void CViewCommander::Command_Diff_Dialog( void )
 	}
 	
 	//自ファイル
-	TCHAR	szTmpFile1[_MAX_PATH * 2];
-	if (!GetDocument()->m_cDocEditor.IsModified()) _tcscpy( szTmpFile1, GetDocument()->m_cDocFile.GetFilePath());
+	WCHAR	szTmpFile1[_MAX_PATH * 2];
+	if (!GetDocument()->m_cDocEditor.IsModified()) wcscpy( szTmpFile1, GetDocument()->m_cDocFile.GetFilePath());
 	else if (m_pCommanderView->MakeDiffTmpFile ( szTmpFile1, NULL )) bTmpFile1 = true;
 	else return;
 		
 	//相手ファイル
-	TCHAR	szTmpFile2[_MAX_PATH * 2];
-	if (!cDlgDiff.m_bIsModifiedDst ) _tcscpy( szTmpFile2, cDlgDiff.m_szFile2);
+	WCHAR	szTmpFile2[_MAX_PATH * 2];
+	if (!cDlgDiff.m_bIsModifiedDst ) wcscpy( szTmpFile2, cDlgDiff.m_szFile2);
 	else if (m_pCommanderView->MakeDiffTmpFile ( szTmpFile2, cDlgDiff.m_hWnd_Dst )) bTmpFile2 = true;
 	else 
 	{
-		if( bTmpFile1 ) _tunlink( szTmpFile1 );
+		if( bTmpFile1 ) _wunlink( szTmpFile1 );
 		return;
 	}
 	
@@ -274,8 +274,8 @@ void CViewCommander::Command_Diff_Dialog( void )
 	
 	
 	//一時ファイルを削除する
-	if( bTmpFile1 ) _tunlink( szTmpFile1 );
-	if( bTmpFile2 ) _tunlink( szTmpFile2 );
+	if( bTmpFile1 ) _wunlink( szTmpFile1 );
+	if( bTmpFile2 ) _wunlink( szTmpFile2 );
 
 	return;
 }
@@ -323,11 +323,11 @@ re_do:;
 	}
 
 	if( bFound ){
-		if( nYOld_Logic >= ptXY.y ) m_pCommanderView->SendStatusMessage( _T("▼先頭から再検索しました") );
+		if( nYOld_Logic >= ptXY.y ) m_pCommanderView->SendStatusMessage( L"▼先頭から再検索しました" );
 	}
 	else{
-		m_pCommanderView->SendStatusMessage( _T("▽見つかりませんでした") );
-		AlertNotFound( m_pCommanderView->GetHwnd(), _T("前方(↓) に差分が見つかりません。") );
+		m_pCommanderView->SendStatusMessage( L"▽見つかりませんでした" );
+		AlertNotFound( m_pCommanderView->GetHwnd(), L"前方(↓) に差分が見つかりません。" );
 	}
 
 	return;
@@ -376,11 +376,11 @@ re_do:;
 	}
 
 	if( bFound ){
-		if( nYOld_Logic <= ptXY.y ) m_pCommanderView->SendStatusMessage( _T("▲末尾から再検索しました") );
+		if( nYOld_Logic <= ptXY.y ) m_pCommanderView->SendStatusMessage( L"▲末尾から再検索しました" );
 	}
 	else{
-		m_pCommanderView->SendStatusMessage( _T("△見つかりませんでした") );
-		AlertNotFound( m_pCommanderView->GetHwnd(), _T("後方(↑) に差分が見つかりません。") );
+		m_pCommanderView->SendStatusMessage( L"△見つかりませんでした" );
+		AlertNotFound( m_pCommanderView->GetHwnd(), L"後方(↑) に差分が見つかりません。" );
 	}
 
 	return;

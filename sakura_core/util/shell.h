@@ -27,10 +27,10 @@
 #define SAKURA_SHELL_A129670C_6564_4E0D_AF52_E323B0C7CA099_H_
 
 /* Shell Interface系(?) */
-BOOL SelectDir(HWND, const TCHAR*, const TCHAR*, TCHAR* );	/* フォルダ選択ダイアログ */
-BOOL ResolveShortcutLink(HWND hwnd, LPCTSTR lpszLinkFile, LPTSTR lpszPath);/* ショートカット(.lnk)の解決 */
+BOOL SelectDir(HWND, const WCHAR*, const WCHAR*, WCHAR* );	/* フォルダ選択ダイアログ */
+BOOL ResolveShortcutLink(HWND hwnd, LPCWSTR lpszLinkFile, LPWSTR lpszPath);/* ショートカット(.lnk)の解決 */
 
-BOOL GetSpecialFolderPath( int nFolder, LPTSTR pszPath );	// 特殊フォルダのパスを取得する	// 2007.05.19 ryoji
+BOOL GetSpecialFolderPath( int nFolder, LPWSTR pszPath );	// 特殊フォルダのパスを取得する	// 2007.05.19 ryoji
 
 
 

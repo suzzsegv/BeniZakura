@@ -640,16 +640,16 @@ void CViewSelect::PrintSelectionInfoMsg() const
 	if( ! IsTextSelected() || m_sSelect.GetFrom().y >= nLineCount ){ // 先頭行が実在しない
 		const_cast<CEditView*>(pView)->GetCaret().m_bClearStatus = false;
 		if( IsBoxSelecting() ){
-			pView->m_pcEditDoc->m_pcEditWnd->m_cStatusBar.SendStatusMessage2( _T("box selecting") );
+			pView->m_pcEditDoc->m_pcEditWnd->m_cStatusBar.SendStatusMessage2( L"box selecting" );
 		}else if( m_bSelectingLock ){
-			pView->m_pcEditDoc->m_pcEditWnd->m_cStatusBar.SendStatusMessage2( _T("selecting") );
+			pView->m_pcEditDoc->m_pcEditWnd->m_cStatusBar.SendStatusMessage2( L"selecting" );
 		}else{
-			pView->m_pcEditDoc->m_pcEditWnd->m_cStatusBar.SendStatusMessage2( _T("") );
+			pView->m_pcEditDoc->m_pcEditWnd->m_cStatusBar.SendStatusMessage2( L"" );
 		}
 		return;
 	}
 
-	TCHAR msg[128];
+	WCHAR msg[128];
 	//	From here 2006.06.06 ryoji 選択範囲の行が実在しない場合の対策
 
 	CLayoutInt select_line;
@@ -667,7 +667,7 @@ void CViewSelect::PrintSelectionInfoMsg() const
 		if( select_col < 0 ){
 			select_col = -select_col;
 		}
-		auto_sprintf( msg, _T("%d Columns * %d lines selected."),
+		auto_sprintf( msg, L"%d Columns * %d lines selected.",
 			select_col, select_line );
 			
 	}
@@ -817,14 +817,14 @@ void CViewSelect::PrintSelectionInfoMsg() const
 		}
 
 #ifdef _DEBUG
-		auto_sprintf( msg, _T("%d %ts (%d lines) selected. [%d:%d]-[%d:%d]"),
+		auto_sprintf( msg, L"%d %ts (%d lines) selected. [%d:%d]-[%d:%d]",
 			select_sum,
-			( bCountByByte ? _T("bytes") : _T("chars") ),
+			( bCountByByte ? L"bytes" : L"chars" ),
 			select_line,
 			m_sSelect.GetFrom().x, m_sSelect.GetFrom().y,
 			m_sSelect.GetTo().x, m_sSelect.GetTo().y );
 #else
-		auto_sprintf( msg, _T("%d %ts (%d lines) selected."), select_sum, ( bCountByByte ? _T("bytes") : _T("chars") ), select_line );
+		auto_sprintf( msg, L"%d %ts (%d lines) selected.", select_sum, ( bCountByByte ? L"bytes" : L"chars" ), select_line );
 #endif
 	}
 	const_cast<CEditView*>(pView)->GetCaret().m_bClearStatus = false;

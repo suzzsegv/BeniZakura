@@ -54,7 +54,7 @@
 #include "CWriteManager.h"
 #include "sakura_rc.h"
 
-#define	SAKURA_DIFF_TEMP_PREFIX	_T("sakura_diff_")
+#define	SAKURA_DIFF_TEMP_PREFIX	L"sakura_diff_"
 
 /*!	差分表示
 	@param	pszFile1	[in]	自ファイル名
@@ -75,8 +75,8 @@
 						からも呼ばれる関数。maru
 */
 void CEditView::ViewDiffInfo( 
-	const TCHAR*	pszFile1,
-	const TCHAR*	pszFile2,
+	const WCHAR*	pszFile1,
+	const WCHAR*	pszFile2,
 	int				nFlgOpt
 )
 /*
@@ -94,20 +94,20 @@ void CEditView::ViewDiffInfo(
 	int		nFlgFile12 = 1;
 
 	/* exeのあるフォルダ */
-	TCHAR	szExeFolder[_MAX_PATH + 1];
+	WCHAR	szExeFolder[_MAX_PATH + 1];
 
-	TCHAR	cmdline[1024];
-	GetExedir( cmdline, _T("diff.exe") );
+	WCHAR	cmdline[1024];
+	GetExedir( cmdline, L"diff.exe" );
 	SplitPath_FolderAndFile( cmdline, szExeFolder, NULL );
 
 	//	From Here Dec. 28, 2002 MIK
 	//	diff.exeの存在チェック
 	if( INVALID_FILE_ATTRIBUTES == ::GetFileAttributes( cmdline ) )
 	{
-		WarningMessage( GetHwnd(), _T( "差分コマンド実行は失敗しました。\n\nDIFF.EXE が見つかりません。" ) );
+		WarningMessage( GetHwnd(), L"差分コマンド実行は失敗しました。\n\nDIFF.EXE が見つかりません。" );
 		return;
 	}
-	cmdline[0] = _T('\0');
+	cmdline[0] = L'\0';
 
 	//今あるDIFF差分を消去する。
 	if( CDiffManager::getInstance()->IsDiffUse() )
@@ -146,14 +146,14 @@ void CEditView::ViewDiffInfo(
 	sui.hStdError   = hStdOutWrite;
 
 	//オプションを作成する
-	TCHAR	szOption[16];	// "-cwbBt"
-	_tcscpy( szOption, _T("-") );
-	if( nFlgOpt & 0x0001 ) _tcscat( szOption, _T("i") );	//-i ignore-case         大文字小文字同一視
-	if( nFlgOpt & 0x0002 ) _tcscat( szOption, _T("w") );	//-w ignore-all-space    空白無視
-	if( nFlgOpt & 0x0004 ) _tcscat( szOption, _T("b") );	//-b ignore-space-change 空白変更無視
-	if( nFlgOpt & 0x0008 ) _tcscat( szOption, _T("B") );	//-B ignore-blank-lines  空行無視
-	if( nFlgOpt & 0x0010 ) _tcscat( szOption, _T("t") );	//-t expand-tabs         TAB-SPACE変換
-	if( _tcscmp( szOption, _T("-") ) == 0 ) _tcscpy( szOption, _T("") );	//オプションなし
+	WCHAR	szOption[16];	// "-cwbBt"
+	wcscpy( szOption, L"-" );
+	if( nFlgOpt & 0x0001 ) wcscat( szOption, L"i" );	//-i ignore-case         大文字小文字同一視
+	if( nFlgOpt & 0x0002 ) wcscat( szOption, L"w" );	//-w ignore-all-space    空白無視
+	if( nFlgOpt & 0x0004 ) wcscat( szOption, L"b" );	//-b ignore-space-change 空白変更無視
+	if( nFlgOpt & 0x0008 ) wcscat( szOption, L"B" );	//-B ignore-blank-lines  空行無視
+	if( nFlgOpt & 0x0010 ) wcscat( szOption, L"t" );	//-t expand-tabs         TAB-SPACE変換
+	if( wcscmp( szOption, L"-" ) == 0 ) wcscpy( szOption, L"" );	//オプションなし
 	if( nFlgOpt & 0x0020 ) nFlgFile12 = 0;
 	else                   nFlgFile12 = 1;
 
@@ -162,7 +162,7 @@ void CEditView::ViewDiffInfo(
 	//OSバージョン取得
 	{
 		// 2010.08.28 Moca システムディレクトリ付加
-		TCHAR szCmdDir[_MAX_PATH];
+		WCHAR szCmdDir[_MAX_PATH];
 
 		//コマンドライン文字列作成(MAX:1024)
 		//	NT    : "<szCmdDir>\cmd.exe" /C ""<szExeFolder>\diff.exe" <szOption> "<旧ファイル>" "<新ファイル>""
@@ -175,32 +175,32 @@ void CEditView::ViewDiffInfo(
 		else{
 			::GetWindowsDirectory(szCmdDir, _countof(szCmdDir));
 		}
-		std::tstring sCmdLine;
-		sCmdLine += _T("\"");
+		std::wstring sCmdLine;
+		sCmdLine += L"\"";
 		sCmdLine += szCmdDir;
-		sCmdLine += ( bNT ? _T("\\cmd.exe\" /C \"\"") : _T("\\command.com\" /C \"") );
+		sCmdLine += ( bNT ? L"\\cmd.exe\" /C \"\"" : L"\\command.com\" /C \"" );
 		sCmdLine += szExeFolder;	//sakura.exeパス
-		sCmdLine += _T("\\");
-		sCmdLine += _T("diff.exe");	//diff.exe
-		sCmdLine += _T("\" ");
+		sCmdLine += L"\\";
+		sCmdLine += L"diff.exe";	//diff.exe
+		sCmdLine += L"\" ";
 		sCmdLine += szOption;		//diffオプション
-		sCmdLine += _T(" \"");
+		sCmdLine += L" \"";
 		sCmdLine += ( nFlgFile12 ? pszFile2 : pszFile1 );
-		sCmdLine += _T("\" \"");
+		sCmdLine += L"\" \"";
 		sCmdLine += ( nFlgFile12 ? pszFile1 : pszFile2 );
-		sCmdLine += ( bNT ? _T("\"\"") : _T("\"") );
+		sCmdLine += ( bNT ? L"\"\"" : L"\"" );
 		if( sCmdLine.length() >= _countof(cmdline) ){
-			WarningMessage( GetHwnd(), _T("差分コマンド実行は失敗しました。\n\nファイルのパスが長すぎます。") );
+			WarningMessage( GetHwnd(), L"差分コマンド実行は失敗しました。\n\nファイルのパスが長すぎます。" );
 			goto finish;
 		}
-		_tcscpy_s( cmdline, _countof(cmdline), sCmdLine.c_str() );
+		wcscpy_s( cmdline, _countof(cmdline), sCmdLine.c_str() );
 	}
 
 	//コマンドライン実行
 	if( CreateProcess( NULL, cmdline, NULL, NULL, TRUE,
 			CREATE_NEW_CONSOLE, NULL, NULL, &sui, &pi ) == FALSE )
 	{
-			WarningMessage( NULL, _T("差分コマンド実行は失敗しました。\n\n%ls"), cmdline );
+			WarningMessage( NULL, L"差分コマンド実行は失敗しました。\n\n%ls", cmdline );
 		goto finish;
 	}
 
@@ -256,7 +256,7 @@ void CEditView::ViewDiffInfo(
 						bFirst = false;
 						if( strncmp( work, "Binary files ", strlen( "Binary files " ) ) == 0 )
 						{
-							WarningMessage( NULL, _T("DIFF差分を行おうとしたファイルはバイナリファイルです。") );
+							WarningMessage( NULL, L"DIFF差分を行おうとしたファイルはバイナリファイルです。" );
 							goto finish;
 						}
 					}
@@ -340,7 +340,7 @@ void CEditView::ViewDiffInfo(
 	{
 		if( !CDiffManager::getInstance()->IsDiffUse() )
 		{
-			InfoMessage( this->GetHwnd(), _T("DIFF差分は見つかりませんでした。") );
+			InfoMessage( this->GetHwnd(), L"DIFF差分は見つかりませんでした。" );
 		}
 	}
 
@@ -474,16 +474,16 @@ void CEditView::AnalyzeDiffInfo(
 	@date	2007/08/??	kobake 機械的にUNICODE化
 	@date	2008/01/26	kobake 出力形式修正
 */
-BOOL CEditView::MakeDiffTmpFile( TCHAR* filename, HWND hWnd )
+BOOL CEditView::MakeDiffTmpFile( WCHAR* filename, HWND hWnd )
 {
 	//一時
-	TCHAR* pszTmpName = _ttempnam( NULL, SAKURA_DIFF_TEMP_PREFIX );
+	WCHAR* pszTmpName = _wtempnam( NULL, SAKURA_DIFF_TEMP_PREFIX );
 	if( NULL == pszTmpName ){
-		WarningMessage( NULL, _T("差分コマンド実行は失敗しました。") );
+		WarningMessage( NULL, L"差分コマンド実行は失敗しました。" );
 		return FALSE;
 	}
 
-	_tcscpy( filename, pszTmpName );
+	wcscpy( filename, pszTmpName );
 	free( pszTmpName );
 
 	//自分か？
@@ -503,7 +503,7 @@ BOOL CEditView::MakeDiffTmpFile( TCHAR* filename, HWND hWnd )
 
 	CTextOutputStream out(filename, CODE_SJIS);
 	if(!out){
-		WarningMessage( NULL, _T("差分コマンド実行は失敗しました。\n\n一時ファイルを作成できません。") );
+		WarningMessage( NULL, L"差分コマンド実行は失敗しました。\n\n一時ファイルを作成できません。" );
 		return FALSE;
 	}
 
@@ -520,8 +520,8 @@ BOOL CEditView::MakeDiffTmpFile( TCHAR* filename, HWND hWnd )
 			// 一時バッファを超える場合はエラー終了
 			if( nLineLen > (int)GetDllShareData().m_sWorkBuffer.GetWorkBufferCount<EDIT_CHAR>() ){
 				out.Close();
-				_tunlink( filename );	//関数の実行に失敗したとき、一時ファイルの削除は関数内で行う。2005.10.29
-				WarningMessage( NULL, _T("差分コマンド実行は失敗しました。\n\n行が長すぎます。") );
+				_wunlink( filename );	//関数の実行に失敗したとき、一時ファイルの削除は関数内で行う。2005.10.29
+				WarningMessage( NULL, L"差分コマンド実行は失敗しました。\n\n行が長すぎます。" );
 				return FALSE;
 			}
 		}
@@ -536,8 +536,8 @@ BOOL CEditView::MakeDiffTmpFile( TCHAR* filename, HWND hWnd )
 		}
 		catch(...){
 			out.Close();
-			_tunlink( filename );	//関数の実行に失敗したとき、一時ファイルの削除は関数内で行う。2005.10.29
-			WarningMessage( NULL, _T("差分コマンド実行は失敗しました。\n\n一時ファイルを作成できません。") );
+			_wunlink( filename );	//関数の実行に失敗したとき、一時ファイルの削除は関数内で行う。2005.10.29
+			WarningMessage( NULL, L"差分コマンド実行は失敗しました。\n\n一時ファイルを作成できません。" );
 		}
 
 		y++;

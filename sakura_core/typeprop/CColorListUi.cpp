@@ -43,7 +43,7 @@
 #include "sakura_rc.h"
 
 //! 一覧のウィンドウに CColorListUi を結び付けるプロパティ名
-static const TCHAR* TSTR_COLORLISTUI = _T("CColorListUi");
+static const WCHAR* TSTR_COLORLISTUI = L"CColorListUi";
 
 /*!
  * CColorListUi::CColorListUi - コンストラクタ
@@ -262,13 +262,13 @@ void CColorListUi::DrawItem(
 	gr.FillMyRect(rc1);
 	/* テキスト */
 	::SetBkMode( gr, TRANSPARENT );
-	::TextOut( gr, rc1.left, rc1.top, pColorInfo->m_szName, _tcslen( pColorInfo->m_szName ) );
+	::TextOut( gr, rc1.left, rc1.top, pColorInfo->m_szName, wcslen( pColorInfo->m_szName ) );
 	if( pColorInfo->m_bBoldFont ){	/* 太字か */
-		::TextOut( gr, rc1.left + 1, rc1.top, pColorInfo->m_szName, _tcslen( pColorInfo->m_szName ) );
+		::TextOut( gr, rc1.left + 1, rc1.top, pColorInfo->m_szName, wcslen( pColorInfo->m_szName ) );
 	}
 	if( pColorInfo->m_bUnderLine ){	/* 下線か */
 		SIZE	sz;
-		::GetTextExtentPoint32( gr, pColorInfo->m_szName, _tcslen( pColorInfo->m_szName ), &sz );
+		::GetTextExtentPoint32( gr, pColorInfo->m_szName, wcslen( pColorInfo->m_szName ), &sz );
 		::MoveToEx( gr, rc1.left,		rc1.bottom - 2, NULL );
 		::LineTo( gr, rc1.left + sz.cx,	rc1.bottom - 2 );
 		::MoveToEx( gr, rc1.left,		rc1.bottom - 1, NULL );

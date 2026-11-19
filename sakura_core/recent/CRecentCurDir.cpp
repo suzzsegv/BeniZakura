@@ -53,30 +53,30 @@ CRecentCurDir::CRecentCurDir()
 
 	@note	取得後のポインタはユーザ管理の構造体にキャストして参照してください。
 */
-const TCHAR* CRecentCurDir::GetItemText( int nIndex ) const
+const WCHAR* CRecentCurDir::GetItemText( int nIndex ) const
 {
 	return *GetItem(nIndex);
 }
 
-bool CRecentCurDir::DataToReceiveType( LPCTSTR* dst, const CCurDirString* src ) const
+bool CRecentCurDir::DataToReceiveType( LPCWSTR* dst, const CCurDirString* src ) const
 {
 	*dst = *src;
 	return true;
 }
 
-bool CRecentCurDir::TextToDataType( CCurDirString* dst, LPCTSTR pszText ) const
+bool CRecentCurDir::TextToDataType( CCurDirString* dst, LPCWSTR pszText ) const
 {
 	CopyItem(dst, pszText);
 	return true;
 }
 
-int CRecentCurDir::CompareItem( const CCurDirString* p1, LPCTSTR p2 ) const
+int CRecentCurDir::CompareItem( const CCurDirString* p1, LPCWSTR p2 ) const
 {
-	return _tcscmp(*p1,p2);
+	return wcscmp(*p1,p2);
 }
 
-void CRecentCurDir::CopyItem( CCurDirString* dst, LPCTSTR src ) const
+void CRecentCurDir::CopyItem( CCurDirString* dst, LPCWSTR src ) const
 {
 	//	バッファに収まらない場合は切り詰める (バッファオーバーフロー防止)
-	_tcsncpy_s( dst->GetBufferPointer(), dst->GetBufferCount(), src, _TRUNCATE );
+	wcsncpy_s( dst->GetBufferPointer(), dst->GetBufferCount(), src, _TRUNCATE );
 }

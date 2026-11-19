@@ -45,7 +45,7 @@ const EEolType gm_pnEolTypeArr[EOL_TYPE_NUM] = {
 //-----------------------------------------------
 
 struct SEolDefinition{
-	const TCHAR*	m_szName;
+	const WCHAR*	m_szName;
 	const WCHAR*	m_szDataW;
 	const ACHAR*	m_szDataA;
 	int				m_nLen;
@@ -54,10 +54,10 @@ struct SEolDefinition{
 	bool StartsWith(const ACHAR* pData, int nLen) const{ return m_nLen<=nLen && 0==auto_memcmp(pData,m_szDataA,m_nLen); }
 };
 static const SEolDefinition g_aEolTable[] = {
-	_T("改行無"),	L"",			"",			0,
-	_T("CRLF"),		L"\x0d\x0a",	"\x0d\x0a",	2,
-	_T("LF"),		L"\x0a",		"\x0a",		1,
-	_T("CR"),		L"\x0d",		"\x0d",		1,
+	L"改行無",	L"",			"",			0,
+	L"CRLF",		L"\x0d\x0a",	"\x0d\x0a",	2,
+	L"LF",		L"\x0a",		"\x0a",		1,
+	L"CR",		L"\x0d",		"\x0d",		1,
 };
 
 
@@ -136,7 +136,7 @@ CLogicInt CEol::GetLen() const
 }
 
 //! 現在のEOLの名称取得
-const TCHAR* CEol::GetName() const
+const WCHAR* CEol::GetName() const
 {
 	return g_aEolTable[ m_eEolType ].m_szName;
 }

@@ -14,7 +14,7 @@ static DWORD s_dwComctl32Version = PACKVERSION(0, 0);
 DWORD GetComctl32Version()
 {
 	if( PACKVERSION(0, 0) == s_dwComctl32Version )
-		s_dwComctl32Version = GetDllVersion(_T("Comctl32.dll"));
+		s_dwComctl32Version = GetDllVersion(L"Comctl32.dll");
 	return s_dwComctl32Version;
 }
 
@@ -62,7 +62,7 @@ void MyInitCommonControls()
 	BOOL (WINAPI *pfnInitCommonControlsEx)(LPINITCOMMONCONTROLSEX);
 
 	BOOL bInit = FALSE;
-	HINSTANCE hDll = ::GetModuleHandle(_T("COMCTL32"));
+	HINSTANCE hDll = ::GetModuleHandle(L"COMCTL32");
 	if( NULL != hDll ){
 		*(FARPROC*)&pfnInitCommonControlsEx = ::GetProcAddress( hDll, "InitCommonControlsEx" );
 		if( NULL != pfnInitCommonControlsEx ){
@@ -151,7 +151,7 @@ bool GetMonitorWorkRect(HMONITOR hMon, LPRECT prcWork, LPRECT prcMonitor/* = NUL
 	@author 鬼
 	@date 2002.09.10 genta CWSH.cppから移動
 */
-bool ReadRegistry(HKEY Hive, const TCHAR* Path, const TCHAR* Item, TCHAR* Buffer, unsigned BufferCount)
+bool ReadRegistry(HKEY Hive, const WCHAR* Path, const WCHAR* Item, WCHAR* Buffer, unsigned BufferCount)
 {
 	bool Result = false;
 	
@@ -161,7 +161,7 @@ bool ReadRegistry(HKEY Hive, const TCHAR* Path, const TCHAR* Item, TCHAR* Buffer
 		auto_memset(Buffer, 0, BufferCount);
 
 		DWORD dwType = REG_SZ;
-		DWORD dwDataLen = (BufferCount - 1) * sizeof(TCHAR); //※バイト単位！
+		DWORD dwDataLen = (BufferCount - 1) * sizeof(WCHAR); //※バイト単位！
 		
 		Result = (RegQueryValueEx(Key, Item, NULL, &dwType, reinterpret_cast<LPBYTE>(Buffer), &dwDataLen) == ERROR_SUCCESS);
 		
@@ -313,7 +313,7 @@ BOOL GetSystemResources(
 	HINSTANCE	hlib;
 	int (CALLBACK *GetFreeSystemResources)( int );
 
-	hlib = ::LoadLibraryExedir( _T("RSRC32.dll") );
+	hlib = ::LoadLibraryExedir( L"RSRC32.dll" );
 	if( (int)hlib > 32 ){
 		GetFreeSystemResources = (int (CALLBACK *)( int ))GetProcAddress(
 			hlib,
@@ -338,38 +338,38 @@ BOOL GetSystemResources(
 #if (WINVER < _WIN32_WINNT_WIN2K)
 // NTではリソースチェックを行わない
 /* システムリソースのチェック */
-BOOL CheckSystemResources( const TCHAR* pszAppName )
+BOOL CheckSystemResources( const WCHAR* pszAppName )
 {
 	int		nSystemResources;
 	int		nUserResources;
 	int		nGDIResources;
-	const TCHAR*	pszResourceName;
+	const WCHAR*	pszResourceName;
 	/* システムリソースの取得 */
 	if( GetSystemResources( &nSystemResources, &nUserResources,	&nGDIResources ) ){
-//		MYTRACE( _T("nSystemResources=%d\n"), nSystemResources );
-//		MYTRACE( _T("nUserResources=%d\n"), nUserResources );
-//		MYTRACE( _T("nGDIResources=%d\n"), nGDIResources );
+//		MYTRACE( L"nSystemResources=%d\n", nSystemResources );
+//		MYTRACE( L"nUserResources=%d\n", nUserResources );
+//		MYTRACE( L"nGDIResources=%d\n", nGDIResources );
 		pszResourceName = NULL;
 		if( nSystemResources <= 5 ){
-			pszResourceName = _T("システム ");
+			pszResourceName = L"システム ";
 		}else
 		if( nUserResources <= 5 ){
-			pszResourceName = _T("ユーザー ");
+			pszResourceName = L"ユーザー ";
 		}else
 		if( nGDIResources <= 5 ){
-			pszResourceName = _T("GDI ");
+			pszResourceName = L"GDI ";
 		}
 		if( NULL != pszResourceName ){
 			ErrorBeep();
 			ErrorBeep();
 			::MYMESSAGEBOX( NULL, MB_OK | /*MB_YESNO | */ MB_ICONSTOP | MB_APPLMODAL | MB_TOPMOST, pszAppName,
-				_T("%tsリソースが極端に不足しています。\n")
-				_T("このまま%tsを起動すると、正常に動作しない可能性があります。\n")
-				_T("新しい%tsの起動を中断します。\n")
-				_T("\n")
-				_T("システム リソース\t残り  %d%%\n")
-				_T("User リソース\t残り  %d%%\n")
-				_T("GDI リソース\t残り  %d%%\n\n"),
+				L"%tsリソースが極端に不足しています。\n"
+				L"このまま%tsを起動すると、正常に動作しない可能性があります。\n"
+				L"新しい%tsの起動を中断します。\n"
+				L"\n"
+				L"システム リソース\t残り  %d%%\n"
+				L"User リソース\t残り  %d%%\n"
+				L"GDI リソース\t残り  %d%%\n\n",
 				pszResourceName,
 				pszAppName,
 				pszAppName,
@@ -401,7 +401,7 @@ CCurrentDirectoryBackupPoint::CCurrentDirectoryBackupPoint()
 	}
 	else{
 		//ng
-		m_szCurDir[0] = _T('\0');
+		m_szCurDir[0] = L'\0';
 	}
 }
 

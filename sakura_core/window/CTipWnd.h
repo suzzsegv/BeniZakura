@@ -37,7 +37,7 @@ public:
 	/*
 	||  Attributes & Operations
 	*/
-	void Show( int, int, const TCHAR*, RECT* pRect = NULL );	/* Tipを表示 */
+	void Show( int, int, const WCHAR*, RECT* pRect = NULL );	/* Tipを表示 */
 	void Hide( void );	/* Tipを消す */
 	void GetWindowSize(LPRECT pRect);		// 2001/06/19 asa-o ウィンドウのサイズを得る
 
@@ -49,7 +49,7 @@ public:
 	}
 
 protected: // 2002/2/10 aroka アクセス権変更
-	LPCTSTR		m_pszClassName;	/* Mutex作成用・ウィンドウクラス名 */
+	LPCWSTR		m_pszClassName;	/* Mutex作成用・ウィンドウクラス名 */
 	HFONT		m_hFont;
 
 public:
@@ -58,14 +58,14 @@ public:
 	int			m_nSearchLine;	/* 辞書のヒット行 */	// 2006.04.10 fon
 	int			m_nSearchDict;	/* ヒット辞書番号 */	// 2006.04.10 fon
 
-	CNativeT	m_cInfo;		/* Tipの内容データ */
+	CNativeW	m_cInfo;		/* Tipの内容データ */
 
 protected:
 	/*
 	||  実装ヘルパ関数
 	*/
-	void ComputeWindowSize( HDC, HFONT, const TCHAR*, RECT* );	/* ウィンドウのサイズを決める */
-	void DrawTipText( HDC, HFONT, const TCHAR* );	/* ウィンドウのテキストを表示 */
+	void ComputeWindowSize( HDC, HFONT, const WCHAR*, RECT* );	/* ウィンドウのサイズを決める */
+	void DrawTipText( HDC, HFONT, const WCHAR* );	/* ウィンドウのテキストを表示 */
 
 	/* 仮想関数 */
 	//	Jan. 9, 2006 genta

@@ -37,7 +37,7 @@ void CViewCommander::Command_GREP_DIALOG( void )
 
 	/* Grepダイアログの表示 */
 	int nRet = GetEditWindow()->m_cDlgGrep.DoModal( G_AppInstance(), m_pCommanderView->GetHwnd(), GetDocument()->m_cDocFile.GetFilePath() );
-//	MYTRACE( _T("nRet=%d\n"), nRet );
+//	MYTRACE( L"nRet=%d\n", nRet );
 	if( !nRet ){
 		return;
 	}
@@ -51,8 +51,8 @@ void CViewCommander::Command_GREP_DIALOG( void )
 void CViewCommander::Command_GREP( void )
 {
 	CNativeW		cmWork1;
-	CNativeT		cmWork2;
-	CNativeT		cmWork3;
+	CNativeW		cmWork2;
+	CNativeW		cmWork3;
 
 	cmWork1.SetString( GetEditWindow()->m_cDlgGrep.m_strText.c_str() );
 	cmWork2.SetString( GetEditWindow()->m_cDlgGrep.m_szFile );
@@ -71,7 +71,7 @@ void CViewCommander::Command_GREP( void )
 	){
 		// 2011.01.23 Grepタイプ別適用
 		if( !GetDocument()->m_cDocEditor.IsModified() && GetDocument()->m_cDocLineMgr.GetLineCount() == 0 ){
-			CTypeConfig cTypeGrep = CDocTypeManager().GetDocumentTypeOfExt( _T("grepout") );
+			CTypeConfig cTypeGrep = CDocTypeManager().GetDocumentTypeOfExt( L"grepout" );
 			GetDocument()->m_cDocType.SetDocumentType( cTypeGrep, false );
 			GetDocument()->m_cDocType.LockDocumentType();
 			GetDocument()->OnChangeType();
@@ -94,7 +94,7 @@ void CViewCommander::Command_GREP( void )
 	else{
 		// 編集ウィンドウの上限チェック
 		if( GetDllShareData().m_sNodes.m_nEditArrNum >= MAX_EDITWINDOWS ){	//最大値修正	//@@@ 2003.05.31 MIK
-			OkMessage( m_pCommanderView->GetHwnd(), _T("編集ウィンドウ数の上限は%dです。\nこれ以上は同時に開けません。"), MAX_EDITWINDOWS );
+			OkMessage( m_pCommanderView->GetHwnd(), L"編集ウィンドウ数の上限は%dです。\nこれ以上は同時に開けません。", MAX_EDITWINDOWS );
 			return;
 		}
 

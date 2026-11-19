@@ -129,8 +129,8 @@ static const wchar_t* g_defaultKeywordSetGasPreprocessor[] = {
 void CType_Asm::InitTypeConfigImp(STypeConfig* pType)
 {
 	//名前と拡張子
-	_tcscpy( pType->m_szTypeName, _T("アセンブラ") );
-	_tcscpy( pType->m_szTypeExts, _T("asm,s") );
+	wcscpy( pType->m_szTypeName, L"アセンブラ" );
+	wcscpy( pType->m_szTypeExts, L"asm,s" );
 
 	//設定
 	pType->m_cLineComment.CopyTo( 0, L";", -1 );							/* 行コメントデリミタ */
@@ -231,11 +231,11 @@ void CDocOutline::MakeTopicList_asm( CFuncInfoArr* pcFuncInfoArr )
 					nFuncId = 52;
 					entry_token = token[ 0 ];
 				//}else
-				//if( my_stricmp( token[ 1 ], _T("macro") ) == 0 ){	//マクロ
+				//if( my_stricmp( token[ 1 ], L"macro" ) == 0 ){	//マクロ
 				//	nFuncId = -1;
 				//	entry_token = token[ 0 ];
 				//}else
-				//if( my_stricmp( token[ 1 ], _T("struc") ) == 0 ){	//構造体
+				//if( my_stricmp( token[ 1 ], L"struc" ) == 0 ){	//構造体
 				//	nFuncId = -1;
 				//	entry_token = token[ 0 ];
 				}

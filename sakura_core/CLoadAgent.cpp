@@ -44,8 +44,8 @@ ECallbackResult CLoadAgent::OnCheckLoad(SLoadInfo* pLoadInfo)
 
 	//フォルダが指定された場合は「ファイルを開く」ダイアログを表示し、実際のファイル入力を促す
 	if( IsDirectory(pLoadInfo->cFilePath) ){
-		std::vector<std::tstring> files;
-		SLoadInfo sLoadInfo(_T(""), CODE_AUTODETECT, false);
+		std::vector<std::wstring> files;
+		SLoadInfo sLoadInfo(L"", CODE_AUTODETECT, false);
 		bool bDlgResult = pcDoc->m_cDocFileOperation.OpenFileDialog(
 			CEditWnd::getInstance()->GetHwnd(),
 			pLoadInfo->cFilePath,	//指定されたフォルダ
@@ -100,7 +100,7 @@ next:
 			//	ここでステータスメッセージを使っても画面に表示されない．
 			TopInfoMessage(
 				CEditWnd::getInstance()->GetHwnd(),
-				_T("%ts\nというファイルは存在しません。\n\nファイルを保存したときに、ディスク上にこのファイルが作成されます。"),	//Mar. 24, 2001 jepro 若干修正
+				L"%ts\nというファイルは存在しません。\n\nファイルを保存したときに、ディスク上にこのファイルが作成されます。",	//Mar. 24, 2001 jepro 若干修正
 				pLoadInfo->cFilePath.GetBufferPointer()
 			);
 		}
@@ -123,9 +123,9 @@ next:
 			if( bLock ) pcDoc->m_cDocFileOperation.DoFileLock(false);
 			ErrorMessage(
 				CEditWnd::getInstance()->GetHwnd(),
-				_T("\'%ts\'\n")
-				_T("というファイルを開けません。\n")
-				_T("読み込みアクセス権がありません。"),
+				L"\'%ts\'\n"
+				L"というファイルを開けません。\n"
+				L"読み込みアクセス権がありません。",
 				pLoadInfo->cFilePath.c_str()
 			);
 			return CALLBACK_INTERRUPT; //ファイルが存在しているのに読み取れない場合は中断
@@ -148,7 +148,7 @@ next:
 				int nRet = MYMESSAGEBOX( CEditWnd::getInstance()->GetHwnd(),
 					MB_ICONQUESTION | MB_YESNO | MB_TOPMOST,
 					GSTR_APPNAME,
-					_T("ファイルサイズが%dMB以上あります。開きますか？"),
+					L"ファイルサイズが%dMB以上あります。開きますか？",
 					GetDllShareData().m_Common.m_sFile.m_nAlertFileSize );
 				if( nRet != IDYES ){
 					return CALLBACK_INTERRUPT;
@@ -255,7 +255,7 @@ void CLoadAgent::OnFinalLoad(ELoadResult eLoadResult)
 	CEditDoc* pcDoc = GetListeningDoc();
 
 	if(eLoadResult==LOADED_FAILURE){
-		pcDoc->SetFilePathAndIcon( _T("") );
+		pcDoc->SetFilePathAndIcon( L"" );
 		pcDoc->m_cDocFile.SetBomDefoult();
 	}
 	if(eLoadResult==LOADED_LOSESOME){

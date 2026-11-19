@@ -50,7 +50,7 @@ public:
 	/*
 	||  Attributes & Operations
 	*/
-	int DoModal( HINSTANCE, HWND, LPARAM, const TCHAR*, bool );	/* モーダルダイアログの表示 */
+	int DoModal( HINSTANCE, HWND, LPARAM, const WCHAR*, bool );	/* モーダルダイアログの表示 */
 
 protected:
 	/*

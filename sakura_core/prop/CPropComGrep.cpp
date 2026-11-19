@@ -152,15 +152,15 @@ int CPropGrep::GetData( HWND hwndDlg )
 
 void CPropGrep::SetRegexpVersion( HWND hwndDlg )
 {
-	TCHAR regexp_dll[_MAX_PATH];
+	WCHAR regexp_dll[_MAX_PATH];
 	
 	::DlgItem_GetText( hwndDlg, IDC_EDIT_REGEXPLIB, regexp_dll, _countof( regexp_dll ));
 	CBregexp breg;
 	if( DLL_SUCCESS != breg.InitDll( regexp_dll ) ){
-		::DlgItem_SetText( hwndDlg, IDC_LABEL_REGEXP_VER, _T("正規表現は使用できません") );
+		::DlgItem_SetText( hwndDlg, IDC_LABEL_REGEXP_VER, L"正規表現は使用できません" );
 		return;
 	}
-	::DlgItem_SetText( hwndDlg, IDC_LABEL_REGEXP_VER, breg.GetVersionT() );
+	::DlgItem_SetText( hwndDlg, IDC_LABEL_REGEXP_VER, breg.GetVersionW() );
 }
 
 

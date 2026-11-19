@@ -37,7 +37,7 @@
 #include "util/window.h"
 
 //タグファイル名	//	@@ 2005.03.31 MIK 定数化
-#define TAG_FILENAME_T        _T("tags")
+#define TAG_FILENAME_T        L"tags"
 
 // 2010.07.22 いくつかcppへ移動
 
@@ -64,12 +64,12 @@ public:
 
 	//	@@ 2005.03.31 MIK 階層パラメータを追加
 //	bool AddParamA( const ACHAR*, const ACHAR*, int, const ACHAR*, const ACHAR*, int depth, int baseDirId );	//登録
-	bool GetSelectedParam( TCHAR *s0, TCHAR *s1, int *n2, TCHAR *s3, TCHAR *s4, int *depth, TCHAR* fileBase  );	//取得
-	void SetFileName( const TCHAR *pszFileName );
+	bool GetSelectedParam( WCHAR *s0, WCHAR *s1, int *n2, WCHAR *s3, WCHAR *s4, int *depth, WCHAR* fileBase  );	//取得
+	void SetFileName( const WCHAR *pszFileName );
 	void SetKeyword( const wchar_t *pszKeyword );	//	@@ 2005.03.31 MIK
 	int  FindDirectTagJump();
 
-	bool GetSelectedFullPathAndLine( TCHAR* fullPath, int count, int* lineNum, int* depth );
+	bool GetSelectedFullPathAndLine( WCHAR* fullPath, int count, int* lineNum, int* depth );
 
 protected:
 	/*
@@ -92,7 +92,7 @@ private:
 	struct STagFindState{
 		int   m_nDepth;
 		int   m_nMatchAll;
-		TCHAR m_szCurPath[1024];
+		WCHAR m_szCurPath[1024];
 	};
 	
 	void	StopTimer( void );
@@ -102,11 +102,11 @@ private:
 	int		GetData( void );	/* ダイアログデータの取得 */
 	void	UpdateData( bool );	//	@@ 2005.03.31 MIK
 
-	TCHAR	*GetNameByType( const TCHAR type, const TCHAR *name );	//タイプを名前に変換する。
+	WCHAR	*GetNameByType( const WCHAR type, const WCHAR *name );	//タイプを名前に変換する。
 	int		SearchBestTag( void );	//もっとも確率の高そうなインデックスを返す。
 	//	@@ 2005.03.31 MIK
-	const TCHAR *GetFileName( void );
-	const TCHAR *GetFilePath( void ){ return m_pszFileName != NULL ? m_pszFileName : _T(""); }
+	const WCHAR *GetFileName( void );
+	const WCHAR *GetFilePath( void ){ return m_pszFileName != NULL ? m_pszFileName : L""; }
 	void Empty( void );
 	void SetTextDir();
 	void FindNext( bool );
@@ -114,7 +114,7 @@ private:
 	int find_key_core(const wchar_t*, bool, bool);
 	int SearchKeywordInTagFile
 		(
-			TCHAR* pTagFileName,
+			WCHAR* pTagFileName,
 			const ACHAR* paszKeyword,
 			int	length,
 			bool bTagJumpAnyWhere,
@@ -126,7 +126,7 @@ private:
 		);
 	int FuzzyMatchInTagFile
 		(
-			TCHAR* pTagFileName,
+			WCHAR* pTagFileName,
 			const ACHAR* paszKeyword,
 			int	length,
 			bool bTagJumpAnyWhere,
@@ -140,9 +140,9 @@ private:
 	bool IsDirectTagJump();
 
 	//! depthから完全パス名(相対パス/絶対パス)を作成する
-	static TCHAR* GetFullPathFromDepth( TCHAR*, int, TCHAR*, const TCHAR*, int );
-	static int CalcMaxUpDirectory( const TCHAR* );
-	static TCHAR* DirUp( TCHAR* dir );
+	static WCHAR* GetFullPathFromDepth( WCHAR*, int, WCHAR*, const WCHAR*, int );
+	static int CalcMaxUpDirectory( const WCHAR* );
+	static WCHAR* DirUp( WCHAR* dir );
 
 private:
 
@@ -151,7 +151,7 @@ private:
 	bool	m_bDirectTagJump;
 
 	int		m_nIndex;		//!< 選択された要素番号
-	TCHAR	*m_pszFileName;	//!< 編集中のファイル名
+	WCHAR	*m_pszFileName;	//!< 編集中のファイル名
 	wchar_t	*m_pszKeyword;	//!< キーワード(DoModalのlParam!=0を指定した場合に指定できる)
 	int		m_nLoop;		//!< さかのぼれる階層数
 	CSortedTagJumpList*	m_pcList;	//!< タグジャンプ情報

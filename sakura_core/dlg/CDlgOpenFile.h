@@ -59,16 +59,16 @@ public:
 	void Create(
 		HINSTANCE					hInstance,
 		HWND						hwndParent,
-		const TCHAR*				pszUserWildCard,
-		const TCHAR*				pszDefaultPath,
-		const std::vector<LPCTSTR>& vMRU			= std::vector<LPCTSTR>(),
-		const std::vector<LPCTSTR>& vOPENFOLDER		= std::vector<LPCTSTR>()
+		const WCHAR*				pszUserWildCard,
+		const WCHAR*				pszDefaultPath,
+		const std::vector<LPCWSTR>& vMRU			= std::vector<LPCWSTR>(),
+		const std::vector<LPCWSTR>& vOPENFOLDER		= std::vector<LPCWSTR>()
 	);
 
 	//操作
-	bool DoModal_GetOpenFileName( TCHAR*, bool bSetCurDir = false );	/* 開くダイアログ モーダルダイアログの表示 */	//2002/08/21 moca	引数追加
-	bool DoModal_GetSaveFileName( TCHAR*, bool bSetCurDir = false );	/* 保存ダイアログ モーダルダイアログの表示 */	//2002/08/21 30,2002 moca	引数追加
-	bool DoModalOpenDlg( SLoadInfo* pLoadInfo, std::vector<std::tstring>* );	/* 開くダイアグ モーダルダイアログの表示 */
+	bool DoModal_GetOpenFileName( WCHAR*, bool bSetCurDir = false );	/* 開くダイアログ モーダルダイアログの表示 */	//2002/08/21 moca	引数追加
+	bool DoModal_GetSaveFileName( WCHAR*, bool bSetCurDir = false );	/* 保存ダイアログ モーダルダイアログの表示 */	//2002/08/21 30,2002 moca	引数追加
+	bool DoModalOpenDlg( SLoadInfo* pLoadInfo, std::vector<std::wstring>* );	/* 開くダイアグ モーダルダイアログの表示 */
 	bool DoModalSaveDlg( SSaveInfo*	pSaveInfo, bool bSimpleMode );	/* 保存ダイアログ モーダルダイアログの表示 */
 
 public:

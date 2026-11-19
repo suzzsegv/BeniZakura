@@ -25,8 +25,8 @@
 
 //	@date 2002.2.17 YAZAKI CShareDataのインスタンスは、CProcessにひとつあるのみ。
 CSplitterWnd::CSplitterWnd()
-: CWnd(_T("::CSplitterWnd"))
-, m_pszClassName(_T("SplitterWndClass"))	/* クラス名 */
+: CWnd(L"::CSplitterWnd")
+, m_pszClassName(L"SplitterWndClass")	/* クラス名 */
 , m_nActivePane(0)					/* アクティブなペイン 0-3 */
 , m_nAllSplitRows(1)					/* 分割行数 */
 , m_nAllSplitCols(1)					/* 分割桁数 */
@@ -79,7 +79,7 @@ HWND CSplitterWnd::Create( HINSTANCE hInstance, HWND hwndParent, void* pCEditWnd
 		m_pszClassName// Pointer to a null-terminated string or is an atom.
 	);
 	if( 0 == atWork ){
-		ErrorMessage( NULL, _T("SplitterWndクラスの登録に失敗しました。") );
+		ErrorMessage( NULL, L"SplitterWndクラスの登録に失敗しました。" );
 	}
 
 	/* 基底クラスメンバ呼び出し */
@@ -966,7 +966,7 @@ LRESULT CSplitterWnd::OnMouseMove( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
 		}
 		/* 分割トラッカーの表示 */
 		DrawSplitter( xPos, yPos, TRUE );
-//		MYTRACE( _T("xPos=%d yPos=%d \n"), xPos, yPos );
+//		MYTRACE( L"xPos=%d yPos=%d \n", xPos, yPos );
 	}
 	return 0L;
 }
@@ -1091,7 +1091,7 @@ LRESULT CSplitterWnd::DispatchEvent_WM_APP( HWND hwnd, UINT uMsg, WPARAM wParam,
 	case MYWM_DOSPLIT:
 		nPosX = (int)wParam;
 		nPosY = (int)lParam;
-//		MYTRACE( _T("MYWM_DOSPLIT nPosX=%d nPosY=%d\n"), nPosX, nPosY );
+//		MYTRACE( L"MYWM_DOSPLIT nPosX=%d nPosY=%d\n", nPosX, nPosY );
 
 		/* ウィンドウの分割 */
 		if( 0 != m_nHSplitPos ){

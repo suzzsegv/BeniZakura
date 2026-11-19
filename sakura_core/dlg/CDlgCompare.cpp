@@ -51,9 +51,9 @@ int CDlgCompare::DoModal(
 	HINSTANCE		hInstance,
 	HWND			hwndParent,
 	LPARAM			lParam,
-	const TCHAR*	pszPath,
+	const WCHAR*	pszPath,
 	bool			bIsModified,
-	TCHAR*			pszCompareLabel,
+	WCHAR*			pszCompareLabel,
 	HWND*			phwndCompareWnd
 )
 {
@@ -113,7 +113,7 @@ void CDlgCompare::SetData( void )
 	EditNode*		pEditNodeArr;
 	EditInfo*		pfi;
 	int				i;
-	TCHAR			szMenu[512];
+	WCHAR			szMenu[512];
 	int				nItem;
 
 	hwndList = :: GetDlgItem( GetHwnd(), IDC_LIST_FILES );
@@ -150,7 +150,7 @@ void CDlgCompare::SetData( void )
 
 			// 横幅を計算する
 			SIZE sizeExtent;
-			if( ::GetTextExtentPoint32( hDC, szMenu, _tcslen(szMenu), &sizeExtent ) && sizeExtent.cx > nExtent ){
+			if( ::GetTextExtentPoint32( hDC, szMenu, wcslen(szMenu), &sizeExtent ) && sizeExtent.cx > nExtent ){
 				nExtent = sizeExtent.cx;
 			}
 		}

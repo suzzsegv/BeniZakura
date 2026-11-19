@@ -23,9 +23,9 @@
 
 /* CTipWndクラス デストラクタ */
 CTipWnd::CTipWnd()
-: CWnd(_T("::CTipWnd"))
+: CWnd(L"::CTipWnd")
 {
-	m_pszClassName = _T("CTipWnd");
+	m_pszClassName = L"CTipWnd";
 	m_hFont = NULL;
 	m_KeyWasHit = FALSE;	/* キーがヒットしたか */
 	return;
@@ -98,7 +98,7 @@ void CTipWnd::AfterCreateWindow( void )
 }
 
 /* Tipを表示 */
-void CTipWnd::Show( int nX, int nY, const TCHAR* szText, RECT* pRect )
+void CTipWnd::Show( int nX, int nY, const WCHAR* szText, RECT* pRect )
 {
 	HDC		hdc;
 	RECT	rc;
@@ -106,7 +106,7 @@ void CTipWnd::Show( int nX, int nY, const TCHAR* szText, RECT* pRect )
 	if( NULL != szText ){
 		m_cInfo.SetString( szText );
 	}
-	const TCHAR* pszInfo = m_cInfo.GetStringPtr();
+	const WCHAR* pszInfo = m_cInfo.GetStringPtr();
 
 	hdc = ::GetDC( GetHwnd() );
 
@@ -133,7 +133,7 @@ void CTipWnd::Show( int nX, int nY, const TCHAR* szText, RECT* pRect )
 void CTipWnd::ComputeWindowSize(
 	HDC				hdc,
 	HFONT			hFont,
-	const TCHAR*	pszText,
+	const WCHAR*	pszText,
 	RECT*			pRect
 )
 {
@@ -150,22 +150,22 @@ void CTipWnd::ComputeWindowSize(
 
 	nCurMaxWidth = 0;
 	nCurHeight = 0;
-	nTextLength = _tcslen( pszText );
+	nTextLength = wcslen( pszText );
 	nBgn = 0;
 	for( i = 0; i <= nTextLength; ++i ){
 		// 2005-09-02 D.S.Koba GetSizeOfChar
-		nCharChars = CNativeT::GetSizeOfChar( pszText, nTextLength, i );
-		if( ( 1 == nCharChars && _T('\\') == pszText[i] && _T('n') == pszText[i + 1]) || _T('\0') == pszText[i] ){
+		nCharChars = CNativeW::GetSizeOfChar( pszText, nTextLength, i );
+		if( ( 1 == nCharChars && L'\\' == pszText[i] && L'n' == pszText[i + 1]) || L'\0' == pszText[i] ){
 			if( 0 < i - nBgn ){
-				TCHAR*	pszWork = new TCHAR[i - nBgn + 1];
+				WCHAR*	pszWork = new WCHAR[i - nBgn + 1];
 				auto_memcpy( pszWork, &pszText[nBgn], i - nBgn );
-				pszWork[i - nBgn] = _T('\0');
+				pszWork[i - nBgn] = L'\0';
 
 				rc.left = 0;
 				rc.top = 0;
 				rc.right = ::GetSystemMetrics( SM_CXSCREEN );
 				rc.bottom = 0;
-				::DrawText( hdc, pszWork, _tcslen(pszWork), &rc,
+				::DrawText( hdc, pszWork, wcslen(pszWork), &rc,
 					DT_CALCRECT | DT_EXTERNALLEADING | DT_EXPANDTABS | DT_WORDBREAK /*| DT_TABSTOP | (0x0000ff00 & ( 4 << 8 ))*/
 				);
 				delete [] pszWork;
@@ -173,7 +173,7 @@ void CTipWnd::ComputeWindowSize(
 					nCurMaxWidth = rc.right;
 				}
 			}else{
-				::DrawText( hdc, _T(" "), 1, &rc,
+				::DrawText( hdc, L" ", 1, &rc,
 					DT_CALCRECT | DT_EXTERNALLEADING | DT_EXPANDTABS | DT_WORDBREAK /*| DT_TABSTOP | (0x0000ff00 & ( 4 << 8 ))*/
 				);
 			}
@@ -203,7 +203,7 @@ void CTipWnd::ComputeWindowSize(
 void CTipWnd::DrawTipText(
 	HDC				hdc,
 	HFONT			hFont,
-	const TCHAR*	pszText
+	const WCHAR*	pszText
 )
 {
 	int			nTextLength;
@@ -223,24 +223,24 @@ void CTipWnd::DrawTipText(
 
 	nCurMaxWidth = 0;
 	nCurHeight = 0;
-	nTextLength = _tcslen( pszText );
+	nTextLength = wcslen( pszText );
 	nBgn = 0;
 	for( i = 0; i <= nTextLength; ++i ){
 //		nCharChars = &pszText[i] - CMemory::MemCharPrev( pszText, nTextLength, &pszText[i] );
 		// 2005-09-02 D.S.Koba GetSizeOfChar
-		nCharChars = CNativeT::GetSizeOfChar( pszText, nTextLength, i );
-		if( ( 1 == nCharChars && _T('\\') == pszText[i] && _T('n') == pszText[i + 1]) || _T('\0') == pszText[i] ){
+		nCharChars = CNativeW::GetSizeOfChar( pszText, nTextLength, i );
+		if( ( 1 == nCharChars && L'\\' == pszText[i] && L'n' == pszText[i + 1]) || L'\0' == pszText[i] ){
 			if( 0 < i - nBgn ){
-				TCHAR*	pszWork;
-				pszWork = new TCHAR[i - nBgn + 1];
+				WCHAR*	pszWork;
+				pszWork = new WCHAR[i - nBgn + 1];
 				auto_memcpy( pszWork, &pszText[nBgn], i - nBgn );
-				pszWork[i - nBgn] = _T('\0');
+				pszWork[i - nBgn] = L'\0';
 
 				rc.left = 4;
 				rc.top = 4 + nCurHeight;
 				rc.right = ::GetSystemMetrics( SM_CXSCREEN );
 				rc.bottom = rc.top + 200;
-				nCurHeight += ::DrawText( hdc, pszWork, _tcslen(pszWork), &rc,
+				nCurHeight += ::DrawText( hdc, pszWork, wcslen(pszWork), &rc,
 					DT_EXTERNALLEADING | DT_EXPANDTABS | DT_WORDBREAK /*| DT_TABSTOP | (0x0000ff00 & ( 4 << 8 ))*/
 				);
 				delete [] pszWork;
@@ -252,7 +252,7 @@ void CTipWnd::DrawTipText(
 				rc.top = 4 + nCurHeight;
 				rc.right = ::GetSystemMetrics( SM_CXSCREEN );
 				rc.bottom = rc.top + 200;
-				nCurHeight += ::DrawText( hdc, _T(" "), 1, &rc,
+				nCurHeight += ::DrawText( hdc, L" ", 1, &rc,
 					DT_EXTERNALLEADING | DT_EXPANDTABS | DT_WORDBREAK /*| DT_TABSTOP | (0x0000ff00 & ( 4 << 8 ))*/
 				);
 			}
@@ -306,7 +306,7 @@ LRESULT CTipWnd::OnPaint( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l_Param )
 // 2001/06/19 Start by asa-o: ウィンドウのサイズを得る
 void CTipWnd::GetWindowSize(LPRECT pRect)
 {
-	const TCHAR*	pszText;
+	const WCHAR*	pszText;
 
 	HDC		hdc = ::GetDC( GetHwnd() );
 

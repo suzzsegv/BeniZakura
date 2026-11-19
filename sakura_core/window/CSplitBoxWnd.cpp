@@ -17,7 +17,7 @@
 
 
 CSplitBoxWnd::CSplitBoxWnd()
-: CWnd(_T("::CSplitBoxWnd"))
+: CWnd(L"::CSplitBoxWnd")
 {
 	m_pszClassName = NULL;
 	m_bVertical = TRUE;	/* 垂直分割ボックスか */
@@ -40,11 +40,11 @@ HWND CSplitBoxWnd::Create( HINSTANCE hInstance, HWND hwndParent, int bVertical )
 
 	/* ウィンドウクラス作成 */
 	if( bVertical ){
-		m_pszClassName = _T("VSplitBoxWnd");
+		m_pszClassName = L"VSplitBoxWnd";
 		hCursor = ::LoadCursor( NULL, IDC_SIZENS );
 	}
 	else{
-		m_pszClassName = _T("HSplitBoxWnd");
+		m_pszClassName = L"HSplitBoxWnd";
 		hCursor = ::LoadCursor( NULL, IDC_SIZEWE );
 	}
 	RegisterWC(
@@ -268,7 +268,7 @@ LRESULT CSplitBoxWnd::OnMouseMove( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
 		yPos = po.y;
 
 		if( yPos != m_nDragPosY ){
-//			MYTRACE( _T("xPos=%d yPos=%d\n"), xPos, yPos );
+//			MYTRACE( L"xPos=%d yPos=%d\n", xPos, yPos );
 
 			hdc = ::GetDC( ::GetParent( GetParentHwnd() ) );
 			::SetBkColor( hdc, RGB(0, 0, 0) );
@@ -322,7 +322,7 @@ LRESULT CSplitBoxWnd::OnMouseMove( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
 		yPos = po.y;
 
 		if( xPos != m_nDragPosX ){
-//			MYTRACE( _T("xPos=%d yPos=%d\n"), xPos, yPos );
+//			MYTRACE( L"xPos=%d yPos=%d\n", xPos, yPos );
 
 			hdc = ::GetDC( ::GetParent( GetParentHwnd() ) );
 			::SetBkColor( hdc, RGB(0, 0, 0) );

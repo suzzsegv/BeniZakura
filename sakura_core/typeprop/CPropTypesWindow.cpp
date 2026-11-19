@@ -20,18 +20,18 @@ using namespace std;
 
 
 TYPE_NAME<int> ImeSwitchArr[] = {
-	{ 0, _T("そのまま") },
-	{ 1, _T("常にON") },
-	{ 2, _T("常にOFF") },
+	{ 0, L"そのまま" },
+	{ 1, L"常にON" },
+	{ 2, L"常にOFF" },
 };
 
 //	Nov. 20, 2000 genta
 TYPE_NAME<int> ImeStateArr[] = {
-	{ 0, _T("標準設定") },
-	{ 1, _T("全角") },
-	{ 2, _T("全角ひらがな") },
-	{ 3, _T("全角カタカナ") },
-	{ 4, _T("無変換") }
+	{ 0, L"標準設定" },
+	{ 1, L"全角" },
+	{ 2, L"全角ひらがな" },
+	{ 3, L"全角カタカナ" },
+	{ 4, L"無変換" }
 };
 
 static const wchar_t* aszEolStr[] = {
@@ -102,7 +102,7 @@ INT_PTR CPropTypesWindow::DispatchEvent(
 			case IDC_BUTTON_BACKIMG_PATH_SEL:
 				{
 					CDialog::SelectFile(hwndDlg, GetDlgItem(hwndDlg, IDC_EDIT_BACKIMG_PATH),
-						_T("*.bmp;*.jpg;*.jpeg"), true );
+						L"*.bmp;*.jpg;*.jpeg", true );
 				}
 				return TRUE;
 			//	From Here Sept. 10, 2000 JEPRO
@@ -124,7 +124,7 @@ INT_PTR CPropTypesWindow::DispatchEvent(
 		pMNUD  = (NM_UPDOWN*)lParam;
 		switch( pNMHDR->code ){
 		case PSN_KILLACTIVE:
-//			MYTRACE( _T("color PSN_KILLACTIVE\n") );
+//			MYTRACE( L"color PSN_KILLACTIVE\n" );
 			/* ダイアログデータの取得 window */
 			GetData( hwndDlg );
 			return TRUE;
@@ -140,7 +140,7 @@ INT_PTR CPropTypesWindow::DispatchEvent(
 }
 
 
-void CPropTypesWindow::SetCombobox(HWND hwndWork, const TCHAR** pszLabels, int nCount, int select)
+void CPropTypesWindow::SetCombobox(HWND hwndWork, const WCHAR** pszLabels, int nCount, int select)
 {
 	Combo_ResetContent(hwndWork);
 	for(int i = 0; i < nCount; ++i ){
@@ -253,16 +253,16 @@ void CPropTypesWindow::SetData( HWND hwndDlg )
 
 	DlgItem_SetText( hwndDlg, IDC_EDIT_BACKIMG_PATH, m_Types.m_szBackImgPath );
 	{
-		const TCHAR* posNames[] ={
-			_T("左上"),
-			_T("右上"),
-			_T("左下"),
-			_T("右下"),
-			_T("中央"),
-			_T("中央上"),
-			_T("中央下"),
-			_T("中央左"),
-			_T("中央右"),
+		const WCHAR* posNames[] ={
+			L"左上",
+			L"右上",
+			L"左下",
+			L"右下",
+			L"中央",
+			L"中央上",
+			L"中央下",
+			L"中央左",
+			L"中央右",
 		};
 		/*BGIMAGE_TOP_LEFT .. */
 		int nCount = _countof(posNames);

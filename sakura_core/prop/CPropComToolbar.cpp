@@ -61,11 +61,11 @@ int Listbox_INSERTDATA(
 {
 	int nIndex1 = List_InsertItemData( hWnd, index, 1 );
 	if( nIndex1 == LB_ERR || nIndex1 == LB_ERRSPACE ){
-		TopErrorMessage( NULL, _T("Toolbar Dialog: 要素の挿入に失敗しました。(%d:%d)"), index, nIndex1 );
+		TopErrorMessage( NULL, L"Toolbar Dialog: 要素の挿入に失敗しました。(%d:%d)", index, nIndex1 );
 		return nIndex1;
 	}
 	else if( List_SetItemData( hWnd, nIndex1, value ) == LB_ERR ){
-		TopErrorMessage( NULL, _T("Toolbar Dialog: INS: 値の設定に失敗しました。:%d"), nIndex1 );
+		TopErrorMessage( NULL, L"Toolbar Dialog: INS: 値の設定に失敗しました。:%d", nIndex1 );
 		return LB_ERR;
 	}
 	return nIndex1;
@@ -93,11 +93,11 @@ int Listbox_ADDDATA(
 {
 	int nIndex1 = List_AddItemData( hWnd, 1 );
 	if( nIndex1 == LB_ERR || nIndex1 == LB_ERRSPACE ){
-		TopErrorMessage( NULL, _T("Toolbar Dialog: 要素の追加に失敗しました。(%d)"), nIndex1 );
+		TopErrorMessage( NULL, L"Toolbar Dialog: 要素の追加に失敗しました。(%d)", nIndex1 );
 		return nIndex1;
 	}
 	else if( List_SetItemData( hWnd, nIndex1, value ) == LB_ERR ){
-		TopErrorMessage( NULL, _T("Toolbar Dialog: ADD: 値の設定に失敗しました。:%d"), nIndex1 );
+		TopErrorMessage( NULL, L"Toolbar Dialog: ADD: 値の設定に失敗しました。:%d", nIndex1 );
 		return LB_ERR;
 	}
 	return nIndex1;
@@ -180,7 +180,7 @@ INT_PTR CPropToolbar::DispatchEvent(
 		pMNUD  = (NM_UPDOWN*)lParam;
 		switch( pNMHDR->code ){
 		case PSN_KILLACTIVE:
-//			MYTRACE( _T("PROP_TOOLBAR PSN_KILLACTIVE\n") );
+//			MYTRACE( L"PROP_TOOLBAR PSN_KILLACTIVE\n" );
 			/* ダイアログデータの取得 Toolbar */
 			GetData( hwndDlg );
 			return TRUE;
@@ -317,7 +317,7 @@ INT_PTR CPropToolbar::DispatchEvent(
 					//	ここでは i != 0 だとは思うけど、一応保険です。
 					nIndex1 = ::Listbox_INSERTDATA( hwndResList, nIndex1, i );
 					if( nIndex1 == LB_ERR || nIndex1 == LB_ERRSPACE ){
-						TopErrorMessage( NULL, _T("Toolbar Dialog: 要素の追加に失敗しました。:%d"), nIndex1 );
+						TopErrorMessage( NULL, L"Toolbar Dialog: 要素の追加に失敗しました。:%d", nIndex1 );
 						break;
 					}
 					//	To Here Apr. 13, 2002 genta
@@ -338,7 +338,7 @@ INT_PTR CPropToolbar::DispatchEvent(
 					//	From Here Apr. 13, 2002 genta
 					nIndex1 = ::Listbox_INSERTDATA( hwndResList, nIndex1 - 1, i );
 					if( nIndex1 == LB_ERR || nIndex1 == LB_ERRSPACE ){
-						TopErrorMessage( NULL, _T("Toolbar Dialog: 要素の追加に失敗しました。:%d"), nIndex1 );
+						TopErrorMessage( NULL, L"Toolbar Dialog: 要素の追加に失敗しました。:%d", nIndex1 );
 						break;
 					}
 					//	To Here Apr. 13, 2002 genta
@@ -360,7 +360,7 @@ INT_PTR CPropToolbar::DispatchEvent(
 					//	From Here Apr. 13, 2002 genta
 					nIndex1 = ::Listbox_INSERTDATA( hwndResList, nIndex1 + 1, i );
 					if( nIndex1 == LB_ERR || nIndex1 == LB_ERRSPACE ){
-						TopErrorMessage( NULL, _T("Toolbar Dialog: 要素の追加に失敗しました。:%d"), nIndex1 );
+						TopErrorMessage( NULL, L"Toolbar Dialog: 要素の追加に失敗しました。:%d", nIndex1 );
 						break;
 					}
 					List_SetCurSel( hwndResList, nIndex1 );

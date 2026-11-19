@@ -95,7 +95,6 @@ const WCHAR* wcsistr( const WCHAR* s1, const WCHAR* s2 );
 const ACHAR* stristr( const ACHAR* s1, const ACHAR* s2 );
 inline WCHAR* wcsistr( WCHAR* s1, const WCHAR* s2 ){ return const_cast<WCHAR*>(wcsistr(static_cast<const WCHAR*>(s1),s2)); }
 inline ACHAR* stristr( ACHAR* s1, const ACHAR* s2 ){ return const_cast<ACHAR*>(stristr(static_cast<const ACHAR*>(s1),s2)); }
-#define _tcsistr wcsistr
 
 //大文字小文字を区別せずに文字列を検索（日本語対応版）
 const char* strchr_j(const char* s1, char c);				//!< strchr の日本語対応版。
@@ -106,7 +105,6 @@ inline char* strchr_j ( char* s1, char c         ){ return const_cast<char*>(str
 inline char* strichr_j( char* s1, char c         ){ return const_cast<char*>(strichr_j((const char*)s1, c )); }
 inline char* strstr_j ( char* s1, const char* s2 ){ return const_cast<char*>(strstr_j ((const char*)s1, s2)); }
 inline char* stristr_j( char* s1, const char* s2 ){ return const_cast<char*>(stristr_j((const char*)s1, s2)); }
-#define _tcsistr_j wcsistr
 
 template <class CHAR_TYPE>
 CHAR_TYPE* my_strtok(
@@ -153,13 +151,6 @@ void wcsReplace(wchar_t* pStr, wchar_t oldChar, wchar_t newChar);
 
 	size_t strnlen(const char *str, size_t num);
 	size_t wcsnlen(const wchar_t *str, size_t num);
-#define _tcscpy_s wcscpy_s
-#define _tcsncpy_s wcsncpy_s
-#define _tcscat_s wcscat_s
-#define _tcsnlen wcsnlen
-#define _tcsncicmp _wcsnicmp
-#define _ttempnam _wtempnam
-#define _tWinMain wWinMain
 #endif
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
@@ -228,10 +219,10 @@ inline       WCHAR* auto_strchr(      WCHAR* str, WCHAR c){ return ::wcschr  (st
 //変換系
 inline long auto_atol(const ACHAR* str){ return atol(str);  }
 inline long auto_atol(const WCHAR* str){ return _wtol(str); }
-ACHAR* tcstostr( ACHAR* dest, const TCHAR* src, size_t count );
-WCHAR* tcstostr( WCHAR* dest, const TCHAR* src, size_t count );
-TCHAR* strtotcs( TCHAR* dest, const ACHAR* src, size_t count );
-TCHAR* strtotcs( TCHAR* dest, const WCHAR* src, size_t count );
+ACHAR* tcstostr( ACHAR* dest, const WCHAR* src, size_t count );
+WCHAR* tcstostr( WCHAR* dest, const WCHAR* src, size_t count );
+WCHAR* strtotcs( WCHAR* dest, const ACHAR* src, size_t count );
+WCHAR* strtotcs( WCHAR* dest, const WCHAR* src, size_t count );
 
 //印字系
 inline int auto_snprintf_s(ACHAR* buf, size_t count, const ACHAR* format, ...)   { va_list v; va_start(v,format); int ret=tchar_vsnprintf_s (buf,count,format,v); va_end(v); return ret; }
@@ -312,13 +303,6 @@ char*	wcstombs_new(const wchar_t* pSrc,int nSrcLen); //戻り値はnew[]で確�
 void	wcstombs_vector(const wchar_t* pSrc, std::vector<char>* ret); //戻り値はvectorとして返す。
 void	wcstombs_vector(const wchar_t* pSrc, int nSrcLen, std::vector<char>* ret); //戻り値はvectorとして返す。
 
-//TCHAR
-size_t _tcstowcs(WCHAR* wszDst, const TCHAR* tszSrc, size_t nDstCount);
-size_t _tcstombs(CHAR*  szDst,  const TCHAR* tszSrc, size_t nDstCount);
-size_t _wcstotcs(TCHAR* tszDst, const WCHAR* wszSrc, size_t nDstCount);
-size_t _mbstotcs(TCHAR* tszDst, const CHAR*  szSrc,  size_t nDstCount);
-int _tctomb(const TCHAR* p,ACHAR* mb);
-int _tctowc(const TCHAR* p,WCHAR* wc);
 
 
 
@@ -344,9 +328,6 @@ inline int wcsncmp_auto(const wchar_t* strData1, const wchar_t* szData2)
 //strncmpの文字数指定をliteralData2の大きさで取得してくれる版
 #define strncmp_literal(strData1, literalData2) \
 	::strncmp(strData1, literalData2, _countof(literalData2) - 1 ) //※終端ヌルを含めないので、_countofからマイナス1する
-
-//TCHAR
-#define _tcsncmp_literal wcsncmp_literal
 
 #endif /* SAKURA_STRING_EX_29EB1DD7_7259_4D6C_A651_B9174E5C3D3C9_H_ */
 /*[EOF]*/

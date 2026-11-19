@@ -501,8 +501,8 @@ protected:
 	int  GetData( HWND );	//!< ダイアログデータの取得
 
 private:
-	static int SetListViewItem_FILENAME( HWND hListView, int, LPTSTR, LPTSTR, bool );//!<ListViewのアイテムを設定
-	static void GetListViewItem_FILENAME( HWND hListView, int, LPTSTR, LPTSTR );//!<ListViewのアイテムを取得
+	static int SetListViewItem_FILENAME( HWND hListView, int, LPWSTR, LPWSTR, bool );//!<ListViewのアイテムを設定
+	static void GetListViewItem_FILENAME( HWND hListView, int, LPWSTR, LPWSTR );//!<ListViewのアイテムを取得
 	static int MoveListViewItem_FILENAME( HWND hListView, int, int );//!<ListViewのアイテムを移動する
 };
 

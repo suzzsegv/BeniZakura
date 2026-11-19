@@ -11,7 +11,7 @@ namespace ApiWrap{
 		LRESULT nCount = SendMessage( hwndList, LB_GETTEXTLEN, (WPARAM)nIndex, (LPARAM)0);
 		if( nCount == LB_ERR )
 			return LB_ERR;
-		return SendMessage( hwndList, LB_GETTEXT, (WPARAM)nIndex, (LPARAM)(TCHAR*)TcharReceiver<ACHAR>(str,nCount+1) );	// +1: NULL 文字分
+		return SendMessage( hwndList, LB_GETTEXT, (WPARAM)nIndex, (LPARAM)(WCHAR*)TcharReceiver<ACHAR>(str,nCount+1) );	// +1: NULL 文字分
 	}
 
 	LRESULT List_GetText(HWND hwndList, int nIndex, WCHAR* str)
@@ -19,7 +19,7 @@ namespace ApiWrap{
 		LRESULT nCount = SendMessage( hwndList, LB_GETTEXTLEN, (WPARAM)nIndex, (LPARAM)0);
 		if( nCount == LB_ERR )
 			return LB_ERR;
-		return SendMessage( hwndList, LB_GETTEXT, (WPARAM)nIndex, (LPARAM)(TCHAR*)TcharReceiver<WCHAR>(str,nCount+1) );	// +1: NULL 文字分
+		return SendMessage( hwndList, LB_GETTEXT, (WPARAM)nIndex, (LPARAM)(WCHAR*)TcharReceiver<WCHAR>(str,nCount+1) );	// +1: NULL 文字分
 	}
 
 	UINT DlgItem_GetText(HWND hwndDlg, int nIDDlgItem, ACHAR* str, int nMaxCount)

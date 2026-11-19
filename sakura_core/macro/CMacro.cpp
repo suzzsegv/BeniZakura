@@ -441,7 +441,7 @@ void CMacro::HandleCommand(
 	const int			ArgSize
 )
 {
-	const TCHAR EXEC_ERROR_TITLE[] = _T("Macro実行エラー");
+	const WCHAR EXEC_ERROR_TITLE[] = L"Macro実行エラー";
 
 	switch ( LOWORD(Index) ) 
 	{
@@ -453,7 +453,7 @@ void CMacro::HandleCommand(
 				NULL,
 				MB_OK | MB_ICONSTOP | MB_TOPMOST,
 				EXEC_ERROR_TITLE,
-				_T("挿入すべき文字コードが指定されていません．")
+				L"挿入すべき文字コードが指定されていません．"
 			);
 			break;
 		}
@@ -479,7 +479,7 @@ void CMacro::HandleCommand(
 				NULL,
 				MB_OK | MB_ICONSTOP | MB_TOPMOST,
 				EXEC_ERROR_TITLE,
-				_T("入力改行コードが指定されていません．")
+				L"入力改行コードが指定されていません．"
 			);
 			break;
 		}
@@ -504,7 +504,7 @@ void CMacro::HandleCommand(
 				NULL,
 				MB_OK | MB_ICONSTOP | MB_TOPMOST,
 				EXEC_ERROR_TITLE,
-				_T("引数(文字列)が指定されていません．")
+				L"引数(文字列)が指定されていません．"
 			);
 			break;
 		}
@@ -521,7 +521,7 @@ void CMacro::HandleCommand(
 				NULL,
 				MB_OK | MB_ICONSTOP | MB_TOPMOST,
 				EXEC_ERROR_TITLE,
-				_T("引数(文字列)が指定されていません．")
+				L"引数(文字列)が指定されていません．"
 			);
 			break;
 		}
@@ -552,7 +552,7 @@ void CMacro::HandleCommand(
 				NULL,
 				MB_OK | MB_ICONSTOP | MB_TOPMOST,
 				EXEC_ERROR_TITLE,
-				_T("ジャンプ先行番号が指定されていません．")
+				L"ジャンプ先行番号が指定されていません．"
 			);
 			break;
 		}
@@ -570,7 +570,7 @@ void CMacro::HandleCommand(
 				NULL,
 				MB_OK | MB_ICONSTOP | MB_TOPMOST,
 				EXEC_ERROR_TITLE,
-				_T("マーク行のパターンが指定されていません．")
+				L"マーク行のパターンが指定されていません．"
 			);
 			break;
 		}
@@ -657,7 +657,7 @@ void CMacro::HandleCommand(
 				NULL,
 				MB_OK | MB_ICONSTOP | MB_TOPMOST,
 				EXEC_ERROR_TITLE,
-				_T(	"引数(文字列)が指定されていません．" )
+				L"引数(文字列)が指定されていません．"
 			);
 			break;
 		}
@@ -680,7 +680,7 @@ void CMacro::HandleCommand(
 		//		現在は特になし
 		if( Argument[0] == NULL ){
 			::MYMESSAGEBOX( NULL, MB_OK | MB_ICONSTOP | MB_TOPMOST, EXEC_ERROR_TITLE,
-				_T(	"ファイル名が指定されていません．" ));
+				L"ファイル名が指定されていません．");
 			break;
 		}
 		{
@@ -721,12 +721,12 @@ void CMacro::HandleCommand(
 		//		0x800	(マクロ専用)検索キーを履歴に登録しない
 		if( Argument[0] == NULL || Argument[0][0] == L'\0' ){
 			::MYMESSAGEBOX( NULL, MB_OK | MB_ICONSTOP | MB_TOPMOST, EXEC_ERROR_TITLE,
-				_T("置換元パターンが指定されていません．"));
+				L"置換元パターンが指定されていません．");
 			break;
 		}
 		if( Argument[1] == NULL ){
 			::MYMESSAGEBOX( NULL, MB_OK | MB_ICONSTOP | MB_TOPMOST, EXEC_ERROR_TITLE,
-				_T("置換先パターンが指定されていません．"));
+				L"置換先パターンが指定されていません．");
 			break;
 		}
 		{
@@ -807,17 +807,17 @@ void CMacro::HandleCommand(
 		//		0x10000	.hgignore の除外指定に従う
 		if( Argument[0] == NULL ){
 			::MYMESSAGEBOX( NULL, MB_OK | MB_ICONSTOP | MB_TOPMOST, EXEC_ERROR_TITLE,
-				_T("GREPパターンが指定されていません．"));
+				L"GREPパターンが指定されていません．");
 			break;
 		}
 		if( Argument[1] == NULL ){
 			::MYMESSAGEBOX( NULL, MB_OK | MB_ICONSTOP | MB_TOPMOST, EXEC_ERROR_TITLE,
-				_T("ファイル種別が指定されていません．"));
+				L"ファイル種別が指定されていません．");
 			break;
 		}
 		if( Argument[2] == NULL ){
 			::MYMESSAGEBOX( NULL, MB_OK | MB_ICONSTOP | MB_TOPMOST, EXEC_ERROR_TITLE,
-				_T("検索先フォルダが指定されていません．"));
+				L"検索先フォルダが指定されていません．");
 			break;
 		}
 		{
@@ -825,8 +825,8 @@ void CMacro::HandleCommand(
 			/*======= Grepの実行 =============*/
 			/* Grep結果ウィンドウの表示 */
 			CNativeW cmWork1;	cmWork1.SetString( Argument[0] );	cmWork1.Replace( L"\"", L"\"\"" );	//	検索文字列
-			CNativeT cmWork2;	cmWork2.SetStringW( Argument[1] );	cmWork2.Replace( _T("\""), _T("\"\"") );	//	ファイル名
-			CNativeT cmWork3;	cmWork3.SetStringW( Argument[2] );	cmWork3.Replace( _T("\""), _T("\"\"") );	//	フォルダ名
+			CNativeW cmWork2;	cmWork2.SetStringW( Argument[1] );	cmWork2.Replace( L"\"", L"\"\"" );	//	ファイル名
+			CNativeW cmWork3;	cmWork3.SetStringW( Argument[2] );	cmWork3.Replace( L"\"", L"\"\"" );	//	フォルダ名
 
 			LPARAM lFlag = Argument[3] != NULL ? _wtoi(Argument[3]) : 5;
 
@@ -844,37 +844,37 @@ void CMacro::HandleCommand(
 			}
 
 			// -GREPMODE -GKEY="1" -GFILE="*.*;*.c;*.h" -GFOLDER="c:\" -GCODE=0 -GOPT=S
-			CNativeT cCmdLine;
-			TCHAR	szTemp[20];
-			TCHAR	pOpt[64];
-			cCmdLine.AppendString(_T("-GREPMODE -GKEY=\""));
+			CNativeW cCmdLine;
+			WCHAR	szTemp[20];
+			WCHAR	pOpt[64];
+			cCmdLine.AppendString(L"-GREPMODE -GKEY=\"");
 			cCmdLine.AppendStringW(cmWork1.GetStringPtr());
-			cCmdLine.AppendString(_T("\" -GFILE=\""));
+			cCmdLine.AppendString(L"\" -GFILE=\"");
 			cCmdLine.AppendString(cmWork2.GetStringPtr());
-			cCmdLine.AppendString(_T("\" -GFOLDER=\""));
+			cCmdLine.AppendString(L"\" -GFOLDER=\"");
 			cCmdLine.AppendString(cmWork3.GetStringPtr());
-			cCmdLine.AppendString(_T("\" -GCODE="));
-			auto_sprintf( szTemp, _T("%d"), nCharSet );
+			cCmdLine.AppendString(L"\" -GCODE=");
+			auto_sprintf( szTemp, L"%d", nCharSet );
 			cCmdLine.AppendString(szTemp);
 
 			//GOPTオプション
 			pOpt[0] = '\0';
-			if( lFlag & 0x01 )_tcscat( pOpt, _T("S") );	/* サブフォルダからも検索する */
-			if( lFlag & 0x80 )_tcscat( pOpt, _T("G") );	/* .gitignore の除外指定に従う */
-			if( lFlag & 0x10000 )_tcscat( pOpt, _T("H") );	/* .hgignore の除外指定に従う */
-			if( lFlag & 0x04 )_tcscat( pOpt, _T("L") );	/* 英大文字と英小文字を区別する */
-			if( lFlag & 0x08 )_tcscat( pOpt, _T("R") );	/* 正規表現 */
-			if( lFlag & 0x20 )_tcscat( pOpt, _T("P") );	/* 行を出力するか該当部分だけ出力するか */
-			if( lFlag & 0x40 )_tcscat( pOpt, _T("2") );	/* Grep: 出力形式 */
-			else _tcscat( pOpt, _T("1") );
-			if( pOpt[0] != _T('\0') ){
-				auto_sprintf( szTemp, _T(" -GOPT=%ts"), pOpt );
+			if( lFlag & 0x01 )wcscat( pOpt, L"S" );	/* サブフォルダからも検索する */
+			if( lFlag & 0x80 )wcscat( pOpt, L"G" );	/* .gitignore の除外指定に従う */
+			if( lFlag & 0x10000 )wcscat( pOpt, L"H" );	/* .hgignore の除外指定に従う */
+			if( lFlag & 0x04 )wcscat( pOpt, L"L" );	/* 英大文字と英小文字を区別する */
+			if( lFlag & 0x08 )wcscat( pOpt, L"R" );	/* 正規表現 */
+			if( lFlag & 0x20 )wcscat( pOpt, L"P" );	/* 行を出力するか該当部分だけ出力するか */
+			if( lFlag & 0x40 )wcscat( pOpt, L"2" );	/* Grep: 出力形式 */
+			else wcscat( pOpt, L"1" );
+			if( pOpt[0] != L'\0' ){
+				auto_sprintf( szTemp, L" -GOPT=%ts", pOpt );
 				cCmdLine.AppendString(szTemp);
 			}
 
 			/* 新規編集ウィンドウの追加 ver 0 */
 			SLoadInfo sLoadInfo;
-			sLoadInfo.cFilePath = _T("");
+			sLoadInfo.cFilePath = L"";
 			sLoadInfo.eCharCode = CODE_NONE;
 			sLoadInfo.bViewMode = false;
 			CEditorManager::OpenNewEditor(
@@ -891,7 +891,7 @@ void CMacro::HandleCommand(
 		//	Argument[0]を開く。
 		if( Argument[0] == NULL ){
 			::MYMESSAGEBOX( NULL, MB_OK | MB_ICONSTOP | MB_TOPMOST, EXEC_ERROR_TITLE,
-				_T("読み込みファイル名が指定されていません．"));
+				L"読み込みファイル名が指定されていません．");
 			break;
 		}
 		{
@@ -902,7 +902,7 @@ void CMacro::HandleCommand(
 		//	Argument[0]を別名で保存。
 		if( Argument[0] == NULL ){
 			::MYMESSAGEBOX( NULL, MB_OK | MB_ICONSTOP | MB_TOPMOST, EXEC_ERROR_TITLE,
-				_T("保存ファイル名が指定されていません．"));
+				L"保存ファイル名が指定されていません．");
 			break;
 		}
 		{
@@ -987,7 +987,7 @@ void CMacro::HandleCommand(
 				pcEditView->GetCommander().HandleCommand( Index, false, lparam1, lparam2, lparam3, 0);
 			}else{
 				::MYMESSAGEBOX( NULL, MB_OK | MB_ICONSTOP | MB_TOPMOST, EXEC_ERROR_TITLE,
-				_T("数値を指定してください．"));
+				L"数値を指定してください．");
 			}
 		}
 		break;
@@ -1052,15 +1052,15 @@ bool CMacro::HandleFunction(CEditView *View, EFunctionCode ID, const VARIANT *Ar
 	{
 	case F_GETFILENAME:
 		{
-			const TCHAR* FileName = View->m_pcEditDoc->m_cDocFile.GetFilePath();
-			SysString S(FileName, _tcslen(FileName));
+			const WCHAR* FileName = View->m_pcEditDoc->m_cDocFile.GetFilePath();
+			SysString S(FileName, wcslen(FileName));
 			Wrap(&Result)->Receive(S);
 		}
 		return true;
 	case F_GETSAVEFILENAME:
 		//	2006.09.04 ryoji 保存時のファイルのパス
 		{
-			const TCHAR* FileName = View->m_pcEditDoc->m_cDocFile.GetSaveFilePath();
+			const WCHAR* FileName = View->m_pcEditDoc->m_cDocFile.GetSaveFilePath();
 			SysString S(FileName, lstrlen(FileName));
 			Wrap(&Result)->Receive(S);
 		}
@@ -1263,13 +1263,13 @@ bool CMacro::HandleFunction(CEditView *View, EFunctionCode ID, const VARIANT *Ar
 		{
 			if( ArgSize != 1 ) return false;
 
-			TCHAR *Source;
+			WCHAR *Source;
 			int SourceLength;
 
 			int nType1 = View->m_pcEditDoc->m_cDocType.GetDocumentType().GetIndex();	// 現在のタイプ
 
 			if(VariantChangeType(&varCopy.Data, const_cast<VARIANTARG*>( &(Arguments[0]) ), 0, VT_BSTR) != S_OK) return false;	// VT_BSTRとして解釈
-			Wrap(&varCopy.Data.bstrVal)->GetT(&Source, &SourceLength);
+			Wrap(&varCopy.Data.bstrVal)->GetW(&Source, &SourceLength);
 			int nType2 = CDocTypeManager().GetDocumentTypeOfExt(Source).GetIndex();	// 指定拡張子のタイプ
 			delete[] Source;
 
@@ -1281,16 +1281,16 @@ bool CMacro::HandleFunction(CEditView *View, EFunctionCode ID, const VARIANT *Ar
 		{
 			if( ArgSize != 2 ) return false;
 
-			TCHAR *Source;
+			WCHAR *Source;
 			int SourceLength;
 
 			if(VariantChangeType(&varCopy.Data, const_cast<VARIANTARG*>( &(Arguments[0]) ), 0, VT_BSTR) != S_OK) return false;	// VT_BSTRとして解釈
-			Wrap(&varCopy.Data.bstrVal)->GetT(&Source, &SourceLength);
+			Wrap(&varCopy.Data.bstrVal)->GetW(&Source, &SourceLength);
 			int nType1 = CDocTypeManager().GetDocumentTypeOfExt(Source).GetIndex();	// 拡張子１のタイプ
 			delete[] Source;
 
 			if(VariantChangeType(&varCopy.Data, const_cast<VARIANTARG*>( &(Arguments[1]) ), 0, VT_BSTR) != S_OK) return false;	// VT_BSTRとして解釈
-			Wrap(&varCopy.Data.bstrVal)->GetT(&Source, &SourceLength);
+			Wrap(&varCopy.Data.bstrVal)->GetW(&Source, &SourceLength);
 			int nType2 = CDocTypeManager().GetDocumentTypeOfExt(Source).GetIndex();	// 拡張子２のタイプ
 			delete[] Source;
 
@@ -1301,18 +1301,18 @@ bool CMacro::HandleFunction(CEditView *View, EFunctionCode ID, const VARIANT *Ar
 		//	2011.03.18 syat テキスト入力ダイアログの表示
 		{
 			if( ArgSize < 1 ) return false;
-			TCHAR *Source;
+			WCHAR *Source;
 			int SourceLength;
 
 			if(VariantChangeType(&varCopy.Data, const_cast<VARIANTARG*>( &(Arguments[0]) ), 0, VT_BSTR) != S_OK) return false;	// VT_BSTRとして解釈
-			Wrap(&varCopy.Data.bstrVal)->GetT(&Source, &SourceLength);
-			std::tstring sMessage = Source;	// 表示メッセージ
+			Wrap(&varCopy.Data.bstrVal)->GetW(&Source, &SourceLength);
+			std::wstring sMessage = Source;	// 表示メッセージ
 			delete[] Source;
 
-			std::tstring sDefaultValue = _T("");
+			std::wstring sDefaultValue = L"";
 			if( ArgSize >= 2 ){
 				if(VariantChangeType(&varCopy.Data, const_cast<VARIANTARG*>( &(Arguments[1]) ), 0, VT_BSTR) != S_OK) return false;	// VT_BSTRとして解釈
-				Wrap(&varCopy.Data.bstrVal)->GetT(&Source, &SourceLength);
+				Wrap(&varCopy.Data.bstrVal)->GetW(&Source, &SourceLength);
 				sDefaultValue = Source;	// デフォルト値
 				delete[] Source;
 			}
@@ -1326,11 +1326,11 @@ bool CMacro::HandleFunction(CEditView *View, EFunctionCode ID, const VARIANT *Ar
 				}
 			}
 
-			TCHAR *Buffer = new TCHAR[ nMaxLen+1 ];
-			_tcscpy( Buffer, sDefaultValue.c_str() );
+			WCHAR *Buffer = new WCHAR[ nMaxLen+1 ];
+			wcscpy( Buffer, sDefaultValue.c_str() );
 			CDlgInput1 cDlgInput1;
-			if( cDlgInput1.DoModal( G_AppInstance(), View->GetHwnd(), _T("sakura macro"), sMessage.c_str(), nMaxLen, Buffer ) ) {
-				SysString S( Buffer, _tcslen(Buffer) );
+			if( cDlgInput1.DoModal( G_AppInstance(), View->GetHwnd(), L"sakura macro", sMessage.c_str(), nMaxLen, Buffer ) ) {
+				SysString S( Buffer, wcslen(Buffer) );
 				Wrap( &Result )->Receive( S );
 			}else{
 				Result.vt = VT_BSTR;
@@ -1348,12 +1348,12 @@ bool CMacro::HandleFunction(CEditView *View, EFunctionCode ID, const VARIANT *Ar
 		//	2011.03.18 syat メッセージボックスの表示
 		{
 			if( ArgSize < 1 ) return false;
-			TCHAR *Source;
+			WCHAR *Source;
 			int SourceLength;
 
 			if(VariantChangeType(&varCopy.Data, const_cast<VARIANTARG*>( &(Arguments[0]) ), 0, VT_BSTR) != S_OK) return false;	// VT_BSTRとして解釈
-			Wrap(&varCopy.Data.bstrVal)->GetT(&Source, &SourceLength);
-			std::tstring sMessage = Source;	// 表示文字列
+			Wrap(&varCopy.Data.bstrVal)->GetW(&Source, &SourceLength);
+			std::wstring sMessage = Source;	// 表示文字列
 			delete[] Source;
 
 			UINT uType = 0;		// メッセージボックス種別
@@ -1382,7 +1382,7 @@ bool CMacro::HandleFunction(CEditView *View, EFunctionCode ID, const VARIANT *Ar
 				uType |= MB_YESNO | MB_ICONQUESTION;
 				break;
 			}
-			int ret = ::MessageBox( View->GetHwnd(), sMessage.c_str(), _T("sakura macro"), uType );
+			int ret = ::MessageBox( View->GetHwnd(), sMessage.c_str(), L"sakura macro", uType );
 			Wrap( &Result )->Receive( ret );
 		}
 		return true;
@@ -1390,17 +1390,17 @@ bool CMacro::HandleFunction(CEditView *View, EFunctionCode ID, const VARIANT *Ar
 		//	2011.03.18 syat バージョン番号の比較
 		{
 			if( ArgSize != 2 ) return false;
-			TCHAR *Source;
+			WCHAR *Source;
 			int SourceLength;
 
 			if(VariantChangeType(&varCopy.Data, const_cast<VARIANTARG*>( &(Arguments[0]) ), 0, VT_BSTR) != S_OK) return false;	// VT_BSTRとして解釈
-			Wrap(&varCopy.Data.bstrVal)->GetT(&Source, &SourceLength);
-			std::tstring sVerA = Source;	// バージョンA
+			Wrap(&varCopy.Data.bstrVal)->GetW(&Source, &SourceLength);
+			std::wstring sVerA = Source;	// バージョンA
 			delete[] Source;
 
 			if(VariantChangeType(&varCopy.Data, const_cast<VARIANTARG*>( &(Arguments[1]) ), 0, VT_BSTR) != S_OK) return false;	// VT_BSTRとして解釈
-			Wrap(&varCopy.Data.bstrVal)->GetT(&Source, &SourceLength);
-			std::tstring sVerB = Source;	// バージョンB
+			Wrap(&varCopy.Data.bstrVal)->GetW(&Source, &SourceLength);
+			std::wstring sVerB = Source;	// バージョンB
 			delete[] Source;
 
 			Wrap( &Result )->Receive( CompareVersion( sVerA.c_str(), sVerB.c_str() ) );
@@ -1421,27 +1421,27 @@ bool CMacro::HandleFunction(CEditView *View, EFunctionCode ID, const VARIANT *Ar
 	case F_FILESAVEDIALOG:
 		//	2011.03.18 syat ファイルダイアログの表示
 		{
-			TCHAR *Source;
+			WCHAR *Source;
 			int SourceLength;
-			std::tstring sDefault;
-			std::tstring sFilter;
+			std::wstring sDefault;
+			std::wstring sFilter;
 
 			if( ArgSize >= 1 ){
 				if(VariantChangeType(&varCopy.Data, const_cast<VARIANTARG*>( &(Arguments[0]) ), 0, VT_BSTR) != S_OK) return false;	// VT_BSTRとして解釈
-				Wrap(&varCopy.Data.bstrVal)->GetT(&Source, &SourceLength);
+				Wrap(&varCopy.Data.bstrVal)->GetW(&Source, &SourceLength);
 				sDefault = Source;	// 既定のファイル名
 				delete[] Source;
 			}
 
 			if( ArgSize >= 2 ){
 				if(VariantChangeType(&varCopy.Data, const_cast<VARIANTARG*>( &(Arguments[1]) ), 0, VT_BSTR) != S_OK) return false;	// VT_BSTRとして解釈
-				Wrap(&varCopy.Data.bstrVal)->GetT(&Source, &SourceLength);
+				Wrap(&varCopy.Data.bstrVal)->GetW(&Source, &SourceLength);
 				sFilter = Source;	// フィルタ文字列
 				delete[] Source;
 			}
 
 			bool bRet;
-			TCHAR szPath[ _MAX_PATH ];
+			WCHAR szPath[ _MAX_PATH ];
 			//	既定のファイル名、フィルタ文字列が長すぎる場合はエラーとする
 			//	(szPath, CDlgOpenFile::m_szDefaultWildCard のバッファオーバーフロー防止)
 			if( sDefault.length() >= _countof(szPath) || sFilter.length() >= _MAX_PATH ){
@@ -1454,14 +1454,14 @@ bool CMacro::HandleFunction(CEditView *View, EFunctionCode ID, const VARIANT *Ar
 				sFilter.c_str(),
 				sDefault.c_str()
 			);
-			_tcscpy_s( szPath, _countof(szPath), sDefault.c_str() );
+			wcscpy_s( szPath, _countof(szPath), sDefault.c_str() );
 			if( LOWORD(ID) == F_FILEOPENDIALOG ){
 				bRet = cDlgOpenFile.DoModal_GetOpenFileName( szPath );
 			}else{
 				bRet = cDlgOpenFile.DoModal_GetSaveFileName( szPath );
 			}
 			if( bRet ){
-				SysString S( szPath, _tcslen(szPath) );
+				SysString S( szPath, wcslen(szPath) );
 				Wrap( &Result )->Receive( S );
 			}else{
 				Result.vt = VT_BSTR;
@@ -1472,29 +1472,29 @@ bool CMacro::HandleFunction(CEditView *View, EFunctionCode ID, const VARIANT *Ar
 	case F_FOLDERDIALOG:
 		//	2011.03.18 syat フォルダダイアログの表示
 		{
-			TCHAR *Source;
+			WCHAR *Source;
 			int SourceLength;
-			std::tstring sMessage;
-			std::tstring sDefault;
+			std::wstring sMessage;
+			std::wstring sDefault;
 
 			if( ArgSize >= 1 ){
 				if(VariantChangeType(&varCopy.Data, const_cast<VARIANTARG*>( &(Arguments[0]) ), 0, VT_BSTR) != S_OK) return false;	// VT_BSTRとして解釈
-				Wrap(&varCopy.Data.bstrVal)->GetT(&Source, &SourceLength);
+				Wrap(&varCopy.Data.bstrVal)->GetW(&Source, &SourceLength);
 				sMessage = Source;	// 表示メッセージ
 				delete[] Source;
 			}
 
 			if( ArgSize >= 2 ){
 				if(VariantChangeType(&varCopy.Data, const_cast<VARIANTARG*>( &(Arguments[1]) ), 0, VT_BSTR) != S_OK) return false;	// VT_BSTRとして解釈
-				Wrap(&varCopy.Data.bstrVal)->GetT(&Source, &SourceLength);
+				Wrap(&varCopy.Data.bstrVal)->GetW(&Source, &SourceLength);
 				sDefault = Source;	// 既定のファイル名
 				delete[] Source;
 			}
 
-			TCHAR szPath[ _MAX_PATH ];
+			WCHAR szPath[ _MAX_PATH ];
 			int nRet = SelectDir( View->GetHwnd(), sMessage.c_str(), sDefault.c_str(), szPath );
 			if( nRet == IDOK ){
-				SysString S( szPath, _tcslen(szPath) );
+				SysString S( szPath, wcslen(szPath) );
 				Wrap( &Result )->Receive( S );
 			}else{
 				Result.vt = VT_BSTR;
@@ -1528,9 +1528,9 @@ bool CMacro::HandleFunction(CEditView *View, EFunctionCode ID, const VARIANT *Ar
 	case F_SETCLIPBOARD:
 		//	2011.03.18 syat クリップボードに文字列を設定
 		{
-			TCHAR *Source;
+			WCHAR *Source;
 			int SourceLength;
-			std::tstring sValue;
+			std::wstring sValue;
 			int nOpt = 0;
 
 			if( ArgSize >= 1 ){
@@ -1540,7 +1540,7 @@ bool CMacro::HandleFunction(CEditView *View, EFunctionCode ID, const VARIANT *Ar
 
 			if( ArgSize >= 2 ){
 				if(VariantChangeType(&varCopy.Data, const_cast<VARIANTARG*>( &(Arguments[1]) ), 0, VT_BSTR) != S_OK) return false;	// VT_BSTRとして解釈
-				Wrap(&varCopy.Data.bstrVal)->GetT(&Source, &SourceLength);
+				Wrap(&varCopy.Data.bstrVal)->GetW(&Source, &SourceLength);
 				sValue = Source;	// 設定する文字列
 				delete[] Source;
 			}

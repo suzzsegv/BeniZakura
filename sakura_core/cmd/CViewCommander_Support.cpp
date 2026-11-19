@@ -53,11 +53,11 @@ retry:;
 	// 2003.06.22 Moca ファイル内から検索する場合には補完ファイルの設定は必須ではない
 	if( GetDocument()->m_cDocType.GetDocumentAttribute().m_bUseHokanByFile == FALSE &&
 		GetDocument()->m_cDocType.GetDocumentAttribute().m_bUseHokanByKeyword == false &&
-		_T('\0') == GetDocument()->m_cDocType.GetDocumentAttribute().m_szHokanFile[0]
+		L'\0' == GetDocument()->m_cDocType.GetDocumentAttribute().m_szHokanFile[0]
 	){
 		ConfirmBeep();
 		if( IDYES == ::ConfirmMessage( GetMainWindow(),
-			_T("補完候補一覧ファイルが設定されていません。\n今すぐ設定しますか?")
+			L"補完候補一覧ファイルが設定されていません。\n今すぐ設定しますか?"
 		) ){
 			/* タイプ別設定 プロパティシート */
 			if( !CEditApp::getInstance()->m_pcPropertyManager->OpenPropertySheetTypes( 2, GetDocument()->m_cDocType.GetDocumentType() ) ){
@@ -73,7 +73,7 @@ retry:;
 		m_pCommanderView->ShowHokanMgr( cmemData, TRUE );
 	}else{
 		InfoBeep(); //2010.04.03 Error→Info
-		m_pCommanderView->SendStatusMessage(_T("補完対象がありません")); // 2010.05.29 ステータスで表示
+		m_pCommanderView->SendStatusMessage(L"補完対象がありません"); // 2010.05.29 ステータスで表示
 		GetDllShareData().m_Common.m_sHelper.m_bUseHokan = FALSE;	//	入力補完終了のお知らせ
 	}
 	return;
@@ -147,7 +147,7 @@ void CViewCommander::Command_MENU_ALLFUNC( void )
 			}
 		}
 		//	Oct. 3, 2001 genta
-		pCEditWnd->GetMenuDrawer().MyAppendMenu( hMenu, MF_BYPOSITION | MF_STRING | MF_POPUP, (UINT)hMenuPopUp , FuncLookup.Category2Name(i) , _T(""));
+		pCEditWnd->GetMenuDrawer().MyAppendMenu( hMenu, MF_BYPOSITION | MF_STRING | MF_POPUP, (UINT)hMenuPopUp , FuncLookup.Category2Name(i) , L"");
 //		pCEditWnd->GetMenuDrawer().MyAppendMenu( hMenu, MF_BYPOSITION | MF_STRING | MF_POPUP, (UINT)hMenuPopUp , nsFuncCode::ppszFuncKind[i] );
 	}
 

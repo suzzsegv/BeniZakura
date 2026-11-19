@@ -554,9 +554,9 @@ int CBregexp::Replace(const wchar_t *szTarget, int nLen, int nStart)
 //>> 2002/03/27 Azumaiya
 
 
-const TCHAR* CBregexp::GetLastMessage() const
+const WCHAR* CBregexp::GetLastMessage() const
 {
-	return to_tchar(m_szMsg);
+	return to_wchar(m_szMsg);
 }
 
 
@@ -590,7 +590,7 @@ bool InitRegexp(
 	CShareData* pInstance = NULL;
 	DLLSHAREDATA* pShareData = NULL;
 	
-	LPCTSTR RegexpDll = _T("");
+	LPCWSTR RegexpDll = L"";
 	
 	if( (pInstance = CShareData::getInstance()) != NULL && (pShareData = pInstance->GetShareData()) != NULL ){
 		RegexpDll = pShareData->m_Common.m_sSearch.m_szRegexpLib;
@@ -600,37 +600,37 @@ bool InitRegexp(
 	EDllResult eDllResult = rRegexp.InitDll(RegexpDll);
 	if( DLL_SUCCESS != eDllResult ){
 		if( bShowMessage ){
-			LPCTSTR pszMsg = _T("");
+			LPCWSTR pszMsg = L"";
 			if(eDllResult==DLL_LOADFAILURE){
 				pszMsg =
-					_T("bregonig.dll のロードに失敗しました。\r\n")
+					L"bregonig.dll のロードに失敗しました。\r\n"
 #ifdef _M_IA64
-					_T("正規表現を利用するには Unicode/IA64 版の bregonig.dll が必要です。\r\n")
+					L"正規表現を利用するには Unicode/IA64 版の bregonig.dll が必要です。\r\n"
 #elif defined(_M_AMD64)
-					_T("正規表現を利用するには Unicode/x64 版の bregonig.dll が必要です。\r\n")
+					L"正規表現を利用するには Unicode/x64 版の bregonig.dll が必要です。\r\n"
 #else
-					_T("正規表現を利用するには Unicode 版の bregonig.dll が必要です。\r\n")
+					L"正規表現を利用するには Unicode 版の bregonig.dll が必要です。\r\n"
 #endif
-					_T("入手方法はヘルプを参照してください。");
+					L"入手方法はヘルプを参照してください。";
 			}
 			else if(eDllResult==DLL_INITFAILURE){
 				pszMsg =
-					_T("bregonig.dll の利用に失敗しました。\r\n")
+					L"bregonig.dll の利用に失敗しました。\r\n"
 #ifdef _M_IA64
-					_T("正規表現を利用するには Unicode/IA64 版の bregonig.dll が必要です。\r\n")
+					L"正規表現を利用するには Unicode/IA64 版の bregonig.dll が必要です。\r\n"
 #elif defined(_M_AMD64)
-					_T("正規表現を利用するには Unicode/x64 版の bregonig.dll が必要です。\r\n")
+					L"正規表現を利用するには Unicode/x64 版の bregonig.dll が必要です。\r\n"
 #else
-					_T("正規表現を利用するには Unicode 版の bregonig.dll が必要です。\r\n")
+					L"正規表現を利用するには Unicode 版の bregonig.dll が必要です。\r\n"
 #endif
-					_T("入手方法はヘルプを参照してください。");
+					L"入手方法はヘルプを参照してください。";
 			}
 			else{
 				pszMsg =
-					_T("bregonig.dll のロードで予期せぬエラーが発生しました。");
+					L"bregonig.dll のロードで予期せぬエラーが発生しました。";
 				assert(0);
 			}
-			::MessageBox( hWnd, pszMsg, _T("情報"), MB_OK | MB_ICONEXCLAMATION );
+			::MessageBox( hWnd, pszMsg, L"情報", MB_OK | MB_ICONEXCLAMATION );
 		}
 		return false;
 	}
@@ -654,12 +654,12 @@ bool CheckRegexpVersion(
 
 	if( !InitRegexp( hWnd, cRegexp, bShowMessage ) ){
 		if( hWnd != NULL ){
-			::DlgItem_SetText( hWnd, nCmpId, _T(" "));
+			::DlgItem_SetText( hWnd, nCmpId, L" ");
 		}
 		return false;
 	}
 	if( hWnd != NULL ){
-		::DlgItem_SetText( hWnd, nCmpId, cRegexp.GetVersionT() );
+		::DlgItem_SetText( hWnd, nCmpId, cRegexp.GetVersionW() );
 	}
 	return true;
 }
@@ -689,7 +689,7 @@ bool CheckRegexpSyntax(
 	if( !cRegexp.Compile( szPattern, nOption ) ){	// 2002/2/1 hor追加
 		if( bShowMessage ){
 			::MessageBox( hWnd, cRegexp.GetLastMessage(),
-				_T("正規表現エラー"), MB_OK | MB_ICONEXCLAMATION );
+				L"正規表現エラー", MB_OK | MB_ICONEXCLAMATION );
 		}
 		return false;
 	}

@@ -78,7 +78,7 @@ INT_PTR CPropTypesRegex::DispatchEvent(
 
 	// ANSIビルドではCP932だと2倍程度必要
 	const int nKeyWordSize = MAX_REGEX_KEYWORDLEN;
-	TCHAR	szColorIndex[256];
+	WCHAR	szColorIndex[256];
 
 	switch( uMsg ){
 	case WM_INITDIALOG:
@@ -92,13 +92,13 @@ INT_PTR CPropTypesRegex::DispatchEvent(
 		col.mask     = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM;
 		col.fmt      = LVCFMT_LEFT;
 		col.cx       = (rc.right - rc.left) * 54 / 100;
-		col.pszText  = _T("キーワード");
+		col.pszText  = L"キーワード";
 		col.iSubItem = 0;
 		ListView_InsertColumn( hwndList, 0, &col );
 		col.mask     = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM;
 		col.fmt      = LVCFMT_LEFT;
 		col.cx       = (rc.right - rc.left) * 38 / 100;
-		col.pszText  = _T("色指定");
+		col.pszText  = L"色指定";
 		col.iSubItem = 1;
 		ListView_InsertColumn( hwndList, 1, &col );
 
@@ -106,7 +106,7 @@ INT_PTR CPropTypesRegex::DispatchEvent(
 		SetData( hwndDlg );	/* ダイアログデータの設定 正規表現キーワード */
 		if( CheckRegexpVersion( hwndDlg, IDC_LABEL_REGEX_VERSION, false ) == false )	//@@@ 2001.11.17 add MIK
 		{
-			::DlgItem_SetText( hwndDlg, IDC_LABEL_REGEX_VERSION, _T("正規表現キーワードは使えません。") );
+			::DlgItem_SetText( hwndDlg, IDC_LABEL_REGEX_VERSION, L"正規表現キーワードは使えません。" );
 			//ライブラリがなくて、使用しないになっている場合は、無効にする。
 			if( ! IsDlgButtonChecked( hwndDlg, IDC_CHECK_REGEX ) )
 			{
@@ -138,8 +138,8 @@ INT_PTR CPropTypesRegex::DispatchEvent(
 								hwndDlg,
 								MB_YESNO | MB_ICONQUESTION | MB_TOPMOST | MB_DEFBUTTON2,
 								GSTR_APPNAME,
-								_T("正規表現ライブラリが見つかりません。\n\n正規表現キーワードは機能しませんが、それでも有効にしますか？"),
-								_T("正規表現キーワードを使用する") );
+								L"正規表現ライブラリが見つかりません。\n\n正規表現キーワードは機能しませんが、それでも有効にしますか？",
+								L"正規表現キーワードを使用する" );
 						if( nRet != IDYES )
 						{
 							CheckDlgButton( hwndDlg, IDC_CHECK_REGEX, BST_UNCHECKED );
@@ -163,15 +163,15 @@ INT_PTR CPropTypesRegex::DispatchEvent(
 			case IDC_BUTTON_REGEX_INS:	/* 挿入 */
 			{
 				//挿入するキー情報を取得する。
-				auto_array_ptr<TCHAR> szKeyWord(new TCHAR [ nKeyWordSize ]);
-				szKeyWord[0] = _T('\0');
+				auto_array_ptr<WCHAR> szKeyWord(new WCHAR [ nKeyWordSize ]);
+				szKeyWord[0] = L'\0';
 				::DlgItem_GetText( hwndDlg, IDC_EDIT_REGEX, &szKeyWord[0], nKeyWordSize );
-				if( szKeyWord[0] == _T('\0') ) return FALSE;
+				if( szKeyWord[0] == L'\0' ) return FALSE;
 				//同じキーがないか調べる。
 				nIndex2 = ListView_GetItemCount(hwndList);
 				if( nIndex2 >= MAX_REGEX_KEYWORD )
 				{
-					ErrorMessage( hwndDlg, _T("これ以上登録できません。"));
+					ErrorMessage( hwndDlg, L"これ以上登録できません。");
 					return FALSE;
 				}
 				//選択中のキーを探す。
@@ -208,17 +208,17 @@ INT_PTR CPropTypesRegex::DispatchEvent(
 
 			case IDC_BUTTON_REGEX_ADD:	/* 追加 */
 			{
-				auto_array_ptr<TCHAR> szKeyWord(new TCHAR [ nKeyWordSize ]);
+				auto_array_ptr<WCHAR> szKeyWord(new WCHAR [ nKeyWordSize ]);
 				//最後のキー番号を取得する。
 				nIndex = ListView_GetItemCount( hwndList );
 				//追加するキー情報を取得する。
-				szKeyWord[0] = _T('\0');
+				szKeyWord[0] = L'\0';
 				::DlgItem_GetText( hwndDlg, IDC_EDIT_REGEX, &szKeyWord[0], nKeyWordSize );
 				if( szKeyWord[0] == L'\0' ) return FALSE;
 				nIndex2 = ListView_GetItemCount(hwndList);
 				if( nIndex2 >= MAX_REGEX_KEYWORD )
 				{
-					ErrorMessage( hwndDlg, _T("これ以上登録できません。"));
+					ErrorMessage( hwndDlg, L"これ以上登録できません。");
 					return FALSE;
 				}
 				if( !CheckKeywordList(hwndDlg, &szKeyWord[0], -1) ){
@@ -247,16 +247,16 @@ INT_PTR CPropTypesRegex::DispatchEvent(
 
 			case IDC_BUTTON_REGEX_UPD:	/* 更新 */
 			{
-				auto_array_ptr<TCHAR> szKeyWord(new TCHAR [ nKeyWordSize ]);
+				auto_array_ptr<WCHAR> szKeyWord(new WCHAR [ nKeyWordSize ]);
 				//選択中のキーを探す。
 				nIndex = ListView_GetNextItem( hwndList, -1, LVNI_ALL | LVNI_SELECTED );
 				if( -1 == nIndex )
 				{
-					ErrorMessage( hwndDlg, _T("キーワードが選択されていません。"));
+					ErrorMessage( hwndDlg, L"キーワードが選択されていません。");
 					return FALSE;
 				}
 				//更新するキー情報を取得する。
-				szKeyWord[0] = _T('\0');
+				szKeyWord[0] = L'\0';
 				::DlgItem_GetText( hwndDlg, IDC_EDIT_REGEX, &szKeyWord[0], nKeyWordSize );
 				if( &szKeyWord[0] == L'\0' ) return FALSE;
 				if( !CheckKeywordList(hwndDlg, &szKeyWord[0], nIndex) ){
@@ -298,8 +298,8 @@ INT_PTR CPropTypesRegex::DispatchEvent(
 
 			case IDC_BUTTON_REGEX_TOP:	/* 先頭 */
 			{
-				auto_array_ptr<TCHAR> szKeyWord(new TCHAR [ nKeyWordSize ]);
-				szKeyWord[0] = _T('\0');
+				auto_array_ptr<WCHAR> szKeyWord(new WCHAR [ nKeyWordSize ]);
+				szKeyWord[0] = L'\0';
 				//選択中のキーを探す。
 				nIndex = ListView_GetNextItem( hwndList, -1, LVNI_ALL | LVNI_SELECTED );
 				if( -1 == nIndex ) return FALSE;
@@ -328,8 +328,8 @@ INT_PTR CPropTypesRegex::DispatchEvent(
 
 			case IDC_BUTTON_REGEX_LAST:	/* 最終 */
 			{
-				auto_array_ptr<TCHAR> szKeyWord(new TCHAR [ nKeyWordSize ]);
-				szKeyWord[0] = _T('\0');
+				auto_array_ptr<WCHAR> szKeyWord(new WCHAR [ nKeyWordSize ]);
+				szKeyWord[0] = L'\0';
 				nIndex = ListView_GetNextItem( hwndList, -1, LVNI_ALL | LVNI_SELECTED );
 				if( -1 == nIndex ) return FALSE;
 				nIndex2 = ListView_GetItemCount(hwndList);
@@ -357,8 +357,8 @@ INT_PTR CPropTypesRegex::DispatchEvent(
 
 			case IDC_BUTTON_REGEX_UP:	/* 上へ */
 			{
-				auto_array_ptr<TCHAR> szKeyWord(new TCHAR [ nKeyWordSize ]);
-				szKeyWord[0] = _T('\0');
+				auto_array_ptr<WCHAR> szKeyWord(new WCHAR [ nKeyWordSize ]);
+				szKeyWord[0] = L'\0';
 				nIndex = ListView_GetNextItem( hwndList, -1, LVNI_ALL | LVNI_SELECTED );
 				if( -1 == nIndex ) return FALSE;
 				if( 0 == nIndex ) return TRUE;	//すでに先頭にある。
@@ -388,8 +388,8 @@ INT_PTR CPropTypesRegex::DispatchEvent(
 
 			case IDC_BUTTON_REGEX_DOWN:	/* 下へ */
 			{
-				auto_array_ptr<TCHAR> szKeyWord(new TCHAR [ nKeyWordSize ]);
-				szKeyWord[0] = _T('\0');
+				auto_array_ptr<WCHAR> szKeyWord(new WCHAR [ nKeyWordSize ]);
+				szKeyWord[0] = L'\0';
 				nIndex = ListView_GetNextItem( hwndList, -1, LVNI_ALL | LVNI_SELECTED );
 				if( -1 == nIndex ) return FALSE;
 				nIndex2 = ListView_GetItemCount(hwndList);
@@ -454,7 +454,7 @@ INT_PTR CPropTypesRegex::DispatchEvent(
 				if( -1 == nIndex )
 				{
 					/* 初期値を設定する */
-					::DlgItem_SetText( hwndDlg, IDC_EDIT_REGEX, _T("//k") );	/* 正規表現 */
+					::DlgItem_SetText( hwndDlg, IDC_EDIT_REGEX, L"//k" );	/* 正規表現 */
 					hwndCombo = GetDlgItem( hwndDlg, IDC_COMBO_REGEX_COLOR );
 					for( i = 0, j = 0; i < COLORIDX_LAST; i++ )
 					{
@@ -473,8 +473,8 @@ INT_PTR CPropTypesRegex::DispatchEvent(
 				}
 				if( nPrevIndex != nIndex )	//@@@ 2003.03.26 MIK
 				{	//更新時にListViewのSubItemを正しく取得できないので、その対策
-					auto_array_ptr<TCHAR> szKeyWord(new TCHAR [ nKeyWordSize ]);
-					szKeyWord[0] = _T('\0');
+					auto_array_ptr<WCHAR> szKeyWord(new WCHAR [ nKeyWordSize ]);
+					szKeyWord[0] = L'\0';
 					ListView_GetItemText(hwndList, nIndex, 0, &szKeyWord[0], nKeyWordSize);
 					ListView_GetItemText(hwndList, nIndex, 1, szColorIndex, _countof(szColorIndex));
 					::DlgItem_SetText( hwndDlg, IDC_EDIT_REGEX, &szKeyWord[0] );	/* 正規表現 */
@@ -484,7 +484,7 @@ INT_PTR CPropTypesRegex::DispatchEvent(
 						if ( 0 == (g_ColorAttributeArr[i].fAttribute & COLOR_ATTRIB_NO_TEXT) &&
 							0 == (g_ColorAttributeArr[i].fAttribute & COLOR_ATTRIB_NO_BACK) )	// 2006.12.18 ryoji フラグ利用で簡素化
 						{
-							if(_tcscmp(m_Types.m_ColorInfoArr[i].m_szName, szColorIndex) == 0)
+							if(wcscmp(m_Types.m_ColorInfoArr[i].m_szName, szColorIndex) == 0)
 							{
 								Combo_SetCurSel(hwndCombo, j);
 								break;
@@ -511,7 +511,7 @@ void CPropTypesRegex::SetData( HWND hwndDlg )
 
 	/* ユーザーがエディット コントロールに入力できるテキストの長さを制限する */
 	EditCtl_LimitText( ::GetDlgItem( hwndDlg, IDC_EDIT_REGEX ), MAX_REGEX_KEYWORDLEN - 1 );
-	::DlgItem_SetText( hwndDlg, IDC_EDIT_REGEX, _T("//k") );	/* 正規表現 */
+	::DlgItem_SetText( hwndDlg, IDC_EDIT_REGEX, L"//k" );	/* 正規表現 */
 
 	/* 色種類のリスト */
 	hwndWork = ::GetDlgItem( hwndDlg, IDC_COMBO_REGEX_COLOR );
@@ -558,7 +558,7 @@ void CPropTypesRegex::SetDataKeywordList( HWND hwndDlg )
 		if( *pKeyword == L'\0' ) break;
 		
 		lvi.mask     = LVIF_TEXT | LVIF_PARAM;
-		lvi.pszText  = const_cast<TCHAR*>(to_tchar(pKeyword));
+		lvi.pszText  = const_cast<WCHAR*>(to_wchar(pKeyword));
 		lvi.iItem    = i;
 		lvi.iSubItem = 0;
 		lvi.lParam   = 0; //m_Types.m_RegexKeywordArr[i].m_nColorIndex;
@@ -582,8 +582,8 @@ int CPropTypesRegex::GetData( HWND hwndDlg )
 	HWND	hwndList;
 	int	nIndex, i, j;
 	const int szKeyWordSize = _countof(m_Types.m_RegexKeywordList) * 2 + 1;
-	auto_array_ptr<TCHAR> szKeyWord(new TCHAR [ szKeyWordSize ]);
-	TCHAR	szColorIndex[256];
+	auto_array_ptr<WCHAR> szKeyWord(new WCHAR [ szKeyWordSize ]);
+	WCHAR	szColorIndex[256];
 
 //@@@ 2002.01.03 YAZAKI 最後に表示していたシートを正しく覚えていないバグ修正
 //	//自分のページ番号
@@ -605,18 +605,18 @@ int CPropTypesRegex::GetData( HWND hwndDlg )
 	{
 		if( i < nIndex )
 		{
-			szKeyWord[0]    = _T('\0');
-			szColorIndex[0] = _T('\0');
+			szKeyWord[0]    = L'\0';
+			szColorIndex[0] = L'\0';
 			ListView_GetItemText(hwndList, i, 0, &szKeyWord[0], szKeyWordSize );
 			ListView_GetItemText(hwndList, i, 1, szColorIndex, _countof(szColorIndex));
 			if( pKeyword < pKeywordLast - 1 ){
-				_tcstowcs(pKeyword, &szKeyWord[0], pKeywordLast - pKeyword);
+				wcsncpy_s(pKeyword, pKeywordLast - pKeyword, &szKeyWord[0], _TRUNCATE);
 			}
 			//色指定文字列を番号に変換する
 			m_Types.m_RegexKeywordArr[i].m_nColorIndex = COLORIDX_REGEX1;
 			for(j = 0; j < COLORIDX_LAST; j++)
 			{
-				if(_tcscmp(m_Types.m_ColorInfoArr[j].m_szName, szColorIndex) == 0)
+				if(wcscmp(m_Types.m_ColorInfoArr[j].m_szName, szColorIndex) == 0)
 				{
 					m_Types.m_RegexKeywordArr[i].m_nColorIndex = j;
 					break;
@@ -650,7 +650,7 @@ BOOL CPropTypesRegex::RegexKakomiCheck(const wchar_t *s)
 }
 //@@@ 2001.11.17 add end MIK
 
-bool CPropTypesRegex::CheckKeywordList(HWND hwndDlg, const TCHAR* szNewKeyWord, int nUpdateItem)
+bool CPropTypesRegex::CheckKeywordList(HWND hwndDlg, const WCHAR* szNewKeyWord, int nUpdateItem)
 {
 	int nRet;
 	//書式をチェックする。
@@ -660,8 +660,8 @@ bool CPropTypesRegex::CheckKeywordList(HWND hwndDlg, const TCHAR* szNewKeyWord, 
 				hwndDlg,
 				MB_OK | MB_ICONSTOP | MB_TOPMOST | MB_DEFBUTTON2,
 				GSTR_APPNAME,
-				_T("正規表現キーワードを / と /k で囲ってください。\nキーワードに / がある場合は m# と #k で囲ってください。"),
-				_T("正規表現キーワード") );
+				L"正規表現キーワードを / と /k で囲ってください。\nキーワードに / がある場合は m# と #k で囲ってください。",
+				L"正規表現キーワード" );
 		return false;
 	}
 	if( !CheckRegexpSyntax( to_wchar(szNewKeyWord), hwndDlg, false ) )
@@ -670,29 +670,29 @@ bool CPropTypesRegex::CheckKeywordList(HWND hwndDlg, const TCHAR* szNewKeyWord, 
 				hwndDlg,
 				MB_YESNO | MB_ICONQUESTION | MB_TOPMOST | MB_DEFBUTTON2,
 				GSTR_APPNAME,
-				_T("書式が正しくないか、正規表現ライブラリが見つかりません。\n\n登録しますか？"),
-				_T("正規表現キーワード") );
+				L"書式が正しくないか、正規表現ライブラリが見つかりません。\n\n登録しますか？",
+				L"正規表現キーワード" );
 		if( nRet != IDYES ) return false;
 	}
 	// 重複確認・文字列長制限チェック
 	const int nKeyWordSize = MAX_REGEX_KEYWORDLEN;
 	HWND hwndList = GetDlgItem( hwndDlg, IDC_LIST_REGEX );
 	int  nIndex  = ListView_GetItemCount(hwndList);
-	auto_array_ptr<TCHAR> szKeyWord(new TCHAR [ nKeyWordSize ]);
+	auto_array_ptr<WCHAR> szKeyWord(new WCHAR [ nKeyWordSize ]);
 	int nKeywordLen = auto_strlen(to_wchar(szNewKeyWord)) + 1;
 	for(int i = 0; i < nIndex; i++){
 		if( i != nUpdateItem ){
-			szKeyWord[0] = _T('\0');
+			szKeyWord[0] = L'\0';
 			ListView_GetItemText(hwndList, i, 0, &szKeyWord[0], nKeyWordSize);
-			if( _tcscmp(szNewKeyWord, &szKeyWord[0]) == 0 ) 
+			if( wcscmp(szNewKeyWord, &szKeyWord[0]) == 0 ) 
 			{
-				ErrorMessage( hwndDlg, _T("同じキーワードで登録済みです。"));
+				ErrorMessage( hwndDlg, L"同じキーワードで登録済みです。");
 				return false;
 			}
 			// 長さには\0も含む
 			nKeywordLen += auto_strlen(to_wchar(&szKeyWord[0])) + 1;
 			if( _countof(m_Types.m_RegexKeywordList) - 1 < nKeywordLen ){
-				ErrorMessage( hwndDlg, _T("これ以上登録できません。\nキーワード領域がいっぱいです。") );
+				ErrorMessage( hwndDlg, L"これ以上登録できません。\nキーワード領域がいっぱいです。" );
 				return false;
 			}
 		}

@@ -7,7 +7,7 @@
 //               コンストラクタ・デストラクタ                  //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
-CFile::CFile(LPCTSTR pszPath)
+CFile::CFile(LPCWSTR pszPath)
 : m_nFileShareModeOld( SHAREMODE_NOT_EXCLUSIVE )
 , m_hLockedFile( INVALID_HANDLE_VALUE )
 {
@@ -32,7 +32,7 @@ bool CFile::IsFileExist() const
 
 bool CFile::HasWritablePermission() const
 {
-	return -1 != _taccess( GetFilePath(), 2 );
+	return -1 != _waccess( GetFilePath(), 2 );
 }
 
 bool CFile::IsFileWritable() const
@@ -40,7 +40,7 @@ bool CFile::IsFileWritable() const
 	//書き込めるか検査
 	// Note. 他のプロセスが明示的に書き込み禁止しているかどうか
 	//       ⇒ GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE でチェックする
-	//          実際のファイル保存もこれと等価な _tfopen の _T("wb") を使用している
+	//          実際のファイル保存もこれと等価な _wfopen の L"wb" を使用している
 	HANDLE hFile = CreateFile(
 		this->GetFilePath(),			//ファイル名
 		GENERIC_WRITE,					//書きモード
@@ -127,16 +127,16 @@ bool CFile::FileLock( EShareMode eShareMode, bool bMsg )
 
 	//結果
 	if( INVALID_HANDLE_VALUE == m_hLockedFile && bMsg ){
-		const TCHAR*	pszMode;
+		const WCHAR*	pszMode;
 		switch( eShareMode ){
-		case SHAREMODE_DENY_READWRITE:	pszMode = _T("読み書き禁止モード"); break;
-		case SHAREMODE_DENY_WRITE:		pszMode = _T("書き込み禁止モード"); break;
-		default:						pszMode = _T("未定義のモード（問題があります）"); break;
+		case SHAREMODE_DENY_READWRITE:	pszMode = L"読み書き禁止モード"; break;
+		case SHAREMODE_DENY_WRITE:		pszMode = L"書き込み禁止モード"; break;
+		default:						pszMode = L"未定義のモード（問題があります）"; break;
 		}
 		TopWarningMessage(
 			CEditWnd::getInstance()->GetHwnd(),
-			_T("%ts\nを%tsでロックできませんでした。\n現在このファイルに対する排他制御は無効となります。"),
-			GetFilePathClass().IsValidPath() ? GetFilePath() : _T("(無題)"),
+			L"%ts\nを%tsでロックできませんでした。\n現在このファイルに対する排他制御は無効となります。",
+			GetFilePathClass().IsValidPath() ? GetFilePath() : L"(無題)",
 			pszMode
 		);
 		return false;

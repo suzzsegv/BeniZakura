@@ -40,8 +40,8 @@
 void CType_Markdown::InitTypeConfigImp(STypeConfig* pType)
 {
 	//名前と拡張子
-	_tcscpy( pType->m_szTypeName, _T("Markdown") );
-	_tcscpy( pType->m_szTypeExts, _T("md") );
+	wcscpy( pType->m_szTypeName, L"Markdown" );
+	wcscpy( pType->m_szTypeExts, L"md" );
 
 	//設定
 	pType->m_nMaxLineKetas = CLayoutInt(120);					/* 折り返し桁数 */

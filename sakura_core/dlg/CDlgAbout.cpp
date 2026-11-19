@@ -68,7 +68,7 @@
 	#define TARGET_DEBUG_MODE "R"
 #endif
 
-#define TSTR_TARGET_MODE _T(TARGET_STRING_MODEL) _T(TARGET_DEBUG_MODE)
+#define TSTR_TARGET_MODE _CRT_WIDE(TARGET_STRING_MODEL) _CRT_WIDE(TARGET_DEBUG_MODE)
 
 #ifdef _WIN32_WINDOWS
 	#define MY_WIN32_WINDOWS _WIN32_WINDOWS
@@ -118,20 +118,20 @@ BOOL CDlgAbout::OnInitDialog( HWND hwndDlg, WPARAM wParam, LPARAM lParam )
 {
 	_SetHwnd( hwndDlg );
 
-	TCHAR			szMsg[2048];
+	WCHAR			szMsg[2048];
 	wchar_t	vcVersion[64];
 
 	/* バージョン情報 */
 
-	CNativeT cmemMsg;
-	cmemMsg.AppendString(_T("\r\n紅桜  "));
+	CNativeW cmemMsg;
+	cmemMsg.AppendString(L"\r\n紅桜  ");
 
 	DWORD dwVersionMS, dwVersionLS;
 	GetAppVersionInfo( NULL, VS_VERSION_INFO, &dwVersionMS, &dwVersionLS );
 
-	auto_sprintf(szMsg, _T("%s\r\n"), _T(GIT_REV));
+	auto_sprintf(szMsg, L"%s\r\n", _CRT_WIDE(GIT_REV));
 	cmemMsg.AppendString( szMsg );
-	cmemMsg.AppendString( _T("\r\n") );
+	cmemMsg.AppendString( L"\r\n" );
 
 	switch(_MSC_VER){
 	case 1500:
@@ -153,26 +153,26 @@ BOOL CDlgAbout::OnInitDialog( HWND hwndDlg, WPARAM wParam, LPARAM lParam )
 		auto_sprintf(vcVersion, L"MSC Ver.%d.%02d", _MSC_VER / 100, _MSC_VER % 100);
 		break;
 	}
-	auto_sprintf( szMsg, L"  %s %s  Built with %s\r\n", _T(__DATE__), _T(__TIME__), vcVersion );
+	auto_sprintf( szMsg, L"  %s %s  Built with %s\r\n", _CRT_WIDE(__DATE__), _CRT_WIDE(__TIME__), vcVersion );
 	cmemMsg.AppendString( szMsg );
-	cmemMsg.AppendString( _T("\r\n") );
-	cmemMsg.AppendString( _T("  Copyright (C) 2012-2026 by Satoshi Suzuki\r\n") );
-	cmemMsg.AppendString( _T("\r\n") );
-	cmemMsg.AppendString( _T("\r\n") );
+	cmemMsg.AppendString( L"\r\n" );
+	cmemMsg.AppendString( L"  Copyright (C) 2012-2026 by Satoshi Suzuki\r\n" );
+	cmemMsg.AppendString( L"\r\n" );
+	cmemMsg.AppendString( L"\r\n" );
 
-	cmemMsg.AppendString( _T("Based on サクラエディタ  Ver.2.0.8.1+\r\n") );
-	cmemMsg.AppendString( _T("\r\n") );
-	cmemMsg.AppendString( _T("  Copyright (C) 1998-2014 by Norio Nakatani & Collaborators\r\n") );
-	cmemMsg.AppendString( _T("\r\n") );
+	cmemMsg.AppendString( L"Based on サクラエディタ  Ver.2.0.8.1+\r\n" );
+	cmemMsg.AppendString( L"\r\n" );
+	cmemMsg.AppendString( L"  Copyright (C) 1998-2014 by Norio Nakatani & Collaborators\r\n" );
+	cmemMsg.AppendString( L"\r\n" );
 
 // パッチ(かリビジョン)の情報をコンパイル時に渡せるようにする
 #ifdef SKR_PATCH_INFO
-	cmemMsg.AppendString( _T("      ") );
-	const TCHAR* ptszPatchInfo = to_tchar(SKR_PATCH_INFO);
+	cmemMsg.AppendString( L"      " );
+	const WCHAR* ptszPatchInfo = to_wchar(SKR_PATCH_INFO);
 	int patchInfoLen = auto_strlen(ptszPatchInfo);
 	cmemMsg.AppendString( ptszPatchInfo, t_min(80, patchInfoLen) );
 #endif
-	cmemMsg.AppendString( _T("\r\n"));
+	cmemMsg.AppendString( L"\r\n");
 
 	::DlgItem_SetText( GetHwnd(), IDC_EDIT_VER, cmemMsg.GetStringPtr() );
 

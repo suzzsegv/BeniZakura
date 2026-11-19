@@ -131,7 +131,7 @@ int CPropTypes::DoPropertySheet( int nPageNum )
 	psp[nIdx].pszTemplate = MAKEINTRESOURCE( IDD_PROP_SCREEN );
 	psp[nIdx].pszIcon     = NULL;
 	psp[nIdx].pfnDlgProc  = PropTypesScreen;
-	psp[nIdx].pszTitle    = _T("スクリーン");
+	psp[nIdx].pszTitle    = L"スクリーン";
 	psp[nIdx].lParam      = (LPARAM)this;
 	psp[nIdx].pfnCallback = NULL;
 	nIdx++;
@@ -143,7 +143,7 @@ int CPropTypes::DoPropertySheet( int nPageNum )
 	psp[nIdx].pszTemplate = MAKEINTRESOURCE( IDD_PROP_COLOR );
 	psp[nIdx].pszIcon     = NULL /*MAKEINTRESOURCE( IDI_BORDER) */;
 	psp[nIdx].pfnDlgProc  = PropTypesColor;
-	psp[nIdx].pszTitle    = _T("カラー");
+	psp[nIdx].pszTitle    = L"カラー";
 	psp[nIdx].lParam      = (LPARAM)this;
 	psp[nIdx].pfnCallback = NULL;
 	nIdx++;
@@ -156,7 +156,7 @@ int CPropTypes::DoPropertySheet( int nPageNum )
 	psp[nIdx].pszTemplate = MAKEINTRESOURCE( IDD_PROP_WINDOW );
 	psp[nIdx].pszIcon     = NULL;
 	psp[nIdx].pfnDlgProc  = PropTypesWindow;
-	psp[nIdx].pszTitle    = _T("ウィンドウ");
+	psp[nIdx].pszTitle    = L"ウィンドウ";
 	psp[nIdx].lParam      = (LPARAM)this;
 	psp[nIdx].pfnCallback = NULL;
 	nIdx++;
@@ -170,7 +170,7 @@ int CPropTypes::DoPropertySheet( int nPageNum )
 	psp[nIdx].pszTemplate = MAKEINTRESOURCE( IDD_PROP_SUPPORT );
 	psp[nIdx].pszIcon     = NULL;
 	psp[nIdx].pfnDlgProc  = PropTypesSupport;
-	psp[nIdx].pszTitle    = _T("支援");
+	psp[nIdx].pszTitle    = L"支援";
 	psp[nIdx].lParam      = (LPARAM)this;
 	psp[nIdx].pfnCallback = NULL;
 	nIdx++;
@@ -184,7 +184,7 @@ int CPropTypes::DoPropertySheet( int nPageNum )
 	psp[nIdx].pszTemplate = MAKEINTRESOURCE( IDD_PROP_REGEX );
 	psp[nIdx].pszIcon     = NULL;
 	psp[nIdx].pfnDlgProc  = PropTypesRegex;
-	psp[nIdx].pszTitle    = _T("正規表現キーワード");
+	psp[nIdx].pszTitle    = L"正規表現キーワード";
 	psp[nIdx].lParam      = (LPARAM)this;
 	psp[nIdx].pfnCallback = NULL;
 	nIdx++;
@@ -198,7 +198,7 @@ int CPropTypes::DoPropertySheet( int nPageNum )
 	psp[nIdx].pszTemplate = MAKEINTRESOURCE( IDD_PROP_KEYHELP );
 	psp[nIdx].pszIcon     = NULL;
 	psp[nIdx].pfnDlgProc  = PropTypesKeyHelp;
-	psp[nIdx].pszTitle    = _T("キーワードヘルプ");
+	psp[nIdx].pszTitle    = L"キーワードヘルプ";
 	psp[nIdx].lParam      = (LPARAM)this;
 	psp[nIdx].pfnCallback = NULL;
 	nIdx++;
@@ -216,7 +216,7 @@ int CPropTypes::DoPropertySheet( int nPageNum )
 	psh.hwndParent = m_hwndParent;
 	psh.hInstance  = m_hInstance;
 	psh.pszIcon    = NULL;
-	psh.pszCaption = _T("タイプ別設定");	// Sept. 8, 2000 jepro 単なる「設定」から変更
+	psh.pszCaption = L"タイプ別設定";	// Sept. 8, 2000 jepro 単なる「設定」から変更
 	psh.nPages     = nIdx;
 
 	//- 20020106 aroka # psh.nStartPage は unsigned なので負にならない
@@ -239,7 +239,7 @@ int CPropTypes::DoPropertySheet( int nPageNum )
 	nRet = MyPropertySheet( &psh );	// 2007.05.24 ryoji 独自拡張プロパティシート
 
 	if( -1 == nRet ){
-		TCHAR*	pszMsgBuf;
+		WCHAR*	pszMsgBuf;
 		::FormatMessage(
 			FORMAT_MESSAGE_ALLOCATE_BUFFER |
 			FORMAT_MESSAGE_FROM_SYSTEM |
@@ -247,17 +247,17 @@ int CPropTypes::DoPropertySheet( int nPageNum )
 			NULL,
 			::GetLastError(),
 			MAKELANGID( LANG_NEUTRAL, SUBLANG_DEFAULT ), // デフォルト言語
-			(LPTSTR)&pszMsgBuf,
+			(LPWSTR)&pszMsgBuf,
 			0,
 			NULL
 		);
 		PleaseReportToAuthor(
 			NULL,
-			_T("CPropTypes::DoPropertySheet()内でエラーが出ました。\n")
-			_T("psh.nStartPage=[%d]\n")
-			_T("::PropertySheet()失敗。\n")
-			_T("\n")
-			_T("%ts\n"),
+			L"CPropTypes::DoPropertySheet()内でエラーが出ました。\n"
+			L"psh.nStartPage=[%d]\n"
+			L"::PropertySheet()失敗。\n"
+			L"\n"
+			L"%ts\n",
 			psh.nStartPage,
 			pszMsgBuf
 		);

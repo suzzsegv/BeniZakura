@@ -26,12 +26,12 @@ CLayout::~CLayout()
 
 void CLayout::DUMP( void )
 {
-	DEBUG_TRACE( _T("\n\n■CLayout::DUMP()======================\n") );
-	DEBUG_TRACE( _T("m_ptLogicPos.y=%d\t\t対応する論理行番号\n"), m_ptLogicPos.y );
-	DEBUG_TRACE( _T("m_ptLogicPos.x=%d\t\t対応する論理行の先頭からのオフセット\n"), m_ptLogicPos.x );
-	DEBUG_TRACE( _T("m_nLength=%d\t\t対応する論理行のハイト数\n"), (int)m_nLength );
-	DEBUG_TRACE( _T("m_colorIndexPrev=%d\t\tColorIndexType\n"), m_colorIndexPrev );
-	DEBUG_TRACE( _T("======================\n") );
+	DEBUG_TRACE( L"\n\n■CLayout::DUMP()======================\n" );
+	DEBUG_TRACE( L"m_ptLogicPos.y=%d\t\t対応する論理行番号\n", m_ptLogicPos.y );
+	DEBUG_TRACE( L"m_ptLogicPos.x=%d\t\t対応する論理行の先頭からのオフセット\n", m_ptLogicPos.x );
+	DEBUG_TRACE( L"m_nLength=%d\t\t対応する論理行のハイト数\n", (int)m_nLength );
+	DEBUG_TRACE( L"m_colorIndexPrev=%d\t\tColorIndexType\n", m_colorIndexPrev );
+	DEBUG_TRACE( L"======================\n" );
 	return;
 }
 

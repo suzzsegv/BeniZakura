@@ -170,9 +170,9 @@ re_do:;								// hor
 		}
 	}
 	if(bFound){
-		if(nYOld >= ptXY.y)m_pCommanderView->SendStatusMessage(_T("▼先頭から再検索しました"));
+		if(nYOld >= ptXY.y)m_pCommanderView->SendStatusMessage(L"▼先頭から再検索しました");
 	}else{
-		m_pCommanderView->SendStatusMessage(_T("▽見つかりませんでした"));
+		m_pCommanderView->SendStatusMessage(L"▽見つかりませんでした");
 	}
 	return;
 }
@@ -213,9 +213,9 @@ re_do:;								// hor
 		}
 	}
 	if(bFound){
-		if(nYOld <= ptXY.y)m_pCommanderView->SendStatusMessage(_T("▲末尾から再検索しました"));
+		if(nYOld <= ptXY.y)m_pCommanderView->SendStatusMessage(L"▲末尾から再検索しました");
 	}else{
-		m_pCommanderView->SendStatusMessage(_T("△見つかりませんでした"));
+		m_pCommanderView->SendStatusMessage(L"△見つかりませんでした");
 	}
 	return;
 }

@@ -166,7 +166,7 @@ void CDlgReplace::SetCombosList( void )
 		Combo_DeleteString( hwndCombo, 0);
 	}
 	int nBufferSize = ::GetWindowTextLength( hwndCombo ) + 1;
-	std::vector<TCHAR> vText;
+	std::vector<WCHAR> vText;
 	vText.resize( nBufferSize );
 	Combo_GetText( hwndCombo, &vText[0], nBufferSize );
 	if (auto_strcmp( to_wchar(&vText[0]), m_strText.c_str() ) != 0) {
@@ -211,7 +211,7 @@ int CDlgReplace::GetData( void )
 
 	/* 検索文字列 */
 	int nBufferSize = ::GetWindowTextLength( GetItemHwnd(IDC_COMBO_TEXT) ) + 1;
-	std::vector<TCHAR> vText(nBufferSize);
+	std::vector<WCHAR> vText(nBufferSize);
 	::DlgItem_GetText( GetHwnd(), IDC_COMBO_TEXT, &vText[0], nBufferSize);
 	m_strText = to_wchar(&vText[0]);
 	/* 置換後文字列 */
@@ -353,7 +353,7 @@ BOOL CDlgReplace::OnBnClicked( int wID )
 		/* テキストの貼り付け */
 		if( ::IsDlgButtonChecked( GetHwnd(), IDC_CHK_PASTE ) &&
 			!pcEditView->m_pcEditDoc->m_cDocEditor.IsEnablePaste() ){
-			OkMessage( GetHwnd(), _T("クリップボードに有効なデータがありません！") );
+			OkMessage( GetHwnd(), L"クリップボードに有効なデータがありません！" );
 			::CheckDlgButton( GetHwnd(), IDC_CHK_PASTE, FALSE );
 		}
 		::EnableWindow( ::GetDlgItem( GetHwnd(), IDC_COMBO_TEXT2 ), !(::IsDlgButtonChecked( GetHwnd(), IDC_CHK_PASTE)) );
@@ -384,13 +384,13 @@ BOOL CDlgReplace::OnBnClicked( int wID )
 		return TRUE;
 // To Here 2001.12.03 hor
 //	case IDC_CHK_LOHICASE:	/* 大文字と小文字を区別する */
-//		MYTRACE( _T("IDC_CHK_LOHICASE\n") );
+//		MYTRACE( L"IDC_CHK_LOHICASE\n" );
 //		return TRUE;
 //	case IDC_CHK_WORDONLY:	/* 一致する単語のみ検索 */
-//		MYTRACE( _T("IDC_CHK_WORDONLY\n") );
+//		MYTRACE( L"IDC_CHK_WORDONLY\n" );
 //		break;
 	case IDC_CHK_REGULAREXP:	/* 正規表現 */
-//		MYTRACE( _T("IDC_CHK_REGULAREXP ::IsDlgButtonChecked( GetHwnd(), IDC_CHK_REGULAREXP ) = %d\n"), ::IsDlgButtonChecked( GetHwnd(), IDC_CHK_REGULAREXP ) );
+//		MYTRACE( L"IDC_CHK_REGULAREXP ::IsDlgButtonChecked( GetHwnd(), IDC_CHK_REGULAREXP ) = %d\n", ::IsDlgButtonChecked( GetHwnd(), IDC_CHK_REGULAREXP ) );
 		if( ::IsDlgButtonChecked( GetHwnd(), IDC_CHK_REGULAREXP ) ){
 			// From Here Jun. 26, 2001 genta
 			//	正規表現ライブラリの差し替えに伴う処理の見直し
@@ -459,7 +459,7 @@ BOOL CDlgReplace::OnBnClicked( int wID )
 			/* 再描画（0文字幅マッチでキャレットを表示するため） */
 			pcEditView->Redraw();	// 前回0文字幅マッチの消去にも必要
 		}else if(nRet == 0){
-			OkMessage( GetHwnd(), _T("文字列を指定してください。") );
+			OkMessage( GetHwnd(), L"文字列を指定してください。" );
 		}
 		return TRUE;
 	case IDC_BUTTON_SEARCHNEXT:	/* 下検索 */
@@ -482,7 +482,7 @@ BOOL CDlgReplace::OnBnClicked( int wID )
 			/* 再描画（0文字幅マッチでキャレットを表示するため） */
 			pcEditView->Redraw();	// 前回0文字幅マッチの消去にも必要
 		}else if(nRet == 0){
-			OkMessage( GetHwnd(), _T("文字列を指定してください。") );
+			OkMessage( GetHwnd(), L"文字列を指定してください。" );
 		}
 		return TRUE;
 
@@ -515,7 +515,7 @@ BOOL CDlgReplace::OnBnClicked( int wID )
 			/* 再描画 */
 			pcEditView->GetCommander().HandleCommand( F_REDRAW, true, 0, 0, 0, 0 );
 		}else if(nRet == 0){
-			OkMessage( GetHwnd(), _T("文字列を指定してください。") );
+			OkMessage( GetHwnd(), L"文字列を指定してください。" );
 		}
 		return TRUE;
 	case IDC_BUTTON_REPALCEALL:	/* すべて置換 */
@@ -534,7 +534,7 @@ BOOL CDlgReplace::OnBnClicked( int wID )
 			/* アクティブにする */
 			ActivateFrameWindow( GetHwnd() );
 
-			TopOkMessage( GetHwnd(), _T("%d箇所を置換しました。"), m_nReplaceCnt);
+			TopOkMessage( GetHwnd(), L"%d箇所を置換しました。", m_nReplaceCnt);
 
 			if( !m_bCanceled ){
 				if( m_bModal ){		/* モーダルダイアログか */
@@ -549,7 +549,7 @@ BOOL CDlgReplace::OnBnClicked( int wID )
 			}
 			return TRUE;
 		}else if(nRet == 0){
-			OkMessage( GetHwnd(), _T("置換条件を指定してください。") );
+			OkMessage( GetHwnd(), L"置換条件を指定してください。" );
 		}
 		return TRUE;
 //	case IDCANCEL:

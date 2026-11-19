@@ -52,7 +52,6 @@ struct SysString
 		*L = Len;
 		wcscpy(*S, Data);
 	}
-	void GetT(TCHAR **S, int *L){GetW(S, L);}
 };
 
 /*! VARIANTのWrapper class

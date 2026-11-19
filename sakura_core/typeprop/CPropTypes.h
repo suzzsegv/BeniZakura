@@ -35,7 +35,7 @@ class CKeyWordSetMgr;
 template <class TYPE>
 struct TYPE_NAME {
 	TYPE		nMethod;
-	const TCHAR*	pszName;
+	const WCHAR*	pszName;
 };
 
 /*-----------------------------------------------------------------------
@@ -127,7 +127,7 @@ protected:
 	int  GetData( HWND );											//!< ダイアログデータの取得
 
 protected:
-	void SetCombobox(HWND hwndWork, const TCHAR** pszLabels, int nCount, int select);
+	void SetCombobox(HWND hwndWork, const WCHAR** pszLabels, int nCount, int select);
 	void EnableTypesPropInput( HWND hwndDlg );						//!< タイプ別設定のON/OFF
 public:
 private:
@@ -178,7 +178,7 @@ protected:
 private:
 	BOOL RegexKakomiCheck(const wchar_t *s);	//@@@ 2001.11.17 add MIK
 
-	bool CheckKeywordList(HWND, const TCHAR*, int);
+	bool CheckKeywordList(HWND, const WCHAR*, int);
 
 };
 

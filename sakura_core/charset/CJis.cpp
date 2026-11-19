@@ -496,12 +496,12 @@ EConvertResult CJis::UnicodeToJIS(CMemory* pMem)
 
 
 // 文字コード表示用	UNICODE → Hex 変換	2008/6/9 Uchi
-EConvertResult CJis::UnicodeToHex(const wchar_t* cSrc, const int iSLen, TCHAR* pDst, const CommonSetting_Statusbar* psStatusbar)
+EConvertResult CJis::UnicodeToHex(const wchar_t* cSrc, const int iSLen, WCHAR* pDst, const CommonSetting_Statusbar* psStatusbar)
 {
 	static CMemory	cCharBuffer;
 	EConvertResult	res;
 	int				i;
-	TCHAR*			pd; 
+	WCHAR*			pd; 
 	unsigned char*	ps; 
 
 	// 2008/6/21 Uchi
@@ -534,7 +534,7 @@ EConvertResult CJis::UnicodeToHex(const wchar_t* cSrc, const int iSLen, TCHAR* p
 			}
 		}
 		else {
-			auto_sprintf( pd, _T("%02X"), *ps);
+			auto_sprintf( pd, L"%02X", *ps);
 			pd += 2;
 		}
 	}

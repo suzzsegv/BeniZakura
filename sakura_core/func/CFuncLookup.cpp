@@ -40,9 +40,9 @@ const int LUOFFSET_MACRO = 0;
 const int LUOFFSET_CUSTMENU = 1;
 
 //! 動的に内容が変わる分類の名前
-const TCHAR *DynCategory[] = {
-	_T("外部マクロ"),
-	_T("カスタムメニュー"),
+const WCHAR *DynCategory[] = {
+	L"外部マクロ",
+	L"カスタムメニュー",
 };
 
 /*!	@brief 分類中の位置に対応する機能番号を返す．
@@ -115,8 +115,8 @@ bool CFuncLookup::Funccode2Name( int funccode, WCHAR* ptr, int bufsize ) const
 	if( F_USERMACRO_0 <= funccode && funccode < F_USERMACRO_0 + MAX_CUSTMACRO ){
 		int position = funccode - F_USERMACRO_0;
 		if( m_pMacroRec[position].IsEnabled() ){
-			const TCHAR *p = m_pMacroRec[position].GetTitle();
-			_tcstowcs( ptr, p, bufsize - 1 );
+			const WCHAR *p = m_pMacroRec[position].GetTitle();
+			wcsncpy_s(ptr, bufsize - 1, p, _TRUNCATE);
 			ptr[ bufsize - 1 ] = LTEXT('\0');
 		}else{
 			_snwprintf( ptr, bufsize, LTEXT("マクロ %d (未登録)"), position );
@@ -154,7 +154,7 @@ bool CFuncLookup::Funccode2Name( int funccode, WCHAR* ptr, int bufsize ) const
 	
 	@return NULL 分類名称．取得に失敗したらNULL．
 */
-const TCHAR* CFuncLookup::Category2Name( int category ) const
+const WCHAR* CFuncLookup::Category2Name( int category ) const
 {
 	if( category < 0 )
 		return NULL;

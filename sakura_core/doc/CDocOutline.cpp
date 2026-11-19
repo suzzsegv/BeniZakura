@@ -33,12 +33,12 @@
 	@date 2002.04.01 YAZAKI
 	@date 2002.11.03 Moca 引数nMaxCountを追加。バッファ長チェックをするように変更
 */
-int CDocOutline::ReadRuleFile( const TCHAR* pszFilename, SOneRule* pcOneRule, int nMaxCount )
+int CDocOutline::ReadRuleFile( const WCHAR* pszFilename, SOneRule* pcOneRule, int nMaxCount )
 {
 	long	i;
 	// 2003.06.23 Moca 相対パスは実行ファイルからのパスとして開く
 	// 2007.05.19 ryoji 相対パスは設定ファイルからのパスを優先
-	FILE*	pFile = _tfopen_absini( pszFilename, _T("r") );
+	FILE*	pFile = _wfopen_absini( pszFilename, L"r" );
 	if( NULL == pFile ){
 		return 0;
 	}

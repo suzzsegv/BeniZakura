@@ -150,14 +150,14 @@ bool CViewCommander::Command_TAGJUMP( bool bClose )
 	}
 
 	//	Apr. 21, 2003 genta bClose追加
-	if( !m_pCommanderView->TagJumpSub( to_tchar(szJumpToFile), CMyPoint(nJumpToColumn, nJumpToLine), bClose ) )	//@@@ 2003.04.13
+	if( !m_pCommanderView->TagJumpSub( to_wchar(szJumpToFile), CMyPoint(nJumpToColumn, nJumpToLine), bClose ) )	//@@@ 2003.04.13
 		goto can_not_tagjump;
 
 	return true;
 
 can_not_tagjump:;
 can_not_tagjump_end:;
-	m_pCommanderView->SendStatusMessage(_T("タグジャンプできません"));	//@@@ 2003.04.13
+	m_pCommanderView->SendStatusMessage(L"タグジャンプできません");	//@@@ 2003.04.13
 	return false;
 }
 
@@ -171,7 +171,7 @@ void CViewCommander::Command_TAGJUMPBACK( void )
 
 	/* タグジャンプ情報の参照 */
 	if( !CTagJumpManager().PopTagJump(&tagJump) || !IsSakuraMainWindow(tagJump.hwndReferer) ){
-		m_pCommanderView->SendStatusMessage(_T("タグジャンプバックできません"));
+		m_pCommanderView->SendStatusMessage(L"タグジャンプバックできません");
 		// 2004.07.10 Moca m_TagJumpNumを0にしなくてもいいと思う
 		// GetDllShareData().m_TagJumpNum = 0;
 		return;
@@ -199,16 +199,16 @@ void CViewCommander::Command_TAGJUMPBACK( void )
 */
 bool CViewCommander::Command_TagsMake( void )
 {
-#define	CTAGS_COMMAND	_T("ctags.exe")
+#define	CTAGS_COMMAND	L"ctags.exe"
 
-	TCHAR	szTargetPath[1024 /*_MAX_PATH+1*/ ];
+	WCHAR	szTargetPath[1024 /*_MAX_PATH+1*/ ];
 	if( GetDocument()->m_cDocFile.GetFilePathClass().IsValidPath() )
 	{
-		TCHAR vcsDirectoryPathName[MAX_PATH];
+		WCHAR vcsDirectoryPathName[MAX_PATH];
 		bool vcsRepositoryDetected;
 
-		_tcscpy( szTargetPath, GetDocument()->m_cDocFile.GetFilePath() );
-		szTargetPath[ _tcslen( szTargetPath ) - _tcslen( GetDocument()->m_cDocFile.GetFileName() ) ] = _T('\0');
+		wcscpy( szTargetPath, GetDocument()->m_cDocFile.GetFilePath() );
+		szTargetPath[ wcslen( szTargetPath ) - wcslen( GetDocument()->m_cDocFile.GetFileName() ) ] = L'\0';
 
 		// UNC パス (ネットワーク上のファイル) の場合は、VCS リポジトリのディレクトリを探さない。
 		// 親フォルダを順にさかのぼって .git などの存在を確認するたびにネットワークへの
@@ -231,9 +231,9 @@ bool CViewCommander::Command_TagsMake( void )
 	CDlgTagsMake	cDlgTagsMake;
 	if( !cDlgTagsMake.DoModal( G_AppInstance(), m_pCommanderView->GetHwnd(), 0, szTargetPath ) ) return false;
 
-	TCHAR	cmdline[1024];
+	WCHAR	cmdline[1024];
 	/* exeのあるフォルダ */
-	TCHAR	szExeFolder[_MAX_PATH + 1];
+	WCHAR	szExeFolder[_MAX_PATH + 1];
 
 	GetExedir( cmdline, CTAGS_COMMAND );
 	SplitPath_FolderAndFile( cmdline, szExeFolder, NULL );
@@ -241,22 +241,22 @@ bool CViewCommander::Command_TagsMake( void )
 	//ctags.exeの存在チェック
 	if( -1 == ::GetFileAttributes( cmdline ) )
 	{
-		WarningMessage( m_pCommanderView->GetHwnd(), _T( "タグ作成コマンド実行は失敗しました。\n\nCTAGS.EXE が見つかりません。" ) );
+		WarningMessage( m_pCommanderView->GetHwnd(), L"タグ作成コマンド実行は失敗しました。\n\nCTAGS.EXE が見つかりません。" );
 		return false;
 	}
 
 	//ctagsオプション作成
-	std::tstring sOptions;
-	sOptions = _T("--excmd=n --extras=+f");	//デフォルトのオプション
-	if( cDlgTagsMake.m_nTagsOpt & 0x0001 ) sOptions += _T(" -R");	//サブフォルダも対象
-	if( cDlgTagsMake.m_nTagsOpt & 0x0002 ) sOptions += _T(" --kinds-C=+px");
-	if( cDlgTagsMake.m_nTagsOpt & 0x0004 ) sOptions += _T(" --input-encoding=cp932");
-	if( cDlgTagsMake.m_szTagsCmdLine[0] != _T('\0') )	//個別指定のコマンドライン
+	std::wstring sOptions;
+	sOptions = L"--excmd=n --extras=+f";	//デフォルトのオプション
+	if( cDlgTagsMake.m_nTagsOpt & 0x0001 ) sOptions += L" -R";	//サブフォルダも対象
+	if( cDlgTagsMake.m_nTagsOpt & 0x0002 ) sOptions += L" --kinds-C=+px";
+	if( cDlgTagsMake.m_nTagsOpt & 0x0004 ) sOptions += L" --input-encoding=cp932";
+	if( cDlgTagsMake.m_szTagsCmdLine[0] != L'\0' )	//個別指定のコマンドライン
 	{
-		sOptions += _T(" ");
+		sOptions += L" ";
 		sOptions += cDlgTagsMake.m_szTagsCmdLine;
 	}
-	sOptions += _T(" *");	//配下のすべてのファイル
+	sOptions += L" *";	//配下のすべてのファイル
 
 	//コマンドライン文字列作成(MAX:1024)
 	//	NT : "<szCmdDir>\cmd.exe" /D /C ""<szExeFolder>\ctags.exe" <options>"
@@ -264,29 +264,29 @@ bool CViewCommander::Command_TagsMake( void )
 	//	cmdline に収まらない場合は実行しない (バッファオーバーフロー防止)
 	{
 		// 2010.08.28 Moca システムディレクトリ付加
-		TCHAR szCmdDir[_MAX_PATH];
+		WCHAR szCmdDir[_MAX_PATH];
 		const bool bNT = IsWin32NT() ? true : false;
 		if( bNT ){
 			::GetSystemDirectory(szCmdDir, _countof(szCmdDir));
 		}else{
 			::GetWindowsDirectory(szCmdDir, _countof(szCmdDir));
 		}
-		std::tstring sCmdLine;
-		sCmdLine += _T("\"");
+		std::wstring sCmdLine;
+		sCmdLine += L"\"";
 		sCmdLine += szCmdDir;
 		//	2006.08.04 genta add /D to disable autorun
-		sCmdLine += ( bNT ? _T("\\cmd.exe\" /D /C \"\"") : _T("\\command.com\" /C \"") );
+		sCmdLine += ( bNT ? L"\\cmd.exe\" /D /C \"\"" : L"\\command.com\" /C \"" );
 		sCmdLine += szExeFolder;	//sakura.exeパス
-		sCmdLine += _T("\\");
+		sCmdLine += L"\\";
 		sCmdLine += CTAGS_COMMAND;	//ctags.exe
-		sCmdLine += _T("\" ");
+		sCmdLine += L"\" ";
 		sCmdLine += sOptions;		//ctagsオプション
-		if( bNT ) sCmdLine += _T("\"");
+		if( bNT ) sCmdLine += L"\"";
 		if( sCmdLine.length() >= _countof(cmdline) ){
-			WarningMessage( m_pCommanderView->GetHwnd(), _T("タグ作成コマンド実行は失敗しました。\n\nコマンドラインが長すぎます。") );
+			WarningMessage( m_pCommanderView->GetHwnd(), L"タグ作成コマンド実行は失敗しました。\n\nコマンドラインが長すぎます。" );
 			return false;
 		}
-		_tcscpy_s( cmdline, _countof(cmdline), sCmdLine.c_str() );
+		wcscpy_s( cmdline, _countof(cmdline), sCmdLine.c_str() );
 	}
 
 	HANDLE	hStdOutWrite, hStdOutRead;
@@ -333,7 +333,7 @@ bool CViewCommander::Command_TagsMake( void )
 	);
 	if( !bProcessResult )
 	{
-		WarningMessage( m_pCommanderView->GetHwnd(), _T("タグ作成コマンド実行は失敗しました。\n\n%ts"), cmdline );
+		WarningMessage( m_pCommanderView->GetHwnd(), L"タグ作成コマンド実行は失敗しました。\n\n%ts", cmdline );
 		goto finish;
 	}
 
@@ -406,7 +406,7 @@ bool CViewCommander::Command_TagsMake( void )
 						cDlgCancel.CloseDialog( TRUE );
 
 						work[ read_cnt ] = L'\0';	// Nov. 15, 2003 genta 表示用に0終端する
-						WarningMessage( m_pCommanderView->GetHwnd(), _T("タグ作成コマンド実行は失敗しました。\n\n%hs"), work ); // 2003.11.09 じゅうじ
+						WarningMessage( m_pCommanderView->GetHwnd(), L"タグ作成コマンド実行は失敗しました。\n\n%hs", work ); // 2003.11.09 じゅうじ
 
 						return true;
 					}
@@ -427,7 +427,7 @@ finish:
 
 	cDlgCancel.CloseDialog( TRUE );
 
-	m_pCommanderView->SendStatusMessage(_T("タグファイルの作成が終了しました。"));
+	m_pCommanderView->SendStatusMessage(L"タグファイルの作成が終了しました。");
 
 	return true;
 }
@@ -443,7 +443,7 @@ bool CViewCommander::Command_TagJumpByTagsFileMsg( bool bMsg )
 {
 	bool ret = Command_TagJumpByTagsFile(false);
 	if( false == ret && bMsg ){
-		m_pCommanderView->SendStatusMessage(_T("タグジャンプできません"));
+		m_pCommanderView->SendStatusMessage(L"タグジャンプできません");
 	}
 	return ret;
 }
@@ -466,7 +466,7 @@ bool CViewCommander::Command_TagJumpByTagsFile( bool bClose )
 		return false;
 	}
 	
-	TCHAR	szDirFile[1024];
+	WCHAR	szDirFile[1024];
 	if( false == Sub_PreProcTagJumpByTagsFile( szDirFile, _countof(szDirFile) ) ){
 		return false;
 	}
@@ -488,7 +488,7 @@ bool CViewCommander::Command_TagJumpByTagsFile( bool bClose )
 	//タグジャンプする。
 	if( 0 < nMatchAll ){
 		//	@@ 2005.03.31 MIK 階層パラメータ追加
-		TCHAR fileName[1024];
+		WCHAR fileName[1024];
 		int   fileLine;
 
 		if( false == cDlgTagJumpList.GetSelectedFullPathAndLine( fileName, _countof(fileName), &fileLine , NULL ) ){
@@ -512,9 +512,9 @@ bool CViewCommander::Command_TagJumpByTagsFile( bool bClose )
 bool CViewCommander::Command_TagJumpByTagsFileKeyword( const wchar_t* keyword )
 {
 	CDlgTagJumpList	cDlgTagJumpList(false);
-	TCHAR	fileName[1024];
+	WCHAR	fileName[1024];
 	int		fileLine;	// 行番号
-	TCHAR	szCurrentPath[1024];
+	WCHAR	szCurrentPath[1024];
 
 	if( false == Sub_PreProcTagJumpByTagsFile( szCurrentPath, _countof(szCurrentPath) ) ){
 		return false;
@@ -543,9 +543,9 @@ bool CViewCommander::Command_TagJumpByTagsFileKeyword( const wchar_t* keyword )
 	タグジャンプの前処理
 	実行可能確認と、基準ファイル名の設定
 */
-bool CViewCommander::Sub_PreProcTagJumpByTagsFile( TCHAR* szCurrentPath, int count )
+bool CViewCommander::Sub_PreProcTagJumpByTagsFile( WCHAR* szCurrentPath, int count )
 {
-	if( count ) szCurrentPath[0] = _T('\0');
+	if( count ) szCurrentPath[0] = L'\0';
 
 	// 実行可能確認
 	if( ! GetDocument()->m_cDocFile.GetFilePathClass().IsValidPath() ){
@@ -561,26 +561,26 @@ bool CViewCommander::Sub_PreProcTagJumpByTagsFile( TCHAR* szCurrentPath, int cou
 	if( GetDocument()->m_cDocFile.GetFilePathClass().IsValidPath() ){
 		auto_strcpy( szCurrentPath, GetDocument()->m_cDocFile.GetFilePath() );
 	}else{
-		if( 0 == ::GetCurrentDirectory( count - _countof(_T("\\dmy")) - MAX_TYPES_EXTS, szCurrentPath ) ){
+		if( 0 == ::GetCurrentDirectory( count - _countof(L"\\dmy") - MAX_TYPES_EXTS, szCurrentPath ) ){
 			return false;
 		}
 		// (無題)でもファイル名を要求してくるのでダミーをつける
 		// 現在のタイプ別の1番目の拡張子を拝借
-		TCHAR szExts[MAX_TYPES_EXTS];
-		TCHAR* pszExt = szExts;
+		WCHAR szExts[MAX_TYPES_EXTS];
+		WCHAR* pszExt = szExts;
 		auto_strcpy( szExts, GetDocument()->m_cDocType.GetDocumentAttribute().m_szTypeExts );
 		if( szExts[0] != '\0' ){
 			// strtok 注意
-			pszExt = _tcstok( szExts, _T(" ;,") );
+			pszExt = _wcstok( szExts, L" ;," );
 		}
 		int nExtLen = 0;
 		if( NULL != pszExt ){
 			nExtLen = auto_strlen( pszExt );
 		}
-		_tcscat( szCurrentPath, _T("\\dmy") );
+		wcscat( szCurrentPath, L"\\dmy" );
 		if( nExtLen ){
-			_tcscat( szCurrentPath, _T(".") );
-			_tcscat( szCurrentPath, pszExt );
+			wcscat( szCurrentPath, L"." );
+			wcscat( szCurrentPath, pszExt );
 		}
 	}
 	return true;

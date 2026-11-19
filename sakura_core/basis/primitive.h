@@ -53,16 +53,6 @@
 typedef char ACHAR;
 
 
-//TCHAR追加機能
-//TCHARと逆の文字型をNOT_TCHARとして定義する
-typedef char NOT_TCHAR;
-
-
-//WIN_CHAR (WinAPIに渡すので、必ずTCHARでなければならないもの)
-typedef TCHAR WIN_CHAR;
-#define _WINT(A) _T(A)
-
-
 //EDIT_CHAR
 typedef wchar_t WChar;      //エディタで用いるテキスト管理データ型
 typedef wchar_t EDIT_CHAR;

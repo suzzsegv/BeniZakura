@@ -155,7 +155,7 @@ LRESULT CPrintPreview::OnPaint(
 	}
 
 	// プリンタ情報の表示 -> IDD_PRINTPREVIEWBAR右上のSTATICへ
-	TCHAR	szText[1024];
+	WCHAR	szText[1024];
 	::DlgItem_SetText(
 		m_hwndPrintPreviewBar,
 		IDC_STATIC_PRNDEV,
@@ -163,13 +163,13 @@ LRESULT CPrintPreview::OnPaint(
 	);
 
 	// 要素情報の表示 -> IDD_PRINTPREVIEWBAR右下のSTATICへ
-	TCHAR	szPaperName[256];
+	WCHAR	szPaperName[256];
 	CPrint::GetPaperName( m_pPrintSetting->m_mdmDevMode.dmPaperSize , szPaperName );
 	auto_sprintf(
 		szText,
-		_T("%ts  %ts"),
+		L"%ts  %ts",
 		szPaperName,
-		(m_pPrintSetting->m_mdmDevMode.dmOrientation & DMORIENT_LANDSCAPE) ? _T("横") : _T("縦")
+		(m_pPrintSetting->m_mdmDevMode.dmOrientation & DMORIENT_LANDSCAPE) ? L"横" : L"縦"
 	);
 	::DlgItem_SetText( m_hwndPrintPreviewBar, IDC_STATIC_PAPER, szText );
 
@@ -719,7 +719,7 @@ void CPrintPreview::OnChangePrintSetting( void )
 	m_pPrintSetting->m_mdmDevMode.dmFields &= (~DM_PAPERWIDTH);
 
 	/* 印刷/プレビューに必要な情報を取得 */
-	TCHAR	szErrMsg[1024];
+	WCHAR	szErrMsg[1024];
 	if( !m_cPrint.GetPrintMetrics(
 		&m_pPrintSetting->m_mdmDevMode,	/* プリンタ設定 DEVMODE用*/
 		&m_nPreview_PaperAllWidth,		/* 用紙幅 */
@@ -745,16 +745,16 @@ void CPrintPreview::OnChangePrintSetting( void )
 		m_pPrintSetting->m_mdmDevMode.dmFields |= ( DM_ORIENTATION | DM_PAPERSIZE | DM_PAPERLENGTH | DM_PAPERWIDTH);
 	}else{
 		if( m_pPrintSetting->m_nPrintPaperSize != m_pPrintSetting->m_mdmDevMode.dmPaperSize ){
-			TCHAR	szPaperNameOld[256];
-			TCHAR	szPaperNameNew[256];
+			WCHAR	szPaperNameOld[256];
+			WCHAR	szPaperNameNew[256];
 			/* 用紙の名前を取得 */
 			CPrint::GetPaperName( m_pPrintSetting->m_nPrintPaperSize , szPaperNameOld );
 			CPrint::GetPaperName( m_pPrintSetting->m_mdmDevMode.dmPaperSize , szPaperNameNew );
 
 			TopWarningMessage(
 				m_pParentWnd->GetHwnd(),
-				_T("現在のプリンタ %ts では、\n指定された用紙 %ts は使用できません。\n")
-				_T("利用可能な用紙 %ts に変更しました。"),
+				L"現在のプリンタ %ts では、\n指定された用紙 %ts は使用できません。\n"
+				L"利用可能な用紙 %ts に変更しました。",
 				m_pPrintSetting->m_mdmDevMode.m_szPrinterDeviceName,
 				szPaperNameOld,
 				szPaperNameNew
@@ -777,7 +777,7 @@ void CPrintPreview::OnChangePrintSetting( void )
 	if( m_bPreview_EnableColumns == 0 || m_bPreview_EnableLines == 0 ){
 		CEditWnd* pcEditWnd = m_pParentWnd;
 		pcEditWnd->PrintPreviewModeONOFF();
-		pcEditWnd->SendStatusMessage( _T("印刷ページ設定エラー:印字可能領域がありません") );
+		pcEditWnd->SendStatusMessage( L"印刷ページ設定エラー:印字可能領域がありません" );
 		return;
 	}
 
@@ -835,29 +835,29 @@ void CPrintPreview::OnPreviewGoDirectPage( void )
 	const int  INPUT_PAGE_NUM_LEN = 12;
 
 	CDlgInput1 cDlgInputPage;
-	TCHAR      szMessage[512];
-	TCHAR      szPageNum[INPUT_PAGE_NUM_LEN];
+	WCHAR      szMessage[512];
+	WCHAR      szPageNum[INPUT_PAGE_NUM_LEN];
 	
-	auto_sprintf( szMessage, _T("表示するページ番号を指定してください。(1 - %d)") , m_nAllPageNum );
-	auto_sprintf( szPageNum, _T("%d"), m_nCurPageNum + 1 );
+	auto_sprintf( szMessage, L"表示するページ番号を指定してください。(1 - %d)" , m_nAllPageNum );
+	auto_sprintf( szPageNum, L"%d", m_nCurPageNum + 1 );
 
 	BOOL bDlgInputPageResult=cDlgInputPage.DoModal(
 		CEditApp::getInstance()->GetAppInstance(),
 		m_hwndPrintPreviewBar, 
-		_T("プレビューページ指定"),
+		L"プレビューページ指定",
 		szMessage,
 		INPUT_PAGE_NUM_LEN,
 		szPageNum
 	);
 	if( FALSE != bDlgInputPageResult ){
 		int i;
-		int nPageNumLen = _tcslen( szPageNum );
+		int nPageNumLen = wcslen( szPageNum );
 		for( i = 0; i < nPageNumLen;  i++ ){
-			if( !(_T('0') <= szPageNum[i] &&  szPageNum[i] <= _T('9')) ){
+			if( !(L'0' <= szPageNum[i] &&  szPageNum[i] <= L'9') ){
 				return;
 			}
 		}
-		int nPage = _ttoi( szPageNum );
+		int nPage = _wtoi( szPageNum );
 		OnPreviewGoPage( nPage - 1 );
 	}
 }
@@ -980,26 +980,26 @@ void CPrintPreview::OnCheckAntialias( void )
 void CPrintPreview::OnPrint( void )
 {
 	HDC			hdc;
-	TCHAR		szJobName[256 + 1];
-	TCHAR		szProgress[100];
-	TCHAR		szErrMsg[1024];
+	WCHAR		szJobName[256 + 1];
+	WCHAR		szProgress[100];
+	WCHAR		szErrMsg[1024];
 	int			nDirectY = -1;
 	int			i;
 	HFONT		hFontOld;	//	OnPrint以前のフォント
 
 	if( 0 == m_nAllPageNum ){
-		TopWarningMessage( m_pParentWnd->GetHwnd(), _T("印刷するページがありません。") );
+		TopWarningMessage( m_pParentWnd->GetHwnd(), L"印刷するページがありません。" );
 		return;
 	}
 
 	/* プリンタに渡すジョブ名を生成 */
 	if( ! m_pParentWnd->GetDocument().m_cDocFile.GetFilePathClass().IsValidPath() ){	/* 現在編集中のファイルのパス */
-		_tcscpy( szJobName, _T("無題") );
+		wcscpy( szJobName, L"無題" );
 	}else{
-		TCHAR	szFileName[_MAX_FNAME];
-		TCHAR	szExt[_MAX_EXT];
-		_tsplitpath( m_pParentWnd->GetDocument().m_cDocFile.GetFilePath(), NULL, NULL, szFileName, szExt );
-		auto_snprintf_s( szJobName, _countof(szJobName), _T("%ts%ts"), szFileName, szExt );
+		WCHAR	szFileName[_MAX_FNAME];
+		WCHAR	szExt[_MAX_EXT];
+		_wsplitpath( m_pParentWnd->GetDocument().m_cDocFile.GetFilePath(), NULL, NULL, szFileName, szExt );
+		auto_snprintf_s( szJobName, _countof(szJobName), L"%ts%ts", szFileName, szExt );
 	}
 
 	/* 印刷範囲を指定できるプリンタダイアログを作成 */
@@ -1033,7 +1033,7 @@ void CPrintPreview::OnPrint( void )
 	CDlgCancel	cDlgPrinting;
 	cDlgPrinting.DoModeless( CEditApp::getInstance()->GetAppInstance(), m_pParentWnd->GetHwnd(), IDD_PRINTING );
 	::DlgItem_SetText( cDlgPrinting.GetHwnd(), IDC_STATIC_JOBNAME, szJobName );
-	::DlgItem_SetText( cDlgPrinting.GetHwnd(), IDC_STATIC_PROGRESS, _T("") );	// XPS対応 2013/5/8 Uchi
+	::DlgItem_SetText( cDlgPrinting.GetHwnd(), IDC_STATIC_PROGRESS, L"" );	// XPS対応 2013/5/8 Uchi
 
 	/* 親ウィンドウを無効化 */
 	::EnableWindow( m_pParentWnd->GetHwnd(), FALSE );
@@ -1045,7 +1045,7 @@ void CPrintPreview::OnPrint( void )
 		&hdc,
 		szErrMsg						/* エラーメッセージ格納場所 */
 	) ){
-//		MYTRACE( _T("%ts\n"), szErrMsg );
+//		MYTRACE( L"%ts\n", szErrMsg );
 	}
 
 	// 印刷用半角フォントと、印刷用全角フォントを作成
@@ -1068,7 +1068,7 @@ void CPrintPreview::OnPrint( void )
 
 		/* 印刷過程を表示 */
 		//	Jun. 18, 2001 genta ページ番号表示の計算ミス修正
-		auto_sprintf( szProgress, _T("%d/%d"), i + 1, nNum );
+		auto_sprintf( szProgress, L"%d/%d", i + 1, nNum );
 		::DlgItem_SetText( cDlgPrinting.GetHwnd(), IDC_STATIC_PROGRESS, szProgress );
 
 		/* 印刷 ページ開始 */
@@ -1151,7 +1151,7 @@ void CPrintPreview::OnPrint( void )
 */
 void CPrintPreview::DrawHeaderFooter( HDC hdc, const CMyRect& rect, bool bHeader )
 {
-	bool		bFontSetting = (bHeader ? m_pPrintSetting->m_lfHeader.lfFaceName[0] : m_pPrintSetting->m_lfFooter.lfFaceName[0]) != _T('\0');
+	bool		bFontSetting = (bHeader ? m_pPrintSetting->m_lfHeader.lfFaceName[0] : m_pPrintSetting->m_lfFooter.lfFaceName[0]) != L'\0';
 	const int	nWorkLen = 1024;
 	wchar_t		szWork[1024 + 1];
 	int			nLen;
@@ -1784,7 +1784,7 @@ CColorStrategy* CPrintPreview::GetColorStrategy(
 	   BYTE lfClipPrecision; 
 	   BYTE lfQuality; 
 	   BYTE lfPitchAndFamily; 
-	   TCHAR lfFaceName[LF_FACESIZE]; 
+	   WCHAR lfFaceName[LF_FACESIZE]; 
 	} LOGFONT;
 */
 void CPrintPreview::SetPreviewFontHan( const LOGFONT* lf )
@@ -1794,7 +1794,7 @@ void CPrintPreview::SetPreviewFontHan( const LOGFONT* lf )
 	//	PrintSettingからコピー
 	m_lfPreviewHan.lfHeight			= m_pPrintSetting->m_nPrintFontHeight;
 	m_lfPreviewHan.lfWidth			= m_pPrintSetting->m_nPrintFontWidth;
-	_tcscpy(m_lfPreviewHan.lfFaceName, m_pPrintSetting->m_szPrintFontFaceHan);
+	wcscpy(m_lfPreviewHan.lfFaceName, m_pPrintSetting->m_szPrintFontFaceHan);
 
 	SelectCharWidthCache( CWM_FONT_PRINT, CWM_CACHE_LOCAL );
 	InitCharWidthCache( m_lfPreviewHan, CWM_FONT_PRINT );
@@ -1806,7 +1806,7 @@ void CPrintPreview::SetPreviewFontZen( const LOGFONT* lf )
 	//	PrintSettingからコピー
 	m_lfPreviewZen.lfHeight	= m_pPrintSetting->m_nPrintFontHeight;
 	m_lfPreviewZen.lfWidth	= m_pPrintSetting->m_nPrintFontWidth;
-	_tcscpy(m_lfPreviewZen.lfFaceName, m_pPrintSetting->m_szPrintFontFaceZen );
+	wcscpy(m_lfPreviewZen.lfFaceName, m_pPrintSetting->m_szPrintFontFaceZen );
 }
 
 int CALLBACK CPrintPreview::MyEnumFontFamProc(
@@ -1817,10 +1817,10 @@ int CALLBACK CPrintPreview::MyEnumFontFamProc(
 )
 {
 	CPrintPreview* pCPrintPreview = (CPrintPreview*)lParam;
-	if( 0 == _tcscmp( pelf->elfLogFont.lfFaceName, pCPrintPreview->m_pPrintSetting->m_szPrintFontFaceHan ) ){
+	if( 0 == wcscmp( pelf->elfLogFont.lfFaceName, pCPrintPreview->m_pPrintSetting->m_szPrintFontFaceHan ) ){
 		pCPrintPreview->SetPreviewFontHan(&pelf->elfLogFont);
 	}
-	if( 0 == _tcscmp( pelf->elfLogFont.lfFaceName, pCPrintPreview->m_pPrintSetting->m_szPrintFontFaceZen ) ){
+	if( 0 == wcscmp( pelf->elfLogFont.lfFaceName, pCPrintPreview->m_pPrintSetting->m_szPrintFontFaceZen ) ){
 		pCPrintPreview->SetPreviewFontZen(&pelf->elfLogFont);
 	}
 
@@ -1844,7 +1844,7 @@ void CPrintPreview::CreatePrintPreviewControls( void )
 	/* 縦スクロールバーの作成 */
 	m_hwndVScrollBar = ::CreateWindowEx(
 		0L,									/* no extended styles			*/
-		_T("SCROLLBAR"),						/* scroll bar control class		*/
+		L"SCROLLBAR",						/* scroll bar control class		*/
 		NULL,								/* text for window title bar	*/
 		WS_VISIBLE | WS_CHILD | SBS_VERT,	/* scroll bar styles			*/
 		0,									/* horizontal position			*/
@@ -1870,7 +1870,7 @@ void CPrintPreview::CreatePrintPreviewControls( void )
 	/* 横スクロールバーの作成 */
 	m_hwndHScrollBar = ::CreateWindowEx(
 		0L,									/* no extended styles			*/
-		_T("SCROLLBAR"),						/* scroll bar control class		*/
+		L"SCROLLBAR",						/* scroll bar control class		*/
 		NULL,								/* text for window title bar	*/
 		WS_VISIBLE | WS_CHILD | SBS_HORZ,	/* scroll bar styles			*/
 		0,									/* horizontal position			*/
@@ -1895,7 +1895,7 @@ void CPrintPreview::CreatePrintPreviewControls( void )
 	/* サイズボックスの作成 */
 	m_hwndSizeBox = ::CreateWindowEx(
 		WS_EX_CONTROLPARENT/*0L*/, 							/* no extended styles			*/
-		_T("SCROLLBAR"),										/* scroll bar control class		*/
+		L"SCROLLBAR",										/* scroll bar control class		*/
 		NULL,												/* text for window title bar	*/
 		WS_VISIBLE | WS_CHILD | SBS_SIZEBOX | SBS_SIZEGRIP, /* scroll bar styles			*/
 		0,													/* horizontal position			*/
@@ -2091,7 +2091,7 @@ void CPrintPreview::CreateFonts( HDC hdc )
 	// 印刷用半角フォントを作成 -> m_hFontHan
 	m_lfPreviewHan.lfHeight	= m_pPrintSetting->m_nPrintFontHeight;
 	m_lfPreviewHan.lfWidth	= m_pPrintSetting->m_nPrintFontWidth;
-	_tcscpy( m_lfPreviewHan.lfFaceName, m_pPrintSetting->m_szPrintFontFaceHan );
+	wcscpy( m_lfPreviewHan.lfFaceName, m_pPrintSetting->m_szPrintFontFaceHan );
 	m_hFontHan	= CreateFontIndirect( &m_lfPreviewHan );
 	if (m_pPrintSetting->m_bColorPrint) {
 		lf = m_lfPreviewHan;	lf.lfWeight = FW_BOLD;
@@ -2115,7 +2115,7 @@ void CPrintPreview::CreateFonts( HDC hdc )
 	if (auto_strcmp(m_pPrintSetting->m_szPrintFontFaceHan, m_pPrintSetting->m_szPrintFontFaceZen)) {
 		m_lfPreviewZen.lfHeight	= m_pPrintSetting->m_nPrintFontHeight;
 		m_lfPreviewZen.lfWidth	= m_pPrintSetting->m_nPrintFontWidth;
-		_tcscpy( m_lfPreviewZen.lfFaceName, m_pPrintSetting->m_szPrintFontFaceZen );
+		wcscpy( m_lfPreviewZen.lfFaceName, m_pPrintSetting->m_szPrintFontFaceZen );
 		m_hFontZen	= CreateFontIndirect( &m_lfPreviewZen );
 		if (m_pPrintSetting->m_bColorPrint) {
 			lf = m_lfPreviewZen;	lf.lfWeight = FW_BOLD;

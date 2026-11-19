@@ -72,20 +72,20 @@ void CMruListener::OnBeforeLoad(SLoadInfo* pLoadInfo)
 	if(IsValidCodeType(ePrevCode) && pLoadInfo->eCharCode!=ePrevCode){
 		//オプション：前回と文字コードが異なるときに問い合わせを行う
 		if( GetDllShareData().m_Common.m_sFile.m_bQueryIfCodeChange && !pLoadInfo->bRequestReload ){
-			const TCHAR* pszCodeNameOld = CCodeTypeName(ePrevCode).Normal();
-			const TCHAR* pszCodeNameNew = CCodeTypeName(pLoadInfo->eCharCode).Normal();
+			const WCHAR* pszCodeNameOld = CCodeTypeName(ePrevCode).Normal();
+			const WCHAR* pszCodeNameNew = CCodeTypeName(pLoadInfo->eCharCode).Normal();
 			ConfirmBeep();
 			int nRet = MYMESSAGEBOX(
 				CEditWnd::getInstance()->GetHwnd(),
 				MB_YESNO | MB_ICONQUESTION | MB_TOPMOST,
-				_T("文字コード情報"),
-				_T("%ts\n")
-				_T("\n")
-				_T("このファイルを文字コード %ts で開こうとしていますが、前回は別の文字コード %ts で開かれています。\n")
-				_T("前回と同じ文字コードを使いますか？\n")
-				_T("\n")
-				_T("・[はい(Y)]  ＝%ts\n")
-				_T("・[いいえ(N)]＝%ts"),
+				L"文字コード情報",
+				L"%ts\n"
+				L"\n"
+				L"このファイルを文字コード %ts で開こうとしていますが、前回は別の文字コード %ts で開かれています。\n"
+				L"前回と同じ文字コードを使いますか？\n"
+				L"\n"
+				L"・[はい(Y)]  ＝%ts\n"
+				L"・[いいえ(N)]＝%ts",
 				pLoadInfo->cFilePath.c_str(),
 				pszCodeNameNew,
 				pszCodeNameOld,

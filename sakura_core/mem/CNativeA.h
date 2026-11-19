@@ -95,10 +95,6 @@ public:
 	void AppendStringW(const wchar_t* pData, int nLength)	{ return AppendStringNew(pData,nLength); }
 	const wchar_t* GetStringW() const;
 
-	//TCHAR
-	void SetStringT( const TCHAR* pszData )				{ return SetStringNew(pszData); }
-	void SetStringT( const TCHAR* pData, int nLength )	{ return SetStringNew(pData,nLength); }
-
 public:
 	// -- -- staticインターフェース -- -- //
 	static int GetSizeOfChar( const char* pData, int nDataLen, int nIdx ); //!< 指定した位置の文字が何バイト文字かを返す

@@ -28,20 +28,20 @@
 #include "CRecentImp.h"
 #include "util/StaticType.h"
 
-typedef StaticString<TCHAR, _MAX_PATH> CCurDirString;
+typedef StaticString<WCHAR, _MAX_PATH> CCurDirString;
 
 //! コマンドの履歴を管理 (RECENT_FOR_CUR_DIR)
-class CRecentCurDir : public CRecentImp<CCurDirString, LPCTSTR>{
+class CRecentCurDir : public CRecentImp<CCurDirString, LPCWSTR>{
 public:
 	//生成
 	CRecentCurDir();
 
 	//オーバーライド
-	int				CompareItem( const CCurDirString* p1, LPCTSTR p2 ) const;
-	void			CopyItem( CCurDirString* dst, LPCTSTR src ) const;
-	const TCHAR*	GetItemText( int nIndex ) const;
-	bool			DataToReceiveType( LPCTSTR* dst, const CCurDirString* src ) const;
-	bool			TextToDataType( CCurDirString* dst, LPCTSTR pszText ) const;
+	int				CompareItem( const CCurDirString* p1, LPCWSTR p2 ) const;
+	void			CopyItem( CCurDirString* dst, LPCWSTR src ) const;
+	const WCHAR*	GetItemText( int nIndex ) const;
+	bool			DataToReceiveType( LPCWSTR* dst, const CCurDirString* src ) const;
+	bool			TextToDataType( CCurDirString* dst, LPCWSTR pszText ) const;
 };
 
 #endif /* SAKURA_CRECENTCURDIR_606E7B1E_F285_4232_92B8_C47260107806_H_ */

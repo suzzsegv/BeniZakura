@@ -60,7 +60,7 @@ void CViewCommander::Command_FILENEW( void )
 {
 	/* 新たな編集ウィンドウを起動 */
 	SLoadInfo sLoadInfo;
-	sLoadInfo.cFilePath = _T("");
+	sLoadInfo.cFilePath = L"";
 	sLoadInfo.eCharCode = CODE_NONE;
 	sLoadInfo.bViewMode = false;
 	CEditorManager::OpenNewEditor( G_AppInstance(), m_pCommanderView->GetHwnd(), sLoadInfo, NULL, true, NULL, false );
@@ -74,7 +74,7 @@ void CViewCommander::Command_FILENEW_NEWWINDOW( void )
 {
 	/* 新たな編集ウィンドウを起動 */
 	SLoadInfo sLoadInfo;
-	sLoadInfo.cFilePath = _T("");
+	sLoadInfo.cFilePath = L"";
 	sLoadInfo.eCharCode = CODE_DEFAULT;
 	sLoadInfo.bViewMode = false;
 	CEditorManager::OpenNewEditor( G_AppInstance(), m_pCommanderView->GetHwnd(), sLoadInfo,
@@ -96,8 +96,8 @@ void CViewCommander::Command_FILENEW_NEWWINDOW( void )
 void CViewCommander::Command_FILEOPEN( const WCHAR* filename, ECodeType nCharCode, bool bViewMode )
 {
 	//ロード情報
-	SLoadInfo sLoadInfo(filename?to_tchar(filename):_T(""), nCharCode, bViewMode);
-	std::vector<std::tstring> files;
+	SLoadInfo sLoadInfo(filename?to_wchar(filename):L"", nCharCode, bViewMode);
+	std::vector<std::wstring> files;
 
 	//必要であれば「ファイルを開く」ダイアログ
 	if(!sLoadInfo.cFilePath.IsValidPath()){
@@ -223,7 +223,7 @@ void CViewCommander::Command_FILECLOSE( void )
 */
 void CViewCommander::Command_FILECLOSE_OPEN( LPCWSTR filename, ECodeType nCharCode, bool bViewMode )
 {
-	GetDocument()->m_cDocFileOperation.FileCloseOpen( SLoadInfo(to_tchar(filename), nCharCode, bViewMode) );
+	GetDocument()->m_cDocFileOperation.FileCloseOpen( SLoadInfo(to_wchar(filename), nCharCode, bViewMode) );
 }
 
 
@@ -240,7 +240,7 @@ void CViewCommander::Command_FILE_REOPEN(
 			m_pCommanderView->GetHwnd(),
 			MB_OKCANCEL | MB_ICONQUESTION | MB_TOPMOST,
 			GSTR_APPNAME,
-			_T("%ts\n\nこのファイルは変更されています。\n再ロードを行うと変更が失われますが、よろしいですか?"),
+			L"%ts\n\nこのファイルは変更されています。\n再ロードを行うと変更が失われますが、よろしいですか?",
 			pcDoc->m_cDocFile.GetFilePath()
 		);
 		if( IDOK == nDlgResult ){
@@ -266,7 +266,7 @@ void CViewCommander::Command_FileExclusiveLock( )
 	EShareMode fileShareMode;
 	fileShareMode = CAppMode::getInstance()->GetFileShareMode();
 	if(fileShareMode == SHAREMODE_DENY_READWRITE){
-		m_pCommanderView->SendStatusMessage(_T("ファイルは既に排他ロック（読み書き禁止）状態です。"));
+		m_pCommanderView->SendStatusMessage(L"ファイルは既に排他ロック（読み書き禁止）状態です。");
 		GetEditWindow()->UpdateCaption();
 		return;
 	}
@@ -281,7 +281,7 @@ void CViewCommander::Command_FileExclusiveLock( )
 	CEditDoc* pcDoc = GetDocument();
 	pcDoc->m_cDocFileOperation.ReloadCurrentFile(pcDoc->m_cDocFile.GetCodeSet());
 
-	m_pCommanderView->SendStatusMessage( _T( "ファイルを排他ロック（読み書き禁止）状態に変更しました。" ) );
+	m_pCommanderView->SendStatusMessage( L"ファイルを排他ロック（読み書き禁止）状態に変更しました。" );
 	GetEditWindow( )->UpdateCaption( );
 }
 
@@ -295,7 +295,7 @@ void CViewCommander::Command_FileShareLock()
 	EShareMode fileShareMode;
 	fileShareMode = CAppMode::getInstance()->GetFileShareMode();
 	if(fileShareMode == SHAREMODE_DENY_WRITE){
-		m_pCommanderView->SendStatusMessage(_T("ファイルは既に共有ロック（上書き禁止）状態です。"));
+		m_pCommanderView->SendStatusMessage(L"ファイルは既に共有ロック（上書き禁止）状態です。");
 		GetEditWindow()->UpdateCaption();
 		return;
 	}
@@ -310,7 +310,7 @@ void CViewCommander::Command_FileShareLock()
 	CEditDoc* pcDoc = GetDocument();
 	pcDoc->m_cDocFileOperation.ReloadCurrentFile(pcDoc->m_cDocFile.GetCodeSet());
 
-	m_pCommanderView->SendStatusMessage( _T( "ファイルを共有ロック（上書き禁止）状態に変更しました。" ) );
+	m_pCommanderView->SendStatusMessage( L"ファイルを共有ロック（上書き禁止）状態に変更しました。" );
 	GetEditWindow( )->UpdateCaption( );
 }
 
@@ -328,7 +328,7 @@ void CViewCommander::Command_FileUnlock( )
 		return;
 	}
 
-	m_pCommanderView->SendStatusMessage( _T( "ファイルのロックを解除しました。" ) );
+	m_pCommanderView->SendStatusMessage( L"ファイルのロックを解除しました。" );
 	GetEditWindow( )->UpdateCaption( );
 }
 
@@ -390,12 +390,12 @@ BOOL CViewCommander::Command_OPEN_HfromtoC( BOOL bCheckOnly )
 BOOL CViewCommander::Command_OPEN_HHPP( BOOL bCheckOnly, BOOL bBeepWhenMiss )
 {
 	// 2003.06.28 Moca ヘッダ・ソースのコードを統合＆削除
-	static const TCHAR* source_ext[] = { _T("c"), _T("cpp"), _T("cxx"), _T("cc"), _T("cp"), _T("c++") };
-	static const TCHAR* header_ext[] = { _T("h"), _T("hpp"), _T("hxx"), _T("hh"), _T("hp"), _T("h++") };
+	static const WCHAR* source_ext[] = { L"c", L"cpp", L"cxx", L"cc", L"cp", L"c++" };
+	static const WCHAR* header_ext[] = { L"h", L"hpp", L"hxx", L"hh", L"hp", L"h++" };
 	return m_pCommanderView->OPEN_ExtFromtoExt(
 		bCheckOnly, bBeepWhenMiss, source_ext, header_ext,
 		_countof(source_ext), _countof(header_ext),
-		_T("C/C++ヘッダファイルのオープンに失敗しました。") );
+		L"C/C++ヘッダファイルのオープンに失敗しました。" );
 }
 
 
@@ -405,12 +405,12 @@ BOOL CViewCommander::Command_OPEN_HHPP( BOOL bCheckOnly, BOOL bBeepWhenMiss )
 BOOL CViewCommander::Command_OPEN_CCPP( BOOL bCheckOnly, BOOL bBeepWhenMiss )
 {
 	// 2003.06.28 Moca ヘッダ・ソースのコードを統合＆削除
-	static const TCHAR* source_ext[] = { _T("c"), _T("cpp"), _T("cxx"), _T("cc"), _T("cp"), _T("c++") };
-	static const TCHAR* header_ext[] = { _T("h"), _T("hpp"), _T("hxx"), _T("hh"), _T("hp"), _T("h++") };
+	static const WCHAR* source_ext[] = { L"c", L"cpp", L"cxx", L"cc", L"cp", L"c++" };
+	static const WCHAR* header_ext[] = { L"h", L"hpp", L"hxx", L"hh", L"hp", L"h++" };
 	return m_pCommanderView->OPEN_ExtFromtoExt(
 		bCheckOnly, bBeepWhenMiss, header_ext, source_ext,
 		_countof(header_ext), _countof(source_ext),
-		_T("C/C++ソースファイルのオープンに失敗しました。"));
+		L"C/C++ソースファイルのオープンに失敗しました。");
 }
 
 
@@ -419,9 +419,9 @@ BOOL CViewCommander::Command_OPEN_CCPP( BOOL bCheckOnly, BOOL bBeepWhenMiss )
 void CViewCommander::Command_ACTIVATE_SQLPLUS( void )
 {
 	HWND		hwndSQLPLUS;
-	hwndSQLPLUS = ::FindWindow( _T("SqlplusWClass"), _T("Oracle SQL*Plus") );
+	hwndSQLPLUS = ::FindWindow( L"SqlplusWClass", L"Oracle SQL*Plus" );
 	if( NULL == hwndSQLPLUS ){
-		ErrorMessage( m_pCommanderView->GetHwnd(), _T("Oracle SQL*Plusをアクティブ表示します。\n\n\nOracle SQL*Plusが起動されていません。\n") );
+		ErrorMessage( m_pCommanderView->GetHwnd(), L"Oracle SQL*Plusをアクティブ表示します。\n\n\nOracle SQL*Plusが起動されていません。\n" );
 		return;
 	}
 	/* Oracle SQL*Plusをアクティブにする */
@@ -442,9 +442,9 @@ void CViewCommander::Command_PLSQL_COMPILE_ON_SQLPLUS( void )
 	BOOL		nBool;
 	BOOL		bResult;
 
-	hwndSQLPLUS = ::FindWindow( _T("SqlplusWClass"), _T("Oracle SQL*Plus") );
+	hwndSQLPLUS = ::FindWindow( L"SqlplusWClass", L"Oracle SQL*Plus" );
 	if( NULL == hwndSQLPLUS ){
-		ErrorMessage( m_pCommanderView->GetHwnd(), _T("Oracle SQL*Plusで実行します。\n\n\nOracle SQL*Plusが起動されていません。\n") );
+		ErrorMessage( m_pCommanderView->GetHwnd(), L"Oracle SQL*Plusで実行します。\n\n\nOracle SQL*Plusが起動されていません。\n" );
 		return;
 	}
 	/* テキストが変更されている場合 */
@@ -453,8 +453,8 @@ void CViewCommander::Command_PLSQL_COMPILE_ON_SQLPLUS( void )
 			m_pCommanderView->GetHwnd(),
 			MB_YESNOCANCEL | MB_ICONEXCLAMATION,
 			GSTR_APPNAME,
-			_T("%ts\nは変更されています。 Oracle SQL*Plusで実行する前に保存しますか？"),
-			GetDocument()->m_cDocFile.GetFilePathClass().IsValidPath() ? GetDocument()->m_cDocFile.GetFilePath() : _T("(無題)")
+			L"%ts\nは変更されています。 Oracle SQL*Plusで実行する前に保存しますか？",
+			GetDocument()->m_cDocFile.GetFilePathClass().IsValidPath() ? GetDocument()->m_cDocFile.GetFilePath() : L"(無題)"
 		);
 		switch( nRet ){
 		case IDYES:
@@ -479,17 +479,17 @@ void CViewCommander::Command_PLSQL_COMPILE_ON_SQLPLUS( void )
 	if( GetDocument()->m_cDocFile.GetFilePathClass().IsValidPath() ){
 		/* ファイルパスに空白が含まれている場合はダブルクォーテーションで囲む */
 		//	2003.10.20 MIK コード簡略化
-		//	固定長バッファ (MAX_PATH + 2) では長いパスで溢れるため、std::tstring で組み立てる
-		const TCHAR* pszFilePath = GetDocument()->m_cDocFile.GetFilePath();
-		std::tstring sPath = _T("@");
-		if( _tcschr( pszFilePath, TCODE::SPACE ) ){
-			sPath += _T("\"");
+		//	固定長バッファ (MAX_PATH + 2) では長いパスで溢れるため、std::wstring で組み立てる
+		const WCHAR* pszFilePath = GetDocument()->m_cDocFile.GetFilePath();
+		std::wstring sPath = L"@";
+		if( wcschr( pszFilePath, WCODE::SPACE ) ){
+			sPath += L"\"";
 			sPath += pszFilePath;
-			sPath += _T("\"");
+			sPath += L"\"";
 		}else{
 			sPath += pszFilePath;
 		}
-		sPath += _T("\r\n");
+		sPath += L"\r\n";
 		/* クリップボードにデータを設定 */
 		m_pCommanderView->MySetClipboardData( sPath.c_str(), (int)sPath.length(), false );
 
@@ -509,11 +509,11 @@ void CViewCommander::Command_PLSQL_COMPILE_ON_SQLPLUS( void )
 			&dwResult
 		);
 		if( !bResult ){
-			TopErrorMessage( m_pCommanderView->GetHwnd(), _T("Oracle SQL*Plusからの反応がありません。\nしばらく待ってから再び実行してください。") );
+			TopErrorMessage( m_pCommanderView->GetHwnd(), L"Oracle SQL*Plusからの反応がありません。\nしばらく待ってから再び実行してください。" );
 		}
 	}else{
 		ErrorBeep();
-		ErrorMessage( m_pCommanderView->GetHwnd(), _T("SQLをファイルに保存しないとOracle SQL*Plusで実行できません。\n") );
+		ErrorMessage( m_pCommanderView->GetHwnd(), L"SQLをファイルに保存しないとOracle SQL*Plusで実行できません。\n" );
 		return;
 	}
 	return;
@@ -587,10 +587,10 @@ void CViewCommander::Command_PROPERTY_FILE( void )
 		CRunningTimer cRunningTimer( "CViewCommander::Command_PROPERTY_FILE 全行データを返すテスト" );
 		cRunningTimer.Reset();
 		pDataAll = CDocReader(GetDocument()->m_cDocLineMgr).GetAllData( &nDataAllLen );
-//		MYTRACE( _T("全データ取得             (%dバイト) 所要時間(ミリ秒) = %d\n"), nDataAllLen, cRunningTimer.Read() );
+//		MYTRACE( L"全データ取得             (%dバイト) 所要時間(ミリ秒) = %d\n", nDataAllLen, cRunningTimer.Read() );
 		free( pDataAll );
 		pDataAll = NULL;
-//		MYTRACE( _T("全データ取得のメモリ開放 (%dバイト) 所要時間(ミリ秒) = %d\n"), nDataAllLen, cRunningTimer.Read() );
+//		MYTRACE( L"全データ取得のメモリ開放 (%dバイト) 所要時間(ミリ秒) = %d\n", nDataAllLen, cRunningTimer.Read() );
 	}
 #endif
 
@@ -663,7 +663,7 @@ BOOL CViewCommander::Command_PUTFILE(
 	{	/* 選択範囲を出力 */
 		try
 		{
-			CBinaryOutputStream out(to_tchar(filename),true);
+			CBinaryOutputStream out(to_wchar(filename),true);
 
 			// 選択範囲の取得 -> cMem
 			CNativeW cMem;
@@ -696,9 +696,9 @@ BOOL CViewCommander::Command_PUTFILE(
 		{
 			WarningMessage(
 				NULL,
-				_T("\'%ls\'\n")
-				_T("ファイルを保存できません。\n")
-				_T("パスが存在しないか、他のアプリケーションで使用されている可能性があります。"),
+				L"\'%ls\'\n"
+				L"ファイルを保存できません。\n"
+				L"パスが存在しないか、他のアプリケーションで使用されている可能性があります。",
 				filename
 			);
 			bResult = FALSE;
@@ -707,7 +707,7 @@ BOOL CViewCommander::Command_PUTFILE(
 		{
 			WarningMessage(
 				NULL,
-				_T("ファイルの書き込み中にエラーが発生しました。")
+				L"ファイルの書き込み中にエラーが発生しました。"
 			);
 			bResult = FALSE;
 		}
@@ -729,7 +729,7 @@ BOOL CViewCommander::Command_PUTFILE(
 		EConvertResult eRet = CWriteManager().WriteFile_From_CDocLineMgr(
 			GetDocument()->m_cDocLineMgr,
 			SSaveInfo(
-				to_tchar(filename),
+				to_wchar(filename),
 				nSaveCharCode,
 				EOL_NONE,
 				bBom
@@ -790,7 +790,7 @@ BOOL CViewCommander::Command_INSFILE( LPCWSTR filename, ECodeType nCharCode, int
 	if(nSaveCharCode == CODE_AUTODETECT) {
 		EditInfo    fi;
 		const CMRUFile  cMRU;
-		if ( cMRU.GetEditInfo( to_tchar(filename), &fi ) ){
+		if ( cMRU.GetEditInfo( to_wchar(filename), &fi ) ){
 				nSaveCharCode = fi.m_nCharCode;
 		} else {
 			nSaveCharCode = GetDocument()->GetDocumentEncoding();
@@ -802,7 +802,7 @@ BOOL CViewCommander::Command_INSFILE( LPCWSTR filename, ECodeType nCharCode, int
 
 	try{
 		// ファイルを開く
-		cfl.FileOpen( to_tchar(filename), nSaveCharCode, 0 );
+		cfl.FileOpen( to_wchar(filename), nSaveCharCode, 0 );
 
 		/* ファイルサイズが65KBを越えたら進捗ダイアログ表示 */
 		if ( 0x10000 < cfl.GetFileSize() ) {
@@ -846,11 +846,11 @@ BOOL CViewCommander::Command_INSFILE( LPCWSTR filename, ECodeType nCharCode, int
 		cfl.FileClose();
 	} // try
 	catch( CError_FileOpen ){
-		WarningMessage( NULL, _T("file open error [%ls]"), filename );
+		WarningMessage( NULL, L"file open error [%ls]", filename );
 		bResult = FALSE;
 	}
 	catch( CError_FileRead ){
-		WarningMessage( NULL, _T("ファイルの読み込み中にエラーが発生しました。") );
+		WarningMessage( NULL, L"ファイルの読み込み中にエラーが発生しました。" );
 		bResult = FALSE;
 	} // 例外処理終わり
 

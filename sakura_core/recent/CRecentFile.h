@@ -36,11 +36,11 @@ public:
 	//オーバーライド
 	int				CompareItem( const EditInfo* p1, const EditInfo* p2 ) const;
 	void			CopyItem( EditInfo* dst, const EditInfo* src ) const;
-	const TCHAR*	GetItemText( int nIndex ) const;
+	const WCHAR*	GetItemText( int nIndex ) const;
 	bool			DataToReceiveType( const EditInfo** dst, const EditInfo* src ) const;
-	bool			TextToDataType( EditInfo* dst, LPCTSTR pszText ) const;
+	bool			TextToDataType( EditInfo* dst, LPCWSTR pszText ) const;
 	//固有インターフェース
-	int FindItemByPath(const TCHAR* pszPath) const;
+	int FindItemByPath(const WCHAR* pszPath) const;
 };
 
 #endif /* SAKURA_CRECENTFILE_EE3F27C6_A91E_426D_8EB9_2E35D191F4199_H_ */

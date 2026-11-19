@@ -356,10 +356,10 @@ public:
 
 
 
-	void ExecCmd(const TCHAR*, int, const TCHAR*) ;							// 子プロセスの標準出力をリダイレクトする
-	void AddToCmdArr( const TCHAR* );
+	void ExecCmd(const WCHAR*, int, const WCHAR*) ;							// 子プロセスの標準出力をリダイレクトする
+	void AddToCmdArr( const WCHAR* );
 	BOOL ChangeCurRegexp(bool bRedrawIfChanged= true);									// 2002.01.16 hor 正規表現の検索パターンを必要に応じて更新する(ライブラリが使用できないときはFALSEを返す)
-	void SendStatusMessage( const TCHAR* msg );					// 2002.01.26 hor 検索／置換／ブックマーク検索時の状態をステータスバーに表示する
+	void SendStatusMessage( const WCHAR* msg );					// 2002.01.26 hor 検索／置換／ブックマーク検索時の状態をステータスバーに表示する
 	LRESULT SetReconvertStruct(PRECONVERTSTRING pReconv, bool bUnicode, bool bDocumentFeed = false);	/* 再変換用構造体を設定する 2002.04.09 minfu */
 	LRESULT SetSelectionFromReonvert(const PRECONVERTSTRING pReconv, bool bUnicode);				/* 再変換用構造体の情報を元に選択範囲を変更する 2002.04.09 minfu */
 
@@ -470,7 +470,7 @@ private:
 	void ISearchExec(bool bNext);
 	void ISearchBack(void) ;
 	void ISearchWordMake(void);
-	void ISearchSetStatusMsg(CNativeT* msg) const;
+	void ISearchSetStatusMsg(CNativeW* msg) const;
 
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 	//                           括弧                              //
@@ -511,7 +511,7 @@ public:
 public:
 	//@@@ 2003.04.13 MIK, Apr. 21, 2003 genta bClose追加
 	//	Feb. 17, 2007 genta 相対パスの基準ディレクトリ指示を追加
-	bool TagJumpSub( const TCHAR* pszJumpToFile, CMyPoint ptJumpTo, bool bClose = false, bool bRelFromIni = false );
+	bool TagJumpSub( const WCHAR* pszJumpToFile, CMyPoint ptJumpTo, bool bClose = false, bool bRelFromIni = false );
 
 
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
@@ -527,8 +527,8 @@ public:
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 public:
 	void AnalyzeDiffInfo( const char*, int );	/* DIFF情報の解析 */	//@@@ 2002.05.25 MIK
-	BOOL MakeDiffTmpFile( TCHAR*, HWND );	/* DIFF一時ファイル作成 */	//@@@ 2002.05.28 MIK	//2005.10.29 maru
-	void ViewDiffInfo( const TCHAR*, const TCHAR*, int );		/* DIFF差分表示 */		//2005.10.29 maru
+	BOOL MakeDiffTmpFile( WCHAR*, HWND );	/* DIFF一時ファイル作成 */	//@@@ 2002.05.28 MIK	//2005.10.29 maru
+	void ViewDiffInfo( const WCHAR*, const WCHAR*, int );		/* DIFF差分表示 */		//2005.10.29 maru
 
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 	//                           履歴                              //
@@ -542,7 +542,7 @@ public:
 	//                          その他                             //
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 public:
-	BOOL OPEN_ExtFromtoExt( BOOL, BOOL, const TCHAR* [], const TCHAR* [], int, int, const TCHAR* ); // 指定拡張子のファイルに対応するファイルを開く補助関数 // 2003.08.12 Moca
+	BOOL OPEN_ExtFromtoExt( BOOL, BOOL, const WCHAR* [], const WCHAR* [], int, int, const WCHAR* ); // 指定拡張子のファイルに対応するファイルを開く補助関数 // 2003.08.12 Moca
 	//	Jan.  8, 2006 genta 折り返しトグル動作判定
 	enum TOGGLE_WRAP_ACTION {
 		TGWRAP_NONE = 0,
@@ -718,7 +718,7 @@ public:
 	BOOL			m_bInMenuLoop;			/* メニュー モーダル ループに入っています */
 	CDicMgr			m_cDicMgr;				/* 辞書マネージャ */
 
-	TCHAR			m_szComposition[512]; // IMR_DOCUMENTFEED用入力中文字列データ
+	WCHAR			m_szComposition[512]; // IMR_DOCUMENTFEED用入力中文字列データ
 
 	// IME
 private:

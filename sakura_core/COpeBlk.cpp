@@ -43,10 +43,10 @@ bool COpeBlk::AppendOpe( COpe* pcOpe )
 {
 	if(pcOpe->m_ptCaretPos_PHY_Before.HasNegative() || pcOpe->m_ptCaretPos_PHY_After.HasNegative()){
 		TopErrorMessage( NULL,
-			_T("COpeBlk::AppendOpe() error.\n")
-			_T("バグ\n")
-			_T("pcOpe->m_nCaretPos_PHY_Before = %d,%d\n")
-			_T("pcOpe->m_nCaretPos_PHY_After = %d,%d\n"),
+			L"COpeBlk::AppendOpe() error.\n"
+			L"バグ\n"
+			L"pcOpe->m_nCaretPos_PHY_Before = %d,%d\n"
+			L"pcOpe->m_nCaretPos_PHY_After = %d,%d\n",
 			pcOpe->m_ptCaretPos_PHY_Before.x,
 			pcOpe->m_ptCaretPos_PHY_Before.y,
 			pcOpe->m_ptCaretPos_PHY_After.x,
@@ -80,7 +80,7 @@ void COpeBlk::DUMP( void )
 	int i;
 	int size = GetNum();
 	for( i = 0; i < size; ++i ){
-		MYTRACE( _T("\tCOpeBlk.m_ppCOpeArr[%d]----\n"), i );
+		MYTRACE( L"\tCOpeBlk.m_ppCOpeArr[%d]----\n", i );
 		m_ppCOpeArr[i]->DUMP();
 	}
 #endif

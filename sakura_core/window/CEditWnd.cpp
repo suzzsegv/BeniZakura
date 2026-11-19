@@ -144,38 +144,38 @@ void ShowCodeBox(HWND hWnd)
 				sStatusbar.m_bDispUtf8Codepoint	= false;
 				sStatusbar.m_bDispSPCodepoint	= false;
 
-				TCHAR szMsg[128];
-				TCHAR szCode[CODE_CODEMAX][32];
+				WCHAR szMsg[128];
+				WCHAR szCode[CODE_CODEMAX][32];
 				wchar_t szChar[3];
 				int nCharChars = CNativeW::GetSizeOfChar( pLine, nLineLen, nIdx );
 				memcpy(szChar, &pLine[nIdx], nCharChars * sizeof(wchar_t));
 				szChar[nCharChars] = L'\0';
 				for( int i = 0; i < CODE_CODEMAX; i++ ){
 					if( i == CODE_SJIS || i == CODE_JIS || i == CODE_EUC || i == CODE_LATIN1 || i == CODE_UNICODE || i == CODE_UTF8 || i == CODE_CESU8 ){
-						//auto_sprintf( szCaretChar, _T("%04x"), );
+						//auto_sprintf( szCaretChar, L"%04x", );
 						//任意の文字コードからUnicodeへ変換する		2008/6/9 Uchi
 						CCodeBase* pCode = CCodeFactory::CreateCodeBase((ECodeType)i, false);
 						EConvertResult ret = pCode->UnicodeToHex(&pLine[nIdx], nLineLen - nIdx, szCode[i], &sStatusbar);
 						delete pCode;
 						if (ret != RESULT_COMPLETE) {
 							// うまくコードが取れなかった
-							auto_strcpy(szCode[i], _T("-"));
+							auto_strcpy(szCode[i], L"-");
 						}
 					}
 				}
 				// コードポイント部（サロゲートペアも）
-				TCHAR szCodeCP[32];
+				WCHAR szCodeCP[32];
 				sStatusbar.m_bDispSPCodepoint = true;
 				CCodeBase* pCode = CCodeFactory::CreateCodeBase(CODE_UNICODE, false);
 				EConvertResult ret = pCode->UnicodeToHex(&pLine[nIdx], nLineLen - nIdx, szCodeCP, &sStatusbar);
 				delete pCode;
 				if (ret != RESULT_COMPLETE) {
 					// うまくコードが取れなかった
-					auto_strcpy(szCodeCP, _T("-"));
+					auto_strcpy(szCodeCP, L"-");
 				}
 
 				// メッセージボックス表示
-				auto_sprintf(szMsg, _T("文字:\t\t%ls (%s)\n\nSJIS:\t\t%s\nJIS:\t\t%s\nEUC:\t\t%s\nLatin1:\t\t%s\nUnicode:\t\t%s\nUTF-8:\t\t%s\nCESU-8:\t\t%s"),
+				auto_sprintf(szMsg, L"文字:\t\t%ls (%s)\n\nSJIS:\t\t%s\nJIS:\t\t%s\nEUC:\t\t%s\nLatin1:\t\t%s\nUnicode:\t\t%s\nUTF-8:\t\t%s\nCESU-8:\t\t%s",
 					szChar, szCodeCP, szCode[CODE_SJIS], szCode[CODE_JIS], szCode[CODE_EUC], szCode[CODE_LATIN1], szCode[CODE_UNICODE], szCode[CODE_UTF8], szCode[CODE_CESU8]);
 				::MessageBox( hWnd, szMsg, GSTR_APPNAME, MB_OK );
 			}
@@ -215,7 +215,7 @@ CEditWnd::CEditWnd()
 , m_cStatusBar(this)		// warning C4355: 'this' : ベース メンバー初期化子リストで使用されました。
 , m_nActivePaneIndex( 0 )
 , m_pcDragSourceView( NULL )
-, m_pszMenubarMessage( new TCHAR[MENUBAR_MESSAGE_MAX_LEN] )
+, m_pszMenubarMessage( new WCHAR[MENUBAR_MESSAGE_MAX_LEN] )
 , m_nSelectCountMode( SELECT_COUNT_TOGGLE )	//文字カウント方法の初期値はSELECT_COUNT_TOGGLE→共通設定に従う
 , m_hAccelWine( NULL )
 , m_hAccel( NULL )
@@ -233,7 +233,7 @@ CEditWnd::CEditWnd()
 
 	m_pcViewFont = new CViewFont(&GetLogfont());
 
-	auto_memset( m_pszMenubarMessage, _T(' '), MENUBAR_MESSAGE_MAX_LEN );	// null終端は不要
+	auto_memset( m_pszMenubarMessage, L' ', MENUBAR_MESSAGE_MAX_LEN );	// null終端は不要
 
 	//	Dec. 4, 2002 genta
 	InitMenubarMessageFont();
@@ -313,12 +313,12 @@ void CEditWnd::UpdateCaption()
 	);
 
 	//キャプション更新
-	::SetWindowText( this->GetHwnd(), to_tchar(pszCap) );
+	::SetWindowText( this->GetHwnd(), to_wchar(pszCap) );
 
 	//@@@ From Here 2003.06.13 MIK
 	//タブウインドウのファイル名を通知
 	CSakuraEnvironment::ExpandParameter( GetDllShareData().m_Common.m_sTabBar.m_szTabWndCaption, pszCap, _countof( pszCap ));
-	this->ChangeFileNameNotify( to_tchar(pszCap), GetListeningDoc()->m_cDocFile.GetFilePath(), CEditApp::getInstance()->m_pcGrepAgent->m_bGrepMode );	// 2006.01.28 ryoji ファイル名、Grepモードパラメータを追加
+	this->ChangeFileNameNotify( to_wchar(pszCap), GetListeningDoc()->m_cDocFile.GetFilePath(), CEditApp::getInstance()->m_pcGrepAgent->m_bGrepMode );	// 2006.01.28 ryoji ファイル名、Grepモードパラメータを追加
 	//@@@ To Here 2003.06.13 MIK
 }
 
@@ -631,7 +631,7 @@ HWND CEditWnd::Create(
 
 	//ウィンドウ数制限
 	if( m_pShareData->m_sNodes.m_nEditArrNum >= MAX_EDITWINDOWS ){	//最大値修正	//@@@ 2003.05.31 MIK
-		OkMessage( NULL, _T("編集ウィンドウ数の上限は%dです。\nこれ以上は同時に開けません。"), MAX_EDITWINDOWS );
+		OkMessage( NULL, L"編集ウィンドウ数の上限は%dです。\nこれ以上は同時に開けません。", MAX_EDITWINDOWS );
 		return NULL;
 	}
 
@@ -655,7 +655,7 @@ HWND CEditWnd::Create(
 	// Vista/7 での初回表示アニメーション抑止（rev1868）とのからみで、ウィンドウが可視化される時点でタブバーに全タブが揃っていないと見苦しいのでここに移動。
 	// AddEditWndList() で自ウィンドウにポストされる MYWM_TAB_WINDOW_NOTIFY(TWNT_ADD) はタブバー作成後の初回アイドリング時に処理されるので特に問題は無いはず。
 	if( !CAppNodeGroupHandle(nGroup).AddEditWndList( GetHwnd() ) ){	// 2007.06.26 ryoji nGroup引数追加
-		OkMessage( GetHwnd(), _T("編集ウィンドウ数の上限は%dです。\nこれ以上は同時に開けません。"), MAX_EDITWINDOWS );
+		OkMessage( GetHwnd(), L"編集ウィンドウ数の上限は%dです。\nこれ以上は同時に開けません。", MAX_EDITWINDOWS );
 		::DestroyWindow( GetHwnd() );
 		m_hWnd = hWnd = NULL;
 		return hWnd;
@@ -727,8 +727,8 @@ HWND CEditWnd::Create(
 		::SendMessage( m_pShareData->m_sHandles.m_hwndControlProcessWnd, MYWM_UIPI_CHECK,  (WPARAM)0, (LPARAM)GetHwnd() );
 		if( !m_bUIPI ){	// 返事が返らない
 			TopErrorMessage( GetHwnd(), 
-				_T("エディタ間の対話に失敗しました。\n")
-				_T("権限レベルの異なるエディタが既に起動している可能性があります。")
+				L"エディタ間の対話に失敗しました。\n"
+				L"権限レベルの異なるエディタが既に起動している可能性があります。"
 			);
 			::DestroyWindow( GetHwnd() );
 			m_hWnd = hWnd = NULL;
@@ -742,7 +742,7 @@ HWND CEditWnd::Create(
 	m_nTimerCount = 0;
 	/* タイマーを起動 */ // タイマーのIDと間隔を変更 20060128 aroka
 	if( 0 == ::SetTimer( GetHwnd(), IDT_EDIT, 500, NULL ) ){
-		WarningMessage( GetHwnd(), _T("CEditWnd::Create()\nタイマーが起動できません。\nシステムリソースが不足しているのかもしれません。") );
+		WarningMessage( GetHwnd(), L"CEditWnd::Create()\nタイマーが起動できません。\nシステムリソースが不足しているのかもしれません。" );
 	}
 	// ツールバーのタイマーを分離した 20060128 aroka
 	Timer_ONOFF( true );
@@ -823,8 +823,8 @@ void CEditWnd::SetDocumentTypeWhenCreate(
 */
 void CEditWnd::LayoutMainMenu()
 {
-	TCHAR		szLabel[300];
-	TCHAR		szKey[10];
+	WCHAR		szLabel[300];
+	WCHAR		szKey[10];
 	CommonSetting_MainMenu*	pcMenu = &m_pShareData->m_Common.m_sMainMenu;
 	CMainMenu*	cMainMenu;
 	HWND		hWnd = GetHwnd();
@@ -841,21 +841,21 @@ void CEditWnd::LayoutMainMenu()
 		switch (cMainMenu->m_nType) {
 		case T_NODE:
 			::AppendMenu( hMenu, MF_POPUP | MF_STRING | (nCount<=1 ? MF_GRAYED : 0), (UINT)CreatePopupMenu(), 
-				CKeyBind::MakeMenuLabel( to_tchar(cMainMenu->m_sName), to_tchar(cMainMenu->m_sKey) ) );
+				CKeyBind::MakeMenuLabel( to_wchar(cMainMenu->m_sName), to_wchar(cMainMenu->m_sKey) ) );
 			break;
 		case T_LEAF:
 			/* メニューラベルの作成 */
-			szLabel[0] = _T('\0');
-			auto_strcpy( szKey, to_tchar(cMainMenu->m_sKey));
+			szLabel[0] = L'\0';
+			auto_strcpy( szKey, to_wchar(cMainMenu->m_sKey));
 			if (CKeyBind::GetMenuLabel(
 				G_AppInstance(),
 				m_pShareData->m_Common.m_sKeyBind.m_nKeyNameArrNum,
 				m_pShareData->m_Common.m_sKeyBind.m_pKeyNameArr,
 				cMainMenu->m_nFunc,
 				szLabel,
-				to_tchar(cMainMenu->m_sKey),
+				to_wchar(cMainMenu->m_sKey),
 				FALSE) == NULL) {
-				auto_strcpy( szLabel, _T("?") );
+				auto_strcpy( szLabel, L"?" );
 			}
 			::AppendMenu( hMenu, MF_STRING, cMainMenu->m_nFunc, szLabel );
 			break;
@@ -904,7 +904,7 @@ void CEditWnd::LayoutMainMenu()
 				break;
 			}
 			::AppendMenu( hMenu, MF_POPUP | MF_STRING | (nCount<=0 ? MF_GRAYED : 0), (UINT)CreatePopupMenu(), 
-				CKeyBind::MakeMenuLabel( to_tchar(cMainMenu->m_sName), to_tchar(cMainMenu->m_sKey) ) );
+				CKeyBind::MakeMenuLabel( to_wchar(cMainMenu->m_sName), to_wchar(cMainMenu->m_sKey) ) );
 			break;
 		}
 	}
@@ -1126,10 +1126,10 @@ LRESULT CEditWnd::DispatchEvent(
 		hmenu = (HMENU) lParam;				// handle to menu clicked
 		{
 			/* メニュー機能のテキストをセット */
-			CNativeT	cmemWork;
+			CNativeW	cmemWork;
 
 			/* 機能に対応するキー名の取得(複数) */
-			CNativeT**	ppcAssignedKeyList;
+			CNativeW**	ppcAssignedKeyList;
 			int			nAssignedKeyNum;
 			int			j;
 			nAssignedKeyNum = CKeyBind::GetKeyStrList(
@@ -1142,7 +1142,7 @@ LRESULT CEditWnd::DispatchEvent(
 			if( 0 < nAssignedKeyNum ){
 				for( j = 0; j < nAssignedKeyNum; ++j ){
 					if( j > 0 ){
-						cmemWork.AppendString(_T(" , "));
+						cmemWork.AppendString(L" , ");
 					}
 					cmemWork.AppendNativeData( *ppcAssignedKeyList[j] );
 					delete ppcAssignedKeyList[j];
@@ -1150,7 +1150,7 @@ LRESULT CEditWnd::DispatchEvent(
 				delete [] ppcAssignedKeyList;
 			}
 
-			const TCHAR* pszItemStr = cmemWork.GetStringPtr();
+			const WCHAR* pszItemStr = cmemWork.GetStringPtr();
 
 			m_cStatusBar.SetStatusText(0, SBT_NOBORDERS, pszItemStr);
 
@@ -1179,9 +1179,9 @@ LRESULT CEditWnd::DispatchEvent(
 				TEXTMETRIC tm;
 				::GetTextMetrics( lpdis->hDC, &tm );
 				int y = ( lpdis->rcItem.bottom - lpdis->rcItem.top - tm.tmHeight + 1 ) / 2 + lpdis->rcItem.top;
-				::TextOut( lpdis->hDC, lpdis->rcItem.left, y, _T("REC"), _tcslen( _T("REC") ) );
+				::TextOut( lpdis->hDC, lpdis->rcItem.left, y, L"REC", wcslen( L"REC" ) );
 				if( COLOR_BTNTEXT == nColor ){
-					::TextOut( lpdis->hDC, lpdis->rcItem.left + 1, y, _T("REC"), _tcslen( _T("REC") ) );
+					::TextOut( lpdis->hDC, lpdis->rcItem.left + 1, y, L"REC", wcslen( L"REC" ) );
 				}
 			}
 			return 0;
@@ -1203,7 +1203,7 @@ LRESULT CEditWnd::DispatchEvent(
 //			pCMenuDrawer = (CMenuDrawer*)lpmis->itemData;
 
 
-//			MYTRACE( _T("WM_MEASUREITEM  lpmis->itemID=%d\n"), lpmis->itemID );
+//			MYTRACE( L"WM_MEASUREITEM  lpmis->itemID=%d\n", lpmis->itemID );
 			/* メニューアイテムの描画サイズを計算 */
 			nItemWidth = m_CMenuDrawer.MeasureItem( lpmis->itemID, &nItemHeight );
 			if( 0 < nItemWidth ){
@@ -1273,7 +1273,7 @@ LRESULT CEditWnd::DispatchEvent(
 		return 0L;
 
 	case WM_SIZE:
-//		MYTRACE( _T("WM_SIZE\n") );
+//		MYTRACE( L"WM_SIZE\n" );
 		/* WM_SIZE 処理 */
 		if( SIZE_MINIMIZED == wParam ){
 			this->UpdateCaption();
@@ -1339,16 +1339,16 @@ LRESULT CEditWnd::DispatchEvent(
 		return Views_DispatchEvent( hwnd, uMsg, wParam, lParam );
 
 	case WM_EXITMENULOOP:
-//		MYTRACE( _T("WM_EXITMENULOOP\n") );
+//		MYTRACE( L"WM_EXITMENULOOP\n" );
 		if( NULL != m_cStatusBar.GetStatusHwnd() ){
-			m_cStatusBar.SetStatusText(0, SBT_NOBORDERS, _T(""));
+			m_cStatusBar.SetStatusText(0, SBT_NOBORDERS, L"");
 		}
 		m_CMenuDrawer.EndDrawMenu();
 		/* メッセージの配送 */
 		return Views_DispatchEvent( hwnd, uMsg, wParam, lParam );
 
 	case WM_SETFOCUS:
-//		MYTRACE( _T("WM_SETFOCUS\n") );
+//		MYTRACE( L"WM_SETFOCUS\n" );
 
 		// Aug. 29, 2003 wmlhq & ryojiファイルのタイムスタンプのチェック処理 OnTimer に移行
 		m_nTimerCount = 9;
@@ -1395,11 +1395,11 @@ LRESULT CEditWnd::DispatchEvent(
 					m_CMenuDrawer.ResetContents();
 					HMENU hMenuPopUp = ::CreatePopupMenu();
 					m_CMenuDrawer.MyAppendMenu( hMenuPopUp, MF_BYPOSITION | MF_STRING, F_CHGMOD_EOL_CRLF, 
-						_T("入力改行コード指定(&CRLF)"), _T("") ); // 入力改行コード指定(CRLF)
+						L"入力改行コード指定(&CRLF)", L"" ); // 入力改行コード指定(CRLF)
 					m_CMenuDrawer.MyAppendMenu( hMenuPopUp, MF_BYPOSITION | MF_STRING, F_CHGMOD_EOL_LF,
-						_T("入力改行コード指定(&LF)"), _T("") ); // 入力改行コード指定(LF)
+						L"入力改行コード指定(&LF)", L"" ); // 入力改行コード指定(LF)
 					m_CMenuDrawer.MyAppendMenu( hMenuPopUp, MF_BYPOSITION | MF_STRING, F_CHGMOD_EOL_CR,
-						_T("入力改行コード指定(C&R)"), _T("") ); // 入力改行コード指定(CR)
+						L"入力改行コード指定(C&R)", L"" ); // 入力改行コード指定(CR)
 						
 					//	mp->ptはステータスバー内部の座標なので，スクリーン座標への変換が必要
 					POINT	po = mp->pt;
@@ -1431,7 +1431,7 @@ LRESULT CEditWnd::DispatchEvent(
 		// 2008.11.03 syat   矩形範囲選択開始のツールチップで80文字超えていたのでlpszTextに変更。
 		case TTN_NEEDTEXT:
 			{
-				static TCHAR szText[256];
+				static WCHAR szText[256];
 				memset(szText, 0, sizeof(szText));
 
 				//ツールチップテキスト取得、設定
@@ -1546,7 +1546,7 @@ LRESULT CEditWnd::DispatchEvent(
 						if( pEditNode )
 							pEditNode->m_bClosing = TRUE;	// 自分はタブ表示してもらわなくていい
 						SLoadInfo sLoadInfo;
-						sLoadInfo.cFilePath = _T("");
+						sLoadInfo.cFilePath = L"";
 						sLoadInfo.eCharCode = CODE_NONE;
 						sLoadInfo.bViewMode = false;
 						CEditorManager::OpenNewEditor(
@@ -1901,8 +1901,8 @@ LRESULT CEditWnd::DispatchEvent(
 		// タイマーを使用してタイトルの変更を遅延する
 		if( m_pShareData->m_sFlags.m_bEditWndChanging ){
 			delete[] m_pszLastCaption;
-			m_pszLastCaption = new TCHAR[ ::_tcslen((LPCTSTR)lParam) + 1 ];
-			::_tcscpy( m_pszLastCaption, (LPCTSTR)lParam );	// 変更後のタイトルを記憶しておく
+			m_pszLastCaption = new WCHAR[ ::wcslen((LPCWSTR)lParam) + 1 ];
+			::wcscpy( m_pszLastCaption, (LPCWSTR)lParam );	// 変更後のタイトルを記憶しておく
 			::SetTimer( GetHwnd(), IDT_CAPTION, 50, NULL );
 			return 0L;
 		}
@@ -2061,12 +2061,12 @@ void CEditWnd::OnCommand( WORD wNotifyCode, WORD wID , HWND hwndCtl )
 		else if( wID - IDM_SELOPENFOLDER >= 0 && wID - IDM_SELOPENFOLDER < 999){
 			//フォルダ取得
 			const CMRUFolder cMRUFolder;
-			LPCTSTR pszFolderPath = cMRUFolder.GetPath( wID - IDM_SELOPENFOLDER );
+			LPCWSTR pszFolderPath = cMRUFolder.GetPath( wID - IDM_SELOPENFOLDER );
 
 			//「ファイルを開く」ダイアログ
-			SLoadInfo sLoadInfo(_T(""), CODE_AUTODETECT, false);
+			SLoadInfo sLoadInfo(L"", CODE_AUTODETECT, false);
 			CDocFileOperation& cDocOp = GetDocument().m_cDocFileOperation;
-			std::vector<std::tstring> files;
+			std::vector<std::wstring> files;
 			if( cDocOp.OpenFileDialog(GetHwnd(), pszFolderPath, &sLoadInfo, files) ){
 				sLoadInfo.cFilePath = files[0].c_str();
 				//開く
@@ -2370,10 +2370,10 @@ void CEditWnd::InitMenu( HMENU hMenu, UINT uPos, BOOL fSystemMenu )
 						MacroRec *mp = &m_pShareData->m_Common.m_sMacro.m_MacroTable[j];
 						if( mp->IsEnabled() ){
 							if(  mp->m_szName[0] ){
-								m_CMenuDrawer.MyAppendMenu( hMenu, MF_BYPOSITION | MF_STRING, F_USERMACRO_0 + j, mp->m_szName, _T("") );
+								m_CMenuDrawer.MyAppendMenu( hMenu, MF_BYPOSITION | MF_STRING, F_USERMACRO_0 + j, mp->m_szName, L"" );
 							}
 							else {
-								m_CMenuDrawer.MyAppendMenu( hMenu, MF_BYPOSITION | MF_STRING, F_USERMACRO_0 + j, mp->m_szFile, _T("") );
+								m_CMenuDrawer.MyAppendMenu( hMenu, MF_BYPOSITION | MF_STRING, F_USERMACRO_0 + j, mp->m_szFile, L"" );
 							}
 							bInList = true;
 						}
@@ -2577,7 +2577,7 @@ void CEditWnd::OnDropFiles( HDROP hDrop )
 
 	for( i = 0; i < cFiles; i++ ) {
 		//ファイルパス取得、解決。
-		TCHAR		szFile[_MAX_PATH + 1];
+		WCHAR		szFile[_MAX_PATH + 1];
 		::DragQueryFile( hDrop, i, szFile, _countof(szFile) );
 		CSakuraEnvironment::ResolvePath(szFile);
 
@@ -2609,7 +2609,7 @@ void CEditWnd::OnDropFiles( HDROP hDrop )
 				else{
 					/* 編集ウィンドウの上限チェック */
 					if( m_pShareData->m_sNodes.m_nEditArrNum >= MAX_EDITWINDOWS ){	//最大値修正	//@@@ 2003.05.31 MIK
-						OkMessage( NULL, _T("編集ウィンドウ数の上限は%dです。\nこれ以上は同時に開けません。"), MAX_EDITWINDOWS );
+						OkMessage( NULL, L"編集ウィンドウ数の上限は%dです。\nこれ以上は同時に開けません。", MAX_EDITWINDOWS );
 						::DragFinish( hDrop );
 						return;
 					}
@@ -2793,7 +2793,7 @@ void CEditWnd::PrintPreviewModeONOFF( void )
 		BOOL bRes;
 		bRes = m_pPrintPreview->GetDefaultPrinterInfo();
 		if( !bRes ){
-			TopInfoMessage( GetHwnd(), _T("印刷プレビューを実行する前に、プリンタをインストールしてください。\n") );
+			TopInfoMessage( GetHwnd(), L"印刷プレビューを実行する前に、プリンタをインストールしてください。\n" );
 			return;
 		}
 
@@ -2906,7 +2906,7 @@ LRESULT CEditWnd::OnSize( WPARAM wParam, LPARAM lParam )
 		// 2004-02-28 yasu 文字列を出力時の書式に合わせる
 		// 幅を変えた場合にはCEditView::ShowCaretPosInfo()での表示方法を見直す必要あり．
 		// ※pszLabel[3]: ステータスバー文字コード表示領域は大きめにとっておく
-		const TCHAR*	pszLabel[7] = { _T(""), _T("99999 行 9999 列"), _T("CRLF"), _T("AAAAAAAAAAAA"), _T("Unicode BOM付"), _T("REC"), _T("上書") };	//Oct. 30, 2000 JEPRO 千万行も要らん	文字コード枠を広げる 2008/6/21	Uchi
+		const WCHAR*	pszLabel[7] = { L"", L"99999 行 9999 列", L"CRLF", L"AAAAAAAAAAAA", L"Unicode BOM付", L"REC", L"上書" };	//Oct. 30, 2000 JEPRO 千万行も要らん	文字コード枠を広げる 2008/6/21	Uchi
 		int			nStArrNum = 7;
 		//	To Here
 		int			nAllWidth = rc.right - rc.left;
@@ -2928,7 +2928,7 @@ LRESULT CEditWnd::OnSize( WPARAM wParam, LPARAM lParam )
 			nStArr[nStArrNum - 1] -= nSbxWidth;
 		}
 		for( i = nStArrNum - 1; i > 0; i-- ){
-			::GetTextExtentPoint32( hdc, pszLabel[i], _tcslen( pszLabel[i] ), &sz );
+			::GetTextExtentPoint32( hdc, pszLabel[i], wcslen( pszLabel[i] ), &sz );
 			nStArr[i - 1] = nStArr[i] - ( sz.cx + nBdrWidth );
 		}
 
@@ -2936,7 +2936,7 @@ LRESULT CEditWnd::OnSize( WPARAM wParam, LPARAM lParam )
 		//	初期状態ではすべての部分が「枠あり」だが，メッセージエリアは枠を描画しないようにしている
 		//	ため，初期化時の枠が変な風に残ってしまう．初期状態で枠を描画させなくするため，
 		//	最初に「枠無し」状態を設定した後でバーの分割を行う．
-		m_cStatusBar.SetStatusText(0, SBT_NOBORDERS, _T(""));
+		m_cStatusBar.SetStatusText(0, SBT_NOBORDERS, L"");
 
 		StatusBar_SetParts( m_cStatusBar.GetStatusHwnd(), nStArrNum, nStArr );
 		if (hFont != NULL)
@@ -3122,7 +3122,7 @@ LRESULT CEditWnd::OnLButtonUp( WPARAM wParam, LPARAM lParam )
 	}
 
 	m_bDragMode = false;
-//	MYTRACE( _T("m_bDragMode = FALSE (OnLButtonUp)\n"));
+//	MYTRACE( L"m_bDragMode = FALSE (OnLButtonUp)\n");
 	ReleaseCapture();
 	::InvalidateRect( GetHwnd(), NULL, TRUE );
 	return 0;
@@ -3479,19 +3479,19 @@ int	CEditWnd::CreateFileDropDownMenu( HWND hwnd )
 	if ( cMRUFolder.MenuLength() > 0 )
 	{
 		//	アクティブ
-		m_CMenuDrawer.MyAppendMenu( hMenu, MF_BYPOSITION | MF_STRING | MF_POPUP, (UINT)hMenuPopUp, _T("最近使ったフォルダ"),  _T("") );
+		m_CMenuDrawer.MyAppendMenu( hMenu, MF_BYPOSITION | MF_STRING | MF_POPUP, (UINT)hMenuPopUp, L"最近使ったフォルダ",  L"" );
 	}
 	else 
 	{
 		//	非アクティブ
-		m_CMenuDrawer.MyAppendMenu( hMenu, MF_BYPOSITION | MF_STRING | MF_POPUP | MF_GRAYED, (UINT)hMenuPopUp, _T("最近使ったフォルダ"),  _T("") );
+		m_CMenuDrawer.MyAppendMenu( hMenu, MF_BYPOSITION | MF_STRING | MF_POPUP | MF_GRAYED, (UINT)hMenuPopUp, L"最近使ったフォルダ",  L"" );
 	}
 
 	m_CMenuDrawer.MyAppendMenuSep( hMenu, MF_BYPOSITION | MF_SEPARATOR, 0, NULL, FALSE );
 
-	m_CMenuDrawer.MyAppendMenu( hMenu, MF_BYPOSITION | MF_STRING, F_FILENEW, _T(""), _T("N"), FALSE );
-	m_CMenuDrawer.MyAppendMenu( hMenu, MF_BYPOSITION | MF_STRING, F_FILENEW_NEWWINDOW, _T(""), _T("M"), FALSE );
-	m_CMenuDrawer.MyAppendMenu( hMenu, MF_BYPOSITION | MF_STRING, F_FILEOPEN, _T(""), _T("O"), FALSE );
+	m_CMenuDrawer.MyAppendMenu( hMenu, MF_BYPOSITION | MF_STRING, F_FILENEW, L"", L"N", FALSE );
+	m_CMenuDrawer.MyAppendMenu( hMenu, MF_BYPOSITION | MF_STRING, F_FILENEW_NEWWINDOW, L"", L"M", FALSE );
+	m_CMenuDrawer.MyAppendMenu( hMenu, MF_BYPOSITION | MF_STRING, F_FILEOPEN, L"", L"O", FALSE );
 
 	nId = ::TrackPopupMenu(
 		hMenu,
@@ -3563,17 +3563,17 @@ void CEditWnd::GetDefaultIcon( HICON* hIconBig, HICON* hIconSmall ) const
 	@author genta
 	@date 2002.09.10
 */
-bool CEditWnd::GetRelatedIcon(const TCHAR* szFile, HICON* hIconBig, HICON* hIconSmall) const
+bool CEditWnd::GetRelatedIcon(const WCHAR* szFile, HICON* hIconBig, HICON* hIconSmall) const
 {
-	if( NULL != szFile && szFile[0] != _T('\0') ){
-		TCHAR szExt[_MAX_EXT];
-		TCHAR FileType[1024];
+	if( NULL != szFile && szFile[0] != L'\0' ){
+		WCHAR szExt[_MAX_EXT];
+		WCHAR FileType[1024];
 
 		// (.で始まる)拡張子の取得
-		_tsplitpath( szFile, NULL, NULL, NULL, szExt );
+		_wsplitpath( szFile, NULL, NULL, NULL, szExt );
 		
 		if( ReadRegistry(HKEY_CLASSES_ROOT, szExt, NULL, FileType, _countof(FileType) - 13)){
-			_tcscat( FileType, _T("\\DefaultIcon") );
+			wcscat( FileType, L"\\DefaultIcon" );
 			if( ReadRegistry(HKEY_CLASSES_ROOT, FileType, NULL, NULL, 0)){
 				// 関連づけられたアイコンを取得する
 				SHFILEINFO shfi;
@@ -3620,7 +3620,7 @@ void CEditWnd::InitMenubarMessageFont(void)
 	lf.lfClipPrecision	= 0x2;
 	lf.lfQuality		= 0x1;
 	lf.lfPitchAndFamily	= 0x31;
-	_tcscpy( lf.lfFaceName, _T("ＭＳ ゴシック") );
+	wcscpy( lf.lfFaceName, L"ＭＳ ゴシック" );
 	m_hFontCaretPosInfo = ::CreateFontIndirect( &lf );
 
 	hdc = ::GetDC( ::GetDesktopWindow() );
@@ -3641,7 +3641,7 @@ void CEditWnd::InitMenubarMessageFont(void)
 	@author genta
 	@date 2002.12.04
 */
-void CEditWnd::PrintMenubarMessage( const TCHAR* msg )
+void CEditWnd::PrintMenubarMessage( const WCHAR* msg )
 {
 	if( NULL == ::GetMenu( GetHwnd() ) )	// 2007.03.08 ryoji 追加
 		return;
@@ -3653,10 +3653,10 @@ void CEditWnd::PrintMenubarMessage( const TCHAR* msg )
 
 	// msg == NULL のときは以前の m_pszMenubarMessage で再描画
 	if( msg ){
-		int len = _tcslen( msg );
-		_tcsncpy( m_pszMenubarMessage, msg, MENUBAR_MESSAGE_MAX_LEN );
+		int len = wcslen( msg );
+		wcsncpy( m_pszMenubarMessage, msg, MENUBAR_MESSAGE_MAX_LEN );
 		if( len < MENUBAR_MESSAGE_MAX_LEN ){
-			auto_memset( m_pszMenubarMessage + len, _T(' '), MENUBAR_MESSAGE_MAX_LEN - len );	//  null終端は不要
+			auto_memset( m_pszMenubarMessage + len, L' ', MENUBAR_MESSAGE_MAX_LEN - len );	//  null終端は不要
 		}
 	}
 
@@ -3700,7 +3700,7 @@ void CEditWnd::PrintMenubarMessage( const TCHAR* msg )
 	@date 2002.01.26 hor 新規作成
 	@date 2002.12.04 genta CEditViewより移動
 */
-void CEditWnd::SendStatusMessage( const TCHAR* msg )
+void CEditWnd::SendStatusMessage( const WCHAR* msg )
 {
 	if( NULL == m_cStatusBar.GetStatusHwnd() ){
 		// メニューバーへ
@@ -3718,15 +3718,15 @@ void CEditWnd::SendStatusMessage( const TCHAR* msg )
 	@date 2003.05.31 新規作成
 	@date 2006.01.28 ryoji ファイル名、Grepモードパラメータを追加
 */
-void CEditWnd::ChangeFileNameNotify( const TCHAR* pszTabCaption, const TCHAR* _pszFilePath, bool bIsGrep )
+void CEditWnd::ChangeFileNameNotify( const WCHAR* pszTabCaption, const WCHAR* _pszFilePath, bool bIsGrep )
 {
-	const TCHAR* pszFilePath = _pszFilePath;
+	const WCHAR* pszFilePath = _pszFilePath;
 
 	EditNode	*p;
 	int		nIndex;
 
-	if( NULL == pszTabCaption ) pszTabCaption = _T("");	//ガード
-	if( NULL == pszFilePath )pszFilePath = _FT("");		//ガード 2006.01.28 ryoji
+	if( NULL == pszTabCaption ) pszTabCaption = L"";	//ガード
+	if( NULL == pszFilePath )pszFilePath = L"";		//ガード 2006.01.28 ryoji
 
 	CRecentEditNode	cRecentEditNode;
 	nIndex = cRecentEditNode.FindItemByHwnd( GetHwnd() );
@@ -3736,13 +3736,13 @@ void CEditWnd::ChangeFileNameNotify( const TCHAR* pszTabCaption, const TCHAR* _p
 		if( p )
 		{
 			int	size = _countof( p->m_szTabCaption ) - 1;
-			_tcsncpy( p->m_szTabCaption, pszTabCaption, size );
-			p->m_szTabCaption[ size ] = _T('\0');
+			wcsncpy( p->m_szTabCaption, pszTabCaption, size );
+			p->m_szTabCaption[ size ] = L'\0';
 
 			// 2006.01.28 ryoji ファイル名、Grepモード追加
 			size = _countof2( p->m_szFilePath ) - 1;
-			_tcsncpy( p->m_szFilePath, pszFilePath, size );
-			p->m_szFilePath[ size ] = _T('\0');
+			wcsncpy( p->m_szFilePath, pszFilePath, size );
+			p->m_szFilePath[ size ] = L'\0';
 
 			p->m_bIsGrep = bIsGrep;
 		}
@@ -3817,7 +3817,7 @@ void CEditWnd::Timer_ONOFF( bool bStart )
 		if( bStart ){
 			/* タイマーを起動 */
 			if( 0 == ::SetTimer( GetHwnd(), IDT_TOOLBAR, 300, NULL ) ){
-				WarningMessage( GetHwnd(), _T("CEditWnd::Create()\nタイマーが起動できません。\nシステムリソースが不足しているのかもしれません。") );
+				WarningMessage( GetHwnd(), L"CEditWnd::Create()\nタイマーが起動できません。\nシステムリソースが不足しているのかもしれません。" );
 			}
 		} else {
 			/* タCマーを削除 */
@@ -3886,7 +3886,7 @@ LRESULT CEditWnd::PopupWinList( bool bMousePos )
 LRESULT CEditWnd::WinListMenu( HMENU hMenu, EditNode* pEditNodeArr, int nRowNum, BOOL bFull )
 {
 	int			i;
-	TCHAR		szMenu[_MAX_PATH * 2 + 3];
+	WCHAR		szMenu[_MAX_PATH * 2 + 3];
 	const EditInfo*	pfi;
 
 	if( nRowNum > 0 ){
@@ -3897,7 +3897,7 @@ LRESULT CEditWnd::WinListMenu( HMENU hMenu, EditNode* pEditNodeArr, int nRowNum,
 ////	From Here Oct. 4, 2000 JEPRO commented out & modified	開いているファイル数がわかるように履歴とは違って1から数える
 			pfi = (EditInfo*)&m_pShareData->m_sWorkBuffer.m_EditInfo_MYWM_GETFILEINFO;
 			CFileNameManager::getInstance()->GetMenuFullLabel_WinList( szMenu, _countof(szMenu), pfi, pEditNodeArr[i].m_nId, i );
-			m_CMenuDrawer.MyAppendMenu( hMenu, MF_BYPOSITION | MF_STRING, IDM_SELWINDOW + pEditNodeArr[i].m_nIndex, szMenu, _T("") );
+			m_CMenuDrawer.MyAppendMenu( hMenu, MF_BYPOSITION | MF_STRING, IDM_SELWINDOW + pEditNodeArr[i].m_nIndex, szMenu, L"" );
 			if( GetHwnd() == pEditNodeArr[i].GetHwnd() ){
 				::CheckMenuItem( hMenu, IDM_SELWINDOW + pEditNodeArr[i].m_nIndex, MF_BYCOMMAND | MF_CHECKED );
 			}
@@ -3908,16 +3908,17 @@ LRESULT CEditWnd::WinListMenu( HMENU hMenu, EditNode* pEditNodeArr, int nRowNum,
 
 //2007.09.08 kobake 追加
 //!ツールチップのテキストを取得
-void CEditWnd::GetTooltipText(TCHAR* wszBuf, size_t nBufCount, int nID) const
+void CEditWnd::GetTooltipText(WCHAR* wszBuf, size_t nBufCount, int nID) const
 {
 	// 機能文字列の取得 -> tmp -> wszBuf
 	WCHAR tmp[256];
 	size_t nLen;
 	GetDocument().m_cFuncLookup.Funccode2Name( nID, tmp, _countof(tmp) );
-	nLen = _wcstotcs(wszBuf, tmp, nBufCount);
+	wcsncpy_s(wszBuf, nBufCount, tmp, _TRUNCATE);
+	nLen = wcslen(wszBuf);
 
 	// 機能に対応するキー名の取得(複数)
-	CNativeT**	ppcAssignedKeyList;
+	CNativeW**	ppcAssignedKeyList;
 	int nAssignedKeyNum = CKeyBind::GetKeyStrList(
 		G_AppInstance(),
 		m_pShareData->m_Common.m_sKeyBind.m_nKeyNameArrNum,
@@ -3929,11 +3930,11 @@ void CEditWnd::GetTooltipText(TCHAR* wszBuf, size_t nBufCount, int nID) const
 	// wszBufへ結合
 	if( 0 < nAssignedKeyNum ){
 		for( int j = 0; j < nAssignedKeyNum; ++j ){
-			const TCHAR* pszKey = ppcAssignedKeyList[j]->GetStringPtr();
-			int nKeyLen = _tcslen(pszKey);
+			const WCHAR* pszKey = ppcAssignedKeyList[j]->GetStringPtr();
+			int nKeyLen = wcslen(pszKey);
 			if ( nLen + 9 + nKeyLen < nBufCount ){
-				_tcscat_s( wszBuf, nBufCount, _T("\n        ") );
-				_tcscat_s( wszBuf, nBufCount, pszKey );
+				wcscat_s( wszBuf, nBufCount, L"\n        " );
+				wcscat_s( wszBuf, nBufCount, pszKey );
 				nLen += 9 + nKeyLen;
 			}
 			delete ppcAssignedKeyList[j];
@@ -4090,7 +4091,7 @@ void CEditWnd::Views_Redraw()
 void  CEditWnd::SetActivePane( int nIndex )
 {
 	assert_warning( nIndex < GetAllViewCount() );
-	DEBUG_TRACE( _T("CEditWnd::SetActivePane %d\n"), nIndex );
+	DEBUG_TRACE( L"CEditWnd::SetActivePane %d\n", nIndex );
 
 	/* アクティブなビューを切り替える */
 	int nOldIndex = m_nActivePaneIndex;
@@ -4483,9 +4484,9 @@ void CEditWnd::CreateAccelTbl( void )
 		if( NULL == m_hAccelWine ){
 			ErrorMessage(
 				NULL,
-				_T("CEditWnd::CEditWnd()\n")
-				_T("アクセラレータ テーブルが作成できません。\n")
-				_T("システムリソースが不足しています。")
+				L"CEditWnd::CEditWnd()\n"
+				L"アクセラレータ テーブルが作成できません。\n"
+				L"システムリソースが不足しています。"
 			);
 		}
 	}

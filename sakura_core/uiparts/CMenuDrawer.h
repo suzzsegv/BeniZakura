@@ -68,14 +68,14 @@ public:
 	*/
 	void ResetContents( void );
 	//void MyAppendMenu( HMENU , int , int , const char*, BOOL = TRUE );	/* メニュー項目を追加 */
-	void MyAppendMenu( HMENU hMenu, int nFlag, int nFuncId, const TCHAR*     pszLabel, const TCHAR*     pszKey, BOOL bAddKeyStr = TRUE, int nForceIconId = -1 );	/* メニュー項目を追加 */	//お気に入り	//@@@ 2003.04.08 MIK	// add pszKey	2010/5/17 Uchi
-	void MyAppendMenu( HMENU hMenu, int nFlag, int nFuncId, const NOT_TCHAR* pszLabel, const NOT_TCHAR* pszKey, BOOL bAddKeyStr = TRUE, int nForceIconId = -1 )
+	void MyAppendMenu( HMENU hMenu, int nFlag, int nFuncId, const WCHAR*     pszLabel, const WCHAR*     pszKey, BOOL bAddKeyStr = TRUE, int nForceIconId = -1 );	/* メニュー項目を追加 */	//お気に入り	//@@@ 2003.04.08 MIK	// add pszKey	2010/5/17 Uchi
+	void MyAppendMenu( HMENU hMenu, int nFlag, int nFuncId, const ACHAR* pszLabel, const ACHAR* pszKey, BOOL bAddKeyStr = TRUE, int nForceIconId = -1 )
 	{
-		MyAppendMenu(hMenu,nFlag,nFuncId,to_tchar(pszLabel),to_tchar(pszKey),bAddKeyStr,nForceIconId);
+		MyAppendMenu(hMenu,nFlag,nFuncId,to_wchar(pszLabel),to_wchar(pszKey),bAddKeyStr,nForceIconId);
 	}
-	void MyAppendMenuSep( HMENU hMenu, int nFlag, int nFuncId, const TCHAR* pszLabel, BOOL bAddKeyStr = TRUE, int nForceIconId = -1 )
+	void MyAppendMenuSep( HMENU hMenu, int nFlag, int nFuncId, const WCHAR* pszLabel, BOOL bAddKeyStr = TRUE, int nForceIconId = -1 )
 	{
-		MyAppendMenu(hMenu,nFlag,nFuncId,pszLabel,_T(""),bAddKeyStr,nForceIconId);
+		MyAppendMenu(hMenu,nFlag,nFuncId,pszLabel,L"",bAddKeyStr,nForceIconId);
 	}
 	int MeasureItem( int, int* );	/* メニューアイテムの描画サイズを計算 */
 	void DrawItem( DRAWITEMSTRUCT* );	/* メニューアイテム描画 */
@@ -97,8 +97,8 @@ private:
 	void DeleteCompDC();
 	int FindIndexFromCommandId( int idCommand, bool bOnlyFunc = true ) const;  /* ツールバーIndexの取得 */// 20050809 aroka
 	int Find( int nFuncID );
-	const TCHAR* GetLabel( int nFuncID );
-	TCHAR GetAccelCharFromLabel( const TCHAR* pszLabel );
+	const WCHAR* GetLabel( int nFuncID );
+	WCHAR GetAccelCharFromLabel( const WCHAR* pszLabel );
 	int ToolbarNoToIndex( int nToolbarNo ) const;
 
 private:
@@ -117,7 +117,7 @@ private:
 	struct MyMenuItemInfo{
 		int				m_nBitmapIdx;
 		int				m_nFuncId;
-		CNativeT		m_cmemLabel;
+		CNativeW		m_cmemLabel;
 	};
 	std::vector<MyMenuItemInfo> m_menuItems;
 	int				m_nMenuHeight;

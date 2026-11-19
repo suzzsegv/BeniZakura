@@ -51,7 +51,7 @@ CUxTheme::~CUxTheme()
 	@author ryoji
 	@date 2007.04.01 ryoji 新規
 */
-bool CUxTheme::InitThemeDll( TCHAR* str )
+bool CUxTheme::InitThemeDll( WCHAR* str )
 {
 	if( m_bInitialized )
 		return IsAvailable();
@@ -63,9 +63,9 @@ bool CUxTheme::InitThemeDll( TCHAR* str )
 /*!
 	UxTheme のファイル名を渡す
 */
-LPCTSTR CUxTheme::GetDllNameImp(int nIndex)
+LPCWSTR CUxTheme::GetDllNameImp(int nIndex)
 {
-	return _T("UxTheme.dll");
+	return L"UxTheme.dll";
 }
 
 bool CUxTheme::InitDllImp()

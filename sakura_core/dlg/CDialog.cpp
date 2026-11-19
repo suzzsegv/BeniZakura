@@ -62,7 +62,7 @@ INT_PTR CALLBACK MyDialogProc(
 */
 CDialog::CDialog()
 {
-//	MYTRACE( _T("CDialog::CDialog()\n") );
+//	MYTRACE( L"CDialog::CDialog()\n" );
 	/* 共有データ構造体のアドレスを返す */
 	m_pShareData = CShareData::getInstance()->GetShareData();
 
@@ -82,7 +82,7 @@ CDialog::CDialog()
 }
 CDialog::~CDialog()
 {
-//	MYTRACE( _T("CDialog::~CDialog()\n") );
+//	MYTRACE( L"CDialog::~CDialog()\n" );
 	CloseDialog( 0 );
 	return;
 }
@@ -189,7 +189,7 @@ void CDialog::SetDialogPosSize()
 	/* ダイアログのサイズ、位置の再現 */
 	if( -1 != m_xPos && -1 != m_yPos ){
 		::SetWindowPos( m_hWnd, NULL, m_xPos, m_yPos, 0, 0, SWP_NOSIZE | SWP_NOOWNERZORDER | SWP_NOZORDER );
-		DEBUG_TRACE( _T("CDialog::OnInitDialog() m_xPos=%d m_yPos=%d\n"), m_xPos, m_yPos );
+		DEBUG_TRACE( L"CDialog::OnInitDialog() m_xPos=%d m_yPos=%d\n", m_xPos, m_yPos );
 	}
 	if( -1 != m_nWidth && -1 != m_nHeight ){
 		::SetWindowPos( m_hWnd, NULL, 0, 0, m_nWidth, m_nHeight, SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER );
@@ -351,7 +351,7 @@ BOOL CDialog::OnMove( WPARAM wParam, LPARAM lParam )
 	m_yPos = rc.top;
 	m_nWidth = rc.right - rc.left;
 	m_nHeight = rc.bottom - rc.top;
-	DEBUG_TRACE( _T("CDialog::OnMove() m_xPos=%d m_yPos=%d\n"), m_xPos, m_yPos );
+	DEBUG_TRACE( L"CDialog::OnMove() m_xPos=%d m_yPos=%d\n", m_xPos, m_yPos );
 	return TRUE;
 
 }
@@ -363,7 +363,7 @@ void CDialog::CreateSizeBox( void )
 	/* サイズボックス */
 	m_hwndSizeBox = ::CreateWindowEx(
 		WS_EX_CONTROLPARENT,								/* no extended styles */
-		_T("SCROLLBAR"),									/* scroll bar control class */
+		L"SCROLLBAR",									/* scroll bar control class */
 		NULL,												/* text for window title bar */
 		WS_VISIBLE | WS_CHILD | SBS_SIZEBOX | SBS_SIZEGRIP, /* scroll bar styles */
 		0,													/* horizontal position */
@@ -387,7 +387,7 @@ void CDialog::CreateSizeBox( void )
 /* ダイアログのメッセージ処理 */
 INT_PTR CDialog::DispatchEvent( HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam )
 {
-//	DEBUG_TRACE( _T("CDialog::DispatchEvent() uMsg == %xh\n"), uMsg );
+//	DEBUG_TRACE( L"CDialog::DispatchEvent() uMsg == %xh\n", uMsg );
 	switch( uMsg ){
 	case WM_INITDIALOG:	return OnInitDialog( hwndDlg, wParam, lParam );
 	case WM_DESTROY:	return OnDestroy();
@@ -418,7 +418,7 @@ BOOL CDialog::OnCommand( WPARAM wParam, LPARAM lParam )
 	wNotifyCode = HIWORD(wParam);	/* 通知コード */
 	wID			= LOWORD(wParam);	/* 項目ID､ コントロールID､ またはアクセラレータID */
 	hwndCtl		= (HWND) lParam;	/* コントロールのハンドル */
-	TCHAR	szClass[32];
+	WCHAR	szClass[32];
 
 	// IDOK と IDCANCEL はボタンからでなくても同じ扱い
 	// MSDN [Windows Management] "Dialog Box Programming Considerations"
@@ -429,26 +429,26 @@ BOOL CDialog::OnCommand( WPARAM wParam, LPARAM lParam )
 	// 通知元がコントロールだった場合の処理
 	if( hwndCtl ){
 		::GetClassName(hwndCtl, szClass, _countof(szClass));
-		if( ::lstrcmpi(szClass, _T("Button")) == 0 ){
+		if( ::lstrcmpi(szClass, L"Button") == 0 ){
 			switch( wNotifyCode ){
 			/* ボタン／チェックボックスがクリックされた */
 			case BN_CLICKED:	return OnBnClicked( wID );
 			}
-		}else if( ::lstrcmpi(szClass, _T("Static")) == 0 ){
+		}else if( ::lstrcmpi(szClass, L"Static") == 0 ){
 			switch( wNotifyCode ){
 			case STN_CLICKED:	return OnStnClicked( wID );
 			}
-		}else if( ::lstrcmpi(szClass, _T("Edit")) == 0 ){
+		}else if( ::lstrcmpi(szClass, L"Edit") == 0 ){
 			switch( wNotifyCode ){
 			case EN_CHANGE:		return OnEnChange( hwndCtl, wID );
 			case EN_KILLFOCUS:	return OnEnKillFocus( hwndCtl, wID );
 			}
-		}else if( ::lstrcmpi(szClass, _T("ListBox")) == 0 ){
+		}else if( ::lstrcmpi(szClass, L"ListBox") == 0 ){
 			switch( wNotifyCode ){
 			case LBN_SELCHANGE:	return OnLbnSelChange( hwndCtl, wID );
 			case LBN_DBLCLK:	return OnLbnDblclk( wID );
 			}
-		}else if( ::lstrcmpi(szClass, _T("ComboBox")) == 0 ){
+		}else if( ::lstrcmpi(szClass, L"ComboBox") == 0 ){
 			switch( wNotifyCode ){
 			/* コンボボックス用メッセージ */
 			case CBN_SELCHANGE:	return OnCbnSelChange( hwndCtl, wID );
@@ -474,13 +474,13 @@ BOOL CDialog::OnCbnSelEndOk( HWND hwndCtl, int wID )
 	//事前に文字列を退避し、リスト非表示後に復元する。
 
 	int nLength;
-	LPTSTR sBuf;
+	LPWSTR sBuf;
 
 	//文字列を退避
 	nLength = ::GetWindowTextLength( hwndCtl );
-	sBuf = new TCHAR[nLength + 1];
+	sBuf = new WCHAR[nLength + 1];
 	::GetWindowText( hwndCtl, sBuf, nLength+1 );
-	sBuf[nLength] = _T('\0');
+	sBuf[nLength] = L'\0';
 
 	//リストを非表示にする
 	Combo_ShowDropdown( hwndCtl, FALSE );
@@ -527,7 +527,7 @@ BOOL CDialog::OnCbnDropDown( HWND hwndCtl, int wID )
 	for( iItem = 0; iItem < nItem; iItem++ ){
 		nTextLen = Combo_GetLBTextLen( hwndCtl, iItem );
 		if( 0 < nTextLen ) {
-			TCHAR* pszText = new TCHAR[nTextLen + 1];
+			WCHAR* pszText = new WCHAR[nTextLen + 1];
 			Combo_GetLBText( hwndCtl, iItem, pszText );
 			if( ::GetTextExtentPoint32( hDC, pszText, nTextLen, &sizeText ) ){
 				if ( nWidth < sizeText.cx )
@@ -542,11 +542,11 @@ BOOL CDialog::OnCbnDropDown( HWND hwndCtl, int wID )
 	return TRUE;
 }
 
-BOOL CDialog::SelectFile(HWND parent, HWND hwndCtl, const TCHAR* filter, bool resolvePath)
+BOOL CDialog::SelectFile(HWND parent, HWND hwndCtl, const WCHAR* filter, bool resolvePath)
 {
 	CDlgOpenFile	cDlgOpenFile;
-	TCHAR			szFilePath[_MAX_PATH + 1];
-	TCHAR			szPath[_MAX_PATH + 1];
+	WCHAR			szFilePath[_MAX_PATH + 1];
+	WCHAR			szPath[_MAX_PATH + 1];
 	GetWindowText(hwndCtl, szFilePath, _countof(szFilePath));
 	// 2003.06.23 Moca 相対パスは実行ファイルからのパスとして開く
 	// 2007.05.19 ryoji 相対パスは設定ファイルからのパスを優先
@@ -563,7 +563,7 @@ BOOL CDialog::SelectFile(HWND parent, HWND hwndCtl, const TCHAR* filter, bool re
 		szPath
 	);
 	if( cDlgOpenFile.DoModal_GetOpenFileName( szPath ) ){
-		const TCHAR* fileName = szPath;
+		const WCHAR* fileName = szPath;
 		if( resolvePath ){
 			GetInidir(szFilePath, NULL);
 			int nLen = auto_strlen(szFilePath);
@@ -585,13 +585,13 @@ BOOL CDialog::SelectFile(HWND parent, HWND hwndCtl, const TCHAR* filter, bool re
 
 
 // static
-bool CDialog::DirectoryUp( TCHAR* szDir )
+bool CDialog::DirectoryUp( WCHAR* szDir )
 {
 	int nLen = auto_strlen( szDir );
 	if( 3 < nLen ){
 		// X:\ や\\. より長い
 		CutLastYenFromDirectoryPath( szDir );
-		const TCHAR *p = GetFileTitlePointer(szDir);
+		const WCHAR *p = GetFileTitlePointer(szDir);
 		if( 0 < p - szDir){
 			if( 3 < p - szDir ){
 				szDir[p - szDir - 1] = '\0'; // \を削るので-1
@@ -633,7 +633,7 @@ HFONT CDialog::SetMainFont( HWND hTarget )
 	//lf.lfClipPrecision	= lf.lfClipPrecision;
 	//lf.lfQuality		= lf.lfQuality;
 	//lf.lfPitchAndFamily	= lf.lfPitchAndFamily;
-	//_tcsncpy( lf.lfFaceName, lf.lfFaceName, _countof(lf.lfFaceName));	// 画面のフォントに設定	2012/11/27 Uchi
+	//wcsncpy( lf.lfFaceName, lf.lfFaceName, _countof(lf.lfFaceName));	// 画面のフォントに設定	2012/11/27 Uchi
 
 	// フォントを作成
 	hFont = ::CreateFontIndirect(&lf);

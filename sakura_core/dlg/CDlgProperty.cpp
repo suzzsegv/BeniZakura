@@ -75,104 +75,104 @@ BOOL CDlgProperty::OnBnClicked( int wID )
 void CDlgProperty::SetData( void )
 {
 	CEditDoc*		pCEditDoc = (CEditDoc*)m_lParam;
-	CNativeT		cmemProp;
-	TCHAR			szWork[500];
+	CNativeW		cmemProp;
+	WCHAR			szWork[500];
 
 	HANDLE			nFind;
 	WIN32_FIND_DATA	wfd;
 
 	//	Aug. 16, 2000 genta	全角化
-	cmemProp.AppendString( _T("ファイル名  ") );
+	cmemProp.AppendString( L"ファイル名  " );
 	cmemProp.AppendString( pCEditDoc->m_cDocFile.GetFilePath() );
-	cmemProp.AppendString( _T("\r\n") );
+	cmemProp.AppendString( L"\r\n" );
 
-	cmemProp.AppendString( _T("設定のタイプ  ") );
+	cmemProp.AppendString( L"設定のタイプ  " );
 	cmemProp.AppendString( pCEditDoc->m_cDocType.GetDocumentAttribute().m_szTypeName );
-	cmemProp.AppendString( _T("\r\n") );
+	cmemProp.AppendString( L"\r\n" );
 
-	cmemProp.AppendString( _T("文字コード  ") );
+	cmemProp.AppendString( L"文字コード  " );
 	cmemProp.AppendString( CCodeTypeName(pCEditDoc->GetDocumentEncoding()).Normal() );
 	//	From Here  2008/4/27 Uchi
 	if (pCEditDoc->GetDocumentBomExist()) {
-		cmemProp.AppendString( _T(" BOM付") );
+		cmemProp.AppendString( L" BOM付" );
 	}
 	//	To Here  2008/4/27 Uchi
-	cmemProp.AppendString( _T("\r\n") );
+	cmemProp.AppendString( L"\r\n" );
 
-	auto_sprintf( szWork, _T("行数  %d行\r\n"), pCEditDoc->m_cDocLineMgr.GetLineCount() );
+	auto_sprintf( szWork, L"行数  %d行\r\n", pCEditDoc->m_cDocLineMgr.GetLineCount() );
 	cmemProp.AppendString( szWork );
 
-	auto_sprintf( szWork, _T("レイアウト行数  %d行\r\n"), pCEditDoc->m_cLayoutMgr.GetLineCount() );
+	auto_sprintf( szWork, L"レイアウト行数  %d行\r\n", pCEditDoc->m_cLayoutMgr.GetLineCount() );
 	cmemProp.AppendString( szWork );
 
 	if( CAppMode::getInstance()->IsViewMode() ){
-		cmemProp.AppendString( _T("ビューモードで開いています。\r\n") );	// 2009.04.11 ryoji 「上書き禁止モード」→「ビューモード」
+		cmemProp.AppendString( L"ビューモードで開いています。\r\n" );	// 2009.04.11 ryoji 「上書き禁止モード」→「ビューモード」
 	}
 	if( pCEditDoc->m_cDocEditor.IsModified() ){
-		cmemProp.AppendString( _T("変更されています。\r\n") );
+		cmemProp.AppendString( L"変更されています。\r\n" );
 	}else{
-		cmemProp.AppendString( _T("変更されていません。\r\n") );
+		cmemProp.AppendString( L"変更されていません。\r\n" );
 	}
 
-	auto_sprintf( szWork, _T("\r\nコマンド実行回数    %d回\r\n"), pCEditDoc->m_nCommandExecNum );
+	auto_sprintf( szWork, L"\r\nコマンド実行回数    %d回\r\n", pCEditDoc->m_nCommandExecNum );
 	cmemProp.AppendString( szWork );
 
-	auto_sprintf( szWork, _T("--ファイル情報-----------------\r\n"), pCEditDoc->m_cDocLineMgr.GetLineCount() );
+	auto_sprintf( szWork, L"--ファイル情報-----------------\r\n", pCEditDoc->m_cDocLineMgr.GetLineCount() );
 	cmemProp.AppendString( szWork );
 
 	if( INVALID_HANDLE_VALUE != ( nFind = ::FindFirstFile( pCEditDoc->m_cDocFile.GetFilePath(), &wfd ) ) ){
 		if( pCEditDoc->m_cDocFile.IsFileLocking() ){
 			if( CAppMode::getInstance()->GetFileShareMode() == SHAREMODE_DENY_WRITE ){
-				auto_sprintf( szWork, _T("あなたはこのファイルを、他プロセスからの上書き禁止モードでロックしています。\r\n") );
+				auto_sprintf( szWork, L"あなたはこのファイルを、他プロセスからの上書き禁止モードでロックしています。\r\n" );
 			}
 			else if( CAppMode::getInstance()->GetFileShareMode() == SHAREMODE_DENY_READWRITE ){
-				auto_sprintf( szWork, _T("あなたはこのファイルを、他プロセスからの読み書き禁止モードでロックしています。\r\n") );
+				auto_sprintf( szWork, L"あなたはこのファイルを、他プロセスからの読み書き禁止モードでロックしています。\r\n" );
 			}
 			else{
-				auto_sprintf( szWork, _T("あなたはこのファイルをロックしています。\r\n") );
+				auto_sprintf( szWork, L"あなたはこのファイルをロックしています。\r\n" );
 			}
 			cmemProp.AppendString( szWork );
 		}
 		else{
-			auto_sprintf( szWork, _T("あなたはこのファイルをロックしていません。\r\n") );
+			auto_sprintf( szWork, L"あなたはこのファイルをロックしていません。\r\n" );
 			cmemProp.AppendString( szWork );
 		}
 
-		auto_sprintf( szWork, _T("ファイル属性  "), pCEditDoc->m_cDocLineMgr.GetLineCount() );
+		auto_sprintf( szWork, L"ファイル属性  ", pCEditDoc->m_cDocLineMgr.GetLineCount() );
 		cmemProp.AppendString( szWork );
 		if( wfd.dwFileAttributes & FILE_ATTRIBUTE_ARCHIVE ){
-			cmemProp.AppendString( _T("/アーカイブ") );
+			cmemProp.AppendString( L"/アーカイブ" );
 		}
 		if( wfd.dwFileAttributes & FILE_ATTRIBUTE_COMPRESSED ){
-			cmemProp.AppendString( _T("/圧縮") );
+			cmemProp.AppendString( L"/圧縮" );
 		}
 		if( wfd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY ){
-			cmemProp.AppendString( _T("/フォルダ") );
+			cmemProp.AppendString( L"/フォルダ" );
 		}
 		if( wfd.dwFileAttributes & FILE_ATTRIBUTE_HIDDEN ){
-			cmemProp.AppendString( _T("/隠し") );
+			cmemProp.AppendString( L"/隠し" );
 		}
 		if( wfd.dwFileAttributes & FILE_ATTRIBUTE_NORMAL ){
-			cmemProp.AppendString( _T("/ノーマル") );
+			cmemProp.AppendString( L"/ノーマル" );
 		}
 		if( wfd.dwFileAttributes & FILE_ATTRIBUTE_OFFLINE ){
-			cmemProp.AppendString( _T("/オフライン") );
+			cmemProp.AppendString( L"/オフライン" );
 		}
 		if( wfd.dwFileAttributes & FILE_ATTRIBUTE_READONLY ){
-			cmemProp.AppendString( _T("/読み取り専用") );
+			cmemProp.AppendString( L"/読み取り専用" );
 		}
 		if( wfd.dwFileAttributes & FILE_ATTRIBUTE_SYSTEM ){
-			cmemProp.AppendString( _T("/システム") );
+			cmemProp.AppendString( L"/システム" );
 		}
 		if( wfd.dwFileAttributes & FILE_ATTRIBUTE_TEMPORARY ){
-			cmemProp.AppendString( _T("/テンポラリ") );
+			cmemProp.AppendString( L"/テンポラリ" );
 		}
-		cmemProp.AppendString( _T("\r\n") );
+		cmemProp.AppendString( L"\r\n" );
 
 
-		cmemProp.AppendString( _T("作成日時  ") );
+		cmemProp.AppendString( L"作成日時  " );
 		CFileTime ctimeCreation = wfd.ftCreationTime;
-		auto_sprintf( szWork, _T("%d年%d月%d日 %02d:%02d:%02d"),
+		auto_sprintf( szWork, L"%d年%d月%d日 %02d:%02d:%02d",
 			ctimeCreation->wYear,
 			ctimeCreation->wMonth,
 			ctimeCreation->wDay,
@@ -181,11 +181,11 @@ void CDlgProperty::SetData( void )
 			ctimeCreation->wSecond
 		);
 		cmemProp.AppendString( szWork );
-		cmemProp.AppendString( _T("\r\n") );
+		cmemProp.AppendString( L"\r\n" );
 
-		cmemProp.AppendString( _T("更新日時  ") );
+		cmemProp.AppendString( L"更新日時  " );
 		CFileTime ctimeLastWrite = wfd.ftLastWriteTime;
-		auto_sprintf( szWork, _T("%d年%d月%d日 %02d:%02d:%02d"),
+		auto_sprintf( szWork, L"%d年%d月%d日 %02d:%02d:%02d",
 			ctimeLastWrite->wYear,
 			ctimeLastWrite->wMonth,
 			ctimeLastWrite->wDay,
@@ -194,23 +194,23 @@ void CDlgProperty::SetData( void )
 			ctimeLastWrite->wSecond
 		);
 		cmemProp.AppendString( szWork );
-		cmemProp.AppendString( _T("\r\n") );
+		cmemProp.AppendString( L"\r\n" );
 
 
-		cmemProp.AppendString( _T("アクセス日  ") );
+		cmemProp.AppendString( L"アクセス日  " );
 		CFileTime ctimeLastAccess = wfd.ftLastAccessTime;
-		auto_sprintf( szWork, _T("%d年%d月%d日"),
+		auto_sprintf( szWork, L"%d年%d月%d日",
 			ctimeLastAccess->wYear,
 			ctimeLastAccess->wMonth,
 			ctimeLastAccess->wDay
 		);
 		cmemProp.AppendString( szWork );
-		cmemProp.AppendString( _T("\r\n") );
+		cmemProp.AppendString( L"\r\n" );
 
-		auto_sprintf( szWork, _T("MS-DOSファイル名  %ts\r\n"), wfd.cAlternateFileName );
+		auto_sprintf( szWork, L"MS-DOSファイル名  %ts\r\n", wfd.cAlternateFileName );
 		cmemProp.AppendString( szWork );
 
-		auto_sprintf( szWork, _T("ファイルサイズ  %d バイト\r\n"), wfd.nFileSizeLow );
+		auto_sprintf( szWork, L"ファイルサイズ  %d バイト\r\n", wfd.nFileSizeLow );
 		cmemProp.AppendString( szWork );
 
 		::FindClose( nFind );
@@ -223,7 +223,7 @@ void CDlgProperty::SetData( void )
 	HGLOBAL					hgData;
 	char*					pBuf;
 	int						nBufLen;
-	CNativeT				ctext;
+	CNativeW				ctext;
 	/* メモリ確保 & ファイル読み込み */
 	hgData = NULL;
 	CBinaryInputStream in(pCEditDoc->m_cDocFile.GetFilePath());

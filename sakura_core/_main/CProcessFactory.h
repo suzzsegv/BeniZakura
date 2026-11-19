@@ -33,7 +33,7 @@ class CProcess;
 */
 class CProcessFactory {
 public:
-	CProcess* Create( HINSTANCE hInstance, LPCTSTR lpCmdLine );
+	CProcess* Create( HINSTANCE hInstance, LPCWSTR lpCmdLine );
 protected:
 private:
 	bool IsValidVersion();

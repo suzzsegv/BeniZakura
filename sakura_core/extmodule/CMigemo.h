@@ -112,7 +112,7 @@ protected:
 	bool	m_bStdcall;
 	bool	m_bUtf8;
 	
-	LPCTSTR GetDllNameImp(int nIndex);
+	LPCWSTR GetDllNameImp(int nIndex);
 	bool InitDllImp();
 	int DeInitDll(void);
 	
@@ -128,7 +128,6 @@ public:
 	void migemo_setproc_int2char(MIGEMO_PROC_INT2CHAR proc);
 	int migemo_load_a(int dict_id, const char* dict_file);
 	int migemo_load_w(int dict_id, const wchar_t* dict_file);
-	#define migemo_load_t migemo_load_w
 	int migemo_is_enable();
 	int migemo_load_all();
 

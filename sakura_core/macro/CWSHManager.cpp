@@ -43,7 +43,7 @@
 static void MacroError(BSTR Description, BSTR Source, void *Data)
 {
 	CEditView *View = reinterpret_cast<CEditView*>(Data);
-	MessageBox(View->GetHwnd(), to_tchar(Description), to_tchar(Source), MB_ICONERROR);
+	MessageBox(View->GetHwnd(), to_wchar(Description), to_wchar(Source), MB_ICONERROR);
 }
 
 CWSHMacroManager::CWSHMacroManager(std::wstring const AEngineName) : m_EngineName(AEngineName)
@@ -85,7 +85,7 @@ void CWSHMacroManager::ExecKeyMacro(CEditView *EditView, int flags) const
 	@param Instance [in] インスタンスハンドル(未使用)
 	@param Path		[in] ファイルのパス
 */
-BOOL CWSHMacroManager::LoadKeyMacro(HINSTANCE hInstance, const TCHAR* szPath)
+BOOL CWSHMacroManager::LoadKeyMacro(HINSTANCE hInstance, const WCHAR* szPath)
 {
 	//ソース読み込み -> m_Source
 	m_Source=L"";
@@ -106,27 +106,27 @@ BOOL CWSHMacroManager::LoadKeyMacro(HINSTANCE hInstance, const TCHAR* szPath)
 	@param Instance [in] インスタンスハンドル(未使用)
 	@param szCode	[in] マクロコード
 */
-BOOL CWSHMacroManager::LoadKeyMacroStr(HINSTANCE hInstance, const TCHAR* szCode)
+BOOL CWSHMacroManager::LoadKeyMacroStr(HINSTANCE hInstance, const WCHAR* szCode)
 {
 	//ソース読み込み -> m_Source
 	m_Source = to_wchar( szCode );
 	return TRUE;
 }
 
-CMacroManagerBase* CWSHMacroManager::Creator(const TCHAR* FileExt)
+CMacroManagerBase* CWSHMacroManager::Creator(const WCHAR* FileExt)
 {
-	TCHAR FileExtWithDot[1024], FileType[1024], EngineName[1024]; //1024を超えたら後は知りません
+	WCHAR FileExtWithDot[1024], FileType[1024], EngineName[1024]; //1024を超えたら後は知りません
 	
-	_tcscpy( FileExtWithDot, _T(".") );
-	_tcscat( FileExtWithDot, FileExt );
+	wcscpy( FileExtWithDot, L"." );
+	wcscat( FileExtWithDot, FileExt );
 
 	if(ReadRegistry(HKEY_CLASSES_ROOT, FileExtWithDot, NULL, FileType, 1024))
 	{
-		lstrcat(FileType, _T("\\ScriptEngine"));
+		lstrcat(FileType, L"\\ScriptEngine");
 		if(ReadRegistry(HKEY_CLASSES_ROOT, FileType, NULL, EngineName, 1024))
 		{
 			wchar_t EngineNameW[1024];
-			_tcstowcs(EngineNameW, EngineName, _countof(EngineNameW));
+			wcsncpy_s(EngineNameW, _countof(EngineNameW), EngineName, _TRUNCATE);
 			return new CWSHMacroManager(EngineNameW);
 		}
 	}

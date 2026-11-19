@@ -61,7 +61,7 @@ static LRESULT CALLBACK CControlProcessWndProc(
 		return pSApp->DispatchEvent( hwnd, uMsg, wParam, lParam );
 	default:
 		// Modified by KEITA for WIN64 2003.9.6
-		//RELPRINT( _T("dispatch\n") );
+		//RELPRINT( L"dispatch\n" );
 		pSApp = ( CControlProcessWnd* )::GetWindowLongPtr( hwnd, GWLP_USERDATA );
 		if( NULL != pSApp ){
 			return pSApp->DispatchEvent( hwnd, uMsg, wParam, lParam );
@@ -132,7 +132,7 @@ HWND CControlProcessWnd::Create( HINSTANCE hInstance )
 		wc.lpszClassName	= GSTR_CONTROL_PROCESS_WND;
 		ATOM	atom = RegisterClass( &wc );
 		if( 0 == atom ){
-			ErrorMessage( NULL, _T("CControlProcessWnd::Create()\nウィンドウクラスを登録できませんでした。") );
+			ErrorMessage( NULL, L"CControlProcessWnd::Create()\nウィンドウクラスを登録できませんでした。" );
 		}
 	}
 	g_pcControlProcessWnd = this;
@@ -224,7 +224,7 @@ LRESULT CControlProcessWnd::DispatchEvent(
 		// 2006.07.09 ryoji 最後の方でシャットダウンするアプリケーションにする
 		BOOL (WINAPI *pfnSetProcessShutdownParameters)( DWORD dwLevel, DWORD dwFlags );
 		HINSTANCE hDll;
-		hDll = ::GetModuleHandle(_T("KERNEL32"));
+		hDll = ::GetModuleHandle(L"KERNEL32");
 		if( NULL != hDll ){
 			*(FARPROC*)&pfnSetProcessShutdownParameters = ::GetProcAddress( hDll, "SetProcessShutdownParameters" );
 			if( NULL != pfnSetProcessShutdownParameters ){
@@ -327,9 +327,9 @@ void CControlProcessWnd::CreateAccelTbl( void )
 	if( NULL == m_pShareData->m_sHandles.m_hAccel ){
 		ErrorMessage(
 			NULL,
-			_T("CControlProcessWnd::CreateAccelTbl()\n")
-			_T("アクセラレータ テーブルが作成できません。\n")
-			_T("システムリソースが不足しています。")
+			L"CControlProcessWnd::CreateAccelTbl()\n"
+			L"アクセラレータ テーブルが作成できません。\n"
+			L"システムリソースが不足しています。"
 		);
 	}
 }

@@ -127,8 +127,8 @@ public:
 	void SetDefaultExtend(int extCx = 0){ nExt = 0; }
 	bool SetWidthIfMax(int width);
 	bool SetWidthIfMax(int width, int extCx);
-	bool SetTextWidthIfMax(LPCTSTR pszText);
-	bool SetTextWidthIfMax(LPCTSTR pszText, int extCx);
+	bool SetTextWidthIfMax(LPCWSTR pszText);
+	bool SetTextWidthIfMax(LPCWSTR pszText, int extCx);
 	int GetCx(){ return nCx; }
 	// 算出方法がよく分からないので定数にしておく
 	// 制御不要なら ListViewはLVSCW_AUTOSIZE等推奨

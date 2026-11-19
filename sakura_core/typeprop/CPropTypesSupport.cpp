@@ -68,23 +68,23 @@ INT_PTR CPropTypesSupport::DispatchEvent(
 			case IDC_BUTTON_HOKANFILE_REF:	/* 入力補完 単語ファイルの「参照...」ボタン */
 				{
 					CDlgOpenFile	cDlgOpenFile;
-					TCHAR			szPath[_MAX_PATH + 1];
+					WCHAR			szPath[_MAX_PATH + 1];
 					// 2003.06.23 Moca 相対パスは実行ファイルからのパスとして開く
 					// 2007.05.19 ryoji 相対パスは設定ファイルからのパスを優先
 					if( _IS_REL_PATH( m_Types.m_szHokanFile ) ){
 						GetInidirOrExedir( szPath, m_Types.m_szHokanFile );
 					}else{
-						_tcscpy( szPath, m_Types.m_szHokanFile );
+						wcscpy( szPath, m_Types.m_szHokanFile );
 					}
 					/* ファイルオープンダイアログの初期化 */
 					cDlgOpenFile.Create(
 						m_hInstance,
 						hwndDlg,
-						_T("*.*"),
+						L"*.*",
 						szPath
 					);
 					if( cDlgOpenFile.DoModal_GetOpenFileName( szPath ) ){
-						_tcscpy( m_Types.m_szHokanFile, szPath );
+						wcscpy( m_Types.m_szHokanFile, szPath );
 						::DlgItem_SetText( hwndDlg, IDC_EDIT_HOKANFILE, m_Types.m_szHokanFile );
 					}
 				}

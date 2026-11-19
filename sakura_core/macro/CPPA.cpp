@@ -66,7 +66,7 @@ void CPPA::Execute(CEditView* pcEditView, int flags )
 {
 	//PPAの多重起動禁止 2008.10.22 syat
 	if ( CPPA::m_bIsRunning ) {
-		MYMESSAGEBOX( pcEditView->GetHwnd(), MB_OK, _T("PPA実行エラー"), _T("PPA実行中に新たにPPAマクロを呼び出すことはできません") );
+		MYMESSAGEBOX( pcEditView->GetHwnd(), MB_OK, L"PPA実行エラー", L"PPA実行中に新たにPPAマクロを呼び出すことはできません" );
 		m_fnAbort();
 		CPPA::m_bIsRunning = false;
 		return;
@@ -92,9 +92,9 @@ void CPPA::Execute(CEditView* pcEditView, int flags )
 	CPPA::m_bIsRunning = false;
 }
 
-LPCTSTR CPPA::GetDllNameImp(int nIndex)
+LPCWSTR CPPA::GetDllNameImp(int nIndex)
 {
-	return _T("PPA.DLL");
+	return L"PPA.DLL";
 }
 
 /*!
@@ -368,10 +368,10 @@ void __stdcall CPPA::stdError( int Err_CD, const char* Err_Mes )
 		pszErr = "エラー情報が不正";
 	}
 	if( 0 == m_CurInstance->m_cMemDebug.GetStringLength() ){
-		MYMESSAGEBOX( m_CurInstance->m_pcEditView->GetHwnd(), MB_OK, _T("PPA実行エラー"), _T("%hs"), pszErr );
+		MYMESSAGEBOX( m_CurInstance->m_pcEditView->GetHwnd(), MB_OK, L"PPA実行エラー", L"%hs", pszErr );
 	}
 	else{
-		MYMESSAGEBOX( m_CurInstance->m_pcEditView->GetHwnd(), MB_OK, _T("PPA実行エラー"), _T("%hs\n%hs"), pszErr, m_CurInstance->m_cMemDebug.GetStringPtr() );
+		MYMESSAGEBOX( m_CurInstance->m_pcEditView->GetHwnd(), MB_OK, L"PPA実行エラー", L"%hs\n%hs", pszErr, m_CurInstance->m_cMemDebug.GetStringPtr() );
 	}
 }
 

@@ -187,7 +187,7 @@ ECodeType CCodeMediator::CheckKanjiCode( const char* pBuf, int nBufLen )
 ||	UnicodeBE	CODE_UNICODEBE
 ||	エラー		CODE_ERROR
 */
-ECodeType CCodeMediator::CheckKanjiCodeOfFile( const TCHAR* pszFile )
+ECodeType CCodeMediator::CheckKanjiCodeOfFile( const WCHAR* pszFile )
 {
 	// オープン
 	CBinaryInputStream in(pszFile);

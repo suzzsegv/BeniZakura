@@ -99,7 +99,7 @@ void CKeyMacroMgr::Append( CMacro* macro )
 /*! キーボードマクロの保存
 	エラーメッセージは出しません。呼び出し側でよきにはからってください。
 */
-BOOL CKeyMacroMgr::SaveKeyMacro( HINSTANCE hInstance, const TCHAR* pszPath ) const
+BOOL CKeyMacroMgr::SaveKeyMacro( HINSTANCE hInstance, const WCHAR* pszPath ) const
 {
 	CTextOutputStream out(pszPath);
 	if(!out){
@@ -141,7 +141,7 @@ void CKeyMacroMgr::ExecKeyMacro( CEditView* pcEditView, int flags ) const
 /*! キーボードマクロの読み込み
 	エラーメッセージは出しません。呼び出し側でよきにはからってください。
 */
-BOOL CKeyMacroMgr::LoadKeyMacro( HINSTANCE hInstance, const TCHAR* pszPath )
+BOOL CKeyMacroMgr::LoadKeyMacro( HINSTANCE hInstance, const WCHAR* pszPath )
 {
 	/* キーマクロのバッファをクリアする */
 	ClearAll();
@@ -161,7 +161,7 @@ BOOL CKeyMacroMgr::LoadKeyMacro( HINSTANCE hInstance, const TCHAR* pszPath )
 
 	//	Jun. 16, 2002 genta
 	m_nReady = true;	//	エラーがあればfalseになる
-	static const TCHAR MACRO_ERROR_TITLE[] = _T("Macro読み込みエラー");
+	static const WCHAR MACRO_ERROR_TITLE[] = L"Macro読み込みエラー";
 
 	int line = 1;	//	エラー時に行番号を通知するため．1始まり．
 	for( ; in.Good() ; ++line ){
@@ -217,7 +217,7 @@ BOOL CKeyMacroMgr::LoadKeyMacro( HINSTANCE hInstance, const TCHAR* pszPath )
 						NULL,
 						MB_OK | MB_ICONSTOP | MB_TOPMOST,
 						MACRO_ERROR_TITLE,
-						_T("Line %d: Column %d: 引数が多すぎます\n"),
+						L"Line %d: Column %d: 引数が多すぎます\n",
 						line,
 						i + 1
 					);
@@ -238,8 +238,8 @@ BOOL CKeyMacroMgr::LoadKeyMacro( HINSTANCE hInstance, const TCHAR* pszPath )
 							NULL,
 							MB_OK | MB_ICONSTOP | MB_TOPMOST,
 							MACRO_ERROR_TITLE,
-							_T("Line %d: Column %d\r\n")
-							_T("関数%lsの%d番目の引数に文字列は置けません．"),
+							L"Line %d: Column %d\r\n"
+							L"関数%lsの%d番目の引数に文字列は置けません．",
 							line,
 							i + 1,
 							szFuncName,
@@ -267,7 +267,7 @@ BOOL CKeyMacroMgr::LoadKeyMacro( HINSTANCE hInstance, const TCHAR* pszPath )
 								NULL,
 								MB_OK | MB_ICONSTOP | MB_TOPMOST,
 								MACRO_ERROR_TITLE,
-								_T("Line %d:\r\n関数%lsの%d番目の引数の終わりに %lc がありません．"),
+								L"Line %d:\r\n関数%lsの%d番目の引数の終わりに %lc がありません．",
 								line,
 								szFuncName,
 								nArgs + 1,
@@ -301,8 +301,8 @@ BOOL CKeyMacroMgr::LoadKeyMacro( HINSTANCE hInstance, const TCHAR* pszPath )
 							NULL,
 							MB_OK | MB_ICONSTOP | MB_TOPMOST,
 							MACRO_ERROR_TITLE,
-							_T("Line %d: Column %d\r\n")
-							_T("関数%lsの%d番目の引数に数値は置けません．"),
+							L"Line %d: Column %d\r\n"
+							L"関数%lsの%d番目の引数に数値は置けません．",
 							line,
 							i + 1,
 							szFuncName,
@@ -343,7 +343,7 @@ BOOL CKeyMacroMgr::LoadKeyMacro( HINSTANCE hInstance, const TCHAR* pszPath )
 					//	Jun. 16, 2002 genta
 					nBgn = nEnd = i;
 					::MYMESSAGEBOX( NULL, MB_OK | MB_ICONSTOP | MB_TOPMOST, MACRO_ERROR_TITLE,
-						_T("Line %d: Column %d: Syntax Error\n"), line, i + 1 );
+						L"Line %d: Column %d: Syntax Error\n", line, i + 1 );
 					m_nReady = false;
 					break;
 				}
@@ -369,7 +369,7 @@ BOOL CKeyMacroMgr::LoadKeyMacro( HINSTANCE hInstance, const TCHAR* pszPath )
 		}
 		else {
 			::MYMESSAGEBOX( NULL, MB_OK | MB_ICONSTOP | MB_TOPMOST, MACRO_ERROR_TITLE,
-				_T("Line %d: %lsは存在しない関数です．\n"), line, szFuncName );
+				L"Line %d: %lsは存在しない関数です．\n", line, szFuncName );
 			//	Jun. 16, 2002 genta
 			m_nReady = false;
 			break;
@@ -383,13 +383,13 @@ BOOL CKeyMacroMgr::LoadKeyMacro( HINSTANCE hInstance, const TCHAR* pszPath )
 }
 
 /*! キーボードマクロを文字列から読み込み */
-BOOL CKeyMacroMgr::LoadKeyMacroStr( HINSTANCE hInstance, const TCHAR* pszCode )
+BOOL CKeyMacroMgr::LoadKeyMacroStr( HINSTANCE hInstance, const WCHAR* pszCode )
 {
 	// 一時ファイル名を作成
-	TCHAR szTempDir[_MAX_PATH];
-	TCHAR szTempFile[_MAX_PATH];
+	WCHAR szTempDir[_MAX_PATH];
+	WCHAR szTempFile[_MAX_PATH];
 	if( 0 == ::GetTempPath( _MAX_PATH, szTempDir ) )return FALSE;
-	if( 0 == ::GetTempFileName( szTempDir, _T("mac"), 0, szTempFile ) )return FALSE;
+	if( 0 == ::GetTempFileName( szTempDir, L"mac", 0, szTempFile ) )return FALSE;
 	// 一時ファイルに書き込む
 	CTextOutputStream out = CTextOutputStream( szTempFile );
 	out.WriteString( to_wchar( pszCode ) );
@@ -412,9 +412,9 @@ BOOL CKeyMacroMgr::LoadKeyMacroStr( HINSTANCE hInstance, const TCHAR* pszCode )
 	@date 2004-01-31 genta RegisterExtの廃止のためRegisterCreatorに置き換え
 		そのため，過ったオブジェクト生成を行わないために拡張子チェックは必須．
 */
-CMacroManagerBase* CKeyMacroMgr::Creator(const TCHAR* ext)
+CMacroManagerBase* CKeyMacroMgr::Creator(const WCHAR* ext)
 {
-	if( _tcscmp( ext, _T("mac") ) == 0 ){
+	if( wcscmp( ext, L"mac" ) == 0 ){
 		return new CKeyMacroMgr;
 	}
 	return NULL;

@@ -110,7 +110,7 @@ private:
 
 
 
-typedef CharPointerW CharPointerT;
+typedef CharPointerW CharPointerW;
 
 #endif /* SAKURA_CHARPOINTER_6EAF62A9_67F6_4CEF_80C2_B7C34014C253_H_ */
 /*[EOF]*/

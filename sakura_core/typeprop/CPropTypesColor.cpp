@@ -270,7 +270,7 @@ INT_PTR CPropTypesColor::DispatchEvent(
 		default:
 			switch( pNMHDR->code ){
 			case PSN_KILLACTIVE:
-//				MYTRACE( _T("color PSN_KILLACTIVE\n") );
+//				MYTRACE( L"color PSN_KILLACTIVE\n" );
 				/* ダイアログデータの取得 color */
 				GetData( hwndDlg );
 				return TRUE;

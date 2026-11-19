@@ -143,7 +143,7 @@ void CMainToolBar::CreateToolBar( void )
 		);
 
 		if( NULL == m_hwndReBar ){
-			TopWarningMessage( m_pOwner->GetHwnd(), _T("Rebar の作成に失敗しました。") );
+			TopWarningMessage( m_pOwner->GetHwnd(), L"Rebar の作成に失敗しました。" );
 			return;
 		}
 
@@ -181,7 +181,7 @@ void CMainToolBar::CreateToolBar( void )
 		if( GetDllShareData().m_Common.m_sToolBar.m_bToolBarIsFlat ){	/* フラットツールバーにする／しない */
 			GetDllShareData().m_Common.m_sToolBar.m_bToolBarIsFlat = FALSE;
 		}
-		TopWarningMessage( m_pOwner->GetHwnd(), _T("ツールバーの作成に失敗しました。") );
+		TopWarningMessage( m_pOwner->GetHwnd(), L"ツールバーの作成に失敗しました。" );
 		DestroyToolBar();	// 2006.06.17 ryoji
 	}
 	else{
@@ -276,7 +276,7 @@ void CMainToolBar::CreateToolBar( void )
 
 						//コンボボックスを作る
 						//	Mar. 8, 2003 genta 検索ボックスを1ドット下にずらした
-						m_hwndSearchBox = CreateWindow( _T("COMBOBOX"), _T("Combo"),
+						m_hwndSearchBox = CreateWindow( L"COMBOBOX", L"Combo",
 								WS_CHILD | WS_VISIBLE | WS_TABSTOP | WS_VSCROLL | CBS_DROPDOWN
 								/*| CBS_SORT*/ | CBS_AUTOHSCROLL /*| CBS_DISABLENOSCROLL*/,
 								rc.left, rc.top + 1, rc.right - rc.left, (rc.bottom - rc.top) * 10,
@@ -300,7 +300,7 @@ void CMainToolBar::CreateToolBar( void )
 							//lf.lfClipPrecision	= GetDllShareData().m_Common.m_sView.m_lf.lfClipPrecision;
 							//lf.lfQuality		= GetDllShareData().m_Common.m_sView.m_lf.lfQuality;
 							//lf.lfPitchAndFamily	= GetDllShareData().m_Common.m_sView.m_lf.lfPitchAndFamily;
-							//_tcsncpy( lf.lfFaceName, GetDllShareData().m_Common.m_sView.m_lf.lfFaceName, _countof(lf.lfFaceName));	// 画面のフォントに設定	2012/11/27 Uchi
+							//wcsncpy( lf.lfFaceName, GetDllShareData().m_Common.m_sView.m_lf.lfFaceName, _countof(lf.lfFaceName));	// 画面のフォントに設定	2012/11/27 Uchi
 							m_hFontSearchBox = ::CreateFontIndirect( &lf );
 							if( m_hFontSearchBox )
 							{
@@ -544,7 +544,7 @@ void CMainToolBar::AcceptSharedSearchKey()
 		std::wstring strText;
 		GetSearchKey(strText);
 		if( 0 < nSize && 0 != wcscmp(strText.c_str(), pszText) ){
-			::SetWindowText(m_hwndSearchBox, to_tchar(pszText));
+			::SetWindowText(m_hwndSearchBox, to_wchar(pszText));
 		}
 	}
 }
@@ -553,7 +553,7 @@ int CMainToolBar::GetSearchKey(std::wstring& strText)
 {
 	if( m_hwndSearchBox ){
 		int nBufferSize = ::GetWindowTextLength( m_hwndSearchBox ) + 1;
-		std::vector<TCHAR> vText(nBufferSize);
+		std::vector<WCHAR> vText(nBufferSize);
 
 		::GetWindowText( m_hwndSearchBox, &vText[0], vText.size() );
 		strText = to_wchar(&vText[0]);

@@ -36,7 +36,7 @@
 
 class CDlgFileUpdateQuery : public CDialog {
 public:
-	CDlgFileUpdateQuery(const TCHAR* filename, bool IsModified)
+	CDlgFileUpdateQuery(const WCHAR* filename, bool IsModified)
 	: m_pFilename( filename )
 	, m_bModified( IsModified )
 	{
@@ -45,7 +45,7 @@ public:
 	virtual BOOL OnBnClicked( int );
 
 private:
-	const TCHAR* m_pFilename;
+	const WCHAR* m_pFilename;
 	bool m_bModified;
 };
 

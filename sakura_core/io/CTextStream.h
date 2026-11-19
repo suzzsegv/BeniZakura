@@ -40,7 +40,7 @@ class CCodeBase;
 class CTextInputStream : public CStream{
 public:
 	//コンストラクタ・デストラクタ
-	CTextInputStream(const TCHAR* tszPath);
+	CTextInputStream(const WCHAR* tszPath);
 	CTextInputStream();
 	virtual ~CTextInputStream();
 
@@ -56,7 +56,7 @@ private:
 class CTextOutputStream : public COutputStream{
 public:
 	//コンストラクタ・デストラクタ
-	CTextOutputStream(const TCHAR* tszPath, ECodeType eCodeType = CODE_UTF8, bool bExceptionMode = false);
+	CTextOutputStream(const WCHAR* tszPath, ECodeType eCodeType = CODE_UTF8, bool bExceptionMode = false);
 	virtual ~CTextOutputStream();
 
 	//文字列書込。改行を入れたい場合は、文字列内に'\n'を含めること。(クラス側で適切な改行コードに変換して出力します)
@@ -75,7 +75,7 @@ private:
 //テキスト入力ストリーム。相対パスの場合はINIファイルのパスからの相対パスとして開く。
 class CTextInputStream_AbsIni : public CTextInputStream{
 public:
-	CTextInputStream_AbsIni(const TCHAR* tszPath, bool bOrExedir = true);
+	CTextInputStream_AbsIni(const WCHAR* tszPath, bool bOrExedir = true);
 };
 
 #endif /* SAKURA_CTEXTSTREAM_0D3CC877_CA34_4CC8_9596_B120F4F902939_H_ */

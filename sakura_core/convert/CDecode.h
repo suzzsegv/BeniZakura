@@ -38,7 +38,7 @@ public:
 	{
 		bool bRet=DoDecode(pcData, pDest);
 		if(!bRet){
-			ErrorMessage(NULL,_WINT("変換でエラーが発生しました"));
+			ErrorMessage(NULL,L"変換でエラーが発生しました");
 			pDest->SetRawData( "", 0 );
 			return false;
 		}

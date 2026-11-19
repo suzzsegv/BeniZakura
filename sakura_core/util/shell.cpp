@@ -31,14 +31,14 @@ int CALLBACK MYBrowseCallbackProc(
 
 
 /* フォルダ選択ダイアログ */
-BOOL SelectDir( HWND hWnd, const TCHAR* pszTitle, const TCHAR* pszInitFolder, TCHAR* strFolderName )
+BOOL SelectDir( HWND hWnd, const WCHAR* pszTitle, const WCHAR* pszInitFolder, WCHAR* strFolderName )
 {
 	BOOL	bRes;
-	TCHAR	szInitFolder[MAX_PATH];
+	WCHAR	szInitFolder[MAX_PATH];
 
 	//	初期フォルダがバッファに収まらない場合は切り詰める (バッファオーバーフロー防止)
 	//	※初期選択位置にのみ使用するため、切り詰めても実害はない
-	_tcsncpy_s( szInitFolder, _countof(szInitFolder), pszInitFolder, _TRUNCATE );
+	wcsncpy_s( szInitFolder, _countof(szInitFolder), pszInitFolder, _TRUNCATE );
 	/* フォルダの最後が半角かつ'\\'の場合は、取り除く "c:\\"等のルートは取り除かない*/
 	CutLastYenFromDirectoryPath( szInitFolder );
 
@@ -81,7 +81,7 @@ BOOL SelectDir( HWND hWnd, const TCHAR* pszTitle, const TCHAR* pszInitFolder, TC
 	@author ryoji
 	@date 2007.05.19 新規
 */
-BOOL GetSpecialFolderPath( int nFolder, LPTSTR pszPath )
+BOOL GetSpecialFolderPath( int nFolder, LPWSTR pszPath )
 {
 	BOOL bRet = FALSE;
 	HRESULT hres;
@@ -149,8 +149,8 @@ static LRESULT CALLBACK PropSheetWndProc( HWND hwnd, UINT uMsg, WPARAM wParam, L
 			GetMonitorWorkRect( pt, &rc );	// モニタのワークエリア
 
 			HMENU hMenu = ::CreatePopupMenu();
-			::InsertMenu( hMenu, 0, MF_BYPOSITION | MF_STRING, 100, _T("開く(&O)...") );
-			::InsertMenu( hMenu, 1, MF_BYPOSITION | MF_STRING, 101, _T("インポート／エクスポートの起点リセット(&R)") );
+			::InsertMenu( hMenu, 0, MF_BYPOSITION | MF_STRING, 100, L"開く(&O)..." );
+			::InsertMenu( hMenu, 1, MF_BYPOSITION | MF_STRING, 101, L"インポート／エクスポートの起点リセット(&R)" );
 
 			int nId = ::TrackPopupMenu( hMenu, TPM_LEFTALIGN | TPM_TOPALIGN | TPM_LEFTBUTTON | TPM_RETURNCMD,
 										( pt.x > rc.left )? pt.x: rc.left,
@@ -161,7 +161,7 @@ static LRESULT CALLBACK PropSheetWndProc( HWND hwnd, UINT uMsg, WPARAM wParam, L
 			// 選択されたメニューの処理
 			switch( nId ){
 			case 100:	// 設定フォルダを開く
-				TCHAR szPath[_MAX_PATH];
+				WCHAR szPath[_MAX_PATH];
 				GetInidir( szPath );
 
 				// フォルダの ITEMIDLIST を取得して ShellExecuteEx() で開く
@@ -175,7 +175,7 @@ static LRESULT CALLBACK PropSheetWndProc( HWND hwnd, UINT uMsg, WPARAM wParam, L
 					if( SUCCEEDED(::SHGetMalloc(&pMalloc)) ){
 						LPITEMIDLIST pIDL;
 						WCHAR pwszDisplayName[_MAX_PATH];
-						_tcstowcs(pwszDisplayName, szPath, _countof(pwszDisplayName));
+						wcsncpy_s(pwszDisplayName, _countof(pwszDisplayName), szPath, _TRUNCATE);
 //#ifdef _UNICODE
 //						pwszDisplayName = szPath;
 //#else
@@ -188,7 +188,7 @@ static LRESULT CALLBACK PropSheetWndProc( HWND hwnd, UINT uMsg, WPARAM wParam, L
 							::ZeroMemory( &si, sizeof(si) );
 							si.cbSize   = sizeof(si);
 							si.fMask    = SEE_MASK_IDLIST;
-							si.lpVerb   = _T("open");
+							si.lpVerb   = L"open";
 							si.lpIDList = pIDL;
 							si.nShow    = SW_SHOWNORMAL;
 							::ShellExecuteEx( &si );	// フォルダを開く
@@ -204,14 +204,14 @@ static LRESULT CALLBACK PropSheetWndProc( HWND hwnd, UINT uMsg, WPARAM wParam, L
 					hwnd,
 					MB_OKCANCEL | MB_ICONINFORMATION,
 					GSTR_APPNAME,
-					_T("各種設定のインポート／エクスポート用ファイル選択画面の\n")
-					_T("初期表示フォルダを設定フォルダに戻します。")
+					L"各種設定のインポート／エクスポート用ファイル選択画面の\n"
+					L"初期表示フォルダを設定フォルダに戻します。"
 				);
 				if( IDOK == nMsgResult )
 				{
 					DLLSHAREDATA *pShareData = CShareData::getInstance()->GetShareData();
 					GetInidir( pShareData->m_sHistory.m_szIMPORTFOLDER );
-					AddLastChar( pShareData->m_sHistory.m_szIMPORTFOLDER, _countof2(pShareData->m_sHistory.m_szIMPORTFOLDER), _T('\\') );
+					AddLastChar( pShareData->m_sHistory.m_szIMPORTFOLDER, _countof2(pShareData->m_sHistory.m_szIMPORTFOLDER), L'\\' );
 				}
 				break;
 			}
@@ -236,7 +236,7 @@ static int CALLBACK PropSheetProc( HWND hwndDlg, UINT uMsg, LPARAM lParam )
 	if( uMsg == PSCB_INITIALIZED ){
 		s_pOldPropSheetWndProc = (WNDPROC)::SetWindowLongPtr( hwndDlg, GWLP_WNDPROC, (LONG_PTR)PropSheetWndProc );
 		HINSTANCE hInstance = (HINSTANCE)::GetModuleHandle( NULL );
-		HWND hwndBtn = ::CreateWindowEx( 0, _T("BUTTON"), _T("設定フォルダ(&/) >>"), BS_PUSHBUTTON | WS_CHILD | WS_VISIBLE | WS_TABSTOP, 0, 0, 140, 20, hwndDlg, (HMENU)0x02000, hInstance, NULL );
+		HWND hwndBtn = ::CreateWindowEx( 0, L"BUTTON", L"設定フォルダ(&/) >>", BS_PUSHBUTTON | WS_CHILD | WS_VISIBLE | WS_TABSTOP, 0, 0, 140, 20, hwndDlg, (HMENU)0x02000, hInstance, NULL );
 		::SendMessage( hwndBtn, WM_SETFONT, (WPARAM)::SendMessage( hwndDlg, WM_GETFONT, 0, 0 ), MAKELPARAM( FALSE, 0 ) );
 		::SetWindowPos( hwndBtn, ::GetDlgItem( hwndDlg, IDHELP), 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE );
 	}
@@ -268,7 +268,7 @@ int MyPropertySheet( LPPROPSHEETHEADER lppsph )
 /*! ショートカット(.lnk)の解決
 	@date 2009.01.08 ryoji CoInitialize/CoUninitializeを削除（WinMainにOleInitialize/OleUninitializeを追加）
 */
-BOOL ResolveShortcutLink( HWND hwnd, LPCTSTR lpszLinkFile, LPTSTR lpszPath )
+BOOL ResolveShortcutLink( HWND hwnd, LPCWSTR lpszLinkFile, LPWSTR lpszPath )
 {
 	BOOL			bRes;
 	HRESULT			hRes;
@@ -285,7 +285,7 @@ BOOL ResolveShortcutLink( HWND hwnd, LPCTSTR lpszLinkFile, LPTSTR lpszPath )
 
 	// Get a pointer to the IShellLink interface.
 //	hRes = 0;
-	TCHAR szAbsLongPath[_MAX_PATH];
+	WCHAR szAbsLongPath[_MAX_PATH];
 	if( ! ::GetLongFileName( lpszLinkFile, szAbsLongPath ) ){
 		return FALSE;
 	}
@@ -299,22 +299,22 @@ BOOL ResolveShortcutLink( HWND hwnd, LPCTSTR lpszLinkFile, LPTSTR lpszPath )
 		if( SUCCEEDED(hRes = pIShellLink->QueryInterface( IID_IPersistFile, (void**)&pIPersistFile ) ) ){
 			// Ensure that the string is Unicode.
 			WCHAR wsz[MAX_PATH];
-			_tcstowcs(wsz, szAbsLongPath, _countof(wsz));
+			wcsncpy_s(wsz, _countof(wsz), szAbsLongPath, _TRUNCATE);
 //			MultiByteToWideChar( CP_ACP, 0, lpszLinkFile, -1, wsz, MAX_PATH );
 			// Load the shortcut.
 			if( SUCCEEDED(hRes = pIPersistFile->Load( wsz, STGM_READ ) ) ){
 				// Resolve the link.
 				if( SUCCEEDED( hRes = pIShellLink->Resolve(hwnd, SLR_ANY_MATCH ) ) ){
 					// Get the path to the link target.
-					TCHAR szGotPath[MAX_PATH];
-					szGotPath[0] = _T('\0');
+					WCHAR szGotPath[MAX_PATH];
+					szGotPath[0] = L'\0';
 					if( SUCCEEDED( hRes = pIShellLink->GetPath(szGotPath, MAX_PATH, &wfd, SLGP_SHORTPATH ) ) ){
 						// Get the description of the target.
-						TCHAR szDescription[MAX_PATH];
+						WCHAR szDescription[MAX_PATH];
 						if( SUCCEEDED(hRes = pIShellLink->GetDescription(szDescription, MAX_PATH ) ) ){
-							if( _T('\0') != szGotPath[0] ){
+							if( L'\0' != szGotPath[0] ){
 								/* 正常終了 */
-								_tcscpy_s( lpszPath, _MAX_PATH, szGotPath );
+								wcscpy_s( lpszPath, _MAX_PATH, szGotPath );
 								bRes = TRUE;
 							}
 						}
@@ -367,19 +367,19 @@ BOOL MySelectFont( LOGFONT* plf, INT* piPointSize, HWND hwndDlgOwner, bool Fixed
 		DWORD nErr;
 		nErr = CommDlgExtendedError();
 		switch( nErr ){
-		case CDERR_FINDRESFAILURE:	MYTRACE( _T("CDERR_FINDRESFAILURE \n") );	break;
-		case CDERR_INITIALIZATION:	MYTRACE( _T("CDERR_INITIALIZATION \n") );	break;
-		case CDERR_LOCKRESFAILURE:	MYTRACE( _T("CDERR_LOCKRESFAILURE \n") );	break;
-		case CDERR_LOADRESFAILURE:	MYTRACE( _T("CDERR_LOADRESFAILURE \n") );	break;
-		case CDERR_LOADSTRFAILURE:	MYTRACE( _T("CDERR_LOADSTRFAILURE \n") );	break;
-		case CDERR_MEMALLOCFAILURE:	MYTRACE( _T("CDERR_MEMALLOCFAILURE\n") );	break;
-		case CDERR_MEMLOCKFAILURE:	MYTRACE( _T("CDERR_MEMLOCKFAILURE \n") );	break;
-		case CDERR_NOHINSTANCE:		MYTRACE( _T("CDERR_NOHINSTANCE \n") );		break;
-		case CDERR_NOHOOK:			MYTRACE( _T("CDERR_NOHOOK \n") );			break;
-		case CDERR_NOTEMPLATE:		MYTRACE( _T("CDERR_NOTEMPLATE \n") );		break;
-		case CDERR_STRUCTSIZE:		MYTRACE( _T("CDERR_STRUCTSIZE \n") );		break;
-		case CFERR_MAXLESSTHANMIN:	MYTRACE( _T("CFERR_MAXLESSTHANMIN \n") );	break;
-		case CFERR_NOFONTS:			MYTRACE( _T("CFERR_NOFONTS \n") );			break;
+		case CDERR_FINDRESFAILURE:	MYTRACE( L"CDERR_FINDRESFAILURE \n" );	break;
+		case CDERR_INITIALIZATION:	MYTRACE( L"CDERR_INITIALIZATION \n" );	break;
+		case CDERR_LOCKRESFAILURE:	MYTRACE( L"CDERR_LOCKRESFAILURE \n" );	break;
+		case CDERR_LOADRESFAILURE:	MYTRACE( L"CDERR_LOADRESFAILURE \n" );	break;
+		case CDERR_LOADSTRFAILURE:	MYTRACE( L"CDERR_LOADSTRFAILURE \n" );	break;
+		case CDERR_MEMALLOCFAILURE:	MYTRACE( L"CDERR_MEMALLOCFAILURE\n" );	break;
+		case CDERR_MEMLOCKFAILURE:	MYTRACE( L"CDERR_MEMLOCKFAILURE \n" );	break;
+		case CDERR_NOHINSTANCE:		MYTRACE( L"CDERR_NOHINSTANCE \n" );		break;
+		case CDERR_NOHOOK:			MYTRACE( L"CDERR_NOHOOK \n" );			break;
+		case CDERR_NOTEMPLATE:		MYTRACE( L"CDERR_NOTEMPLATE \n" );		break;
+		case CDERR_STRUCTSIZE:		MYTRACE( L"CDERR_STRUCTSIZE \n" );		break;
+		case CFERR_MAXLESSTHANMIN:	MYTRACE( L"CFERR_MAXLESSTHANMIN \n" );	break;
+		case CFERR_NOFONTS:			MYTRACE( L"CFERR_NOFONTS \n" );			break;
 		}
 #endif
 		return FALSE;

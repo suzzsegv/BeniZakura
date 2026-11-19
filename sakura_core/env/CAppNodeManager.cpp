@@ -278,7 +278,7 @@ BOOL CAppNodeGroupHandle::RequestCloseEditor( EditNode* pWndArr, int nArrCnt, BO
 				hWndFrom,
 				MB_YESNO | MB_APPLMODAL | MB_ICONQUESTION,
 				GSTR_APPNAME,
-				_T("同時に複数の編集用ウィンドウを閉じようとしています。これらを閉じますか?")
+				L"同時に複数の編集用ウィンドウを閉じようとしています。これらを閉じますか?"
 			) ){
 				return FALSE;
 			}

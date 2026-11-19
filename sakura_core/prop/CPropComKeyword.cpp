@@ -87,7 +87,7 @@ INT_PTR CPropKeyword::DispatchEvent(
 
 			GetWindowRect( hwndDlg, &rc );
 			SetWindowPos( hwndDlg, NULL, 0, 0, rc.right-rc.left, i-rc.top+10, SWP_NOZORDER|SWP_NOMOVE );
-			SetWindowText( hwndDlg, _T("共通設定 - 強調キーワード") );
+			SetWindowText( hwndDlg, L"共通設定 - 強調キーワード" );
 
 			hwndCOMBO_SET = ::GetDlgItem( hwndDlg, IDC_COMBO_SET );
 			Combo_SetCurSel( hwndCOMBO_SET, m_nKeywordSet1 );
@@ -106,7 +106,7 @@ INT_PTR CPropKeyword::DispatchEvent(
 		lvc.mask = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM;
 		lvc.fmt = LVCFMT_LEFT;
 		lvc.cx = rc.right - rc.left;
-		lvc.pszText = _T("");
+		lvc.pszText = L"";
 		lvc.iSubItem = 0;
 		ListView_InsertColumn( hwndLIST_KEYWORD, 0, &lvc );
 
@@ -131,43 +131,43 @@ INT_PTR CPropKeyword::DispatchEvent(
 		if( hwndLIST_KEYWORD == pNMHDR->hwndFrom ){
 			switch( pNMHDR->code ){
 			case NM_DBLCLK:
-//				MYTRACE( _T("NM_DBLCLK     \n") );
+//				MYTRACE( L"NM_DBLCLK     \n" );
 				/* リスト中で選択されているキーワードを編集する */
 				Edit_List_KeyWord( hwndDlg, hwndLIST_KEYWORD );
 				return TRUE;
 			case LVN_BEGINLABELEDIT:
 #ifdef _DEBUG
-				MYTRACE( _T("LVN_BEGINLABELEDIT\n") );
-												MYTRACE( _T("	plvi->mask =[%xh]\n"), plvi->mask );
-												MYTRACE( _T("	plvi->iItem =[%d]\n"), plvi->iItem );
-												MYTRACE( _T("	plvi->iSubItem =[%d]\n"), plvi->iSubItem );
-				if (plvi->mask & LVIF_STATE)	MYTRACE( _T("	plvi->state =[%xf]\n"), plvi->state );
-												MYTRACE( _T("	plvi->stateMask =[%xh]\n"), plvi->stateMask );
-				if (plvi->mask & LVIF_TEXT)		MYTRACE( _T("	plvi->pszText =[%ts]\n"), plvi->pszText );
-												MYTRACE( _T("	plvi->cchTextMax=[%d]\n"), plvi->cchTextMax );
-				if (plvi->mask & LVIF_IMAGE)	MYTRACE( _T("	plvi->iImage=[%d]\n"), plvi->iImage );
-				if (plvi->mask & LVIF_PARAM)	MYTRACE( _T("	plvi->lParam=[%xh(%d)]\n"), plvi->lParam, plvi->lParam );
+				MYTRACE( L"LVN_BEGINLABELEDIT\n" );
+												MYTRACE( L"	plvi->mask =[%xh]\n", plvi->mask );
+												MYTRACE( L"	plvi->iItem =[%d]\n", plvi->iItem );
+												MYTRACE( L"	plvi->iSubItem =[%d]\n", plvi->iSubItem );
+				if (plvi->mask & LVIF_STATE)	MYTRACE( L"	plvi->state =[%xf]\n", plvi->state );
+												MYTRACE( L"	plvi->stateMask =[%xh]\n", plvi->stateMask );
+				if (plvi->mask & LVIF_TEXT)		MYTRACE( L"	plvi->pszText =[%ts]\n", plvi->pszText );
+												MYTRACE( L"	plvi->cchTextMax=[%d]\n", plvi->cchTextMax );
+				if (plvi->mask & LVIF_IMAGE)	MYTRACE( L"	plvi->iImage=[%d]\n", plvi->iImage );
+				if (plvi->mask & LVIF_PARAM)	MYTRACE( L"	plvi->lParam=[%xh(%d)]\n", plvi->lParam, plvi->lParam );
 #endif
 				return TRUE;
 			case LVN_ENDLABELEDIT:
 #ifdef _DEBUG
-				MYTRACE( _T("LVN_ENDLABELEDIT\n") );
-												MYTRACE( _T("	plvi->mask =[%xh]\n"), plvi->mask );
-												MYTRACE( _T("	plvi->iItem =[%d]\n"), plvi->iItem );
-												MYTRACE( _T("	plvi->iSubItem =[%d]\n"), plvi->iSubItem );
-				if (plvi->mask & LVIF_STATE)	MYTRACE( _T("	plvi->state =[%xf]\n"), plvi->state );
-												MYTRACE( _T("	plvi->stateMask =[%xh]\n"), plvi->stateMask );
-				if (plvi->mask & LVIF_TEXT)		MYTRACE( _T("	plvi->pszText =[%ts]\n"), plvi->pszText  );
-												MYTRACE( _T("	plvi->cchTextMax=[%d]\n"), plvi->cchTextMax );
-				if (plvi->mask & LVIF_IMAGE)	MYTRACE( _T("	plvi->iImage=[%d]\n"), plvi->iImage );
-				if (plvi->mask & LVIF_PARAM)	MYTRACE( _T("	plvi->lParam=[%xh(%d)]\n"), plvi->lParam, plvi->lParam );
+				MYTRACE( L"LVN_ENDLABELEDIT\n" );
+												MYTRACE( L"	plvi->mask =[%xh]\n", plvi->mask );
+												MYTRACE( L"	plvi->iItem =[%d]\n", plvi->iItem );
+												MYTRACE( L"	plvi->iSubItem =[%d]\n", plvi->iSubItem );
+				if (plvi->mask & LVIF_STATE)	MYTRACE( L"	plvi->state =[%xf]\n", plvi->state );
+												MYTRACE( L"	plvi->stateMask =[%xh]\n", plvi->stateMask );
+				if (plvi->mask & LVIF_TEXT)		MYTRACE( L"	plvi->pszText =[%ts]\n", plvi->pszText  );
+												MYTRACE( L"	plvi->cchTextMax=[%d]\n", plvi->cchTextMax );
+				if (plvi->mask & LVIF_IMAGE)	MYTRACE( L"	plvi->iImage=[%d]\n", plvi->iImage );
+				if (plvi->mask & LVIF_PARAM)	MYTRACE( L"	plvi->lParam=[%xh(%d)]\n", plvi->lParam, plvi->lParam );
 #endif
 				if( NULL == plvi->pszText ){
 					return TRUE;
 				}
-				if( plvi->pszText[0] != _T('\0') ){
-					if( MAX_KEYWORDLEN < _tcslen( plvi->pszText ) ){
-						InfoMessage( hwndDlg, _T("キーワードの長さは%dバイトまでです。"), MAX_KEYWORDLEN );
+				if( plvi->pszText[0] != L'\0' ){
+					if( MAX_KEYWORDLEN < wcslen( plvi->pszText ) ){
+						InfoMessage( hwndDlg, L"キーワードの長さは%dバイトまでです。", MAX_KEYWORDLEN );
 						return TRUE;
 					}
 					/* ｎ番目のセットにキーワードを編集 */
@@ -187,7 +187,7 @@ INT_PTR CPropKeyword::DispatchEvent(
 
 				return TRUE;
 			case LVN_KEYDOWN:
-//				MYTRACE( _T("LVN_KEYDOWN\n") );
+//				MYTRACE( L"LVN_KEYDOWN\n" );
 				switch( pnkd->wVKey ){
 				case VK_DELETE:
 					/* リスト中で選択されているキーワードを削除する */
@@ -203,7 +203,7 @@ INT_PTR CPropKeyword::DispatchEvent(
 		}else{
 			switch( pNMHDR->code ){
 			case PSN_KILLACTIVE:
-				DEBUG_TRACE( _T("Keyword PSN_KILLACTIVE\n") );
+				DEBUG_TRACE( L"Keyword PSN_KILLACTIVE\n" );
 				/* ダイアログデータの取得 Keyword */
 				GetData( hwndDlg );
 				return TRUE;
@@ -233,7 +233,7 @@ INT_PTR CPropKeyword::DispatchEvent(
 				switch( wID ){
 				case IDC_BUTTON_ADDSET:	/* セット追加 */
 					if( MAX_SETNUM <= m_Common.m_sSpecialKeyword.m_CKeyWordSetMgr.m_nKeyWordSetNum ){
-						InfoMessage( hwndDlg, _T("セットは%d個までしか登録できません。\n"), MAX_SETNUM );
+						InfoMessage( hwndDlg, L"セットは%d個までしか登録できません。\n", MAX_SETNUM );
 						return TRUE;
 					}
 					/* モードレスダイアログの表示 */
@@ -242,8 +242,8 @@ INT_PTR CPropKeyword::DispatchEvent(
 					if( !cDlgInput1.DoModal(
 						G_AppInstance(),
 						hwndDlg,
-						_T("キーワードのセット追加"),
-						_T("セット名を入力してください。"),
+						L"キーワードのセット追加",
+						L"セット名を入力してください。",
 						MAX_SETNAMELEN,
 						szKeyWord
 						)
@@ -266,8 +266,8 @@ INT_PTR CPropKeyword::DispatchEvent(
 						return TRUE;
 					}
 					/* 削除対象のセットを使用しているファイルタイプを列挙 */
-					static TCHAR		pszLabel[1024];
-					_tcscpy( pszLabel, _T("") );
+					static WCHAR		pszLabel[1024];
+					wcscpy( pszLabel, L"" );
 					for( i = 0; i < MAX_TYPES; ++i ){
 						CTypeConfig type(i);
 						// 2002/04/25 YAZAKI STypeConfig全体を保持する必要はないし、m_pShareDataを直接見ても問題ない。
@@ -281,16 +281,16 @@ INT_PTR CPropKeyword::DispatchEvent(
 						||  nIndex1 == m_Types_nKeyWordSetIdx[i][7]
 						||  nIndex1 == m_Types_nKeyWordSetIdx[i][8]
 						||  nIndex1 == m_Types_nKeyWordSetIdx[i][9] ){
-							_tcscat( pszLabel, _T("・") );
-							_tcscat( pszLabel, type->m_szTypeName );
-							_tcscat( pszLabel, _T("（") );
-							_tcscat( pszLabel, type->m_szTypeExts );
-							_tcscat( pszLabel, _T("）") );
-							_tcscat( pszLabel, _T("\n") );
+							wcscat( pszLabel, L"・" );
+							wcscat( pszLabel, type->m_szTypeName );
+							wcscat( pszLabel, L"（" );
+							wcscat( pszLabel, type->m_szTypeExts );
+							wcscat( pszLabel, L"）" );
+							wcscat( pszLabel, L"\n" );
 						}
 					}
 					if( IDCANCEL == ::MYMESSAGEBOX(	hwndDlg, MB_OKCANCEL | MB_ICONQUESTION, GSTR_APPNAME,
-						_T("「%ls」のセットを削除します。\nよろしいですか？\n削除しようとするセットは、以下のファイルタイプに割り当てられています。\n削除したセットは無効になります。\n\n%ts"),
+						L"「%ls」のセットを削除します。\nよろしいですか？\n削除しようとするセットは、以下のファイルタイプに割り当てられています。\n削除したセットは無効になります。\n\n%ts",
 						m_Common.m_sSpecialKeyword.m_CKeyWordSetMgr.GetTypeName( nIndex1 ),
 						pszLabel
 					) ){
@@ -320,8 +320,8 @@ INT_PTR CPropKeyword::DispatchEvent(
 						BOOL bDlgInputResult = cDlgInput1.DoModal(
 							G_AppInstance(),
 							hwndDlg,
-							_T("セットの名称変更"),
-							_T("セット名を入力してください。"),
+							L"セットの名称変更",
+							L"セット名を入力してください。",
 							MAX_SETNAMELEN,
 							szKeyWord
 						);
@@ -343,12 +343,12 @@ INT_PTR CPropKeyword::DispatchEvent(
 				case IDC_BUTTON_ADDKEYWORD:	/* キーワード追加 */
 					/* ｎ番目のセットのキーワードの数を返す */
 					if( !m_Common.m_sSpecialKeyword.m_CKeyWordSetMgr.CanAddKeyWord( m_Common.m_sSpecialKeyword.m_CKeyWordSetMgr.m_nCurrentKeyWordSetIdx ) ){
-						InfoMessage( hwndDlg, _T("登録できるキーワード数が上限に達しています。\n") );
+						InfoMessage( hwndDlg, L"登録できるキーワード数が上限に達しています。\n" );
 						return TRUE;
 					}
 					/* モードレスダイアログの表示 */
 					wcscpy( szKeyWord, L"" );
-					if( !cDlgInput1.DoModal( G_AppInstance(), hwndDlg, _T("キーワード追加"), _T("キーワードを入力してください。"), MAX_KEYWORDLEN, szKeyWord ) ){
+					if( !cDlgInput1.DoModal( G_AppInstance(), hwndDlg, L"キーワード追加", L"キーワードを入力してください。", MAX_KEYWORDLEN, szKeyWord ) ){
 						return TRUE;
 					}
 					if( szKeyWord[0] != L'\0' ){
@@ -433,7 +433,7 @@ void CPropKeyword::Edit_List_KeyWord( HWND hwndDlg, HWND hwndLIST_KEYWORD )
 	wcscpy( szKeyWord, m_Common.m_sSpecialKeyword.m_CKeyWordSetMgr.GetKeyWord( m_Common.m_sSpecialKeyword.m_CKeyWordSetMgr.m_nCurrentKeyWordSetIdx, lvi.lParam ) );
 
 	/* モードレスダイアログの表示 */
-	if( !cDlgInput1.DoModal( G_AppInstance(), hwndDlg, _T("キーワード編集"), _T("キーワードを編集してください。"), MAX_KEYWORDLEN, szKeyWord ) ){
+	if( !cDlgInput1.DoModal( G_AppInstance(), hwndDlg, L"キーワード編集", L"キーワードを編集してください。", MAX_KEYWORDLEN, szKeyWord ) ){
 		return;
 	}
 	if( szKeyWord[0] != L'\0' ){
@@ -523,7 +523,7 @@ void CPropKeyword::Export_List_KeyWord( HWND hwndDlg, HWND hwndLIST_KEYWORD )
 //! キーワードを整頓する
 void CPropKeyword::Clean_List_KeyWord( HWND hwndDlg, HWND hwndLIST_KEYWORD )
 {
-	if( IDYES == ::MessageBox( hwndDlg, _T("現在の設定では強調キーワードとして表示できないキーワードを削除しますか？"),
+	if( IDYES == ::MessageBox( hwndDlg, L"現在の設定では強調キーワードとして表示できないキーワードを削除しますか？",
 			GSTR_APPNAME, MB_YESNO | MB_ICONQUESTION ) ){	// 2009.03.26 ryoji MB_ICONSTOP->MB_ICONQUESTION
 		if( m_Common.m_sSpecialKeyword.m_CKeyWordSetMgr.CleanKeyWords( m_Common.m_sSpecialKeyword.m_CKeyWordSetMgr.m_nCurrentKeyWordSetIdx ) ){
 		}
@@ -610,10 +610,10 @@ void CPropKeyword::SetKeyWordSet( HWND hwndDlg, int nIdx )
 
 	for( i = 0; i < nNum; ++i ){
 		/* ｎ番目のセットのｍ番目のキーワードを返す */
-		const TCHAR* pszKeyWord = to_tchar(m_Common.m_sSpecialKeyword.m_CKeyWordSetMgr.GetKeyWord( nIdx, i ));
+		const WCHAR* pszKeyWord = to_wchar(m_Common.m_sSpecialKeyword.m_CKeyWordSetMgr.GetKeyWord( nIdx, i ));
 
 		lvi.mask = LVIF_TEXT | LVIF_PARAM;
-		lvi.pszText = const_cast<TCHAR*>(pszKeyWord);
+		lvi.pszText = const_cast<WCHAR*>(pszKeyWord);
 		lvi.iItem = i;
 		lvi.iSubItem = 0;
 		lvi.lParam	= i;
@@ -658,7 +658,7 @@ void CPropKeyword::DispKeywordCount( HWND hwndDlg )
 {
 	HWND	hwndList;
 	int		n;
-	TCHAR szCount[ 256 ];
+	WCHAR szCount[ 256 ];
 
 	hwndList = ::GetDlgItem( hwndDlg, IDC_LIST_KEYWORD );
 	n = ListView_GetItemCount( hwndList );
@@ -669,7 +669,7 @@ void CPropKeyword::DispKeywordCount( HWND hwndDlg )
 	nAlloc -= m_Common.m_sSpecialKeyword.m_CKeyWordSetMgr.GetKeyWordNum( m_Common.m_sSpecialKeyword.m_CKeyWordSetMgr.m_nCurrentKeyWordSetIdx );
 	nAlloc += m_Common.m_sSpecialKeyword.m_CKeyWordSetMgr.GetFreeSize();
 	
-	auto_sprintf( szCount, _T("(最大 %d 文字, 登録数 %d, 空き %d 個)"), MAX_KEYWORDLEN, n, nAlloc );
+	auto_sprintf( szCount, L"(最大 %d 文字, 登録数 %d, 空き %d 個)", MAX_KEYWORDLEN, n, nAlloc );
 	::SetWindowText( ::GetDlgItem( hwndDlg, IDC_STATIC_KEYWORD_COUNT ), szCount );
 }
 

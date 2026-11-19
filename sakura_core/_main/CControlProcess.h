@@ -32,7 +32,7 @@ class CControlProcessWnd;
 */
 class CControlProcess : public CProcess {
 public:
-	CControlProcess( HINSTANCE hInstance, LPCTSTR lpCmdLine ) : 
+	CControlProcess( HINSTANCE hInstance, LPCWSTR lpCmdLine ) : 
 		CProcess( hInstance, lpCmdLine ),
 		m_pcControlProcessWnd( 0 ),
 		// 2006.04.10 ryoji 同期オブジェクトのハンドルを初期化

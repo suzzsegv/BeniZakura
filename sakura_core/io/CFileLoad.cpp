@@ -104,7 +104,7 @@ CFileLoad::~CFileLoad( void )
 	@date 2003.06.08 Moca CODE_AUTODETECTを指定できるように変更
 	@date 2003.07.26 ryoji BOM引数追加
 */
-ECodeType CFileLoad::FileOpen( LPCTSTR pFileName, ECodeType CharCode, int nFlag, bool* pbBomExist )
+ECodeType CFileLoad::FileOpen( LPCWSTR pFileName, ECodeType CharCode, int nFlag, bool* pbBomExist )
 {
 	HANDLE	hFile;
 	DWORD	FileSize;
@@ -114,7 +114,7 @@ ECodeType CFileLoad::FileOpen( LPCTSTR pFileName, ECodeType CharCode, int nFlag,
 	// FileCloseを呼んでからにしてください
 	if( NULL != m_hFile ){
 #ifdef _DEBUG
-		::MessageBox( NULL, _T("CFileLoad::FileOpen\nFileCloseを呼んでからにしてください") , NULL, MB_OK );
+		::MessageBox( NULL, L"CFileLoad::FileOpen\nFileCloseを呼んでからにしてください" , NULL, MB_OK );
 #endif
 		throw CError_FileOpen();
 	}
@@ -235,7 +235,7 @@ EConvertResult CFileLoad::ReadLine(
 
 #ifdef _DEBUG
 	if( m_eMode < FLMODE_READY ){
-		MYTRACE( _T("CFileLoad::ReadLine(): m_eMode = %d\n"), m_eMode );
+		MYTRACE( L"CFileLoad::ReadLine(): m_eMode = %d\n", m_eMode );
 		return RESULT_FAILURE;
 	}
 #endif

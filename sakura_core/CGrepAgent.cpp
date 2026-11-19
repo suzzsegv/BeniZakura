@@ -59,7 +59,7 @@ ECallbackResult CGrepAgent::OnBeforeClose()
 		ActivateFrameWindow( CEditWnd::getInstance()->GetHwnd() );	//@@@ 2003.06.25 MIK
 		TopInfoMessage(
 			CEditWnd::getInstance()->GetHwnd(),
-			_T("Grepの処理中です。\n")
+			L"Grepの処理中です。\n"
 		);
 		return CALLBACK_INTERRUPT;
 	}
@@ -73,21 +73,21 @@ void CGrepAgent::OnAfterSave(const SSaveInfo& sSaveInfo)
 	wcscpy( CAppMode::getInstance()->m_szGrepKey, L"" );
 }
 
-void CGrepAgent::CreateFolders( const TCHAR* pszPath, std::vector<std::tstring>& vPaths )
+void CGrepAgent::CreateFolders( const WCHAR* pszPath, std::vector<std::wstring>& vPaths )
 {
 	const int nPathLen = auto_strlen( pszPath );
-	auto_array_ptr<TCHAR> szPath(new TCHAR[nPathLen + 1]);
-	auto_array_ptr<TCHAR> szTmp(new TCHAR[nPathLen + 1]);
+	auto_array_ptr<WCHAR> szPath(new WCHAR[nPathLen + 1]);
+	auto_array_ptr<WCHAR> szTmp(new WCHAR[nPathLen + 1]);
 	auto_strcpy( &szPath[0], pszPath );
-	TCHAR* token;
+	WCHAR* token;
 	int nPathPos = 0;
-	while( NULL != (token = my_strtok<TCHAR>( &szPath[0], nPathLen, &nPathPos, _T(";"))) ){
+	while( NULL != (token = my_strtok<WCHAR>( &szPath[0], nPathLen, &nPathPos, L";")) ){
 		auto_strcpy( &szTmp[0], token );
-		TCHAR* p;
-		TCHAR* q;
+		WCHAR* p;
+		WCHAR* q;
 		p = q = &szTmp[0];
 		while( *p ){
-			if( *p != _T('"') ){
+			if( *p != L'"' ){
 				if( p != q ){
 					*q = *p;
 				}
@@ -95,13 +95,13 @@ void CGrepAgent::CreateFolders( const TCHAR* pszPath, std::vector<std::tstring>&
 			}
 			p++;
 		}
-		*q = _T('\0');
+		*q = L'\0';
 		// 2011.12.25 仕様変更。最後の\\は取り除く
 		int	nFolderLen = q - &szTmp[0];
 		if( 0 < nFolderLen ){
-			int nCharChars = &szTmp[nFolderLen] - CNativeT::GetCharPrev( &szTmp[0], nFolderLen, &szTmp[nFolderLen] );
-			if( 1 == nCharChars && (_T('\\') == szTmp[nFolderLen - 1] || _T('/') == szTmp[nFolderLen - 1]) ){
-				szTmp[nFolderLen - 1] = _T('\0');
+			int nCharChars = &szTmp[nFolderLen] - CNativeW::GetCharPrev( &szTmp[0], nFolderLen, &szTmp[nFolderLen] );
+			if( 1 == nCharChars && (L'\\' == szTmp[nFolderLen - 1] || L'/' == szTmp[nFolderLen - 1]) ){
+				szTmp[nFolderLen - 1] = L'\0';
 			}
 		}
 		vPaths.push_back( &szTmp[0] );
@@ -122,8 +122,8 @@ void CGrepAgent::CreateFolders( const TCHAR* pszPath, std::vector<std::tstring>&
 DWORD CGrepAgent::DoGrep(
 	CEditView*				pcViewDst,
 	const CNativeW*			pcmGrepKey,
-	const CNativeT*			pcmGrepFile,
-	const CNativeT*			pcmGrepFolder,
+	const CNativeW*			pcmGrepFile,
+	const CNativeW*			pcmGrepFolder,
 	BOOL					bGrepSubFolder,
 	BOOL					bGrepUseGitIgnore,	// .gitignore の除外指定に従う
 	BOOL					bGrepUseHgIgnore,	// .hgignore の除外指定に従う
@@ -147,7 +147,7 @@ DWORD CGrepAgent::DoGrep(
 	// (szPath[_MAX_PATH] へのコピーと '\\' の付加でバッファオーバーフローしないように。
 	//  切り詰めると別のフォルダを検索してしまう恐れがあるため、エラーとする)
 	if( pcmGrepFolder->GetStringLength() + 2 > _MAX_PATH ){
-		ErrorMessage( pcViewDst->GetHwnd(), _T("検索するフォルダのパスが長すぎます。\n(%d 文字以内にしてください)"), _MAX_PATH - 2 );
+		ErrorMessage( pcViewDst->GetHwnd(), L"検索するフォルダのパスが長すぎます。\n(%d 文字以内にしてください)", _MAX_PATH - 2 );
 		return 0xffffffff;
 	}
 
@@ -219,7 +219,7 @@ DWORD CGrepAgent::DoGrep(
 	hwndCancel = cDlgCancel.DoModeless( G_AppInstance(), pcViewDst->m_hwndParent, IDD_GREPRUNNING );
 
 	::SetDlgItemInt( hwndCancel, IDC_STATIC_HITCOUNT, 0, FALSE );
-	::DlgItem_SetText( hwndCancel, IDC_STATIC_CURFILE, _T(" ") );	// 2002/09/09 Moca add
+	::DlgItem_SetText( hwndCancel, IDC_STATIC_CURFILE, L" " );	// 2002/09/09 Moca add
 	::CheckDlgButton( hwndCancel, IDC_CHECK_REALTIMEVIEW, GetDllShareData().m_Common.m_sSearch.m_bGrepRealTimeView );	// 2003.06.23 Moca
 
 	//	2008.12.13 genta パターンが長すぎる場合は登録しない
@@ -260,8 +260,8 @@ DWORD CGrepAgent::DoGrep(
 	pCEditWnd->SetWindowIcon( hIconSmall, ICON_SMALL );
 	pCEditWnd->SetWindowIcon( hIconBig, ICON_BIG );
 
-	TCHAR szPath[_MAX_PATH];
-	_tcscpy_s( szPath, _countof(szPath), pcmGrepFolder->GetStringPtr() );
+	WCHAR szPath[_MAX_PATH];
+	wcscpy_s( szPath, _countof(szPath), pcmGrepFolder->GetStringPtr() );
 
 	/* フォルダの最後が「半角かつ'\\'」でない場合は、付加する */
 	AddLastYenFromDirectoryPath( szPath, _countof(szPath) );
@@ -364,7 +364,7 @@ DWORD CGrepAgent::DoGrep(
 	if( pcViewDst->m_pcEditDoc->m_cDocType.GetDocumentAttribute().m_nStringType == 0 ){	/* 文字列区切り記号エスケープ方法  0=[\"][\'] 1=[""][''] */
 	}else{
 	}
-	cmemWork.SetStringT( pcmGrepFile->GetStringPtr() );
+	cmemWork.SetString( pcmGrepFile->GetStringPtr() );
 	cmemMessage += cmemWork;
 
 
@@ -372,7 +372,7 @@ DWORD CGrepAgent::DoGrep(
 
 	cmemMessage.AppendString( L"\r\n" );
 	cmemMessage.AppendString( L"フォルダ   " );
-	cmemWork.SetStringT( szPath );
+	cmemWork.SetString( szPath );
 	if( pcViewDst->m_pcEditDoc->m_cDocType.GetDocumentAttribute().m_nStringType == 0 ){	/* 文字列区切り記号エスケープ方法  0=[\"][\'] 1=[""][''] */
 	}else{
 	}
@@ -423,7 +423,7 @@ DWORD CGrepAgent::DoGrep(
 		if( sSearchOption.bRegularExp ){
 			//	2007.07.22 genta : 正規表現ライブラリのバージョンも出力する
 			cmemMessage.AppendString( L"    (正規表現:" );
-			cmemMessage.AppendStringT( cRegexp.GetVersionT() );
+			cmemMessage.AppendString( cRegexp.GetVersionW() );
 			cmemMessage.AppendString( L")\r\n" );
 		}
 	}
@@ -432,7 +432,7 @@ DWORD CGrepAgent::DoGrep(
 		cmemMessage.AppendString( L"    (文字コードセットの自動判別)\r\n" );
 	}else if(IsValidCodeType(nGrepCharSet)){
 		cmemMessage.AppendString( L"    (文字コードセット：" );
-		cmemMessage.AppendStringT( CCodeTypeName(nGrepCharSet).Normal() );
+		cmemMessage.AppendString( CCodeTypeName(nGrepCharSet).Normal() );
 		cmemMessage.AppendString( L")\r\n" );
 	}
 
@@ -579,7 +579,7 @@ typedef int (* COMP)(const void *, const void *);
 */
 int grep_compare_pp(const void* a, const void* b)
 {
-	return _tcscmp( *((const TCHAR**)a), *((const TCHAR**)b) );
+	return wcscmp( *((const WCHAR**)a), *((const WCHAR**)b) );
 }
 
 /*!
@@ -592,7 +592,7 @@ int grep_compare_pp(const void* a, const void* b)
 */
 int grep_compare_sp(const void* a, const void* b)
 {
-	return _tcscmp( (const TCHAR*)a, *((const TCHAR**)b) );
+	return wcscmp( (const WCHAR*)a, *((const WCHAR**)b) );
 }
 #endif
 
@@ -609,8 +609,8 @@ int CGrepAgent::DoGrepTree(
 	CDlgCancel*				pcDlgCancel,		//!< [in] Cancelダイアログへのポインタ
 	HWND					hwndCancel,			//!< [in] Cancelダイアログのウィンドウハンドル
 	const wchar_t*			pszKey,				//!< [in] 検索キー
-	const TCHAR*			pszFile,			//!< [in] 検索対象ファイルパターン(!で除外指定)
-	const TCHAR*			pszPath,			//!< [in] 検索対象パス
+	const WCHAR*			pszFile,			//!< [in] 検索対象ファイルパターン(!で除外指定)
+	const WCHAR*			pszPath,			//!< [in] 検索対象パス
 	BOOL					bGrepSubFolder,		//!< [in] TRUE: サブフォルダを再帰的に探索する / FALSE: しない
 	const SSearchOption&	sSearchOption,		//!< [in] 検索オプション
 	ECodeType				nGrepCharSet,		//!< [in] 文字コードセット (0:自動認識)～
@@ -624,9 +624,9 @@ int CGrepAgent::DoGrepTree(
 {
 	::DlgItem_SetText( hwndCancel, IDC_STATIC_CURPATH, pszPath );
 
-	const TCHAR EXCEPT_CHAR = _T('!');	//除外識別子
-	const TCHAR* WILDCARD_DELIMITER = _T(" ;,");	//リストの区切り
-	const TCHAR* WILDCARD_ANY = _T("*.*");	//サブフォルダ探索用
+	const WCHAR EXCEPT_CHAR = L'!';	//除外識別子
+	const WCHAR* WILDCARD_DELIMITER = L" ;,";	//リストの区切り
+	const WCHAR* WILDCARD_ANY = L"*.*";	//サブフォルダ探索用
 
 	int		nWildCardLen;
 	int		nPos;
@@ -647,7 +647,7 @@ int CGrepAgent::DoGrepTree(
 	 */
 	int checked_list_size = 256;	//確保済みサイズ
 	int checked_list_count = 0;	//登録個数
-	TCHAR** checked_list = (TCHAR**)malloc( sizeof( TCHAR* ) * checked_list_size );
+	WCHAR** checked_list = (WCHAR**)malloc( sizeof( WCHAR* ) * checked_list_size );
 	if( ! checked_list ) return FALSE;	//メモリ確保失敗
 
 
@@ -655,27 +655,27 @@ int CGrepAgent::DoGrepTree(
 	 * 除外ファイルを登録する。
 	 */
 	nPos = 0;
-	TCHAR* pWildCard = _tcsdup( pszFile );	//ワイルドカードリスト作業用
+	WCHAR* pWildCard = _wcsdup( pszFile );	//ワイルドカードリスト作業用
 	if( ! pWildCard ) goto error_return;	//メモリ確保失敗
-	nWildCardLen = _tcslen( pWildCard );
-	TCHAR*	token;
-	while( NULL != (token = my_strtok<TCHAR>( pWildCard, nWildCardLen, &nPos, WILDCARD_DELIMITER )) )	//トークン毎に繰り返す。
+	nWildCardLen = wcslen( pWildCard );
+	WCHAR*	token;
+	while( NULL != (token = my_strtok<WCHAR>( pWildCard, nWildCardLen, &nPos, WILDCARD_DELIMITER )) )	//トークン毎に繰り返す。
 	{
 		//除外ファイル指定でないか？
 		if( EXCEPT_CHAR != token[0] ) continue;
 
 		//ダブルコーテーションを除き、絶対パス名を作成する。
-		TCHAR* p;
-		TCHAR* q;
+		WCHAR* p;
+		WCHAR* q;
 		p = q = ++token;
 		while( *p )
 		{
-			if( *p != _T('"') ) *q++ = *p;
+			if( *p != L'"' ) *q++ = *p;
 			p++;
 		}
-		*q = _T('\0');
+		*q = L'\0';
 		{
-			std::tstring currentPath = pszPath;	//現在探索中のパス
+			std::wstring currentPath = pszPath;	//現在探索中のパス
 			currentPath += token;
 			//ファイルの羅列を開始する。
 			handle = FindFirstFile( currentPath.c_str(), &w32fd );
@@ -689,11 +689,11 @@ int CGrepAgent::DoGrepTree(
 				if( checked_list_count >= checked_list_size )
 				{
 					checked_list_size += 256;
-					TCHAR** p = (TCHAR**)realloc( checked_list, sizeof( TCHAR* ) * checked_list_size );
+					WCHAR** p = (WCHAR**)realloc( checked_list, sizeof( WCHAR* ) * checked_list_size );
 					if( ! p ) goto error_return;	//メモリ確保失敗
 					checked_list = p;
 				}
-				checked_list[ checked_list_count ] = _tcsdup( w32fd.cFileName );
+				checked_list[ checked_list_count ] = _wcsdup( w32fd.cFileName );
 				checked_list_count++;
 			}
 
@@ -714,26 +714,26 @@ int CGrepAgent::DoGrepTree(
 	 * カレントフォルダのファイルを探索する。
 	 */
 	nPos = 0;
-	pWildCard = _tcsdup( pszFile );
+	pWildCard = _wcsdup( pszFile );
 	if( ! pWildCard ) goto error_return;	//メモリ確保失敗
-	nWildCardLen = _tcslen( pWildCard );
-	while( NULL != (token = my_strtok<TCHAR>( pWildCard, nWildCardLen, &nPos, WILDCARD_DELIMITER )) )	//トークン毎に繰り返す。
+	nWildCardLen = wcslen( pWildCard );
+	while( NULL != (token = my_strtok<WCHAR>( pWildCard, nWildCardLen, &nPos, WILDCARD_DELIMITER )) )	//トークン毎に繰り返す。
 	{
 		//除外ファイル指定か？
 		if( EXCEPT_CHAR == token[0] ) continue;
 
 		//ダブルコーテーションを除き、絶対パス名を作成する。
-		TCHAR* p;
-		TCHAR* q;
+		WCHAR* p;
+		WCHAR* q;
 		p = q = token;
 		while( *p )
 		{
-			if( *p != _T('"') ) *q++ = *p;
+			if( *p != L'"' ) *q++ = *p;
 			p++;
 		}
-		*q = _T('\0');
+		*q = L'\0';
 		{
-			std::tstring currentPath = pszPath;	//現在探索中のパス
+			std::wstring currentPath = pszPath;	//現在探索中のパス
 			currentPath += token;
 			//ファイルの羅列を開始する。
 			handle = FindFirstFile( currentPath.c_str(), &w32fd );
@@ -772,7 +772,7 @@ int CGrepAgent::DoGrepTree(
 				if( ! bsearch( w32fd.cFileName, checked_list, current_checked_list_count, sizeof( WCHAR* ), (COMP)grep_compare_sp ) )
 #else
 				bool found = false;
-				TCHAR** ptr = checked_list;
+				WCHAR** ptr = checked_list;
 				for( i = 0; i < current_checked_list_count; i++, ptr++ )
 				{
 #ifdef SORTED_LIST
@@ -787,7 +787,7 @@ int CGrepAgent::DoGrepTree(
 						break;
 					}
 #else
-					if( 0 == _tcscmp( *ptr, w32fd.cFileName ) )
+					if( 0 == wcscmp( *ptr, w32fd.cFileName ) )
 					{
 						found = true; 
 						break;
@@ -801,21 +801,21 @@ int CGrepAgent::DoGrepTree(
 					if( checked_list_count >= checked_list_size )
 					{
 						checked_list_size += 256;
-						TCHAR** p = (TCHAR**)realloc( checked_list, sizeof( TCHAR* ) * checked_list_size );
+						WCHAR** p = (WCHAR**)realloc( checked_list, sizeof( WCHAR* ) * checked_list_size );
 						if( ! p ) goto error_return;	//メモリ確保失敗
 						checked_list = p;
 					}
-					checked_list[ checked_list_count ] = _tcsdup( w32fd.cFileName );
+					checked_list[ checked_list_count ] = _wcsdup( w32fd.cFileName );
 					checked_list_count++;
 
 
 					//GREP実行！
 					::DlgItem_SetText( hwndCancel, IDC_STATIC_CURFILE, w32fd.cFileName );
 
-					TCHAR* currentFile = new TCHAR[ _tcslen( pszPath ) + _tcslen( w32fd.cFileName ) + 1 ];
+					WCHAR* currentFile = new WCHAR[ wcslen( pszPath ) + wcslen( w32fd.cFileName ) + 1 ];
 					if( ! currentFile ) goto error_return;	//メモリ確保失敗
-					_tcscpy( currentFile, pszPath );
-					_tcscat( currentFile, w32fd.cFileName );
+					wcscpy( currentFile, pszPath );
+					wcscat( currentFile, w32fd.cFileName );
 
 					int nRet = 0;
 					if( IsBinaryFile( currentFile ) == true ){
@@ -907,7 +907,7 @@ int CGrepAgent::DoGrepTree(
 	if( bGrepSubFolder ){
 		// 2010.08.01 キャンセルでのメモリーリーク修正
 		{
-			std::tstring subPath = pszPath;
+			std::wstring subPath = pszPath;
 			subPath += WILDCARD_ANY;
 			handle = FindFirstFile( subPath.c_str(), &w32fd );
 		}
@@ -929,19 +929,19 @@ int CGrepAgent::DoGrepTree(
 			);
 
 			if( (w32fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)	//フォルダの場合
-			 && 0 != _tcscmp( w32fd.cFileName, _T(".bzr"))
-			 && 0 != _tcscmp( w32fd.cFileName, _T(".git"))
-			 && 0 != _tcscmp( w32fd.cFileName, _T(".hg"))
-			 && 0 != _tcscmp( w32fd.cFileName, _T(".svn"))
-			 && 0 != _tcscmp( w32fd.cFileName, _T("."))
-			 && 0 != _tcscmp( w32fd.cFileName, _T(".."))
+			 && 0 != wcscmp( w32fd.cFileName, L".bzr")
+			 && 0 != wcscmp( w32fd.cFileName, L".git")
+			 && 0 != wcscmp( w32fd.cFileName, L".hg")
+			 && 0 != wcscmp( w32fd.cFileName, L".svn")
+			 && 0 != wcscmp( w32fd.cFileName, L".")
+			 && 0 != wcscmp( w32fd.cFileName, L"..")
 			 && ! ( pcVcsIgnore != NULL && pcVcsIgnore->IsIgnored( w32fd.cFileName, true ) ) )	// VCS の除外指定で除外されていない場合
 			{
 				//フォルダ名を作成する。
 				// 2010.08.01 キャンセルでメモリーリークしてました
-				std::tstring currentPath  = pszPath;
+				std::wstring currentPath  = pszPath;
 				currentPath += w32fd.cFileName;
-				currentPath += _T("\\");
+				currentPath += L"\\";
 
 				// VCS の除外指定: サブフォルダに入る (入れ子のリポジトリの切り替え、そのフォルダの除外指定の読み込み)
 				if( pcVcsIgnore != NULL ){
@@ -1039,8 +1039,8 @@ void CGrepAgent::SetGrepResult(
 	wchar_t*	pWork,
 	int*		pnWorkLen,			/*!< [out] Grep出力文字列の長さ */
 	/* マッチしたファイルの情報 */
-	const TCHAR*		pszFullPath,	/*!< [in] フルパス */
-	const TCHAR*		pszCodeName,	/*!< [in] 文字コード情報．" [SJIS]"とか */
+	const WCHAR*		pszFullPath,	/*!< [in] フルパス */
+	const WCHAR*		pszCodeName,	/*!< [in] 文字コード情報．" [SJIS]"とか */
 	/* マッチした行の情報 */
 	int			nLine,				/*!< [in] マッチした行番号(1～) */
 	int			nColumn,			/*!< [in] マッチした桁番号(1～) */
@@ -1119,14 +1119,14 @@ int CGrepAgent::DoGrepFile(
 	CDlgCancel*				pcDlgCancel,		//!< [in] Cancelダイアログへのポインタ
 	HWND					hwndCancel,			//!< [in] Cancelダイアログのウィンドウハンドル
 	const wchar_t*			pszKey,				//!< [in] 検索パターン
-	const TCHAR*			pszFile,			//!< [in] 処理対象ファイル名(表示用)
+	const WCHAR*			pszFile,			//!< [in] 処理対象ファイル名(表示用)
 	const SSearchOption&	sSearchOption,		//!< [in] 検索オプション
 	ECodeType				nGrepCharSet,		//!< [in] 文字コードセット (0:自動認識)～
 	BOOL					bGrepOutputLine,	//!< [in] TRUE: ヒット行を出力 / FALSE: ヒット部分を出力
 	int						nGrepOutputStyle,	//!< [in] 出力形式 1: Normal, 2: WZ風(ファイル単位)
 	CBregexp*				pRegexp,			//!< [in] 正規表現コンパイルデータ。既にコンパイルされている必要がある
 	int*					pnHitCount,			//!< [i/o] ヒット数の合計．元々の値に見つかった数を加算して返す．
-	const TCHAR*			pszFullPath,		//!< [in] 処理対象ファイルパス
+	const WCHAR*			pszFullPath,		//!< [in] 処理対象ファイルパス
 	CNativeW&				cmemMessage			//!< 
 )
 {
@@ -1152,8 +1152,8 @@ int CGrepAgent::DoGrepFile(
 
 	//	ここでは正規表現コンパイルデータの初期化は不要
 
-	const TCHAR*	pszCodeName; // 2002/08/29 const付加
-	pszCodeName = _T("");
+	const WCHAR*	pszCodeName; // 2002/08/29 const付加
+	pszCodeName = L"";
 	nHitCount = 0;
 	nLine = 0;
 
@@ -1167,7 +1167,7 @@ int CGrepAgent::DoGrepFile(
 			CCodeMediator cmediator( pcViewDst->GetDocument()->m_cDocType.GetDocumentAttribute().m_encoding );
 			nCharCode = cmediator.CheckKanjiCodeOfFile( pszFullPath );
 			if( !IsValidCodeType(nCharCode) ){
-				pszCodeName = _T("  [(DetectError)]");
+				pszCodeName = L"  [(DetectError)]";
 			}else{
 				pszCodeName = CCodeTypeName(nCharCode).Bracket();
 			}
@@ -1269,7 +1269,7 @@ int CGrepAgent::DoGrepFile(
 					int matchlen = pRegexp->GetMatchLen();
 #ifdef _DEBUG
 					if( nIndex <= nIndexPrev ){
-						MYTRACE( _T("ERROR: CEditView::DoGrepFile() nIndex <= nIndexPrev break \n") );
+						MYTRACE( L"ERROR: CEditView::DoGrepFile() nIndex <= nIndexPrev break \n" );
 						break;
 					}
 					nIndexPrev = nIndex;

@@ -33,7 +33,7 @@ public:
 	||  Attributes & Operations
 	*/
 	BOOL OnCbnDropDown( HWND hwndCtl, int wID );
-	int DoModal( HINSTANCE, HWND, const TCHAR* );	/* モーダルダイアログの表示 */
+	int DoModal( HINSTANCE, HWND, const WCHAR* );	/* モーダルダイアログの表示 */
 //	HWND DoModeless( HINSTANCE, HWND, const char* );	/* モードレスダイアログの表示 */
 
 

@@ -134,7 +134,7 @@ BOOL CViewCommander::HandleCommand(
 			nCommandFrom & FA_NONRECORD )){
 			InfoMessage(
 				this->m_pCommanderView->m_hwndParent,
-				_T("マクロ %d (%ts) の実行に失敗しました。"),
+				L"マクロ %d (%ts) の実行に失敗しました。",
 				nCommand - F_USERMACRO_0,
 				CEditApp::getInstance()->m_pcSMacroMgr->GetFile( nCommand - F_USERMACRO_0 )
 			);
@@ -764,7 +764,7 @@ void CViewCommander::Command_SearchWordend( void )
 
 	@date 2010.04.21 ryoji	新規作成（数カ所で用いられていた類似コードの共通化）
 */
-void CViewCommander::AlertNotFound(HWND hwnd, LPCTSTR format, ...)
+void CViewCommander::AlertNotFound(HWND hwnd, LPCWSTR format, ...)
 {
 	if( GetDllShareData().m_Common.m_sSearch.m_bNOTIFYNOTFOUND
 		&& m_pCommanderView->GetDrawSwitch()	// ← たぶん「全て置換」実行中判定の代用品（もとは Command_SEARCH_NEXT() の中でだけ使用されていた）

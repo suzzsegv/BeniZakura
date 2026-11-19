@@ -113,39 +113,39 @@ INT_PTR CPropHelper::DispatchEvent(
 			case IDC_BUTTON_OPENMDLL:	/* MIGEMODLL場所指定「参照...」ボタン */
 				{
 					CDlgOpenFile	cDlgOpenFile;
-					TCHAR			szPath[_MAX_PATH];
+					WCHAR			szPath[_MAX_PATH];
 					// 2003.06.23 Moca 相対パスは実行ファイルからのパス
 					// 2007.05.21 ryoji 相対パスは設定ファイルからのパスを優先
 					if( _IS_REL_PATH( m_Common.m_sHelper.m_szMigemoDll ) ){
 						GetInidirOrExedir( szPath, m_Common.m_sHelper.m_szMigemoDll, TRUE );
 					}else{
-						_tcscpy( szPath, m_Common.m_sHelper.m_szMigemoDll );
+						wcscpy( szPath, m_Common.m_sHelper.m_szMigemoDll );
 					}
 					/* ファイルオープンダイアログの初期化 */
 					cDlgOpenFile.Create(
 						G_AppInstance(),
 						hwndDlg,
-						_T("*.dll"),
+						L"*.dll",
 						szPath
 					);
 					if( cDlgOpenFile.DoModal_GetOpenFileName( szPath ) ){
-						_tcscpy( m_Common.m_sHelper.m_szMigemoDll, szPath );
+						wcscpy( m_Common.m_sHelper.m_szMigemoDll, szPath );
 						::DlgItem_SetText( hwndDlg, IDC_EDIT_MIGEMO_DLL, m_Common.m_sHelper.m_szMigemoDll );
 					}
 				}
 				return TRUE;
 			case IDC_BUTTON_OPENMDICT:	/* MigemoDict場所指定「参照...」ボタン */
 				{
-					TCHAR	szPath[_MAX_PATH];
+					WCHAR	szPath[_MAX_PATH];
 					/* 検索フォルダ */
 					// 2007.05.27 ryoji 相対パスは設定ファイルからのパスを優先
 					if( _IS_REL_PATH( m_Common.m_sHelper.m_szMigemoDict ) ){
 						GetInidirOrExedir( szPath, m_Common.m_sHelper.m_szMigemoDict, TRUE );
 					}else{
-						_tcscpy( szPath, m_Common.m_sHelper.m_szMigemoDict );
+						wcscpy( szPath, m_Common.m_sHelper.m_szMigemoDict );
 					}
-					if( SelectDir( hwndDlg, _T("検索するフォルダを選んでください"), szPath, szPath ) ){
-						_tcscpy( m_Common.m_sHelper.m_szMigemoDict, szPath );
+					if( SelectDir( hwndDlg, L"検索するフォルダを選んでください", szPath, szPath ) ){
+						wcscpy( m_Common.m_sHelper.m_szMigemoDict, szPath );
 						::DlgItem_SetText( hwndDlg, IDC_EDIT_MIGEMO_DICT, m_Common.m_sHelper.m_szMigemoDict );
 					}
 				}
@@ -164,7 +164,7 @@ INT_PTR CPropHelper::DispatchEvent(
 //		default:
 			switch( pNMHDR->code ){
 			case PSN_KILLACTIVE:
-//				MYTRACE( _T("Helper PSN_KILLACTIVE\n") );
+//				MYTRACE( L"Helper PSN_KILLACTIVE\n" );
 				/* ダイアログデータの取得 Helper */
 				GetData( hwndDlg );
 				return TRUE;
@@ -176,11 +176,11 @@ INT_PTR CPropHelper::DispatchEvent(
 //			break;	/* default */
 //		}
 
-//		MYTRACE( _T("pNMHDR->hwndFrom=%xh\n"), pNMHDR->hwndFrom );
-//		MYTRACE( _T("pNMHDR->idFrom  =%xh\n"), pNMHDR->idFrom );
-//		MYTRACE( _T("pNMHDR->code    =%xh\n"), pNMHDR->code );
-//		MYTRACE( _T("pMNUD->iPos    =%d\n"), pMNUD->iPos );
-//		MYTRACE( _T("pMNUD->iDelta  =%d\n"), pMNUD->iDelta );
+//		MYTRACE( L"pNMHDR->hwndFrom=%xh\n", pNMHDR->hwndFrom );
+//		MYTRACE( L"pNMHDR->idFrom  =%xh\n", pNMHDR->idFrom );
+//		MYTRACE( L"pNMHDR->code    =%xh\n", pNMHDR->code );
+//		MYTRACE( L"pMNUD->iPos    =%d\n", pMNUD->iPos );
+//		MYTRACE( L"pMNUD->iDelta  =%d\n", pMNUD->iDelta );
 		break;	/* WM_NOTIFY */
 
 	case WM_DESTROY:

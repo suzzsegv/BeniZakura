@@ -57,7 +57,6 @@
 #include <CommCtrl.h> // コモンコントロール
 #include <stdlib.h>  // _MAX_PATH
 #include <wchar.h>
-#include <tchar.h>
 
 #ifndef SAKURA_PCH_MODE_MIN
 // 2010.04.19 重そうなので追加
@@ -96,7 +95,6 @@
 //よく使うヘッダ
 #include "mem/CNativeW.h"
 #include "mem/CNativeA.h"
-#include "mem/CNativeT.h"
 
 #include "util/string_ex.h"
 #include "util/MessageBoxF.h"
@@ -113,7 +111,7 @@
 #include "apiwrap/CommonControl.h"
 #include "apiwrap/StdApi.h"
 
-//TCHARユーティリティ
+//WCHARユーティリティ
 #include "util/tchar_convert.h"
 #include "charset/charcode.h"
 #include "charset/codechecker.h"

@@ -74,11 +74,11 @@ int CDlgDiff::DoModal(
 	HINSTANCE			hInstance,
 	HWND				hwndParent,
 	LPARAM				lParam,
-	const TCHAR*		pszPath,		//自ファイル
+	const WCHAR*		pszPath,		//自ファイル
 	bool				bIsModified		//自ファイル編集中？
 )
 {
-	_tcscpy(m_szFile1, pszPath);
+	wcscpy(m_szFile1, pszPath);
 	m_bIsModified = bIsModified;
 
 	return (int)CDialog::DoModal( hInstance, hwndParent, IDD_DIFF, lParam );
@@ -91,18 +91,18 @@ BOOL CDlgDiff::OnBnClicked( int wID )
 	case IDC_BUTTON_DIFF_DST:	/* 参照 */
 		{
 			CDlgOpenFile	cDlgOpenFile;
-			TCHAR			szPath[_MAX_PATH];
-			_tcscpy( szPath, m_szFile2 );
+			WCHAR			szPath[_MAX_PATH];
+			wcscpy( szPath, m_szFile2 );
 			/* ファイルオープンダイアログの初期化 */
 			cDlgOpenFile.Create(
 				m_hInstance,
 				GetHwnd(),
-				_T("*.*"),
+				L"*.*",
 				m_szFile1 /*m_szFile2*/
 			);
 			if( cDlgOpenFile.DoModal_GetOpenFileName( szPath ) )
 			{
-				_tcscpy( m_szFile2, szPath );
+				wcscpy( m_szFile2, szPath );
 				::DlgItem_SetText( GetHwnd(), IDC_EDIT_DIFF_DST, m_szFile2 );
 				//外部ファイルを選択状態に
 				::CheckDlgButton( GetHwnd(), IDC_RADIO_DIFF_DST1, TRUE );
@@ -208,7 +208,7 @@ void CDlgDiff::SetData( void )
 		EditInfo	*pFileInfo;
 		int			i;
 		int			nItem;
-		WIN_CHAR	szName[_MAX_PATH];
+		WCHAR	szName[_MAX_PATH];
 		int			count = 0;
 
 		/* リストのハンドル取得 */
@@ -249,7 +249,7 @@ void CDlgDiff::SetData( void )
 
 				// 横幅を計算する
 				SIZE sizeExtent;
-				if( ::GetTextExtentPoint32( hDC, szName, _tcslen(szName), &sizeExtent ) && sizeExtent.cx > nExtent ){
+				if( ::GetTextExtentPoint32( hDC, szName, wcslen(szName), &sizeExtent ) && sizeExtent.cx > nExtent ){
 					nExtent = sizeExtent.cx;
 				}
 			}
@@ -315,7 +315,7 @@ int CDlgDiff::GetData( void )
 	m_pShareData->m_nDiffFlgOpt = m_nDiffFlgOpt;
 
 	//相手ファイル名
-	_tcscpy( m_szFile2, _T("") );
+	wcscpy( m_szFile2, L"" );
 	m_hWnd_Dst = NULL;
 	m_bIsModifiedDst = false;
 	if( ::IsDlgButtonChecked( GetHwnd(), IDC_RADIO_DIFF_DST1 ) == BST_CHECKED )
@@ -343,7 +343,7 @@ int CDlgDiff::GetData( void )
 			::SendMessageAny( m_hWnd_Dst, MYWM_GETFILEINFO, 0, 0 );
 			pFileInfo = (EditInfo*)&m_pShareData->m_sWorkBuffer.m_EditInfo_MYWM_GETFILEINFO;
 
-			_tcscpy( m_szFile2, pFileInfo->m_szPath );
+			wcscpy( m_szFile2, pFileInfo->m_szPath );
 			m_bIsModifiedDst = pFileInfo->m_bIsModified;
 		}
 		else

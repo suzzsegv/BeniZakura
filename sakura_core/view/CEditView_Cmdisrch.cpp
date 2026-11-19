@@ -170,22 +170,22 @@ void CEditView::ISearchEnter( int mode, ESearchDirection direction)
 				m_sCurSearchOption.bRegularExp = false;
 				m_sCurSearchOption.bLoHiCase = false;
 				m_sCurSearchOption.bWordOnly = false;
-				//SendStatusMessage(_T("I-Search: "));
+				//SendStatusMessage(L"I-Search: ");
 				break;
 			case 2: // 正規表現インクリメンタルサーチ
 				if (!m_CurRegexp.IsAvailable()){
 					WarningBeep();
-					SendStatusMessage(_T("正規表現ライブラリが使用できません。"));
+					SendStatusMessage(L"正規表現ライブラリが使用できません。");
 					return;
 				}
 				m_sCurSearchOption.bRegularExp = true;
 				m_sCurSearchOption.bLoHiCase = false;
-				//SendStatusMessage(_T("[RegExp] I-Search: "));
+				//SendStatusMessage(L"[RegExp] I-Search: ");
 				break;
 			case 3: // MIGEMOインクリメンタルサーチ
 				if (!m_CurRegexp.IsAvailable()){
 					WarningBeep();
-					SendStatusMessage(_T("正規表現ライブラリが使用できません。"));
+					SendStatusMessage(L"正規表現ライブラリが使用できません。");
 					return;
 				}
 				if(m_pcmigemo==NULL){
@@ -197,17 +197,17 @@ void CEditView::ISearchEnter( int mode, ESearchDirection direction)
 				//	可能性があるので，使用可能でなければ一応初期化を試みる
 				if ( !m_pcmigemo->IsAvailable() && DLL_SUCCESS != m_pcmigemo->InitDll() ){
 					WarningBeep();
-					SendStatusMessage(_T("MIGEMO.DLLが使用できません。"));
+					SendStatusMessage(L"MIGEMO.DLLが使用できません。");
 					return;
 				}
 				m_pcmigemo->migemo_load_all();
 				if (m_pcmigemo->migemo_is_enable()) {
 					m_sCurSearchOption.bRegularExp = true;
 					m_sCurSearchOption.bLoHiCase = false;
-					//SendStatusMessage(_T("[MIGEMO] I-Search: "));
+					//SendStatusMessage(L"[MIGEMO] I-Search: ");
 				}else{
 					WarningBeep();
-					SendStatusMessage(_T("MIGEMOは使用できません。 "));
+					SendStatusMessage(L"MIGEMOは使用できません。 ");
 					return;
 				}
 				break;
@@ -228,7 +228,7 @@ void CEditView::ISearchEnter( int mode, ESearchDirection direction)
 
 		Redraw();
 		
-		CNativeT msg;
+		CNativeW msg;
 		ISearchSetStatusMsg(&msg);
 		SendStatusMessage(msg.GetStringPtr());
 		
@@ -267,7 +267,7 @@ void CEditView::ISearchExit()
 	OnMOUSEMOVE(0,point1.x,point1.y);
 
 	//ステータス表示エリアをクリア
-	SendStatusMessage(_T(""));
+	SendStatusMessage(L"");
 
 }
 
@@ -344,7 +344,7 @@ void CEditView::ISearchExec(bool bNext)
 
 	if ( (m_strCurSearchKey.size() == 0) || (m_nISearchMode == 0)){
 		//ステータスの表示
-		CNativeT msg;
+		CNativeW msg;
 		ISearchSetStatusMsg(&msg);
 		SendStatusMessage(msg.GetStringPtr());
 		return ;
@@ -400,7 +400,7 @@ void CEditView::ISearchExec(bool bNext)
 
 	m_nISearchHistoryCount ++ ;
 
-	CNativeT msg;
+	CNativeW msg;
 	ISearchSetStatusMsg(&msg);
 
 	if (m_nISearchHistoryCount >= 256) {
@@ -425,7 +425,7 @@ void CEditView::ISearchExec(bool bNext)
 	);
 	if( nSearchResult == 0 ){
 		/*検索結果がない*/
-		msg.AppendString(_T(" (見つかりません)"));
+		msg.AppendString(L" (見つかりません)");
 		SendStatusMessage(msg.GetStringPtr());
 		
 		if (bNext) 	m_bISearchWrap = true;
@@ -497,7 +497,7 @@ void CEditView::ISearchBack(void) {
 	Redraw();
 
 	//ステータス表示
-	CNativeT msg;
+	CNativeW msg;
 	ISearchSetStatusMsg(&msg);
 	SendStatusMessage(msg.GetStringPtr());
 	
@@ -547,32 +547,32 @@ void CEditView::ISearchWordMake(void)
 	@date 2004/10/13
 	@date 2005.01.13 genta 文字列修正
 */
-void CEditView::ISearchSetStatusMsg(CNativeT* msg) const
+void CEditView::ISearchSetStatusMsg(CNativeW* msg) const
 {
 
 	switch ( m_nISearchMode){
 	case 1 :
-		msg->SetString(_T("I-Search") );
+		msg->SetString(L"I-Search" );
 		break;
 	case 2 :
-		msg->SetString(_T("[RegExp] I-Search") );
+		msg->SetString(L"[RegExp] I-Search" );
 		break;
 	case 3 :
-		msg->SetString(_T("[Migemo] I-Search") );
+		msg->SetString(L"[Migemo] I-Search" );
 		break;
 	default:
-		msg->SetString(_T(""));
+		msg->SetString(L"");
 		return;
 	}
 	if (m_nISearchDirection == 0){
-		msg->AppendString(_T(" Backward: "));
+		msg->AppendString(L" Backward: ");
 	}
 	else{
-		msg->AppendString(_T(": "));
+		msg->AppendString(L": ");
 	}
 
 	if(m_nISearchHistoryCount > 0)
-		msg->AppendString(to_tchar(m_strCurSearchKey.c_str()));
+		msg->AppendString(to_wchar(m_strCurSearchKey.c_str()));
 }
 
 /*!

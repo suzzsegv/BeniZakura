@@ -39,14 +39,14 @@ public:
 	ECallbackResult OnBeforeClose();
 	void OnAfterSave(const SSaveInfo& sSaveInfo);
 
-	static void CreateFolders( const TCHAR* pszPath, std::vector<std::tstring>& vPaths );
+	static void CreateFolders( const WCHAR* pszPath, std::vector<std::wstring>& vPaths );
 
 	// Grep実行
 	DWORD DoGrep(
 		CEditView*				pcViewDst,
 		const CNativeW*			pcmGrepKey,
-		const CNativeT*			pcmGrepFile,
-		const CNativeT*			pcmGrepFolder,
+		const CNativeW*			pcmGrepFile,
+		const CNativeW*			pcmGrepFolder,
 		BOOL					bGrepSubFolder,
 		BOOL					bGrepUseGitIgnore,	// .gitignore の除外指定に従う
 	BOOL					bGrepUseHgIgnore,	// .hgignore の除外指定に従う
@@ -63,8 +63,8 @@ private:
 		CDlgCancel*				pcDlgCancel,		//!< [in] Cancelダイアログへのポインタ
 		HWND					hwndCancel,			//!< [in] Cancelダイアログのウィンドウハンドル
 		const wchar_t*			pszKey,				//!< [in] 検索パターン
-		const TCHAR*			pszFile,			//!< [in] 検索対象ファイルパターン(!で除外指定)
-		const TCHAR*			pszPath,			//!< [in] 検索対象パス
+		const WCHAR*			pszFile,			//!< [in] 検索対象ファイルパターン(!で除外指定)
+		const WCHAR*			pszPath,			//!< [in] 検索対象パス
 		BOOL					bGrepSubFolder,		//!< [in] TRUE: サブフォルダを再帰的に探索する / FALSE: しない
 		const SSearchOption&	sSearchOption,		//!< [in] 検索オプション
 		ECodeType				nGrepCharSet,		//!< [in] 文字コードセット (0:自動認識)～
@@ -82,14 +82,14 @@ private:
 		CDlgCancel*				pcDlgCancel,
 		HWND					hwndCancel,
 		const wchar_t*			pszKey,
-		const TCHAR*			pszFile,
+		const WCHAR*			pszFile,
 		const SSearchOption&	sSearchOption,
 		ECodeType				nGrepCharSet,
 		BOOL					bGrepOutputLine,
 		int						nGrepOutputStyle,
 		CBregexp*				pRegexp,		//	Jun. 27, 2001 genta	正規表現ライブラリの差し替え
 		int*					pnHitCount,
-		const TCHAR*			pszFullPath,
+		const WCHAR*			pszFullPath,
 		CNativeW&				cmemMessage
 	);
 
@@ -99,8 +99,8 @@ private:
 		wchar_t*		pWork,
 		int*			pnWorkLen,
 		// マッチしたファイルの情報
-		const TCHAR*	pszFullPath,	//	フルパス
-		const TCHAR*	pszCodeName,	//	文字コード情報"[SJIS]"とか
+		const WCHAR*	pszFullPath,	//	フルパス
+		const WCHAR*	pszCodeName,	//	文字コード情報"[SJIS]"とか
 		// マッチした行の情報
 		int				nLine,			//	マッチした行番号
 		int				nColumn,		//	マッチした桁番号

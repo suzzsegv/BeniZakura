@@ -27,20 +27,20 @@
 #include "CRecentImp.h"
 #include "util/StaticType.h"
 
-typedef StaticString<TCHAR, _MAX_PATH> CGrepFileString;
+typedef StaticString<WCHAR, _MAX_PATH> CGrepFileString;
 
 //! GREPファイルの履歴を管理 (RECENT_FOR_GREP_FILE)
-class CRecentGrepFile : public CRecentImp<CGrepFileString, LPCTSTR>{
+class CRecentGrepFile : public CRecentImp<CGrepFileString, LPCWSTR>{
 public:
 	//生成
 	CRecentGrepFile();
 
 	//オーバーライド
-	int				CompareItem( const CGrepFileString* p1, LPCTSTR p2 ) const;
-	void			CopyItem( CGrepFileString* dst, LPCTSTR src ) const;
-	const TCHAR*	GetItemText( int nIndex ) const;
-	bool			DataToReceiveType( LPCTSTR* dst, const CGrepFileString* src ) const;
-	bool			TextToDataType( CGrepFileString* dst, LPCTSTR pszText ) const;
+	int				CompareItem( const CGrepFileString* p1, LPCWSTR p2 ) const;
+	void			CopyItem( CGrepFileString* dst, LPCWSTR src ) const;
+	const WCHAR*	GetItemText( int nIndex ) const;
+	bool			DataToReceiveType( LPCWSTR* dst, const CGrepFileString* src ) const;
+	bool			TextToDataType( CGrepFileString* dst, LPCWSTR pszText ) const;
 };
 
 #endif /* SAKURA_CRECENTGREPFILE_6DFF8FB2_B7D0_4828_8191_744A9580C467_H_ */

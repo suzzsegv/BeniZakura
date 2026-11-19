@@ -185,8 +185,8 @@ static const wchar_t* g_defaultKeywordSetJavaScriptFunction[] = {
 void CType_JavaScript::InitTypeConfigImp(STypeConfig* pType)
 {
 	// 名前と拡張子
-	_tcscpy(pType->m_szTypeName, _T("JavaScript"));
-	_tcscpy(pType->m_szTypeExts, _T("js"));
+	wcscpy(pType->m_szTypeName, L"JavaScript");
+	wcscpy(pType->m_szTypeExts, L"js");
 
 	// 設定
 	pType->m_cLineComment.CopyTo(0, L"//", -1); // 行コメントデリミタ

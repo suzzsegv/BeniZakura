@@ -82,7 +82,7 @@ struct SLoadInfo
 	bool		bOpened;
 
 	SLoadInfo()
-	: cFilePath(_T(""))
+	: cFilePath(L"")
 	, eCharCode(CODE_AUTODETECT)
 	, bViewMode(false)
 	, nType(-1)
@@ -101,7 +101,7 @@ struct SLoadInfo
 	}
 
 	//! ファイルパスの比較
-	bool IsSamePath(LPCTSTR pszPath) const;
+	bool IsSamePath(LPCWSTR pszPath) const;
 };
 
 struct SSaveInfo{
@@ -114,12 +114,12 @@ struct SSaveInfo{
 	//モード
 	bool		bOverwriteMode;	//!< 上書き要求
 
-	SSaveInfo() : cFilePath(_T("")), eCharCode(CODE_AUTODETECT), bBomExist(false), bChgCodeSet(false), cEol(EOL_NONE), bOverwriteMode(false) { }
+	SSaveInfo() : cFilePath(L""), eCharCode(CODE_AUTODETECT), bBomExist(false), bChgCodeSet(false), cEol(EOL_NONE), bOverwriteMode(false) { }
 	SSaveInfo(const CFilePath& _cFilePath, ECodeType _eCodeType, const CEol& _cEol, bool _bBomExist)
 		: cFilePath(_cFilePath), eCharCode(_eCodeType), cEol(_cEol), bBomExist(_bBomExist), bOverwriteMode(false) { }
 
 	//! ファイルパスの比較
-	bool IsSamePath(LPCTSTR pszPath) const;
+	bool IsSamePath(LPCWSTR pszPath) const;
 };
 
 

@@ -260,7 +260,7 @@ void CPropColor::SetColorList(
 		ColorInfo* pCustom = m_Common.m_sColorTheme.m_CustomColorInfoArr;
 		for( int i = 0; i < COLORIDX_LAST; i++ ){
 			pCustom[i].m_nColorIdx = i;
-			_tcscpy_s( pCustom[i].m_szName, _countof(pCustom[i].m_szName), m_PresetColorInfoArr[i].m_szName );
+			wcscpy_s( pCustom[i].m_szName, _countof(pCustom[i].m_szName), m_PresetColorInfoArr[i].m_szName );
 		}
 	}
 
@@ -345,7 +345,7 @@ void CPropColor::CopyFromPreset(
 		return;
 	}
 	const int nColorTheme = nCmd - 1;
-	if( IDYES != ConfirmMessage( hwndDlg, _T("カスタムの色を「%ts」の配色で上書きします。よろしいですか？"), GetColorThemeDispName( nColorTheme ) ) ){
+	if( IDYES != ConfirmMessage( hwndDlg, L"カスタムの色を「%ts」の配色で上書きします。よろしいですか？", GetColorThemeDispName( nColorTheme ) ) ){
 		return;
 	}
 	SetPresetColorInfo( m_Common.m_sColorTheme.m_CustomColorInfoArr, nColorTheme );

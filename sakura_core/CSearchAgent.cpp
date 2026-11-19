@@ -642,9 +642,9 @@ int CSearchAgent::SearchWord(
 end_of_func:;
 #ifdef MEASURE_SEARCH_TIME
 	clockEnd = clock();
-	TCHAR buf[100];
+	WCHAR buf[100];
 	memset(buf, 0x00, sizeof(buf));
-	wsprintf( buf, _T("%d"), clockEnd - clockStart);
+	wsprintf( buf, L"%d", clockEnd - clockStart);
 	::MessageBox( NULL, buf, GSTR_APPNAME, MB_OK );
 #endif
 
@@ -744,11 +744,11 @@ void CSearchAgent::ReplaceData( DocLineReplaceArg* pArg )
 		if( 0 > nWorkLen ){
 			PleaseReportToAuthor(
 				NULL,
-				_T("CDocLineMgr::ReplaceData()\n")
-				_T("\n")
-				_T("0 > nWorkLen\nnWorkLen=%d\n")
-				_T("i=%d\n")
-				_T("pArg->sDelRange.GetTo().y=%d"),
+				L"CDocLineMgr::ReplaceData()\n"
+				L"\n"
+				L"0 > nWorkLen\nnWorkLen=%d\n"
+				L"i=%d\n"
+				L"pArg->sDelRange.GetTo().y=%d",
 				nWorkLen, i, pArg->sDelRange.GetTo().y
 			);
 		}
@@ -765,11 +765,11 @@ void CSearchAgent::ReplaceData( DocLineReplaceArg* pArg )
 		if( pLine != pCDocLine->GetPtr() ){
 			PleaseReportToAuthor(
 				NULL,
-				_T("CDocLineMgr::ReplaceData()\n")
-				_T("\n")
-				_T("pLine != pCDocLine->m_cLine.GetPtr() =%d\n")
-				_T("i=%d\n")
-				_T("pArg->sDelRange.GetTo().y=%d"),
+				L"CDocLineMgr::ReplaceData()\n"
+				L"\n"
+				L"pLine != pCDocLine->m_cLine.GetPtr() =%d\n"
+				L"i=%d\n"
+				L"pArg->sDelRange.GetTo().y=%d",
 				pLine, i, pArg->sDelRange.GetTo().y
 			);
 		}

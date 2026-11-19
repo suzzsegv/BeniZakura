@@ -39,7 +39,6 @@
 #define SAKURA_CCOLORTHEME_H_
 
 #include <Windows.h>
-#include <tchar.h>
 #include "view/colors/EColorIndexType.h"
 
 //! プリセットのカラーテーマ (配色表の並び順)
@@ -72,12 +71,12 @@ struct ColorInfoBase{
 //! 名前とインデックス付き色設定
 struct ColorInfo : public ColorInfoBase{
 	int			m_nColorIdx;		//!< インデックス
-	TCHAR		m_szName[64];		//!< 名前
+	WCHAR		m_szName[64];		//!< 名前
 };
 
 int GetColorThemeBySelIndex( int nSelIndex );
 int GetColorThemeSelIndex( int nColorTheme );
-const TCHAR* GetColorThemeDispName( int nColorTheme );
+const WCHAR* GetColorThemeDispName( int nColorTheme );
 const wchar_t* GetColorThemeKeyName( int nColorTheme );
 int GetColorThemeFromKeyName( const wchar_t* pszKeyName );
 bool IsColorThemePreset( int nColorTheme );

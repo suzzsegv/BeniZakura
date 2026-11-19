@@ -20,7 +20,7 @@ void CMainStatusBar::CreateStatusBar()
 	/* ステータスバー */
 	m_hwndStatusBar = ::CreateStatusWindow(
 		WS_CHILD/* | WS_VISIBLE*/ | WS_EX_RIGHT | SBARS_SIZEGRIP,	// 2007.03.08 ryoji WS_VISIBLE 除去
-		_T(""),
+		L"",
 		m_pOwner->GetHwnd(),
 		IDW_STATUSBAR
 	);
@@ -94,7 +94,7 @@ void CMainStatusBar::DestroyStatusBar()
 	
 	@sa SendStatusMessage2IsEffective
 */
-void CMainStatusBar::SendStatusMessage2( const TCHAR* msg )
+void CMainStatusBar::SendStatusMessage2( const WCHAR* msg )
 {
 	if( NULL != m_hwndStatusBar ){
 		// ステータスバーへ
@@ -103,7 +103,7 @@ void CMainStatusBar::SendStatusMessage2( const TCHAR* msg )
 }
 
 
-void CMainStatusBar::SetStatusText(int nIndex, int nOption, const TCHAR* pszText)
+void CMainStatusBar::SetStatusText(int nIndex, int nOption, const WCHAR* pszText)
 {
 	StatusBar_SetText( m_hwndStatusBar, nIndex | nOption, pszText );
 }

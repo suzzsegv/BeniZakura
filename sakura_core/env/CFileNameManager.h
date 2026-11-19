@@ -40,8 +40,8 @@ struct IniFolder {
 	bool m_bInit;							// 初期化済フラグ
 	bool m_bReadPrivate;					// マルチユーザ用iniからの読み出しフラグ
 	bool m_bWritePrivate;					// マルチユーザ用iniへの書き込みフラグ
-	TCHAR m_szIniFile[_MAX_PATH];			// EXE基準のiniファイルパス
-	TCHAR m_szPrivateIniFile[_MAX_PATH];	// マルチユーザ用のiniファイルパス
+	WCHAR m_szIniFile[_MAX_PATH];			// EXE基準のiniファイルパス
+	WCHAR m_szPrivateIniFile[_MAX_PATH];	// マルチユーザ用のiniファイルパス
 };	/* iniフォルダ設定 */
 
 
@@ -63,42 +63,42 @@ protected:
 	}
 public:
 	//ファイル名関連
-	LPTSTR GetTransformFileNameFast( LPCTSTR, LPTSTR, int );	// 2002.11.24 Moca Add
+	LPWSTR GetTransformFileNameFast( LPCWSTR, LPWSTR, int );	// 2002.11.24 Moca Add
 	int TransformFileName_MakeCache( void );
-	static LPCTSTR GetFilePathFormat( LPCTSTR, LPTSTR, int, LPCTSTR, LPCTSTR );
-	static bool ExpandMetaToFolder( LPCTSTR, LPTSTR, int );
+	static LPCWSTR GetFilePathFormat( LPCWSTR, LPWSTR, int, LPCWSTR, LPCWSTR );
+	static bool ExpandMetaToFolder( LPCWSTR, LPWSTR, int );
 
 	//メニュー類のファイル名作成
-	bool GetMenuFullLabel_WinList(TCHAR* pszOutput, int nBuffSize, const EditInfo* editInfo, int id, int index){
+	bool GetMenuFullLabel_WinList(WCHAR* pszOutput, int nBuffSize, const EditInfo* editInfo, int id, int index){
 		return GetMenuFullLabel(pszOutput, nBuffSize, true, editInfo, id, false, index, false);
 	}
-	bool GetMenuFullLabel_MRU(TCHAR* pszOutput, int nBuffSize, const EditInfo* editInfo, int id, bool bFavorite, int index){
+	bool GetMenuFullLabel_MRU(WCHAR* pszOutput, int nBuffSize, const EditInfo* editInfo, int id, bool bFavorite, int index){
 		return GetMenuFullLabel(pszOutput, nBuffSize, true, editInfo, id, bFavorite, index, true);
 	}
-	bool GetMenuFullLabel_WinListNoEscape(TCHAR* pszOutput, int nBuffSize, const EditInfo* editInfo, int id, int index){
+	bool GetMenuFullLabel_WinListNoEscape(WCHAR* pszOutput, int nBuffSize, const EditInfo* editInfo, int id, int index){
 		return GetMenuFullLabel(pszOutput, nBuffSize, false, editInfo, id, false, index, false);
 	}
-	bool GetMenuFullLabel_File(TCHAR* pszOutput, int nBuffSize, const TCHAR* pszFile, int id, bool bModified = false, ECodeType nCharCode = CODE_NONE){
+	bool GetMenuFullLabel_File(WCHAR* pszOutput, int nBuffSize, const WCHAR* pszFile, int id, bool bModified = false, ECodeType nCharCode = CODE_NONE){
 		return GetMenuFullLabel(pszOutput, nBuffSize, true, pszFile, id, false, nCharCode, false, -1, false);
 	}
-	bool GetMenuFullLabel_FileNoEscape(TCHAR* pszOutput, int nBuffSize, const TCHAR* pszFile, int id, bool bModified = false, ECodeType nCharCode = CODE_NONE){
+	bool GetMenuFullLabel_FileNoEscape(WCHAR* pszOutput, int nBuffSize, const WCHAR* pszFile, int id, bool bModified = false, ECodeType nCharCode = CODE_NONE){
 		return GetMenuFullLabel(pszOutput, nBuffSize, false, pszFile, id, false, nCharCode, false, -1, false);
 	}
 
-	bool GetMenuFullLabel(TCHAR* pszOutput, int nBuffSize, bool bEspaceAmp, const EditInfo* editInfo, int id, bool bFavorite, int index, bool bAccKeyZeroOrigin);
-	bool GetMenuFullLabel(TCHAR* pszOutput, int nBuffSize, bool bEspaceAmp, const TCHAR* pszFile, int id, bool bModified, ECodeType nCharCode, bool bFavorite, int index, bool bAccKeyZeroOrigin);
+	bool GetMenuFullLabel(WCHAR* pszOutput, int nBuffSize, bool bEspaceAmp, const EditInfo* editInfo, int id, bool bFavorite, int index, bool bAccKeyZeroOrigin);
+	bool GetMenuFullLabel(WCHAR* pszOutput, int nBuffSize, bool bEspaceAmp, const WCHAR* pszFile, int id, bool bModified, ECodeType nCharCode, bool bFavorite, int index, bool bAccKeyZeroOrigin);
 	
-	static TCHAR GetAccessKeyByIndex(int index, bool bZeroOrigin);
+	static WCHAR GetAccessKeyByIndex(int index, bool bZeroOrigin);
 
-	static void GetIniFileNameDirect( LPTSTR pszPrivateIniFile, LPTSTR pszIniFile );	/* 構成設定ファイルからiniファイル名を取得する */	// 2007.09.04 ryoji
-	void GetIniFileName( LPTSTR pszIniFileName, BOOL bRead = FALSE );	/* iniファイル名の取得 */	// 2007.05.19 ryoji
+	static void GetIniFileNameDirect( LPWSTR pszPrivateIniFile, LPWSTR pszIniFile );	/* 構成設定ファイルからiniファイル名を取得する */	// 2007.09.04 ryoji
+	void GetIniFileName( LPWSTR pszIniFileName, BOOL bRead = FALSE );	/* iniファイル名の取得 */	// 2007.05.19 ryoji
 
 private:
 	DLLSHAREDATA* m_pShareData;
 
 	// ファイル名簡易表示用キャッシュ
 	int		m_nTransformFileNameCount; // 有効数
-	TCHAR	m_szTransformFileNameFromExp[MAX_TRANSFORM_FILENAME][_MAX_PATH];
+	WCHAR	m_szTransformFileNameFromExp[MAX_TRANSFORM_FILENAME][_MAX_PATH];
 	int		m_nTransformFileNameOrgId[MAX_TRANSFORM_FILENAME];
 };
 

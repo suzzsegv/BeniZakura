@@ -40,8 +40,8 @@
 
 WNDPROC			m_wpOpenDialogProc;
 
-std::vector<LPCTSTR>	m_vMRU;
-std::vector<LPCTSTR>	m_vOPENFOLDER;
+std::vector<LPCWSTR>	m_vMRU;
+std::vector<LPCWSTR>	m_vOPENFOLDER;
 bool			m_bViewMode;		/* ビューモードか */
 BOOL			m_bIsSaveDialog;	/* 保存のダイアログか */
 
@@ -65,7 +65,7 @@ LRESULT APIENTRY OFNHookProcMain( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lP
 		/* 「開く」ダイアログのサイズと位置 */
 		pShareData = CShareData::getInstance()->GetShareData();
 		::GetWindowRect( hwnd, &pShareData->m_Common.m_sOthers.m_rcOpenDialog );
-//		MYTRACE( _T("WM_MOVE 1\n") );
+//		MYTRACE( L"WM_MOVE 1\n" );
 		break;
 	case WM_COMMAND:
 		wNotifyCode = HIWORD(wParam);	// notification code
@@ -86,10 +86,10 @@ LRESULT APIENTRY OFNHookProcMain( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lP
 	case WM_NOTIFY:
 		idCtrl = (int) wParam;
 		pofn = (OFNOTIFY*) lParam;
-//		MYTRACE( _T("=========WM_NOTIFY=========\n") );
-//		MYTRACE( _T("pofn->hdr.hwndFrom=%xh\n"), pofn->hdr.hwndFrom );
-//		MYTRACE( _T("pofn->hdr.idFrom=%xh(%d)\n"), pofn->hdr.idFrom, pofn->hdr.idFrom );
-//		MYTRACE( _T("pofn->hdr.code=%xh(%d)\n"), pofn->hdr.code, pofn->hdr.code );
+//		MYTRACE( L"=========WM_NOTIFY=========\n" );
+//		MYTRACE( L"pofn->hdr.hwndFrom=%xh\n", pofn->hdr.hwndFrom );
+//		MYTRACE( L"pofn->hdr.idFrom=%xh(%d)\n", pofn->hdr.idFrom, pofn->hdr.idFrom );
+//		MYTRACE( L"pofn->hdr.code=%xh(%d)\n", pofn->hdr.code, pofn->hdr.code );
 		break;
 	}
 //	return ::CallWindowProc( (int (__stdcall *)( void ))(WNDPROC)m_wpOpenDialogProc, hwnd, uMsg, wParam, lParam );
@@ -146,11 +146,11 @@ UINT_PTR CALLBACK OFNHookProc(
 		EOL_CR,
 	};
 	//	文字列はResource内に入れる
-	const TCHAR*	const	pEolNameArr[] = {
-		_T("変換なし"),
-		_T("CR+LF"),
-		_T("LF (UNIX)"),
-		_T("CR (Mac)"),
+	const WCHAR*	const	pEolNameArr[] = {
+		L"変換なし",
+		L"CR+LF",
+		L"LF (UNIX)",
+		L"CR (Mac)",
 	};
 	int nEolNameArrNum = (int)_countof(pEolNameArr);
 
@@ -160,7 +160,7 @@ UINT_PTR CALLBACK OFNHookProc(
 
 	switch( uiMsg ){
 	case WM_MOVE:
-//		MYTRACE( _T("WM_MOVE 2\n") );
+//		MYTRACE( L"WM_MOVE 2\n" );
 		break;
 	case WM_SIZE:
 		fwSizeType = wParam;		// resizing flag
@@ -295,30 +295,30 @@ UINT_PTR CALLBACK OFNHookProc(
 	case WM_NOTIFY:
 		idCtrl = (int) wParam;
 		pofn = (OFNOTIFY*) lParam;
-//		MYTRACE( _T("=========WM_NOTIFY=========\n") );
-//		MYTRACE( _T("pofn->hdr.hwndFrom=%xh\n"), pofn->hdr.hwndFrom );
-//		MYTRACE( _T("pofn->hdr.idFrom=%xh(%d)\n"), pofn->hdr.idFrom, pofn->hdr.idFrom );
-//		MYTRACE( _T("pofn->hdr.code=%xh(%d)\n"), pofn->hdr.code, pofn->hdr.code );
+//		MYTRACE( L"=========WM_NOTIFY=========\n" );
+//		MYTRACE( L"pofn->hdr.hwndFrom=%xh\n", pofn->hdr.hwndFrom );
+//		MYTRACE( L"pofn->hdr.idFrom=%xh(%d)\n", pofn->hdr.idFrom, pofn->hdr.idFrom );
+//		MYTRACE( L"pofn->hdr.code=%xh(%d)\n", pofn->hdr.code, pofn->hdr.code );
 
 		switch( pofn->hdr.code ){
 		case CDN_FILEOK:
 			// 拡張子の補完を自前で行う	// 2006.11.10 ryoji
 			if( m_bIsSaveDialog ){
-				TCHAR szDefExt[_MAX_EXT];	// 補完する拡張子
-				TCHAR szBuf[_MAX_PATH + _MAX_EXT];	// ワーク
-				LPTSTR pszCur, pszNext;
+				WCHAR szDefExt[_MAX_EXT];	// 補完する拡張子
+				WCHAR szBuf[_MAX_PATH + _MAX_EXT];	// ワーク
+				LPWSTR pszCur, pszNext;
 				int i;
 
 				CommDlg_OpenSave_GetSpec(hwndOpenDlg, szBuf, _MAX_PATH);	// ファイル名入力ボックス内の文字列
 				pszCur = szBuf;
-				while( *pszCur == _T(' ') )	// 空白を読み飛ばす
+				while( *pszCur == L' ' )	// 空白を読み飛ばす
 					pszCur = ::CharNext(pszCur);
-				if( *pszCur == _T('\"') ){	// 二重引用部で始まっている
+				if( *pszCur == L'\"' ){	// 二重引用部で始まっている
 					::lstrcpyn(pcDlgOpenFile->m_szPath, pOf->lpstrFile, _MAX_PATH);
 				}
 				else{
-					_tsplitpath( pOf->lpstrFile, NULL, NULL, NULL, szDefExt );
-					if( szDefExt[0] == _T('.') /* && szDefExt[1] != _T('\0') */ ){	// 既に拡張子がついている	2文字目のチェックの削除	2008/6/14 Uchi
+					_wsplitpath( pOf->lpstrFile, NULL, NULL, NULL, szDefExt );
+					if( szDefExt[0] == L'.' /* && szDefExt[1] != L'\0' */ ){	// 既に拡張子がついている	2文字目のチェックの削除	2008/6/14 Uchi
 						// .のみの場合にも拡張子付きとみなす。
 						lstrcpyn(pcDlgOpenFile->m_szPath, pOf->lpstrFile, _MAX_PATH);
 					}
@@ -327,38 +327,38 @@ UINT_PTR CALLBACK OFNHookProc(
 						{
 						case 1:		// ユーザー定義
 							pszCur = pcDlgOpenFile->m_szDefaultWildCard;
-							while( *pszCur != _T('.') && *pszCur != _T('\0') )	// '.'まで読み飛ばす
+							while( *pszCur != L'.' && *pszCur != L'\0' )	// '.'まで読み飛ばす
 								pszCur = ::CharNext(pszCur);
 							i = 0;
-							while( *pszCur != _T(';') && *pszCur != _T('\0') ){	// ';'までコピーする
+							while( *pszCur != L';' && *pszCur != L'\0' ){	// ';'までコピーする
 								pszNext = ::CharNext(pszCur);
 								while( pszCur < pszNext )
 									szDefExt[i++] = *pszCur++;
 							}
-							szDefExt[i] = _T('\0');
-							if( ::_tcslen(szDefExt) < 2 || szDefExt[1] == _T('*') )	// 無効な拡張子?
-								szDefExt[0] = _T('\0');
+							szDefExt[i] = L'\0';
+							if( ::wcslen(szDefExt) < 2 || szDefExt[1] == L'*' )	// 無効な拡張子?
+								szDefExt[0] = L'\0';
 							break;
 						case 2:		// *.txt
-							::_tcscpy(szDefExt, _T(".txt"));
+							::wcscpy(szDefExt, L".txt");
 							break;
 						case 3:		// *.*
 						default:	// 不明
-							szDefExt[0] = _T('\0');
+							szDefExt[0] = L'\0';
 							break;
 						}
 						lstrcpyn(szBuf, pOf->lpstrFile, _MAX_PATH + 1);
-						::_tcscat(szBuf, szDefExt);
+						::wcscat(szBuf, szDefExt);
 						lstrcpyn(pcDlgOpenFile->m_szPath, szBuf, _MAX_PATH);
 					}
 				}
 
 				// ファイルの上書き確認を自前で行う	// 2006.11.10 ryoji
 				if( IsFileExists(pcDlgOpenFile->m_szPath, true) ){
-					TCHAR szText[_MAX_PATH + 100];
+					WCHAR szText[_MAX_PATH + 100];
 					lstrcpyn(szText, pcDlgOpenFile->m_szPath, _MAX_PATH);
-					::_tcscat(szText, _T(" は既に存在します。\r\n上書きしますか？"));
-					if( IDYES != ::MessageBox( hwndOpenDlg, szText, _T("名前を付けて保存"), MB_YESNO | MB_ICONEXCLAMATION) ){
+					::wcscat(szText, L" は既に存在します。\r\n上書きしますか？");
+					if( IDYES != ::MessageBox( hwndOpenDlg, szText, L"名前を付けて保存", MB_YESNO | MB_ICONEXCLAMATION) ){
 						::SetWindowLongPtr( hdlg, DWLP_MSGRESULT, TRUE );
 						return TRUE;
 					}
@@ -383,17 +383,17 @@ UINT_PTR CALLBACK OFNHookProc(
 			}
 			//	To Here Jul. 26, 2003 ryoji
 
-//			MYTRACE( _T("文字コード  lRes=%d\n"), lRes );
-//			MYTRACE( _T("pofn->hdr.code=CDN_FILEOK        \n") );break;
+//			MYTRACE( L"文字コード  lRes=%d\n", lRes );
+//			MYTRACE( L"pofn->hdr.code=CDN_FILEOK        \n" );break;
 			break;	/* CDN_FILEOK */
 
 		case CDN_FOLDERCHANGE  :
-//			MYTRACE( _T("pofn->hdr.code=CDN_FOLDERCHANGE  \n") );
+//			MYTRACE( L"pofn->hdr.code=CDN_FOLDERCHANGE  \n" );
 			{
 				wchar_t szFolder[_MAX_PATH];
 				lRes = CommDlg_OpenSave_GetFolderPath( hwndOpenDlg, szFolder, _countof( szFolder ) );
 			}
-//			MYTRACE( _T("\tlRes=%d\tszFolder=[%ls]\n"), lRes, szFolder );
+//			MYTRACE( L"\tlRes=%d\tszFolder=[%ls]\n", lRes, szFolder );
 
 			break;
 		case CDN_SELCHANGE :
@@ -406,22 +406,22 @@ UINT_PTR CALLBACK OFNHookProc(
 					nLength += _MAX_PATH + 2;
 					if( pcDlgOpenFile->m_ofn.nMaxFile < nLength ){
 						delete [] pcDlgOpenFile->m_ofn.lpstrFile;
-						pcDlgOpenFile->m_ofn.lpstrFile = new TCHAR[nLength];
+						pcDlgOpenFile->m_ofn.lpstrFile = new WCHAR[nLength];
 						pcDlgOpenFile->m_ofn.nMaxFile = nLength;
 					}
 				}
 			}
-			// MYTRACE( _T("pofn->hdr.code=CDN_SELCHANGE     \n") );
+			// MYTRACE( L"pofn->hdr.code=CDN_SELCHANGE     \n" );
 			break;
-//		case CDN_HELP			:	MYTRACE( _T("pofn->hdr.code=CDN_HELP          \n") );break;
-//		case CDN_INITDONE		:	MYTRACE( _T("pofn->hdr.code=CDN_INITDONE      \n") );break;
-//		case CDN_SHAREVIOLATION	:	MYTRACE( _T("pofn->hdr.code=CDN_SHAREVIOLATION\n") );break;
-//		case CDN_TYPECHANGE		:	MYTRACE( _T("pofn->hdr.code=CDN_TYPECHANGE    \n") );break;
-//		default:					MYTRACE( _T("pofn->hdr.code=???\n") );break;
+//		case CDN_HELP			:	MYTRACE( L"pofn->hdr.code=CDN_HELP          \n" );break;
+//		case CDN_INITDONE		:	MYTRACE( L"pofn->hdr.code=CDN_INITDONE      \n" );break;
+//		case CDN_SHAREVIOLATION	:	MYTRACE( L"pofn->hdr.code=CDN_SHAREVIOLATION\n" );break;
+//		case CDN_TYPECHANGE		:	MYTRACE( L"pofn->hdr.code=CDN_TYPECHANGE    \n" );break;
+//		default:					MYTRACE( L"pofn->hdr.code=???\n" );break;
 
 		}
 
-//		MYTRACE( _T("=======================\n") );
+//		MYTRACE( L"=======================\n" );
 		break;
 	case WM_COMMAND:
 		wNotifyCode = HIWORD(wParam);	// notification code
@@ -456,7 +456,7 @@ UINT_PTR CALLBACK OFNHookProc(
 			case IDC_COMBO_MRU:
 			case IDC_COMBO_OPENFOLDER:
 				{
-					TCHAR	szWork[_MAX_PATH + 1];
+					WCHAR	szWork[_MAX_PATH + 1];
 					nIdx = Combo_GetCurSel( (HWND) lParam );
 
 					if( CB_ERR != Combo_GetLBText( (HWND) lParam, nIdx, szWork ) ){
@@ -517,20 +517,20 @@ CDlgOpenFile::CDlgOpenFile()
 	InitOfn( &m_ofn );		// 2005.10.29 ryoji
 	m_ofn.nFilterIndex = 1;	//Jul. 09, 2001 JEPRO		/* 「開く」での最初のワイルドカード */
 
-	TCHAR	szFile[_MAX_PATH + 1];
-	TCHAR	szDrive[_MAX_DRIVE];
-	TCHAR	szDir[_MAX_DIR];
+	WCHAR	szFile[_MAX_PATH + 1];
+	WCHAR	szDrive[_MAX_DRIVE];
+	WCHAR	szDir[_MAX_DIR];
 	lPathLen = ::GetModuleFileName(
 		NULL,
 		szFile, _countof( szFile )
 	);
-	_tsplitpath( szFile, szDrive, szDir, NULL, NULL );
-	_tcscpy( m_szInitialDir, szDrive );
-	_tcscat( m_szInitialDir, szDir );
+	_wsplitpath( szFile, szDrive, szDir, NULL, NULL );
+	wcscpy( m_szInitialDir, szDrive );
+	wcscat( m_szInitialDir, szDir );
 
 
 
-	_tcscpy( m_szDefaultWildCard, _T("*.*") );	/*「開く」での最初のワイルドカード（保存時の拡張子補完でも使用される） */
+	wcscpy( m_szDefaultWildCard, L"*.*" );	/*「開く」での最初のワイルドカード（保存時の拡張子補完でも使用される） */
 
 	return;
 }
@@ -549,10 +549,10 @@ CDlgOpenFile::~CDlgOpenFile()
 void CDlgOpenFile::Create(
 	HINSTANCE					hInstance,
 	HWND						hwndParent,
-	const TCHAR*				pszUserWildCard,
-	const TCHAR*				pszDefaultPath,
-	const std::vector<LPCTSTR>& vMRU,
-	const std::vector<LPCTSTR>& vOPENFOLDER
+	const WCHAR*				pszUserWildCard,
+	const WCHAR*				pszDefaultPath,
+	const std::vector<LPCWSTR>& vMRU,
+	const std::vector<LPCWSTR>& vOPENFOLDER
 )
 {
 	m_hInstance = hInstance;
@@ -561,19 +561,19 @@ void CDlgOpenFile::Create(
 	/* ユーザー定義ワイルドカード（保存時の拡張子補完でも使用される） */
 	if( NULL != pszUserWildCard ){
 		//	バッファに収まらない場合は切り詰める (バッファオーバーフロー防止)
-		_tcsncpy_s( m_szDefaultWildCard.GetBufferPointer(), m_szDefaultWildCard.GetBufferCount(), pszUserWildCard, _TRUNCATE );
+		wcsncpy_s( m_szDefaultWildCard.GetBufferPointer(), m_szDefaultWildCard.GetBufferCount(), pszUserWildCard, _TRUNCATE );
 	}
 
 	/* 「開く」での初期フォルダ */
-	if( pszDefaultPath && pszDefaultPath[0] != _T('\0') ){	//現在編集中のファイルのパス	//@@@ 2002.04.18
-		TCHAR szDrive[_MAX_DRIVE];
-		TCHAR szDir[_MAX_DIR];
+	if( pszDefaultPath && pszDefaultPath[0] != L'\0' ){	//現在編集中のファイルのパス	//@@@ 2002.04.18
+		WCHAR szDrive[_MAX_DRIVE];
+		WCHAR szDir[_MAX_DIR];
 		//	Jun. 23, 2002 genta
-		my_splitpath_t( pszDefaultPath, szDrive, szDir, NULL, NULL );
+		my_splitpath_w( pszDefaultPath, szDrive, szDir, NULL, NULL );
 		// 2010.08.28 相対パス解決
-		TCHAR szRelPath[_MAX_PATH];
-		auto_sprintf( szRelPath, _T("%ts%ts"), szDrive, szDir );
-		const TCHAR* p = szRelPath;
+		WCHAR szRelPath[_MAX_PATH];
+		auto_sprintf( szRelPath, L"%ts%ts", szDrive, szDir );
+		const WCHAR* p = szRelPath;
 		if( ! ::GetLongFileName( p, m_szInitialDir ) ){
 			auto_strcpy(m_szInitialDir, p );
 		}
@@ -595,16 +595,16 @@ void CDlgOpenFile::Create(
 		拡張子フィルタの管理をCFileExtクラスで行う。
 	@date 2005.02.20 novice 拡張子を省略したら補完する
 */
-bool CDlgOpenFile::DoModal_GetOpenFileName( TCHAR* pszPath , bool bSetCurDir )
+bool CDlgOpenFile::DoModal_GetOpenFileName( WCHAR* pszPath , bool bSetCurDir )
 {
 	//カレントディレクトリを保存。関数から抜けるときに自動でカレントディレクトリは復元される。
 	CCurrentDirectoryBackupPoint cCurDirBackup;
 
 	//	2003.05.12 MIK
 	CFileExt	cFileExt;
-	cFileExt.AppendExtRaw( _T("ユーザー指定"),     m_szDefaultWildCard );
-	cFileExt.AppendExtRaw( _T("テキストファイル"), _T("*.txt") );
-	cFileExt.AppendExtRaw( _T("すべてのファイル"), _T("*.*") );
+	cFileExt.AppendExtRaw( L"ユーザー指定",     m_szDefaultWildCard );
+	cFileExt.AppendExtRaw( L"テキストファイル", L"*.txt" );
+	cFileExt.AppendExtRaw( L"すべてのファイル", L"*.*" );
 
 	/* 構造体の初期化 */
 	InitOfn( &m_ofn );		// 2005.10.29 ryoji
@@ -615,24 +615,24 @@ bool CDlgOpenFile::DoModal_GetOpenFileName( TCHAR* pszPath , bool bSetCurDir )
 	// 「開く」での初期フォルダチェック強化
 // 2005/02/20 novice デフォルトのファイル名は何も設定しない
 	{
-		TCHAR szDrive[_MAX_DRIVE];
-		TCHAR szDir[_MAX_DIR];
-		TCHAR szName[_MAX_FNAME];
-		TCHAR szExt  [_MAX_EXT];
+		WCHAR szDrive[_MAX_DRIVE];
+		WCHAR szDir[_MAX_DIR];
+		WCHAR szName[_MAX_FNAME];
+		WCHAR szExt  [_MAX_EXT];
 
 		//	Jun. 23, 2002 Thanks to sui
-		my_splitpath_t( pszPath, szDrive, szDir, szName, szExt );
+		my_splitpath_w( pszPath, szDrive, szDir, szName, szExt );
 	
 		//	指定されたファイルが存在しないとき szName == NULL
 		//	ファイルの場所にディレクトリを指定するとエラーになるので
 		//	ファイルが無い場合は全く指定しないことにする．
-		if( szName[0] == _T('\0') ){
-			pszPath[0] = _T('\0');
+		if( szName[0] == L'\0' ){
+			pszPath[0] = L'\0';
 		}
 		else {
-			TCHAR szRelPath[_MAX_PATH];
-			auto_sprintf( szRelPath, _T("%ts%ts%ts%ts"), szDrive, szDir, szName, szExt );
-			const TCHAR* p = szRelPath;
+			WCHAR szRelPath[_MAX_PATH];
+			auto_sprintf( szRelPath, L"%ts%ts%ts%ts", szDrive, szDir, szName, szExt );
+			const WCHAR* p = szRelPath;
 			if( ! ::GetLongFileName( p, pszPath ) ){
 				auto_strcpy( pszPath, p );
 			}
@@ -643,7 +643,7 @@ bool CDlgOpenFile::DoModal_GetOpenFileName( TCHAR* pszPath , bool bSetCurDir )
 	m_ofn.nMaxFile = _MAX_PATH;
 	m_ofn.lpstrInitialDir = m_szInitialDir;
 	m_ofn.Flags = OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
-	m_ofn.lpstrDefExt = _T(""); // 2005/02/20 novice 拡張子を省略したら補完する
+	m_ofn.lpstrDefExt = L""; // 2005/02/20 novice 拡張子を省略したら補完する
 
 	// 2010.08.28 Moca DLLが読み込まれるので移動
 	ChangeCurrentDirectoryToExeDir();
@@ -667,21 +667,21 @@ bool CDlgOpenFile::DoModal_GetOpenFileName( TCHAR* pszPath , bool bSetCurDir )
 		拡張子フィルタの管理をCFileExtクラスで行う。
 	@date 2005.02.20 novice 拡張子を省略したら補完する
 */
-bool CDlgOpenFile::DoModal_GetSaveFileName( TCHAR* pszPath, bool bSetCurDir )
+bool CDlgOpenFile::DoModal_GetSaveFileName( WCHAR* pszPath, bool bSetCurDir )
 {
 	//カレントディレクトリを保存。関数から抜けるときに自動でカレントディレクトリは復元される。
 	CCurrentDirectoryBackupPoint cCurDirBackup;
 
 	//	2003.05.12 MIK
 	CFileExt	cFileExt;
-	cFileExt.AppendExtRaw( _T("ユーザー指定"),     m_szDefaultWildCard );
-	cFileExt.AppendExtRaw( _T("テキストファイル"), _T("*.txt") );
-	cFileExt.AppendExtRaw( _T("すべてのファイル"), _T("*.*") );
+	cFileExt.AppendExtRaw( L"ユーザー指定",     m_szDefaultWildCard );
+	cFileExt.AppendExtRaw( L"テキストファイル", L"*.txt" );
+	cFileExt.AppendExtRaw( L"すべてのファイル", L"*.*" );
 	
 	// 2010.08.28 カレントディレクトリを移動するのでパス解決する
 	if( pszPath[0] ){
-		TCHAR szFullPath[_MAX_PATH];
-		const TCHAR* pOrg = pszPath;
+		WCHAR szFullPath[_MAX_PATH];
+		const WCHAR* pOrg = pszPath;
 		if( ::GetLongFileName( pOrg, szFullPath ) ){
 			// 成功。書き戻す
 			auto_strcpy( pszPath , szFullPath );
@@ -698,7 +698,7 @@ bool CDlgOpenFile::DoModal_GetSaveFileName( TCHAR* pszPath, bool bSetCurDir )
 	m_ofn.lpstrInitialDir = m_szInitialDir;
 	m_ofn.Flags = OFN_CREATEPROMPT | OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT;
 
-	m_ofn.lpstrDefExt = _T("");	// 2005/02/20 novice 拡張子を省略したら補完する
+	m_ofn.lpstrDefExt = L"";	// 2005/02/20 novice 拡張子を省略したら補完する
 
 	// 2010.08.28 Moca DLLが読み込まれるので移動
 	ChangeCurrentDirectoryToExeDir();
@@ -722,7 +722,7 @@ bool CDlgOpenFile::DoModal_GetSaveFileName( TCHAR* pszPath, bool bSetCurDir )
 		拡張子フィルタの管理をCFileExtクラスで行う。
 	@date 2005.02.20 novice 拡張子を省略したら補完する
 */
-bool CDlgOpenFile::DoModalOpenDlg( SLoadInfo* pLoadInfo, std::vector<std::tstring>* pFileNames )
+bool CDlgOpenFile::DoModalOpenDlg( SLoadInfo* pLoadInfo, std::vector<std::wstring>* pFileNames )
 {
 	m_bIsSaveDialog = FALSE;	/* 保存のダイアログか */
 
@@ -730,8 +730,8 @@ bool CDlgOpenFile::DoModalOpenDlg( SLoadInfo* pLoadInfo, std::vector<std::tstrin
 
 	// ファイルの種類	2003.05.12 MIK
 	CFileExt	cFileExt;
-	cFileExt.AppendExtRaw( _T("すべてのファイル"), _T("*.*") );
-	cFileExt.AppendExtRaw( _T("テキストファイル"), _T("*.txt") );
+	cFileExt.AppendExtRaw( L"すべてのファイル", L"*.*" );
+	cFileExt.AppendExtRaw( L"テキストファイル", L"*.txt" );
 	for( int i = 0; i < MAX_TYPES; i++ ){
 		const STypeConfig& types = CDocTypeManager().GetTypeSetting(CTypeConfig(i));
 		cFileExt.AppendExt( types.m_szTypeName, types.m_szTypeExts );
@@ -744,8 +744,8 @@ bool CDlgOpenFile::DoModalOpenDlg( SLoadInfo* pLoadInfo, std::vector<std::tstrin
 	m_bUseBom = false;	//	Jul. 26, 2003 ryoji
 
 	//ファイルパス受け取りバッファ
-	TCHAR* pszPathBuf = new TCHAR[2000];
-	pszPathBuf[0] = _T('\0');
+	WCHAR* pszPathBuf = new WCHAR[2000];
+	pszPathBuf[0] = L'\0';
 
 	//OPENFILENAME構造体の初期化
 	InitOfn( &m_ofn );		// 2005.10.29 ryoji
@@ -760,7 +760,7 @@ bool CDlgOpenFile::DoModalOpenDlg( SLoadInfo* pLoadInfo, std::vector<std::tstrin
 	if( bMultiSelect ){
 		m_ofn.Flags |= OFN_ALLOWMULTISELECT;
 	}
-	m_ofn.lpstrDefExt = _T("");	// 2005/02/20 novice 拡張子を省略したら補完する
+	m_ofn.lpstrDefExt = L"";	// 2005/02/20 novice 拡張子を省略したら補完する
 
 	//カレントディレクトリを保存。関数を抜けるときに自動でカレントディレクトリは復元されます。
 	CCurrentDirectoryBackupPoint cCurDirBackup;
@@ -772,19 +772,19 @@ bool CDlgOpenFile::DoModalOpenDlg( SLoadInfo* pLoadInfo, std::vector<std::tstrin
 	bool bDlgResult = _GetOpenFileNameRecover( &m_ofn );
 	if( bDlgResult ){
 		if( bMultiSelect ){
-			pLoadInfo->cFilePath = _T("");
-			if( m_ofn.nFileOffset < _tcslen( m_ofn.lpstrFile ) ){
-				pFileNames->push_back( std::tstring(m_ofn.lpstrFile) );
+			pLoadInfo->cFilePath = L"";
+			if( m_ofn.nFileOffset < wcslen( m_ofn.lpstrFile ) ){
+				pFileNames->push_back( std::wstring(m_ofn.lpstrFile) );
 			}else{
-				std::tstring path;
-				TCHAR* pos = m_ofn.lpstrFile;
-				pos += _tcslen(pos) + 1;
-				while( *pos != _T('\0') ){
+				std::wstring path;
+				WCHAR* pos = m_ofn.lpstrFile;
+				pos += wcslen(pos) + 1;
+				while( *pos != L'\0' ){
 					path = m_ofn.lpstrFile;
-					path.append( _T("\\") );
+					path.append( L"\\" );
 					path.append( pos );
 					pFileNames->push_back( path );
-					pos += _tcslen(pos) + 1;
+					pos += wcslen(pos) + 1;
 				}
 			}
 		}else{
@@ -819,13 +819,13 @@ bool CDlgOpenFile::DoModalSaveDlg(SSaveInfo* pSaveInfo, bool bSimpleMode)
 
 	//	2003.05.12 MIK
 	CFileExt	cFileExt;
-	cFileExt.AppendExtRaw( _T("ユーザー指定"),     m_szDefaultWildCard );
-	cFileExt.AppendExtRaw( _T("テキストファイル"), _T("*.txt") );
-	cFileExt.AppendExtRaw( _T("すべてのファイル"), _T("*.*") );
+	cFileExt.AppendExtRaw( L"ユーザー指定",     m_szDefaultWildCard );
+	cFileExt.AppendExtRaw( L"テキストファイル", L"*.txt" );
+	cFileExt.AppendExtRaw( L"すべてのファイル", L"*.*" );
 
 	// ファイル名の初期設定	// 2006.11.10 ryoji
-	if( pSaveInfo->cFilePath[0] == _T('\0') )
-		lstrcpyn(pSaveInfo->cFilePath, _T("無題"), _MAX_PATH);
+	if( pSaveInfo->cFilePath[0] == L'\0' )
+		lstrcpyn(pSaveInfo->cFilePath, L"無題", _MAX_PATH);
 
 	//OPENFILENAME構造体の初期化
 	InitOfn( &m_ofn );		// 2005.10.29 ryoji
@@ -843,8 +843,8 @@ bool CDlgOpenFile::DoModalSaveDlg(SSaveInfo* pSaveInfo, bool bSimpleMode)
 
 
 // 2005/02/20 novice 拡張子を省略したら補完する
-//	m_ofn.lpstrDefExt = _T("");
-	m_ofn.lpstrDefExt = (m_ofn.Flags & OFN_ENABLEHOOK)? NULL: _T("");	// 2006.11.10 ryoji フックを使うときは自前で拡張子を補完する
+//	m_ofn.lpstrDefExt = L"";
+	m_ofn.lpstrDefExt = (m_ofn.Flags & OFN_ENABLEHOOK)? NULL: L"";	// 2006.11.10 ryoji フックを使うときは自前で拡張子を補完する
 
 	//カレントディレクトリを保存。関数から抜けるときに自動でカレントディレクトリは復元される。
 	CCurrentDirectoryBackupPoint cCurDirBackup;
@@ -907,7 +907,7 @@ bool CDlgOpenFile::DoModalSaveDlg(SSaveInfo* pSaveInfo, bool bSimpleMode)
 */
 void CDlgOpenFile::DlgOpenFail(void)
 {
-	const TCHAR*	pszError;
+	const WCHAR*	pszError;
 	DWORD dwError = ::CommDlgExtendedError();
 	if( dwError == 0 ){
 		//	ユーザキャンセルによる
@@ -915,29 +915,29 @@ void CDlgOpenFile::DlgOpenFail(void)
 	}
 	
 	switch( dwError ){
-	case CDERR_DIALOGFAILURE  : pszError = _T("CDERR_DIALOGFAILURE  "); break;
-	case CDERR_FINDRESFAILURE : pszError = _T("CDERR_FINDRESFAILURE "); break;
-	case CDERR_NOHINSTANCE    : pszError = _T("CDERR_NOHINSTANCE    "); break;
-	case CDERR_INITIALIZATION : pszError = _T("CDERR_INITIALIZATION "); break;
-	case CDERR_NOHOOK         : pszError = _T("CDERR_NOHOOK         "); break;
-	case CDERR_LOCKRESFAILURE : pszError = _T("CDERR_LOCKRESFAILURE "); break;
-	case CDERR_NOTEMPLATE     : pszError = _T("CDERR_NOTEMPLATE     "); break;
-	case CDERR_LOADRESFAILURE : pszError = _T("CDERR_LOADRESFAILURE "); break;
-	case CDERR_STRUCTSIZE     : pszError = _T("CDERR_STRUCTSIZE     "); break;
-	case CDERR_LOADSTRFAILURE : pszError = _T("CDERR_LOADSTRFAILURE "); break;
-	case FNERR_BUFFERTOOSMALL : pszError = _T("FNERR_BUFFERTOOSMALL "); break;
-	case CDERR_MEMALLOCFAILURE: pszError = _T("CDERR_MEMALLOCFAILURE"); break;
-	case FNERR_INVALIDFILENAME: pszError = _T("FNERR_INVALIDFILENAME"); break;
-	case CDERR_MEMLOCKFAILURE : pszError = _T("CDERR_MEMLOCKFAILURE "); break;
-	case FNERR_SUBCLASSFAILURE: pszError = _T("FNERR_SUBCLASSFAILURE"); break;
-	default: pszError = _T("UNKNOWN_ERRORCODE"); break;
+	case CDERR_DIALOGFAILURE  : pszError = L"CDERR_DIALOGFAILURE  "; break;
+	case CDERR_FINDRESFAILURE : pszError = L"CDERR_FINDRESFAILURE "; break;
+	case CDERR_NOHINSTANCE    : pszError = L"CDERR_NOHINSTANCE    "; break;
+	case CDERR_INITIALIZATION : pszError = L"CDERR_INITIALIZATION "; break;
+	case CDERR_NOHOOK         : pszError = L"CDERR_NOHOOK         "; break;
+	case CDERR_LOCKRESFAILURE : pszError = L"CDERR_LOCKRESFAILURE "; break;
+	case CDERR_NOTEMPLATE     : pszError = L"CDERR_NOTEMPLATE     "; break;
+	case CDERR_LOADRESFAILURE : pszError = L"CDERR_LOADRESFAILURE "; break;
+	case CDERR_STRUCTSIZE     : pszError = L"CDERR_STRUCTSIZE     "; break;
+	case CDERR_LOADSTRFAILURE : pszError = L"CDERR_LOADSTRFAILURE "; break;
+	case FNERR_BUFFERTOOSMALL : pszError = L"FNERR_BUFFERTOOSMALL "; break;
+	case CDERR_MEMALLOCFAILURE: pszError = L"CDERR_MEMALLOCFAILURE"; break;
+	case FNERR_INVALIDFILENAME: pszError = L"FNERR_INVALIDFILENAME"; break;
+	case CDERR_MEMLOCKFAILURE : pszError = L"CDERR_MEMLOCKFAILURE "; break;
+	case FNERR_SUBCLASSFAILURE: pszError = L"FNERR_SUBCLASSFAILURE"; break;
+	default: pszError = L"UNKNOWN_ERRORCODE"; break;
 	}
 
 	ErrorBeep();
 	TopErrorMessage( m_hwndParent,
-		_T("ダイアログが開けません。\n")
-		_T("\n")
-		_T("エラー:%ts"),
+		L"ダイアログが開けません。\n"
+		L"\n"
+		L"エラー:%ts",
 		pszError
 	);
 }
@@ -956,7 +956,7 @@ void CDlgOpenFile::InitOfn( OPENFILENAMEZ* ofn )
 	ofn->lStructSize = IsWinV5forOfn()? sizeof(OPENFILENAMEZ): OPENFILENAME_SIZE_VERSION_400;
 	ofn->lCustData = (LPARAM)this;
 	ofn->lpfnHook = OFNHookProc;
-	ofn->lpTemplateName = MAKEINTRESOURCE(IDD_FILEOPEN);	// <-_T("IDD_FILEOPEN"); 2008/7/26 Uchi
+	ofn->lpTemplateName = MAKEINTRESOURCE(IDD_FILEOPEN);	// <-L"IDD_FILEOPEN"; 2008/7/26 Uchi
 }
 
 /*! 初期レイアウト設定処理
@@ -1065,7 +1065,7 @@ void CDlgOpenFile::OnCmbDropdown( HWND hwnd )
 	for( iItem = 0; iItem < nItem; iItem++ ){
 		nTextLen = Combo_GetLBTextLen( hwnd, iItem );
 		if( 0 < nTextLen ) {
-			TCHAR* pszText = new TCHAR[nTextLen + 1];
+			WCHAR* pszText = new WCHAR[nTextLen + 1];
 			Combo_GetLBText( hwnd, iItem, pszText );
 			if( ::GetTextExtentPoint32( hDC, pszText, nTextLen, &sizeText ) ){
 				if ( nWidth < sizeText.cx )
@@ -1088,8 +1088,8 @@ bool CDlgOpenFile::_GetOpenFileNameRecover( OPENFILENAMEZ* ofn )
 	BOOL bRet = ::GetOpenFileName( ofn );
 	if( !bRet  ){
 		if( FNERR_INVALIDFILENAME == ::CommDlgExtendedError() ){
-			_tcscpy( ofn->lpstrFile, _T("") );
-			ofn->lpstrInitialDir = _T("");
+			wcscpy( ofn->lpstrFile, L"" );
+			ofn->lpstrInitialDir = L"";
 			bRet = ::GetOpenFileName( ofn );
 		}
 	}
@@ -1105,8 +1105,8 @@ bool CDlgOpenFile::GetSaveFileNameRecover( OPENFILENAMEZ* ofn )
 	BOOL bRet = ::GetSaveFileName( ofn );
 	if( !bRet  ){
 		if( FNERR_INVALIDFILENAME == ::CommDlgExtendedError() ){
-			_tcscpy( ofn->lpstrFile, _T("") );
-			ofn->lpstrInitialDir = _T("");
+			wcscpy( ofn->lpstrFile, L"" );
+			ofn->lpstrInitialDir = L"";
 			bRet = ::GetSaveFileName( ofn );
 		}
 	}

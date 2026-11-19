@@ -30,7 +30,7 @@
 
 CDlgExec::CDlgExec()
 {
-	m_szCommand[0] = _T('\0');	/* コマンドライン */
+	m_szCommand[0] = L'\0';	/* コマンドライン */
 	return;
 }
 
@@ -42,7 +42,7 @@ static const int codeTable2[] = { 0x00, 0x10, 0x100 };
 /* モーダルダイアログの表示 */
 int CDlgExec::DoModal( HINSTANCE hInstance, HWND hwndParent, LPARAM lParam )
 {
-	m_szCommand[0] = _T('\0');	/* コマンドライン */
+	m_szCommand[0] = L'\0';	/* コマンドライン */
 	m_bEditable = CEditDoc::GetInstance(0)->IsEditable();
 	return (int)CDialog::DoModal( hInstance, hwndParent, IDD_EXEC, lParam );
 }
@@ -69,7 +69,7 @@ BOOL CDlgExec::OnInitDialog( HWND hwnd, WPARAM wParam, LPARAM lParam )
 /* ダイアログデータの設定 */
 void CDlgExec::SetData( void )
 {
-//	MYTRACE( _T("CDlgExec::SetData()") );
+//	MYTRACE( L"CDlgExec::SetData()" );
 	int		i;
 	HWND	hwndCombo;
 
@@ -110,7 +110,7 @@ void CDlgExec::SetData( void )
 	/*****************************
 	*         データ設定         *
 	*****************************/
-	_tcscpy( m_szCommand, m_pShareData->m_sHistory.m_aCommands[0] );
+	wcscpy( m_szCommand, m_pShareData->m_sHistory.m_aCommands[0] );
 	hwndCombo = ::GetDlgItem( GetHwnd(), IDC_COMBO_m_szCommand );
 	Combo_ResetContent( hwndCombo );
 	::DlgItem_SetText( GetHwnd(), IDC_COMBO_TEXT, m_szCommand );
@@ -120,7 +120,7 @@ void CDlgExec::SetData( void )
 	}
 	Combo_SetCurSel( hwndCombo, 0 );
 
-	_tcscpy( m_szCurDir, m_pShareData->m_sHistory.m_aCurDirs[0] );
+	wcscpy( m_szCurDir, m_pShareData->m_sHistory.m_aCurDirs[0] );
 	hwndCombo = GetItemHwnd( IDC_COMBO_CUR_DIR );
 	Combo_ResetContent( hwndCombo );
 	::DlgItem_SetText( GetHwnd(), IDC_COMBO_TEXT, m_szCurDir );
@@ -159,7 +159,7 @@ int CDlgExec::GetData( void )
 	if( IsDlgButtonCheckedBool( GetHwnd(), IDC_CHECK_CUR_DIR ) ){
 		DlgItem_GetText( GetHwnd(), IDC_COMBO_CUR_DIR, &m_szCurDir[0], _countof2( m_szCurDir ));
 	}else{
-		m_szCurDir[0] = _T('\0');
+		m_szCurDir[0] = L'\0';
 	}
 	{	//	From Here 2007.01.02 maru 引数を拡張のため
 		//	マクロからの呼び出しではShareDataに保存させないように，ShareDataとの受け渡しはExecCmdの外で
@@ -212,19 +212,19 @@ BOOL CDlgExec::OnBnClicked( int wID )
 	case IDC_BUTTON_REFERENCE:	/* ファイル名の「参照...」ボタン */
 		{
 			CDlgOpenFile	cDlgOpenFile;
-			TCHAR			szPath[_MAX_PATH + 1];
+			WCHAR			szPath[_MAX_PATH + 1];
 			int				size = _countof(szPath) - 1;
-			_tcsncpy( szPath, m_szCommand, size);
-			szPath[size] = _T('\0');
+			wcsncpy( szPath, m_szCommand, size);
+			szPath[size] = L'\0';
 			/* ファイルオープンダイアログの初期化 */
 			cDlgOpenFile.Create(
 				m_hInstance,
 				GetHwnd(),
-				_T("*.com;*.exe;*.bat;*.cmd"),
+				L"*.com;*.exe;*.bat;*.cmd",
 				m_szCommand
 			);
 			if( cDlgOpenFile.DoModal_GetOpenFileName( szPath ) ){
-				_tcscpy( m_szCommand, szPath );
+				wcscpy( m_szCommand, szPath );
 				::DlgItem_SetText( GetHwnd(), IDC_COMBO_m_szCommand, m_szCommand );
 			}
 		}
@@ -233,7 +233,7 @@ BOOL CDlgExec::OnBnClicked( int wID )
 
 	case IDC_BUTTON_REFERENCE2:
 		{
-			if( SelectDir( GetHwnd(), _T("カレントディレクトリを選んでください"), &m_szCurDir[0], &m_szCurDir[0] ) ){
+			if( SelectDir( GetHwnd(), L"カレントディレクトリを選んでください", &m_szCurDir[0], &m_szCurDir[0] ) ){
 				::DlgItem_SetText( GetHwnd(), IDC_COMBO_CUR_DIR, &m_szCurDir[0] );
 				
 			}

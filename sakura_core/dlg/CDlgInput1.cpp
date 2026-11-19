@@ -69,10 +69,10 @@ CDlgInput1::~CDlgInput1()
 BOOL CDlgInput1::DoModal(
 	HINSTANCE		hInstApp,
 	HWND			hwndParent,
-	const TCHAR*	pszTitle,
-	const TCHAR*	pszMessage,
+	const WCHAR*	pszTitle,
+	const WCHAR*	pszMessage,
 	int				nMaxTextLen,
-	TCHAR*			pszText
+	WCHAR*			pszText
 )
 {
 	BOOL bRet;
@@ -90,24 +90,24 @@ BOOL CDlgInput1::DoModal(
 		CDlgInput1Proc,
 		(LPARAM)this
 	);
-	_tcscpy( pszText, m_cmemText.GetStringPtr() );
+	wcscpy( pszText, m_cmemText.GetStringPtr() );
 	return bRet;
 }
 
 BOOL CDlgInput1::DoModal(
 	HINSTANCE		hInstApp,
 	HWND			hwndParent,
-	const TCHAR*	pszTitle,
-	const TCHAR*	pszMessage,
+	const WCHAR*	pszTitle,
+	const WCHAR*	pszMessage,
 	int				nMaxTextLen,
-	NOT_TCHAR*		pszText
+	ACHAR*		pszText
 )
 {
-	TCHAR buf[1024];
-	buf[0] = _T('\0');
+	WCHAR buf[1024];
+	buf[0] = L'\0';
 	BOOL ret=DoModal(hInstApp, hwndParent, pszTitle, pszMessage, nMaxTextLen, buf);
 	if(ret){
-		auto_strcpy(pszText,to_not_tchar(buf));
+		auto_strcpy(pszText,to_achar(buf));
 	}
 	return ret;
 }

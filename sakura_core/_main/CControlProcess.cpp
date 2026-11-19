@@ -49,7 +49,7 @@ bool CControlProcess::InitializeProcess()
 	m_hMutex = ::CreateMutex( NULL, FALSE, GSTR_MUTEX_SAKURA );
 	if( NULL == m_hMutex ){
 		ErrorBeep();
-		TopErrorMessage( NULL, _T("CreateMutex()失敗。\n終了します。") );
+		TopErrorMessage( NULL, L"CreateMutex()失敗。\n終了します。" );
 		return false;
 	}
 
@@ -58,7 +58,7 @@ bool CControlProcess::InitializeProcess()
 	if( NULL == m_hEventCPInitialized )
 	{
 		ErrorBeep();
-		TopErrorMessage( NULL, _T("CreateEvent()失敗。\n終了します。") );
+		TopErrorMessage( NULL, L"CreateEvent()失敗。\n終了します。" );
 		return false;
 	}
 
@@ -66,7 +66,7 @@ bool CControlProcess::InitializeProcess()
 	m_hMutexCP = ::CreateMutex( NULL, TRUE, GSTR_MUTEX_SAKURA_CP );
 	if( NULL == m_hMutexCP ){
 		ErrorBeep();
-		TopErrorMessage( NULL, _T("CreateMutex()失敗。\n終了します。") );
+		TopErrorMessage( NULL, L"CreateMutex()失敗。\n終了します。" );
 		return false;
 	}
 	if( ERROR_ALREADY_EXISTS == ::GetLastError() ){
@@ -81,13 +81,13 @@ bool CControlProcess::InitializeProcess()
 	SessionStore::createUniqInstance();
 
 	// コントロールプロセスのカレントディレクトリをシステムディレクトリに変更
-	TCHAR szDir[_MAX_PATH];
+	WCHAR szDir[_MAX_PATH];
 	::GetSystemDirectory( szDir, _countof(szDir) );
 	::SetCurrentDirectory( szDir );
 
 	/* 共有データのロード */
 	// 2007.05.19 ryoji 「設定を保存して終了する」オプション処理（sakuext連携用）を追加
-	TCHAR szIniFile[_MAX_PATH];
+	WCHAR szIniFile[_MAX_PATH];
 	CShareData_IO::LoadShareData();
 	CFileNameManager::getInstance()->GetIniFileName( szIniFile );	// 出力iniファイル名
 	if( !fexist(szIniFile) || CCommandLine::getInstance()->IsWriteQuit() ){
@@ -108,7 +108,7 @@ bool CControlProcess::InitializeProcess()
 	HWND hwnd = m_pcControlProcessWnd->Create( GetProcessInstance() );
 	if( !hwnd ){
 		ErrorBeep();
-		TopErrorMessage( NULL, _T("ウィンドウの作成に失敗しました。\n起動できません。") );
+		TopErrorMessage( NULL, L"ウィンドウの作成に失敗しました。\n起動できません。" );
 		return false;
 	}
 	SetMainWindow(hwnd);
@@ -117,7 +117,7 @@ bool CControlProcess::InitializeProcess()
 	// 初期化完了イベントをシグナル状態にする
 	if( !::SetEvent( m_hEventCPInitialized ) ){
 		ErrorBeep();
-		TopErrorMessage( NULL, _T("SetEvent()失敗。\n終了します。") );
+		TopErrorMessage( NULL, L"SetEvent()失敗。\n終了します。" );
 		return false;
 	}
 

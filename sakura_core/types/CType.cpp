@@ -95,7 +95,7 @@ void _DefaultConfig(STypeConfig* pType)
 	pType->m_nColorInfoArrNum = COLORIDX_LAST;
 
 	// 2001/06/14 Start by asa-o
-	_tcscpy( pType->m_szHokanFile, _T("") );		/* 入力補完 単語ファイル */
+	wcscpy( pType->m_szHokanFile, L"" );		/* 入力補完 単語ファイル */
 	// 2001/06/14 End
 
 
@@ -172,8 +172,8 @@ void _DefaultConfig(STypeConfig* pType)
 //@@@ 2006.04.10 fon ADD-start
 	for(int i = 0; i < MAX_KEYHELP_FILE; i++){
 		pType->m_KeyHelpArr[i].m_bUse = false;
-		pType->m_KeyHelpArr[i].m_szAbout[0] = _T('\0');
-		pType->m_KeyHelpArr[i].m_szPath[0] = _T('\0');
+		pType->m_KeyHelpArr[i].m_szAbout[0] = L'\0';
+		pType->m_KeyHelpArr[i].m_szPath[0] = L'\0';
 	}
 	pType->m_bUseKeyWordHelp = false;		// 辞書選択機能の使用可否
 	pType->m_nKeyHelpNum = 0;				// 登録辞書数

@@ -35,12 +35,12 @@ CFilePath::CFilePath(const char* rhs)
 {
 	//現時点ではNULLを受け付けない
 	assert(rhs);
-	_mbstotcs(m_tszPath, _countof(m_tszPath), rhs);
+	mbstowcs2(m_tszPath, rhs, _countof(m_tszPath));
 }
 CFilePath::CFilePath(const wchar_t* rhs)
 {
 	//現時点ではNULLを受け付けない
 	assert(rhs);
-	_wcstotcs(m_tszPath, _countof(m_tszPath), rhs);
+	wcsncpy_s(m_tszPath, _countof(m_tszPath), rhs, _TRUNCATE);
 }
 */

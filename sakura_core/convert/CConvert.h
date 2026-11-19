@@ -46,7 +46,7 @@ public:
 	{
 		bool bRet=DoConvert(pcData);
 		if(!bRet){
-			ErrorMessage(NULL,_T("変換でエラーが発生しました"));
+			ErrorMessage(NULL,L"変換でエラーが発生しました");
 		}
 	}
 

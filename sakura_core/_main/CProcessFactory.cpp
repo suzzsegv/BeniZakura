@@ -26,7 +26,6 @@
 #include "debug/CRunningTimer.h"
 #include "util/os.h"
 #include <io.h>
-#include <tchar.h>
 
 class CProcess;
 
@@ -54,7 +53,7 @@ bool			COsVersionInfo::m_bSSE;
 	@date 2002/01/08
 	@date 2006/04/10 ryoji
 */
-CProcess* CProcessFactory::Create( HINSTANCE hInstance, LPCTSTR lpCmdLine )
+CProcess* CProcessFactory::Create( HINSTANCE hInstance, LPCWSTR lpCmdLine )
 {
 	CCommandLine::getInstance()->ParseCommandLine(lpCmdLine);
 
@@ -108,22 +107,22 @@ bool CProcessFactory::IsValidVersion()
 	if( cOsVer.GetVersion() ){
 		if( !cOsVer.OsIsEnableVersion() ){
 			InfoMessage( NULL,
-				_T("このアプリケーションを実行するには、\n")
+				L"このアプリケーションを実行するには、\n"
 #if (WINVER >= _WIN32_WINNT_WIN7)
-				_T("Windows7以降のOSが必要です。\n")
+				L"Windows7以降のOSが必要です。\n"
 #elif (WINVER >= _WIN32_WINNT_VISTA)
-				_T("WindowsVista以降 または WindowsServer2008以降のOSが必要です。\n")
+				L"WindowsVista以降 または WindowsServer2008以降のOSが必要です。\n"
 #elif (WINVER >= _WIN32_WINNT_WIN2K)
-				_T("Windows2000以降のOSが必要です。\n")
+				L"Windows2000以降のOSが必要です。\n"
 #else
-				_T("Windows95以上 または WindowsNT4.0以上のOSが必要です。\n")
+				L"Windows95以上 または WindowsNT4.0以上のOSが必要です。\n"
 #endif
-				_T("アプリケーションを終了します。")
+				L"アプリケーションを終了します。"
 			);
 			return false;
 		}
 	}else{
-		InfoMessage( NULL, _T("OSのバージョンが取得できません。\nアプリケーションを終了します。") );
+		InfoMessage( NULL, L"OSのバージョンが取得できません。\nアプリケーションを終了します。" );
 		return false;
 	}
 
@@ -132,9 +131,9 @@ bool CProcessFactory::IsValidVersion()
 	if ( cOsVer._SupportSSE() ) {
 	} else {
 		InfoMessage( NULL,
-			_T("このアプリケーションを実行するには、\n")
-			_T("SSE命令セットをサポートしたCPUが必要です。\n")
-			_T("アプリケーションを終了します。")
+			L"このアプリケーションを実行するには、\n"
+			L"SSE命令セットをサポートしたCPUが必要です。\n"
+			L"アプリケーションを終了します。"
 		);
 		return false;
 	}
@@ -205,17 +204,17 @@ bool CProcessFactory::StartControlProcess()
 	s.cb          = sizeof( s );
 	s.lpReserved  = NULL;
 	s.lpDesktop   = NULL;
-	s.lpTitle     = _T("sakura control process"); //2007.09.21 kobake デバッグしやすいように、名前を付ける
+	s.lpTitle     = L"sakura control process"; //2007.09.21 kobake デバッグしやすいように、名前を付ける
 	s.dwFlags     = STARTF_USESHOWWINDOW;
 	s.wShowWindow = SW_SHOWDEFAULT;
 	s.cbReserved2 = 0;
 	s.lpReserved2 = NULL;
 
-	TCHAR szCmdLineBuf[1024];	//	コマンドライン
-	TCHAR szEXE[MAX_PATH + 1];	//	アプリケーションパス名
+	WCHAR szCmdLineBuf[1024];	//	コマンドライン
+	WCHAR szEXE[MAX_PATH + 1];	//	アプリケーションパス名
 
 	::GetModuleFileName( NULL, szEXE, _countof( szEXE ));
-	::auto_sprintf( szCmdLineBuf, _T("\"%ts\" -NOWIN"), szEXE ); // ""付加
+	::auto_sprintf( szCmdLineBuf, L"\"%ts\" -NOWIN", szEXE ); // ""付加
 
 	//常駐プロセス起動
 	DWORD dwCreationFlag = CREATE_DEFAULT_ERROR_MODE;
@@ -236,18 +235,18 @@ bool CProcessFactory::StartControlProcess()
 	);
 	if( !bCreateResult ){
 		//	失敗
-		TCHAR* pMsg;
+		WCHAR* pMsg;
 		::FormatMessage( FORMAT_MESSAGE_ALLOCATE_BUFFER |
 						FORMAT_MESSAGE_IGNORE_INSERTS |
 						FORMAT_MESSAGE_FROM_SYSTEM,
 						NULL,
 						::GetLastError(),
 						MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-						(LPTSTR)&pMsg,
+						(LPWSTR)&pMsg,
 						0,
 						NULL
 		);
-		ErrorMessage( NULL, _T("\'%ts\'\nプロセスの起動に失敗しました。\n%ts"), szEXE, pMsg );
+		ErrorMessage( NULL, L"\'%ts\'\nプロセスの起動に失敗しました。\n%ts", szEXE, pMsg );
 		::LocalFree( (HLOCAL)pMsg );	//	エラーメッセージバッファを解放
 		return false;
 	}
@@ -260,7 +259,7 @@ bool CProcessFactory::StartControlProcess()
 	int nResult;
 	nResult = ::WaitForInputIdle( p.hProcess, 60 * 1000 );	//	最大60秒間待つ
 	if( 0 != nResult ){
-		ErrorMessage( NULL, _T("\'%ls\'\nコントロールプロセスの起動に失敗しました。"), szEXE );
+		ErrorMessage( NULL, L"\'%ls\'\nコントロールプロセスの起動に失敗しました。", szEXE );
 		::CloseHandle( p.hThread );
 		::CloseHandle( p.hProcess );
 		return false;
@@ -309,7 +308,7 @@ bool CProcessFactory::WaitForInitializedControlProcess()
 	dwRet = ::WaitForSingleObject( hEvent, 10000 );	// 最大10秒間待つ
 	if( WAIT_TIMEOUT == dwRet ){	// コントロールプロセスの初期化が終了しない
 		::CloseHandle( hEvent );
-		TopErrorMessage( NULL, _T("エディタまたはシステムがビジー状態です。\nしばらく待って開きなおしてください。") );
+		TopErrorMessage( NULL, L"エディタまたはシステムがビジー状態です。\nしばらく待って開きなおしてください。" );
 		return false;
 	}
 	::CloseHandle( hEvent );
@@ -325,10 +324,10 @@ bool CProcessFactory::WaitForInitializedControlProcess()
 bool CProcessFactory::TestWriteQuit()
 {
 	if( CCommandLine::getInstance()->IsWriteQuit() ){
-		TCHAR szIniFileIn[_MAX_PATH];
-		TCHAR szIniFileOut[_MAX_PATH];
+		WCHAR szIniFileIn[_MAX_PATH];
+		WCHAR szIniFileOut[_MAX_PATH];
 		CFileNameManager::getInstance()->GetIniFileNameDirect( szIniFileIn, szIniFileOut );
-		if( szIniFileIn[0] != _T('\0') ){	// マルチユーザ用設定か
+		if( szIniFileIn[0] != L'\0' ){	// マルチユーザ用設定か
 			// 既にマルチユーザ用のiniファイルがあればEXE基準のiniファイルに上書き更新して終了
 			if( fexist(szIniFileIn) ){
 				if( ::CopyFile( szIniFileIn, szIniFileOut, FALSE ) ){

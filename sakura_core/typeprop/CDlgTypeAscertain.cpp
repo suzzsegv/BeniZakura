@@ -69,8 +69,8 @@ BOOL CDlgTypeAscertain::OnBnClicked( int wID )
 void CDlgTypeAscertain::SetData( void )
 {
 	// タイプ名設定
-	::SetWindowText( ::GetDlgItem( GetHwnd(), IDC_STATIC_TYPE_TO   ), to_tchar(m_psi->sTypeNameTo.c_str()) );
-	::SetWindowText( ::GetDlgItem( GetHwnd(), IDC_STATIC_TYPE_FILE ), to_tchar(m_psi->sTypeNameFile.c_str()) );
+	::SetWindowText( ::GetDlgItem( GetHwnd(), IDC_STATIC_TYPE_TO   ), to_wchar(m_psi->sTypeNameTo.c_str()) );
+	::SetWindowText( ::GetDlgItem( GetHwnd(), IDC_STATIC_TYPE_FILE ), to_wchar(m_psi->sTypeNameFile.c_str()) );
 	return;
 }
 

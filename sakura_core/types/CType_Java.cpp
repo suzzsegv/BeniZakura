@@ -87,8 +87,8 @@ static const wchar_t* g_defaultKeywordSetJavaDataType[] = {
 void CType_Java::InitTypeConfigImp(STypeConfig* pType)
 {
 	//名前と拡張子
-	_tcscpy( pType->m_szTypeName, _T("Java") );
-	_tcscpy( pType->m_szTypeExts, _T("java,jav") );
+	wcscpy( pType->m_szTypeName, L"Java" );
+	wcscpy( pType->m_szTypeExts, L"java,jav" );
 
 	//設定
 	pType->m_cLineComment.CopyTo( 0, L"//", -1 );					/* 行コメントデリミタ */

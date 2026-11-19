@@ -64,7 +64,7 @@ BOOL CViewCommander::Command_FUNCLIST(
 		/* タイプ別に設定されたアウトライン解析方法 */
 		nOutlineType = GetDocument()->m_cDocType.GetDocumentAttribute().m_eDefaultOutline;
 //		if( nOutlineType == OUTLINE_CPP ){
-//			if( CheckEXT( GetDocument()->m_cDocFile.GetFilePath(), _T("c") ) ){
+//			if( CheckEXT( GetDocument()->m_cDocFile.GetFilePath(), L"c" ) ){
 //				nOutlineType = OUTLINE_C;	/* これでC関数一覧リストビューになる */
 //			}
 //		}
@@ -113,7 +113,7 @@ BOOL CViewCommander::Command_FUNCLIST(
 	}
 
 	/* 解析対象ファイル名 */
-	_tcscpy( cFuncInfoArr.m_szFilePath, GetDocument()->m_cDocFile.GetFilePath() );
+	wcscpy( cFuncInfoArr.m_szFilePath, GetDocument()->m_cDocFile.GetFilePath() );
 
 	/* アウトライン ダイアログの表示 */
 	CLayoutPoint poCaret = GetCaret().GetCaretLayoutPos();

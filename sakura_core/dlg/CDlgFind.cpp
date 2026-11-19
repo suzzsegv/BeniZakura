@@ -95,7 +95,7 @@ BOOL CDlgFind::OnDestroy()
 /* ダイアログデータの設定 */
 void CDlgFind::SetData( void )
 {
-//	MYTRACE( _T("CDlgFind::SetData()") );
+//	MYTRACE( L"CDlgFind::SetData()" );
 
 	/*****************************
 	*           初期化           *
@@ -167,7 +167,7 @@ void CDlgFind::SetCombosList( void )
 		Combo_DeleteString( hwndCombo, 0);
 	}
 	int nBufferSize = ::GetWindowTextLength( GetItemHwnd(IDC_COMBO_TEXT) ) + 1;
-	std::vector<TCHAR> vText(nBufferSize);
+	std::vector<WCHAR> vText(nBufferSize);
 	Combo_GetText( hwndCombo, &vText[0], nBufferSize );
 	if (auto_strcmp( to_wchar(&vText[0]), m_strText.c_str() ) != 0) {
 		::DlgItem_SetText( GetHwnd(), IDC_COMBO_TEXT, m_strText.c_str() );
@@ -178,7 +178,7 @@ void CDlgFind::SetCombosList( void )
 /* ダイアログデータの取得 */
 int CDlgFind::GetData( void )
 {
-//	MYTRACE( _T("CDlgFind::GetData()") );
+//	MYTRACE( L"CDlgFind::GetData()" );
 
 	/* 英大文字と英小文字を区別する */
 	m_sSearchOption.bLoHiCase = (0!=IsDlgButtonChecked( GetHwnd(), IDC_CHK_LOHICASE ));
@@ -193,7 +193,7 @@ int CDlgFind::GetData( void )
 
 	/* 検索文字列 */
 	int nBufferSize = ::GetWindowTextLength( GetItemHwnd(IDC_COMBO_TEXT) ) + 1;
-	std::vector<TCHAR> vText(nBufferSize);
+	std::vector<WCHAR> vText(nBufferSize);
 	::DlgItem_GetText( GetHwnd(), IDC_COMBO_TEXT, &vText[0], nBufferSize);
 	m_strText = to_wchar(&vText[0]);
 
@@ -248,7 +248,7 @@ BOOL CDlgFind::OnBnClicked( int wID )
 	CEditView*	pcEditView = (CEditView*)m_lParam;
 	switch( wID ){
 	case IDC_CHK_REGULAREXP:	/* 正規表現 */
-//		MYTRACE( _T("IDC_CHK_REGULAREXP ::IsDlgButtonChecked( GetHwnd(), IDC_CHK_REGULAREXP ) = %d\n"), ::IsDlgButtonChecked( GetHwnd(), IDC_CHK_REGULAREXP ) );
+//		MYTRACE( L"IDC_CHK_REGULAREXP ::IsDlgButtonChecked( GetHwnd(), IDC_CHK_REGULAREXP ) = %d\n", ::IsDlgButtonChecked( GetHwnd(), IDC_CHK_REGULAREXP ) );
 		if( ::IsDlgButtonChecked( GetHwnd(), IDC_CHK_REGULAREXP ) ){
 
 			// From Here Jun. 26, 2001 genta
@@ -313,7 +313,7 @@ BOOL CDlgFind::OnBnClicked( int wID )
 			}
 		}
 		else if (nRet == 0){
-			OkMessage( GetHwnd(), _T("検索条件を指定してください。") );
+			OkMessage( GetHwnd(), L"検索条件を指定してください。" );
 		}
 		return TRUE;
 	case IDC_BUTTON_SEARCHNEXT:		/* 下検索 */	//Feb. 13, 2001 JEPRO ボタン名を[IDOK]→[IDC_BUTTON_SERACHNEXT]に変更
@@ -344,7 +344,7 @@ BOOL CDlgFind::OnBnClicked( int wID )
 			}
 		}
 		else if (nRet == 0){
-			OkMessage( GetHwnd(), _T("検索条件を指定してください。") );
+			OkMessage( GetHwnd(), L"検索条件を指定してください。" );
 		}
 		return TRUE;
 	case IDC_BUTTON_SETMARK:	//2002.01.16 hor 該当行マーク

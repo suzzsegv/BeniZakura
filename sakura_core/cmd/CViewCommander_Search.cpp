@@ -63,7 +63,7 @@ void CViewCommander::Command_SEARCH_DIALOG( void )
 	else{
 		/* アクティブにする */
 		ActivateFrameWindow( GetEditWindow()->m_cDlgFind.GetHwnd() );
-		::DlgItem_SetText( GetEditWindow()->m_cDlgFind.GetHwnd(), IDC_COMBO_TEXT, cmemCurText.GetStringT() );
+		::DlgItem_SetText( GetEditWindow()->m_cDlgFind.GetHwnd(), IDC_COMBO_TEXT, cmemCurText.GetStringPtr() );
 	}
 	return;
 }
@@ -272,12 +272,12 @@ end_of_func:;
 
 	if(bFound){
 		if((nLineNumOld > nLineNum)||(nLineNumOld == nLineNum && nIdxOld > nIdx))
-			m_pCommanderView->SendStatusMessage(_T("▼先頭から再検索しました"));
+			m_pCommanderView->SendStatusMessage(L"▼先頭から再検索しました");
 	}
 	else{
 		GetCaret().ShowEditCaret();	// 2002/04/18 YAZAKI
 		GetCaret().ShowCaretPosInfo();	// 2002/04/18 YAZAKI
-		m_pCommanderView->SendStatusMessage(_T("▽見つかりませんでした"));
+		m_pCommanderView->SendStatusMessage(L"▽見つかりませんでした");
 	}
 }
 
@@ -418,9 +418,9 @@ end_of_func:;
 	}
 	if(bFound){
 		if((nLineNumOld < nLineNum)||(nLineNumOld == nLineNum && nIdxOld < nIdx))
-			m_pCommanderView->SendStatusMessage(_T("▲末尾から再検索しました"));
+			m_pCommanderView->SendStatusMessage(L"▲末尾から再検索しました");
 	}else{
-		m_pCommanderView->SendStatusMessage(_T("△見つかりませんでした"));
+		m_pCommanderView->SendStatusMessage(L"△見つかりませんでした");
 	}
 	return;
 }
@@ -464,7 +464,7 @@ void CViewCommander::Command_REPLACE_DIALOG( void )
 	else {
 		/* アクティブにする */
 		ActivateFrameWindow( GetEditWindow()->m_cDlgReplace.GetHwnd() );
-		::DlgItem_SetText( GetEditWindow()->m_cDlgReplace.GetHwnd(), IDC_COMBO_TEXT, cmemCurText.GetStringT() );
+		::DlgItem_SetText( GetEditWindow()->m_cDlgReplace.GetHwnd(), IDC_COMBO_TEXT, cmemCurText.GetStringPtr() );
 	}
 	//	To Here Jul. 2, 2001 genta 置換ウィンドウの2重開きを抑止
 	return;
@@ -489,7 +489,7 @@ void CViewCommander::Command_REPLACE( HWND hwndParent )
 
 	// From Here 2001.12.03 hor
 	if( nPaste && !GetDocument()->m_cDocEditor.IsEnablePaste()){
-		OkMessage( hwndParent, _T("クリップボードに有効なデータがありません！") );
+		OkMessage( hwndParent, L"クリップボードに有効なデータがありません！" );
 		::CheckDlgButton( GetEditWindow()->m_cDlgReplace.GetHwnd(), IDC_CHK_PASTE, FALSE );
 		::EnableWindow( ::GetDlgItem( GetEditWindow()->m_cDlgReplace.GetHwnd(), IDC_COMBO_TEXT2 ), TRUE );
 		return;	//	失敗return;
@@ -663,7 +663,7 @@ void CViewCommander::Command_REPLACE_ALL()
 
 	// From Here 2001.12.03 hor
 	if( nPaste && !GetDocument()->m_cDocEditor.IsEnablePaste() ){
-		OkMessage( m_pCommanderView->GetHwnd(), _T("クリップボードに有効なデータがありません！") );
+		OkMessage( m_pCommanderView->GetHwnd(), L"クリップボードに有効なデータがありません！" );
 		::CheckDlgButton( m_pCommanderView->GetHwnd(), IDC_CHK_PASTE, FALSE );
 		::EnableWindow( ::GetDlgItem( m_pCommanderView->GetHwnd(), IDC_COMBO_TEXT2 ), TRUE );
 		return;	// TRUE;
@@ -710,8 +710,8 @@ void CViewCommander::Command_REPLACE_ALL()
 	/* 置換個数初期化 */
 	int			nReplaceNum = 0;
 	HWND		hwndStatic = ::GetDlgItem( hwndCancel, IDC_STATIC_KENSUU );
-	TCHAR szLabel[64];
-	_itot( nReplaceNum, szLabel, 10 );
+	WCHAR szLabel[64];
+	_itow( nReplaceNum, szLabel, 10 );
 	::SendMessage( hwndStatic, WM_SETTEXT, 0, (LPARAM)szLabel );
 
 	CLayoutRange sRangeA;	//選択範囲
@@ -889,7 +889,7 @@ void CViewCommander::Command_REPLACE_ALL()
 		{
 			nNewPos = (Int)GetSelect().GetFrom().GetY2() >> nShiftCount;
 			Progress_SetPos( hwndProgress, nNewPos);
-			_itot( nReplaceNum, szLabel, 10 );
+			_itow( nReplaceNum, szLabel, 10 );
 			::SendMessage( hwndStatic, WM_SETTEXT, 0, (LPARAM)szLabel );
 		}
 
@@ -1160,7 +1160,7 @@ void CViewCommander::Command_REPLACE_ALL()
 	}
 	//>> 2002/03/26 Azumaiya
 
-	_itot( nReplaceNum, szLabel, 10 );
+	_itow( nReplaceNum, szLabel, 10 );
 	::SendMessage( hwndStatic, WM_SETTEXT, 0, (LPARAM)szLabel );
 
 	if( !cDlgCancel.IsCanceled() ){

@@ -42,47 +42,47 @@ void CEditorManager::DoGrepCreateWindow(HINSTANCE hinst, HWND msgParent, CDlgGre
 	/* Grep結果ウィンドウの表示 */
 
 	CNativeW		cmWork1;
-	CNativeT		cmWork2;
-	CNativeT		cmWork3;
+	CNativeW		cmWork2;
+	CNativeW		cmWork3;
 	cmWork1.SetString( cDlgGrep.m_strText.c_str() );
 	cmWork2.SetString( cDlgGrep.m_szFile );
 	cmWork3.SetString( cDlgGrep.m_szFolder );
 	cmWork1.Replace( L"\"", L"\"\"" );
-	cmWork2.Replace( _T("\""), _T("\"\"") );
-	cmWork3.Replace( _T("\""), _T("\"\"") );
+	cmWork2.Replace( L"\"", L"\"\"" );
+	cmWork3.Replace( L"\"", L"\"\"" );
 
 	// -GREPMODE -GKEY="1" -GFILE="*.*;*.c;*.h" -GFOLDER="c:\" -GCODE=0 -GOPT=S
-	CNativeT cCmdLine;
-	TCHAR szTemp[20];
-	cCmdLine.AppendString(_T("-GREPMODE -GKEY=\""));
+	CNativeW cCmdLine;
+	WCHAR szTemp[20];
+	cCmdLine.AppendString(L"-GREPMODE -GKEY=\"");
 	cCmdLine.AppendStringW(cmWork1.GetStringPtr());
-	cCmdLine.AppendString(_T("\" -GFILE=\""));
+	cCmdLine.AppendString(L"\" -GFILE=\"");
 	cCmdLine.AppendString(cmWork2.GetStringPtr());
-	cCmdLine.AppendString(_T("\" -GFOLDER=\""));
+	cCmdLine.AppendString(L"\" -GFOLDER=\"");
 	cCmdLine.AppendString(cmWork3.GetStringPtr());
-	cCmdLine.AppendString(_T("\" -GCODE="));
-	auto_sprintf( szTemp, _T("%d"), cDlgGrep.m_nGrepCharSet );
+	cCmdLine.AppendString(L"\" -GCODE=");
+	auto_sprintf( szTemp, L"%d", cDlgGrep.m_nGrepCharSet );
 	cCmdLine.AppendString(szTemp);
 
 	//GOPTオプション
-	TCHAR pOpt[64] = _T("");
-	if( cDlgGrep.m_bSubFolder					)_tcscat( pOpt, _T("S") );	// サブフォルダからも検索する
-	if( cDlgGrep.m_bUseGitIgnore				)_tcscat( pOpt, _T("G") );	// .gitignore の除外指定に従う
-	if( cDlgGrep.m_bUseHgIgnore				)_tcscat( pOpt, _T("H") );	// .hgignore の除外指定に従う
-	if( cDlgGrep.m_sSearchOption.bLoHiCase		)_tcscat( pOpt, _T("L") );	// 英大文字と英小文字を区別する
-	if( cDlgGrep.m_sSearchOption.bRegularExp	)_tcscat( pOpt, _T("R") );	// 正規表現
-	if( cDlgGrep.m_bGrepOutputLine				)_tcscat( pOpt, _T("P") );	// 行を出力するか該当部分だけ出力するか
-	if( cDlgGrep.m_sSearchOption.bWordOnly		)_tcscat( pOpt, _T("W") );	// 単語単位で探す
-	if( 1 == cDlgGrep.m_nGrepOutputStyle		)_tcscat( pOpt, _T("1") );	// Grep: 出力形式
-	if( 2 == cDlgGrep.m_nGrepOutputStyle		)_tcscat( pOpt, _T("2") );	// Grep: 出力形式
-	if( pOpt[0] != _T('\0') ){
-		cCmdLine.AppendString( _T(" -GOPT=") );
+	WCHAR pOpt[64] = L"";
+	if( cDlgGrep.m_bSubFolder					)wcscat( pOpt, L"S" );	// サブフォルダからも検索する
+	if( cDlgGrep.m_bUseGitIgnore				)wcscat( pOpt, L"G" );	// .gitignore の除外指定に従う
+	if( cDlgGrep.m_bUseHgIgnore				)wcscat( pOpt, L"H" );	// .hgignore の除外指定に従う
+	if( cDlgGrep.m_sSearchOption.bLoHiCase		)wcscat( pOpt, L"L" );	// 英大文字と英小文字を区別する
+	if( cDlgGrep.m_sSearchOption.bRegularExp	)wcscat( pOpt, L"R" );	// 正規表現
+	if( cDlgGrep.m_bGrepOutputLine				)wcscat( pOpt, L"P" );	// 行を出力するか該当部分だけ出力するか
+	if( cDlgGrep.m_sSearchOption.bWordOnly		)wcscat( pOpt, L"W" );	// 単語単位で探す
+	if( 1 == cDlgGrep.m_nGrepOutputStyle		)wcscat( pOpt, L"1" );	// Grep: 出力形式
+	if( 2 == cDlgGrep.m_nGrepOutputStyle		)wcscat( pOpt, L"2" );	// Grep: 出力形式
+	if( pOpt[0] != L'\0' ){
+		cCmdLine.AppendString( L" -GOPT=" );
 		cCmdLine.AppendString( pOpt );
 	}
 
 	/* 新規編集ウィンドウの追加 ver 0 */
 	SLoadInfo sLoadInfo;
-	sLoadInfo.cFilePath = _T("");
+	sLoadInfo.cFilePath = L"";
 	sLoadInfo.eCharCode = CODE_NONE;
 	sLoadInfo.bViewMode = false;
 	OpenNewEditor( hinst, msgParent, sLoadInfo, cCmdLine.GetStringPtr(),
@@ -105,9 +105,9 @@ bool CEditorManager::OpenNewEditor(
 	HINSTANCE			hInstance,			//!< [in] インスタンスID (実は未使用)
 	HWND				hWndParent,			//!< [in] 親ウィンドウハンドル．エラーメッセージ表示用
 	const SLoadInfo&	sLoadInfo,			//!< [in]
-	const TCHAR*		szCmdLineOption,	//!< [in] 追加のコマンドラインオプション
+	const WCHAR*		szCmdLineOption,	//!< [in] 追加のコマンドラインオプション
 	bool				sync,				//!< [in] trueなら新規エディタの起動まで待機する
-	const TCHAR*		szCurDir,			//!< [in] 新規エディタのカレントディレクトリ
+	const WCHAR*		szCurDir,			//!< [in] 新規エディタのカレントディレクトリ
 	bool				bNewWindow			//!< [in] 新規エディタを新しいウインドウで開く
 )
 {
@@ -116,7 +116,7 @@ bool CEditorManager::OpenNewEditor(
 
 	/* 編集ウィンドウの上限チェック */
 	if( pShareData->m_sNodes.m_nEditArrNum >= MAX_EDITWINDOWS ){	//最大値修正	//@@@ 2003.05.31 MIK
-		OkMessage( NULL, _T("編集ウィンドウ数の上限は%dです。\nこれ以上は同時に開けません。"), MAX_EDITWINDOWS );
+		OkMessage( NULL, L"編集ウィンドウ数の上限は%dです。\nこれ以上は同時に開けません。", MAX_EDITWINDOWS );
 		return false;
 	}
 
@@ -124,18 +124,18 @@ bool CEditorManager::OpenNewEditor(
 	CCommandLineString cCmdLineBuf;
 
 	//アプリケーションパス
-	TCHAR szEXE[MAX_PATH + 1];
+	WCHAR szEXE[MAX_PATH + 1];
 	::GetModuleFileName( NULL, szEXE, _countof( szEXE ) );
-	cCmdLineBuf.AppendF( _T("\"%ts\""), szEXE );
+	cCmdLineBuf.AppendF( L"\"%ts\"", szEXE );
 
 	// ファイル名
-	if( sLoadInfo.cFilePath.c_str()[0] != _T('\0') )	cCmdLineBuf.AppendF( _T(" \"%ts\""), sLoadInfo.cFilePath.c_str() );
+	if( sLoadInfo.cFilePath.c_str()[0] != L'\0' )	cCmdLineBuf.AppendF( L" \"%ts\"", sLoadInfo.cFilePath.c_str() );
 
 	// コード指定
-	if( IsValidCodeType(sLoadInfo.eCharCode) )cCmdLineBuf.AppendF( _T(" -CODE=%d"), sLoadInfo.eCharCode );
+	if( IsValidCodeType(sLoadInfo.eCharCode) )cCmdLineBuf.AppendF( L" -CODE=%d", sLoadInfo.eCharCode );
 
 	// ビューモード指定
-	if( sLoadInfo.bViewMode )cCmdLineBuf.AppendF( _T(" -R") );
+	if( sLoadInfo.bViewMode )cCmdLineBuf.AppendF( L" -R" );
 
 	// グループID
 	if( false == bNewWindow ){	// 新規エディタをウインドウで開く
@@ -143,17 +143,17 @@ bool CEditorManager::OpenNewEditor(
 		HWND hwndAncestor = MyGetAncestor( hWndParent, GA_ROOTOWNER2 );	// 2007.10.22 ryoji GA_ROOTOWNER -> GA_ROOTOWNER2
 		int nGroup = CAppNodeManager::getInstance()->GetEditNode( hwndAncestor )->GetGroup();
 		if( nGroup > 0 ){
-			cCmdLineBuf.AppendF( _T(" -GROUP=%d"), nGroup );
+			cCmdLineBuf.AppendF( L" -GROUP=%d", nGroup );
 		}
 	}else{
 		// 空いているグループIDを使用する
-		cCmdLineBuf.AppendF( _T(" -GROUP=%d"), CAppNodeManager::getInstance()->GetFreeGroupId() );
+		cCmdLineBuf.AppendF( L" -GROUP=%d", CAppNodeManager::getInstance()->GetFreeGroupId() );
 	}
 
 	// 追加のコマンドラインオプション
-	TCHAR szResponseFile[_MAX_PATH] = _T("");
+	WCHAR szResponseFile[_MAX_PATH] = L"";
 	struct CResponsefileDeleter{
-		LPCTSTR fileName;
+		LPCWSTR fileName;
 		CResponsefileDeleter(): fileName(NULL){}
 		~CResponsefileDeleter(){
 			if( fileName && fileName[0] ){
@@ -166,18 +166,18 @@ bool CEditorManager::OpenNewEditor(
 	if( szCmdLineOption ){
 		// Grepなどで入りきらない場合はレスポンスファイルを利用する
 		if( cCmdLineBuf.max_size() < cCmdLineBuf.size() + auto_strlen(szCmdLineOption) ){
-			TCHAR szIniDir[_MAX_PATH];
+			WCHAR szIniDir[_MAX_PATH];
 			GetInidir(szIniDir);
-			LPTSTR pszTempFile = _ttempnam(szIniDir, _T("skr_resp"));
+			LPWSTR pszTempFile = _wtempnam(szIniDir, L"skr_resp");
 			if( !pszTempFile ){
-				ErrorMessage(hWndParent, _T("レスポンスファイルの作成に失敗しました。"));
+				ErrorMessage(hWndParent, L"レスポンスファイルの作成に失敗しました。");
 				return false;
 			}
 			auto_strcpy(szResponseFile, pszTempFile);
 			free(pszTempFile);
 			CTextOutputStream output(szResponseFile);
 			if( !output ){
-				ErrorMessage(hWndParent, _T("レスポンスファイルの作成に失敗しました。"));
+				ErrorMessage(hWndParent, L"レスポンスファイルの作成に失敗しました。");
 				return false;
 			}
 			respDeleter.fileName = szResponseFile;
@@ -185,9 +185,9 @@ bool CEditorManager::OpenNewEditor(
 			output.WriteString(to_wchar(szCmdLineOption));
 			output.Close();
 			sync = true;
-			cCmdLineBuf.AppendF(_T(" -@=\"%ts\""), szResponseFile);
+			cCmdLineBuf.AppendF(L" -@=\"%ts\"", szResponseFile);
 		}else{
-			cCmdLineBuf.AppendF(_T(" %ts"), szCmdLineOption);
+			cCmdLineBuf.AppendF(L" %ts", szCmdLineOption);
 		}
 	}
 	// -- -- -- -- プロセス生成 -- -- -- -- //
@@ -212,7 +212,7 @@ bool CEditorManager::OpenNewEditor(
 #ifdef _DEBUG
 //	dwCreationFlag |= DEBUG_PROCESS; //2007.09.22 kobake デバッグ用フラグ
 #endif
-	TCHAR szCmdLine[1024]; _tcscpy_s(szCmdLine, _countof(szCmdLine), cCmdLineBuf.c_str());
+	WCHAR szCmdLine[1024]; wcscpy_s(szCmdLine, _countof(szCmdLine), cCmdLineBuf.c_str());
 	BOOL bCreateResult = CreateProcess(
 		szEXE,					// 実行可能モジュールの名前
 		szCmdLine,				// コマンドラインの文字列
@@ -227,20 +227,20 @@ bool CEditorManager::OpenNewEditor(
 	);
 	if( !bCreateResult ){
 		//	失敗
-		TCHAR* pMsg;
+		WCHAR* pMsg;
 		FormatMessage( FORMAT_MESSAGE_ALLOCATE_BUFFER |
 						FORMAT_MESSAGE_IGNORE_INSERTS |
 						FORMAT_MESSAGE_FROM_SYSTEM,
 						NULL,
 						GetLastError(),
 						MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-						(LPTSTR)&pMsg,
+						(LPWSTR)&pMsg,
 						0,
 						NULL
 		);
 		ErrorMessage(
 			hWndParent,
-			_T("\'%ts\'\nプロセスの起動に失敗しました。\n%ts"),
+			L"\'%ts\'\nプロセスの起動に失敗しました。\n%ts",
 			szEXE,
 			pMsg
 		);
@@ -255,7 +255,7 @@ bool CEditorManager::OpenNewEditor(
 		if( nResult != 0 ){
 			ErrorMessage(
 				hWndParent,
-				_T("\'%ts\'\nプロセスの起動に失敗しました。"),
+				L"\'%ts\'\nプロセスの起動に失敗しました。",
 				szEXE
 			);
 			bRet = false;
@@ -324,20 +324,20 @@ bool CEditorManager::OpenNewEditor2(
 
 	/* 編集ウィンドウの上限チェック */
 	if( pShareData->m_sNodes.m_nEditArrNum >= MAX_EDITWINDOWS ){	//最大値修正	//@@@ 2003.05.31 MIK
-		OkMessage( NULL, _T("編集ウィンドウ数の上限は%dです。\nこれ以上は同時に開けません。"), MAX_EDITWINDOWS );
+		OkMessage( NULL, L"編集ウィンドウ数の上限は%dです。\nこれ以上は同時に開けません。", MAX_EDITWINDOWS );
 		return false;
 	}
 
 	// 追加のコマンドラインオプション
 	CCommandLineString cCmdLine;
 	if( pfi != NULL ){
-		if( pfi->m_ptCursor.x >= 0					)cCmdLine.AppendF( _T(" -X=%d"), pfi->m_ptCursor.x +1 );
-		if( pfi->m_ptCursor.y >= 0					)cCmdLine.AppendF( _T(" -Y=%d"), pfi->m_ptCursor.y +1 );
-		if( pfi->m_nViewLeftCol >= CLayoutInt(0)	)cCmdLine.AppendF( _T(" -VX=%d"), (Int)pfi->m_nViewLeftCol + 1 );
-		if( pfi->m_nViewTopLine >= CLayoutInt(0)	)cCmdLine.AppendF( _T(" -VY=%d"), (Int)pfi->m_nViewTopLine + 1 );
+		if( pfi->m_ptCursor.x >= 0					)cCmdLine.AppendF( L" -X=%d", pfi->m_ptCursor.x +1 );
+		if( pfi->m_ptCursor.y >= 0					)cCmdLine.AppendF( L" -Y=%d", pfi->m_ptCursor.y +1 );
+		if( pfi->m_nViewLeftCol >= CLayoutInt(0)	)cCmdLine.AppendF( L" -VX=%d", (Int)pfi->m_nViewLeftCol + 1 );
+		if( pfi->m_nViewTopLine >= CLayoutInt(0)	)cCmdLine.AppendF( L" -VY=%d", (Int)pfi->m_nViewTopLine + 1 );
 	}
 	SLoadInfo sLoadInfo;
-	sLoadInfo.cFilePath = pfi ? pfi->m_szPath : _T("");
+	sLoadInfo.cFilePath = pfi ? pfi->m_szPath : L"";
 	sLoadInfo.eCharCode = pfi ? pfi->m_nCharCode : CODE_NONE;
 	sLoadInfo.bViewMode = bViewMode;
 	return OpenNewEditor( hInstance, hWndParent, sLoadInfo, cCmdLine.c_str(), sync, NULL, bNewWindow );
@@ -443,7 +443,7 @@ void CEditorManager::TerminateApplication(
 				hWndFrom,
 				MB_YESNO | MB_APPLMODAL | MB_ICONQUESTION,
 				GSTR_APPNAME,
-				_T("現在開いている編集用のウィンドウをすべて閉じて終了しますか?")
+				L"現在開いている編集用のウィンドウをすべて閉じて終了しますか?"
 			) ){
 				return;
 			}

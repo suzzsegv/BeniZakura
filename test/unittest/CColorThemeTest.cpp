@@ -190,7 +190,7 @@ namespace BeniZakuraUnitTest
 			SetPresetColorInfo( arr, COLOR_THEME_VS2012DARK );
 			for( int i = 0; i < COLORIDX_LAST; i++ ){
 				Assert::AreEqual( i, arr[i].m_nColorIdx );
-				Assert::IsTrue( arr[i].m_szName[0] != _T('\0') );
+				Assert::IsTrue( arr[i].m_szName[0] != L'\0' );
 			}
 			Assert::AreEqual( std::wstring( L"テキスト" ), std::wstring( arr[COLORIDX_TEXT].m_szName ) );
 		}

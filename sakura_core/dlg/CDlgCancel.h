@@ -39,7 +39,7 @@ public:
 	int DoModal( HINSTANCE, HWND, int );	/* モードレスダイアログの表示 */
 	HWND DoModeless( HINSTANCE, HWND, int );	/* モードレスダイアログの表示 */
 
-//	HWND Open( LPCTSTR );
+//	HWND Open( LPCWSTR );
 //	void Close( void );	/* モードレスダイアログの削除 */
 	BOOL IsCanceled( void ){ return m_bCANCEL; } /* IDCANCELボタンが押されたか？ */
 	INT_PTR DispatchEvent( HWND, UINT, WPARAM, LPARAM );	/* ダイアログのメッセージ処理 *//* BOOL->INT_PTR 2008/7/18 Uchi*/

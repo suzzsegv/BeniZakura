@@ -42,7 +42,6 @@ namespace ApiWrap
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 	//W版が無いので、自作
 	BOOL MakeSureDirectoryPathExistsW(LPCWSTR wszDirPath);
-	#define MakeSureDirectoryPathExistsT MakeSureDirectoryPathExistsW
 
 
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //

@@ -36,16 +36,16 @@
 	
 	拡張子を切り出して GetDocumentTypeOfExt に渡すだけ．
 */
-CTypeConfig CDocTypeManager::GetDocumentTypeOfPath( const TCHAR* pszFilePath )
+CTypeConfig CDocTypeManager::GetDocumentTypeOfPath( const WCHAR* pszFilePath )
 {
-	TCHAR	szExt[_MAX_EXT];
-	TCHAR	szName[_MAX_FNAME];
-	TCHAR*	pszExt = szExt;
+	WCHAR	szExt[_MAX_EXT];
+	WCHAR	szName[_MAX_FNAME];
+	WCHAR*	pszExt = szExt;
 
 	if( NULL != pszFilePath && pszFilePath[0] ){
-		_tsplitpath( pszFilePath, NULL, NULL, szName, szExt );
+		_wsplitpath( pszFilePath, NULL, NULL, szName, szExt );
 		// 2重拡張子探索
-		TCHAR* pFileExt = _tcschr( szName, '.' );
+		WCHAR* pFileExt = wcschr( szName, '.' );
 		if( pFileExt ){
 			pFileExt++;
 			auto_strcat( pFileExt, pszExt );
@@ -73,26 +73,26 @@ CTypeConfig CDocTypeManager::GetDocumentTypeOfPath( const TCHAR* pszFilePath )
 	ファイル全体の形式に対応させるときは，また考え直す．
 	@date 2012.10.22 Moca ２重拡張子, 拡張子なしに対応
 */
-CTypeConfig CDocTypeManager::GetDocumentTypeOfExt( const TCHAR* pszExt )
+CTypeConfig CDocTypeManager::GetDocumentTypeOfExt( const WCHAR* pszExt )
 {
-	const TCHAR	pszSeps[] = _T(" ;,");	// separator
+	const WCHAR	pszSeps[] = L" ;,";	// separator
 
 	int		i;
-	TCHAR*	pszToken;
-	TCHAR	szText[MAX_TYPES_EXTS];
+	WCHAR*	pszToken;
+	WCHAR	szText[MAX_TYPES_EXTS];
 
 	for( i = 0; i < MAX_TYPES; ++i ){
 		CTypeConfig nType(i);
-		_tcscpy( szText, CDocTypeManager().GetTypeSetting(nType).m_szTypeExts );
-		pszToken = _tcstok( szText, pszSeps );
+		wcscpy( szText, CDocTypeManager().GetTypeSetting(nType).m_szTypeExts );
+		pszToken = _wcstok( szText, pszSeps );
 		while( NULL != pszToken ){
-			if( 0 == _tcsicmp( pszExt, pszToken ) ){
+			if( 0 == _wcsicmp( pszExt, pszToken ) ){
 				return CTypeConfig(i);	//	番号
 			}
-			pszToken = _tcstok( NULL, pszSeps );
+			pszToken = _wcstok( NULL, pszSeps );
 		}
 	}
-	const TCHAR* pFileExt = _tcschr( pszExt, _T('.') );
+	const WCHAR* pFileExt = wcschr( pszExt, L'.' );
 	if( pFileExt && pFileExt[1] ){
 		return GetDocumentTypeOfExt( pFileExt + 1 );
 	}

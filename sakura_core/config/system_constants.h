@@ -436,7 +436,7 @@
 */
 #define N_SHAREDATA_VERSION		2026111801
 #define STR_SHAREDATA_VERSION	NUM_TO_STR(N_SHAREDATA_VERSION)
-#define	GSTR_SHAREDATA	(_T("BeniZakuraShareData") _T(CON_SKR_MACHINE_SUFFIX_) _T(_CODE_SUFFIX_) _T(_DEBUG_SUFFIX_) _T(STR_SHAREDATA_VERSION))
+#define	GSTR_SHAREDATA	(L"BeniZakuraShareData" _CRT_WIDE(CON_SKR_MACHINE_SUFFIX_) _CRT_WIDE(_CODE_SUFFIX_) _CRT_WIDE(_DEBUG_SUFFIX_) _CRT_WIDE(STR_SHAREDATA_VERSION))
 
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
@@ -444,16 +444,16 @@
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
 //! アプリケーション実行検出用(インストーラで使用)
-#define	GSTR_MUTEX_SAKURA _T("MutexBeniZakuraExecuted")
+#define	GSTR_MUTEX_SAKURA L"MutexBeniZakuraExecuted"
 
 //! コントロールプロセス
-#define	GSTR_MUTEX_SAKURA_CP (_T("MutexBeniZakuraControlProcess") _T(CON_SKR_MACHINE_SUFFIX_) _T(_CODE_SUFFIX_) _T(_DEBUG_SUFFIX_) _T(STR_SHAREDATA_VERSION))
+#define	GSTR_MUTEX_SAKURA_CP (L"MutexBeniZakuraControlProcess" _CRT_WIDE(CON_SKR_MACHINE_SUFFIX_) _CRT_WIDE(_CODE_SUFFIX_) _CRT_WIDE(_DEBUG_SUFFIX_) _CRT_WIDE(STR_SHAREDATA_VERSION))
 
 //! ノーマルプロセス初期化同期
-#define	GSTR_MUTEX_SAKURA_INIT (_T("MutexBeniZakuraInit") _T(CON_SKR_MACHINE_SUFFIX_) _T(_CODE_SUFFIX_) _T(_DEBUG_SUFFIX_) _T(STR_SHAREDATA_VERSION))
+#define	GSTR_MUTEX_SAKURA_INIT (L"MutexBeniZakuraInit" _CRT_WIDE(CON_SKR_MACHINE_SUFFIX_) _CRT_WIDE(_CODE_SUFFIX_) _CRT_WIDE(_DEBUG_SUFFIX_) _CRT_WIDE(STR_SHAREDATA_VERSION))
 
 //! ノード操作同期
-#define	GSTR_MUTEX_SAKURA_EDITARR (_T("MutexBeniZakuraEditArr") _T(CON_SKR_MACHINE_SUFFIX_) _T(_CODE_SUFFIX_) _T(_DEBUG_SUFFIX_) _T(STR_SHAREDATA_VERSION))
+#define	GSTR_MUTEX_SAKURA_EDITARR (L"MutexBeniZakuraEditArr" _CRT_WIDE(CON_SKR_MACHINE_SUFFIX_) _CRT_WIDE(_CODE_SUFFIX_) _CRT_WIDE(_DEBUG_SUFFIX_) _CRT_WIDE(STR_SHAREDATA_VERSION))
 
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
@@ -461,7 +461,7 @@
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
 //! 初期化完了イベント
-#define	GSTR_EVENT_SAKURA_CP_INITIALIZED (_T("EventBeniZakuraInitialized") _T(CON_SKR_MACHINE_SUFFIX_) _T(_CODE_SUFFIX_) _T(_DEBUG_SUFFIX_) _T(STR_SHAREDATA_VERSION))
+#define	GSTR_EVENT_SAKURA_CP_INITIALIZED (L"EventBeniZakuraInitialized" _CRT_WIDE(CON_SKR_MACHINE_SUFFIX_) _CRT_WIDE(_CODE_SUFFIX_) _CRT_WIDE(_DEBUG_SUFFIX_) _CRT_WIDE(STR_SHAREDATA_VERSION))
 
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
@@ -469,13 +469,13 @@
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
 //! コントロールプロセスのウィンドウのクラス名 (兼ウィンドウ名)
-#define	GSTR_CONTROL_PROCESS_WND (_T("BeniZakuraControlProcess") _T(CON_SKR_MACHINE_SUFFIX_) _T(_CODE_SUFFIX_) _T(_DEBUG_SUFFIX_) _T(STR_SHAREDATA_VERSION))
+#define	GSTR_CONTROL_PROCESS_WND (L"BeniZakuraControlProcess" _CRT_WIDE(CON_SKR_MACHINE_SUFFIX_) _CRT_WIDE(_CODE_SUFFIX_) _CRT_WIDE(_DEBUG_SUFFIX_) _CRT_WIDE(STR_SHAREDATA_VERSION))
 
 //! メインウィンドウ
-#define	GSTR_EDITWINDOWNAME (_T("BeniZakuraEditorWindow") _T(CON_SKR_MACHINE_SUFFIX_) _T(_CODE_SUFFIX_) _T(_DEBUG_SUFFIX_) _T(STR_SHAREDATA_VERSION))
+#define	GSTR_EDITWINDOWNAME (L"BeniZakuraEditorWindow" _CRT_WIDE(CON_SKR_MACHINE_SUFFIX_) _CRT_WIDE(_CODE_SUFFIX_) _CRT_WIDE(_DEBUG_SUFFIX_) _CRT_WIDE(STR_SHAREDATA_VERSION))
 
 //! ビュー
-#define	GSTR_VIEWNAME (_T("BeniZakuraEditorClient") _T(STR_SHAREDATA_VERSION))
+#define	GSTR_VIEWNAME (L"BeniZakuraEditorClient" _CRT_WIDE(STR_SHAREDATA_VERSION))
 
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
@@ -483,9 +483,9 @@
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 //	Dec. 2, 2002 genta
 //	固定ファイル名
-#define FN_APP_ICON  _T("my_appicon.ico")
-#define FN_GREP_ICON _T("my_grepicon.ico")
-#define FN_TOOL_BMP  _T("my_icons.bmp")
+#define FN_APP_ICON  L"my_appicon.ico"
+#define FN_GREP_ICON L"my_grepicon.ico"
+#define FN_TOOL_BMP  L"my_icons.bmp"
 
 //	標準アプリケーションアイコンリソース名
 #define ICON_DEFAULT_APP IDI_ICON_STD
@@ -604,8 +604,8 @@ enum e_PM_SETCARETPOS_SELECTSTATE {
 #else
 #define MYWM_IME_REQUEST WM_IME_REQUEST
 #endif
-#define MSGNAME_ATOK_RECONVERT TEXT("Atok Message for ReconvertString")
-#define RWM_RECONVERT TEXT("MSIMEReconvert")
+#define MSGNAME_ATOK_RECONVERT L"Atok Message for ReconvertString"
+#define RWM_RECONVERT L"MSIMEReconvert"
 
 #define	VK_XBUTTON1		0x05	// マウスサイドボタン1（Windows2000以降で使用可能）	// 2009.01.17 nasukoji
 #define	VK_XBUTTON2		0x06    // マウスサイドボタン2（Windows2000以降で使用可能）	// 2009.01.17 nasukoji

@@ -7,9 +7,9 @@
 #include "env/DLLSHAREDATA.h"
 #include "env/CFileNameManager.h"
 
-bool fexist(LPCTSTR pszPath)
+bool fexist(LPCWSTR pszPath)
 {
-	return _taccess(pszPath,0)!=-1;
+	return _waccess(pszPath,0)!=-1;
 }
 
 /**	ファイル名の切り出し
@@ -86,7 +86,7 @@ bool IsFilePath(
 			szJumpToFile[0] != L'\0'
 		){
 			//	ファイル存在確認
-			if( IsFileExists(to_tchar(szJumpToFile), bFileOnly)){
+			if( IsFileExists(to_wchar(szJumpToFile), bFileOnly)){
 				tmp_end = cur_pos;
 			}
 		}
@@ -106,7 +106,7 @@ bool IsFilePath(
 
 	//	Jan. 04, 2002 genta
 	//	ファイル存在確認方法変更
-	if( szJumpToFile[0] != L'\0' && IsFileExists(to_tchar(szJumpToFile), bFileOnly)){
+	if( szJumpToFile[0] != L'\0' && IsFileExists(to_wchar(szJumpToFile), bFileOnly)){
 		tmp_end = cur_pos;
 	}
 	if( tmp_end != 0 ){
@@ -134,20 +134,20 @@ bool IsFilePath(
 	@date 2006.01.08 genta CMRU::IsRemovableDriveとCEditDoc::IsLocalDriveが
 		実質的に同じものだった
 */
-bool IsLocalDrive( const TCHAR* pszDrive )
+bool IsLocalDrive( const WCHAR* pszDrive )
 {
-	TCHAR	szDriveType[_MAX_DRIVE+1];	// "A:\ "登録用
+	WCHAR	szDriveType[_MAX_DRIVE+1];	// "A:\ "登録用
 	long	lngRet;
 
 	if( iswalpha(pszDrive[0]) ){
-		auto_sprintf(szDriveType, _T("%tc:\\"), _totupper(pszDrive[0]));
+		auto_sprintf(szDriveType, L"%tc:\\", towupper(pszDrive[0]));
 		lngRet = GetDriveType( szDriveType );
 		if( lngRet == DRIVE_REMOVABLE || lngRet == DRIVE_CDROM || lngRet == DRIVE_REMOTE )
 		{
 			return false;
 		}
 	}
-	else if (pszDrive[0] == _T('\\') && pszDrive[1] == _T('\\')) {
+	else if (pszDrive[0] == L'\\' && pszDrive[1] == L'\\') {
 		// ネットワークパス	2010/5/27 Uchi
 		return false;
 	}
@@ -156,14 +156,14 @@ bool IsLocalDrive( const TCHAR* pszDrive )
 
 
 
-const TCHAR* GetFileTitlePointer(const TCHAR* tszPath)
+const WCHAR* GetFileTitlePointer(const WCHAR* tszPath)
 {
-	CharPointerT p;
-	const TCHAR* pszName;
+	CharPointerW p;
+	const WCHAR* pszName;
 	p = pszName = tszPath;
 	while( *p )
 	{
-		if( *p == _T('\\') ){
+		if( *p == L'\\' ){
 			pszName = p + 1;
 			p++;
 		}
@@ -180,52 +180,52 @@ const TCHAR* GetFileTitlePointer(const TCHAR* tszPath)
 	@date 2003.06.23
 	@date 2007.05.20 ryoji 関数名変更（旧：fopen_absexe）、汎用テキストマッピング化
 */
-FILE* _tfopen_absexe(LPCTSTR fname, LPCTSTR mode)
+FILE* _wfopen_absexe(LPCWSTR fname, LPCWSTR mode)
 {
 	if( _IS_REL_PATH( fname ) ){
-		TCHAR path[_MAX_PATH];
+		WCHAR path[_MAX_PATH];
 		GetExedir( path, fname );
-		return _tfopen( path, mode );
+		return _wfopen( path, mode );
 	}
-	return _tfopen( fname, mode );
+	return _wfopen( fname, mode );
 }
 
 /*! fnameが相対パスの場合は、INIファイルのパスからの相対パスとして開く
 	@author ryoji
-	@date 2007.05.19 新規作成（_tfopen_absexeベース）
+	@date 2007.05.19 新規作成（_wfopen_absexeベース）
 */
-FILE* _tfopen_absini(LPCTSTR fname, LPCTSTR mode, BOOL bOrExedir/*=TRUE*/ )
+FILE* _wfopen_absini(LPCWSTR fname, LPCWSTR mode, BOOL bOrExedir/*=TRUE*/ )
 {
 	if( _IS_REL_PATH( fname ) ){
-		TCHAR path[_MAX_PATH];
+		WCHAR path[_MAX_PATH];
 		if( bOrExedir )
 			GetInidirOrExedir( path, fname );
 		else
 			GetInidir( path, fname );
-		return _tfopen( path, mode );
+		return _wfopen( path, mode );
 	}
-	return _tfopen( fname, mode );
+	return _wfopen( fname, mode );
 }
 
 
 
 /* フォルダの最後が半角かつ'\\'の場合は、取り除く "c:\\"等のルートは取り除かない */
-void CutLastYenFromDirectoryPath( TCHAR* pszFolder )
+void CutLastYenFromDirectoryPath( WCHAR* pszFolder )
 {
-	if( 3 == _tcslen( pszFolder )
-	 && pszFolder[1] == _T(':')
-	 && pszFolder[2] == _T('\\')
+	if( 3 == wcslen( pszFolder )
+	 && pszFolder[1] == L':'
+	 && pszFolder[2] == L'\\'
 	){
 		/* ドライブ名:\ */
 	}else{
 		/* フォルダの最後が半角かつ'\\'の場合は、取り除く */
 		int	nFolderLen;
 		int	nCharChars;
-		nFolderLen = _tcslen( pszFolder );
+		nFolderLen = wcslen( pszFolder );
 		if( 0 < nFolderLen ){
-			nCharChars = &pszFolder[nFolderLen] - CNativeT::GetCharPrev( pszFolder, nFolderLen, &pszFolder[nFolderLen] );
-			if( 1 == nCharChars && _T('\\') == pszFolder[nFolderLen - 1] ){
-				pszFolder[nFolderLen - 1] = _T('\0');
+			nCharChars = &pszFolder[nFolderLen] - CNativeW::GetCharPrev( pszFolder, nFolderLen, &pszFolder[nFolderLen] );
+			if( 1 == nCharChars && L'\\' == pszFolder[nFolderLen - 1] ){
+				pszFolder[nFolderLen - 1] = L'\0';
 			}
 		}
 	}
@@ -243,28 +243,28 @@ void CutLastYenFromDirectoryPath( TCHAR* pszFolder )
 	@retval true	成功 (付加した、または付加する必要がなかった)
 	@retval false	バッファに '\\' を付加する余裕がないため、付加しなかった
 */
-bool AddLastYenFromDirectoryPath( TCHAR* pszFolder, size_t nBufCount )
+bool AddLastYenFromDirectoryPath( WCHAR* pszFolder, size_t nBufCount )
 {
-	if( 3 == _tcslen( pszFolder )
-	 && pszFolder[1] == _T(':')
-	 && pszFolder[2] == _T('\\')
+	if( 3 == wcslen( pszFolder )
+	 && pszFolder[1] == L':'
+	 && pszFolder[2] == L'\\'
 	){
 		/* ドライブ名:\ */
 	}else{
 		/* フォルダの最後が半角かつ'\\'でない場合は、付加する */
 		int	nFolderLen;
 		int	nCharChars;
-		nFolderLen = _tcslen( pszFolder );
+		nFolderLen = wcslen( pszFolder );
 		if( 0 < nFolderLen ){
-			nCharChars = &pszFolder[nFolderLen] - CNativeT::GetCharPrev( pszFolder, nFolderLen, &pszFolder[nFolderLen] );
-			if( 1 == nCharChars && _T('\\') == pszFolder[nFolderLen - 1] ){
+			nCharChars = &pszFolder[nFolderLen] - CNativeW::GetCharPrev( pszFolder, nFolderLen, &pszFolder[nFolderLen] );
+			if( 1 == nCharChars && L'\\' == pszFolder[nFolderLen - 1] ){
 			}else{
 				// '\\' と終端 NUL の 2 文字分の空きがない場合は付加しない (バッファオーバーフロー防止)
 				if( (size_t)nFolderLen + 2 > nBufCount ){
 					return false;
 				}
-				pszFolder[nFolderLen] = _T('\\');
-				pszFolder[nFolderLen + 1] = _T('\0');
+				pszFolder[nFolderLen] = L'\\';
+				pszFolder[nFolderLen + 1] = L'\0';
 			}
 		}
 	}
@@ -275,30 +275,30 @@ bool AddLastYenFromDirectoryPath( TCHAR* pszFolder, size_t nBufCount )
 
 /* ファイルのフルパスを、フォルダとファイル名に分割 */
 /* [c:\work\test\aaa.txt] → [c:\work\test] + [aaa.txt] */
-void SplitPath_FolderAndFile( const TCHAR* pszFilePath, TCHAR* pszFolder, TCHAR* pszFile )
+void SplitPath_FolderAndFile( const WCHAR* pszFilePath, WCHAR* pszFolder, WCHAR* pszFile )
 {
-	TCHAR	szDrive[_MAX_DRIVE];
-	TCHAR	szDir[_MAX_DIR];
-	TCHAR	szFname[_MAX_FNAME];
-	TCHAR	szExt[_MAX_EXT];
+	WCHAR	szDrive[_MAX_DRIVE];
+	WCHAR	szDir[_MAX_DIR];
+	WCHAR	szFname[_MAX_FNAME];
+	WCHAR	szExt[_MAX_EXT];
 	int		nFolderLen;
 	int		nCharChars;
-	_tsplitpath( pszFilePath, szDrive, szDir, szFname, szExt );
+	_wsplitpath( pszFilePath, szDrive, szDir, szFname, szExt );
 	if( NULL != pszFolder ){
-		_tcscpy( pszFolder, szDrive );
-		_tcscat( pszFolder, szDir );
+		wcscpy( pszFolder, szDrive );
+		wcscat( pszFolder, szDir );
 		/* フォルダの最後が半角かつ'\\'の場合は、取り除く */
-		nFolderLen = _tcslen( pszFolder );
+		nFolderLen = wcslen( pszFolder );
 		if( 0 < nFolderLen ){
-			nCharChars = &pszFolder[nFolderLen] - CNativeT::GetCharPrev( pszFolder, nFolderLen, &pszFolder[nFolderLen] );
-			if( 1 == nCharChars && _T('\\') == pszFolder[nFolderLen - 1] ){
-				pszFolder[nFolderLen - 1] = _T('\0');
+			nCharChars = &pszFolder[nFolderLen] - CNativeW::GetCharPrev( pszFolder, nFolderLen, &pszFolder[nFolderLen] );
+			if( 1 == nCharChars && L'\\' == pszFolder[nFolderLen - 1] ){
+				pszFolder[nFolderLen - 1] = L'\0';
 			}
 		}
 	}
 	if( NULL != pszFile ){
-		_tcscpy( pszFile, szFname );
-		_tcscat( pszFile, szExt );
+		wcscpy( pszFile, szFname );
+		wcscat( pszFile, szExt );
 	}
 	return;
 }
@@ -307,10 +307,10 @@ void SplitPath_FolderAndFile( const TCHAR* pszFilePath, TCHAR* pszFolder, TCHAR*
  * [c:\work\test] + [aaa.txt] → [c:\work\test\aaa.txt]
  * フォルダ末尾に円記号があってもなくても良い。
  */
-void Concat_FolderAndFile( const TCHAR* pszDir, const TCHAR* pszTitle, TCHAR* pszPath )
+void Concat_FolderAndFile( const WCHAR* pszDir, const WCHAR* pszTitle, WCHAR* pszPath )
 {
-	TCHAR* out=pszPath;
-	const TCHAR* in;
+	WCHAR* out=pszPath;
+	const WCHAR* in;
 
 	//フォルダをコピー
 	for( in=pszDir ; *in != '\0'; ){
@@ -336,10 +336,10 @@ void Concat_FolderAndFile( const TCHAR* pszDir, const TCHAR* pszTitle, TCHAR* ps
 	@date Oct. 4, 2005 genta 相対パスが絶対パスに直されなかった
 	@date Oct. 5, 2005 Moca  相対パスを絶対パスに変換するように
 */
-BOOL GetLongFileName( const TCHAR* pszFilePathSrc, TCHAR* pszFilePathDes )
+BOOL GetLongFileName( const WCHAR* pszFilePathSrc, WCHAR* pszFilePathDes )
 {
-	TCHAR* name;
-	TCHAR szBuf[_MAX_PATH + 1];
+	WCHAR* name;
+	WCHAR szBuf[_MAX_PATH + 1];
 	int len = ::GetFullPathName( pszFilePathSrc, _MAX_PATH, szBuf, &name );
 	if( len <= 0 || _MAX_PATH <= len ){
 		len = ::GetLongPathName( pszFilePathSrc, pszFilePathDes, _MAX_PATH );
@@ -350,23 +350,23 @@ BOOL GetLongFileName( const TCHAR* pszFilePathSrc, TCHAR* pszFilePathDes )
 	}
 	len = ::GetLongPathName( szBuf, pszFilePathDes, _MAX_PATH );
 	if( len <= 0 || _MAX_PATH < len ){
-		_tcscpy( pszFilePathDes, szBuf );
+		wcscpy( pszFilePathDes, szBuf );
 	}
 	return TRUE;
 }
 
 
 /* 拡張子を調べる */
-BOOL CheckEXT( const TCHAR* pszPath, const TCHAR* pszExt )
+BOOL CheckEXT( const WCHAR* pszPath, const WCHAR* pszExt )
 {
-	TCHAR	szExt[_MAX_EXT];
-	TCHAR*	pszWork;
-	_tsplitpath( pszPath, NULL, NULL, NULL, szExt );
+	WCHAR	szExt[_MAX_EXT];
+	WCHAR*	pszWork;
+	_wsplitpath( pszPath, NULL, NULL, NULL, szExt );
 	pszWork = szExt;
-	if( pszWork[0] == _T('.') ){
+	if( pszWork[0] == L'.' ){
 		pszWork++;
 	}
-	if( 0 == _tcsicmp( pszExt, pszWork ) ){
+	if( 0 == _wcsicmp( pszExt, pszWork ) ){
 		return TRUE;
 	}else{
 		return FALSE;
@@ -377,12 +377,12 @@ BOOL CheckEXT( const TCHAR* pszPath, const TCHAR* pszExt )
 	@author Moca
 	@date 2003.06.23
 */
-bool _IS_REL_PATH(const TCHAR* path)
+bool _IS_REL_PATH(const WCHAR* path)
 {
 	bool ret = true;
-	if( ( _T('A') <= path[0] && path[0] <= _T('Z') || _T('a') <= path[0] && path[0] <= _T('z') )
-		&& path[1] == _T(':') && path[2] == _T('\\')
-		|| path[0] == _T('\\') && path[1] == _T('\\')
+	if( ( L'A' <= path[0] && path[0] <= L'Z' || L'a' <= path[0] && path[0] <= L'z' )
+		&& path[1] == L':' && path[2] == L'\\'
+		|| path[0] == L'\\' && path[1] == L'\\'
 		 ){
 		ret = false;
 	}
@@ -403,18 +403,18 @@ bool _IS_REL_PATH(const TCHAR* path)
 	@date 2003.04.30 genta 新規作成
 */
 int CalcDirectoryDepth(
-	const TCHAR* path	//!< [in] 深さを調べたいファイル/ディレクトリのフルパス
+	const WCHAR* path	//!< [in] 深さを調べたいファイル/ディレクトリのフルパス
 )
 {
 	int depth = 0;
  
 	//	とりあえず\の数を数える
-	for( CharPointerT p = path; *p != _T('\0'); ++p ){
-		if( *p == _T('\\') ){
+	for( CharPointerW p = path; *p != L'\0'; ++p ){
+		if( *p == L'\\' ){
 			++depth;
 			//	フルパスには入っていないはずだが念のため
 			//	.\はカレントディレクトリなので，深さに関係ない．
-			while( p[1] == _T('.') && p[2] == _T('\\') ){
+			while( p[1] == L'.' && p[2] == L'\\' ){
 				p += 2;
 			}
 		}
@@ -422,12 +422,12 @@ int CalcDirectoryDepth(
  
 	//	補正
 	//	ドライブ名はパスの深さに数えない
-	if( _T('A') <= path[0] && path[0] <= _T('Z') && path[1] == _T(':') && path[2] == _T('\\') ){
+	if( L'A' <= path[0] && path[0] <= L'Z' && path[1] == L':' && path[2] == L'\\' ){
 		//フルパス
 		--depth; // C:\ の \ はルートの記号なので階層深さではない
 	}
-	else if( path[0] == _T('\\') ){
-		if( path[1] == _T('\\') ){
+	else if( path[0] == L'\\' ){
+		if( path[1] == L'\\' ){
 			//	ネットワークパス
 			//	先頭の2つはネットワークを表し，その次はホスト名なので
 			//	ディレクトリ階層とは無関係
@@ -452,23 +452,23 @@ int CalcDirectoryDepth(
 	@date 2008.05.05 novice GetModuleHandle(NULL)→NULLに変更
 */
 void GetExedir(
-	LPTSTR	pDir,	//!< [out] EXEファイルのあるディレクトリを返す場所．予め_MAX_PATHのバッファを用意しておくこと．
-	LPCTSTR	szFile	//!< [in]  ディレクトリ名に結合するファイル名．
+	LPWSTR	pDir,	//!< [out] EXEファイルのあるディレクトリを返す場所．予め_MAX_PATHのバッファを用意しておくこと．
+	LPCWSTR	szFile	//!< [in]  ディレクトリ名に結合するファイル名．
 )
 {
 	if( pDir == NULL )
 		return;
 	
-	TCHAR	szPath[_MAX_PATH];
+	WCHAR	szPath[_MAX_PATH];
 	// sakura.exe のパスを取得
 	::GetModuleFileName( NULL, szPath, _countof(szPath) );
 	if( szFile == NULL ){
 		SplitPath_FolderAndFile( szPath, pDir, NULL );
 	}
 	else {
-		TCHAR	szDir[_MAX_PATH];
+		WCHAR	szDir[_MAX_PATH];
 		SplitPath_FolderAndFile( szPath, szDir, NULL );
-		auto_snprintf_s( pDir, _MAX_PATH, _T("%ts\\%ts"), szDir, szFile );
+		auto_snprintf_s( pDir, _MAX_PATH, L"%ts\\%ts", szDir, szFile );
 	}
 }
 
@@ -479,23 +479,23 @@ void GetExedir(
 	@date 2007.05.19 新規作成（GetExedirベース）
 */
 void GetInidir(
-	LPTSTR	pDir,				//!< [out] INIファイルのあるディレクトリを返す場所．予め_MAX_PATHのバッファを用意しておくこと．
-	LPCTSTR szFile	/*=NULL*/	//!< [in] ディレクトリ名に結合するファイル名．
+	LPWSTR	pDir,				//!< [out] INIファイルのあるディレクトリを返す場所．予め_MAX_PATHのバッファを用意しておくこと．
+	LPCWSTR szFile	/*=NULL*/	//!< [in] ディレクトリ名に結合するファイル名．
 )
 {
 	if( pDir == NULL )
 		return;
 	
-	TCHAR	szPath[_MAX_PATH];
+	WCHAR	szPath[_MAX_PATH];
 	// sakura.ini のパスを取得
 	CFileNameManager::getInstance()->GetIniFileName( szPath );
 	if( szFile == NULL ){
 		SplitPath_FolderAndFile( szPath, pDir, NULL );
 	}
 	else {
-		TCHAR	szDir[_MAX_PATH];
+		WCHAR	szDir[_MAX_PATH];
 		SplitPath_FolderAndFile( szPath, szDir, NULL );
-		auto_snprintf_s( pDir, _MAX_PATH, _T("%ts\\%ts"), szDir, szFile );
+		auto_snprintf_s( pDir, _MAX_PATH, L"%ts\\%ts", szDir, szFile );
 	}
 }
 
@@ -507,17 +507,17 @@ void GetInidir(
 	@date 2007.05.22 新規作成
 */
 void GetInidirOrExedir(
-	LPTSTR	pDir,								//!< [out] INIファイルまたはEXEファイルのあるディレクトリを返す場所．
+	LPWSTR	pDir,								//!< [out] INIファイルまたはEXEファイルのあるディレクトリを返す場所．
 												//         予め_MAX_PATHのバッファを用意しておくこと．
-	LPCTSTR	szFile					/*=NULL*/,	//!< [in] ディレクトリ名に結合するファイル名．
+	LPCWSTR	szFile					/*=NULL*/,	//!< [in] ディレクトリ名に結合するファイル名．
 	BOOL	bRetExedirIfFileEmpty	/*=FALSE*/	//!< [in] ファイル名の指定が空の場合はEXEファイルのフルパスを返す．
 )
 {
-	TCHAR	szInidir[_MAX_PATH];
-	TCHAR	szExedir[_MAX_PATH];
+	WCHAR	szInidir[_MAX_PATH];
+	WCHAR	szExedir[_MAX_PATH];
 
 	// ファイル名の指定が空の場合はEXEファイルのフルパスを返す（オプション）
-	if( bRetExedirIfFileEmpty && (szFile == NULL || szFile[0] == _T('\0')) ){
+	if( bRetExedirIfFileEmpty && (szFile == NULL || szFile[0] == L'\0') ){
 		GetExedir( szExedir, szFile );
 		::lstrcpy( pDir, szExedir );
 		return;
@@ -596,11 +596,11 @@ bool GetVcsRepositoryRootDir(
 	pathLen = wcslen( pathName );
 	while( pathLen > (int)wcslen( L"C:\\" ) ){
 		int i;
-		TCHAR* vcsDirectoryNames[] = { L".bzr", L".git", L".hg", L".svn" };
+		WCHAR* vcsDirectoryNames[] = { L".bzr", L".git", L".hg", L".svn" };
 
 		for( i = 0; i < _countof(vcsDirectoryNames); i++ ){
 			bool vcsRepositoryDetected;
-			TCHAR vcsDirectoryPathName[MAX_PATH + 4];
+			WCHAR vcsDirectoryPathName[MAX_PATH + 4];
 
 			Concat_FolderAndFile( pathName, vcsDirectoryNames[i], vcsDirectoryPathName );
 			vcsRepositoryDetected = IsDirectoryExists( vcsDirectoryPathName );
@@ -712,7 +712,7 @@ bool GetHgRepositoryRootDir(
 	@author genta
 	@date 2002.01.04 新規作成
 */
-bool IsFileExists(const TCHAR* path, bool bFileOnly)
+bool IsFileExists(const WCHAR* path, bool bFileOnly)
 {
 	WIN32_FIND_DATA fd;
 	HANDLE hFind = ::FindFirstFile( path, &fd );
@@ -730,12 +730,12 @@ bool IsFileExists(const TCHAR* path, bool bFileOnly)
  *	@return true: 指定ファイルはバイナリファイル / false: 指定ファイルはバイナリファイルではない
  */
 bool IsBinaryFile(
-	const TCHAR* path	//!< [in] 調べるパス名
+	const WCHAR* path	//!< [in] 調べるパス名
 )
 {
 	FILE* fp;
 
-	fp = _tfopen( path, _T("rb") );
+	fp = _wfopen( path, L"rb" );
 	if( fp == NULL ){
 		return false;
 	}
@@ -765,7 +765,7 @@ bool IsBinaryFile(
 	@retval true  ディレクトリは存在する
 	@retval false ディレクトリは存在しない
 */
-bool IsDirectoryExists(const TCHAR* path)
+bool IsDirectoryExists(const WCHAR* path)
 {
 	WIN32_FIND_DATA fd;
 	HANDLE hFind = ::FindFirstFile( path, &fd );
@@ -790,7 +790,7 @@ bool IsDirectoryExists(const TCHAR* path)
 	@author ryoji
 	@date 2009.08.20 新規作成
 */
-bool IsDirectory(LPCTSTR pszPath)
+bool IsDirectory(LPCWSTR pszPath)
 {
 	WIN32_FIND_DATA fd;
 	HANDLE hFind = ::FindFirstFile( pszPath, &fd );
@@ -816,7 +816,7 @@ bool IsDirectory(LPCTSTR pszPath)
 	取得できる．(ryoji)
 */
 bool GetLastWriteTimestamp(
-	const TCHAR*	pszFileName,	//!< [in]  ファイルのパス
+	const WCHAR*	pszFileName,	//!< [in]  ファイルのパス
 	CFileTime*		pcFileTime		//!< [out] 更新日時を返す場所
 )
 {

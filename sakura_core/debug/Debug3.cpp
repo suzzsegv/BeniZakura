@@ -8,7 +8,7 @@ static HINSTANCE hDll=NULL;
 static void Load()
 {
 	if(!hDll){
-		hDll=LoadLibraryExedir(_T("DebugMonitorLib.dll"));
+		hDll=LoadLibraryExedir(L"DebugMonitorLib.dll");
 	}
 }
 

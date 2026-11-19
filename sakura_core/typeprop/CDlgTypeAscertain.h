@@ -33,7 +33,6 @@ class CDlgTypeAscertain;
 #ifndef _CDLGTYPEASCERTAIN_H_
 #define _CDLGTYPEASCERTAIN_H_
 using std::wstring;
-using std::tstring;
 
 #include "dlg/CDialog.h"
 /*-----------------------------------------------------------------------

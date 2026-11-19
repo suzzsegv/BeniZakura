@@ -66,8 +66,8 @@ HMENU CMRUFolder::CreateMenu( CMenuDrawer* pCMenuDrawer ) const
 */
 HMENU CMRUFolder::CreateMenu( HMENU	hMenuPopUp, CMenuDrawer* pCMenuDrawer ) const
 {
-	TCHAR	szFolder2[_MAX_PATH * 2];	//	全部&でも問題ないように :-)
-	TCHAR	szMemu[_MAX_PATH * 2 + 10];				//	メニューキャプション
+	WCHAR	szFolder2[_MAX_PATH * 2];	//	全部&でも問題ないように :-)
+	WCHAR	szMemu[_MAX_PATH * 2 + 10];				//	メニューキャプション
 	int		i;
 	bool	bFavorite;
 
@@ -85,21 +85,21 @@ HMENU CMRUFolder::CreateMenu( HMENU	hMenuPopUp, CMenuDrawer* pCMenuDrawer ) cons
 
 		bFavorite = m_cRecentFolder.IsFavorite( i );
 		const int nAccKey = i % 36;
-		auto_sprintf( szMemu, _T("%ts%ts (&%tc)"), 
-			(!m_pShareData->m_Common.m_sWindow.m_bMenuIcon && bFavorite) ? _T("★ ") : _T(""),
+		auto_sprintf( szMemu, L"%ts%ts (&%tc)", 
+			(!m_pShareData->m_Common.m_sWindow.m_bMenuIcon && bFavorite) ? L"★ " : L"",
 			szFolder2,
-			(nAccKey < 10) ? (_T('0') + nAccKey) : (_T('A') + nAccKey - 10) );
+			(nAccKey < 10) ? (L'0' + nAccKey) : (L'A' + nAccKey - 10) );
 
 		//	メニューに追加
-		pCMenuDrawer->MyAppendMenu( hMenuPopUp, MF_BYPOSITION | MF_STRING, IDM_SELOPENFOLDER + i, szMemu, _T(""), TRUE,
+		pCMenuDrawer->MyAppendMenu( hMenuPopUp, MF_BYPOSITION | MF_STRING, IDM_SELOPENFOLDER + i, szMemu, L"", TRUE,
 			bFavorite ? F_FAVORITE : -1 );
 	}
 	return hMenuPopUp;
 }
 
-std::vector<LPCTSTR> CMRUFolder::GetPathList() const
+std::vector<LPCWSTR> CMRUFolder::GetPathList() const
 {
-	std::vector<LPCTSTR> ret;
+	std::vector<LPCWSTR> ret;
 	for( int i = 0; i < m_cRecentFolder.GetItemCount(); ++i ){
 		//	「共通設定」→「全般」→「フォルダの履歴MAX」を反映
 		if ( i >= m_cRecentFolder.GetViewCount() ) break;
@@ -122,10 +122,10 @@ void CMRUFolder::ClearAll()
 
 	@date 2001.12.26  CShareData::AddOPENFOLDERListから移動した。（YAZAKI）
 */
-void CMRUFolder::Add( const TCHAR* pszFolder )
+void CMRUFolder::Add( const WCHAR* pszFolder )
 {
 	if( NULL == pszFolder
-	 || pszFolder[0] == _T('\0') )
+	 || pszFolder[0] == L'\0' )
 	{	//	長さが0なら排除。
 		return;
 	}
@@ -134,9 +134,9 @@ void CMRUFolder::Add( const TCHAR* pszFolder )
 	if( -1 == m_cRecentFolder.FindItemByText( pszFolder ) ){
 		int nSize = m_pShareData->m_sHistory.m_aExceptMRU.size();
 		for( int i = 0 ; i < nSize; i++ ){
-			TCHAR szExceptMRU[_MAX_PATH];
+			WCHAR szExceptMRU[_MAX_PATH];
 			CFileNameManager::ExpandMetaToFolder( m_pShareData->m_sHistory.m_aExceptMRU[i], szExceptMRU, _countof(szExceptMRU) );
-			if( NULL != _tcsistr( pszFolder, szExceptMRU ) ){
+			if( NULL != wcsistr( pszFolder, szExceptMRU ) ){
 				return;
 			}
 		}
@@ -145,7 +145,7 @@ void CMRUFolder::Add( const TCHAR* pszFolder )
 	m_cRecentFolder.AppendItem( pszFolder );
 }
 
-const TCHAR* CMRUFolder::GetPath(int num) const
+const WCHAR* CMRUFolder::GetPath(int num) const
 {
 	return m_cRecentFolder.GetItemText( num );
 }

@@ -383,7 +383,7 @@ void CViewCommander::Command_UNINDENT( wchar_t wcChar )
 			eIndent = INDENT_NONE;
 		}
 		Command_INDENT( wcChar, eIndent );
-		m_pCommanderView->SendStatusMessage(_T("★逆インデントは選択時のみ"));
+		m_pCommanderView->SendStatusMessage(L"★逆インデントは選択時のみ");
 		return;
 	}
 
@@ -853,9 +853,9 @@ void CViewCommander::Command_MERGE(void)
 	m_pCommanderView->RedrawAll();
 
 	if(j){
-		TopOkMessage( m_pCommanderView->GetHwnd(), _T("%d行をマージしました。"), j);
+		TopOkMessage( m_pCommanderView->GetHwnd(), L"%d行をマージしました。", j);
 	}else{
-		InfoMessage( m_pCommanderView->GetHwnd(), _T("マージ可能な行がみつかりませんでした。") );
+		InfoMessage( m_pCommanderView->GetHwnd(), L"マージ可能な行がみつかりませんでした。" );
 	}
 }
 
@@ -889,9 +889,9 @@ void CViewCommander::Command_Reconvert(void)
 		}
 
 		// ATOKが使えるかどうか
-		TCHAR sz[256];
+		WCHAR sz[256];
 		ImmGetDescription(GetKeyboardLayout(0),sz,_countof(sz)); //説明の取得
-		if ( (_tcsncmp(sz,_T("ATOK"),4) == 0) && (NULL != m_pCommanderView->m_AT_ImmSetReconvertString) ){
+		if ( (wcsncmp(sz,L"ATOK",4) == 0) && (NULL != m_pCommanderView->m_AT_ImmSetReconvertString) ){
 			bUseUnicodeATOK = true;
 		}else{
 			//対応IMEなし

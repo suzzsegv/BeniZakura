@@ -29,30 +29,30 @@ CRecentCmd::CRecentCmd()
 
 	@note	取得後のポインタはユーザ管理の構造体にキャストして参照してください。
 */
-const TCHAR* CRecentCmd::GetItemText( int nIndex ) const
+const WCHAR* CRecentCmd::GetItemText( int nIndex ) const
 {
 	return *GetItem(nIndex);
 }
 
-bool CRecentCmd::DataToReceiveType( LPCTSTR* dst, const CCmdString* src ) const
+bool CRecentCmd::DataToReceiveType( LPCWSTR* dst, const CCmdString* src ) const
 {
 	*dst = *src;
 	return true;
 }
 
-bool CRecentCmd::TextToDataType( CCmdString* dst, LPCTSTR pszText ) const
+bool CRecentCmd::TextToDataType( CCmdString* dst, LPCWSTR pszText ) const
 {
 	CopyItem(dst, pszText);
 	return true;
 }
 
-int CRecentCmd::CompareItem( const CCmdString* p1, LPCTSTR p2 ) const
+int CRecentCmd::CompareItem( const CCmdString* p1, LPCWSTR p2 ) const
 {
-	return _tcscmp(*p1,p2);
+	return wcscmp(*p1,p2);
 }
 
-void CRecentCmd::CopyItem( CCmdString* dst, LPCTSTR src ) const
+void CRecentCmd::CopyItem( CCmdString* dst, LPCWSTR src ) const
 {
 	//	バッファに収まらない場合は切り詰める (バッファオーバーフロー防止)
-	_tcsncpy_s( dst->GetBufferPointer(), dst->GetBufferCount(), src, _TRUNCATE );
+	wcsncpy_s( dst->GetBufferPointer(), dst->GetBufferCount(), src, _TRUNCATE );
 }

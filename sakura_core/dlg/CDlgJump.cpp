@@ -91,7 +91,7 @@ BOOL CDlgJump::OnBnClicked( int wID )
 			if( 0 < GetData() ){
 				CloseDialog( 1 );
 			}else{
-				OkMessage( GetHwnd(), _T("正しく行番号を入力してください。") );
+				OkMessage( GetHwnd(), L"正しく行番号を入力してください。" );
 				return TRUE;
 			}
 			{
@@ -116,7 +116,7 @@ BOOL CDlgJump::OnBnClicked( int wID )
 void CDlgJump::SetData( void )
 {
 	if( 0 == m_nLineNum ){
-		::DlgItem_SetText( GetHwnd(), IDC_EDIT_LINENUM, _T("") );	/* 行番号 */
+		::DlgItem_SetText( GetHwnd(), IDC_EDIT_LINENUM, L"" );	/* 行番号 */
 	}else{
 		::SetDlgItemInt( GetHwnd(), IDC_EDIT_LINENUM, m_nLineNum, FALSE );	/* 前回の行番号 */
 	}

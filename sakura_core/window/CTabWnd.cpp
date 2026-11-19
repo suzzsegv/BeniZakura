@@ -3,7 +3,7 @@
 
 	@author MIK
 	@date 2003.5.30
-	@date 2004.01.27 break漏れ対応。TCHAR化。タブ表示が崩れる(?)の対応。
+	@date 2004.01.27 break漏れ対応。WCHAR化。タブ表示が崩れる(?)の対応。
 */
 /*
 	Copyright (C) 2003, MIK, KEITA
@@ -94,7 +94,7 @@ typedef struct {
 	HWND	hwnd;
 	int		iItem;
 	int		iImage;
-	TCHAR	szText[_MAX_PATH];
+	WCHAR	szText[_MAX_PATH];
 } TABMENU_DATA;
 
 /*!	タブ一覧メニュー用データの qsort() コールバック処理
@@ -333,7 +333,7 @@ LRESULT CTabWnd::OnTabMouseMove( WPARAM wParam, LPARAM lParam )
 	case DRAG_DRAG:
 		// ドラッグ中のマウスカーソルを表示する
 		HINSTANCE hInstance;
-		LPCTSTR lpCursorName;
+		LPCWSTR lpCursorName;
 		lpCursorName = IDC_NO;	// 禁止カーソル
 		if ( 0 <= nDstTab )	// タブの上にカーソルがある
 		{
@@ -740,7 +740,7 @@ LRESULT CTabWnd::ExecTabCommand( int nId, POINTS pts )
 }
 
 CTabWnd::CTabWnd()
-: CWnd(_T("::CTabWnd"))
+: CWnd(L"::CTabWnd")
 , m_bVisualStyle( FALSE )		// 2007.04.01 ryoji
 , m_eDragState( DRAG_NONE )
 , m_bHovering( FALSE )	//	2006.02.01 ryoji
@@ -749,7 +749,7 @@ CTabWnd::CTabWnd()
 , m_eCaptureSrc( CAPT_NONE )	//	2006.11.30 ryoji
 , m_nTabBorderArray( NULL )		//  2012.04.22 syat
 {
-	m_pszClassName = _T("CTabWnd");
+	m_pszClassName = L"CTabWnd";
 	/* 共有データ構造体のアドレスを返す */
 	m_pShareData = CShareData::getInstance()->GetShareData();
 
@@ -761,7 +761,7 @@ CTabWnd::CTabWnd()
 
 	// 2006.02.17 ryoji ImageList_Duplicate() のアドレスを取得する
 	// （IE4.0 未満の環境でも動作可能なように動的ロード）
-    HINSTANCE hinst = ::GetModuleHandle(TEXT("comctl32"));
+    HINSTANCE hinst = ::GetModuleHandle(L"comctl32");
     *(FARPROC*)&m_RealImageList_Duplicate = ::GetProcAddress(hinst, "ImageList_Duplicate");
 
 	return;
@@ -819,7 +819,7 @@ HWND CTabWnd::Open( HINSTANCE hInstance, HWND hwndParent )
 	//タブウインドウを作成する。
 	m_hwndTab = ::CreateWindow(
 		WC_TABCONTROL,
-		_T(""),
+		L"",
 		//	2004.05.22 MIK 消えるTAB対策でWS_CLIPSIBLINGS追加
 		// 2007.12.06 ryoji TCS_TOOLTIPS追加（タブ用のツールチップはタブに作らせる）
 		WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | TCS_TOOLTIPS,
@@ -1181,7 +1181,7 @@ LRESULT CTabWnd::OnMeasureItem( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 		HFONT hFontOld = (HFONT)::SelectObject( hdc, hFont );
 
 		SIZE size;
-		::GetTextExtentPoint32( hdc, pData->szText, ::_tcslen(pData->szText), &size );
+		::GetTextExtentPoint32( hdc, pData->szText, ::wcslen(pData->szText), &size );
 
 		int cxIcon = CX_SMICON;
 		int cyIcon = CY_SMICON;
@@ -1275,14 +1275,14 @@ LRESULT CTabWnd::OnDrawItem( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam 
 		int nTabIndex = lpdis->itemID;
 		HWND hwndItem = lpdis->hwndItem;
 		TCITEM item;
-		TCHAR szBuf[256];
+		WCHAR szBuf[256];
 		int nSelIndex = TabCtrl_GetCurSel(m_hwndTab);
 		bool bSelected = ( nSelIndex == nTabIndex );
 		int nTabCount = TabCtrl_GetItemCount(m_hwndTab);
 
 		item.mask = TCIF_TEXT | TCIF_PARAM | TCIF_IMAGE;
 		item.pszText = szBuf;
-		item.cchTextMax = sizeof(szBuf) / sizeof(TCHAR);
+		item.cchTextMax = sizeof(szBuf) / sizeof(WCHAR);
 		TabCtrl_GetItem(hwndItem, nTabIndex, &item);
 
 		//描画対象
@@ -1440,8 +1440,8 @@ LRESULT CTabWnd::OnMouseMove( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 
 	// カーソルがボタン上を出入りするときに再描画
 	RECT rcBtn;
-	LPTSTR pszTip = (LPTSTR)-1L;
-	TCHAR szText[80];	// 2007.12.06 ryoji メンバ変数を使う必要は無いのでローカル変数にした
+	LPWSTR pszTip = (LPWSTR)-1L;
+	WCHAR szText[80];	// 2007.12.06 ryoji メンバ変数を使う必要は無いのでローカル変数にした
 
 	GetListBtnRect( &rc, &rcBtn );
 	bHovering = ::PtInRect( &rcBtn, pt );
@@ -1455,7 +1455,7 @@ LRESULT CTabWnd::OnMouseMove( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 		if( m_bListBtnHilighted )	// ボタンに入ってきた?
 		{
 			pszTip = szText;
-			_tcscpy( szText, _T("左クリック: タブ名一覧\n右クリック: パス名一覧") );
+			wcscpy( szText, L"左クリック: タブ名一覧\n右クリック: パス名一覧" );
 		}
 	}
 
@@ -1475,24 +1475,24 @@ LRESULT CTabWnd::OnMouseMove( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 			{
 				if( !m_pShareData->m_Common.m_sTabBar.m_bTab_CloseOneWin )
 				{
-					_tcscpy( szText, _T("タブを閉じる") );
+					wcscpy( szText, L"タブを閉じる" );
 				}
 				else
 				{
 					::LoadString( GetAppInstance(), F_GROUPCLOSE, szText, _countof(szText) );
-					szText[_countof(szText) - 1] = _T('\0');
+					szText[_countof(szText) - 1] = L'\0';
 				}
 			}
 			else
 			{
 				::LoadString( GetAppInstance(), F_EXITALLEDITORS, szText, _countof(szText) );
-				szText[_countof(szText) - 1] = _T('\0');
+				szText[_countof(szText) - 1] = L'\0';
 			}
 		}
 	}
 
 	// ツールチップ更新	// 2007.03.05 ryoji
-	if( pszTip != (LPTSTR)-1L )	// ボタンへの出入りがあった?
+	if( pszTip != (LPWSTR)-1L )	// ボタンへの出入りがあった?
 	{
 		TOOLINFO ti;
 		::ZeroMemory( &ti, sizeof(ti) );
@@ -1659,9 +1659,9 @@ void CTabWnd::TabWindowNotify( WPARAM wParam, LPARAM lParam )
 		if( -1 == nIndex )
 		{
 			TCITEM	tcitem;
-			TCHAR	szName[1024];
+			WCHAR	szName[1024];
 
-			_tcscpy( szName, _T("(無題)") );
+			wcscpy( szName, L"(無題)" );
 
 			tcitem.mask    = TCIF_TEXT | TCIF_PARAM;
 			tcitem.pszText = szName;
@@ -1758,7 +1758,7 @@ void CTabWnd::TabWindowNotify( WPARAM wParam, LPARAM lParam )
 		{
 			TCITEM	tcitem;
 			CRecentEditNode	cRecentEditNode;
-			TCHAR	szName[1024];
+			WCHAR	szName[1024];
 			//	Jun. 19, 2004 genta
 			EditNode	*p;
 			p = CAppNodeManager::getInstance()->GetEditNode( (HWND)lParam );
@@ -1924,8 +1924,8 @@ void CTabWnd::Refresh( BOOL bEnsureVisible/* = TRUE*/, BOOL bRebuild/* = FALSE*/
 		nTab = j;	// 作成するタブ数
 
 		// タブが無ければ１つ作成して選択状態にする（自ウィンドウのタブ用）
-		TCHAR		szName[2048];
-		_tcscpy( szName, _T("") );
+		WCHAR		szName[2048];
+		wcscpy( szName, L"" );
 		tcitem.mask    = TCIF_TEXT | TCIF_PARAM;
 		tcitem.pszText = szName;
 		tcitem.lParam  = (LPARAM)GetParentHwnd();
@@ -2368,7 +2368,7 @@ HIMAGELIST CTabWnd::InitImageList( void )
 		//     WinNT4.0 では SHGetFileInfo() の第一引数に同名を指定すると同じインデックスを返してくることがある？
 
 		hImlSys = (HIMAGELIST)::SHGetFileInfo(
-			_T(".0"),
+			L".0",
 			FILE_ATTRIBUTE_DIRECTORY,
 			&sfi,
 			sizeof(sfi),
@@ -2379,7 +2379,7 @@ HIMAGELIST CTabWnd::InitImageList( void )
 		m_iIconApp = sfi.iIcon;
 
 		hImlSys = (HIMAGELIST)::SHGetFileInfo(
-			_T(".1"),
+			L".1",
 			FILE_ATTRIBUTE_DIRECTORY,
 			&sfi,
 			sizeof(sfi),
@@ -2432,8 +2432,8 @@ int CTabWnd::GetImageIndex( EditNode* pNode )
 		if( pNode->m_szFilePath[0] )
 		{
 			// 拡張子を取り出す
-			TCHAR szExt[_MAX_EXT];
-			_tsplitpath( pNode->m_szFilePath, NULL, NULL, NULL, szExt );
+			WCHAR szExt[_MAX_EXT];
+			_wsplitpath( pNode->m_szFilePath, NULL, NULL, NULL, szExt );
 
 			// 拡張子に関連付けられたアイコンイメージのインデックスを取得する
 			hImlSys = (HIMAGELIST)::SHGetFileInfo( szExt, FILE_ATTRIBUTE_NORMAL, &sfi, sizeof(sfi), SHGFI_SYSICONINDEX | SHGFI_SMALLICON | SHGFI_USEFILEATTRIBUTES );
@@ -2720,13 +2720,13 @@ void CTabWnd::GetTabCloseBtnRect( const LPRECT lprcTab, LPRECT lprc, bool select
 
 	@date 2007.06.28 ryoji 新規作成
 */
-void CTabWnd::GetTabName( EditNode* pEditNode, BOOL bFull, BOOL bDupamp, LPTSTR pszName, int nLen )
+void CTabWnd::GetTabName( EditNode* pEditNode, BOOL bFull, BOOL bDupamp, LPWSTR pszName, int nLen )
 {
-	LPTSTR pszText = new TCHAR[nLen];
+	LPWSTR pszText = new WCHAR[nLen];
 
 	if( pEditNode == NULL )
 	{
-		::lstrcpyn( pszText, _T("(無題)"), nLen );
+		::lstrcpyn( pszText, L"(無題)", nLen );
 	}
 	else if( !bFull || pEditNode->m_szFilePath[0] == '\0' )
 	{
@@ -2736,7 +2736,7 @@ void CTabWnd::GetTabName( EditNode* pEditNode, BOOL bFull, BOOL bDupamp, LPTSTR 
 		}
 		else
 		{
-			::lstrcpyn( pszText, _T("(無題)"), nLen );
+			::lstrcpyn( pszText, L"(無題)", nLen );
 		}
 	}
 	else
@@ -2748,7 +2748,7 @@ void CTabWnd::GetTabName( EditNode* pEditNode, BOOL bFull, BOOL bDupamp, LPTSTR 
 	if( bDupamp )
 	{
 		// &を&&に置き換える
-		LPTSTR pszText_amp = new TCHAR[nLen * 2];
+		LPWSTR pszText_amp = new WCHAR[nLen * 2];
 		dupamp( pszText, pszText_amp );
 		::lstrcpyn( pszName, pszText_amp, nLen );
 		delete []pszText_amp;
@@ -2860,7 +2860,7 @@ LRESULT CTabWnd::TabListMenu( POINT pt, BOOL bSel/* = TRUE*/, BOOL bFull/* = FAL
 		HMENU hMenu = ::CreatePopupMenu();
 		for( i = 0; i < nSelfTab; i++ )
 		{
-			::InsertMenu( hMenu, i, uFlags, IDM_SELWINDOW + i, m_hIml? (LPCTSTR)&pData[i]: pData[i].szText );
+			::InsertMenu( hMenu, i, uFlags, IDM_SELWINDOW + i, m_hIml? (LPCWSTR)&pData[i]: pData[i].szText );
 			if( pData[i].hwnd == GetParentHwnd() )
 				iMenuSel = i;
 		}
@@ -2878,12 +2878,12 @@ LRESULT CTabWnd::TabListMenu( POINT pt, BOOL bSel/* = TRUE*/, BOOL bFull/* = FAL
 			{
 				for( i = nSelfTab; i < nTab; i++ )
 				{
-					::InsertMenu( hMenu, i, uFlags, IDM_SELWINDOW + i, m_hIml? (LPCTSTR)&pData[i]: pData[i].szText );
+					::InsertMenu( hMenu, i, uFlags, IDM_SELWINDOW + i, m_hIml? (LPCWSTR)&pData[i]: pData[i].szText );
 				}
 			}
 			else
 			{
-				::InsertMenu( hMenu, nSelfTab, MF_BYPOSITION, 101, _T("すべて表示(&A)") );
+				::InsertMenu( hMenu, nSelfTab, MF_BYPOSITION, 101, L"すべて表示(&A)" );
 			}
 			::InsertMenu( hMenu, nSelfTab, MF_BYPOSITION | MF_SEPARATOR, 0, NULL);	// セパレータ
 		}
@@ -2891,7 +2891,7 @@ LRESULT CTabWnd::TabListMenu( POINT pt, BOOL bSel/* = TRUE*/, BOOL bFull/* = FAL
 		// 表示切替メニューを追加する
 		if( bSel )
 		{
-			::InsertMenu( hMenu, 0, MF_BYPOSITION | MF_STRING, 100, bFull? _T("タブ名一覧に切替える(&W)"): _T("パス名一覧に切替える(&W)") );
+			::InsertMenu( hMenu, 0, MF_BYPOSITION | MF_STRING, 100, bFull? L"タブ名一覧に切替える(&W)": L"パス名一覧に切替える(&W)" );
 			::InsertMenu( hMenu, 1, MF_BYPOSITION | MF_SEPARATOR, 0, NULL);	// セパレータ
 		}
 

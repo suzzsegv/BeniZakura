@@ -26,20 +26,20 @@
 
 void GetAppVersionInfo( HINSTANCE, int, DWORD*, DWORD* );	/* リソースから製品バージョンの取得 */
 
-HICON GetAppIcon( HINSTANCE hInst, int nResource, const TCHAR* szFile, bool bSmall = false);
+HICON GetAppIcon( HINSTANCE hInst, int nResource, const WCHAR* szFile, bool bSmall = false);
 
-DWORD GetDllVersion( LPCTSTR lpszDllName );	// シェルやコモンコントロール DLL のバージョン番号を取得	// 2006.06.17 ryoji
+DWORD GetDllVersion( LPCWSTR lpszDllName );	// シェルやコモンコントロール DLL のバージョン番号を取得	// 2006.06.17 ryoji
 
 void ChangeCurrentDirectoryToExeDir();
 
 //! カレントディレクトリ移動機能付LoadLibrary
-HMODULE LoadLibraryExedir( LPCTSTR pszDll);
+HMODULE LoadLibraryExedir( LPCWSTR pszDll);
 
 
 //※サクラ依存
-void GetExedir( LPTSTR pDir, LPCTSTR szFile = NULL );
-void GetInidir( LPTSTR pDir, LPCTSTR szFile = NULL ); // 2007.05.19 ryoji
-void GetInidirOrExedir( LPTSTR pDir, LPCTSTR szFile = NULL, BOOL bRetExedirIfFileEmpty = FALSE ); // 2007.05.22 ryoji
+void GetExedir( LPWSTR pDir, LPCWSTR szFile = NULL );
+void GetInidir( LPWSTR pDir, LPCWSTR szFile = NULL ); // 2007.05.19 ryoji
+void GetInidirOrExedir( LPWSTR pDir, LPCWSTR szFile = NULL, BOOL bRetExedirIfFileEmpty = FALSE ); // 2007.05.22 ryoji
 
 #endif /* SAKURA_MODULE_4F382EF5_EF52_47E1_A774_5CDFB545AB25_H_ */
 /*[EOF]*/

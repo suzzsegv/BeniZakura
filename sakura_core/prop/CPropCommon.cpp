@@ -183,7 +183,7 @@ void CPropCommon::Create( HWND hwndParent, CImageListMgr* cIcons, CMenuDrawer* p
 	保持する構造体
 */
 struct ComPropSheetInfo {
-	const TCHAR* szTabname;									//!< TABの表示名
+	const WCHAR* szTabname;									//!< TABの表示名
 	unsigned int resId;										//!< Property sheetに対応するDialog resource
 	INT_PTR (CALLBACK *DProc)(HWND, UINT, WPARAM, LPARAM);	//!< Dialog Procedure
 };
@@ -205,24 +205,24 @@ int CPropCommon::DoPropertySheet( int nPageNum/*, int nActiveItem*/ )
 	//	順序変更 Win,Toolbar,Tab,Statusbarの順に、File,FileName 順に	2008/6/22 Uchi 
 	//	DProcの変更	2010/5/9 Uchi
 	static ComPropSheetInfo ComPropSheetInfoList[] = {
-		{ _T("全般"), 				IDD_PROP_GENERAL,	CPropGeneral::DlgProc_page },
-		{ _T("ウィンドウ"),			IDD_PROP_WIN,		CPropWin::DlgProc_page },
-		{ _T("メインメニュー"),		IDD_PROP_MAINMENU,	CPropMainMenu::DlgProc_page },	// 2010/5/8 Uchi
-		{ _T("ツールバー"),			IDD_PROP_TOOLBAR,	CPropToolbar::DlgProc_page },
-		{ _T("タブバー"),			IDD_PROP_TAB,		CPropTab::DlgProc_page },
-		{ _T("ステータスバー"),		IDD_PROP_STATUSBAR,	CPropStatusbar::DlgProc_page },	// 文字コード表示指定	2008/6/21	Uchi
-		{ _T("編集"),				IDD_PROP_EDIT,		CPropEdit::DlgProc_page },
-		{ _T("ファイル"),			IDD_PROP_FILE,		CPropFile::DlgProc_page },
-		{ _T("ファイル名表示"),		IDD_PROP_FNAME,		CPropFileName::DlgProc_page },
-		{ _T("バックアップ"),		IDD_PROP_BACKUP,	CPropBackup::DlgProc_page },
-		{ _T("書式"),				IDD_PROP_FORMAT,	CPropFormat::DlgProc_page },
-		{ _T("カラー"),				IDD_PROP_COMMON_COLOR,	CPropColor::DlgProc_page },	// 2026.11.18
-		{ _T("検索"),				IDD_PROP_GREP,		CPropGrep::DlgProc_page },	// 2006.08.23 ryoji タイトル変更（Grep -> 検索）
-		{ _T("キー割り当て"),		IDD_PROP_KEYBIND,	CPropKeybind::DlgProc_page },
-		{ _T("カスタムメニュー"),	IDD_PROP_CUSTMENU,	CPropCustmenu::DlgProc_page },
-		{ _T("強調キーワード"),		IDD_PROP_KEYWORD,	CPropKeyword::DlgProc_page },
-		{ _T("支援"),				IDD_PROP_HELPER,	CPropHelper::DlgProc_page },
-		{ _T("マクロ"),				IDD_PROP_MACRO,		CPropMacro::DlgProc_page },
+		{ L"全般", 				IDD_PROP_GENERAL,	CPropGeneral::DlgProc_page },
+		{ L"ウィンドウ",			IDD_PROP_WIN,		CPropWin::DlgProc_page },
+		{ L"メインメニュー",		IDD_PROP_MAINMENU,	CPropMainMenu::DlgProc_page },	// 2010/5/8 Uchi
+		{ L"ツールバー",			IDD_PROP_TOOLBAR,	CPropToolbar::DlgProc_page },
+		{ L"タブバー",			IDD_PROP_TAB,		CPropTab::DlgProc_page },
+		{ L"ステータスバー",		IDD_PROP_STATUSBAR,	CPropStatusbar::DlgProc_page },	// 文字コード表示指定	2008/6/21	Uchi
+		{ L"編集",				IDD_PROP_EDIT,		CPropEdit::DlgProc_page },
+		{ L"ファイル",			IDD_PROP_FILE,		CPropFile::DlgProc_page },
+		{ L"ファイル名表示",		IDD_PROP_FNAME,		CPropFileName::DlgProc_page },
+		{ L"バックアップ",		IDD_PROP_BACKUP,	CPropBackup::DlgProc_page },
+		{ L"書式",				IDD_PROP_FORMAT,	CPropFormat::DlgProc_page },
+		{ L"カラー",				IDD_PROP_COMMON_COLOR,	CPropColor::DlgProc_page },	// 2026.11.18
+		{ L"検索",				IDD_PROP_GREP,		CPropGrep::DlgProc_page },	// 2006.08.23 ryoji タイトル変更（Grep -> 検索）
+		{ L"キー割り当て",		IDD_PROP_KEYBIND,	CPropKeybind::DlgProc_page },
+		{ L"カスタムメニュー",	IDD_PROP_CUSTMENU,	CPropCustmenu::DlgProc_page },
+		{ L"強調キーワード",		IDD_PROP_KEYWORD,	CPropKeyword::DlgProc_page },
+		{ L"支援",				IDD_PROP_HELPER,	CPropHelper::DlgProc_page },
+		{ L"マクロ",				IDD_PROP_MACRO,		CPropMacro::DlgProc_page },
 	};
 
 	PROPSHEETPAGE		psp[32];
@@ -257,7 +257,7 @@ int CPropCommon::DoPropertySheet( int nPageNum/*, int nActiveItem*/ )
 	psh.hwndParent = m_hwndParent;
 	psh.hInstance  = G_AppInstance();
 	psh.pszIcon    = NULL;
-	psh.pszCaption = _T("共通設定");
+	psh.pszCaption = L"共通設定";
 	psh.nPages     = nIdx;
 
 	//- 20020106 aroka # psh.nStartPage は unsigned なので負にならない
@@ -278,7 +278,7 @@ int CPropCommon::DoPropertySheet( int nPageNum/*, int nActiveItem*/ )
 
 	nRet = MyPropertySheet( &psh );	// 2007.05.24 ryoji 独自拡張プロパティシート
 	if( -1 == nRet ){
-		TCHAR*	pszMsgBuf;
+		WCHAR*	pszMsgBuf;
 		::FormatMessage(
 			FORMAT_MESSAGE_ALLOCATE_BUFFER |
 			FORMAT_MESSAGE_FROM_SYSTEM |
@@ -286,17 +286,17 @@ int CPropCommon::DoPropertySheet( int nPageNum/*, int nActiveItem*/ )
 			NULL,
 			::GetLastError(),
 			MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),	// デフォルト言語
-			(LPTSTR)&pszMsgBuf,
+			(LPWSTR)&pszMsgBuf,
 			0,
 			NULL
 		);
 		PleaseReportToAuthor(
 			NULL,
-			_T("CPropCommon::DoPropertySheet()内でエラーが出ました。\n")
-			_T("psh.nStartPage=[%d]\n")
-			_T("::PropertySheet()失敗\n")
-			_T("\n")
-			_T("%ts\n"),
+			L"CPropCommon::DoPropertySheet()内でエラーが出ました。\n"
+			L"psh.nStartPage=[%d]\n"
+			L"::PropertySheet()失敗\n"
+			L"\n"
+			L"%ts\n",
 			psh.nStartPage,
 			pszMsgBuf
 		);
@@ -369,12 +369,12 @@ HFONT CPropCommon::SetCtrlFont( HWND hwndDlg, int idc_ctrl, const LOGFONT& lf )
 HFONT CPropCommon::SetFontLabel( HWND hwndDlg, int idc_static, const LOGFONT& lf, int nps )
 {
 	HFONT	hFont;
-	TCHAR	szFontName[80];
+	WCHAR	szFontName[80];
 
 	hFont = SetCtrlFont( hwndDlg, idc_static, lf );
 
 	// フォント名の設定
-	auto_sprintf( szFontName, nps % 10 ? _T("%s(%.1fpt)") : _T("%s(%.0fpt)"),
+	auto_sprintf( szFontName, nps % 10 ? L"%s(%.1fpt)" : L"%s(%.0fpt)",
 		lf.lfFaceName, double(nps)/10 );
 	::DlgItem_SetText( hwndDlg, idc_static, szFontName );
 

@@ -13,8 +13,8 @@ using namespace std;
 //                     CTextInputStream                        //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
-CTextInputStream::CTextInputStream(const TCHAR* tszPath)
-: CStream(tszPath,_T("rb"))
+CTextInputStream::CTextInputStream(const WCHAR* tszPath)
+: CStream(tszPath,L"rb")
 {
 	m_bIsUtf8=false;
 
@@ -81,8 +81,8 @@ wstring CTextInputStream::ReadLineW()
 //                     CTextOutputStream                       //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
-CTextOutputStream::CTextOutputStream(const TCHAR* tszPath, ECodeType eCodeType, bool bExceptionMode)
-: COutputStream(tszPath,_T("wb"),bExceptionMode)
+CTextOutputStream::CTextOutputStream(const WCHAR* tszPath, ECodeType eCodeType, bool bExceptionMode)
+: COutputStream(tszPath,L"wb",bExceptionMode)
 {
 	m_pcCodeBase = CCodeFactory::CreateCodeBase(eCodeType,0);
 	if(Good()){
@@ -170,10 +170,10 @@ void CTextOutputStream::WriteF(const wchar_t* format, ...)
 //                  CTextInputStream_AbsIni                    //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
-static const TCHAR* _Resolve(const TCHAR* fname, bool bOrExedir)
+static const WCHAR* _Resolve(const WCHAR* fname, bool bOrExedir)
 {
 	if( _IS_REL_PATH( fname ) ){
-		static TCHAR path[_MAX_PATH];
+		static WCHAR path[_MAX_PATH];
 		if( bOrExedir )
 			GetInidirOrExedir( path, fname );
 		else
@@ -183,7 +183,7 @@ static const TCHAR* _Resolve(const TCHAR* fname, bool bOrExedir)
 	return fname;
 }
 
-CTextInputStream_AbsIni::CTextInputStream_AbsIni(const TCHAR* fname, bool bOrExedir )
+CTextInputStream_AbsIni::CTextInputStream_AbsIni(const WCHAR* fname, bool bOrExedir )
 : CTextInputStream(_Resolve(fname,bOrExedir))
 {
 }

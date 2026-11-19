@@ -132,8 +132,8 @@ struct CommonSetting_Window
 	BOOL			m_bSplitterWndVScroll;		// 分割ウィンドウの垂直スクロールの同期をとる 2001/06/20 asa-o
 
 	//タイトルバー
-	TCHAR			m_szWindowCaptionActive  [MAX_CAPTION_CONF_LEN];
-	TCHAR			m_szWindowCaptionInactive[MAX_CAPTION_CONF_LEN];
+	WCHAR			m_szWindowCaptionActive  [MAX_CAPTION_CONF_LEN];
+	WCHAR			m_szWindowCaptionInactive[MAX_CAPTION_CONF_LEN];
 
 	//INI内設定のみ
 	int				m_nVertLineOffset;			// 縦線の描画座標オフセット 2005.11.10 Moca
@@ -290,7 +290,7 @@ public:
 	void	SetBackupCount(int value)			{ m_nBackUpType_Opt2 = (m_nBackUpType_Opt2 & 0xffff0000) | ( value & 0xffff ); }
 
 	//	バックアップの拡張子先頭文字(1文字)
-	TCHAR	GetBackupExtChar(void) const		{ return (TCHAR)(( m_nBackUpType_Opt2 >> 16 ) & 0xff) ; }
+	WCHAR	GetBackupExtChar(void) const		{ return (WCHAR)(( m_nBackUpType_Opt2 >> 16 ) & 0xff) ; }
 	void	SetBackupExtChar(int value)			{ m_nBackUpType_Opt2 = (m_nBackUpType_Opt2 & 0xff00ffff) | (( value & 0xff ) << 16 ); }
 
 	//	Aug. 21, 2000 genta
@@ -331,11 +331,11 @@ struct CommonSetting_Format
 {
 	//日付書式
 	int			m_nDateFormatType;							//日付書式のタイプ
-	TCHAR		m_szDateFormat[MAX_DATETIMEFOREMAT_LEN];	//日付書式
+	WCHAR		m_szDateFormat[MAX_DATETIMEFOREMAT_LEN];	//日付書式
 
 	//時刻書式
 	int			m_nTimeFormatType;							//時刻書式のタイプ
-	TCHAR		m_szTimeFormat[MAX_DATETIMEFOREMAT_LEN];	//時刻書式
+	WCHAR		m_szTimeFormat[MAX_DATETIMEFOREMAT_LEN];	//時刻書式
 
 	//見出し記号
 	wchar_t		m_szMidashiKigou[256];
@@ -367,7 +367,7 @@ struct CommonSetting_Search
 
 	BOOL			m_bCaretTextForSearch;		// カーソル位置の文字列をデフォルトの検索文字列にする 2006.08.23 ryoji
 	bool			m_bInheritKeyOtherView;		// 次・前検索で他のビューの検索条件を引き継ぐ
-	TCHAR			m_szRegexpLib[_MAX_PATH];	// 使用する正規表現DLL  2007.08.22 genta
+	WCHAR			m_szRegexpLib[_MAX_PATH];	// 使用する正規表現DLL  2007.08.22 genta
 
 	//Grep
 	BOOL			m_bGrepExitConfirm;			// Grepモードで保存確認するか
@@ -440,8 +440,8 @@ struct CommonSetting_Helper
 	BOOL		m_bHokanKey_SPACE;				// VK_SPACE		補完決定キーが有効/無効 $$$ほぼ未使用
 
 	//migemo設定
-	TCHAR		m_szMigemoDll[_MAX_PATH];		// migemo dll
-	TCHAR		m_szMigemoDict[_MAX_PATH];		// migemo dict
+	WCHAR		m_szMigemoDll[_MAX_PATH];		// migemo dll
+	WCHAR		m_szMigemoDict[_MAX_PATH];		// migemo dict
 
 	//キーワードヘルプ
 	LOGFONT		m_lf;							// キーワードヘルプのフォント情報		// ai 02/05/21 Add
@@ -456,7 +456,7 @@ struct CommonSetting_Helper
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 struct CommonSetting_Macro
 {
-	TCHAR			m_szKeyMacroFileName[MAX_PATH];	//!< キーボードマクロのファイル名
+	WCHAR			m_szKeyMacroFileName[MAX_PATH];	//!< キーボードマクロのファイル名
 	MacroRec		m_MacroTable[MAX_CUSTMACRO];	//!< キー割り当て用マクロテーブル	//	Sep. 14, 2001 genta
 	SFilePath		m_szMACROFOLDER;	/* マクロ用フォルダ */
 	int				m_nMacroOnOpened;			/* オープン後自動実行マクロ番号 */	//@@@ 2006.09.01 ryoji
@@ -471,8 +471,8 @@ struct CommonSetting_Macro
 struct CommonSetting_FileName
 {
 	int			m_nTransformFileNameArrNum;
-	TCHAR		m_szTransformFileNameFrom[MAX_TRANSFORM_FILENAME][_MAX_PATH];
-	TCHAR		m_szTransformFileNameTo[MAX_TRANSFORM_FILENAME][_MAX_PATH];	//お気に入り	//@@@ 2003.04.08 MIK
+	WCHAR		m_szTransformFileNameFrom[MAX_TRANSFORM_FILENAME][_MAX_PATH];
+	WCHAR		m_szTransformFileNameTo[MAX_TRANSFORM_FILENAME][_MAX_PATH];	//お気に入り	//@@@ 2003.04.08 MIK
 };
 
 

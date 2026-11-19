@@ -310,16 +310,10 @@ namespace ACODE
 	}
 }
 
-//TCHAR判定関数群
-namespace TCODE
-{
-	using namespace WCODE;
-}
-
 // 文字幅の動的計算用キャッシュ関連
 struct SCharWidthCache {
 	// 文字半角全角キャッシュ
-	TCHAR		m_lfFaceName[LF_FACESIZE];
+	WCHAR		m_lfFaceName[LF_FACESIZE];
 	BYTE		m_bCharWidthCache[0x10000/4];		//16KB 文字半角全角キャッシュ 2008/5/16 Uchi
 	int			m_nCharWidthCacheTest;				//cache溢れ検出
 };

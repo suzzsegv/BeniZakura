@@ -138,11 +138,11 @@ INT_PTR CPropBackup::DispatchEvent( HWND hwndDlg, UINT uMsg, WPARAM wParam, LPAR
 			case IDC_BUTTON_BACKUP_FOLDER_REF:	/* フォルダ参照 */
 				{
 					/* バックアップを作成するフォルダ */
-					TCHAR		szFolder[_MAX_PATH];
+					WCHAR		szFolder[_MAX_PATH];
 					::DlgItem_GetText( hwndDlg, IDC_EDIT_BACKUPFOLDER, szFolder, _countof( szFolder ));
 
-					if( SelectDir( hwndDlg, _T("バックアップを作成するフォルダを選んでください"), szFolder, szFolder ) ){
-						_tcscpy( m_Common.m_sBackup.m_szBackUpFolder, szFolder );
+					if( SelectDir( hwndDlg, L"バックアップを作成するフォルダを選んでください", szFolder, szFolder ) ){
+						wcscpy( m_Common.m_sBackup.m_szBackUpFolder, szFolder );
 						::DlgItem_SetText( hwndDlg, IDC_EDIT_BACKUPFOLDER, m_Common.m_sBackup.m_szBackUpFolder );
 					}
 					UpdateBackupFile( hwndDlg );
@@ -522,7 +522,7 @@ void CPropBackup::UpdateBackupFile(HWND hwndDlg)	//	バックアップファイ�
 		}
 	}
 	if( !m_Common.m_sBackup.m_bBackUpPathAdvanced ){	// 詳細設定モードでないときだけ自動更新する
-		auto_sprintf( m_Common.m_sBackup.m_szBackUpPathAdvanced, _T("%ls"), temp );
+		auto_sprintf( m_Common.m_sBackup.m_szBackUpPathAdvanced, L"%ls", temp );
 		::DlgItem_SetText( hwndDlg, IDC_EDIT_BACKUPFILE, m_Common.m_sBackup.m_szBackUpPathAdvanced );
 	}
 	return;
