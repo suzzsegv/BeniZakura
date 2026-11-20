@@ -52,11 +52,15 @@ public:
 	HWND GetProgressHwnd() const{ return m_hwndProgressBar; }
 
 	//設定
-	void SetStatusText(int nIndex, int nOption, const WCHAR* pszText);
+	void SetStatusText(int nIndex, int nOption, const WCHAR* pszText);	// 現在の内容と同じなら設定しない	// 2026.11.20
+	void SetKeyMacroRecMark( bool bRecording );	// キーマクロの記録中を示す「REC」の欄を設定する	// 2026.11.20
 private:
+	bool IsSameStatusText( int nIndex, int nOption, const WCHAR* pszText ) const;	// 欄の現在の内容と同じか	// 2026.11.20
+
 	CEditWnd*	m_pOwner;
 	HWND		m_hwndStatusBar;
 	HWND		m_hwndProgressBar;
+	int			m_nRecMarkState;	//!< 「REC」の欄に前回設定した状態 (-1: 未設定, 0: 記録中でない, 1: 記録中)	// 2026.11.20
 };
 
 #endif /* SAKURA_CMAINSTATUSBAR_2F45F977_E8DD_4787_8EA8_FF15685D114F_H_ */

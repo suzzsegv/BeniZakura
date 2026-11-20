@@ -811,19 +811,24 @@ void CCaret::ShowCaretPosInfo()
 		}else{
 			wcscpy( szText_6, L"上書" );
 		}
+		// 2026.11.20 値が変わった欄だけを設定する (CMainStatusBar で比較する)
+		CMainStatusBar& cStatusBar = m_pEditDoc->m_pcEditWnd->m_cStatusBar;
+		const bool bRecording =
+			GetDllShareData().m_sFlags.m_bRecordingKeyMacro	/* キーボードマクロの記録中 */
+			&& GetDllShareData().m_sFlags.m_hwndRecordingKeyMacro == m_pEditDoc->m_pcEditWnd->GetHwnd();	/* このウィンドウで記録中 */
 		if( m_bClearStatus ){
-			::StatusBar_SetText( hwndStatusBar, 0 | SBT_NOBORDERS, L"" );
+			cStatusBar.SetStatusText( 0, SBT_NOBORDERS, L"" );
 		}
-		::StatusBar_SetText( hwndStatusBar, 1 | 0,             szText_1 );
+		cStatusBar.SetStatusText( 1, 0, szText_1 );
 		//	May 12, 2000 genta
 		//	改行コードの表示を追加．後ろの番号を1つずつずらす
 		//	From Here
-		::StatusBar_SetText( hwndStatusBar, 2 | 0,             szEolMode );
+		cStatusBar.SetStatusText( 2, 0, szEolMode );
 		//	To Here
-		::StatusBar_SetText( hwndStatusBar, 3 | 0,             szCaretChar );
-		::StatusBar_SetText( hwndStatusBar, 4 | 0,             pszCodeName );
-		::StatusBar_SetText( hwndStatusBar, 5 | SBT_OWNERDRAW, L"" );
-		::StatusBar_SetText( hwndStatusBar, 6 | 0,             szText_6 );
+		cStatusBar.SetStatusText( 3, 0, szCaretChar );
+		cStatusBar.SetStatusText( 4, 0, pszCodeName );
+		cStatusBar.SetKeyMacroRecMark( bRecording );
+		cStatusBar.SetStatusText( 6, 0, szText_6 );
 	}
 
 }

@@ -7,6 +7,7 @@ CMainStatusBar::CMainStatusBar(CEditWnd* pOwner)
 : m_pOwner(pOwner)
 , m_hwndStatusBar( NULL )
 , m_hwndProgressBar( NULL )
+, m_nRecMarkState( -1 )
 {
 }
 
@@ -16,6 +17,8 @@ CMainStatusBar::CMainStatusBar(CEditWnd* pOwner)
 void CMainStatusBar::CreateStatusBar()
 {
 	if( m_hwndStatusBar )return;
+
+	m_nRecMarkState = -1;	// 「REC」の欄は未設定	// 2026.11.20
 
 	/* ステータスバー */
 	m_hwndStatusBar = ::CreateStatusWindow(
@@ -98,14 +101,79 @@ void CMainStatusBar::SendStatusMessage2( const WCHAR* msg )
 {
 	if( NULL != m_hwndStatusBar ){
 		// ステータスバーへ
-		StatusBar_SetText( m_hwndStatusBar,0 | SBT_NOBORDERS,msg );
+		SetStatusText( 0, SBT_NOBORDERS, msg );
 	}
 }
 
 
 void CMainStatusBar::SetStatusText(int nIndex, int nOption, const WCHAR* pszText)
 {
+	if( NULL == m_hwndStatusBar ){
+		return;
+	}
+	// 現在の欄の内容と同じなら設定しない (SB_SETTEXT は同じ内容でも欄を再描画するため)	// 2026.11.20
+	if( IsSameStatusText( nIndex, nOption, pszText ) ){
+		return;
+	}
 	StatusBar_SetText( m_hwndStatusBar, nIndex | nOption, pszText );
+}
+
+
+/*!
+ * CMainStatusBar::IsSameStatusText - ステータスバーの欄の現在の内容が、指定した内容と同じかを調べる
+ *
+ * SB_GETTEXTLENGTH で欄の描画方法 (SBT_*) と文字列の長さを、SB_GETTEXT で文字列を取得して比較する。
+ * 自前描画 (SBT_OWNERDRAW) の欄は文字列を持たないので、常に「異なる」とする。
+ *
+ *	@return	true: 同じ / false: 異なる (または比較できない)
+ */
+bool CMainStatusBar::IsSameStatusText(
+	int				nIndex,		//!< [in] 欄の番号
+	int				nOption,	//!< [in] 描画方法 (SBT_NOBORDERS など)
+	const WCHAR*	pszText		//!< [in] 設定しようとしている文字列
+) const
+{
+	if( NULL == pszText || 0 != (nOption & SBT_OWNERDRAW) ){
+		return false;
+	}
+	LRESULT lRes = ::SendMessage( m_hwndStatusBar, SB_GETTEXTLENGTH, (WPARAM)nIndex, 0 );
+	if( HIWORD( lRes ) != (WORD)nOption ){
+		return false;
+	}
+	size_t nLen = wcslen( pszText );
+	if( LOWORD( lRes ) != nLen ){
+		return false;
+	}
+	WCHAR szCurrent[1024];
+	if( _countof( szCurrent ) <= nLen ){
+		return false;
+	}
+	::SendMessage( m_hwndStatusBar, SB_GETTEXT, (WPARAM)nIndex, (LPARAM)szCurrent );
+	szCurrent[nLen] = L'\0';
+	return 0 == wcscmp( szCurrent, pszText );
+}
+
+
+/*!
+ * CMainStatusBar::SetKeyMacroRecMark - キーマクロの記録中を示す「REC」の欄を設定する
+ *
+ * 「REC」の欄は自前描画 (SBT_OWNERDRAW) で、CEditWnd が WM_DRAWITEM で記録中かどうかに応じて描く。
+ * 文字列では比較できないため、前回設定したときの記録中の状態を覚えておき、変わったときだけ設定する。
+ * ステータスバーを作り直したときは未設定に戻すので、最初の 1 回は必ず設定する。
+ */
+void CMainStatusBar::SetKeyMacroRecMark(
+	bool	bRecording		//!< [in] このウィンドウでキーマクロを記録中か
+)
+{
+	if( NULL == m_hwndStatusBar ){
+		return;
+	}
+	int nState = bRecording ? 1 : 0;
+	if( nState == m_nRecMarkState ){
+		return;
+	}
+	m_nRecMarkState = nState;
+	StatusBar_SetText( m_hwndStatusBar, 5 | SBT_OWNERDRAW, L"" );
 }
 
 
