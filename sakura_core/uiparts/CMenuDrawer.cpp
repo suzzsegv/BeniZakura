@@ -872,7 +872,7 @@ void CMenuDrawer::MyAppendMenu(
 	MENUITEMINFO mii;
 	memset_raw( &mii, 0, sizeof( mii ) );
 	//	Aug. 31, 2001 genta
-	mii.cbSize = SIZEOF_MENUITEMINFO; //Win95対策済みのsizeof(MENUITEMINFO)値
+	mii.cbSize = sizeof(MENUITEMINFO);
 
 	mii.fMask = MIIM_CHECKMARKS | MIIM_DATA | MIIM_ID | MIIM_STATE | MIIM_SUBMENU | MIIM_TYPE;
 	mii.fType = 0;
@@ -1592,7 +1592,7 @@ LRESULT CMenuDrawer::OnMenuChar( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 		MENUITEMINFO		mii;
 		memset_raw( &mii, 0, sizeof( mii ) );
 
-		mii.cbSize = SIZEOF_MENUITEMINFO; //Win95対策済みのsizeof(MENUITEMINFO)値
+		mii.cbSize = sizeof(MENUITEMINFO);
 
 		mii.fMask = MIIM_CHECKMARKS | MIIM_DATA | MIIM_ID | MIIM_STATE | MIIM_SUBMENU | MIIM_TYPE;
 		mii.fType = MFT_STRING;

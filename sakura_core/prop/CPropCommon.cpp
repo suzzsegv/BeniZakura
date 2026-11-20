@@ -250,7 +250,7 @@ int CPropCommon::DoPropertySheet( int nPageNum/*, int nActiveItem*/ )
 	
 	//	Jun. 29, 2002 こおり
 	//	Windows 95対策．Property SheetのサイズをWindows95が認識できる物に固定する．
-	psh.dwSize = sizeof_old_PROPSHEETHEADER;
+	psh.dwSize = sizeof(PROPSHEETHEADER);
 
 	//	JEPROtest Sept. 30, 2000 共通設定の隠れ[適用]ボタンの正体はここ。行頭のコメントアウトを入れ替えてみればわかる
 	psh.dwFlags    = PSH_NOAPPLYNOW | PSH_PROPSHEETPAGE | PSH_NOCONTEXTHELP;
