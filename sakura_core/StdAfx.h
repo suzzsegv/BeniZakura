@@ -9,13 +9,7 @@
 #if !defined(AFX_STDAFX_H__11490042_E569_11D3_BCE2_444553540001__INCLUDED_)
 #define AFX_STDAFX_H__11490042_E569_11D3_BCE2_444553540001__INCLUDED_
 
-#if !defined(_MSC_VER)
-#define _MSC_VER 0
-#endif
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 // この位置にヘッダーを挿入してください
 // #define WIN32_LEAN_AND_MEAN		// Windows ヘッダーから殆ど使用されないスタッフを除外します
@@ -23,7 +17,6 @@
 #define STRICT 1
 #endif
 
-#if _MSC_VER >= 1400
 
 //#pragma warning(disable: 4786)
 #pragma warning(disable: 4996)	//warning C4996: 'xxxx': This function or variable may be unsafe. Consider using wcscpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
@@ -37,7 +30,6 @@
 #pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='amd64' publicKeyToken='6595b64144ccf1df' language='*'\"")
 #else
 #pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
-#endif
 #endif
 
 

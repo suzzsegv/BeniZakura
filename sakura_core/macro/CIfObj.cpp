@@ -324,9 +324,6 @@ HRESULT STDMETHODCALLTYPE CIfObj::GetTypeInfoCount(
 	return S_OK;
 }
 
-#ifdef __BORLANDC__
-#pragma argsused
-#endif
 HRESULT STDMETHODCALLTYPE CIfObj::GetIDsOfNames(
   REFIID riid,
   OLECHAR FAR* FAR* rgszNames,

@@ -130,30 +130,6 @@ void wcsReplace(wchar_t* pStr, wchar_t oldChar, wchar_t newChar);
 
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-//                           互換                              //
-// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-
-// VS2005以降の安全版文字列関数
-#if _MSC_VER<1400 //VS2005より前なら
-	typedef int errno_t;
-#define _TRUNCATE ((size_t)-1)
-	errno_t strcpy_s(char *dest, size_t num, const char *src);
-	errno_t wcscpy_s(wchar_t *dest, size_t num, const wchar_t *src);
-	errno_t strncpy_s(char *dest, size_t num, const char *src, size_t count);
-	errno_t wcsncpy_s(wchar_t *dest, size_t num, const wchar_t *src, size_t count);
-	errno_t strcat_s(char *dest, size_t num, const char *src);
-	errno_t wcscat_s(wchar_t *dest, size_t num, const wchar_t *src);
-
-	int vsprintf_s(char *buf, size_t num, const char *fmt, va_list vaarg);
-	int vswprintf_s(wchar_t *buf, size_t num, const wchar_t *fmt, va_list vaarg);
-	int vsnprintf_s(char *buf, size_t num, size_t count, const char *fmt, va_list vaarg);
-	int _vsnwprintf_s(wchar_t *buf, size_t num, size_t count, const wchar_t *fmt, va_list vaarg);
-
-	size_t strnlen(const char *str, size_t num);
-	size_t wcsnlen(const wchar_t *str, size_t num);
-#endif
-
-// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 //        auto系（_UNICODE 定義に依存しない関数）              //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 //char型にするかwchar_t型にするか確定しない変数があります。

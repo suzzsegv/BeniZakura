@@ -46,9 +46,6 @@ private:
 	ImplementsIUnknown(const ImplementsIUnknown &);
 	ImplementsIUnknown& operator = (const ImplementsIUnknown &);
 public:
-	#ifdef __BORLANDC__
-	#pragma argsused
-	#endif
 	virtual HRESULT STDMETHODCALLTYPE QueryInterface(REFIID iid, void ** ppvObject) 
 	{ 
 		return E_NOINTERFACE; 

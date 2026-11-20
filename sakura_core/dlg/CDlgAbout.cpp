@@ -38,23 +38,6 @@
 #else
 #  define TARGET_M_SUFFIX ""
 #endif
-
-#if defined(__BORLANDC__)
-#  define COMPILER_TYPE "B"
-#  define COMPILER_VER  __BORLANDC__ 
-#elif defined(__INTEL_COMPILER)
-#  define COMPILER_TYPE "I"
-#  define COMPILER_VER __INTEL_COMPILER
-#elif defined(__DMC__)
-#  define COMPILER_TYPE "D"
-#  define COMPILER_VER __DMC__
-#elif defined(_MSC_VER)
-#  define COMPILER_TYPE "V"
-#  define COMPILER_VER _MSC_VER
-#else
-#  define COMPILER_TYPE "U"
-#  define COMPILER_VER 0
-#endif
 //	To Here Feb. 7, 2002 genta
 
 #define TARGET_STRING_MODEL "W"
