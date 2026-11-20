@@ -599,16 +599,9 @@ enum e_PM_SETCARETPOS_SELECTSTATE {
 #define MYWM_OUTLINE_NOTIFY (WM_APP+220)	//@@@ 2010.06.06 ryoji
 
 /* 再変換対応 */ // 20020331 aroka
-#ifndef WM_IME_REQUEST
-#define MYWM_IME_REQUEST 0x288  // ==WM_IME_REQUEST
-#else
 #define MYWM_IME_REQUEST WM_IME_REQUEST
-#endif
 #define MSGNAME_ATOK_RECONVERT L"Atok Message for ReconvertString"
 #define RWM_RECONVERT L"MSIMEReconvert"
-
-#define	VK_XBUTTON1		0x05	// マウスサイドボタン1（Windows2000以降で使用可能）	// 2009.01.17 nasukoji
-#define	VK_XBUTTON2		0x06    // マウスサイドボタン2（Windows2000以降で使用可能）	// 2009.01.17 nasukoji
 
 #endif /* SAKURA_SYSTEM_CONSTANTS_608BC31D_86C2_4526_B749_70DBD090752A_H_ */
 /*[EOF]*/

@@ -34,10 +34,6 @@
 #include "util/module.h"
 #include "sakura_rc.h"
 
-#ifndef OFN_ENABLESIZING
-	#define OFN_ENABLESIZING	0x00800000
-#endif
-
 WNDPROC			m_wpOpenDialogProc;
 
 std::vector<LPCWSTR>	m_vMRU;

@@ -27,41 +27,6 @@
 #include "gitrev.h"
 #include "sakura_rc.h" // 2002/2/10 aroka 復帰
 
-
-//	From Here Feb. 7, 2002 genta
-// 2006.01.17 Moca COMPILER_VERを追加
-// 2010.04.15 Moca icc/dmcを追加しCPUを分離
-#if defined(_M_IA64)
-#  define TARGET_M_SUFFIX "_I64"
-#elif defined(_M_AMD64)
-#  define TARGET_M_SUFFIX "_A64"
-#else
-#  define TARGET_M_SUFFIX ""
-#endif
-//	To Here Feb. 7, 2002 genta
-
-#define TARGET_STRING_MODEL "W"
-
-#ifdef _DEBUG
-	#define TARGET_DEBUG_MODE "D"
-#else
-	#define TARGET_DEBUG_MODE "R"
-#endif
-
-#define TSTR_TARGET_MODE _CRT_WIDE(TARGET_STRING_MODEL) _CRT_WIDE(TARGET_DEBUG_MODE)
-
-#ifdef _WIN32_WINDOWS
-	#define MY_WIN32_WINDOWS _WIN32_WINDOWS
-#else
-	#define MY_WIN32_WINDOWS 0
-#endif
-
-#ifdef _WIN32_WINNT
-	#define MY_WIN32_WINNT _WIN32_WINNT
-#else
-	#define MY_WIN32_WINNT 0
-#endif
-
 //	From Here Nov. 7, 2000 genta
 /*!
 	標準以外のメッセージを捕捉する

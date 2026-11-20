@@ -34,11 +34,6 @@
 #include <Windows.h>
 #include "CStream.h" //CError_FileOpen
 
-// VC6添付のヘッダで定義されてません
-#ifndef INVALID_SET_FILE_POINTER
- #define INVALID_SET_FILE_POINTER 0xFFFFFFFF
-#endif // INVALID_SET_FILE_POINTER
-
 struct SEncodingConfig;
 #include "charset/CCodeBase.h"
 class CCodeBase;

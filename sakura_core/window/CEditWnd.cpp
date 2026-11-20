@@ -75,15 +75,6 @@
 //@@@ 2002.01.14 YAZAKI 印刷プレビューをCPrintPreviewに独立させたので
 //	定義を削除
 
-#ifndef TBSTYLE_ALTDRAG
-	#define TBSTYLE_ALTDRAG	0x0400
-#endif
-#ifndef TBSTYLE_FLAT
-	#define TBSTYLE_FLAT	0x0800
-#endif
-#ifndef TBSTYLE_LIST
-	#define TBSTYLE_LIST	0x1000
-#endif
 
 
 

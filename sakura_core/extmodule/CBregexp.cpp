@@ -604,9 +604,7 @@ bool InitRegexp(
 			if(eDllResult==DLL_LOADFAILURE){
 				pszMsg =
 					L"bregonig.dll のロードに失敗しました。\r\n"
-#ifdef _M_IA64
-					L"正規表現を利用するには Unicode/IA64 版の bregonig.dll が必要です。\r\n"
-#elif defined(_M_AMD64)
+#ifdef _M_AMD64
 					L"正規表現を利用するには Unicode/x64 版の bregonig.dll が必要です。\r\n"
 #else
 					L"正規表現を利用するには Unicode 版の bregonig.dll が必要です。\r\n"
@@ -616,9 +614,7 @@ bool InitRegexp(
 			else if(eDllResult==DLL_INITFAILURE){
 				pszMsg =
 					L"bregonig.dll の利用に失敗しました。\r\n"
-#ifdef _M_IA64
-					L"正規表現を利用するには Unicode/IA64 版の bregonig.dll が必要です。\r\n"
-#elif defined(_M_AMD64)
+#ifdef _M_AMD64
 					L"正規表現を利用するには Unicode/x64 版の bregonig.dll が必要です。\r\n"
 #else
 					L"正規表現を利用するには Unicode 版の bregonig.dll が必要です。\r\n"

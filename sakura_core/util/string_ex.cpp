@@ -615,63 +615,6 @@ template WCHAR* my_strtok(WCHAR*,int,int*,const WCHAR*);
 //                         実装補助                            //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
-#ifdef MY_ICMP_MBS
-int my_mbtoupper2( int c );
-int my_mbtolower2( int c );
-int my_mbisalpha2( int c );
-#endif  /* MY_ICMP_MBS */
-
-#ifdef MY_ICMP_MBS
-/*!	全角アルファベットの２文字目を大文字に変換する。
-	@param c [in] 変換する文字コード
-
-	@note
-		0x8260 - 0x8279 : Ａ...Ｚ
-		0x8281 - 0x829a : ａ...ｚ
-
-	@return 変換された文字コード
-*/
-int my_mbtoupper2( int c )
-{
-	if( c >= 0x81 && c <= 0x9a ) return c - (0x81 - 0x60);
-	return c;
-}
-#endif  /* MY_ICMP_MBS */
-
-
-
-#ifdef MY_ICMP_MBS
-/*!	全角アルファベットの２文字目を小文字に変換する。
-	@param c [in] 変換する文字コード
-
-	@return 変換された文字コード
-*/
-int my_mbtolower2( int c )
-{
-	if( c >= 0x60 && c <= 0x79 ) return c + (0x81 - 0x60);
-	return c;
-}
-#endif  /* MY_ICMP_MBS */
-
-
-
-#ifdef MY_ICMP_MBS
-/*!	全角アルファベットの２文字目か調べる。
-	@param c [in] 検査する文字コード
-
-	@retval 1	全角アルファベット２バイト目である
-	@retval 0	ちがう
-*/
-int my_mbisalpha2( int c )
-{
-	if( (c >= 0x60 && c <= 0x79) || (c >= 0x81 && c <= 0x9a) ) return 1;
-	return 0;
-}
-#endif  /* MY_ICMP_MBS */
-
-
-
-
 /*!	大文字小文字を同一視する文字列長さ制限比較をする。
 	@param s1   [in] 文字列１
 	@param s2   [in] 文字列２
@@ -691,16 +634,10 @@ int __cdecl my_internal_icmp( const char *s1, const char *s2, unsigned int n, un
 //	int	c2, c2_lo, c2_up;
 	int 	c1, c2;
 	bool	prev1, prev2; /* 前の文字が SJISの１バイト目か */
-#ifdef MY_ICMP_MBS
-	bool	mba1, mba2;
-#endif  /* MY_ICMP_MBS */
 
 	p1 = (unsigned char*)s1;
 	p2 = (unsigned char*)s2;
 	prev1 = prev2 = false;
-#ifdef MY_ICMP_MBS
-	mba1 = mba2 = false;
-#endif  /* MY_ICMP_MBS */
 
 	/* 指定長だけ繰り返す */
 	for(i = n; i > 0; i -= dcount)
@@ -717,22 +654,10 @@ int __cdecl my_internal_icmp( const char *s1, const char *s2, unsigned int n, un
 		if( prev1 ){	/* 前の文字が日本語１バイト目 */
 			/* 今回は日本語２バイト目なので変換しない */
 			prev1 = false;
-#ifdef MY_ICMP_MBS
-			/* 全角文字のアルファベット */
-			if( mba1 ){
-				mba1 = false;
-				if( my_mbisalpha2( c1 ) ){
-					c1 = my_mbtoupper2( c1 );
-				}
-			}
-#endif  /* MY_ICMP_MBS */
 		}
 		else if( my_iskanji1(c1) ){
 			/* 今回は日本語１バイト目なので変換しない */
 			prev1 = true;
-#ifdef MY_ICMP_MBS
-			if( c1 == 0x82 ) mba1 = true;
-#endif  /* MY_ICMP_MBS */
 		}
 		else{
 			c1 = my_toupper(c1);
@@ -742,22 +667,10 @@ int __cdecl my_internal_icmp( const char *s1, const char *s2, unsigned int n, un
 		if( prev2 ){	/* 前の文字が日本語１バイト目 */
 			/* 今回は日本語２バイト目なので変換しない */
 			prev2 = false;
-#ifdef MY_ICMP_MBS
-			/* 全角文字のアルファベット */
-			if( mba2 ){
-				mba2 = false;
-				if( my_mbisalpha2( c2 ) ){
-					c2 = my_mbtoupper2( c2 );
-				}
-			}
-#endif  /* MY_ICMP_MBS */
 		}
 		else if( my_iskanji1(c2) ){
 			/* 今回は日本語１バイト目なので変換しない */
 			prev2 = true;
-#ifdef MY_ICMP_MBS
-			if( c2 == 0x82 ) mba2 = true;
-#endif  /* MY_ICMP_MBS */
 		}
 		else{
 			c2 = my_toupper(c2);
