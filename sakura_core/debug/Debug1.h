@@ -39,7 +39,7 @@ void DebugOutA( LPCSTR lpFmt, ...);
 //#ifdef _DEBUG～#endifで囲まなくても良い版
 #ifdef _DEBUG
 	#define DEBUG_TRACE DebugOutW
-#elif (defined(_MSC_VER) && 1400 <= _MSC_VER) || (defined(__GNUC__) && 3 <= __GNUC__ )
+#elif defined(_MSC_VER) && 1400 <= _MSC_VER
 	#define DEBUG_TRACE(...)
 #else
 	// Not support C99 variable macro

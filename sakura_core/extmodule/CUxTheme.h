@@ -35,9 +35,6 @@
 
 #include "CDllHandler.h"
 #include "util/design_template.h"
-#ifdef __MINGW32__
-typedef HANDLE HTHEME;
-#endif
 
 /*!
 	@brief UxTheme 動的ロード

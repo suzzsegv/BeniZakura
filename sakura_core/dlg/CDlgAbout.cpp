@@ -42,9 +42,6 @@
 #if defined(__BORLANDC__)
 #  define COMPILER_TYPE "B"
 #  define COMPILER_VER  __BORLANDC__ 
-#elif defined(__GNUG__)
-#  define COMPILER_TYPE "G"
-#  define COMPILER_VER (__GNUC__ * 10000 + __GNUC_MINOR__  * 100 + __GNUC_PATCHLEVEL__)
 #elif defined(__INTEL_COMPILER)
 #  define COMPILER_TYPE "I"
 #  define COMPILER_VER __INTEL_COMPILER

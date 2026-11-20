@@ -238,13 +238,6 @@ BOOL CDlgCtrlCode::OnBnClicked( int wID )
 	return CDialog::OnBnClicked( wID );
 }
 
-#ifdef __MINGW32__
-typedef struct tagNMKEY {
-  NMHDR hdr;
-  UINT  nVKey;
-  UINT  uFlags;
-} NMKEY, *LPNMKEY;
-#endif
 
 BOOL CDlgCtrlCode::OnNotify( WPARAM wParam, LPARAM lParam )
 {

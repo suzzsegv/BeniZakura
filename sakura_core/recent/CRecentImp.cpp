@@ -541,14 +541,10 @@ template class CRecentImp<CCmdString, LPCWSTR>;
 template class CRecentImp<EditNode>;
 template class CRecentImp<EditInfo>;
 template class CRecentImp<CPathString, LPCWSTR>;
-#ifndef __MINGW32__
 template class CRecentImp<CMetaPath, LPCWSTR>;
 template class CRecentImp<CGrepFileString, LPCWSTR>;
 template class CRecentImp<CGrepFolderString, LPCWSTR>;
 template class CRecentImp<CSearchString, LPCWSTR>;
 template class CRecentImp<CTagjumpKeywordString, LPCWSTR>;
 template class CRecentImp<CCurDirString, LPCWSTR>;
-#endif
-#if !defined(__MINGW32__)
 template class CRecentImp<CReplaceString, LPCWSTR>;
-#endif
