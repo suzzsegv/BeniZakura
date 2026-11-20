@@ -34,7 +34,7 @@
 #include "util/window.h"
 #include "view/colors/CColorStrategy.h"
 #include "env/CAppNodeManager.h"
-#include "extmodule/CUxTheme.h"
+#include <uxtheme.h>
 #include "sakura_rc.h"
 
 // 画面ドッキング用の定義	// 2010.06.05 ryoji
@@ -2664,7 +2664,7 @@ INT_PTR CDlgFuncList::OnNcPaint( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 	::DrawEdge( gr, &rcWk, EDGE_ETCHED, BF_TOPLEFT );
 
 	// タイトルを描画する
-	BOOL bThemeActive = CUxTheme::getInstance()->IsThemeActive();
+	BOOL bThemeActive = ::IsThemeActive();
 	BOOL bGradient = FALSE;
 	::SystemParametersInfo( SPI_GETGRADIENTCAPTIONS, 0, &bGradient, 0 );
 	if( !bThemeActive ) bGradient = FALSE;	// 適当に調整

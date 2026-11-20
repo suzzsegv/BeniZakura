@@ -44,7 +44,7 @@
 #include "doc/CEditDoc.h"
 #include "_main/global.h"
 #include "charset/charcode.h"
-#include "extmodule/CUxTheme.h"
+#include <uxtheme.h>
 #include "env/CShareData.h"
 #include "env/CSakuraEnvironment.h"
 #include "uiparts/CGraphics.h"
@@ -750,11 +750,6 @@ CTabWnd::CTabWnd()
 	m_hwndToolTip = NULL;
 	m_hIml = NULL;
 
-	// 2006.02.17 ryoji ImageList_Duplicate() のアドレスを取得する
-	// （IE4.0 未満の環境でも動作可能なように動的ロード）
-    HINSTANCE hinst = ::GetModuleHandle(L"comctl32");
-    *(FARPROC*)&m_RealImageList_Duplicate = ::GetProcAddress(hinst, "ImageList_Duplicate");
-
 	return;
 }
 
@@ -1288,12 +1283,11 @@ LRESULT CTabWnd::OnDrawItem( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam 
 		if( !IsVisualStyle() ) {
 			::FillRect( gr, &rcItem, (HBRUSH)(COLOR_BTNFACE + 1) );
 		}else{
-			CUxTheme& uxTheme = *CUxTheme::getInstance();
 			int iPartId = TABP_TABITEM;
 			int iStateId = TIS_NORMAL;
 			int cxEdge = ::GetSystemMetrics( SM_CXEDGE );	// 3D枠線幅（横）
 			int cyEdge = ::GetSystemMetrics( SM_CYEDGE );	// 3D枠線幅（縦）
-			HTHEME hTheme = uxTheme.OpenThemeData( m_hwndTab, L"TAB" );
+			HTHEME hTheme = ::OpenThemeData( m_hwndTab, L"TAB" );
 			if( hTheme ) {
 				if( !bSelected ){
 					::InflateRect( &rcFullItem, DpiScaleX(2), DpiScaleY(2) );
@@ -1336,10 +1330,10 @@ LRESULT CTabWnd::OnDrawItem( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam 
 					}
 				}
 
-				if( uxTheme.IsThemeBackgroundPartiallyTransparent(hTheme, iPartId, iStateId) ) {
-					uxTheme.DrawThemeParentBackground(m_hwndTab, hdc, &rcFullItem);
+				if( ::IsThemeBackgroundPartiallyTransparent(hTheme, iPartId, iStateId) ) {
+					::DrawThemeParentBackground(m_hwndTab, hdc, &rcFullItem);
 				}
-				uxTheme.DrawThemeBackground(hTheme, hdc, iPartId, iStateId, &rcBk, NULL);
+				::DrawThemeBackground(hTheme, hdc, iPartId, iStateId, &rcBk, NULL);
 			}
 		}
 
@@ -2381,7 +2375,7 @@ HIMAGELIST CTabWnd::InitImageList( void )
 		m_iIconGrep = sfi.iIcon;
 
 		// システムイメージリストを複製する
-		hImlNew = ImageList_Duplicate( hImlSys );
+		hImlNew = ::ImageList_Duplicate( hImlSys );
 		if( NULL == hImlNew )
 			goto l_end;
 		ImageList_SetBkColor( hImlNew, CLR_NONE );
@@ -2434,7 +2428,7 @@ int CTabWnd::GetImageIndex( EditNode* pNode )
 				return sfi.iIcon;	// インデックスを返す
 
 			// システムイメージリストを複製する
-			hImlNew = ImageList_Duplicate( hImlSys );
+			hImlNew = ::ImageList_Duplicate( hImlSys );
 			if( NULL == hImlNew )
 				return -1;
 			ImageList_SetBkColor( hImlNew, CLR_NONE );
@@ -2459,55 +2453,6 @@ int CTabWnd::GetImageIndex( EditNode* pNode )
 	}
 
 	return m_iIconApp;	// アプリケーションアイコンのインデックスを返す
-}
-
-/*! イメージリストの複製処理
-	@date 2006.02.17 ryoji 新規作成
-*/
-HIMAGELIST CTabWnd::ImageList_Duplicate( HIMAGELIST himl )
-{
-	if( NULL == himl ) return NULL;
-
-	// 本物の ImageList_Duplicate() があればそれを呼び出す
-	HIMAGELIST hImlNew;
-	if( m_RealImageList_Duplicate )
-	{
-		hImlNew = m_RealImageList_Duplicate( himl );
-		if( NULL != hImlNew )
-			return hImlNew;
-		m_RealImageList_Duplicate = NULL;	// 2006.06.20 ryoji 失敗時は代替処理に切り替え
-	}
-
-	// 本物の ImageList_Duplicate() の代替処理
-	// 新しいイメージリストを作成してアイコン単位でコピーする
-	//（この場合、多色アイコンは綺麗には表示されないかもしれない）
-	int cxIcon = CX_SMICON;
-	int cyIcon = CY_SMICON;
-	ImageList_GetIconSize( himl, &cxIcon, &cyIcon );
-	hImlNew = ImageList_Create( cxIcon, cyIcon, ILC_COLOR32 | ILC_MASK, 4, 4 );
-	if( hImlNew )
-	{
-		ImageList_SetBkColor( hImlNew, CLR_NONE );
-		int nCount = ImageList_GetImageCount( himl );
-		int i;
-		for( i = 0; i < nCount; i++ )
-		{
-			HICON hIcon = ImageList_GetIcon( himl, i, ILD_TRANSPARENT );
-			if( NULL == hIcon )
-			{
-				ImageList_Destroy( hImlNew );
-				return NULL;
-			}
-			int iIcon = ImageList_AddIcon( hImlNew, hIcon );
-			::DestroyIcon( hIcon );
-			if( 0 > iIcon )
-			{
-				ImageList_Destroy( hImlNew );
-				return NULL;
-			}
-		}
-	}
-	return hImlNew;
 }
 
 /*! ボタン背景描画処理

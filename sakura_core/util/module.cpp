@@ -36,58 +36,6 @@ HMODULE LoadLibraryExedir(LPCWSTR pszDll)
 	return ::LoadLibrary( pszDll );
 }
 
-/*!	シェルやコモンコントロール DLL のバージョン番号を取得
-
-	@param[in] lpszDllName DLL ファイルのパス
-	@return DLL のバージョン番号（失敗時は 0）
-
-	@author ? (from MSDN Library document)
-	@date 2006.06.17 ryoji MSDNライブラリから引用
-*/
-DWORD GetDllVersion(LPCWSTR lpszDllName)
-{
-	HINSTANCE hinstDll;
-	DWORD dwVersion = 0;
-
-	/* For security purposes, LoadLibrary should be provided with a
-	   fully-qualified path to the DLL. The lpszDllName variable should be
-	   tested to ensure that it is a fully qualified path before it is used. */
-	hinstDll = LoadLibraryExedir(lpszDllName);
-
-	if(hinstDll)
-	{
-		DLLGETVERSIONPROC pDllGetVersion;
-		pDllGetVersion = (DLLGETVERSIONPROC)GetProcAddress(hinstDll,
-						  "DllGetVersion");
-
-		/* Because some DLLs might not implement this function, you
-		must test for it explicitly. Depending on the particular
-		DLL, the lack of a DllGetVersion function can be a useful
-		indicator of the version. */
-
-		if(pDllGetVersion)
-		{
-			DLLVERSIONINFO dvi;
-			HRESULT hr;
-
-			ZeroMemory(&dvi, sizeof(dvi));
-			dvi.cbSize = sizeof(dvi);
-
-			hr = (*pDllGetVersion)(&dvi);
-
-			if(SUCCEEDED(hr))
-			{
-			   dwVersion = PACKVERSION(dvi.dwMajorVersion, dvi.dwMinorVersion);
-			}
-		}
-
-		FreeLibrary(hinstDll);
-	}
-	return dwVersion;
-}
-
-
-
 /*!
 	@brief アプリケーションアイコンの取得
 	

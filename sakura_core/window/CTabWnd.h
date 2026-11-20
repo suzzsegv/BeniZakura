@@ -127,7 +127,6 @@ protected:
 
 	HIMAGELIST InitImageList( void );				/*!< イメージリストの初期化処理 */
 	int GetImageIndex( EditNode* pNode );			/*!< イメージリストのインデックス取得処理 */
-	HIMAGELIST ImageList_Duplicate( HIMAGELIST himl );	/*!< イメージリストの複製処理 */
 
 	// 2006.02.01 ryoji タブ一覧を追加
 	void DrawBtnBkgnd( HDC hdc, const LPRECT lprcBtn, BOOL bBtnHilighted );	/*!< ボタン背景描画処理 */	// 2006.10.21 ryoji
@@ -153,8 +152,6 @@ protected:
 	enum DragState { DRAG_NONE, DRAG_CHECK, DRAG_DRAG };
 	enum CaptureSrc { CAPT_NONE, CAPT_CLOSE, CAPT_TABCLOSE };
 
-	typedef HIMAGELIST (WINAPI *FN_ImageList_Duplicate)(HIMAGELIST himl);
-
 	/*
 	|| メンバ変数
 	*/
@@ -173,8 +170,6 @@ private:
 	HCURSOR		m_hDefaultCursor;		//!< ドラッグ開始時のカーソル
 
 	// 2006.01.28 ryoji タブへのアイコン表示を可能に
-	FN_ImageList_Duplicate	m_RealImageList_Duplicate;
-
 	HIMAGELIST	m_hIml;					//!< イメージリスト
 	HICON		m_hIconApp;				//!< アプリケーションアイコン
 	HICON		m_hIconGrep;			//!< Grepアイコン

@@ -1,23 +1,7 @@
 #include "StdAfx.h"
 #include "os.h"
 #include "util/module.h"
-#include "extmodule/CUxTheme.h"
-
-/*!	Comctl32.dll のバージョン番号を取得
-
-	@return Comctl32.dll のバージョン番号（失敗時は 0）
-
-	@author ryoji
-	@date 2006.06.17 ryoji 新規
-*/
-static DWORD s_dwComctl32Version = PACKVERSION(0, 0);
-DWORD GetComctl32Version()
-{
-	if( PACKVERSION(0, 0) == s_dwComctl32Version )
-		s_dwComctl32Version = GetDllVersion(L"Comctl32.dll");
-	return s_dwComctl32Version;
-}
-
+#include <uxtheme.h>
 
 /*!	自分が現在ビジュアルスタイル表示状態かどうかを示す
 	Win32 API の IsAppThemed() はこれとは一致しない（IsAppThemed() と IsThemeActive() との差異は不明）
@@ -29,9 +13,8 @@ DWORD GetComctl32Version()
 */
 BOOL IsVisualStyle()
 {
-	// ロードした Comctl32.dll が Ver 6 以上で画面設定がビジュアルスタイル指定になっている場合だけ
-	// ビジュアルスタイル表示になる（マニフェストで指定しないと Comctl32.dll は 6 未満になる）
-	return ( (GetComctl32Version() >= PACKVERSION(6, 0)) && CUxTheme::getInstance()->IsThemeActive() );
+	// マニフェストで Comctl32.dll の Ver 6 を指定しているので、画面設定がビジュアルスタイル指定になっているかだけを調べる
+	return ::IsThemeActive();
 }
 
 
@@ -45,7 +28,7 @@ BOOL IsVisualStyle()
 */
 void PreventVisualStyle( HWND hWnd )
 {
-	CUxTheme::getInstance()->SetWindowTheme( hWnd, L"", L"" );
+	::SetWindowTheme( hWnd, L"", L"" );
 	return;
 }
 
@@ -59,23 +42,10 @@ void PreventVisualStyle( HWND hWnd )
 */
 void MyInitCommonControls()
 {
-	BOOL (WINAPI *pfnInitCommonControlsEx)(LPINITCOMMONCONTROLSEX);
-
-	BOOL bInit = FALSE;
-	HINSTANCE hDll = ::GetModuleHandle(L"COMCTL32");
-	if( NULL != hDll ){
-		*(FARPROC*)&pfnInitCommonControlsEx = ::GetProcAddress( hDll, "InitCommonControlsEx" );
-		if( NULL != pfnInitCommonControlsEx ){
-			INITCOMMONCONTROLSEX icex;
-			icex.dwSize = sizeof(icex);
-			icex.dwICC = ICC_WIN95_CLASSES | ICC_COOL_CLASSES;
-			bInit = pfnInitCommonControlsEx( &icex );
-		}
-	}
-
-	if( !bInit ){
-		::InitCommonControls();
-	}
+	INITCOMMONCONTROLSEX icex;
+	icex.dwSize = sizeof(icex);
+	icex.dwICC = ICC_WIN95_CLASSES | ICC_COOL_CLASSES;
+	::InitCommonControlsEx( &icex );
 }
 
 

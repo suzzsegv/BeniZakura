@@ -78,7 +78,7 @@
       <Culture>0x0411</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>comctl32.lib;Imm32.lib;imagehlp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>comctl32.lib;Imm32.lib;imagehlp.lib;uxtheme.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateMapFile>true</GenerateMapFile>
       <SubSystem>Windows</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
@@ -113,7 +113,7 @@
       <Culture>0x0411</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>comctl32.lib;Imm32.lib;imagehlp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>comctl32.lib;Imm32.lib;imagehlp.lib;uxtheme.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
@@ -412,7 +412,6 @@
     <ClInclude Include="..\sakura_core\extmodule\CBregexpDll2.h" />
     <ClInclude Include="..\sakura_core\extmodule\CDllHandler.h" />
     <ClInclude Include="..\sakura_core\extmodule\CMigemo.h" />
-    <ClInclude Include="..\sakura_core\extmodule\CUxTheme.h" />
     <ClInclude Include="..\sakura_core\print\CPrint.h" />
     <ClInclude Include="..\sakura_core\print\CPrintPreview.h" />
     <ClInclude Include="..\sakura_core\uiparts\CGraphics.h" />
@@ -804,7 +803,6 @@
     <ClCompile Include="..\sakura_core\extmodule\CBregexpDll2.cpp" />
     <ClCompile Include="..\sakura_core\extmodule\CDllHandler.cpp" />
     <ClCompile Include="..\sakura_core\extmodule\CMigemo.cpp" />
-    <ClCompile Include="..\sakura_core\extmodule\CUxTheme.cpp" />
     <ClCompile Include="..\sakura_core\print\CPrint.cpp" />
     <ClCompile Include="..\sakura_core\print\CPrintPreview.cpp" />
     <ClCompile Include="..\sakura_core\uiparts\CGraphics.cpp" />

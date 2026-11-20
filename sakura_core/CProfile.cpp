@@ -252,11 +252,7 @@ bool CProfile::WriteProfile(
 		return false;
 
 	if( szMirrorFile[0] ){
-		BOOL (__stdcall *pfnReplaceFile)(LPCWSTR, LPCWSTR, LPCWSTR, DWORD, LPVOID, LPVOID);
-		HMODULE hModule = ::GetModuleHandle(L"KERNEL32");
-		pfnReplaceFile = (BOOL (__stdcall *)(LPCWSTR, LPCWSTR, LPCWSTR, DWORD, LPVOID, LPVOID))
-			::GetProcAddress(hModule, "ReplaceFileW");
-		if( !pfnReplaceFile || !pfnReplaceFile(m_strProfileName.c_str(), szMirrorFile, NULL, 0, NULL, NULL) ){
+		if( !::ReplaceFileW(m_strProfileName.c_str(), szMirrorFile, NULL, 0, NULL, NULL) ){
 			if (fexist(m_strProfileName.c_str())) {
 				if (!::DeleteFile(m_strProfileName.c_str())) {
 					return false;

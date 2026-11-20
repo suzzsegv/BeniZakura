@@ -28,7 +28,6 @@ void GetAppVersionInfo( HINSTANCE, int, DWORD*, DWORD* );	/* リソースから�
 
 HICON GetAppIcon( HINSTANCE hInst, int nResource, const WCHAR* szFile, bool bSmall = false);
 
-DWORD GetDllVersion( LPCWSTR lpszDllName );	// シェルやコモンコントロール DLL のバージョン番号を取得	// 2006.06.17 ryoji
 
 void ChangeCurrentDirectoryToExeDir();
 
