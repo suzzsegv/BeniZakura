@@ -70,6 +70,7 @@ public:
 	void JoinPrev( void );			/* 前のグループに移動 */	// 2007.06.20 ryoji
 
 	LRESULT TabWndDispatchEvent( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam );
+	void PaintTabDark( HWND hwndTab );	// ダークモードのとき、タブコントロール全体を描画する	// 2026.11.20
 	LRESULT TabListMenu( POINT pt, BOOL bSel = TRUE, BOOL bFull = FALSE, BOOL bOtherGroup = TRUE );	/*!< タブ一覧メニュー作成処理 */	// 2006.03.23 fon
 
 protected:

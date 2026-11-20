@@ -14,6 +14,7 @@
 */
 #include "StdAfx.h"
 #include "window/CSplitBoxWnd.h"
+#include "uiparts/CDarkMode.h"
 
 
 CSplitBoxWnd::CSplitBoxWnd()
@@ -132,6 +133,11 @@ LRESULT CSplitBoxWnd::OnPaint( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
 
 	hdc = ::BeginPaint( hwnd, &ps );
 
+	// 背景 (ダークモードでは暗い色。ライトではクラスの背景と同じ色)	// 2026.11.20
+	RECT rcClient;
+	::GetClientRect( hwnd, &rcClient );
+	::FillRect( hdc, &rcClient, CDarkMode::GetUiColorBrush( COLOR_3DFACE ) );
+
 	nCyHScroll = ::GetSystemMetrics( SM_CYHSCROLL );
 	nCxVScroll = ::GetSystemMetrics( SM_CXVSCROLL );
 
@@ -141,19 +147,19 @@ LRESULT CSplitBoxWnd::OnPaint( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
 	if( m_bVertical ){
 		/* 垂直分割ボックスの描画 */
 		Draw3dRect( hdc, 0, 0, nCxVScroll, nVSplitHeight,
-			::GetSysColor( COLOR_3DLIGHT ), ::GetSysColor( COLOR_3DDKSHADOW )
+			CDarkMode::GetUiColor( COLOR_3DLIGHT ), CDarkMode::GetUiColor( COLOR_3DDKSHADOW )
 		 );
 		Draw3dRect( hdc, 1, 1, nCxVScroll - 2, nVSplitHeight - 2,
-			::GetSysColor( COLOR_3DHILIGHT ), ::GetSysColor( COLOR_3DSHADOW )
+			CDarkMode::GetUiColor( COLOR_3DHILIGHT ), CDarkMode::GetUiColor( COLOR_3DSHADOW )
 		 );
 	}else{
 		/* 水平分割ボックスの描画 */
 		Draw3dRect( hdc, 0, 0, nHSplitWidth, nCyHScroll,
-			::GetSysColor( COLOR_3DLIGHT ), ::GetSysColor( COLOR_3DDKSHADOW )
+			CDarkMode::GetUiColor( COLOR_3DLIGHT ), CDarkMode::GetUiColor( COLOR_3DDKSHADOW )
 		 );
 
 		Draw3dRect( hdc, 1, 1, nHSplitWidth - 2, nCyHScroll - 2,
-			::GetSysColor( COLOR_3DHILIGHT ), ::GetSysColor( COLOR_3DSHADOW )
+			CDarkMode::GetUiColor( COLOR_3DHILIGHT ), CDarkMode::GetUiColor( COLOR_3DSHADOW )
 		 );
 	}
 

@@ -653,6 +653,9 @@
 #define IDC_CHECK_bOverWriteFixMode     1632
 #define IDC_CHECK_WORD_ZENKAKU_SAME_KIND 1662
 #define IDC_BUTTON_COPY_PRESET          1663
+#define IDC_RADIO_UICOLOR_LIGHT         1664
+#define IDC_RADIO_UICOLOR_DARK          1665
+#define IDC_RADIO_UICOLOR_SYSTEM        1666
 #define IDC_STATIC_MOZI                 1633
 #define IDC_BUTTON_TYPEFONT             1634
 #define IDC_CHECK_CHKENTERATEND         1635
@@ -716,7 +719,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        230
 #define _APS_NEXT_COMMAND_VALUE         4057
-#define _APS_NEXT_CONTROL_VALUE         1664
+#define _APS_NEXT_CONTROL_VALUE         1667
 #define _APS_NEXT_SYMED_VALUE           104
 #endif
 #endif

@@ -70,6 +70,8 @@ protected:
 	virtual LRESULT OnCommand( HWND, UINT, WPARAM, LPARAM );	// WM_COMMAND処理
 	virtual LRESULT OnSize( HWND, UINT, WPARAM, LPARAM );// WM_SIZE処理
 	virtual LRESULT OnDestroy( HWND, UINT, WPARAM, LPARAM );// WM_DESTROY処理
+	virtual LRESULT OnPaint( HWND, UINT, WPARAM, LPARAM );	// WM_PAINT処理 (背景を画面の配色で塗る)	// 2026.11.20
+	virtual LRESULT OnNotify( HWND, UINT, WPARAM, LPARAM );	// WM_NOTIFY処理 (ダークモードのボタンの描画)	// 2026.11.20
 };
 
 

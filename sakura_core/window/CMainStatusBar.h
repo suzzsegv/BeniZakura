@@ -56,6 +56,8 @@ public:
 	void SetKeyMacroRecMark( bool bRecording );	// キーマクロの記録中を示す「REC」の欄を設定する	// 2026.11.20
 private:
 	bool IsSameStatusText( int nIndex, int nOption, const WCHAR* pszText ) const;	// 欄の現在の内容と同じか	// 2026.11.20
+	static LRESULT CALLBACK StatusBarSubclassProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData );	// 2026.11.20
+	void PaintDark( HWND hwnd );	// ダークモードのとき、ステータスバー全体を描画する	// 2026.11.20
 
 	CEditWnd*	m_pOwner;
 	HWND		m_hwndStatusBar;

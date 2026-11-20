@@ -2,6 +2,7 @@
 #include "CMainStatusBar.h"
 #include "window/CEditWnd.h"
 #include "CEditApp.h"
+#include "uiparts/CDarkMode.h"
 
 CMainStatusBar::CMainStatusBar(CEditWnd* pOwner)
 : m_pOwner(pOwner)
@@ -27,6 +28,10 @@ void CMainStatusBar::CreateStatusBar()
 		m_pOwner->GetHwnd(),
 		IDW_STATUSBAR
 	);
+	// ダークモードのときに自分で描画するためにサブクラス化する	// 2026.11.20
+	if( NULL != m_hwndStatusBar ){
+		::SetWindowSubclass( m_hwndStatusBar, StatusBarSubclassProc, 0, (DWORD_PTR)this );
+	}
 
 	/* プログレスバー */
 	m_hwndProgressBar = ::CreateWindowEx(
@@ -118,6 +123,118 @@ void CMainStatusBar::SetStatusText(int nIndex, int nOption, const WCHAR* pszText
 	StatusBar_SetText( m_hwndStatusBar, nIndex | nOption, pszText );
 }
 
+
+/*!
+ * CMainStatusBar::StatusBarSubclassProc - ステータスバーのサブクラスプロシージャ
+ *
+ * ダークモードのときは、背景の消去を省き、WM_PAINT で全体を自分で描画する (PaintDark)。
+ * ライトのときは、ステータスバー本来の処理にそのまま渡す。
+ *
+ *	@return	メッセージの処理結果
+ */
+LRESULT CALLBACK CMainStatusBar::StatusBarSubclassProc(
+	HWND		hwnd,		//!< [in] ステータスバー
+	UINT		uMsg,		//!< [in] メッセージ
+	WPARAM		wParam,		//!< [in] パラメータ
+	LPARAM		lParam,		//!< [in] パラメータ
+	UINT_PTR	uIdSubclass,	//!< [in] サブクラスの ID
+	DWORD_PTR	dwRefData	//!< [in] CMainStatusBar のポインタ
+)
+{
+	switch( uMsg ){
+	case WM_ERASEBKGND:
+		if( CDarkMode::IsEnabled() ){
+			return 1;
+		}
+		break;
+	case WM_PAINT:
+		if( CDarkMode::IsEnabled() ){
+			((CMainStatusBar*)dwRefData)->PaintDark( hwnd );
+			return 0;
+		}
+		break;
+	case WM_NCDESTROY:
+		::RemoveWindowSubclass( hwnd, StatusBarSubclassProc, uIdSubclass );
+		break;
+	}
+	return ::DefSubclassProc( hwnd, uMsg, wParam, lParam );
+}
+
+/*!
+ * CMainStatusBar::PaintDark - ダークモードのとき、ステータスバー全体を描画する
+ *
+ * ステータスバーはテーマで明るく描かれるため、ダークモードでは背景を暗い色で塗り、各欄の文字と区切り線を描く。
+ * 自前描画 (SBT_OWNERDRAW) の欄は、通常と同じく親ウィンドウに WM_DRAWITEM を送って描かせる。
+ */
+void CMainStatusBar::PaintDark(
+	HWND	hwnd		//!< [in] ステータスバー
+)
+{
+	PAINTSTRUCT ps;
+	HDC hdc = ::BeginPaint( hwnd, &ps );
+	RECT rcClient;
+	::GetClientRect( hwnd, &rcClient );
+	::FillRect( hdc, &rcClient, CDarkMode::GetUiColorBrush( COLOR_3DFACE ) );
+
+	HFONT hFontOld = (HFONT)::SelectObject( hdc, (HFONT)::SendMessage( hwnd, WM_GETFONT, 0, 0 ) );
+	int nBkModeOld = ::SetBkMode( hdc, TRANSPARENT );
+	COLORREF colTextOld = ::SetTextColor( hdc, CDarkMode::GetUiColor( COLOR_BTNTEXT ) );
+	HPEN hPen = ::CreatePen( PS_SOLID, 1, CDarkMode::GetUiColor( COLOR_3DSHADOW ) );
+	HPEN hPenOld = (HPEN)::SelectObject( hdc, hPen );
+	const int nMargin = DpiScaleX( 4 );
+
+	int nParts = (int)::SendMessage( hwnd, SB_GETPARTS, 0, 0 );
+	for( int i = 0; i < nParts; i++ ){
+		RECT rcPart, rcDummy;
+		if( !::SendMessage( hwnd, SB_GETRECT, (WPARAM)i, (LPARAM)&rcPart ) || !::IntersectRect( &rcDummy, &rcPart, &ps.rcPaint ) ){
+			continue;
+		}
+		LRESULT lLen = ::SendMessage( hwnd, SB_GETTEXTLENGTH, (WPARAM)i, 0 );
+		::SetTextColor( hdc, CDarkMode::GetUiColor( COLOR_BTNTEXT ) );	// 自前描画の欄で変更されることがあるため、欄ごとに設定する
+		WORD wType = HIWORD( lLen );
+		if( wType & SBT_OWNERDRAW ){
+			DRAWITEMSTRUCT dis;
+			dis.CtlType = 0;
+			dis.CtlID = ::GetDlgCtrlID( hwnd );
+			dis.itemID = i;
+			dis.itemAction = ODA_DRAWENTIRE;
+			dis.itemState = 0;
+			dis.hwndItem = hwnd;
+			dis.hDC = hdc;
+			dis.rcItem = rcPart;
+			dis.itemData = (ULONG_PTR)::SendMessage( hwnd, SB_GETTEXT, (WPARAM)i, 0 );
+			::SendMessage( ::GetParent( hwnd ), WM_DRAWITEM, (WPARAM)dis.CtlID, (LPARAM)&dis );
+		}else{
+			WCHAR szText[1024];
+			if( LOWORD( lLen ) < _countof( szText ) ){
+				szText[0] = L'\0';
+				::SendMessage( hwnd, SB_GETTEXT, (WPARAM)i, (LPARAM)szText );
+				RECT rcText = rcPart;
+				rcText.left += nMargin;
+				::DrawText( hdc, szText, -1, &rcText, DT_SINGLELINE | DT_VCENTER | DT_LEFT | DT_NOPREFIX | DT_END_ELLIPSIS );
+			}
+		}
+		// 区切り線 (枠なしの欄と最後の欄には描かない)
+		if( 0 == ( wType & SBT_NOBORDERS ) && i < nParts - 1 ){
+			::MoveToEx( hdc, rcPart.right, rcPart.top + 2, NULL );
+			::LineTo( hdc, rcPart.right, rcPart.bottom - 2 );
+		}
+	}
+
+	// サイズ変更のつかむ位置 (SBARS_SIZEGRIP)。ウィンドウが最大化されているときは、ステータスバー本来の描画と同じく描かない
+	if( ( ::GetWindowLongPtr( hwnd, GWL_STYLE ) & SBARS_SIZEGRIP ) && !::IsZoomed( ::GetAncestor( hwnd, GA_ROOT ) ) ){
+		RECT rcGrip = rcClient;
+		rcGrip.left = rcGrip.right - ::GetSystemMetrics( SM_CXVSCROLL );
+		CDarkMode::DrawSizeGrip( hdc, rcGrip );
+	}
+
+	::SelectObject( hdc, hPenOld );
+	::DeleteObject( hPen );
+	::SetTextColor( hdc, colTextOld );
+	::SetBkMode( hdc, nBkModeOld );
+	::SelectObject( hdc, hFontOld );
+	::EndPaint( hwnd, &ps );
+}
 
 /*!
  * CMainStatusBar::IsSameStatusText - ステータスバーの欄の現在の内容が、指定した内容と同じかを調べる

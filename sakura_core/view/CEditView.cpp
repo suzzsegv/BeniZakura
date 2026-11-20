@@ -59,6 +59,7 @@
 #include "util/os.h" //WM_MOUSEWHEEL,IMR_RECONVERTSTRING,WM_XBUTTON*,IMR_CONFIRMRECONVERTSTRING
 #include "util/module.h"
 #include "debug/CRunningTimer.h"
+#include "uiparts/CDarkMode.h"
 
 CEditView*	g_m_pcEditView;
 LRESULT CALLBACK EditViewWndProc( HWND, UINT, WPARAM, LPARAM );
@@ -800,6 +801,13 @@ LRESULT CEditView::DispatchEvent(
 		}
 
 		return nRes;
+
+	case WM_CTLCOLORSTATIC:
+		// 2026.11.20 ダークモードでは、サイズボックスの代わりの STATIC (右下の角) を暗い色で塗る
+		if( CDarkMode::IsEnabled() && (HWND)lParam == m_hwndSizeBox ){
+			return (LRESULT)CDarkMode::GetUiColorBrush( COLOR_3DFACE );
+		}
+		return DefWindowProc( hwnd, uMsg, wParam, lParam );
 
 	case EM_GETLIMITTEXT:
 		return INT_MAX;
@@ -1630,6 +1638,9 @@ void CEditView::SplitBoxOnOff( BOOL bVert, BOOL bHorz, BOOL bSizeBox )
 		);
 	}
 	::ShowWindow( m_hwndSizeBox, SW_SHOW );
+	if( bSizeBox ){
+		CDarkMode::AttachSizeBox( m_hwndSizeBox );	// 2026.11.20 ダークモードでは暗く描く
+	}
 
 	::GetClientRect( GetHwnd(), &rc );
 	OnSize( rc.right, rc.bottom );

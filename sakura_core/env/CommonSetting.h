@@ -30,6 +30,7 @@
 #include "func/CFuncLookup.h" //MacroRec
 #include "io/CFile.h" //EShareMode
 #include "doc/CColorTheme.h" //ColorInfo
+#include "uiparts/DarkModeColor.h" //EUiColorMode
 
 // Apr. 05, 2003 genta WindowCaption用領域（変換前）の長さ
 static const int MAX_CAPTION_CONF_LEN = 256;
@@ -609,6 +610,7 @@ struct CommonSetting_ColorTheme
 {
 	int			m_nColorTheme;							//!< 選択中のテーマ (ColorTheme の値、または COLOR_THEME_CUSTOM)
 	ColorInfo	m_CustomColorInfoArr[COLORIDX_LAST];	//!< カスタムテーマの色 (テーマが決める値だけを使う)
+	int			m_nUiColorMode;							//!< 画面の配色 (EUiColorMode: ライト / ダーク / OS の設定に従う)	// 2026.11.20
 };
 
 

@@ -53,6 +53,7 @@
 #include "util/window.h"
 #include "util/module.h"
 #include "util/string_ex2.h"
+#include "uiparts/CDarkMode.h"
 #include "sakura_rc.h"
 
 
@@ -175,10 +176,68 @@ LRESULT CTabWnd::TabWndDispatchEvent( HWND hwnd, UINT uMsg, WPARAM wParam, LPARA
 		m_bVisualStyle = ::IsVisualStyle();
 		break;
 
+	case WM_ERASEBKGND:
+		if( CDarkMode::IsEnabled() ){	// 2026.11.20 ダークモードでは WM_PAINT で背景ごと描く
+			return 0L;
+		}
+		break;
+
+	case WM_PAINT:
+		if( CDarkMode::IsEnabled() ){	// 2026.11.20 ダークモードではタブコントロール全体を自分で描く
+			PaintTabDark( hwnd );
+			return 0L;
+		}
+		break;
+
 	//default:
 	}
 
 	return 1L;	//デフォルトのディスパッチにまわす
+}
+
+/*!
+ * CTabWnd::PaintTabDark - ダークモードのとき、タブコントロール全体を描画する
+ *
+ * タブコントロールの背景はテーマで明るく描かれるため、ダークモードでは背景を暗い色で塗り、
+ * 各タブは通常のオーナードローと同じ処理 (親ウィンドウへの WM_DRAWITEM → OnDrawItem) で描く。
+ */
+void CTabWnd::PaintTabDark(
+	HWND	hwndTab		//!< [in] タブコントロール
+)
+{
+	PAINTSTRUCT ps;
+	HDC hdc = ::BeginPaint( hwndTab, &ps );
+	RECT rcClient;
+	::GetClientRect( hwndTab, &rcClient );
+	::FillRect( hdc, &rcClient, CDarkMode::GetUiColorBrush( COLOR_3DFACE ) );
+
+	HFONT hFontOld = (HFONT)::SelectObject( hdc, (HFONT)::SendMessage( hwndTab, WM_GETFONT, 0, 0 ) );
+	int nSel = TabCtrl_GetCurSel( hwndTab );
+	int nCount = TabCtrl_GetItemCount( hwndTab );
+	for( int i = 0; i < nCount; i++ ){
+		RECT rcItem, rcDummy;
+		if( !TabCtrl_GetItemRect( hwndTab, i, &rcItem ) || !::IntersectRect( &rcDummy, &rcItem, &ps.rcPaint ) ){
+			continue;
+		}
+		TCITEM tcitem;
+		tcitem.mask = TCIF_PARAM;
+		tcitem.lParam = 0;
+		TabCtrl_GetItem( hwndTab, i, &tcitem );
+
+		DRAWITEMSTRUCT dis;
+		dis.CtlType = ODT_TAB;
+		dis.CtlID = ::GetDlgCtrlID( hwndTab );
+		dis.itemID = i;
+		dis.itemAction = ODA_DRAWENTIRE;
+		dis.itemState = ( i == nSel ) ? ODS_SELECTED : 0;
+		dis.hwndItem = hwndTab;
+		dis.hDC = hdc;
+		dis.rcItem = rcItem;
+		dis.itemData = (ULONG_PTR)tcitem.lParam;
+		::SendMessage( ::GetParent( hwndTab ), WM_DRAWITEM, (WPARAM)dis.CtlID, (LPARAM)&dis );
+	}
+	::SelectObject( hdc, hFontOld );
+	::EndPaint( hwndTab, &ps );
 }
 
 /*! タブ部 WM_LBUTTONDOWN 処理 */
@@ -780,7 +839,7 @@ HWND CTabWnd::Open( HINSTANCE hInstance, HWND hwndParent )
 		NULL,								//Handle to a small icon
 		::LoadCursor( NULL, IDC_ARROW ),	// Handle to the class cursor.
 		// 2006.01.30 ryoji 背景は WM_PAINT で描画するほうがちらつかない（と思う）
-		//(HBRUSH)(COLOR_3DFACE + 1),			// Handle to the class background brush.
+		//CDarkMode::GetUiColorBrush( COLOR_3DFACE ),			// Handle to the class background brush.
 		NULL,								// Handle to the class background brush.
 		NULL,								// Pointer to a null-terminated character string that specifies the resource name of the class menu, as the name appears in the resource file.
 		m_pszClassName						// Pointer to a null-terminated string or is an atom.
@@ -1209,17 +1268,17 @@ LRESULT CTabWnd::OnDrawItem( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam 
 		COLORREF clrBk;
 		if (lpdis->itemState & ODS_SELECTED)
 		{
-			clrText = ::GetSysColor( COLOR_HIGHLIGHTTEXT );
+			clrText = CDarkMode::GetUiColor( COLOR_HIGHLIGHTTEXT );
 			clrBk = COLOR_HIGHLIGHT;
 		}
 		else
 		{
-			clrText = ::GetSysColor( COLOR_MENUTEXT );
+			clrText = CDarkMode::GetUiColor( COLOR_MENUTEXT );
 			clrBk = COLOR_MENU;
 		}
 
 		// 背景描画
-		::FillRect( gr, &rcItem, (HBRUSH)(clrBk + 1) );
+		::FillRect( gr, &rcItem, CDarkMode::GetUiColorBrush( clrBk ) );
 
 		// アイコン描画
 		int cxIcon = CX_SMICON;
@@ -1251,7 +1310,7 @@ LRESULT CTabWnd::OnDrawItem( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam 
 		// チェック状態なら外枠描画
 		if( lpdis->itemState & ODS_CHECKED )
 		{
-			gr.SetPen( ::GetSysColor(COLOR_HIGHLIGHT) );
+			gr.SetPen( CDarkMode::GetUiColor(COLOR_HIGHLIGHT) );
 			gr.SetBrushColor(-1); //NULL_BRUSH
 			::Rectangle( gr, rcItem.left, rcItem.top, rcItem.right, rcItem.bottom );
 		}
@@ -1280,8 +1339,8 @@ LRESULT CTabWnd::OnDrawItem( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam 
 		// 状態に従ってテキストと背景色を決める
 
 		// 背景描画
-		if( !IsVisualStyle() ) {
-			::FillRect( gr, &rcItem, (HBRUSH)(COLOR_BTNFACE + 1) );
+		if( !IsVisualStyle() || CDarkMode::IsEnabled() ) {	// 2026.11.20 ダークモードではテーマを使わずに塗る
+			::FillRect( gr, &rcItem, CDarkMode::GetUiColorBrush( COLOR_BTNFACE ) );
 		}else{
 			int iPartId = TABP_TABITEM;
 			int iStateId = TIS_NORMAL;
@@ -1370,7 +1429,7 @@ LRESULT CTabWnd::OnDrawItem( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam 
 
 		// テキスト描画
 		COLORREF clrText;
-		clrText = bSelected ? cTabColor.m_colTEXT : ::GetSysColor(COLOR_MENUTEXT);
+		clrText = bSelected ? cTabColor.m_colTEXT : CDarkMode::GetUiColor(COLOR_MENUTEXT);
 		gr.PushTextForeColor( clrText );
 		gr.SetTextBackTransparent(true);
 		RECT rcText = rcItem;
@@ -1385,7 +1444,7 @@ LRESULT CTabWnd::OnDrawItem( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam 
 
 		// タブを閉じるボタンを描画
 		if( m_pShareData->m_Common.m_sTabBar.m_bDispTabClose ){
-			DrawTabCloseBtn( gr, &rcItem, bSelected, bSelected ? cTabColor.m_colTEXT : ::GetSysColor(COLOR_BTNTEXT) );
+			DrawTabCloseBtn( gr, &rcItem, bSelected, bSelected ? cTabColor.m_colTEXT : CDarkMode::GetUiColor(COLOR_BTNTEXT) );
 		}
 
 		// Vista以降ではオーナードロータブに自動で3D枠が描画されてしまうため、
@@ -1527,14 +1586,20 @@ LRESULT CTabWnd::OnPaint( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 
 	// 背景を描画する
 	::GetClientRect( hwnd, &rc );
-	::FillRect( gr, &rc, (HBRUSH)(COLOR_3DFACE + 1) );
+	::FillRect( gr, &rc, CDarkMode::GetUiColorBrush( COLOR_3DFACE ) );
 
 	// ボタンを描画する
 	DrawListBtn( gr, &rc );
 	DrawCloseBtn( gr, &rc );	// 2006.10.21 ryoji 追加
 
 	// 上側に境界線を描画する
-	::DrawEdge(gr, &rc, EDGE_ETCHED, BF_TOP);
+	if( CDarkMode::IsEnabled() ){	// 2026.11.20 ダークモードでは暗い線で描く
+		gr.SetPen( CDarkMode::GetUiColor( COLOR_3DSHADOW ) );
+		::MoveToEx( gr, rc.left, rc.top, NULL );
+		::LineTo( gr, rc.right, rc.top );
+	}else{
+		::DrawEdge(gr, &rc, EDGE_ETCHED, BF_TOP);
+	}
 
 	// アクティブタブの上部にトップバンドを描画する
 	int nCurSel = TabCtrl_GetCurSel(m_hwndTab);
@@ -1573,7 +1638,7 @@ LRESULT CTabWnd::OnPaint( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 
 		if (rcCurSel.left < rcCurSel.right)
 		{
-			::FillRect(gr, &rcCurSel, ::GetSysColorBrush(COLOR_HIGHLIGHT));
+			::FillRect(gr, &rcCurSel, CDarkMode::GetUiColorBrush(COLOR_HIGHLIGHT));
 		}
 	}
 
@@ -2463,8 +2528,8 @@ void CTabWnd::DrawBtnBkgnd( HDC hdc, const LPRECT lprcBtn, BOOL bBtnHilighted )
 	if( bBtnHilighted )
 	{
 		CGraphics gr(hdc);
-		gr.SetPen( ::GetSysColor(COLOR_HIGHLIGHT) );
-		gr.SetBrushColor( ::GetSysColor(COLOR_MENU) );
+		gr.SetPen( CDarkMode::GetUiColor(COLOR_HIGHLIGHT) );
+		gr.SetBrushColor( CDarkMode::GetUiColor(COLOR_MENU) );
 		::Rectangle( gr, lprcBtn->left, lprcBtn->top, lprcBtn->right, lprcBtn->bottom );
 	}
 }
@@ -2490,8 +2555,8 @@ void CTabWnd::DrawListBtn( CGraphics& gr, const LPRECT lprcClient )
 	rcBtn.bottom = rcBtn.top + (rcBtnBase.bottom - rcBtnBase.left);
 
 	int nIndex = m_bListBtnHilighted? COLOR_MENUTEXT: COLOR_BTNTEXT;
-	gr.SetPen( ::GetSysColor( nIndex ) );
-	gr.SetBrushColor( ::GetSysColor( nIndex ) ); //$$ GetSysColorBrushを用いた実装のほうが効率は良い
+	gr.SetPen( CDarkMode::GetUiColor( nIndex ) );
+	gr.SetBrushColor( CDarkMode::GetUiColor( nIndex ) ); //$$ GetSysColorBrushを用いた実装のほうが効率は良い
 	for( int i = 0; i < _countof(ptBase); i++ )
 	{
 		pt[i].x = ptBase[i].x + rcBtn.left;
@@ -2555,7 +2620,7 @@ void CTabWnd::DrawCloseBtn( CGraphics& gr, const LPRECT lprcClient )
 	GetCloseBtnRect( lprcClient, &rcBtn );
 
 	// ボタンの左側にセパレータを描画する	// 2007.02.27 ryoji
-	gr.SetPen( ::GetSysColor( COLOR_3DSHADOW ) );
+	gr.SetPen( CDarkMode::GetUiColor( COLOR_3DSHADOW ) );
 	::MoveToEx( gr, rcBtn.left - DpiScaleX(4), rcBtn.top + 1, NULL );
 	::LineTo( gr, rcBtn.left - DpiScaleX(4), rcBtn.bottom - 1 );
 
@@ -2568,8 +2633,8 @@ void CTabWnd::DrawCloseBtn( CGraphics& gr, const LPRECT lprcClient )
 	rcBtn.bottom = rcBtn.top + (rcBtnBase.bottom - rcBtnBase.left);
 
 	int nIndex = m_bCloseBtnHilighted? COLOR_MENUTEXT: COLOR_BTNTEXT;
-	gr.SetPen( ::GetSysColor(nIndex) );
-	gr.SetBrushColor( ::GetSysColor(nIndex) );
+	gr.SetPen( CDarkMode::GetUiColor(nIndex) );
+	gr.SetBrushColor( CDarkMode::GetUiColor(nIndex) );
 	if( m_pShareData->m_Common.m_sTabBar.m_bDispTabWnd &&
 		!m_pShareData->m_Common.m_sTabBar.m_bDispTabWndMultiWin &&
 		!m_pShareData->m_Common.m_sTabBar.m_bTab_CloseOneWin			// 2007.02.13 ryoji 条件追加（ウィンドウの閉じるボタンは全部閉じる）

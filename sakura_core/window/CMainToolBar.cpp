@@ -31,6 +31,8 @@
 #include "util/os.h"
 #include "util/tchar_receive.h"
 #include "util/window.h"
+#include "uiparts/CDarkMode.h"
+#include <uxtheme.h>
 
 CMainToolBar::CMainToolBar(CEditWnd* pOwner)
 : m_pOwner(pOwner)
@@ -103,6 +105,16 @@ static LRESULT CALLBACK ToolBarWndProc( HWND hWnd, UINT msg, WPARAM wParam, LPAR
 		// サブクラス化解除
 		::SetWindowLongPtr( hWnd, GWLP_WNDPROC, (LONG_PTR)g_pOldToolBarWndProc );
 		break;
+
+	// 2026.11.20 ダークモードでは、検索ボックス (コンボボックス) のエディット・リストを暗い配色にする
+	case WM_CTLCOLOREDIT:
+	case WM_CTLCOLORLISTBOX:
+		if( CDarkMode::IsEnabled() ){
+			::SetTextColor( (HDC)wParam, CDarkMode::GetUiColor( COLOR_WINDOWTEXT ) );
+			::SetBkColor( (HDC)wParam, CDarkMode::GetUiColor( COLOR_WINDOW ) );
+			return (LRESULT)CDarkMode::GetUiColorBrush( COLOR_WINDOW );
+		}
+		break;
 	}
 	return ::CallWindowProc( g_pOldToolBarWndProc, hWnd, msg, wParam, lParam );
 }
@@ -147,8 +159,12 @@ void CMainToolBar::CreateToolBar( void )
 			return;
 		}
 
-		if( GetDllShareData().m_Common.m_sToolBar.m_bToolBarIsFlat ){	/* フラットツールバーにする／しない */
-			PreventVisualStyle( m_hwndReBar );	// ビジュアルスタイル非適用のフラットな Rebar にする
+		if( GetDllShareData().m_Common.m_sToolBar.m_bToolBarIsFlat || CDarkMode::IsEnabled() ){	/* フラットツールバーにする／しない */
+			PreventVisualStyle( m_hwndReBar );	// ビジュアルスタイル非適用のフラットな Rebar にする (ダークモードでは背景色を指定するため)	// 2026.11.20
+		}
+		if( CDarkMode::IsEnabled() ){	// 2026.11.20 ダークモードの背景色
+			::SendMessage( m_hwndReBar, RB_SETBKCOLOR, 0, (LPARAM)CDarkMode::GetUiColor( COLOR_3DFACE ) );
+			::SendMessage( m_hwndReBar, RB_SETTEXTCOLOR, 0, (LPARAM)CDarkMode::GetUiColor( COLOR_BTNTEXT ) );
 		}
 
 		::ZeroMemory(&rbi, sizeof(rbi));
@@ -284,6 +300,9 @@ void CMainToolBar::CreateToolBar( void )
 						if( m_hwndSearchBox )
 						{
 							m_pOwner->SetCurrentFocus(0);
+							if( CDarkMode::IsEnabled() ){	// 2026.11.20 ダークモードではドロップダウンボタンを暗いテーマにする
+								::SetWindowTheme( m_hwndSearchBox, L"DarkMode_CFD", NULL );
+							}
 
 							lf = m_pOwner->GetLogfont();
 							//memset_raw( &lf, 0, sizeof(lf) );
@@ -355,6 +374,11 @@ void CMainToolBar::CreateToolBar( void )
 		rbBand.cxMinChild = 0;
 		rbBand.cyMinChild = HIWORD(dwBtnSize) * dwRows;
 		rbBand.cx         = 250;
+		if( CDarkMode::IsEnabled() ){	// 2026.11.20 ダークモードのバンドの色
+			rbBand.fMask |= RBBIM_COLORS;
+			rbBand.clrFore = CDarkMode::GetUiColor( COLOR_BTNTEXT );
+			rbBand.clrBack = CDarkMode::GetUiColor( COLOR_3DFACE );
+		}
 
 		// バンドを追加する
 		Rebar_InsertBand( m_hwndReBar, -1, &rbBand );
@@ -410,6 +434,56 @@ bool CMainToolBar::EatMessage(MSG* msg)
 }
 
 
+/*!
+ * DrawDropDownArrowDark - ダークモードのとき、ドロップダウンのボタンの矢印を描き直す
+ *
+ * ツールバーが描く矢印 (TBSTYLE_EX_DRAWDDARROWS) は Windows のテーマの黒い矢印で、暗い背景では見えないため、
+ * 矢印の部分を背景の色で塗り直し、明るい色の下向きの三角形を描く。三角形の大きさは DPI に合わせて拡大する。
+ * ドロップダウンでないボタンでは何もしない。
+ */
+static void DrawDropDownArrowDark(
+	LPNMCUSTOMDRAW	pnmh	//!< [in] ツールバーのボタンの NM_CUSTOMDRAW の情報 (CDDS_ITEMPOSTPAINT)
+)
+{
+	HWND hwndToolBar = pnmh->hdr.hwndFrom;
+	TBBUTTONINFO tbbi = { sizeof( tbbi ) };
+	tbbi.dwMask = TBIF_STYLE;
+	if( -1 == ::SendMessage( hwndToolBar, TB_GETBUTTONINFO, (WPARAM)pnmh->dwItemSpec, (LPARAM)&tbbi )
+	 || 0 == ( tbbi.fsStyle & BTNS_DROPDOWN ) ){
+		return;
+	}
+	int nIndex = (int)::SendMessage( hwndToolBar, TB_COMMANDTOINDEX, (WPARAM)pnmh->dwItemSpec, 0 );
+	RECT rcDrop;
+	if( !::SendMessage( hwndToolBar, TB_GETITEMDROPDOWNRECT, (WPARAM)nIndex, (LPARAM)&rcDrop ) ){
+		return;
+	}
+
+	// 背景 (ボタンの状態に合わせる)
+	int nBack = COLOR_3DFACE;
+	if( pnmh->uItemState & ( CDIS_SELECTED | CDIS_CHECKED ) ){
+		nBack = COLOR_3DSHADOW;
+	}else if( pnmh->uItemState & CDIS_HOT ){
+		nBack = COLOR_MENUHILIGHT;
+	}
+	::FillRect( pnmh->hdc, &rcDrop, CDarkMode::GetUiColorBrush( nBack ) );
+
+	// 下向きの三角形
+	const int nHalf = DpiScaleX( 3 );
+	const int cx = ( rcDrop.left + rcDrop.right ) / 2;
+	const int y0 = ( rcDrop.top + rcDrop.bottom ) / 2 - nHalf / 2;
+	const POINT pt[3] = { { cx - nHalf, y0 }, { cx + nHalf, y0 }, { cx, y0 + nHalf } };
+	COLORREF clrArrow = CDarkMode::GetUiColor( ( pnmh->uItemState & CDIS_DISABLED ) ? COLOR_GRAYTEXT : COLOR_BTNTEXT );
+	HPEN hPen = ::CreatePen( PS_SOLID, 1, clrArrow );
+	HBRUSH hBrush = ::CreateSolidBrush( clrArrow );
+	HPEN hPenOld = (HPEN)::SelectObject( pnmh->hdc, hPen );
+	HBRUSH hBrushOld = (HBRUSH)::SelectObject( pnmh->hdc, hBrush );
+	::Polygon( pnmh->hdc, pt, _countof( pt ) );
+	::SelectObject( pnmh->hdc, hPenOld );
+	::SelectObject( pnmh->hdc, hBrushOld );
+	::DeleteObject( hPen );
+	::DeleteObject( hBrush );
+}
+
 /*!	@brief ToolBarのOwnerDraw
 
 	@param pnmh [in] Owner Draw情報
@@ -428,6 +502,9 @@ LPARAM CMainToolBar::ToolBarOwnerDraw( LPNMCUSTOMDRAW pnmh )
 	case CDDS_PREPAINT:
 		//	描画開始前
 		//	アイテムを自前で描画する旨を通知する
+		if( CDarkMode::IsEnabled() ){	// 2026.11.20 ダークモードでは背景を暗く塗る
+			::FillRect( pnmh->hdc, &pnmh->rc, CDarkMode::GetUiColorBrush( COLOR_3DFACE ) );
+		}
 		return CDRF_NOTIFYITEMDRAW;
 	
 	case CDDS_ITEMPREPAINT:
@@ -436,6 +513,16 @@ LPARAM CMainToolBar::ToolBarOwnerDraw( LPNMCUSTOMDRAW pnmh )
 		// 2010.07.15 Moca 検索(ボックス)なら枠を描かない
 		if( pnmh->dwItemSpec == F_SEARCH_BOX ){
 			return CDRF_SKIPDEFAULT;
+		}
+		if( CDarkMode::IsEnabled() ){	// 2026.11.20 ダークモードでは、マウスが乗ったとき・押したときを暗い色で塗る (枠は描かない)
+			LPNMTBCUSTOMDRAW pnmtb = (LPNMTBCUSTOMDRAW)pnmh;
+			pnmtb->clrBtnFace = CDarkMode::GetUiColor( COLOR_3DFACE );
+			pnmtb->clrBtnHighlight = CDarkMode::GetUiColor( COLOR_MENUHILIGHT );
+			pnmtb->clrHighlightHotTrack = CDarkMode::GetUiColor( COLOR_MENUHILIGHT );
+			if( pnmh->uItemState & ( CDIS_SELECTED | CDIS_CHECKED ) ){
+				::FillRect( pnmh->hdc, &pnmh->rc, CDarkMode::GetUiColorBrush( COLOR_3DSHADOW ) );
+			}
+			return CDRF_NOTIFYPOSTPAINT | TBCDRF_HILITEHOTTRACK | TBCDRF_NOEDGES | TBCDRF_NOBACKGROUND;
 		}
 		return CDRF_NOTIFYPOSTPAINT;
 	
@@ -452,6 +539,9 @@ LPARAM CMainToolBar::ToolBarOwnerDraw( LPNMCUSTOMDRAW pnmh )
 			CEditApp::getInstance()->GetIcons().Draw( nIconId, pnmh->hdc, pnmh->rc.left + offset + shift, pnmh->rc.top + offset + shift,
 				(pnmh->uItemState & CDIS_DISABLED ) ? ILD_MASK : ILD_NORMAL
 			);
+			if( CDarkMode::IsEnabled() ){	// 2026.11.21 ダークモードではドロップダウンの矢印を明るい色で描き直す
+				DrawDropDownArrowDark( pnmh );
+			}
 		}
 		break;
 	default:

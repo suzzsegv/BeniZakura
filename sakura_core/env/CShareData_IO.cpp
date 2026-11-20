@@ -1221,6 +1221,12 @@ void CShareData_IO::ShareData_IO_ColorTheme(
 		cProfile.IOProfileData( pszSecName, LTEXT("szColorTheme"), MakeStringBufferW(szThemeName) );
 		IO_ColorSet( &cProfile, pszCustomSecName, sColorTheme.m_CustomColorInfoArr );
 	}
+
+	// 画面の配色 (ライト / ダーク / OS の設定に従う)	// 2026.11.20
+	cProfile.IOProfileData( pszSecName, LTEXT("nUiColorMode"), sColorTheme.m_nUiColorMode );
+	if( sColorTheme.m_nUiColorMode < 0 || UI_COLOR_MODE_MAX <= sColorTheme.m_nUiColorMode ){
+		sColorTheme.m_nUiColorMode = UI_COLOR_MODE_LIGHT;
+	}
 }
 
 /*!

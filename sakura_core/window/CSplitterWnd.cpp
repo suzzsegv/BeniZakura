@@ -21,6 +21,7 @@
 #include "view/CEditView.h"
 #include "outline/CDlgFuncList.h"
 #include "env/DLLSHAREDATA.h"
+#include "uiparts/CDarkMode.h"
 
 
 //	@date 2002.2.17 YAZAKI CShareDataのインスタンスは、CProcessにひとつあるのみ。
@@ -130,12 +131,12 @@ void CSplitterWnd::SetChildWndArr( HWND* hwndEditViewArr )
 void CSplitterWnd::DrawFrame( HDC hdc, RECT* prc )
 {
 	CSplitBoxWnd::Draw3dRect( hdc, prc->left, prc->top, prc->right, prc->bottom,
-		::GetSysColor( COLOR_3DSHADOW ),
-		::GetSysColor( COLOR_3DHILIGHT )
+		CDarkMode::GetUiColor( COLOR_3DSHADOW ),
+		CDarkMode::GetUiColor( COLOR_3DHILIGHT )
 	);
 	CSplitBoxWnd::Draw3dRect( hdc, prc->left + 1, prc->top + 1, prc->right - 2, prc->bottom - 2,
 		RGB( 0, 0, 0 ),
-		::GetSysColor( COLOR_3DFACE )
+		CDarkMode::GetUiColor( COLOR_3DFACE )
 	);
 	return;
 }
@@ -810,7 +811,7 @@ LRESULT CSplitterWnd::OnPaint( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
 	HBRUSH		hBrush;
 	hdc = ::BeginPaint( hwnd, &ps );
 	::GetClientRect( GetHwnd(), &rc );
-	hBrush = ::CreateSolidBrush( ::GetSysColor( COLOR_3DFACE ) );
+	hBrush = ::CreateSolidBrush( CDarkMode::GetUiColor( COLOR_3DFACE ) );
 	if( m_nAllSplitRows > 1 ){
 		::SetRect( &rcFrame, rc.left, m_nVSplitPos, rc.right, m_nVSplitPos + nFrameWidth );
 		::FillRect( hdc, &rcFrame, hBrush );

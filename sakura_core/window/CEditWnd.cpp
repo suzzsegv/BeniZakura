@@ -61,6 +61,7 @@
 #include "recent/CMRUFolder.h"
 #include "util/module.h"
 #include "util/os.h"		//WM_MOUSEWHEEL,WM_THEMECHANGED
+#include "uiparts/CDarkMode.h"
 #include "util/window.h"
 #include "util/shell.h"
 #include "util/string_ex2.h"
@@ -621,6 +622,10 @@ HWND CEditWnd::Create(
 	if(!hWnd)return NULL;
 	m_hWnd = hWnd;
 
+	// 画面の配色 (ダークモード) を決め、タイトルバーに適用する	// 2026.11.20
+	CDarkMode::Refresh();
+	CDarkMode::ApplyTitleBar( GetHwnd() );
+
 	// 初回アイドリング検出用のゼロ秒タイマーをセットする	// 2008.04.19 ryoji
 	// ゼロ秒タイマーが発動（初回アイドリング検出）したら MYWM_FIRST_IDLE を起動元プロセスにポストする。
 	// ※起動元での起動先アイドリング検出については CEditorManager::OpenNewEditor を参照
@@ -686,6 +691,11 @@ HWND CEditWnd::Create(
 
 	// 画面表示直前にDispatchEventを有効化する
 	::SetWindowLongPtr( GetHwnd(), GWLP_USERDATA, (LONG_PTR)this );
+
+	// ダークモードでは、メニューバーの項目の幅 (WM_MEASUREITEM) を DispatchEvent で計算させるため、メニューを作り直す	// 2026.11.20
+	if( CDarkMode::IsEnabled() ){
+		LayoutMainMenu();
+	}
 
 	// デスクトップからはみ出さないようにする
 	_AdjustInMonitor(sTabGroupInfo);
@@ -795,6 +805,23 @@ void CEditWnd::SetDocumentTypeWhenCreate(
 /*! メインメニューの配置処理
 	@date 20105/16 Uchi
 */
+/*!
+ * CEditWnd::ApplyUiColorMode - 画面の配色 (ダークモード) をウィンドウ全体に適用する
+ *
+ * CDarkMode::Refresh() で決めた状態を、Windows が描く部分 (タイトルバー、編集画面のスクロールバー) に設定し、
+ * メニューバーを含むウィンドウ全体を描き直す。メニュー・ツールバー・ステータスバーなどの作り直しは、
+ * 設定変更の処理 (MYWM_CHANGESETTING) で別に行う。
+ */
+void CEditWnd::ApplyUiColorMode()
+{
+	CDarkMode::ApplyTitleBar( GetHwnd() );
+	for( int i = 0; i < GetAllViewCount(); i++ ){
+		GetView(i).ApplyScrollBarTheme();
+	}
+	::DrawMenuBar( GetHwnd() );
+	::RedrawWindow( GetHwnd(), NULL, NULL, RDW_INVALIDATE | RDW_ERASE | RDW_FRAME | RDW_ALLCHILDREN );
+}
+
 void CEditWnd::LayoutMainMenu()
 {
 	WCHAR		szLabel[300];
@@ -882,6 +909,10 @@ void CEditWnd::LayoutMainMenu()
 			break;
 		}
 	}
+	// ダークモードでは、メニューバーの項目をオーナードローにして背景を暗くする	// 2026.11.20
+	m_CMenuDrawer.SetMenuBarOwnerDraw( hMenu );
+	CDarkMode::ApplyMenuBackground( hMenu );
+
 	HMENU hMenuOld = ::GetMenu( hWnd );
 	SetMenu( hWnd, hMenu );
 	if( hMenuOld ){
@@ -1146,7 +1177,7 @@ LRESULT CEditWnd::DispatchEvent(
 				}else{
 					nColor = COLOR_3DSHADOW;
 				}
-				::SetTextColor( lpdis->hDC, ::GetSysColor( nColor ) );
+				::SetTextColor( lpdis->hDC, CDarkMode::GetUiColor( nColor ) );
 				::SetBkMode( lpdis->hDC, TRANSPARENT );
 				
 				// 2003.08.26 Moca 上下中央位置に作画
@@ -1162,8 +1193,10 @@ LRESULT CEditWnd::DispatchEvent(
 		}else{
 			switch( lpdis->CtlType ){
 			case ODT_MENU:	/* オーナー描画メニュー */
-				/* メニューアイテム描画 */
-				m_CMenuDrawer.DrawItem( lpdis );
+				/* メニューアイテム描画 (メニューバーの項目はダークモードのとき) */
+				if( !m_CMenuDrawer.DrawMenuBarItem( lpdis ) ){
+					m_CMenuDrawer.DrawItem( lpdis );
+				}
 				return TRUE;
 			}
 		}
@@ -1178,6 +1211,10 @@ LRESULT CEditWnd::DispatchEvent(
 
 
 //			MYTRACE( L"WM_MEASUREITEM  lpmis->itemID=%d\n", lpmis->itemID );
+			/* メニューバーの項目 (ダークモードのとき) */
+			if( m_CMenuDrawer.MeasureMenuBarItem( lpmis ) ){
+				return TRUE;
+			}
 			/* メニューアイテムの描画サイズを計算 */
 			nItemWidth = m_CMenuDrawer.MeasureItem( lpmis->itemID, &nItemHeight );
 			if( 0 < nItemWidth ){
@@ -1437,7 +1474,20 @@ LRESULT CEditWnd::DispatchEvent(
 		return 0L;
 	case WM_INITMENUPOPUP:
 		InitMenu( (HMENU)wParam, (UINT)LOWORD( lParam ), (BOOL)HIWORD( lParam ) );
+		CDarkMode::ApplyMenuBackground( (HMENU)wParam );	// 2026.11.20 ダークモードではポップアップメニューの背景を暗くする
 		return 0L;
+	case WM_ENTERIDLE:
+		// 2026.11.20 ダークモードでは、開いているメニューのウィンドウの枠を暗くする (Windows 11 以降)
+		if( MSGF_MENU == wParam ){
+			CDarkMode::ApplyMenuWindowBorder( (HWND)lParam );
+		}
+		return DefWindowProc( hwnd, uMsg, wParam, lParam );
+	case WM_SETTINGCHANGE:
+		// 2026.11.20 OS のアプリのモード (ライト / ダーク) が変わったら、画面の配色を適用し直す
+		if( NULL != lParam && 0 == wcscmp( (const WCHAR*)lParam, L"ImmersiveColorSet" ) && CDarkMode::Refresh() ){
+			::PostMessage( hwnd, MYWM_CHANGESETTING, (WPARAM)0, (LPARAM)PM_CHANGESETTING_ALL );
+		}
+		return DefWindowProc( hwnd, uMsg, wParam, lParam );
 	case WM_DROPFILES:
 		/* ファイルがドロップされた */
 		OnDropFiles( (HDROP) wParam );
@@ -1564,6 +1614,9 @@ LRESULT CEditWnd::DispatchEvent(
 		/* 設定変更の通知 */
 		switch( (e_PM_CHANGESETTING_SELECT)lParam ){
 		case PM_CHANGESETTING_ALL:
+			// 画面の配色 (ダークモード) を決め直す (メニュー・バーの作り直しより前に行う)	// 2026.11.20
+			CDarkMode::Refresh();
+
 			// メインメニュー	2010/5/16 Uchi
 			LayoutMainMenu();
 
@@ -1609,6 +1662,9 @@ LRESULT CEditWnd::DispatchEvent(
 
 			// バー変更で画面が乱れないように	// 2006.12.19 ryoji
 			EndLayoutBars();
+
+			// 画面の配色 (ダークモード) をタイトルバー・スクロールバーに適用し、全体を描き直す	// 2026.11.20
+			ApplyUiColorMode();
 
 			// アクセラレータテーブルを再作成する(Wine用)
 			// ウィンドウ毎に作成したアクセラレータテーブルを破棄する(Wine用)
@@ -3648,9 +3704,9 @@ void CEditWnd::PrintMenubarMessage( const WCHAR* msg )
 	rc.right = rc.left + nStrLen * m_nCaretPosInfoCharWidth + 2;
 	rc.top = po.y - m_nCaretPosInfoCharHeight - 2;
 	rc.bottom = rc.top + m_nCaretPosInfoCharHeight;
-	::SetTextColor( hdc, ::GetSysColor( COLOR_MENUTEXT ) );
+	::SetTextColor( hdc, CDarkMode::GetUiColor( COLOR_MENUTEXT ) );
 	//	Sep. 6, 2003 genta Windows XP(Luna)の場合にはCOLOR_MENUBARを使わなくてはならない
-	COLORREF bkColor = ::GetSysColor( COLOR_MENUBAR );
+	COLORREF bkColor = CDarkMode::GetUiColor( COLOR_MENUBAR );
 	::SetBkColor( hdc, bkColor );
 	/*
 	int			m_pnCaretPosInfoDx[64];	// 文字列描画用文字幅配列

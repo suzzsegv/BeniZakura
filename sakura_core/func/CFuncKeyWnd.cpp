@@ -25,6 +25,7 @@
 #include "doc/CEditDoc.h"
 #include "util/input.h"
 #include "util/window.h"
+#include "uiparts/CDarkMode.h"
 
 #define IDT_FUNCWND 1248
 #define TIMER_TIMEOUT 100
@@ -168,6 +169,7 @@ HWND CFuncKeyWnd::Open( HINSTANCE hInstance, HWND hwndParent, CEditDoc* pCEditDo
 			GetAppInstance(),				/* instance owning this window	*/
 			(LPVOID) NULL				/* pointer not needed			*/
 		);
+		CDarkMode::AttachSizeBox( m_hwndSizeBox );	// 2026.11.20 ダークモードでは暗く描く
 	}
 
 	/* ボタンの生成 */
@@ -363,6 +365,84 @@ LRESULT CFuncKeyWnd::OnTimer( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 }
 
 
+/*!
+ * CFuncKeyWnd::OnPaint - WM_PAINT 処理 (背景を画面の配色で塗る)
+ *
+ * ボタンの周りの背景を塗る。ライトのときはウィンドウクラスの背景と同じ色、ダークモードのときは暗い色になる。
+ *
+ *	@return	0
+ */
+LRESULT CFuncKeyWnd::OnPaint(
+	HWND	hwnd,	//!< [in] ウィンドウ
+	UINT	uMsg,	//!< [in] メッセージ
+	WPARAM	wParam,	//!< [in] パラメータ
+	LPARAM	lParam	//!< [in] パラメータ
+)
+{
+	PAINTSTRUCT ps;
+	HDC hdc = ::BeginPaint( hwnd, &ps );
+	::FillRect( hdc, &ps.rcPaint, CDarkMode::GetUiColorBrush( COLOR_3DFACE ) );
+	::EndPaint( hwnd, &ps );
+	return 0;
+}
+
+/*!
+ * CFuncKeyWnd::OnNotify - WM_NOTIFY 処理 (ダークモードのボタンの描画)
+ *
+ * ダークモードのときは、ファンクションキーのボタンの NM_CUSTOMDRAW で、背景・枠・文字を暗い配色で描く。
+ * マウスが乗っているとき・押しているときは背景の色を変え、無効なボタンは淡色の文字で描く。
+ *
+ *	@return	カスタムドローの戻り値 (それ以外は既定の処理の戻り値)
+ */
+LRESULT CFuncKeyWnd::OnNotify(
+	HWND	hwnd,	//!< [in] ウィンドウ
+	UINT	uMsg,	//!< [in] メッセージ
+	WPARAM	wParam,	//!< [in] パラメータ
+	LPARAM	lParam	//!< [in] NMHDR のポインタ
+)
+{
+	LPNMCUSTOMDRAW pnmcd = (LPNMCUSTOMDRAW)lParam;
+	if( !CDarkMode::IsEnabled() || NM_CUSTOMDRAW != pnmcd->hdr.code ){
+		return CallDefWndProc( hwnd, uMsg, wParam, lParam );
+	}
+	bool bButton = false;
+	for( int i = 0; i < _countof( m_hwndButtonArr ); i++ ){
+		if( m_hwndButtonArr[i] == pnmcd->hdr.hwndFrom ){
+			bButton = true;
+			break;
+		}
+	}
+	if( !bButton || CDDS_PREPAINT != pnmcd->dwDrawStage ){
+		return CDRF_DODEFAULT;
+	}
+
+	HDC hdc = pnmcd->hdc;
+	RECT rc = pnmcd->rc;
+	int nBack = COLOR_3DFACE;
+	if( pnmcd->uItemState & CDIS_SELECTED ){
+		nBack = COLOR_3DSHADOW;
+	}else if( pnmcd->uItemState & CDIS_HOT ){
+		nBack = COLOR_MENUHILIGHT;
+	}
+	::FillRect( hdc, &rc, CDarkMode::GetUiColorBrush( nBack ) );
+	::FrameRect( hdc, &rc, CDarkMode::GetUiColorBrush( COLOR_3DSHADOW ) );
+
+	WCHAR szText[256] = L"";
+	::GetWindowText( pnmcd->hdr.hwndFrom, szText, _countof( szText ) );
+	bool bDisabled = ( pnmcd->uItemState & CDIS_DISABLED ) || !::IsWindowEnabled( pnmcd->hdr.hwndFrom );
+	HFONT hFontOld = (HFONT)::SelectObject( hdc, (HFONT)::SendMessage( pnmcd->hdr.hwndFrom, WM_GETFONT, 0, 0 ) );
+	int nBkModeOld = ::SetBkMode( hdc, TRANSPARENT );
+	COLORREF colOld = ::SetTextColor( hdc, CDarkMode::GetUiColor( bDisabled ? COLOR_GRAYTEXT : COLOR_BTNTEXT ) );
+	RECT rcText = rc;
+	rcText.left += DpiScaleX( 3 );
+	::DrawText( hdc, szText, -1, &rcText, DT_SINGLELINE | DT_VCENTER | DT_LEFT | DT_NOPREFIX | DT_END_ELLIPSIS );
+	::SetTextColor( hdc, colOld );
+	::SetBkMode( hdc, nBkModeOld );
+	::SelectObject( hdc, hFontOld );
+	return CDRF_SKIPDEFAULT;
+}
+
+
 // WM_DESTROY処理
 LRESULT CFuncKeyWnd::OnDestroy( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 {
@@ -496,6 +576,7 @@ void CFuncKeyWnd::SizeBox_ONOFF( bool bSizeBox )
 			GetAppInstance(),				/* instance owning this window	*/
 			(LPVOID) NULL			/* pointer not needed				*/
 		);
+		CDarkMode::AttachSizeBox( m_hwndSizeBox );	// 2026.11.20 ダークモードでは暗く描く
 		::ShowWindow( m_hwndSizeBox, SW_SHOW );
 		m_bSizeBox = true;
 		OnSize( NULL, 0, 0, 0 );

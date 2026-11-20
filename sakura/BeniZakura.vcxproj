@@ -78,7 +78,7 @@
       <Culture>0x0411</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>comctl32.lib;Imm32.lib;imagehlp.lib;uxtheme.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>comctl32.lib;Imm32.lib;imagehlp.lib;uxtheme.lib;dwmapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateMapFile>true</GenerateMapFile>
       <SubSystem>Windows</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
@@ -113,7 +113,7 @@
       <Culture>0x0411</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>comctl32.lib;Imm32.lib;imagehlp.lib;uxtheme.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>comctl32.lib;Imm32.lib;imagehlp.lib;uxtheme.lib;dwmapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
@@ -417,6 +417,8 @@
     <ClInclude Include="..\sakura_core\uiparts\CGraphics.h" />
     <ClInclude Include="..\sakura_core\uiparts\CImageListMgr.h" />
     <ClInclude Include="..\sakura_core\uiparts\CMenuDrawer.h" />
+    <ClInclude Include="..\sakura_core\uiparts\CDarkMode.h" />
+    <ClInclude Include="..\sakura_core\uiparts\DarkModeColor.h" />
     <ClInclude Include="..\sakura_core\uiparts\CSoundSet.h" />
     <ClInclude Include="..\sakura_core\uiparts\CVisualProgress.h" />
     <ClInclude Include="..\sakura_core\uiparts\CWaitCursor.h" />
@@ -808,6 +810,10 @@
     <ClCompile Include="..\sakura_core\uiparts\CGraphics.cpp" />
     <ClCompile Include="..\sakura_core\uiparts\CImageListMgr.cpp" />
     <ClCompile Include="..\sakura_core\uiparts\CMenuDrawer.cpp" />
+    <ClCompile Include="..\sakura_core\uiparts\CDarkMode.cpp" />
+    <ClCompile Include="..\sakura_core\uiparts\DarkModeColor.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="..\sakura_core\uiparts\CSoundSet.cpp" />
     <ClCompile Include="..\sakura_core\uiparts\CVisualProgress.cpp" />
     <ClCompile Include="..\sakura_core\uiparts\CWaitCursor.cpp" />

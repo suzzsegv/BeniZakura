@@ -188,6 +188,7 @@ public:
 	void LayoutTabBar( void );			/* タブバーの配置処理 */			// 2006.12.19 ryoji
 	void LayoutStatusBar( void );		/* ステータスバーの配置処理 */		// 2006.12.19 ryoji
 	void EndLayoutBars( BOOL bAdjust = TRUE );	/* バーの配置終了処理 */	// 2006.12.19 ryoji
+	void ApplyUiColorMode();		// 画面の配色 (ダークモード) をウィンドウ全体に適用する	// 2026.11.20
 
 
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //

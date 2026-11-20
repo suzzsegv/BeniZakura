@@ -26,6 +26,7 @@
 #include "CImageListMgr.h"
 #include "func/CKeyBind.h"
 #include "util/window.h"
+#include "uiparts/CDarkMode.h"
 
 // メニューアイコンの背景をボタンの色にする
 #define DRAW_MENU_ICON_BACKGROUND_3DFACE
@@ -851,7 +852,7 @@ void CMenuDrawer::MyAppendMenu(
 			item.m_cmemLabel.SetString( szLabel );
 			// メニュー項目をオーナー描画にして、アイコンを表示する
 			// Vista以上ではメニューもテーマが適用されるので、オーナードローにすると見た目がXP風になってしまう。
-			if( m_pShareData->m_Common.m_sWindow.m_bMenuIcon ){
+			if( m_pShareData->m_Common.m_sWindow.m_bMenuIcon || CDarkMode::IsEnabled() ){	// 2026.11.20 ダークモードでは常にオーナードロー
 				nFlagAdd = MF_OWNERDRAW;
 			}
 			/* 機能のビットマップの情報を覚えておく */
@@ -1034,14 +1035,14 @@ void CMenuDrawer::DrawItem( DRAWITEMSTRUCT* lpdis )
 	// アイコン部分の背景を灰色にする
 	if( bMenuIconDraw ){
 		const int nXIconMenu = lpdis->rcItem.left + nIndentLeft - 3 - 3;
-		hBrush = ::GetSysColorBrush( COLOR_MENU );
+		hBrush = CDarkMode::GetUiColorBrush( COLOR_MENU );
 		RECT rcFillMenuBack = lpdis->rcItem;
 		rcFillMenuBack.left = nXIconMenu;
 		::FillRect( hdc, &rcFillMenuBack, hBrush );
 
-//		hBrush = ::GetSysColorBrush( COLOR_3DFACE );
-		COLORREF colMenu   = ::GetSysColor( COLOR_MENU );
-		COLORREF colFace = ::GetSysColor( COLOR_3DFACE );
+//		hBrush = CDarkMode::GetUiColorBrush( COLOR_3DFACE );
+		COLORREF colMenu   = CDarkMode::GetUiColor( COLOR_MENU );
+		COLORREF colFace = CDarkMode::GetUiColor( COLOR_3DFACE );
 		COLORREF colIconBack;
 		// 明度らしきもの
 		if( 64 < t_abs(t_max(t_max(GetRValue(colFace),GetGValue(colFace)),GetBValue(colFace))
@@ -1062,8 +1063,8 @@ void CMenuDrawer::DrawItem( DRAWITEMSTRUCT* lpdis )
 		::DeleteObject( hbr );
 
 		// アイコンとテキストの間に縦線を描画する
-		int nSepColor = (::GetSysColor(COLOR_3DSHADOW) != ::GetSysColor(COLOR_MENU) ? COLOR_3DSHADOW : COLOR_3DHIGHLIGHT);
-		HPEN hPen = ::CreatePen( PS_SOLID, 1, ::GetSysColor(nSepColor) );
+		int nSepColor = (CDarkMode::GetUiColor(COLOR_3DSHADOW) != CDarkMode::GetUiColor(COLOR_MENU) ? COLOR_3DSHADOW : COLOR_3DHIGHLIGHT);
+		HPEN hPen = ::CreatePen( PS_SOLID, 1, CDarkMode::GetUiColor(nSepColor) );
 		HPEN hPenOld = (HPEN)::SelectObject( hdc, hPen );
 		::MoveToEx( hdc, lpdis->rcItem.left + nIndentLeft - 3 - 3, lpdis->rcItem.top, NULL );
 		::LineTo(   hdc, lpdis->rcItem.left + nIndentLeft - 3 - 3, lpdis->rcItem.bottom );
@@ -1072,7 +1073,7 @@ void CMenuDrawer::DrawItem( DRAWITEMSTRUCT* lpdis )
 
 	}else{
 		// アイテム矩形塗りつぶし
-		hBrush = ::GetSysColorBrush( COLOR_MENU );
+		hBrush = CDarkMode::GetUiColorBrush( COLOR_MENU );
 		::FillRect( hdc, &lpdis->rcItem, hBrush );
 	}
 	
@@ -1082,14 +1083,14 @@ void CMenuDrawer::DrawItem( DRAWITEMSTRUCT* lpdis )
 #ifdef DRAW_MENU_3DSTYLE
 		int nSepColor = COLOR_3DSHADOW;
 #else
-		int nSepColor = (::GetSysColor(COLOR_3DSHADOW) != ::GetSysColor(COLOR_MENU) ? COLOR_3DSHADOW : COLOR_3DHIGHLIGHT);
+		int nSepColor = (CDarkMode::GetUiColor(COLOR_3DSHADOW) != CDarkMode::GetUiColor(COLOR_MENU) ? COLOR_3DSHADOW : COLOR_3DHIGHLIGHT);
 #endif
-		HPEN hPen = ::CreatePen( PS_SOLID, 1, ::GetSysColor(nSepColor) );
+		HPEN hPen = ::CreatePen( PS_SOLID, 1, CDarkMode::GetUiColor(nSepColor) );
 		HPEN hPenOld = (HPEN)::SelectObject( hdc, hPen );
 		::MoveToEx( hdc, lpdis->rcItem.left + (bMenuIconDraw ? nIndentLeft : 3), y, NULL );
 		::LineTo(   hdc, lpdis->rcItem.right - 2, y );
 #ifdef DRAW_MENU_3DSTYLE
-		HPEN hPen3d = ::CreatePen( PS_SOLID, 1, ::GetSysColor(COLOR_3DHIGHLIGHT) );
+		HPEN hPen3d = ::CreatePen( PS_SOLID, 1, CDarkMode::GetUiColor(COLOR_3DHIGHLIGHT) );
 		(void)::SelectObject( hdc, hPen3d );
 		::MoveToEx( hdc, lpdis->rcItem.left + (bMenuIconDraw ? nIndentLeft - 3: 3), y + 1, NULL );
 		::LineTo(   hdc, lpdis->rcItem.right - 2, y + 1 );
@@ -1105,7 +1106,7 @@ void CMenuDrawer::DrawItem( DRAWITEMSTRUCT* lpdis )
 	}
 
 #else // DRAW_MENU_ICON_BACKGROUND_3DFACE
-	hBrush = ::GetSysColorBrush( COLOR_MENU );
+	hBrush = CDarkMode::GetUiColorBrush( COLOR_MENU );
 	::FillRect( hdc, &lpdis->rcItem, hBrush );
 #endif
 
@@ -1126,10 +1127,10 @@ void CMenuDrawer::DrawItem( DRAWITEMSTRUCT* lpdis )
 			//rc1.left += (nIndentLeft - 3);
 		}
 #ifdef DRAW_MENU_SELECTION_LIGHT
-		HPEN hPenBorder = ::CreatePen( PS_SOLID, 1, ::GetSysColor( COLOR_HIGHLIGHT ) );
+		HPEN hPenBorder = ::CreatePen( PS_SOLID, 1, CDarkMode::GetUiColor( COLOR_HIGHLIGHT ) );
 		HPEN hOldPen = (HPEN)::SelectObject( hdc, hPenBorder );
-		COLORREF colHilight = ::GetSysColor( COLOR_HIGHLIGHT );
-		COLORREF colMenu = ::GetSysColor( COLOR_MENU );
+		COLORREF colHilight = CDarkMode::GetUiColor( COLOR_HIGHLIGHT );
+		COLORREF colMenu = CDarkMode::GetUiColor( COLOR_MENU );
 		BYTE valR = ((GetRValue(colHilight) * 4 + GetRValue(colMenu) * 6) / 10) | 0x18;
 		BYTE valG = ((GetGValue(colHilight) * 4 + GetGValue(colMenu) * 6) / 10) | 0x18;
 		BYTE valB = ((GetBValue(colHilight) * 4 + GetBValue(colMenu) * 6) / 10) | 0x18;
@@ -1141,7 +1142,7 @@ void CMenuDrawer::DrawItem( DRAWITEMSTRUCT* lpdis )
 		::DeleteObject( hPenBorder );
 		::DeleteObject( hBrush );
 #else
-		hBrush = ::GetSysColorBrush( COLOR_HIGHLIGHT );
+		hBrush = CDarkMode::GetUiColorBrush( COLOR_HIGHLIGHT );
 		/* 選択ハイライト矩形 */
 		::FillRect( hdc, &rc1, hBrush );
 #endif
@@ -1161,13 +1162,13 @@ void CMenuDrawer::DrawItem( DRAWITEMSTRUCT* lpdis )
 			// アイテムが使用不可
 			// 背景を黒にすると同じ色になることがある
 			// 2013.06.21 GRAYTEXTに変更
-			// nTxSysColor = (::GetSysColor(COLOR_3DSHADOW) != ::GetSysColor(COLOR_MENU) ? COLOR_3DSHADOW : COLOR_3DHIGHLIGHT);
+			// nTxSysColor = (CDarkMode::GetUiColor(COLOR_3DSHADOW) != CDarkMode::GetUiColor(COLOR_MENU) ? COLOR_3DSHADOW : COLOR_3DHIGHLIGHT);
 			nTxSysColor = COLOR_GRAYTEXT;
 		}else{
 			nTxSysColor = COLOR_MENUTEXT;
 		}
 	}
-	::SetTextColor( hdc, ::GetSysColor(nTxSysColor) );
+	::SetTextColor( hdc, CDarkMode::GetUiColor(nTxSysColor) );
 
 	rcText = lpdis->rcItem;
 	rcText.left += nIndentLeft + 1;
@@ -1184,7 +1185,7 @@ void CMenuDrawer::DrawItem( DRAWITEMSTRUCT* lpdis )
 #ifdef DRAW_MENU_3DSTYLE
 		/* アイテムが使用不可 */
 		if( lpdis->itemState & ODS_DISABLED && !(lpdis->itemState & ODS_SELECTED)  ){
-			COLORREF colOld = ::SetTextColor( hdc, ::GetSysColor( COLOR_3DHIGHLIGHT ) );
+			COLORREF colOld = ::SetTextColor( hdc, CDarkMode::GetUiColor( COLOR_3DHIGHLIGHT ) );
 				rcText.left++;
 				rcText.top++;
 				rcText.right++;
@@ -1215,7 +1216,7 @@ void CMenuDrawer::DrawItem( DRAWITEMSTRUCT* lpdis )
 #ifdef DRAW_MENU_3DSTYLE
 	/* アイテムが使用不可 */
 	if( lpdis->itemState & ODS_DISABLED && !(lpdis->itemState & ODS_SELECTED)  ){
-		COLORREF colOld = ::SetTextColor( hdc, ::GetSysColor( COLOR_3DHIGHLIGHT ) );
+		COLORREF colOld = ::SetTextColor( hdc, CDarkMode::GetUiColor( COLOR_3DHIGHLIGHT ) );
 
 		rcText.left++;
 		rcText.top++;
@@ -1254,13 +1255,13 @@ void CMenuDrawer::DrawItem( DRAWITEMSTRUCT* lpdis )
 		CSplitBoxWnd::Draw3dRect(
 			hdc, lpdis->rcItem.left + 1, lpdis->rcItem.top,
 			2 + 16 + 2, lpdis->rcItem.bottom - lpdis->rcItem.top,
-			::GetSysColor( COLOR_3DSHADOW ),
-			::GetSysColor( COLOR_3DHIGHLIGHT )
+			CDarkMode::GetUiColor( COLOR_3DSHADOW ),
+			CDarkMode::GetUiColor( COLOR_3DHIGHLIGHT )
 		);
 #else
 		{
 			// フラットな枠 + 半透明の背景色
-			HBRUSH hBrush = ::GetSysColorBrush( COLOR_HIGHLIGHT );
+			HBRUSH hBrush = CDarkMode::GetUiColorBrush( COLOR_HIGHLIGHT );
 			const int MENUICO_PADDING = 0;
 			const int MENUICO_BORDER  = 1;
 			const int MENUICO_PB  = MENUICO_PADDING + MENUICO_BORDER;
@@ -1271,8 +1272,8 @@ void CMenuDrawer::DrawItem( DRAWITEMSTRUCT* lpdis )
 			::SetRect( &rc, left-1, top-1, left + MENUICO_SIZE+2, top + MENUICO_SIZE+1 );
 			::FillRect( hdc, &rc, hBrush );
 
-			COLORREF colHilight = ::GetSysColor( COLOR_HIGHLIGHT );
-			COLORREF colMenu = ::GetSysColor( COLOR_MENU );
+			COLORREF colHilight = CDarkMode::GetUiColor( COLOR_HIGHLIGHT );
+			COLORREF colMenu = CDarkMode::GetUiColor( COLOR_MENU );
 			// 16bitカラーの黒色でも少し明るくするように or 0x18 する
 			BYTE valR;
 			BYTE valG;
@@ -1299,7 +1300,7 @@ void CMenuDrawer::DrawItem( DRAWITEMSTRUCT* lpdis )
 		/* アイテムが選択されていない場合は3D枠の中を明るく塗りつぶす */
 		if( lpdis->itemState & ODS_SELECTED ){
 		}else{
-			HBRUSH hbr = ::GetSysColorBrush( COLOR_3DLIGHT );
+			HBRUSH hbr = CDarkMode::GetUiColorBrush( COLOR_3DLIGHT );
 			RECT rc;
 			::SetRect( &rc, lpdis->rcItem.left + 2 + 1, lpdis->rcItem.top + 1,
 				lpdis->rcItem.left + 1 + 2 + 16 + 2 - 1, lpdis->rcItem.bottom - 1 );
@@ -1325,8 +1326,8 @@ void CMenuDrawer::DrawItem( DRAWITEMSTRUCT* lpdis )
 					CSplitBoxWnd::Draw3dRect(
 						hdc, lpdis->rcItem.left + 1, lpdis->rcItem.top,
 						2 + 16 + 2, lpdis->rcItem.bottom - lpdis->rcItem.top,
-						::GetSysColor( COLOR_3DHIGHLIGHT ),
-						::GetSysColor( COLOR_3DSHADOW )
+						CDarkMode::GetUiColor( COLOR_3DHIGHLIGHT ),
+						CDarkMode::GetUiColor( COLOR_3DSHADOW )
 					 );
 #endif
 				}
@@ -1366,7 +1367,7 @@ void CMenuDrawer::DrawItem( DRAWITEMSTRUCT* lpdis )
 				HPEN hPen   = NULL;
 				HPEN hPenOld = NULL;
 				// 2010.05.31 チェックの色を黒(未指定)からテキスト色に変更
-				hPen = ::CreatePen( PS_SOLID, 1, ::GetSysColor(COLOR_MENUTEXT) );
+				hPen = ::CreatePen( PS_SOLID, 1, CDarkMode::GetUiColor(COLOR_MENUTEXT) );
 				hPenOld = (HPEN)::SelectObject( hdc, hPen );
 #if 0
 // チェックマークも自分で書く場合
@@ -1397,7 +1398,7 @@ void CMenuDrawer::DrawItem( DRAWITEMSTRUCT* lpdis )
 				COLORREF colTextOld = ::SetTextColor(hdc, RGB(0,0,0) );
 				COLORREF colBackOld = ::SetBkColor(hdc,   RGB(255,255,255) );
 				::BitBlt( hdc, lpdis->rcItem.left+2, lpdis->rcItem.top+2, nCxCheck, nCyCheck, hdcMem, 0, 0, SRCAND );
-				::SetTextColor( hdc, ::GetSysColor(nTxSysColor) );
+				::SetTextColor( hdc, CDarkMode::GetUiColor(nTxSysColor) );
 				::SetBkColor( hdc, RGB(0,0,0) );
 				::BitBlt( hdc, lpdis->rcItem.left+2, lpdis->rcItem.top+2, nCxCheck, nCyCheck, hdcMem, 0, 0, SRCPAINT );
 				::SetTextColor( hdc, colTextOld );
@@ -1603,7 +1604,9 @@ LRESULT CMenuDrawer::OnMenuChar( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 			continue;
 		}
 		const WCHAR* pszLabel;
-		if( NULL == ( pszLabel = GetLabel( mii.wID ) ) ){
+		// 2026.11.20 オーナードローにしたメニューバーの項目は、覚えておいたラベルを使う
+		if( NULL == ( pszLabel = GetMenuBarLabel( mii.dwItemData ) )
+		 && NULL == ( pszLabel = GetLabel( mii.wID ) ) ){
 			continue;
 		}
 		if( chUser == GetAccelCharFromLabel( pszLabel ) ){
@@ -1631,6 +1634,150 @@ LRESULT CMenuDrawer::OnMenuChar( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 //		MYTRACE( L"vecAccel[nAccelSel + 1].idx=%d\n", vecAccel[nAccelSel + 1].idx );
 		return  MAKELONG( vecAccel[nAccelSel + 1].idx, MNC_SELECT );
 	}
+}
+
+/*!
+ * CMenuDrawer::SetMenuBarOwnerDraw - メニューバーの項目をオーナードローにする (ダークモード用)
+ *
+ * メニューバーの項目は Windows が描くため、ダークモードでは項目をオーナードローにして暗い配色で描く。
+ * オーナードローにすると項目の文字列が失われるので、ラベルを m_vecMenuBarLabel に覚えておき、
+ * その要素のアドレスを項目のデータにする (描画・アクセスキーの処理で使う)。
+ * ダークモードでないときは何もしない。
+ */
+void CMenuDrawer::SetMenuBarOwnerDraw(
+	HMENU	hMenuBar	//!< [in] メニューバー
+)
+{
+	m_vecMenuBarLabel.clear();
+	if( !CDarkMode::IsEnabled() || NULL == hMenuBar ){
+		return;
+	}
+	int nCount = ::GetMenuItemCount( hMenuBar );
+	if( nCount <= 0 ){
+		return;
+	}
+	// 要素のアドレスを項目のデータにするので、先に全要素を作ってから設定する
+	m_vecMenuBarLabel.resize( nCount );
+	for( int i = 0; i < nCount; i++ ){
+		WCHAR szText[256] = L"";
+		::GetMenuString( hMenuBar, i, szText, _countof( szText ), MF_BYPOSITION );
+		m_vecMenuBarLabel[i] = szText;
+	}
+	for( int i = 0; i < nCount; i++ ){
+		MENUITEMINFO mii;
+		memset_raw( &mii, 0, sizeof( mii ) );
+		mii.cbSize = sizeof( mii );
+		mii.fMask = MIIM_FTYPE | MIIM_DATA;
+		if( !::GetMenuItemInfo( hMenuBar, i, TRUE, &mii ) || ( mii.fType & MFT_SEPARATOR ) ){
+			continue;
+		}
+		mii.fMask = MIIM_FTYPE | MIIM_DATA;
+		mii.fType |= MFT_OWNERDRAW;
+		mii.dwItemData = (ULONG_PTR)&m_vecMenuBarLabel[i];
+		::SetMenuItemInfo( hMenuBar, i, TRUE, &mii );
+	}
+}
+
+/*!
+ * CMenuDrawer::EnsureMenuFont - メニューのフォントがまだ作られていなければ作る
+ *
+ * メニューのフォント (m_hFontMenu) は、ポップアップメニューを開くとき (ResetContents) に作られる。
+ * メニューバーの項目は起動直後から描くため、まだ作られていない場合はシステムのメニューのフォントで作る。
+ */
+void CMenuDrawer::EnsureMenuFont()
+{
+	if( NULL != m_hFontMenu ){
+		return;
+	}
+	NONCLIENTMETRICS ncm;
+	memset_raw( &ncm, 0, sizeof( ncm ) );
+	ncm.cbSize = sizeof( ncm );
+	::SystemParametersInfo( SPI_GETNONCLIENTMETRICS, ncm.cbSize, (PVOID)&ncm, 0 );
+	m_hFontMenu = ::CreateFontIndirect( &ncm.lfMenuFont );
+}
+
+/*!
+ * CMenuDrawer::GetMenuBarLabel - オーナードローにしたメニューバーの項目のラベルを返す
+ *
+ *	@return	ラベル (項目のデータが m_vecMenuBarLabel の要素でない場合は NULL)
+ */
+const WCHAR* CMenuDrawer::GetMenuBarLabel(
+	ULONG_PTR	itemData	//!< [in] メニューの項目のデータ
+) const
+{
+	for( size_t i = 0; i < m_vecMenuBarLabel.size(); i++ ){
+		if( (ULONG_PTR)&m_vecMenuBarLabel[i] == itemData ){
+			return m_vecMenuBarLabel[i].c_str();
+		}
+	}
+	return NULL;
+}
+
+/*!
+ * CMenuDrawer::MeasureMenuBarItem - オーナードローにしたメニューバーの項目の描画サイズを計算する
+ *
+ *	@return	true: メニューバーの項目 (サイズを設定) / false: メニューバーの項目ではない
+ */
+bool CMenuDrawer::MeasureMenuBarItem(
+	MEASUREITEMSTRUCT*	lpmis	//!< [in,out] 項目の情報
+)
+{
+	const WCHAR* pszLabel = GetMenuBarLabel( lpmis->itemData );
+	if( NULL == pszLabel ){
+		return false;
+	}
+	EnsureMenuFont();
+	RECT rc = { 0, 0, 0, 0 };
+	HDC hdc = ::GetDC( m_hWndOwner );
+	HFONT hFontOld = (HFONT)::SelectObject( hdc, m_hFontMenu );
+	::DrawText( hdc, pszLabel, -1, &rc, DT_SINGLELINE | DT_CALCRECT );
+	::SelectObject( hdc, hFontOld );
+	::ReleaseDC( m_hWndOwner, hdc );
+	// 左右の余白は、Windows が描くメニューバーの項目と同程度 (メニューのフォントの平均文字幅) にする
+	TEXTMETRIC tm;
+	hdc = ::GetDC( m_hWndOwner );
+	hFontOld = (HFONT)::SelectObject( hdc, m_hFontMenu );
+	::GetTextMetrics( hdc, &tm );
+	::SelectObject( hdc, hFontOld );
+	::ReleaseDC( m_hWndOwner, hdc );
+	lpmis->itemWidth = ( rc.right - rc.left ) + tm.tmAveCharWidth * 2;
+	lpmis->itemHeight = ::GetSystemMetrics( SM_CYMENU );
+	return true;
+}
+
+/*!
+ * CMenuDrawer::DrawMenuBarItem - オーナードローにしたメニューバーの項目を描画する
+ *
+ * 背景はメニューバーの色、選択中・マウスが乗っているときは強調の色で塗り、ラベルを中央に描く。
+ * 無効な項目と、ウィンドウが非アクティブのときは淡色の文字で描く。
+ *
+ *	@return	true: メニューバーの項目 (描画した) / false: メニューバーの項目ではない
+ */
+bool CMenuDrawer::DrawMenuBarItem(
+	const DRAWITEMSTRUCT*	lpdis	//!< [in] 項目の描画情報
+)
+{
+	const WCHAR* pszLabel = GetMenuBarLabel( lpdis->itemData );
+	if( NULL == pszLabel ){
+		return false;
+	}
+	EnsureMenuFont();
+	RECT rc = lpdis->rcItem;
+	bool bHot = 0 != ( lpdis->itemState & ( ODS_HOTLIGHT | ODS_SELECTED ) );
+	::FillRect( lpdis->hDC, &rc, CDarkMode::GetUiColorBrush( bHot ? COLOR_MENUHILIGHT : COLOR_MENUBAR ) );
+	bool bGray = 0 != ( lpdis->itemState & ( ODS_GRAYED | ODS_DISABLED | ODS_INACTIVE ) );
+	int nBkModeOld = ::SetBkMode( lpdis->hDC, TRANSPARENT );
+	COLORREF colOld = ::SetTextColor( lpdis->hDC, CDarkMode::GetUiColor( bGray ? COLOR_GRAYTEXT : COLOR_MENUTEXT ) );
+	HFONT hFontOld = (HFONT)::SelectObject( lpdis->hDC, m_hFontMenu );
+	UINT uFormat = DT_SINGLELINE | DT_CENTER | DT_VCENTER;
+	if( lpdis->itemState & ODS_NOACCEL ){
+		uFormat |= DT_HIDEPREFIX;
+	}
+	::DrawText( lpdis->hDC, pszLabel, -1, &rc, uFormat );
+	::SelectObject( lpdis->hDC, hFontOld );
+	::SetTextColor( lpdis->hDC, colOld );
+	::SetBkMode( lpdis->hDC, nBkModeOld );
+	return true;
 }
 
 //	Jul. 21, 2003 genta

@@ -28,6 +28,7 @@
 #include "env/DLLSHAREDATA.h"
 #include "window/CEditWnd.h"
 #include "types/CTypeSupport.h"
+#include "uiparts/CDarkMode.h"
 
 /*! スクロールバー作成
 	@date 2006.12.19 ryoji 新規作成（CEditView::Createから分離）
@@ -122,7 +123,25 @@ BOOL CEditView::CreateScrollBar()
 			(LPVOID) NULL						/* pointer not needed */
 		);
 	}
+	ApplyScrollBarTheme();	// 2026.11.20 画面の配色 (ダークモード)
 	return TRUE;
+}
+
+
+/*!
+ * CEditView::ApplyScrollBarTheme - スクロールバーとサイズボックスに画面の配色 (ダークモード) を適用する
+ *
+ * ダークモードのときは暗いテーマを、ライトのときは標準のテーマを設定する (CDarkMode::ApplyControlTheme)。
+ */
+void CEditView::ApplyScrollBarTheme()
+{
+	CDarkMode::ApplyControlTheme( m_hwndVScrollBar );
+	CDarkMode::ApplyControlTheme( m_hwndHScrollBar );
+	// サイズボックス (SCROLLBAR) はダークモードのときに自分で描く。角を埋めるだけの STATIC は親の WM_CTLCOLORSTATIC で塗る
+	WCHAR szClass[16];
+	if( NULL != m_hwndSizeBox && ::GetClassName( m_hwndSizeBox, szClass, _countof( szClass ) ) && 0 == _wcsicmp( szClass, L"SCROLLBAR" ) ){
+		CDarkMode::AttachSizeBox( m_hwndSizeBox );
+	}
 }
 
 

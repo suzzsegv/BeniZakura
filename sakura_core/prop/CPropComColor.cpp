@@ -208,12 +208,21 @@ void CPropColor::SetData(
 {
 	Combo_SetCurSel( ::GetDlgItem( hwndDlg, IDC_COMBO_THEME ), GetColorThemeSelIndex( m_Common.m_sColorTheme.m_nColorTheme ) );
 	SetColorList( hwndDlg );
+
+	// 画面の配色	// 2026.11.20
+	int nRadioId;
+	switch( m_Common.m_sColorTheme.m_nUiColorMode ){
+	case UI_COLOR_MODE_DARK:	nRadioId = IDC_RADIO_UICOLOR_DARK;		break;
+	case UI_COLOR_MODE_SYSTEM:	nRadioId = IDC_RADIO_UICOLOR_SYSTEM;	break;
+	default:					nRadioId = IDC_RADIO_UICOLOR_LIGHT;		break;
+	}
+	::CheckRadioButton( hwndDlg, IDC_RADIO_UICOLOR_LIGHT, IDC_RADIO_UICOLOR_SYSTEM, nRadioId );
 }
 
 /*!
  * CPropColor::GetData - ダイアログデータの取得
  *
- * テーマとカスタムの色は、操作のたびに m_Common に設定しているため、ここで取得するものはない。
+ * テーマとカスタムの色は、操作のたびに m_Common に設定しているため、ここでは画面の配色だけを取得する。
  *
  *	@return TRUE
  */
@@ -221,6 +230,14 @@ int CPropColor::GetData(
 	HWND	hwndDlg		//!< [in] ダイアログ
 )
 {
+	// 画面の配色	// 2026.11.20
+	if( ::IsDlgButtonChecked( hwndDlg, IDC_RADIO_UICOLOR_DARK ) ){
+		m_Common.m_sColorTheme.m_nUiColorMode = UI_COLOR_MODE_DARK;
+	}else if( ::IsDlgButtonChecked( hwndDlg, IDC_RADIO_UICOLOR_SYSTEM ) ){
+		m_Common.m_sColorTheme.m_nUiColorMode = UI_COLOR_MODE_SYSTEM;
+	}else{
+		m_Common.m_sColorTheme.m_nUiColorMode = UI_COLOR_MODE_LIGHT;
+	}
 	return TRUE;
 }
 

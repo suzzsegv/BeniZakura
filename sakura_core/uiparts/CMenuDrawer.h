@@ -72,6 +72,9 @@ public:
 	void DrawItem( DRAWITEMSTRUCT* );	/* メニューアイテム描画 */
 	void EndDrawMenu();
 	LRESULT OnMenuChar( HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam );
+	void SetMenuBarOwnerDraw( HMENU hMenuBar );					// メニューバーの項目をオーナードローにする (ダークモード用)	// 2026.11.20
+	bool MeasureMenuBarItem( MEASUREITEMSTRUCT* lpmis );		// メニューバーの項目の描画サイズを計算	// 2026.11.20
+	bool DrawMenuBarItem( const DRAWITEMSTRUCT* lpdis );		// メニューバーの項目を描画	// 2026.11.20
 	int FindToolbarNoFromCommandId( int idCommand, bool bOnlyFunc = true )const; // ツールバーNoの取得
 	int GetIconIdByFuncId( int nIndex ) const;
 
@@ -91,6 +94,8 @@ private:
 	const WCHAR* GetLabel( int nFuncID );
 	WCHAR GetAccelCharFromLabel( const WCHAR* pszLabel );
 	int ToolbarNoToIndex( int nToolbarNo ) const;
+	const WCHAR* GetMenuBarLabel( ULONG_PTR itemData ) const;	// メニューバーの項目のラベル	// 2026.11.20
+	void EnsureMenuFont();										// メニューのフォントがなければ作る	// 2026.11.20
 
 private:
 	DLLSHAREDATA*	m_pShareData;
@@ -111,6 +116,7 @@ private:
 		CNativeW		m_cmemLabel;
 	};
 	std::vector<MyMenuItemInfo> m_menuItems;
+	std::vector<std::wstring>	m_vecMenuBarLabel;	//!< オーナードローにしたメニューバーの項目のラベル (要素のアドレスを項目のデータにする)	// 2026.11.20
 	int				m_nMenuHeight;
 	int				m_nMenuFontHeight;
 	HFONT			m_hFontMenu;

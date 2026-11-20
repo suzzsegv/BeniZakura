@@ -498,6 +498,7 @@ bool CShareData::InitShareData()
 		// カラーテーマ (既定は紅桜。カスタムの色も紅桜の配色にしておく)	// 2026.11.18
 		m_pShareData->m_Common.m_sColorTheme.m_nColorTheme = COLOR_THEME_BENIZAKURA;
 		SetPresetColorInfo( m_pShareData->m_Common.m_sColorTheme.m_CustomColorInfoArr, COLOR_THEME_BENIZAKURA );
+		m_pShareData->m_Common.m_sColorTheme.m_nUiColorMode = UI_COLOR_MODE_LIGHT;	// 画面の配色 (既定はライト)	// 2026.11.20
 
 		InitKeyword( m_pShareData );
 		InitTypeConfigs( m_pShareData );

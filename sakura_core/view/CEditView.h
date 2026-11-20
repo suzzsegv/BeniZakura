@@ -278,6 +278,7 @@ public:
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 public:
 	void AdjustScrollBars();											/* スクロールバーの状態を更新する */
+	void ApplyScrollBarTheme();											// スクロールバーに画面の配色 (ダークモード) を適用する	// 2026.11.20
 	BOOL CreateScrollBar();												/* スクロールバー作成 */	// 2006.12.19 ryoji
 	void DestroyScrollBar();											/* スクロールバー破棄 */	// 2006.12.19 ryoji
 	CLayoutInt GetWrapOverhang( void ) const;							/* 折り返し桁以後のぶら下げ余白計算 */	// 2008.06.08 ryoji
