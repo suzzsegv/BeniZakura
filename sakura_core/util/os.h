@@ -27,10 +27,6 @@
 #include <ObjIdl.h> // LPDATAOBJECT
 
 
-//システム資源
-BOOL GetSystemResources( int*, int*, int* );	/* システムリソースを調べる */
-BOOL CheckSystemResources( const WCHAR* );	/* システムリソースのチェック */
-
 //クリップボード
 bool SetClipboardText( HWND hwnd, const ACHAR* pszText, int nLength );    //!< クリープボードにText形式でコピーする。ANSI版。nLengthは文字単位。
 bool SetClipboardText( HWND hwnd, const WCHAR* pszText, int nLength ); //!< クリープボードにText形式でコピーする。UNICODE版。nLengthは文字単位。

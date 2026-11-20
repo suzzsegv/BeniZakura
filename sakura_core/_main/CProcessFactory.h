@@ -36,7 +36,6 @@ public:
 	CProcess* Create( HINSTANCE hInstance, LPCWSTR lpCmdLine );
 protected:
 private:
-	bool IsValidVersion();
 	bool IsStartingControlProcess();
 	bool IsExistControlProcess();
 	bool StartControlProcess();

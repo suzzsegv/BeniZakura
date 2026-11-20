@@ -58,9 +58,6 @@ CProcess* CProcessFactory::Create( HINSTANCE hInstance, LPCWSTR lpCmdLine )
 	CCommandLine::getInstance()->ParseCommandLine(lpCmdLine);
 
 	CProcess* process = 0;
-	if( !IsValidVersion() ){
-		return 0;
-	}
 
 	// プロセスクラスを生成する
 	//
@@ -88,67 +85,6 @@ CProcess* CProcessFactory::Create( HINSTANCE hInstance, LPCWSTR lpCmdLine )
 		}
 	}
 	return process;
-}
-
-
-/*!
-	@brief Windowsバージョンのチェック
-	
-	Windows 95以上，Windows NT4.0以上であることを確認する．
-	Windows 95系では残りリソースのチェックも行う．
-	
-	@author aroka
-	@date 2002/01/03
-*/
-bool CProcessFactory::IsValidVersion()
-{
-	/* Windowsバージョンのチェック */
-	COsVersionInfo	cOsVer(true);	// 初期化を行う
-	if( cOsVer.GetVersion() ){
-		if( !cOsVer.OsIsEnableVersion() ){
-			InfoMessage( NULL,
-				L"このアプリケーションを実行するには、\n"
-#if (WINVER >= _WIN32_WINNT_WIN7)
-				L"Windows7以降のOSが必要です。\n"
-#elif (WINVER >= _WIN32_WINNT_VISTA)
-				L"WindowsVista以降 または WindowsServer2008以降のOSが必要です。\n"
-#elif (WINVER >= _WIN32_WINNT_WIN2K)
-				L"Windows2000以降のOSが必要です。\n"
-#else
-				L"Windows95以上 または WindowsNT4.0以上のOSが必要です。\n"
-#endif
-				L"アプリケーションを終了します。"
-			);
-			return false;
-		}
-	}else{
-		InfoMessage( NULL, L"OSのバージョンが取得できません。\nアプリケーションを終了します。" );
-		return false;
-	}
-
-	/* 拡張命令セットのチェック */
-#ifdef USE_SSE
-	if ( cOsVer._SupportSSE() ) {
-	} else {
-		InfoMessage( NULL,
-			L"このアプリケーションを実行するには、\n"
-			L"SSE命令セットをサポートしたCPUが必要です。\n"
-			L"アプリケーションを終了します。"
-		);
-		return false;
-	}
-#endif
-
-#if (WINVER < _WIN32_WINNT_WIN2K)
-	/* システムリソースのチェック */
-	// Jul. 5, 2001 shoji masami NTではリソースチェックを行わない
-	if( !IsWin32NT() ){
-		if( !CheckSystemResources( GSTR_APPNAME ) ){
-			return false;
-		}
-	}
-#endif
-	return true;
 }
 
 
