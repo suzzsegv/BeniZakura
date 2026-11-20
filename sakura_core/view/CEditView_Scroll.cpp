@@ -247,6 +247,29 @@ CLayoutInt CEditView::OnHScroll( int nScrollCode, int nPos )
 	return nScrollVal;
 }
 
+/*!
+ * SetScrollInfoIfChanged - スクロールバーの範囲・ページサイズ・位置が変わったときだけ設定する
+ *
+ * SetScrollInfo() は同じ値を設定してもスクロールバーを再描画するため、設定する前に GetScrollInfo() で
+ * 現在の値を取得し、nMin・nMax・nPage・nPos がすべて同じなら設定しない。
+ */
+static void SetScrollInfoIfChanged(
+	HWND				hwndScrollBar,	//!< [in] スクロールバー (SB_CTL)
+	const SCROLLINFO&	si				//!< [in] 設定する値 (fMask に SIF_ALL を含むこと)
+)
+{
+	SCROLLINFO cur;
+	cur.cbSize = sizeof( cur );
+	cur.fMask = SIF_RANGE | SIF_PAGE | SIF_POS;
+	if( ::GetScrollInfo( hwndScrollBar, SB_CTL, &cur )
+	 && cur.nMin == si.nMin && cur.nMax == si.nMax && cur.nPage == si.nPage && cur.nPos == si.nPos ){
+		return;
+	}
+	SCROLLINFO siSet = si;
+	::SetScrollInfo( hwndScrollBar, SB_CTL, &siSet, TRUE );
+}
+
+
 /** スクロールバーの状態を更新する
 
 	タブバーのタブ切替時は SIF_DISABLENOSCROLL フラグでの有効化／無効化が正常に動作しない
@@ -285,7 +308,7 @@ void CEditView::AdjustScrollBars()
 		si.nPage = (Int)GetTextArea().m_nViewRowNum / nVScrollRate;	/* 表示域の行数 */
 		si.nPos  = (Int)GetTextArea().GetViewTopLine() / nVScrollRate;	/* 表示域の一番上の行(0開始) */
 		si.nTrackPos = nVScrollRate;
-		::SetScrollInfo( m_hwndVScrollBar, SB_CTL, &si, TRUE );
+		SetScrollInfoIfChanged( m_hwndVScrollBar, si );
 		m_nVScrollRate = nVScrollRate;				/* 垂直スクロールバーの縮尺 */
 		
 		//	Nov. 16, 2002 genta
@@ -309,7 +332,7 @@ void CEditView::AdjustScrollBars()
 		si.nPage = (Int)GetTextArea().m_nViewColNum;			/* 表示域の桁数 */
 		si.nPos  = (Int)GetTextArea().GetViewLeftCol();		/* 表示域の一番左の桁(0開始) */
 		si.nTrackPos = 1;
-		::SetScrollInfo( m_hwndHScrollBar, SB_CTL, &si, TRUE );
+		SetScrollInfoIfChanged( m_hwndHScrollBar, si );
 
 		//	2006.1.28 aroka 判定条件誤り修正 (バーが消えてもスクロールしない)
 		bEnable = ( GetTextArea().m_nViewColNum < GetRightEdgeForScrollBar() );
