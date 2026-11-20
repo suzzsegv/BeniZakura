@@ -901,6 +901,7 @@ HWND CTabWnd::Open( HINSTANCE hInstance, HWND hwndParent )
 		lngStyle = (UINT)::GetWindowLongPtr( hwndToolTips, GWL_STYLE );
 		lngStyle |= TTS_ALWAYSTIP | TTS_NOPREFIX;	// 従来通りTTS_ALWAYSTIPにしておく
 		::SetWindowLongPtr( hwndToolTips, GWL_STYLE, lngStyle );
+		CDarkMode::ApplyTooltip( hwndToolTips );	// 2026.11.21
 
 		/* 表示用フォント */
 		/* LOGFONTの初期化 */
@@ -928,6 +929,7 @@ HWND CTabWnd::Open( HINSTANCE hInstance, HWND hwndParent )
 
 		// ツールチップをマルチライン可能にする（SHRT_MAX: Win95でINT_MAXだと表示されない）	// 2007.03.03 ryoji
 		Tooltip_SetMaxTipWidth( m_hwndToolTip, SHRT_MAX );
+		CDarkMode::ApplyTooltip( m_hwndToolTip );	// 2026.11.21
 
 		// タブバーにツールチップを追加する
 		TOOLINFO	ti;

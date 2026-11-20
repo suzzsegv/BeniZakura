@@ -56,7 +56,22 @@ public:
 	static void AttachSizeBox( HWND hwndSizeBox );	// サイズボックスを、ダークモードのときに暗く描くようにする
 	static void DrawSizeGrip( HDC hdc, const RECT& rc );	// ダークモードの、サイズ変更のつかむ位置の模様を描く
 
+	// ダイアログ・コントロール (段階 2)	// 2026.11.21
+	static void ApplyDialog( HWND hDlg );			// ダイアログのタイトルバーと子コントロールに画面の配色を適用する
+	static void ApplyChildControls( HWND hwndParent );	// 子コントロールに画面の配色を適用する
+	static void ApplyTooltip( HWND hwndTooltip );	// ツールチップに画面の配色を適用する
+	static INT_PTR OnCtlColor( UINT uMsg, WPARAM wParam, LPARAM lParam );	// WM_CTLCOLOR* の処理 (ブラシを返す)
+	static bool OnButtonCustomDraw( LPNMCUSTOMDRAW pnmcd, LRESULT* plResult );	// ボタンの NM_CUSTOMDRAW の処理
+
 private:
+	static BOOL CALLBACK ApplyChildControlProc( HWND hwnd, LPARAM lParam );
+	static LRESULT CALLBACK GroupBoxSubclassProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData );
+	static void PaintGroupBoxDark( HWND hwnd );
+	static LRESULT CALLBACK TabControlSubclassProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData );
+	static void PaintTabControlDark( HWND hwnd );
+	static LRESULT CALLBACK ListViewSubclassProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData );
+	static void DrawPushButtonDark( LPNMCUSTOMDRAW pnmcd );
+	static void DrawCheckRadioDark( LPNMCUSTOMDRAW pnmcd, LONG_PTR lStyle );
 	static void DeleteBrushes();
 	static LRESULT CALLBACK SizeBoxSubclassProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData );
 	static void PaintSizeBoxDark( HWND hwnd );

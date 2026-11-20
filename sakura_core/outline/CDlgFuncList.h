@@ -130,6 +130,7 @@ protected:
 	INT_PTR OnNcLButtonDown( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam );
 	INT_PTR OnLButtonUp( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam );
 	INT_PTR OnNcPaint( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam );
+	void DrawDarkCaption( HDC hdc, const RECT& rcCaption, const RECT& rcText, bool bActive );	// 2026.11.21
 	INT_PTR OnTimer( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam );
 	void GetDockSpaceRect( LPRECT pRect );
 	void GetCaptionRect( LPRECT pRect );

@@ -26,6 +26,7 @@
 #include "util/os.h"
 #include "util/shell.h"
 #include "util/module.h"
+#include "uiparts/CDarkMode.h"
 
 /* ダイアログプロシージャ */
 INT_PTR CALLBACK MyDialogProc(
@@ -40,6 +41,8 @@ INT_PTR CALLBACK MyDialogProc(
 	case WM_INITDIALOG:
 		pCDialog = ( CDialog* )lParam;
 		if( NULL != pCDialog ){
+			// ダークモードの配色は、各ダイアログの初期化 (コントロールの色の個別の設定など) より前に適用する	// 2026.11.21
+			CDarkMode::ApplyDialog( hwndDlg );
 			return pCDialog->DispatchEvent( hwndDlg, uMsg, wParam, lParam );
 		}else{
 			return FALSE;
@@ -48,7 +51,20 @@ INT_PTR CALLBACK MyDialogProc(
 		// Modified by KEITA for WIN64 2003.9.6
 		pCDialog = ( CDialog* )::GetWindowLongPtr( hwndDlg, DWLP_USER );
 		if( NULL != pCDialog ){
-			return pCDialog->DispatchEvent( hwndDlg, uMsg, wParam, lParam );
+			// ダークモードのボタン (チェックボックス・ラジオボタン) の描画	// 2026.11.21
+			if( WM_NOTIFY == uMsg ){
+				LRESULT lResult;
+				if( CDarkMode::OnButtonCustomDraw( (LPNMCUSTOMDRAW)lParam, &lResult ) ){
+					::SetWindowLongPtr( hwndDlg, DWLP_MSGRESULT, lResult );
+					return TRUE;
+				}
+			}
+			INT_PTR nRet = pCDialog->DispatchEvent( hwndDlg, uMsg, wParam, lParam );
+			// ダークモードの背景・文字の色 (各ダイアログで処理しなかった場合)	// 2026.11.21
+			if( 0 == nRet && WM_CTLCOLORMSGBOX <= uMsg && uMsg <= WM_CTLCOLORSTATIC ){
+				nRet = CDarkMode::OnCtlColor( uMsg, wParam, lParam );
+			}
+			return nRet;
 		}else{
 			return FALSE;
 		}
@@ -375,6 +391,7 @@ void CDialog::CreateSizeBox( void )
 		m_hInstance,										/* instance owning this window */
 		(LPVOID) NULL										/* pointer not needed */
 	);
+	CDarkMode::AttachSizeBox( m_hwndSizeBox );	// ダークモードのときは暗く描く	// 2026.11.21
 	::ShowWindow( m_hwndSizeBox, SW_SHOW );
 
 }

@@ -19,6 +19,7 @@
 #include "CTipWnd.h"
 #include "env/CShareData.h"
 #include "env/DLLSHAREDATA.h"
+#include "uiparts/CDarkMode.h"
 
 
 /* CTipWndクラス デストラクタ */
@@ -219,7 +220,7 @@ void CTipWnd::DrawTipText(
 
 	nBkMode_Old = ::SetBkMode( hdc, TRANSPARENT );
 	hFontOld = (HFONT)::SelectObject( hdc, hFont );
-	colText_Old = ::SetTextColor( hdc, ::GetSysColor( COLOR_INFOTEXT ) );
+	colText_Old = ::SetTextColor( hdc, CDarkMode::GetUiColor( COLOR_INFOTEXT ) );
 
 	nCurMaxWidth = 0;
 	nCurHeight = 0;
@@ -294,6 +295,9 @@ LRESULT CTipWnd::OnPaint( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l_Param )
 	RECT		rc;
 	HDC			hdc = ::BeginPaint(	hwnd, &ps );
 	::GetClientRect( hwnd, &rc );
+
+	// 背景 (ダークモードのときは、クラスの背景のブラシの色と異なる)	// 2026.11.21
+	::FillRect( hdc, &rc, CDarkMode::GetUiColorBrush( COLOR_INFOBK ) );
 
 	/* ウィンドウのテキストを表示 */
 	DrawTipText( hdc, m_hFont, m_cInfo.GetStringPtr() );

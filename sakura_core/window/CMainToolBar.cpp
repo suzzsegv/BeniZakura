@@ -208,6 +208,8 @@ void CMainToolBar::CreateToolBar( void )
 			(LONG_PTR)ToolBarWndProc
 		);
 
+		CDarkMode::ApplyTooltip( (HWND)::SendMessage( m_hwndToolBar, TB_GETTOOLTIPS, 0, 0 ) );	// 2026.11.21
+
 		Toolbar_SetButtonSize( m_hwndToolBar, DpiScaleX(22), DpiScaleY(22) );	// 2009.10.01 ryoji 高DPI対応スケーリング
 		Toolbar_ButtonStructSize( m_hwndToolBar, sizeof(TBBUTTON) );
 		//	Oct. 12, 2000 genta

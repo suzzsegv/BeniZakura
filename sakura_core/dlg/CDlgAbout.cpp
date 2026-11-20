@@ -22,6 +22,7 @@
 #include <ShellAPI.h>
 #include "dlg/CDlgAbout.h"
 #include "uiparts/HandCursor.h"
+#include "uiparts/CDarkMode.h"
 #include "util/file.h"
 #include "util/module.h"
 #include "gitrev.h"
@@ -38,6 +39,10 @@ INT_PTR CDlgAbout::DispatchEvent( HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lP
 	switch( wMsg ){
 	case WM_CTLCOLORDLG:
 	case WM_CTLCOLORSTATIC:
+		// ダークモードのときは、白い背景にせず、ダイアログ共通の配色にする	// 2026.11.21
+		if( CDarkMode::IsEnabled() ){
+			break;
+		}
 		// EDITも READONLY か DISABLEの場合 WM_CTLCOLORSTATIC になります
 		if( (HWND)lParam == GetDlgItem(hWnd, IDC_EDIT_ABOUT) ){
 			::SetTextColor( (HDC)wParam, RGB( 102, 102, 102 ) );

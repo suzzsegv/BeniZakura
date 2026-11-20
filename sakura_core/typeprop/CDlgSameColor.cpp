@@ -31,6 +31,7 @@
 #include "StdAfx.h"
 #include "CDlgSameColor.h"
 #include "util/shell.h"
+#include "uiparts/CDarkMode.h"
 #include "view/CEditView.h" // SColorStrategyInfo
 #include "view/colors/CColorStrategy.h"
 #include "sakura_rc.h"
@@ -72,9 +73,9 @@ INT_PTR CDlgSameColor::DispatchEvent( HWND hWnd, UINT wMsg, WPARAM wParam, LPARA
 			HWND hwndLB = (HWND)lParam;
 			if( IDC_LIST_ITEMINFO == ::GetDlgCtrlID( hwndLB ) ){
 				HDC hdcLB = (HDC)wParam;
-				::SetTextColor( hdcLB, ::GetSysColor( COLOR_WINDOWTEXT ) );
+				::SetTextColor( hdcLB, CDarkMode::GetUiColor( COLOR_WINDOWTEXT ) );
 				::SetBkMode( hdcLB, TRANSPARENT );
-				return (INT_PTR)::GetSysColorBrush( COLOR_BTNFACE );
+				return (INT_PTR)CDarkMode::GetUiColorBrush( COLOR_BTNFACE );
 			}
 		}
 		break;
@@ -262,13 +263,13 @@ BOOL CDlgSameColor::OnDrawItem( WPARAM wParam, LPARAM lParam )
 	rc = pDis->rcItem;
 
 	// アイテム矩形塗りつぶし
-	::FillRect( gr, &pDis->rcItem, ::GetSysColorBrush( COLOR_WINDOW ) );
+	::FillRect( gr, &pDis->rcItem, CDarkMode::GetUiColorBrush( COLOR_WINDOW ) );
 
 	// アイテムが選択状態
 	if( pDis->itemState & ODS_SELECTED ){
 		rc = pDis->rcItem;
 		rc.left += (rc.bottom - rc.top);
-		::FillRect( gr, &rc, ::GetSysColorBrush( COLOR_HIGHLIGHT ) );
+		::FillRect( gr, &rc, CDarkMode::GetUiColorBrush( COLOR_HIGHLIGHT ) );
 	}
 
 	// アイテムにフォーカスがある
@@ -294,7 +295,7 @@ BOOL CDlgSameColor::OnDrawItem( WPARAM wParam, LPARAM lParam )
 	rc.bottom -= 2;
 	rc.right -= 2;
 	gr.SetBrushColor( cr );
-	gr.SetPen( ::GetSysColor(COLOR_3DSHADOW) );
+	gr.SetPen( CDarkMode::GetUiColor(COLOR_3DSHADOW) );
 	::RoundRect( gr, rc.left, rc.top, rc.right, rc.bottom , 5, 5 );
 
 	return TRUE;
@@ -379,7 +380,7 @@ LRESULT CALLBACK CDlgSameColor::ColorStatic_SubclassProc( HWND hwnd, UINT uMsg, 
 		{
 			CGraphics gr(hDC);
 			gr.SetBrushColor( pCDlgSameColor->m_cr );
-			gr.SetPen( ::GetSysColor(COLOR_3DSHADOW) );
+			gr.SetPen( CDarkMode::GetUiColor(COLOR_3DSHADOW) );
 			::RoundRect( gr, rc.left, rc.top, rc.right, rc.bottom, 5, 5 );
 		}
 		::EndPaint( hwnd, &ps );

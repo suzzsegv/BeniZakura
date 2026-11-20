@@ -808,7 +808,7 @@ void CEditWnd::SetDocumentTypeWhenCreate(
 /*!
  * CEditWnd::ApplyUiColorMode - 画面の配色 (ダークモード) をウィンドウ全体に適用する
  *
- * CDarkMode::Refresh() で決めた状態を、Windows が描く部分 (タイトルバー、編集画面のスクロールバー) に設定し、
+ * CDarkMode::Refresh() で決めた状態を、Windows が描く部分 (タイトルバー、編集画面のスクロールバー、タブバーのツールチップ) に設定し、
  * メニューバーを含むウィンドウ全体を描き直す。メニュー・ツールバー・ステータスバーなどの作り直しは、
  * 設定変更の処理 (MYWM_CHANGESETTING) で別に行う。
  */
@@ -817,6 +817,10 @@ void CEditWnd::ApplyUiColorMode()
 	CDarkMode::ApplyTitleBar( GetHwnd() );
 	for( int i = 0; i < GetAllViewCount(); i++ ){
 		GetView(i).ApplyScrollBarTheme();
+	}
+	if( NULL != m_cTabWnd.m_hwndTab ){
+		CDarkMode::ApplyTooltip( TabCtrl_GetToolTips( m_cTabWnd.m_hwndTab ) );
+		CDarkMode::ApplyTooltip( m_cTabWnd.m_hwndToolTip );
 	}
 	::DrawMenuBar( GetHwnd() );
 	::RedrawWindow( GetHwnd(), NULL, NULL, RDW_INVALIDATE | RDW_ERASE | RDW_FRAME | RDW_ALLCHILDREN );

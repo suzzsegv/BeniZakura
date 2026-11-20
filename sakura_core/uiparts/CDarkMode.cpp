@@ -41,6 +41,7 @@
 #include "util/window.h"
 #include <dwmapi.h>
 #include <uxtheme.h>
+#include <vsstyle.h>
 
 //! タイトルバーをダークにする DWM の属性 (Windows 10 20H1 以降。それより前の Windows 10 は 19)
 static const DWORD DWMWA_USE_IMMERSIVE_DARK_MODE_VALUE = 20;
@@ -302,6 +303,587 @@ void CDarkMode::DrawSizeGrip(
 			::FillRect( hdc, &rcDot, hbrDot );
 		}
 	}
+}
+
+/*!
+ * CDarkMode::ApplyDialog - ダイアログのタイトルバーと子コントロールに画面の配色を適用する
+ *
+ * ダークモードのときだけ、タイトルバーを暗くし、子コントロールのテーマと色を設定する (ApplyChildControls)。
+ * ライトのときは何もしない (Windows の標準の表示のまま)。ダイアログの WM_INITDIALOG で呼ぶ。
+ * ダイアログの背景や文字の色は、WM_CTLCOLOR* (OnCtlColor) で別に設定する。
+ */
+void CDarkMode::ApplyDialog(
+	HWND	hDlg	//!< [in] ダイアログ
+)
+{
+	if( !s_bEnabled || NULL == hDlg ){
+		return;
+	}
+	if( 0 == ( ::GetWindowLongPtr( hDlg, GWL_STYLE ) & WS_CHILD ) ){
+		ApplyTitleBar( hDlg );
+	}
+	ApplyChildControls( hDlg );
+}
+
+/*!
+ * CDarkMode::ApplyChildControls - 子コントロールに画面の配色を適用する
+ *
+ * ダークモードのときだけ、子孫のウィンドウをすべて列挙し、クラスに応じて
+ * Windows のダークのテーマ (DarkMode_Explorer / DarkMode_CFD) や背景色・文字色を設定する。
+ */
+void CDarkMode::ApplyChildControls(
+	HWND	hwndParent	//!< [in] 親ウィンドウ
+)
+{
+	if( !s_bEnabled || NULL == hwndParent ){
+		return;
+	}
+	::EnumChildWindows( hwndParent, ApplyChildControlProc, 0 );
+}
+
+/*!
+ * CDarkMode::ApplyChildControlProc - 子コントロール 1 つに画面の配色を適用する (EnumChildWindows のコールバック)
+ *
+ * ボタン: グループボックスはサブクラス化して自分で描く。それ以外はダークのテーマを設定する
+ * (チェックボックス・ラジオボタンの文字は NM_CUSTOMDRAW で描く)。
+ * エディット・リストボックス・コンボボックス・リストビュー・ツリービューは、ダークのテーマと色を設定する。
+ * タブコントロールはサブクラス化して自分で描く。
+ *
+ *	@return	TRUE: 列挙を続ける
+ */
+BOOL CALLBACK CDarkMode::ApplyChildControlProc(
+	HWND	hwnd,	//!< [in] 子コントロール
+	LPARAM	lParam	//!< [in] 未使用
+)
+{
+	WCHAR szClass[64];
+	if( 0 == ::GetClassName( hwnd, szClass, _countof( szClass ) ) ){
+		return TRUE;
+	}
+	LONG_PTR lStyle = ::GetWindowLongPtr( hwnd, GWL_STYLE );
+	if( 0 == _wcsicmp( szClass, WC_BUTTON ) ){
+		switch( lStyle & BS_TYPEMASK ){
+		case BS_GROUPBOX:
+			::SetWindowSubclass( hwnd, GroupBoxSubclassProc, 0, 0 );
+			break;
+		case BS_OWNERDRAW:
+			break;
+		default:
+			::SetWindowTheme( hwnd, L"DarkMode_Explorer", NULL );
+			break;
+		}
+	}else if( 0 == _wcsicmp( szClass, WC_EDIT ) ){
+		::SetWindowTheme( hwnd, ( lStyle & ES_MULTILINE ) ? L"DarkMode_Explorer" : L"DarkMode_CFD", NULL );
+	}else if( 0 == _wcsicmp( szClass, WC_LISTBOX ) ){
+		::SetWindowTheme( hwnd, L"DarkMode_Explorer", NULL );
+	}else if( 0 == _wcsicmp( szClass, WC_COMBOBOX ) ){
+		::SetWindowTheme( hwnd, L"DarkMode_CFD", NULL );
+		COMBOBOXINFO cbi = { sizeof( cbi ) };
+		if( ::GetComboBoxInfo( hwnd, &cbi ) && NULL != cbi.hwndList ){
+			::SetWindowTheme( cbi.hwndList, L"DarkMode_Explorer", NULL );
+		}
+	}else if( 0 == _wcsicmp( szClass, WC_LISTVIEW ) ){
+		::SetWindowTheme( hwnd, L"DarkMode_Explorer", NULL );
+		ListView_SetBkColor( hwnd, GetUiColor( COLOR_WINDOW ) );
+		ListView_SetTextBkColor( hwnd, GetUiColor( COLOR_WINDOW ) );
+		ListView_SetTextColor( hwnd, GetUiColor( COLOR_WINDOWTEXT ) );
+		HWND hwndHeader = ListView_GetHeader( hwnd );
+		if( NULL != hwndHeader ){
+			::SetWindowTheme( hwndHeader, L"DarkMode_ItemsView", NULL );
+		}
+		::SetWindowSubclass( hwnd, ListViewSubclassProc, 0, 0 );	// 見出しの文字色
+	}else if( 0 == _wcsicmp( szClass, WC_TABCONTROL ) ){
+		::SetWindowSubclass( hwnd, TabControlSubclassProc, 0, 0 );
+	}else if( 0 == _wcsicmp( szClass, WC_TREEVIEW ) ){
+		::SetWindowTheme( hwnd, L"DarkMode_Explorer", NULL );
+		TreeView_SetBkColor( hwnd, GetUiColor( COLOR_WINDOW ) );
+		TreeView_SetTextColor( hwnd, GetUiColor( COLOR_WINDOWTEXT ) );
+		TreeView_SetLineColor( hwnd, GetUiColor( COLOR_GRAYTEXT ) );
+	}else if( 0 == _wcsicmp( szClass, UPDOWN_CLASS ) || 0 == _wcsicmp( szClass, WC_SCROLLBAR ) ){
+		::SetWindowTheme( hwnd, L"DarkMode_Explorer", NULL );
+	}
+	return TRUE;
+}
+
+/*!
+ * CDarkMode::ApplyTooltip - ツールチップに画面の配色を適用する
+ *
+ * ダークモードのときは Windows のテーマの "DarkMode_Explorer" を、ライトのときは標準のテーマを設定する。
+ */
+void CDarkMode::ApplyTooltip(
+	HWND	hwndTooltip	//!< [in] ツールチップ (tooltips_class32)
+)
+{
+	if( NULL == hwndTooltip ){
+		return;
+	}
+	::SetWindowTheme( hwndTooltip, s_bEnabled ? L"DarkMode_Explorer" : NULL, NULL );
+}
+
+/*!
+ * CDarkMode::OnCtlColor - ダイアログの WM_CTLCOLOR* を処理する
+ *
+ * ダークモードのときは、文字色・背景色を設定し、背景のブラシを返す。
+ * エディット・リストボックスはウィンドウの背景色、それ以外 (ダイアログ・スタティック・ボタン) は 3D の面の色とする。
+ *
+ *	@return	背景のブラシ / 0: ライト (既定の処理を行う)
+ */
+INT_PTR CDarkMode::OnCtlColor(
+	UINT	uMsg,	//!< [in] メッセージ (WM_CTLCOLOR*)
+	WPARAM	wParam,	//!< [in] 描画先の HDC
+	LPARAM	lParam	//!< [in] コントロール
+)
+{
+	if( !s_bEnabled ){
+		return 0;
+	}
+	int nBack;
+	int nText;
+	switch( uMsg ){
+	case WM_CTLCOLOREDIT:
+	case WM_CTLCOLORLISTBOX:
+		nBack = COLOR_WINDOW;
+		nText = COLOR_WINDOWTEXT;
+		break;
+	case WM_CTLCOLORDLG:
+	case WM_CTLCOLORSTATIC:
+	case WM_CTLCOLORBTN:
+		nBack = COLOR_3DFACE;
+		nText = COLOR_BTNTEXT;
+		break;
+	default:
+		return 0;
+	}
+	HDC hdc = (HDC)wParam;
+	::SetTextColor( hdc, GetUiColor( nText ) );
+	::SetBkColor( hdc, GetUiColor( nBack ) );
+	return (INT_PTR)GetUiColorBrush( nBack );
+}
+
+/*!
+ * CDarkMode::OnButtonCustomDraw - ボタンの NM_CUSTOMDRAW を処理する
+ *
+ * ダークモードのとき、チェックボックス・ラジオボタンを自分で描く (テーマの描画では文字が黒くなるため)。
+ * 押しボタンやライトのときは処理しない。
+ *
+ *	@return	true: 処理した (*plResult に戻り値を設定) / false: 処理していない
+ */
+bool CDarkMode::OnButtonCustomDraw(
+	LPNMCUSTOMDRAW	pnmcd,		//!< [in] NM_CUSTOMDRAW の情報
+	LRESULT*		plResult	//!< [out] メッセージの戻り値
+)
+{
+	if( !s_bEnabled || NULL == pnmcd || NM_CUSTOMDRAW != pnmcd->hdr.code ){
+		return false;
+	}
+	WCHAR szClass[16];
+	if( 0 == ::GetClassName( pnmcd->hdr.hwndFrom, szClass, _countof( szClass ) ) || 0 != _wcsicmp( szClass, WC_BUTTON ) ){
+		return false;
+	}
+	LONG_PTR lStyle = ::GetWindowLongPtr( pnmcd->hdr.hwndFrom, GWL_STYLE );
+	if( lStyle & BS_PUSHLIKE ){
+		return false;
+	}
+	switch( lStyle & BS_TYPEMASK ){
+	case BS_CHECKBOX:
+	case BS_AUTOCHECKBOX:
+	case BS_3STATE:
+	case BS_AUTO3STATE:
+	case BS_RADIOBUTTON:
+	case BS_AUTORADIOBUTTON:
+		break;
+	default:
+		return false;
+	}
+	if( CDDS_PREPAINT != pnmcd->dwDrawStage ){
+		*plResult = CDRF_DODEFAULT;
+		return true;
+	}
+	DrawCheckRadioDark( pnmcd, lStyle );
+	*plResult = CDRF_SKIPDEFAULT;
+	return true;
+}
+
+/*!
+ * CDarkMode::DrawCheckRadioDark - ダークモードのチェックボックス・ラジオボタンを描く
+ *
+ * 背景を 3D の面の色で塗り、チェックの印をテーマ (DarkMode_Explorer の Button) で描き、文字を明るい色で描く。
+ * フォーカスがあれば、文字の周りにフォーカスの枠を描く。
+ */
+void CDarkMode::DrawCheckRadioDark(
+	LPNMCUSTOMDRAW	pnmcd,	//!< [in] NM_CUSTOMDRAW の情報
+	LONG_PTR		lStyle	//!< [in] ボタンのスタイル
+)
+{
+	HWND hwnd = pnmcd->hdr.hwndFrom;
+	HDC hdc = pnmcd->hdc;
+	RECT rc = pnmcd->rc;
+	bool bRadio = ( BS_RADIOBUTTON == ( lStyle & BS_TYPEMASK ) || BS_AUTORADIOBUTTON == ( lStyle & BS_TYPEMASK ) );
+	bool bRightButton = ( 0 != ( lStyle & BS_RIGHTBUTTON ) );
+	bool bDisabled = ( 0 != ( pnmcd->uItemState & CDIS_DISABLED ) );
+
+	::FillRect( hdc, &rc, GetUiColorBrush( COLOR_3DFACE ) );
+
+	// チェックの印
+	LRESULT lCheck = ::SendMessage( hwnd, BM_GETCHECK, 0, 0 );
+	int nState;	// CBS_* / RBS_* (未チェック・チェック・不定 ごとに 4 つずつ、通常・ホット・押下・無効の順)
+	if( BST_INDETERMINATE == lCheck && !bRadio ){
+		nState = CBS_MIXEDNORMAL;
+	}else if( BST_CHECKED == lCheck ){
+		nState = bRadio ? RBS_CHECKEDNORMAL : CBS_CHECKEDNORMAL;
+	}else{
+		nState = bRadio ? RBS_UNCHECKEDNORMAL : CBS_UNCHECKEDNORMAL;
+	}
+	if( bDisabled ){
+		nState += 3;
+	}else if( pnmcd->uItemState & CDIS_SELECTED ){
+		nState += 2;
+	}else if( pnmcd->uItemState & CDIS_HOT ){
+		nState += 1;
+	}
+	int nPart = bRadio ? BP_RADIOBUTTON : BP_CHECKBOX;
+	SIZE sizeBox = { DpiScaleX( 13 ), DpiScaleY( 13 ) };
+	HTHEME hTheme = ::OpenThemeData( hwnd, L"Button" );
+	if( NULL != hTheme ){
+		::GetThemePartSize( hTheme, hdc, nPart, nState, NULL, TS_DRAW, &sizeBox );
+	}
+	RECT rcBox;
+	rcBox.top = rc.top + ( rc.bottom - rc.top - sizeBox.cy ) / 2;
+	rcBox.bottom = rcBox.top + sizeBox.cy;
+	if( bRightButton ){
+		rcBox.right = rc.right;
+		rcBox.left = rcBox.right - sizeBox.cx;
+	}else{
+		rcBox.left = rc.left;
+		rcBox.right = rcBox.left + sizeBox.cx;
+	}
+	if( NULL != hTheme ){
+		::DrawThemeBackground( hTheme, hdc, nPart, nState, &rcBox, NULL );
+		::CloseThemeData( hTheme );
+	}else{
+		UINT uState = ( bRadio ? DFCS_BUTTONRADIO : DFCS_BUTTONCHECK ) | ( BST_CHECKED == lCheck ? DFCS_CHECKED : 0 ) | ( bDisabled ? DFCS_INACTIVE : 0 );
+		::DrawFrameControl( hdc, &rcBox, DFC_BUTTON, uState );
+	}
+
+	// 文字
+	RECT rcText = rc;
+	const int nGap = DpiScaleX( 4 );
+	if( bRightButton ){
+		rcText.right = rcBox.left - nGap;
+	}else{
+		rcText.left = rcBox.right + nGap;
+	}
+	int nLen = ::GetWindowTextLength( hwnd );
+	std::vector<WCHAR> vecText( nLen + 1 );
+	::GetWindowText( hwnd, &vecText[0], nLen + 1 );
+
+	LRESULT lUiState = ::SendMessage( hwnd, WM_QUERYUISTATE, 0, 0 );
+	UINT uFormat = ( lStyle & BS_MULTILINE ) ? DT_WORDBREAK : DT_SINGLELINE;
+	if( bRightButton ){
+		uFormat |= DT_RIGHT;
+	}
+	if( lUiState & UISF_HIDEACCEL ){
+		uFormat |= DT_HIDEPREFIX;
+	}
+	HFONT hFont = (HFONT)::SendMessage( hwnd, WM_GETFONT, 0, 0 );
+	HFONT hFontOld = ( NULL != hFont ) ? (HFONT)::SelectObject( hdc, hFont ) : NULL;
+	RECT rcCalc = rcText;
+	::DrawText( hdc, &vecText[0], nLen, &rcCalc, uFormat | DT_CALCRECT );
+	int nTextHeight = rcCalc.bottom - rcCalc.top;
+	rcText.top = rc.top + ( rc.bottom - rc.top - nTextHeight ) / 2;
+	rcText.bottom = rcText.top + nTextHeight;
+	::SetBkMode( hdc, TRANSPARENT );
+	::SetTextColor( hdc, GetUiColor( bDisabled ? COLOR_GRAYTEXT : COLOR_BTNTEXT ) );
+	::DrawText( hdc, &vecText[0], nLen, &rcText, uFormat );
+
+	// フォーカスの枠
+	if( ( pnmcd->uItemState & CDIS_FOCUS ) && 0 == ( lUiState & UISF_HIDEFOCUS ) && 0 < nLen ){
+		RECT rcFocus = rcText;
+		int nWidth = rcCalc.right - rcCalc.left;
+		if( bRightButton ){
+			rcFocus.left = rcFocus.right - nWidth;
+		}else{
+			rcFocus.right = rcFocus.left + nWidth;
+		}
+		::InflateRect( &rcFocus, 1, 1 );
+		::IntersectRect( &rcFocus, &rcFocus, &rc );
+		::SetTextColor( hdc, GetUiColor( COLOR_BTNTEXT ) );
+		::SetBkColor( hdc, GetUiColor( COLOR_3DFACE ) );
+		::DrawFocusRect( hdc, &rcFocus );
+	}
+	if( NULL != hFontOld ){
+		::SelectObject( hdc, hFontOld );
+	}
+}
+
+/*!
+ * CDarkMode::GroupBoxSubclassProc - グループボックスのサブクラスプロシージャ
+ *
+ * ダークモードのときは、WM_PAINT で枠と見出しを自分で描く (PaintGroupBoxDark)。
+ * テーマの描画では見出しの文字色を変えられないため。
+ *
+ *	@return	メッセージの処理結果
+ */
+LRESULT CALLBACK CDarkMode::GroupBoxSubclassProc(
+	HWND		hwnd,			//!< [in] グループボックス
+	UINT		uMsg,			//!< [in] メッセージ
+	WPARAM		wParam,			//!< [in] パラメータ
+	LPARAM		lParam,			//!< [in] パラメータ
+	UINT_PTR	uIdSubclass,	//!< [in] サブクラスの ID
+	DWORD_PTR	dwRefData		//!< [in] 未使用
+)
+{
+	switch( uMsg ){
+	case WM_PAINT:
+		if( s_bEnabled ){
+			PaintGroupBoxDark( hwnd );
+			return 0;
+		}
+		break;
+	case WM_ENABLE:
+	case WM_SETTEXT:
+		if( s_bEnabled ){
+			// 標準の処理がテーマの配色で直接描くので、親ウィンドウのその範囲ごと描き直す
+			LRESULT lRet = ::DefSubclassProc( hwnd, uMsg, wParam, lParam );
+			HWND hwndParent = ::GetParent( hwnd );
+			RECT rc;
+			::GetWindowRect( hwnd, &rc );
+			::MapWindowPoints( NULL, hwndParent, (LPPOINT)&rc, 2 );
+			::RedrawWindow( hwndParent, &rc, NULL, RDW_INVALIDATE | RDW_ERASE | RDW_ALLCHILDREN );
+			return lRet;
+		}
+		break;
+	case WM_NCDESTROY:
+		::RemoveWindowSubclass( hwnd, GroupBoxSubclassProc, uIdSubclass );
+		break;
+	}
+	return ::DefSubclassProc( hwnd, uMsg, wParam, lParam );
+}
+
+/*!
+ * CDarkMode::PaintGroupBoxDark - ダークモードのとき、グループボックスを描画する
+ *
+ * 見出しの高さの中央を上端として 1 ドットの枠を描き、左上に見出しを明るい色で描く。
+ * 内側は塗らない (中のコントロールを消さないため。背景は親ウィンドウが塗る)。
+ */
+void CDarkMode::PaintGroupBoxDark(
+	HWND	hwnd	//!< [in] グループボックス
+)
+{
+	PAINTSTRUCT ps;
+	HDC hdc = ::BeginPaint( hwnd, &ps );
+	RECT rc;
+	::GetClientRect( hwnd, &rc );
+
+	HFONT hFont = (HFONT)::SendMessage( hwnd, WM_GETFONT, 0, 0 );
+	HFONT hFontOld = ( NULL != hFont ) ? (HFONT)::SelectObject( hdc, hFont ) : NULL;
+
+	int nLen = ::GetWindowTextLength( hwnd );
+	std::vector<WCHAR> vecText( nLen + 1 );
+	::GetWindowText( hwnd, &vecText[0], nLen + 1 );
+
+	UINT uFormat = DT_SINGLELINE | DT_LEFT | DT_TOP;
+	if( ::SendMessage( hwnd, WM_QUERYUISTATE, 0, 0 ) & UISF_HIDEACCEL ){
+		uFormat |= DT_HIDEPREFIX;
+	}
+	const int nTextLeft = rc.left + DpiScaleX( 9 );
+	RECT rcText = { nTextLeft, rc.top, rc.right - DpiScaleX( 9 ), rc.bottom };
+	::DrawText( hdc, &vecText[0], nLen, &rcText, uFormat | DT_CALCRECT );
+	if( rcText.right > rc.right - DpiScaleX( 9 ) ){
+		rcText.right = rc.right - DpiScaleX( 9 );
+	}
+	int nTextHeight = rcText.bottom - rcText.top;
+	if( 0 == nLen ){
+		TEXTMETRIC tm;
+		::GetTextMetrics( hdc, &tm );
+		nTextHeight = tm.tmHeight;
+	}
+
+	// 枠 (見出しの部分は空ける)
+	HBRUSH hbrFrame = GetUiColorBrush( COLOR_3DSHADOW );
+	int nFrameTop = rc.top + nTextHeight / 2;
+	RECT rcLine;
+	::SetRect( &rcLine, rc.left, nFrameTop, rc.left + 1, rc.bottom );			::FillRect( hdc, &rcLine, hbrFrame );	// 左
+	::SetRect( &rcLine, rc.right - 1, nFrameTop, rc.right, rc.bottom );			::FillRect( hdc, &rcLine, hbrFrame );	// 右
+	::SetRect( &rcLine, rc.left, rc.bottom - 1, rc.right, rc.bottom );			::FillRect( hdc, &rcLine, hbrFrame );	// 下
+	if( 0 < nLen ){
+		const int nPad = DpiScaleX( 2 );
+		::SetRect( &rcLine, rc.left, nFrameTop, rcText.left - nPad, nFrameTop + 1 );	::FillRect( hdc, &rcLine, hbrFrame );	// 上 (見出しの左)
+		::SetRect( &rcLine, rcText.right + nPad, nFrameTop, rc.right, nFrameTop + 1 );	::FillRect( hdc, &rcLine, hbrFrame );	// 上 (見出しの右)
+	}else{
+		::SetRect( &rcLine, rc.left, nFrameTop, rc.right, nFrameTop + 1 );			::FillRect( hdc, &rcLine, hbrFrame );	// 上
+	}
+
+	// 見出し
+	if( 0 < nLen ){
+		::SetBkMode( hdc, TRANSPARENT );
+		::SetTextColor( hdc, GetUiColor( ::IsWindowEnabled( hwnd ) ? COLOR_BTNTEXT : COLOR_GRAYTEXT ) );
+		::DrawText( hdc, &vecText[0], nLen, &rcText, uFormat );
+	}
+
+	if( NULL != hFontOld ){
+		::SelectObject( hdc, hFontOld );
+	}
+	::EndPaint( hwnd, &ps );
+}
+
+/*!
+ * CDarkMode::ListViewSubclassProc - リストビューのサブクラスプロシージャ
+ *
+ * ダークモードのとき、見出し (ヘッダーコントロール) の NM_CUSTOMDRAW で文字色を明るくする。
+ * 見出しの背景は、テーマ (DarkMode_ItemsView) で暗く描かれる。
+ *
+ *	@return	メッセージの処理結果
+ */
+LRESULT CALLBACK CDarkMode::ListViewSubclassProc(
+	HWND		hwnd,			//!< [in] リストビュー
+	UINT		uMsg,			//!< [in] メッセージ
+	WPARAM		wParam,			//!< [in] パラメータ
+	LPARAM		lParam,			//!< [in] パラメータ
+	UINT_PTR	uIdSubclass,	//!< [in] サブクラスの ID
+	DWORD_PTR	dwRefData		//!< [in] 未使用
+)
+{
+	switch( uMsg ){
+	case WM_NOTIFY:
+		if( s_bEnabled ){
+			LPNMCUSTOMDRAW pnmcd = (LPNMCUSTOMDRAW)lParam;
+			if( NM_CUSTOMDRAW == pnmcd->hdr.code && pnmcd->hdr.hwndFrom == ListView_GetHeader( hwnd ) ){
+				switch( pnmcd->dwDrawStage ){
+				case CDDS_PREPAINT:
+					return CDRF_NOTIFYITEMDRAW;
+				case CDDS_ITEMPREPAINT:
+					::SetTextColor( pnmcd->hdc, GetUiColor( COLOR_WINDOWTEXT ) );
+					return CDRF_DODEFAULT;
+				}
+			}
+		}
+		break;
+	case WM_NCDESTROY:
+		::RemoveWindowSubclass( hwnd, ListViewSubclassProc, uIdSubclass );
+		break;
+	}
+	return ::DefSubclassProc( hwnd, uMsg, wParam, lParam );
+}
+
+/*!
+ * CDarkMode::TabControlSubclassProc - タブコントロールのサブクラスプロシージャ
+ *
+ * ダークモードのときは、背景の消去を省き、WM_PAINT で自分で描画する (PaintTabControlDark)。
+ * テーマの描画では、タブの背景と文字の色を変えられないため。
+ *
+ *	@return	メッセージの処理結果
+ */
+LRESULT CALLBACK CDarkMode::TabControlSubclassProc(
+	HWND		hwnd,			//!< [in] タブコントロール
+	UINT		uMsg,			//!< [in] メッセージ
+	WPARAM		wParam,			//!< [in] パラメータ
+	LPARAM		lParam,			//!< [in] パラメータ
+	UINT_PTR	uIdSubclass,	//!< [in] サブクラスの ID
+	DWORD_PTR	dwRefData		//!< [in] 未使用
+)
+{
+	switch( uMsg ){
+	case WM_ERASEBKGND:
+		if( s_bEnabled ){
+			return 1;
+		}
+		break;
+	case WM_PAINT:
+		if( s_bEnabled ){
+			PaintTabControlDark( hwnd );
+			return 0;
+		}
+		break;
+	case WM_NCDESTROY:
+		::RemoveWindowSubclass( hwnd, TabControlSubclassProc, uIdSubclass );
+		break;
+	}
+	return ::DefSubclassProc( hwnd, uMsg, wParam, lParam );
+}
+
+/*!
+ * CDarkMode::PaintTabControlDark - ダークモードのとき、タブコントロールを描画する
+ *
+ * 背景を 3D の面の色で塗り、ページの領域を 1 ドットの枠で囲む。各タブは、選択中のものを面の色で
+ * ページとつなげて描き、それ以外をウィンドウの背景色で描く。タブの文字は明るい色で中央に描く。
+ * タブの画像 (イメージリスト) は描かない。
+ */
+void CDarkMode::PaintTabControlDark(
+	HWND	hwnd	//!< [in] タブコントロール
+)
+{
+	PAINTSTRUCT ps;
+	HDC hdc = ::BeginPaint( hwnd, &ps );
+	RECT rc;
+	::GetClientRect( hwnd, &rc );
+	::FillRect( hdc, &rc, GetUiColorBrush( COLOR_3DFACE ) );
+
+	HBRUSH hbrFrame = GetUiColorBrush( COLOR_3DSHADOW );
+	int nCount = TabCtrl_GetItemCount( hwnd );
+	int nCurSel = TabCtrl_GetCurSel( hwnd );
+
+	// ページの領域の枠 (タブの並びの下から)
+	RECT rcPane = rc;
+	for( int i = 0; i < nCount; i++ ){
+		RECT rcItem;
+		if( TabCtrl_GetItemRect( hwnd, i, &rcItem ) && rcPane.top < rcItem.bottom ){
+			rcPane.top = rcItem.bottom;
+		}
+	}
+	::FrameRect( hdc, &rcPane, hbrFrame );
+
+	HFONT hFont = (HFONT)::SendMessage( hwnd, WM_GETFONT, 0, 0 );
+	HFONT hFontOld = ( NULL != hFont ) ? (HFONT)::SelectObject( hdc, hFont ) : NULL;
+	::SetBkMode( hdc, TRANSPARENT );
+	UINT uFormat = DT_SINGLELINE | DT_CENTER | DT_VCENTER | DT_END_ELLIPSIS;
+	if( ::SendMessage( hwnd, WM_QUERYUISTATE, 0, 0 ) & UISF_HIDEACCEL ){
+		uFormat |= DT_HIDEPREFIX;
+	}
+
+	for( int i = 0; i < nCount; i++ ){
+		RECT rcItem;
+		if( !TabCtrl_GetItemRect( hwnd, i, &rcItem ) ){
+			continue;
+		}
+		bool bSelected = ( i == nCurSel );
+		if( bSelected ){
+			// 選択中のタブは少し大きくし、下の枠を消してページとつなげる
+			rcItem.top -= DpiScaleY( 2 );
+			rcItem.left -= DpiScaleX( 2 );
+			rcItem.right += DpiScaleX( 2 );
+			rcItem.bottom += 1;
+		}
+		::FillRect( hdc, &rcItem, GetUiColorBrush( bSelected ? COLOR_3DFACE : COLOR_WINDOW ) );
+		RECT rcLine;
+		::SetRect( &rcLine, rcItem.left, rcItem.top, rcItem.right, rcItem.top + 1 );		::FillRect( hdc, &rcLine, hbrFrame );	// 上
+		::SetRect( &rcLine, rcItem.left, rcItem.top, rcItem.left + 1, rcItem.bottom );		::FillRect( hdc, &rcLine, hbrFrame );	// 左
+		::SetRect( &rcLine, rcItem.right - 1, rcItem.top, rcItem.right, rcItem.bottom );	::FillRect( hdc, &rcLine, hbrFrame );	// 右
+
+		WCHAR szText[256] = L"";
+		TCITEM tci = { 0 };
+		tci.mask = TCIF_TEXT;
+		tci.pszText = szText;
+		tci.cchTextMax = _countof( szText );
+		TabCtrl_GetItem( hwnd, i, &tci );
+		RECT rcText = rcItem;
+		::InflateRect( &rcText, -DpiScaleX( 4 ), 0 );
+		::SetTextColor( hdc, GetUiColor( bSelected ? COLOR_BTNTEXT : COLOR_GRAYTEXT ) );
+		::DrawText( hdc, szText, -1, &rcText, uFormat );
+
+		if( bSelected && ::GetFocus() == hwnd && 0 == ( ::SendMessage( hwnd, WM_QUERYUISTATE, 0, 0 ) & UISF_HIDEFOCUS ) ){
+			RECT rcFocus = rcItem;
+			::InflateRect( &rcFocus, -DpiScaleX( 3 ), -DpiScaleY( 3 ) );
+			::SetTextColor( hdc, GetUiColor( COLOR_BTNTEXT ) );
+			::SetBkColor( hdc, GetUiColor( COLOR_3DFACE ) );
+			::DrawFocusRect( hdc, &rcFocus );
+		}
+	}
+
+	if( NULL != hFontOld ){
+		::SelectObject( hdc, hFontOld );
+	}
+	::EndPaint( hwnd, &ps );
 }
 
 /*!

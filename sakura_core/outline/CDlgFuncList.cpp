@@ -35,6 +35,7 @@
 #include "view/colors/CColorStrategy.h"
 #include "env/CAppNodeManager.h"
 #include <uxtheme.h>
+#include "uiparts/CDarkMode.h"
 #include "sakura_rc.h"
 
 // 画面ドッキング用の定義	// 2010.06.05 ryoji
@@ -1583,6 +1584,7 @@ BOOL CDlgFuncList::OnInitDialog( HWND hwndDlg, WPARAM wParam, LPARAM lParam )
 
 		// ツールチップをマルチライン可能にする（SHRT_MAX: Win95でINT_MAXだと表示されない）
 		Tooltip_SetMaxTipWidth( m_hwndToolTip, SHRT_MAX );
+		CDarkMode::ApplyTooltip( m_hwndToolTip );	// 2026.11.21
 
 		// アウトラインにツールチップを追加する
 		TOOLINFO	ti;
@@ -1804,7 +1806,7 @@ BOOL CDlgFuncList::OnNotify( WPARAM wParam, LPARAM lParam )
 	}
 
 #ifdef DEFINE_SYNCCOLOR
-	if( IsDocking() ){
+	if( IsDocking() && !CDarkMode::IsEnabled() ){	// ダークモードのときは、選択アイテムをテーマに描画させる	// 2026.11.21
 		if( hwndList == pnmh->hwndFrom || hwndTree == pnmh->hwndFrom ){
 			if( pnmh->code == NM_CUSTOMDRAW ){
 				LPNMCUSTOMDRAW lpnmcd = (LPNMCUSTOMDRAW)lParam;
@@ -2207,6 +2209,11 @@ void CDlgFuncList::SyncColor( void )
 	STypeConfig	*TypeDataPtr = &(pcEditView->m_pcEditDoc->m_cDocType.GetDocumentAttribute());
 	COLORREF clrText = TypeDataPtr->m_ColorInfoArr[COLORIDX_TEXT].m_colTEXT;
 	COLORREF clrBack = TypeDataPtr->m_ColorInfoArr[COLORIDX_TEXT].m_colBACK;
+	if( CDarkMode::IsEnabled() ){
+		// ダークモードのときは、フローティングと同じく画面の配色の色にする	// 2026.11.21
+		clrText = CDarkMode::GetUiColor( COLOR_WINDOWTEXT );
+		clrBack = CDarkMode::GetUiColor( COLOR_WINDOW );
+	}
 
 	HWND hwndTree = ::GetDlgItem( GetHwnd(), IDC_TREE_FL );
 	TreeView_SetTextColor( hwndTree, clrText );
@@ -2660,8 +2667,18 @@ INT_PTR CDlgFuncList::OnNcPaint( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 	case DOCKSIDE_RIGHT:	rcWk.right = rcWk.left + DOCK_SPLITTER_WIDTH; break;
 	case DOCKSIDE_BOTTOM:	rcWk.bottom = rcWk.top + DOCK_SPLITTER_WIDTH; break;
 	}
-	::FillRect( gr, &rcWk, (HBRUSH)(COLOR_3DFACE + 1) );
-	::DrawEdge( gr, &rcWk, EDGE_ETCHED, BF_TOPLEFT );
+	::FillRect( gr, &rcWk, CDarkMode::GetUiColorBrush( COLOR_3DFACE ) );
+	if( CDarkMode::IsEnabled() ){
+		// ダークモードのときは、立体の線の代わりに暗い 1 ドットの線を上と左に引く	// 2026.11.21
+		RECT rcLine = rcWk;
+		rcLine.bottom = rcLine.top + 1;
+		::FillRect( gr, &rcLine, CDarkMode::GetUiColorBrush( COLOR_3DSHADOW ) );
+		rcLine = rcWk;
+		rcLine.right = rcLine.left + 1;
+		::FillRect( gr, &rcLine, CDarkMode::GetUiColorBrush( COLOR_3DSHADOW ) );
+	}else{
+		::DrawEdge( gr, &rcWk, EDGE_ETCHED, BF_TOPLEFT );
+	}
 
 	// タイトルを描画する
 	BOOL bThemeActive = ::IsThemeActive();
@@ -2678,15 +2695,20 @@ INT_PTR CDlgFuncList::OnNcPaint( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 	rcWk.right -= DOCK_BUTTON_NUM * (::GetSystemMetrics( SM_CXSMSIZE ));
 	// ↓DrawCaption() に DC_SMALLCAP を指定してはいけないっぽい
 	// ↓DC_SMALLCAP 指定のものを Win7(64bit版) で動かしてみたら描画位置が下にずれて上半分しか見えなかった（x86ビルド/x64ビルドのどちらも NG）
-	::DrawCaption( hwnd, gr, &rcWk, DC_TEXT | (bGradient? DC_GRADIENT: 0) /*| DC_SMALLCAP*/ | (bActive? DC_ACTIVE: 0) );
-	rcWk.left = rcCaption.right;
-	int nClrCaption;
-	if( bGradient )
-		nClrCaption = ( bActive? COLOR_GRADIENTACTIVECAPTION: COLOR_GRADIENTINACTIVECAPTION );
-	else
-		nClrCaption = ( bActive? COLOR_ACTIVECAPTION: COLOR_INACTIVECAPTION );
-	::FillRect( gr, &rcWk, ::GetSysColorBrush( nClrCaption ) );
-	::DrawEdge( gr, &rcCaption, BDR_SUNKENOUTER, BF_TOP );
+	if( CDarkMode::IsEnabled() ){
+		// ダークモードのときは、タイトルを暗い背景に明るい文字で描く (DrawCaption() はシステムカラーで描くため)	// 2026.11.21
+		DrawDarkCaption( gr, rcCaption, rcWk, bActive );
+	}else{
+		::DrawCaption( hwnd, gr, &rcWk, DC_TEXT | (bGradient? DC_GRADIENT: 0) /*| DC_SMALLCAP*/ | (bActive? DC_ACTIVE: 0) );
+		rcWk.left = rcCaption.right;
+		int nClrCaption;
+		if( bGradient )
+			nClrCaption = ( bActive? COLOR_GRADIENTACTIVECAPTION: COLOR_GRADIENTINACTIVECAPTION );
+		else
+			nClrCaption = ( bActive? COLOR_ACTIVECAPTION: COLOR_INACTIVECAPTION );
+		::FillRect( gr, &rcWk, ::GetSysColorBrush( nClrCaption ) );
+		::DrawEdge( gr, &rcCaption, BDR_SUNKENOUTER, BF_TOP );
+	}
 
 	// タイトル上のボタンを描画する
 	NONCLIENTMETRICS ncm;
@@ -2715,14 +2737,23 @@ INT_PTR CDlgFuncList::OnNcPaint( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 	for( int i = 0; i < DOCK_BUTTON_NUM; i++ ){
 		int nClrCaptionText;
 		// マウスカーソルがボタン上にあればハイライト
-		if( ::PtInRect( &rcBtn, pt ) ){
+		COLORREF clrCaptionText;
+		if( CDarkMode::IsEnabled() ){
+			// ダークモードのボタン	// 2026.11.21
+			if( ::PtInRect( &rcBtn, pt ) ){
+				::FillRect( gr, &rcBtn, CDarkMode::GetUiColorBrush( COLOR_3DLIGHT ) );
+			}
+			clrCaptionText = CDarkMode::GetUiColor( bActive? COLOR_CAPTIONTEXT: COLOR_GRAYTEXT );
+		}else if( ::PtInRect( &rcBtn, pt ) ){
 			::FillRect( gr, &rcBtn, ::GetSysColorBrush( (bGradient && !bActive)? COLOR_INACTIVECAPTION: COLOR_ACTIVECAPTION ) );
 			nClrCaptionText = ( (bGradient && !bActive)? COLOR_INACTIVECAPTIONTEXT: COLOR_CAPTIONTEXT );
+			clrCaptionText = ::GetSysColor( nClrCaptionText );
 		}else{
 			nClrCaptionText = ( bActive? COLOR_CAPTIONTEXT: COLOR_INACTIVECAPTIONTEXT );
+			clrCaptionText = ::GetSysColor( nClrCaptionText );
 		}
 		gr.PushMyFont( hFontBtn[i] );
-		::SetTextColor( gr, ::GetSysColor( nClrCaptionText ) );
+		::SetTextColor( gr, clrCaptionText );
 		::DrawText( gr, &szBtn[i], 1, &rcBtn, DT_SINGLELINE | DT_CENTER | DT_VCENTER );
 		::OffsetRect( &rcBtn, -(rcBtn.right - rcBtn.left), 0 );
 		gr.PopMyFont();
@@ -2733,6 +2764,44 @@ INT_PTR CDlgFuncList::OnNcPaint( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 
 	::ReleaseDC( hwnd, hdc );
 	return 1L;
+}
+
+/*!
+ * CDlgFuncList::DrawDarkCaption - ダークモードのとき、ドッキング中のタイトルを描く
+ *
+ * タイトル全体 (ボタンの部分を含む) を暗い色で塗り、上端に区切りの線を引き、
+ * ウィンドウのタイトルの文字をキャプションのフォントで描く。非アクティブのときは文字を灰色にする。
+ * ボタンは呼び出し元で、この上に描く。
+ */
+void CDlgFuncList::DrawDarkCaption(
+	HDC			hdc,		//!< [in] 描画先 (ウィンドウ全体の DC)
+	const RECT&	rcCaption,	//!< [in] タイトル全体の矩形
+	const RECT&	rcText,		//!< [in] タイトルの文字を描く矩形 (ボタンの部分を除く)
+	bool		bActive		//!< [in] アクティブか
+)
+{
+	::FillRect( hdc, &rcCaption, CDarkMode::GetUiColorBrush( COLOR_3DFACE ) );
+	RECT rcLine = rcCaption;
+	rcLine.bottom = rcLine.top + 1;
+	::FillRect( hdc, &rcLine, CDarkMode::GetUiColorBrush( COLOR_3DSHADOW ) );
+
+	WCHAR szTitle[256];
+	int nLen = ::GetWindowText( GetHwnd(), szTitle, _countof( szTitle ) );
+	if( 0 == nLen ){
+		return;
+	}
+	NONCLIENTMETRICS ncm;
+	ncm.cbSize = CCSIZEOF_STRUCT( NONCLIENTMETRICS, lfMessageFont );
+	::SystemParametersInfo( SPI_GETNONCLIENTMETRICS, ncm.cbSize, (PVOID)&ncm, 0 );
+	HFONT hFont = ::CreateFontIndirect( &ncm.lfCaptionFont );
+	HFONT hFontOld = (HFONT)::SelectObject( hdc, hFont );
+	RECT rc = rcText;
+	rc.left += ::GetSystemMetrics( SM_CXEDGE ) * 2;
+	::SetBkMode( hdc, TRANSPARENT );
+	::SetTextColor( hdc, CDarkMode::GetUiColor( bActive ? COLOR_CAPTIONTEXT : COLOR_GRAYTEXT ) );
+	::DrawText( hdc, szTitle, nLen, &rc, DT_SINGLELINE | DT_VCENTER | DT_LEFT | DT_END_ELLIPSIS | DT_NOPREFIX );
+	::SelectObject( hdc, hFontOld );
+	::DeleteObject( hFont );
 }
 
 /** メニュー処理
