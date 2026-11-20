@@ -398,13 +398,10 @@ LRESULT CPrintPreview::OnSize( WPARAM wParam, LPARAM lParam )
 		::DeleteObject( m_hbmpCompatBMP );
 	}
 	// 2007.02.11 Moca プレビューを滑らかにする
-	// Win9xでは 巨大なBMPは作成できないことと
-	// StretchBltでSTRETCH_HALFTONEが未サポートであるので Win2K 以上のみで有効にする。
-	if( BST_CHECKED == ::IsDlgButtonChecked( m_hwndPrintPreviewBar, IDC_CHECK_ANTIALIAS ) &&
-			IsWin2000_or_later() ){
+	if( BST_CHECKED == ::IsDlgButtonChecked( m_hwndPrintPreviewBar, IDC_CHECK_ANTIALIAS ) ){
 		m_nbmpCompatScale = COMPAT_BMP_SCALE;
 	}else{
-		// Win9x: BASE = SCALE で 1:1
+		// BASE = SCALE で 1:1
 		m_nbmpCompatScale = COMPAT_BMP_BASE;
 	}
 	m_hbmpCompatBMP = ::CreateCompatibleBitmap( hdc, (cx * m_nbmpCompatScale + COMPAT_BMP_BASE - 1) / COMPAT_BMP_BASE,
@@ -2006,9 +2003,7 @@ INT_PTR CPrintPreview::DispatchEvent_PPB(
 		//// Modified by KEITA for WIN64 2003.9.6
 		//::SetWindowLongPtr( hwndDlg, DWLP_USER, lParam );
 		{
-			if( IsWin2000_or_later() ){
-				::EnableWindow( ::GetDlgItem(hwndDlg, IDC_CHECK_ANTIALIAS), TRUE );
-			}
+			::EnableWindow( ::GetDlgItem(hwndDlg, IDC_CHECK_ANTIALIAS), TRUE );
 		}
 		return TRUE;
 	case WM_COMMAND:

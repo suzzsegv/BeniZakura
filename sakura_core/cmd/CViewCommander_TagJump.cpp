@@ -29,7 +29,6 @@
 #include "dlg/CDlgTagJumpList.h"
 #include "dlg/CDlgTagsMake.h"	//@@@ 2003.05.12 MIK
 #include "CEditApp.h"
-#include "_os/COsVersionInfo.h"
 #include "util/window.h"
 #include "util/module.h"
 #include "util/string_ex2.h"
@@ -259,29 +258,23 @@ bool CViewCommander::Command_TagsMake( void )
 	sOptions += L" *";	//配下のすべてのファイル
 
 	//コマンドライン文字列作成(MAX:1024)
-	//	NT : "<szCmdDir>\cmd.exe" /D /C ""<szExeFolder>\ctags.exe" <options>"
-	//	9x : "<szCmdDir>\command.com" /C "<szExeFolder>\ctags.exe" <options>
+	//	"<szCmdDir>\cmd.exe" /D /C ""<szExeFolder>\ctags.exe" <options>"
 	//	cmdline に収まらない場合は実行しない (バッファオーバーフロー防止)
 	{
 		// 2010.08.28 Moca システムディレクトリ付加
 		WCHAR szCmdDir[_MAX_PATH];
-		const bool bNT = IsWin32NT() ? true : false;
-		if( bNT ){
-			::GetSystemDirectory(szCmdDir, _countof(szCmdDir));
-		}else{
-			::GetWindowsDirectory(szCmdDir, _countof(szCmdDir));
-		}
+		::GetSystemDirectory(szCmdDir, _countof(szCmdDir));
 		std::wstring sCmdLine;
 		sCmdLine += L"\"";
 		sCmdLine += szCmdDir;
 		//	2006.08.04 genta add /D to disable autorun
-		sCmdLine += ( bNT ? L"\\cmd.exe\" /D /C \"\"" : L"\\command.com\" /C \"" );
+		sCmdLine += L"\\cmd.exe\" /D /C \"\"";
 		sCmdLine += szExeFolder;	//sakura.exeパス
 		sCmdLine += L"\\";
 		sCmdLine += CTAGS_COMMAND;	//ctags.exe
 		sCmdLine += L"\" ";
 		sCmdLine += sOptions;		//ctagsオプション
-		if( bNT ) sCmdLine += L"\"";
+		sCmdLine += L"\"";
 		if( sCmdLine.length() >= _countof(cmdline) ){
 			WarningMessage( m_pCommanderView->GetHwnd(), L"タグ作成コマンド実行は失敗しました。\n\nコマンドラインが長すぎます。" );
 			return false;

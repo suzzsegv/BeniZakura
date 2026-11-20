@@ -33,17 +33,8 @@ struct SSaveInfo;	// doc/CDocListener.h
 // Windows 2000 version of OPENFILENAME.
 // The new version has three extra members.
 // See CommDlg.h
-#if (_WIN32_WINNT >= 0x0500)
 struct OPENFILENAMEZ : public OPENFILENAME {
 };
-#else
-struct OPENFILENAMEZ : public OPENFILENAME {
-  void *        pvReserved;
-  DWORD         dwReserved;
-  DWORD         FlagsEx;
-};
-#define OPENFILENAME_SIZE_VERSION_400 sizeof(OPENFILENAME)
-#endif // (_WIN32_WINNT >= 0x0500)
 
 
 /*!	ファイルオープンダイアログボックス

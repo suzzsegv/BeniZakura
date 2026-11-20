@@ -27,7 +27,6 @@
 #include "env/CShareData.h"
 #include "CEditApp.h"
 #include "doc/CDocListener.h"
-#include "_os/COsVersionInfo.h"
 #include "util/shell.h"
 #include "util/file.h"
 #include "util/os.h"
@@ -395,9 +394,7 @@ UINT_PTR CALLBACK OFNHookProc(
 		case CDN_SELCHANGE :
 			{
 				// OFNの再設定はNT系ではUnicode版APIのみ有効
-				if( pcDlgOpenFile->m_ofn.Flags & OFN_ALLOWMULTISELECT &&
-						IsWin32NT()
-				){
+				if( pcDlgOpenFile->m_ofn.Flags & OFN_ALLOWMULTISELECT ){
 					DWORD nLength = CommDlg_OpenSave_GetSpec( hwndOpenDlg, NULL, 0 );
 					nLength += _MAX_PATH + 2;
 					if( pcDlgOpenFile->m_ofn.nMaxFile < nLength ){
@@ -949,7 +946,7 @@ void CDlgOpenFile::InitOfn( OPENFILENAMEZ* ofn )
 {
 	memset_raw(ofn, 0, sizeof(m_ofn));
 
-	ofn->lStructSize = IsWinV5forOfn()? sizeof(OPENFILENAMEZ): OPENFILENAME_SIZE_VERSION_400;
+	ofn->lStructSize = sizeof(OPENFILENAME);
 	ofn->lCustData = (LPARAM)this;
 	ofn->lpfnHook = OFNHookProc;
 	ofn->lpTemplateName = MAKEINTRESOURCE(IDD_FILEOPEN);	// <-L"IDD_FILEOPEN"; 2008/7/26 Uchi

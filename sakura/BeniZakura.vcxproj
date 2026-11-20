@@ -397,7 +397,6 @@
     <ClInclude Include="..\sakura_core\_main\global.h" />
     <ClInclude Include="..\sakura_core\_os\CClipboard.h" />
     <ClInclude Include="..\sakura_core\_os\CDropTarget.h" />
-    <ClInclude Include="..\sakura_core\_os\COsVersionInfo.h" />
     <ClInclude Include="..\sakura_core\_os\OleTypes.h" />
     <ClInclude Include="..\sakura_core\outline\CDlgFuncList.h" />
     <ClInclude Include="..\sakura_core\outline\CFuncInfo.h" />

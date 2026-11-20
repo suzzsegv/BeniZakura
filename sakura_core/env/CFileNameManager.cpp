@@ -36,7 +36,6 @@
 #include "util/string_ex.h"
 #include "util/string_ex2.h"
 #include "_main/CCommandLine.h"
-#include "_os/COsVersionInfo.h"
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 //                      ファイル名管理                         //
@@ -477,31 +476,29 @@ void CFileNameManager::GetIniFileNameDirect( LPWSTR pszPrivateIniFile, LPWSTR ps
 	//		exeと同じフォルダに置かれたマルチユーザ構成設定ファイル（sakura.exe.ini）の内容
 	//		に従ってマルチユーザ用のiniファイルパスを決める
 	pszPrivateIniFile[0] = L'\0';
-	if( IsWin2000_or_later() ){
-		auto_snprintf_s( szPath, _MAX_PATH - 1, L"%ts%ts%ts%ts", szDrive, szDir, szFname, L".exe.ini" );
-		int nEnable = ::GetPrivateProfileInt(L"Settings", L"MultiUser", 0, szPath );
-		if( nEnable ){
-			int nFolder = ::GetPrivateProfileInt(L"Settings", L"UserRootFolder", 0, szPath );
-			switch( nFolder ){
-			case 1:
-				nFolder = CSIDL_PROFILE;			// ユーザのルートフォルダ
-				break;
-			case 2:
-				nFolder = CSIDL_PERSONAL;			// ユーザのドキュメントフォルダ
-				break;
-			case 3:
-				nFolder = CSIDL_DESKTOPDIRECTORY;	// ユーザのデスクトップフォルダ
-				break;
-			default:
-				nFolder = CSIDL_APPDATA;			// ユーザのアプリケーションデータフォルダ
-				break;
-			}
-			::GetPrivateProfileString(L"Settings", L"UserSubFolder", L"sakura", szDir, _MAX_DIR, szPath );
-			if( szDir[0] == L'\0' )
-				::lstrcpy( szDir, L"sakura" );
-			if( GetSpecialFolderPath( nFolder, szPath ) ){
-				auto_snprintf_s( pszPrivateIniFile, _MAX_PATH - 1, L"%ts\\%ts\\%ts%ts", szPath, szDir, szFname, L".ini" );
-			}
+	auto_snprintf_s( szPath, _MAX_PATH - 1, L"%ts%ts%ts%ts", szDrive, szDir, szFname, L".exe.ini" );
+	int nEnable = ::GetPrivateProfileInt(L"Settings", L"MultiUser", 0, szPath );
+	if( nEnable ){
+		int nFolder = ::GetPrivateProfileInt(L"Settings", L"UserRootFolder", 0, szPath );
+		switch( nFolder ){
+		case 1:
+			nFolder = CSIDL_PROFILE;			// ユーザのルートフォルダ
+			break;
+		case 2:
+			nFolder = CSIDL_PERSONAL;			// ユーザのドキュメントフォルダ
+			break;
+		case 3:
+			nFolder = CSIDL_DESKTOPDIRECTORY;	// ユーザのデスクトップフォルダ
+			break;
+		default:
+			nFolder = CSIDL_APPDATA;			// ユーザのアプリケーションデータフォルダ
+			break;
+		}
+		::GetPrivateProfileString(L"Settings", L"UserSubFolder", L"sakura", szDir, _MAX_DIR, szPath );
+		if( szDir[0] == L'\0' )
+			::lstrcpy( szDir, L"sakura" );
+		if( GetSpecialFolderPath( nFolder, szPath ) ){
+			auto_snprintf_s( pszPrivateIniFile, _MAX_PATH - 1, L"%ts\\%ts\\%ts%ts", szPath, szDir, szFname, L".ini" );
 		}
 	}
 }

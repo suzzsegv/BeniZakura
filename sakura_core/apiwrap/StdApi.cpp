@@ -2,7 +2,6 @@
 #include <vector>
 #include "StdApi.h"
 #include "charset/charcode.h"
-#include "_os/COsVersionInfo.h"
 
 using namespace std;
 
@@ -129,27 +128,21 @@ namespace ApiWrap{
 	*/
 	void SetPixelSurely(HDC hdc,int x,int y,COLORREF c)
 	{
-		if (!IsWinVista_or_later()) {
-		//Vistaより前：SetPixel直呼び出し
-			::SetPixel(hdc,x,y,c);
+		//SetPixelエミュレート
+		static HPEN hPen = NULL;
+		static COLORREF clrPen = 0;
+		if(hPen && c!=clrPen){
+			DeleteObject(hPen);
+			hPen = NULL;
 		}
-		else {
-		//Vista以降：SetPixelエミュレート
-			static HPEN hPen = NULL;
-			static COLORREF clrPen = 0;
-			if(hPen && c!=clrPen){
-				DeleteObject(hPen);
-				hPen = NULL;
-			}
-			//ペン生成
-			if(!hPen){
-				hPen = CreatePen(PS_SOLID,1,clrPen = c);
-			}
-			//描画
-			HPEN hpnOld = (HPEN)SelectObject(hdc,hPen);
-			::MoveToEx(hdc,x,y,NULL);
-			::LineTo(hdc,x+1,y+1);
-			SelectObject(hdc,hpnOld);
+		//ペン生成
+		if(!hPen){
+			hPen = CreatePen(PS_SOLID,1,clrPen = c);
 		}
+		//描画
+		HPEN hpnOld = (HPEN)SelectObject(hdc,hPen);
+		::MoveToEx(hdc,x,y,NULL);
+		::LineTo(hdc,x+1,y+1);
+		SelectObject(hdc,hpnOld);
 	}
 }

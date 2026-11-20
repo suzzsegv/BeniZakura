@@ -48,7 +48,6 @@
 #include "_main/CCommandLine.h"	/// 2003/1/26 aroka
 #include "_main/CAppMode.h"
 #include "_os/CDropTarget.h"
-#include "_os/COsVersionInfo.h"
 #include "dlg/CDlgAbout.h"
 #include "dlg/CDlgPrintSetting.h"
 #include "env/CShareData.h"
@@ -514,72 +513,58 @@ void CEditWnd::_AdjustInMonitor(const STabGroupInfo& sTabGroupInfo)
 
 		//タブウインドウ時は現状を維持
 		/* ウィンドウサイズ継承 */
-		// Vista 以降の初回表示アニメーション効果を抑止する
-		if( !IsWinVista_or_later() ){
-			if( sTabGroupInfo.wpTop.showCmd == SW_SHOWMAXIMIZED )
-			{
-				::ShowWindow( GetHwnd(), SW_SHOWMAXIMIZED );
-			}
-			else
-			{
-				::ShowWindow( GetHwnd(), SW_SHOW );
-			}
-		}
-		else
-		{
-			// 初回表示のアニメーション効果を抑止する
+		// 初回表示のアニメーション効果を抑止する
 
-			// 先頭ウィンドウの背後で画面描画してから手前に出す（ツールバーやビューのちらつきを抑える）
-			// ここでは、あとで正式に適用されるはずのドキュメントタイプを仮設定して一時描画しておく（ビューの配色切替によるちらつきを抑える）
-			// さらに、タイプを戻して画面を無効化だけしておく（何らかの原因で途中停止した場合にはもとのタイプ色で再描画されるように ← 例えばファイルサイズが大きすぎる警告を出すときなど）
-			// ※ 正攻法とはいえないかもしれないがあちこち手を入れることなく簡潔に済ませられるのでこうしておく
-			CTypeConfig cTypeOld, cTypeNew(-1);
-			cTypeOld = GetDocument().m_cDocType.GetDocumentType();	// 現在のタイプ
-			{
-				EditInfo ei, mruei;
-				CCommandLine::getInstance()->GetEditInfo( &ei );
-				if( ei.m_szDocType[0] != '\0' ){
-					cTypeNew = CDocTypeManager().GetDocumentTypeOfExt( ei.m_szDocType );
-				}else{
-					if( CMRUFile().GetEditInfo( ei.m_szPath, &mruei ) ){
-						cTypeNew = mruei.m_nType;
-					}
-					if( !cTypeNew.IsValid() ){
-						if( ei.m_szPath[0] ){
-							cTypeNew = CDocTypeManager().GetDocumentTypeOfPath( ei.m_szPath );
-						}else{
-							cTypeNew = cTypeOld;
-						}
+		// 先頭ウィンドウの背後で画面描画してから手前に出す（ツールバーやビューのちらつきを抑える）
+		// ここでは、あとで正式に適用されるはずのドキュメントタイプを仮設定して一時描画しておく（ビューの配色切替によるちらつきを抑える）
+		// さらに、タイプを戻して画面を無効化だけしておく（何らかの原因で途中停止した場合にはもとのタイプ色で再描画されるように ← 例えばファイルサイズが大きすぎる警告を出すときなど）
+		// ※ 正攻法とはいえないかもしれないがあちこち手を入れることなく簡潔に済ませられるのでこうしておく
+		CTypeConfig cTypeOld, cTypeNew(-1);
+		cTypeOld = GetDocument().m_cDocType.GetDocumentType();	// 現在のタイプ
+		{
+			EditInfo ei, mruei;
+			CCommandLine::getInstance()->GetEditInfo( &ei );
+			if( ei.m_szDocType[0] != '\0' ){
+				cTypeNew = CDocTypeManager().GetDocumentTypeOfExt( ei.m_szDocType );
+			}else{
+				if( CMRUFile().GetEditInfo( ei.m_szPath, &mruei ) ){
+					cTypeNew = mruei.m_nType;
+				}
+				if( !cTypeNew.IsValid() ){
+					if( ei.m_szPath[0] ){
+						cTypeNew = CDocTypeManager().GetDocumentTypeOfPath( ei.m_szPath );
+					}else{
+						cTypeNew = cTypeOld;
 					}
 				}
 			}
-			GetDocument().m_cDocType.SetDocumentType( cTypeNew, true, true );	// 仮設定
-
-			// 可能な限り画面描画の様子が見えないよう一時的に先頭ウィンドウの後ろに配置
-			::SetWindowPos( GetHwnd(), sTabGroupInfo.hwndTop, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE );
-
-			// アニメーション効果は一時的に OFF にする
-			ANIMATIONINFO ai = {sizeof(ANIMATIONINFO)};
-			::SystemParametersInfo( SPI_GETANIMATION, sizeof(ANIMATIONINFO), &ai, 0 );
-			int iMinAnimateOld = ai.iMinAnimate;
-			ai.iMinAnimate = 0;
-			::SystemParametersInfo( SPI_SETANIMATION, sizeof(ANIMATIONINFO), &ai, 0 );
-
-			// 可視化する（最大化のときは次の ::ShowWindow() で手前に出てしまうので、アニメーション除去効果はあるがクライアント領域のちらつきは抑えきれない）
-			int nCmdShow = ( sTabGroupInfo.wpTop.showCmd == SW_SHOWMAXIMIZED )? SW_SHOWMAXIMIZED: SW_SHOWNOACTIVATE;
-			::ShowWindow( GetHwnd(), nCmdShow );
-			::UpdateWindow( GetHwnd() );	// 画面更新
-			::BringWindowToTop( GetHwnd() );
-			::ShowWindow( sTabGroupInfo.hwndTop , SW_HIDE );	// 以前の先頭ウィンドウはここで消しておかないと消えるアニメーションが見える場合がある
-
-			// アニメーション効果を戻す
-			ai.iMinAnimate = iMinAnimateOld;
-			::SystemParametersInfo( SPI_SETANIMATION, sizeof(ANIMATIONINFO), &ai, 0 );
-
-			// アイドリング開始時にその時点のタイプ別設定色で再描画されるようにしておく
-			GetDocument().m_cDocType.SetDocumentType( cTypeOld, true, true );	// タイプ戻し
-			::InvalidateRect( GetHwnd(), NULL, TRUE );	// 画面無効化
 		}
+		GetDocument().m_cDocType.SetDocumentType( cTypeNew, true, true );	// 仮設定
+
+		// 可能な限り画面描画の様子が見えないよう一時的に先頭ウィンドウの後ろに配置
+		::SetWindowPos( GetHwnd(), sTabGroupInfo.hwndTop, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE );
+
+		// アニメーション効果は一時的に OFF にする
+		ANIMATIONINFO ai = {sizeof(ANIMATIONINFO)};
+		::SystemParametersInfo( SPI_GETANIMATION, sizeof(ANIMATIONINFO), &ai, 0 );
+		int iMinAnimateOld = ai.iMinAnimate;
+		ai.iMinAnimate = 0;
+		::SystemParametersInfo( SPI_SETANIMATION, sizeof(ANIMATIONINFO), &ai, 0 );
+
+		// 可視化する（最大化のときは次の ::ShowWindow() で手前に出てしまうので、アニメーション除去効果はあるがクライアント領域のちらつきは抑えきれない）
+		int nCmdShow = ( sTabGroupInfo.wpTop.showCmd == SW_SHOWMAXIMIZED )? SW_SHOWMAXIMIZED: SW_SHOWNOACTIVATE;
+		::ShowWindow( GetHwnd(), nCmdShow );
+		::UpdateWindow( GetHwnd() );	// 画面更新
+		::BringWindowToTop( GetHwnd() );
+		::ShowWindow( sTabGroupInfo.hwndTop , SW_HIDE );	// 以前の先頭ウィンドウはここで消しておかないと消えるアニメーションが見える場合がある
+
+		// アニメーション効果を戻す
+		ai.iMinAnimate = iMinAnimateOld;
+		::SystemParametersInfo( SPI_SETANIMATION, sizeof(ANIMATIONINFO), &ai, 0 );
+
+		// アイドリング開始時にその時点のタイプ別設定色で再描画されるようにしておく
+		GetDocument().m_cDocType.SetDocumentType( cTypeOld, true, true );	// タイプ戻し
+		::InvalidateRect( GetHwnd(), NULL, TRUE );	// 画面無効化
 	}
 	else
 	{
@@ -713,18 +698,16 @@ HWND CEditWnd::Create(
 	m_bIsActiveApp = ( ::GetActiveWindow() == GetHwnd() );	// 2007.03.08 ryoji
 
 	// エディタ－コントロールプロセス間でのUI特権分離の確認（Vista UIPI機能） 2007.06.07 ryoji
-	if( IsWinVista_or_later() ){
-		m_bUIPI = FALSE;
-		::SendMessage( m_pShareData->m_sHandles.m_hwndControlProcessWnd, MYWM_UIPI_CHECK,  (WPARAM)0, (LPARAM)GetHwnd() );
-		if( !m_bUIPI ){	// 返事が返らない
-			TopErrorMessage( GetHwnd(), 
-				L"エディタ間の対話に失敗しました。\n"
-				L"権限レベルの異なるエディタが既に起動している可能性があります。"
-			);
-			::DestroyWindow( GetHwnd() );
-			m_hWnd = hWnd = NULL;
-			return hWnd;
-		}
+	m_bUIPI = FALSE;
+	::SendMessage( m_pShareData->m_sHandles.m_hwndControlProcessWnd, MYWM_UIPI_CHECK,  (WPARAM)0, (LPARAM)GetHwnd() );
+	if( !m_bUIPI ){	// 返事が返らない
+		TopErrorMessage( GetHwnd(), 
+			L"エディタ間の対話に失敗しました。\n"
+			L"権限レベルの異なるエディタが既に起動している可能性があります。"
+		);
+		::DestroyWindow( GetHwnd() );
+		m_hWnd = hWnd = NULL;
+		return hWnd;
 	}
 
 	CShareData::getInstance()->SetTraceOutSource( GetHwnd() );	// TraceOut()起動元ウィンドウの設定	// 2006.06.26 ryoji
@@ -3667,8 +3650,7 @@ void CEditWnd::PrintMenubarMessage( const WCHAR* msg )
 	rc.bottom = rc.top + m_nCaretPosInfoCharHeight;
 	::SetTextColor( hdc, ::GetSysColor( COLOR_MENUTEXT ) );
 	//	Sep. 6, 2003 genta Windows XP(Luna)の場合にはCOLOR_MENUBARを使わなくてはならない
-	COLORREF bkColor =
-		::GetSysColor( IsWinXP_or_later() ? COLOR_MENUBAR : COLOR_MENU );
+	COLORREF bkColor = ::GetSysColor( COLOR_MENUBAR );
 	::SetBkColor( hdc, bkColor );
 	/*
 	int			m_pnCaretPosInfoDx[64];	// 文字列描画用文字幅配列

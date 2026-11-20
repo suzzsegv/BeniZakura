@@ -1,7 +1,6 @@
 #include "StdAfx.h"
 #include "CEditView.h"
 #include "_main/CAppMode.h"
-#include "_os/COsVersionInfo.h"
 #include "env/CShareData.h"
 #include "env/DLLSHAREDATA.h"
 #include "env/CFormatManager.h"
@@ -209,15 +208,11 @@ void CEditView::ExecCmd( const WCHAR* pszCmd, int nFlgOpt, const WCHAR* pszCurDi
 	if( CreateProcess( NULL, cmdline, NULL, NULL, TRUE,
 				CREATE_NEW_CONSOLE, NULL, bCurDir ? pszCurDir : NULL, &sui, &pi ) == FALSE ) {
 		//実行に失敗した場合、コマンドラインベースのアプリケーションと判断して
-		// command(9x) か cmd(NT) を呼び出す
+		// cmd.exe を呼び出す
 
 		// 2010.08.27 Moca システムディレクトリ付加
 		WCHAR szCmdDir[_MAX_PATH];
-		if( IsWin32NT() ){
-			::GetSystemDirectory(szCmdDir, _countof(szCmdDir));
-		}else{
-			::GetWindowsDirectory(szCmdDir, _countof(szCmdDir));
-		}
+		::GetSystemDirectory(szCmdDir, _countof(szCmdDir));
 
 		//コマンドライン文字列作成
 		//	"<szCmdDir>\cmd.exe" [/U]/C|/K <pszCmd>
@@ -226,7 +221,7 @@ void CEditView::ExecCmd( const WCHAR* pszCmd, int nFlgOpt, const WCHAR* pszCurDi
 		sCmdLine += L"\"";
 		sCmdLine += szCmdDir;
 		sCmdLine += L"\\";
-		sCmdLine += ( IsWin32NT() ? L"cmd.exe" : L"command.com" );
+		sCmdLine += L"cmd.exe";
 		sCmdLine += L"\" ";
 		sCmdLine += ( outputEncoding == CODE_UNICODE ? L"/U" : L"" );	// Unicdeモードでコマンド実行	2008/6/17 Uchi
 		sCmdLine += ( bGetStdout ? L"/C " : L"/K " );

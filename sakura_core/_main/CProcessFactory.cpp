@@ -22,22 +22,11 @@
 #include "CNormalProcess.h"
 #include "CCommandLine.h"
 #include "CEditorManager.h"
-#include "_os/COsVersionInfo.h"
 #include "debug/CRunningTimer.h"
 #include "util/os.h"
 #include <io.h>
 
 class CProcess;
-
-
-// COsVersionInfoの内部static変数の定義
-//	初期化はIsValidVersion()で行う
-//	_os/COsVersionInfo.cppを作るべきか?
-BOOL	 		COsVersionInfo::m_bSuccess;
-OSVERSIONINFO	COsVersionInfo::m_cOsVersionInfo;
-#ifdef USE_SSE
-bool			COsVersionInfo::m_bSSE;
-#endif
 
 
 /*!

@@ -31,20 +31,9 @@
 #ifndef SAKURA_HANDCURSOR_A545F10D_9F24_4AB5_889F_13732FC0150B_H_
 #define SAKURA_HANDCURSOR_A545F10D_9F24_4AB5_889F_13732FC0150B_H_
 
-#include "_os/COsVersionInfo.h"
-#include "sakura_rc.h"
-
 inline void SetHandCursor ()
 {
-#ifdef IDC_CURSOR_HAND
-	if (!IsWin2000_or_later()) {
-		SetCursor( LoadCursor( GetModuleHandle( NULL ), MAKEINTRESOURCE( IDC_CURSOR_HAND ) ) );
-	}
-	else
-#endif
-	{
-		SetCursor( LoadCursor( NULL, IDC_HAND ) );
-	}
+	SetCursor( LoadCursor( NULL, IDC_HAND ) );
 }
 
 #endif	// SAKURA_HANDCURSOR_A545F10D_9F24_4AB5_889F_13732FC0150B_H_
