@@ -62,38 +62,6 @@ using namespace std;
 
 #define PREPROCESSOR "cl.exe /EP %s"
 
-#ifdef __MINGW32__
-#include <windows.h>
-#ifndef _countof
-#define _countof(A) (sizeof(A)/sizeof(A[0]))
-#endif
-#define sprintf_s(A, B, C, ...) sprintf((A), (C), (__VA_ARGS__))
-#define strncpy_s(A, B, C, D) strncpy((A), (C), (D))
-
-#undef PREPROCESSOR
-#define PREPROCESSOR "gcc -x c++ -finput-charset=cp932 -fexec-charset=cp932 -E %s"
-
-void fopen_s( 
-   FILE** pFile,
-   const char *filename,
-   const char *mode 
-)
-{
-	*pFile = fopen(filename, mode);
-}
-#endif	// __MINGW32__
-
-#ifdef _MSC_VER
-#if _MSC_VER < 1400	// VC2003
-#ifndef _countof
-#define _countof(A) (sizeof(A)/sizeof(A[0]))
-#endif
-#define sprintf_s(A, B, C, D) sprintf((A), (C), (D))
-#define strncpy_s(A, B, C, D) strncpy((A), (C), (D))
-#define fopen_s(A, B, C) ( *(A) = fopen((B), (C)) )
-#endif	// VC2003
-#endif	// _MSC_VER
-
 enum EMode{
 	MODE_INVALID,
 
