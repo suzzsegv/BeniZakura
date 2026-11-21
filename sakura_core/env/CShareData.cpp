@@ -498,6 +498,7 @@ bool CShareData::InitShareData()
 		// カラーテーマ (既定は紅桜。カスタムの色も紅桜の配色にしておく)	// 2026.11.18
 		m_pShareData->m_Common.m_sColorTheme.m_nColorTheme = COLOR_THEME_BENIZAKURA;
 		SetPresetColorInfo( m_pShareData->m_Common.m_sColorTheme.m_CustomColorInfoArr, COLOR_THEME_BENIZAKURA );
+		SetPresetColorThemeView( &m_pShareData->m_Common.m_sColorTheme.m_sCustomView, COLOR_THEME_BENIZAKURA );	// 2026.11.21
 		m_pShareData->m_Common.m_sColorTheme.m_nUiColorMode = UI_COLOR_MODE_LIGHT;	// 画面の配色 (既定はライト)	// 2026.11.20
 
 		InitKeyword( m_pShareData );
@@ -999,14 +1000,18 @@ void CShareData::ApplyColorThemeToAllTypes(
 }
 
 /*!
- * CShareData::ApplyColorThemeDispToAllTypes - カラーテーマの「色分け/表示」を、すべてのタイプ別設定に適用する
+ * CShareData::ApplyColorThemeSwitch - テーマを切り替えたときの値を、タイプ別設定と共通設定に適用する
  *
- * 共通設定のテーマが持つ「色分け/表示」を、各タイプ別設定の色設定に適用する。テーマを切り替えたときに使う。
- * カーソル行の背景色などの 5 項目はテーマの値、それ以外の項目はテーマの値とタイプの初期値から決める
- * (ApplyColorThemeDisp を参照)。タイプの初期値は、タイプ別設定の番号ごとの初期設定の値 (CreateDefaultType)。
+ * 共通設定のテーマが持つ次の値を適用する。テーマを切り替えたときに使う。
+ * - 「色分け/表示」(全タイプ): カーソル行の背景色などの 5 項目はテーマの値、それ以外の項目はテーマの値とタイプの初期値から決める
+ *   (ApplyColorThemeDisp を参照)。タイプの初期値は、タイプ別設定の番号ごとの初期設定の値 (CreateDefaultType)。
+ * - TAB 表示・矢印表示 (全タイプ): テーマの値 (ApplyColorThemeView)。
+ * - カーソル形状 (共通設定): テーマの値 (GetColorThemeCaretType)。bApplyCaretType が false のときは変更しない。
+ * (2026.11.21 ApplyColorThemeDispToAllTypes から名前を変更し、TAB 表示・矢印表示・カーソル形状を追加)
  */
-void CShareData::ApplyColorThemeDispToAllTypes(
-	DLLSHAREDATA*	pShareData	//!< [i/o] 共有データ
+void CShareData::ApplyColorThemeSwitch(
+	DLLSHAREDATA*	pShareData,			//!< [i/o] 共有データ
+	bool			bApplyCaretType		//!< [in] カーソル形状も適用するか (共通設定の「全般」タブで変更された場合は false)
 )
 {
 	const CommonSetting_ColorTheme& sColorTheme = pShareData->m_Common.m_sColorTheme;
@@ -1015,7 +1020,13 @@ void CShareData::ApplyColorThemeDispToAllTypes(
 		CType* pType = CreateDefaultType( i );
 		pType->GetInitialColorDisp( abTypeInitDisp );
 		SAFE_DELETE( pType );
-		ApplyColorThemeDisp( pShareData->m_Types[i].m_ColorInfoArr, sColorTheme.m_nColorTheme, sColorTheme.m_CustomColorInfoArr, abTypeInitDisp );
+		STypeConfig& types = pShareData->m_Types[i];
+		ApplyColorThemeDisp( types.m_ColorInfoArr, sColorTheme.m_nColorTheme, sColorTheme.m_CustomColorInfoArr, abTypeInitDisp );
+		ApplyColorThemeView( types.m_szTabViewString, _countof(types.m_szTabViewString), &types.m_bTabArrow,
+							 sColorTheme.m_nColorTheme, &sColorTheme.m_sCustomView );
+	}
+	if( bApplyCaretType ){
+		pShareData->m_Common.m_sGeneral.SetCaretType( GetColorThemeCaretType( sColorTheme.m_nColorTheme, &sColorTheme.m_sCustomView ) );
 	}
 }
 

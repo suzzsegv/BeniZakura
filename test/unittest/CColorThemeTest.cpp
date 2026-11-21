@@ -5,6 +5,7 @@
  * テーマの適用で、テーマが決める値 (文字色・背景色・太字・下線) だけが変わり、「色分け/表示」が変わらないこと、
  * テーマの切り替え時の「色分け/表示」の適用 (5 項目はテーマの値、それ以外はテーマとタイプの初期値から決めること、
  * 適用が必要かの判定、プリセットの 5 項目以外の値が共有データの初期値と同じこと)、
+ * 色以外の表示の設定 (TAB 表示、矢印表示、カーソル形状) の初期値と適用、
  * テーマの名前と番号の変換、移行処理を確認する。
  *
  *	@author	Claude Opus 5.5
@@ -326,51 +327,138 @@ namespace BeniZakuraUnitTest
 		}
 
 		/*!
-		 * DispChangedTheme - テーマ番号が異なる場合は、「色分け/表示」の適用が必要
+		 * ApplyNeededTheme - テーマ番号が異なる場合は、テーマの切り替え時の適用が必要
 		 */
-		TEST_METHOD( DispChangedTheme )
+		TEST_METHOD( ApplyNeededTheme )
 		{
 			ColorInfo custom[COLORIDX_LAST];
 			SetPresetColorInfo( custom, COLOR_THEME_BENIZAKURA );
-			Assert::IsTrue( IsColorThemeDispChanged( COLOR_THEME_BENIZAKURA, custom, COLOR_THEME_MONOKAI, custom ) );
-			Assert::IsTrue( IsColorThemeDispChanged( COLOR_THEME_MONOKAI, custom, COLOR_THEME_CUSTOM, custom ) );
-			Assert::IsTrue( IsColorThemeDispChanged( COLOR_THEME_CUSTOM, custom, COLOR_THEME_SAKURA, custom ) );
+			ColorThemeView view;
+			SetPresetColorThemeView( &view, COLOR_THEME_BENIZAKURA );
+			Assert::IsTrue( IsColorThemeApplyNeeded( COLOR_THEME_BENIZAKURA, custom, &view, COLOR_THEME_MONOKAI, custom, &view ) );
+			Assert::IsTrue( IsColorThemeApplyNeeded( COLOR_THEME_MONOKAI, custom, &view, COLOR_THEME_CUSTOM, custom, &view ) );
+			Assert::IsTrue( IsColorThemeApplyNeeded( COLOR_THEME_CUSTOM, custom, &view, COLOR_THEME_SAKURA, custom, &view ) );
 			// プリセット同士で、表示の有無が同じテーマでも、切り替えたら適用する
-			Assert::IsTrue( IsColorThemeDispChanged( COLOR_THEME_BENIZAKURA, custom, COLOR_THEME_SAKURA, custom ) );
+			Assert::IsTrue( IsColorThemeApplyNeeded( COLOR_THEME_BENIZAKURA, custom, &view, COLOR_THEME_SAKURA, custom, &view ) );
 		}
 
 		/*!
-		 * DispChangedSameTheme - テーマ番号が同じ場合は、カスタムの「色分け/表示」が異なるときだけ適用が必要
+		 * ApplyNeededSameTheme - テーマ番号が同じ場合は、カスタムの「色分け/表示」・TAB 表示・矢印表示・カーソル形状が異なるときだけ適用が必要
 		 */
-		TEST_METHOD( DispChangedSameTheme )
+		TEST_METHOD( ApplyNeededSameTheme )
 		{
 			ColorInfo oldCustom[COLORIDX_LAST];
 			SetPresetColorInfo( oldCustom, COLOR_THEME_BENIZAKURA );
 			ColorInfo newCustom[COLORIDX_LAST];
+			ColorThemeView oldView;
+			SetPresetColorThemeView( &oldView, COLOR_THEME_BENIZAKURA );
+			ColorThemeView newView = oldView;
 
-			// 同じプリセット: カスタムの色が異なっても適用しない
+			// 同じプリセット: カスタムの値が異なっても適用しない
 			memcpy( newCustom, oldCustom, sizeof(newCustom) );
 			newCustom[COLORIDX_TAB].m_bDisp = !newCustom[COLORIDX_TAB].m_bDisp;
-			Assert::IsFalse( IsColorThemeDispChanged( COLOR_THEME_MONOKAI, oldCustom, COLOR_THEME_MONOKAI, newCustom ) );
+			newView.m_bTabArrow = !newView.m_bTabArrow;
+			newView.m_nCaretType = 1 - newView.m_nCaretType;
+			Assert::IsFalse( IsColorThemeApplyNeeded( COLOR_THEME_MONOKAI, oldCustom, &oldView, COLOR_THEME_MONOKAI, newCustom, &newView ) );
 
 			// カスタム: 何も変えていない
 			memcpy( newCustom, oldCustom, sizeof(newCustom) );
-			Assert::IsFalse( IsColorThemeDispChanged( COLOR_THEME_CUSTOM, oldCustom, COLOR_THEME_CUSTOM, newCustom ) );
+			newView = oldView;
+			Assert::IsFalse( IsColorThemeApplyNeeded( COLOR_THEME_CUSTOM, oldCustom, &oldView, COLOR_THEME_CUSTOM, newCustom, &newView ) );
 
 			// カスタム: 文字色・背景色・太字・下線だけが異なる
 			newCustom[COLORIDX_TEXT].m_colTEXT = RGB( 0x12, 0x34, 0x56 );
 			newCustom[COLORIDX_TEXT].m_colBACK = RGB( 0x65, 0x43, 0x21 );
 			newCustom[COLORIDX_COMMENT].m_bBoldFont = !newCustom[COLORIDX_COMMENT].m_bBoldFont;
 			newCustom[COLORIDX_COMMENT].m_bUnderLine = !newCustom[COLORIDX_COMMENT].m_bUnderLine;
-			Assert::IsFalse( IsColorThemeDispChanged( COLOR_THEME_CUSTOM, oldCustom, COLOR_THEME_CUSTOM, newCustom ) );
+			Assert::IsFalse( IsColorThemeApplyNeeded( COLOR_THEME_CUSTOM, oldCustom, &oldView, COLOR_THEME_CUSTOM, newCustom, &newView ) );
 
 			// カスタム: いずれかの項目の「色分け/表示」が異なる (5 項目とそれ以外)
 			for( int i = 0; i < COLORIDX_LAST; i++ ){
 				memcpy( newCustom, oldCustom, sizeof(newCustom) );
 				newCustom[i].m_bDisp = !newCustom[i].m_bDisp;
 				const std::wstring strItem = L"item " + std::to_wstring( i );
-				Assert::IsTrue( IsColorThemeDispChanged( COLOR_THEME_CUSTOM, oldCustom, COLOR_THEME_CUSTOM, newCustom ), strItem.c_str() );
+				Assert::IsTrue( IsColorThemeApplyNeeded( COLOR_THEME_CUSTOM, oldCustom, &oldView, COLOR_THEME_CUSTOM, newCustom, &newView ), strItem.c_str() );
 			}
+
+			// カスタム: TAB 表示・矢印表示・カーソル形状のどれかが異なる
+			memcpy( newCustom, oldCustom, sizeof(newCustom) );
+			newView = oldView;
+			newView.m_szTabViewString[0] = L'>';
+			Assert::IsTrue( IsColorThemeApplyNeeded( COLOR_THEME_CUSTOM, oldCustom, &oldView, COLOR_THEME_CUSTOM, newCustom, &newView ) );
+			newView = oldView;
+			newView.m_bTabArrow = !newView.m_bTabArrow;
+			Assert::IsTrue( IsColorThemeApplyNeeded( COLOR_THEME_CUSTOM, oldCustom, &oldView, COLOR_THEME_CUSTOM, newCustom, &newView ) );
+			newView = oldView;
+			newView.m_nCaretType = 1 - newView.m_nCaretType;
+			Assert::IsTrue( IsColorThemeApplyNeeded( COLOR_THEME_CUSTOM, oldCustom, &oldView, COLOR_THEME_CUSTOM, newCustom, &newView ) );
+		}
+
+		/*!
+		 * PresetView - プリセットの色以外の表示の設定の初期値 (TAB 表示はテーマごと、カーソル形状は紅桜のみ MS-DOS 風)
+		 */
+		TEST_METHOD( PresetView )
+		{
+			struct { int nTheme; const wchar_t* pszTab; bool bArrow; } const aExpected[] = {
+				{ COLOR_THEME_BENIZAKURA,		L"o.......",	false },
+				{ COLOR_THEME_SAKURA,			L"^       ",	false },
+				{ COLOR_THEME_MIFES_BLUE,		L">.......",	false },
+				{ COLOR_THEME_HIDEMARU_BLACK,	L">       ",	true },
+				{ COLOR_THEME_MONOKAI,			L"|       ",	false },
+				{ COLOR_THEME_VS2012DARK,		L"|       ",	false },
+			};
+			Assert::AreEqual( (size_t)COLOR_THEME_MAX, _countof(aExpected) );
+			for( const auto& e : aExpected ){
+				const int nTheme = e.nTheme;
+				ColorThemeView view;
+				SetPresetColorThemeView( &view, nTheme );
+				const std::wstring strTheme = L"theme " + std::to_wstring( nTheme );
+				Assert::AreEqual( std::wstring( e.pszTab ), std::wstring( view.m_szTabViewString ), strTheme.c_str() );
+				Assert::AreEqual( e.bArrow, view.m_bTabArrow, strTheme.c_str() );
+				Assert::AreEqual( ( nTheme == COLOR_THEME_BENIZAKURA ) ? 1 : 0, view.m_nCaretType, strTheme.c_str() );
+				Assert::AreEqual( view.m_nCaretType, GetColorThemeCaretType( nTheme, NULL ), strTheme.c_str() );
+			}
+			// 不明なテーマ番号とカスタム (値なし) は紅桜
+			ColorThemeView view;
+			SetPresetColorThemeView( &view, 99 );
+			Assert::AreEqual( 1, view.m_nCaretType );
+			Assert::AreEqual( 1, GetColorThemeCaretType( COLOR_THEME_CUSTOM, NULL ) );
+			Assert::AreEqual( 1, GetColorThemeCaretType( -1, NULL ) );
+		}
+
+		/*!
+		 * ApplyView - テーマの TAB 表示・矢印表示がタイプの値になり、カスタムのカーソル形状を返す
+		 */
+		TEST_METHOD( ApplyView )
+		{
+			ColorThemeView custom;
+			wcscpy_s( custom.m_szTabViewString, _countof(custom.m_szTabViewString), L">-------" );
+			custom.m_bTabArrow = true;
+			custom.m_nCaretType = 0;
+
+			wchar_t szTab[8+1] = L"abc";
+			bool bArrow = false;
+			ApplyColorThemeView( szTab, _countof(szTab), &bArrow, COLOR_THEME_CUSTOM, &custom );
+			Assert::AreEqual( std::wstring( L">-------" ), std::wstring( szTab ) );
+			Assert::IsTrue( bArrow );
+			Assert::AreEqual( 0, GetColorThemeCaretType( COLOR_THEME_CUSTOM, &custom ) );
+
+			// プリセットはプリセットの初期値 (カスタムの値は使わない)
+			ApplyColorThemeView( szTab, _countof(szTab), &bArrow, COLOR_THEME_MONOKAI, &custom );
+			Assert::AreEqual( std::wstring( L"|       " ), std::wstring( szTab ) );
+			Assert::IsFalse( bArrow );
+			ApplyColorThemeView( szTab, _countof(szTab), &bArrow, COLOR_THEME_HIDEMARU_BLACK, NULL );
+			Assert::AreEqual( std::wstring( L">       " ), std::wstring( szTab ) );
+			Assert::IsTrue( bArrow );
+			Assert::AreEqual( 0, GetColorThemeCaretType( COLOR_THEME_MONOKAI, &custom ) );
+			Assert::AreEqual( 1, GetColorThemeCaretType( COLOR_THEME_BENIZAKURA, &custom ) );
+
+			// カスタムの値がない場合は紅桜
+			wcscpy_s( szTab, _countof(szTab), L"abc" );
+			bArrow = true;
+			ApplyColorThemeView( szTab, _countof(szTab), &bArrow, COLOR_THEME_CUSTOM, NULL );
+			Assert::AreEqual( std::wstring( L"o......." ), std::wstring( szTab ) );
+			Assert::IsFalse( bArrow );
 		}
 
 		/*!

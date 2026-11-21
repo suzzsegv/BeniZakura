@@ -95,7 +95,7 @@ public:
 	int			GetMacroFilename( int idx, WCHAR* pszPath, int nBufLen ); // idxで指定したマクロファイル名（フルパス）を取得する	//	Jun. 14, 2003 genta 引数追加．書式変更
 	bool		BeReloadWhenExecuteMacro( int idx );	//	idxで指定したマクロは、実行するたびにファイルを読み込む設定か？
 	static void ApplyColorThemeToAllTypes( DLLSHAREDATA* pShareData );	//!< カラーテーマを、すべてのタイプ別設定に適用する	// 2026.11.18
-	static void ApplyColorThemeDispToAllTypes( DLLSHAREDATA* pShareData );	//!< カラーテーマの「色分け/表示」を、すべてのタイプ別設定に適用する	// 2026.11.21
+	static void ApplyColorThemeSwitch( DLLSHAREDATA* pShareData, bool bApplyCaretType );	//!< テーマを切り替えたときの値を、タイプ別設定と共通設定に適用する	// 2026.11.21
 
 	
 

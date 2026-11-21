@@ -227,7 +227,7 @@ int CPropCommon::DoPropertySheet( int nPageNum/*, int nActiveItem*/ )
 		{ L"ファイル名表示",		IDD_PROP_FNAME,		CPropFileName::DlgProc_page },
 		{ L"バックアップ",		IDD_PROP_BACKUP,	CPropBackup::DlgProc_page },
 		{ L"書式",				IDD_PROP_FORMAT,	CPropFormat::DlgProc_page },
-		{ L"カラー",				IDD_PROP_COMMON_COLOR,	CPropColor::DlgProc_page },	// 2026.11.18
+		{ L"テーマ",				IDD_PROP_COMMON_COLOR,	CPropColor::DlgProc_page },	// 2026.11.18	// 2026.11.21 「カラー」から名前を変更
 		{ L"検索",				IDD_PROP_GREP,		CPropGrep::DlgProc_page },	// 2006.08.23 ryoji タイトル変更（Grep -> 検索）
 		{ L"キー割り当て",		IDD_PROP_KEYBIND,	CPropKeybind::DlgProc_page },
 		{ L"カスタムメニュー",	IDD_PROP_CUSTMENU,	CPropCustmenu::DlgProc_page },

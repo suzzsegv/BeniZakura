@@ -1,8 +1,8 @@
 /*!
  *	@file
- *	@brief	共通設定ダイアログボックス、「カラー」ページ
+ *	@brief	共通設定ダイアログボックス、「テーマ」ページ (2026.11.21 「カラー」から名前を変更)
  *
- * カラーテーマ (全タイプ共通) の選択と、カスタムテーマの色の編集を行う。
+ * カラーテーマ (全タイプ共通) の選択と、カスタムテーマの色・色以外の表示の設定 (TAB 表示、矢印表示、カーソル形状) の編集を行う。
  * プリセットのテーマを選んでいる間は配色を確認するだけで、変更はカスタムを選んでいる間だけできる。
  * カスタムの色は、プリセットの配色からのコピーと、色設定ファイル (.col) のインポートでも設定できる。
  *
@@ -45,7 +45,7 @@
 
 
 /*!
- * CPropColor::DlgProc_page - 「カラー」ページのダイアログプロシージャ
+ * CPropColor::DlgProc_page - 「テーマ」ページのダイアログプロシージャ
  *
  *	@return メッセージの処理結果
  */
@@ -60,7 +60,7 @@ INT_PTR CALLBACK CPropColor::DlgProc_page(
 }
 
 /*!
- * CPropColor::DispatchEvent - 「カラー」ページのメッセージ処理
+ * CPropColor::DispatchEvent - 「テーマ」ページのメッセージ処理
  *
  *	@return TRUE: 処理した / FALSE: 処理していない
  */
@@ -86,6 +86,7 @@ INT_PTR CPropColor::DispatchEvent(
 				Combo_AddString( hwndCombo, GetColorThemeDispName( GetColorThemeBySelIndex( i ) ) );
 			}
 		}
+		EditCtl_LimitText( ::GetDlgItem( hwndDlg, IDC_EDIT_THEME_TABVIEWSTRING ), _countof(m_Common.m_sColorTheme.m_sCustomView.m_szTabViewString) - 1 );	// 2026.11.21
 
 		SetData( hwndDlg );
 		m_cColorListUi.Attach( hwndList, m_dwColorCustColors, CanEditColor, this );
@@ -109,10 +110,32 @@ INT_PTR CPropColor::DispatchEvent(
 				const int nSel = Combo_GetCurSel( hwndCtl );
 				m_Common.m_sColorTheme.m_nColorTheme = GetColorThemeBySelIndex( nSel );
 				SetColorList( hwndDlg );
+				SetViewControls( hwndDlg );	// 2026.11.21
+				return TRUE;
+			}
+			if( wID == IDC_EDIT_THEME_TABVIEWSTRING && wNotifyCode == EN_CHANGE ){	// 2026.11.21 TAB 表示
+				GetTabViewString( hwndDlg );
 				return TRUE;
 			}
 			if( wNotifyCode != BN_CLICKED ){
 				break;
+			}
+
+			// 色以外の表示の設定 (カスタム選択中だけ有効なコントロール)	// 2026.11.21
+			ColorThemeView& sCustomView = m_Common.m_sColorTheme.m_sCustomView;
+			switch( wID ){
+			case IDC_CHECK_THEME_TAB_ARROW:	/* 矢印表示 */
+				if( IsCustomTheme() ){
+					sCustomView.m_bTabArrow = ( ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_THEME_TAB_ARROW ) != BST_UNCHECKED );
+					SetViewControls( hwndDlg );
+				}
+				return TRUE;
+			case IDC_RADIO_THEME_CARETTYPE0:	/* カーソル形状 */
+			case IDC_RADIO_THEME_CARETTYPE1:
+				if( IsCustomTheme() ){
+					sCustomView.m_nCaretType = ( ::IsDlgButtonChecked( hwndDlg, IDC_RADIO_THEME_CARETTYPE1 ) != BST_UNCHECKED ) ? 1 : 0;
+				}
+				return TRUE;
 			}
 
 			ColorInfo* pColorInfoArr = GetDispColorInfoArr();
@@ -208,6 +231,7 @@ void CPropColor::SetData(
 {
 	Combo_SetCurSel( ::GetDlgItem( hwndDlg, IDC_COMBO_THEME ), GetColorThemeSelIndex( m_Common.m_sColorTheme.m_nColorTheme ) );
 	SetColorList( hwndDlg );
+	SetViewControls( hwndDlg );	// 2026.11.21
 
 	// 画面の配色	// 2026.11.20
 	int nRadioId;
@@ -338,6 +362,7 @@ void CPropColor::UpdateControls(
  * CPropColor::CopyFromPreset - プリセットの配色を選んで、カスタムの色にコピーする
  *
  * プリセットの一覧をポップアップメニューで表示し、選んだテーマの配色でカスタムの色を上書きする (確認あり)。
+ * 色以外の表示の設定 (TAB 表示、矢印表示、カーソル形状) も、選んだテーマの初期値で上書きする。	// 2026.11.21
  */
 void CPropColor::CopyFromPreset(
 	HWND	hwndDlg		//!< [in] ダイアログ
@@ -365,7 +390,68 @@ void CPropColor::CopyFromPreset(
 		return;
 	}
 	SetPresetColorInfo( m_Common.m_sColorTheme.m_CustomColorInfoArr, nColorTheme );
+	SetPresetColorThemeView( &m_Common.m_sColorTheme.m_sCustomView, nColorTheme );	// 2026.11.21 TAB 表示・矢印表示・カーソル形状もコピーする
 	SetColorList( hwndDlg );
+	SetViewControls( hwndDlg );
+}
+
+/*!
+ * CPropColor::SetViewControls - 選択中のテーマの、色以外の表示の設定 (TAB 表示、矢印表示、カーソル形状) を表示する
+ *
+ * プリセット選択中はテーマの初期値を表示してコントロールを無効にし、カスタム選択中はカスタムの値を表示して変更できるようにする。
+ * 矢印表示がオンのときは、TAB 表示のエディットを無効にする (タイプ別設定の「スクリーン」タブと同じ)。
+ */
+void CPropColor::SetViewControls(
+	HWND	hwndDlg		//!< [in] ダイアログ
+)
+{
+	const bool bCustom = IsCustomTheme();
+	ColorThemeView sView;
+	if( bCustom ){
+		sView = m_Common.m_sColorTheme.m_sCustomView;
+	}else{
+		SetPresetColorThemeView( &sView, m_Common.m_sColorTheme.m_nColorTheme );
+	}
+
+	// エディットの EN_CHANGE で値を読み直す (GetTabViewString) ため、表示中の文字列と異なるときだけ設定する
+	WCHAR szTab[_countof(sView.m_szTabViewString)];
+	::DlgItem_GetText( hwndDlg, IDC_EDIT_THEME_TABVIEWSTRING, szTab, _countof(szTab) );
+	if( wcscmp( szTab, sView.m_szTabViewString ) != 0 ){
+		::DlgItem_SetText( hwndDlg, IDC_EDIT_THEME_TABVIEWSTRING, sView.m_szTabViewString );
+	}
+	::CheckDlgButton( hwndDlg, IDC_CHECK_THEME_TAB_ARROW, sView.m_bTabArrow ? BST_CHECKED : BST_UNCHECKED );
+	::CheckRadioButton( hwndDlg, IDC_RADIO_THEME_CARETTYPE0, IDC_RADIO_THEME_CARETTYPE1,
+		( sView.m_nCaretType == 1 ) ? IDC_RADIO_THEME_CARETTYPE1 : IDC_RADIO_THEME_CARETTYPE0 );
+
+	::EnableWindow( ::GetDlgItem( hwndDlg, IDC_EDIT_THEME_TABVIEWSTRING ), ( bCustom && !sView.m_bTabArrow ) ? TRUE : FALSE );
+	::EnableWindow( ::GetDlgItem( hwndDlg, IDC_CHECK_THEME_TAB_ARROW ), bCustom ? TRUE : FALSE );
+	::EnableWindow( ::GetDlgItem( hwndDlg, IDC_RADIO_THEME_CARETTYPE0 ), bCustom ? TRUE : FALSE );
+	::EnableWindow( ::GetDlgItem( hwndDlg, IDC_RADIO_THEME_CARETTYPE1 ), bCustom ? TRUE : FALSE );
+}
+
+/*!
+ * CPropColor::GetTabViewString - TAB 表示のエディットの文字列を、カスタムの値に設定する
+ *
+ * カスタム選択中だけ設定する。タイプ別設定の「スクリーン」タブ (CPropTypesScreen::GetData) と同じく、
+ * 既定の文字列 "o......." の先頭から、TAB 表示に使える文字だけを 8 文字まで置き換える。
+ */
+void CPropColor::GetTabViewString(
+	HWND	hwndDlg		//!< [in] ダイアログ
+)
+{
+	if( !IsCustomTheme() ){
+		return;
+	}
+	ColorThemeView& sCustomView = m_Common.m_sColorTheme.m_sCustomView;
+	WCHAR szTab[8+1];
+	::DlgItem_GetText( hwndDlg, IDC_EDIT_THEME_TABVIEWSTRING, szTab, _countof(szTab) );
+	wcscpy_s( sCustomView.m_szTabViewString, _countof(sCustomView.m_szTabViewString), L"o......." );
+	for( int i = 0; i < 8; i++ ){
+		if( !WCODE::IsTabAvailableCode( szTab[i] ) ){
+			break;
+		}
+		sCustomView.m_szTabViewString[i] = szTab[i];
+	}
 }
 
 /*!

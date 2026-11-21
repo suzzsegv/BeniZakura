@@ -5,6 +5,8 @@
  * プリセットの配色表 (doc/CDocTypeSetting.cpp から移動) と、テーマをタイプ別設定の色設定に適用する処理。
  * テーマは全項目の文字色・背景色・太字・下線を決める。「色分け/表示」はテーマも全項目の値を持ち、
  * テーマを切り替えたときにタイプ別設定へ適用する (ApplyColorThemeDisp。その後はタイプごとに変更できる)。
+ * 色以外の表示の設定 (TAB 表示、矢印表示、カーソル形状。ColorThemeView) もテーマが初期値を持ち、
+ * テーマを切り替えたときに適用する (ApplyColorThemeView、GetColorThemeCaretType)。
  * テーマの番号は ColorTheme の値 (プリセット) または COLOR_THEME_CUSTOM。ini には名前の文字列で保存する。
  *
  * プリコンパイル済みヘッダー (StdAfx.h) は使用しない (単体テストからも単独でビルドするため)。
@@ -184,7 +186,7 @@ static ColorInfoIni ColorInfo_DEFAULT[COLOR_THEME_MAX][COLORIDX_LAST] = {
 		L"カーソル位置縦線",					FALSE,		FALSE,		FALSE,		RGB( 0x33,0x33,0x33 ),	RGB( 0x00,0x00,0x00 ), // "CVL"
 		L"行番号",							TRUE,		FALSE,		FALSE,		RGB( 0x2b,0x91,0xaf ),	RGB( 0x1e,0x1e,0x1e ), // "LNO"
 		L"行番号(変更行)",					TRUE,		FALSE,		FALSE,		RGB( 0xff,0xd8,0x00 ),	RGB( 0x1e,0x1e,0x1e ), // "MOD"
-		L"TAB記号",							FALSE,		FALSE,		FALSE,		RGB( 0x33,0x33,0x33 ),	RGB( 0x1e,0x1e,0x1e ), // "TAB"
+		L"TAB記号",							TRUE,		FALSE,		FALSE,		RGB( 0x33,0x33,0x33 ),	RGB( 0x1e,0x1e,0x1e ), // "TAB"
 		L"半角空白"		,					FALSE,		FALSE,		FALSE,		RGB( 0x9b,0x9b,0x9b ),	RGB( 0x1e,0x1e,0x1e ), // "SPC"
 		L"日本語空白",						TRUE,		FALSE,		FALSE,		RGB( 0x9b,0x9b,0x9b ),	RGB( 0x1e,0x1e,0x1e ), // "ZEN"
 		L"コントロールコード",				TRUE,		FALSE,		FALSE,		RGB( 0xff,0xd8,0x00 ),	RGB( 0x1e,0x1e,0x1e ), // "CTL"
@@ -243,7 +245,7 @@ static ColorInfoIni ColorInfo_DEFAULT[COLOR_THEME_MAX][COLORIDX_LAST] = {
 		L"カーソル位置縦線",					FALSE,		FALSE,		FALSE,		RGB( 0x75,0x71,0x5e ),	RGB( 0x00,0x00,0x00 ),
 		L"行番号",							TRUE,		FALSE,		FALSE,		RGB( 0x8f,0x90,0x8b ),	RGB( 0x30,0x30,0x30 ),
 		L"行番号(変更行)",					TRUE,		FALSE,		FALSE,		RGB( 0xff,0xff,0xff ),	RGB( 0x49,0x48,0x3e ),
-		L"TAB記号",							FALSE,		FALSE,		FALSE,		RGB( 0x3f,0x3d,0x30 ),	RGB( 0x28,0x28,0x28 ),
+		L"TAB記号",							TRUE,		FALSE,		FALSE,		RGB( 0x3f,0x3d,0x30 ),	RGB( 0x28,0x28,0x28 ),
 		L"半角空白"		,					FALSE,		FALSE,		FALSE,		RGB( 0x75,0x71,0x5e ),	RGB( 0x28,0x28,0x28 ),
 		L"日本語空白",						TRUE,		FALSE,		FALSE,		RGB( 0x75,0x71,0x5e ),	RGB( 0x28,0x28,0x28 ),
 		L"コントロールコード",				TRUE,		FALSE,		FALSE,		RGB( 0xe6,0xdb,0x74 ),	RGB( 0x28,0x28,0x28 ),
@@ -409,6 +411,17 @@ static ColorInfoIni ColorInfo_DEFAULT[COLOR_THEME_MAX][COLORIDX_LAST] = {
 	}
 };
 
+
+//! プリセットの、色以外の表示の設定 (enum ColorTheme の順)	// 2026.11.21
+static const ColorThemeView ColorThemeView_DEFAULT[COLOR_THEME_MAX] = {
+	//	TAB 表示,		矢印表示,	カーソル形状 (0: Windows 風、1: MS-DOS 風)
+	{ L"o.......",		false,		1 },	// 紅桜
+	{ L"^       ",		false,		0 },	// サクラエディタ
+	{ L"|       ",		false,		0 },	// VS2012 Dark
+	{ L"|       ",		false,		0 },	// Monokai
+	{ L">.......",		false,		0 },	// MIFES Blue
+	{ L">       ",		true,		0 },	// 秀丸エディタ Black
+};
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 //                     テーマの名前と番号                      //
@@ -631,19 +644,23 @@ void ApplyColorThemeDisp(
 }
 
 /*!
- * IsColorThemeDispChanged - テーマの変更で、テーマの「色分け/表示」を全タイプに適用する必要があるかを返す
+ * IsColorThemeApplyNeeded - テーマの変更で、テーマの切り替え時の適用が必要かを返す
  *
- * 変更前と変更後でテーマ番号が異なる場合、またはどちらもカスタムで、カスタムの色の
- * 「色分け/表示」(いずれかの項目) が異なる場合に、適用が必要とする。
+ * テーマの切り替え時の適用 (「色分け/表示」、TAB 表示・矢印表示、カーソル形状) が必要かを判定する。
+ * 変更前と変更後でテーマ番号が異なる場合、またはどちらもカスタムで、カスタムの「色分け/表示」(いずれかの項目)、
+ * TAB 表示、矢印表示、カーソル形状のいずれかが異なる場合に、適用が必要とする。
  * カスタムの文字色・背景色・太字・下線だけが異なる場合は、適用しない。
+ * (2026.11.21 IsColorThemeDispChanged から名前を変更し、色以外の表示の設定も判定するように変更)
  *
  *	@return	true: 適用する必要がある / false: 適用しない
  */
-bool IsColorThemeDispChanged(
-	int					nOldColorTheme,				//!< [in] 変更前のテーマ番号
-	const ColorInfo*	pOldCustomColorInfoArr,		//!< [in] 変更前のカスタムテーマの色 (COLORIDX_LAST 個)
-	int					nNewColorTheme,				//!< [in] 変更後のテーマ番号
-	const ColorInfo*	pNewCustomColorInfoArr		//!< [in] 変更後のカスタムテーマの色 (COLORIDX_LAST 個)
+bool IsColorThemeApplyNeeded(
+	int						nOldColorTheme,				//!< [in] 変更前のテーマ番号
+	const ColorInfo*		pOldCustomColorInfoArr,		//!< [in] 変更前のカスタムテーマの色 (COLORIDX_LAST 個)
+	const ColorThemeView*	pOldCustomView,				//!< [in] 変更前のカスタムテーマの、色以外の表示の設定
+	int						nNewColorTheme,				//!< [in] 変更後のテーマ番号
+	const ColorInfo*		pNewCustomColorInfoArr,		//!< [in] 変更後のカスタムテーマの色 (COLORIDX_LAST 個)
+	const ColorThemeView*	pNewCustomView				//!< [in] 変更後のカスタムテーマの、色以外の表示の設定
 )
 {
 	if( nOldColorTheme != nNewColorTheme ){
@@ -656,6 +673,11 @@ bool IsColorThemeDispChanged(
 		if( pOldCustomColorInfoArr[i].m_bDisp != pNewCustomColorInfoArr[i].m_bDisp ){
 			return true;
 		}
+	}
+	if( wcscmp( pOldCustomView->m_szTabViewString, pNewCustomView->m_szTabViewString ) != 0
+	 || pOldCustomView->m_bTabArrow != pNewCustomView->m_bTabArrow
+	 || pOldCustomView->m_nCaretType != pNewCustomView->m_nCaretType ){
+		return true;
 	}
 	return false;
 }
@@ -681,4 +703,79 @@ void SetCustomColorThemeFromType(
 		}
 	}
 	*pnColorTheme = COLOR_THEME_CUSTOM;
+}
+
+
+// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+//                   色以外の表示の設定                        //
+// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+
+/*!
+ * GetColorThemeView - テーマの、色以外の表示の設定を返す
+ *
+ * カスタムの場合はカスタムの値、プリセットの場合はプリセットの初期値を返す。
+ * カスタムの値がない場合 (NULL)、または不明なテーマ番号の場合は、紅桜の初期値を返す。
+ *
+ *	@return	色以外の表示の設定
+ */
+static const ColorThemeView& GetColorThemeView(
+	int						nColorTheme,	//!< [in] テーマ番号
+	const ColorThemeView*	pCustomView		//!< [in] カスタムテーマの、色以外の表示の設定
+)
+{
+	if( nColorTheme == COLOR_THEME_CUSTOM && pCustomView != NULL ){
+		return *pCustomView;
+	}
+	if( !IsColorThemePreset( nColorTheme ) ){
+		nColorTheme = COLOR_THEME_BENIZAKURA;
+	}
+	return ColorThemeView_DEFAULT[nColorTheme];
+}
+
+/*!
+ * SetPresetColorThemeView - 色以外の表示の設定 (TAB 表示、矢印表示、カーソル形状) を、プリセットの初期値にする
+ *
+ * カスタム、または不明なテーマ番号の場合は、紅桜の初期値にする。
+ */
+void SetPresetColorThemeView(
+	ColorThemeView*	pView,			//!< [out] 色以外の表示の設定
+	int				nColorTheme		//!< [in] テーマ番号
+)
+{
+	*pView = GetColorThemeView( nColorTheme, NULL );
+}
+
+/*!
+ * ApplyColorThemeView - テーマの TAB 表示と矢印表示を、タイプ別設定の値に設定する
+ *
+ * テーマを切り替えたときに、各タイプ別設定 (STypeConfig::m_szTabViewString、m_bTabArrow) に適用する。
+ * カスタムの値がない場合 (NULL)、または不明なテーマ番号の場合は、紅桜の初期値を設定する。
+ */
+void ApplyColorThemeView(
+	wchar_t*				pszTabViewString,		//!< [out] タイプ別設定の TAB 表示の文字列
+	size_t					nTabViewStringCount,	//!< [in] pszTabViewString のバッファサイズ (文字数)
+	bool*					pbTabArrow,				//!< [out] タイプ別設定の矢印表示
+	int						nColorTheme,			//!< [in] テーマ番号
+	const ColorThemeView*	pCustomView				//!< [in] カスタムテーマの、色以外の表示の設定
+)
+{
+	const ColorThemeView& sView = GetColorThemeView( nColorTheme, pCustomView );
+	wcsncpy_s( pszTabViewString, nTabViewStringCount, sView.m_szTabViewString, _TRUNCATE );
+	*pbTabArrow = sView.m_bTabArrow;
+}
+
+/*!
+ * GetColorThemeCaretType - テーマのカーソル形状を返す
+ *
+ * テーマを切り替えたときに、共通設定のカーソル形状 (CommonSetting_General::SetCaretType()) に適用する。
+ * カスタムの値がない場合 (NULL)、または不明なテーマ番号の場合は、紅桜の初期値を返す。
+ *
+ *	@return	カーソル形状 (0: Windows 風、1: MS-DOS 風)
+ */
+int GetColorThemeCaretType(
+	int						nColorTheme,	//!< [in] テーマ番号
+	const ColorThemeView*	pCustomView		//!< [in] カスタムテーマの、色以外の表示の設定
+)
+{
+	return GetColorThemeView( nColorTheme, pCustomView ).m_nCaretType;
 }

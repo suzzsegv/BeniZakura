@@ -610,6 +610,7 @@ struct CommonSetting_ColorTheme
 {
 	int			m_nColorTheme;							//!< 選択中のテーマ (ColorTheme の値、または COLOR_THEME_CUSTOM)
 	ColorInfo	m_CustomColorInfoArr[COLORIDX_LAST];	//!< カスタムテーマの色 (テーマが決める値だけを使う)
+	ColorThemeView	m_sCustomView;						//!< カスタムテーマの、色以外の表示の設定 (TAB 表示、矢印表示、カーソル形状)	// 2026.11.21
 	int			m_nUiColorMode;							//!< 画面の配色 (EUiColorMode: ライト / ダーク / OS の設定に従う)	// 2026.11.20
 };
 

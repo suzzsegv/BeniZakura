@@ -74,6 +74,13 @@ struct ColorInfo : public ColorInfoBase{
 	WCHAR		m_szName[64];		//!< 名前
 };
 
+//! テーマが持つ、色以外の表示の設定	// 2026.11.21
+struct ColorThemeView{
+	wchar_t		m_szTabViewString[8+1];	//!< TAB 表示の文字列 (STypeConfig::m_szTabViewString と同じ長さ)
+	bool		m_bTabArrow;			//!< 矢印表示
+	int			m_nCaretType;			//!< カーソル形状 (0: Windows 風、1: MS-DOS 風。CommonSetting_General::GetCaretType() と同じ値)
+};
+
 int GetColorThemeBySelIndex( int nSelIndex );
 int GetColorThemeSelIndex( int nColorTheme );
 const WCHAR* GetColorThemeDispName( int nColorTheme );
@@ -84,7 +91,11 @@ bool IsColorThemeDispItem( int nColorIdx );
 void SetPresetColorInfo( ColorInfo* pColorInfoArr, int nColorTheme );
 void ApplyColorTheme( ColorInfo* pColorInfoArr, int nColorTheme, const ColorInfo* pCustomColorInfoArr );
 void ApplyColorThemeDisp( ColorInfo* pColorInfoArr, int nColorTheme, const ColorInfo* pCustomColorInfoArr, const bool* pbTypeInitDisp );
-bool IsColorThemeDispChanged( int nOldColorTheme, const ColorInfo* pOldCustomColorInfoArr, int nNewColorTheme, const ColorInfo* pNewCustomColorInfoArr );
+bool IsColorThemeApplyNeeded( int nOldColorTheme, const ColorInfo* pOldCustomColorInfoArr, const ColorThemeView* pOldCustomView,
+							  int nNewColorTheme, const ColorInfo* pNewCustomColorInfoArr, const ColorThemeView* pNewCustomView );
 void SetCustomColorThemeFromType( int* pnColorTheme, ColorInfo* pCustomColorInfoArr, const ColorInfo* pTypeColorInfoArr );
+void SetPresetColorThemeView( ColorThemeView* pView, int nColorTheme );
+void ApplyColorThemeView( wchar_t* pszTabViewString, size_t nTabViewStringCount, bool* pbTabArrow, int nColorTheme, const ColorThemeView* pCustomView );
+int GetColorThemeCaretType( int nColorTheme, const ColorThemeView* pCustomView );
 
 #endif /* SAKURA_CCOLORTHEME_H_ */

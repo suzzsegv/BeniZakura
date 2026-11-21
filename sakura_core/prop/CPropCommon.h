@@ -62,7 +62,7 @@ enum ComPropSheetOrder {
 	ID_PAGENUM_FILENAME,		// ファイル名表示
 	ID_PAGENUM_BACKUP,			// バックアップ
 	ID_PAGENUM_FORMAT,			// 書式
-	ID_PAGENUM_COLOR,			// カラー	// 2026.11.18
+	ID_PAGENUM_COLOR,			// テーマ (旧カラー)	// 2026.11.18
 	ID_PAGENUM_GREP,			// 検索
 	ID_PAGENUM_KEYBOARD,		// キー割り当て
 	ID_PAGENUM_CUSTMENU,		// カスタムメニュー
@@ -325,7 +325,7 @@ private:
 };
 
 //==============================================================
-//!	カラーページ	// 2026.11.18
+//!	テーマページ (旧カラーページ)	// 2026.11.18	// 2026.11.21 タブ名を「テーマ」に変更
 class CPropColor : CPropCommon
 {
 public:
@@ -343,6 +343,8 @@ private:
 	ColorInfo* GetDispColorInfoArr();
 	void SetColorList( HWND hwndDlg );
 	void UpdateControls( HWND hwndDlg );
+	void SetViewControls( HWND hwndDlg );		// 2026.11.21 TAB 表示・矢印表示・カーソル形状
+	void GetTabViewString( HWND hwndDlg );		// 2026.11.21
 	void CopyFromPreset( HWND hwndDlg );
 	void Import( HWND hwndDlg );
 	void Export( HWND hwndDlg );

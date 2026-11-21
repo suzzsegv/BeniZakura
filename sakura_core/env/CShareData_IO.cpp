@@ -1193,7 +1193,8 @@ void CShareData_IO::ShareData_IO_Types( CDataProfile& cProfile )
 /*!
  * CShareData_IO::ShareData_IO_ColorTheme - カラーテーマの入出力
  *
- * [Common] の szColorTheme にテーマの名前を、[ColorTheme.Custom] にカスタムテーマの色を保存する。
+ * [Common] の szColorTheme にテーマの名前を、[ColorTheme.Custom] にカスタムテーマの色と、
+ * 色以外の表示の設定 (TAB 表示、矢印表示、カーソル形状) を保存する。
  * 読み込み時に szColorTheme がない場合 (カラーテーマの導入前の ini) は、基本タイプの色をカスタムの色にして
  * カスタムを選ぶ。読み込みの後、テーマをすべてのタイプ別設定に適用する。
  */
@@ -1207,25 +1208,55 @@ void CShareData_IO::ShareData_IO_ColorTheme(
 	const WCHAR* pszCustomSecName = LTEXT("ColorTheme.Custom");
 	WCHAR szThemeName[64];
 
+	ColorThemeView& sCustomView = sColorTheme.m_sCustomView;	// 2026.11.21 カスタムの、色以外の表示の設定
 	if( cProfile.IsReadingMode() ){
 		if( cProfile.IOProfileData( pszSecName, LTEXT("szColorTheme"), MakeStringBufferW(szThemeName) ) ){
 			sColorTheme.m_nColorTheme = GetColorThemeFromKeyName( szThemeName );
 			IO_ColorSet( &cProfile, pszCustomSecName, sColorTheme.m_CustomColorInfoArr );
+			// キーがない ini (この設定の追加前): TAB 表示・矢印表示は紅桜の初期値、カーソル形状は共通設定の現在の値
+			SetPresetColorThemeView( &sCustomView, COLOR_THEME_BENIZAKURA );
+			sCustomView.m_nCaretType = pShare->m_Common.m_sGeneral.GetCaretType();
+			IO_ColorThemeView( cProfile, pszCustomSecName, sCustomView );
 		}else{
 			// カラーテーマの導入前の ini: 基本タイプの色をカスタムの色にする
 			SetCustomColorThemeFromType( &sColorTheme.m_nColorTheme, sColorTheme.m_CustomColorInfoArr, pShare->m_Types[0].m_ColorInfoArr );
+			// TAB 表示・矢印表示は基本タイプの値、カーソル形状は共通設定の現在の値にする	// 2026.11.21
+			wcsncpy_s( sCustomView.m_szTabViewString, _countof(sCustomView.m_szTabViewString), pShare->m_Types[0].m_szTabViewString, _TRUNCATE );
+			sCustomView.m_bTabArrow = pShare->m_Types[0].m_bTabArrow;
+			sCustomView.m_nCaretType = pShare->m_Common.m_sGeneral.GetCaretType();
 		}
 		CShareData::ApplyColorThemeToAllTypes( pShare );
 	}else{
 		wcscpy_s( szThemeName, _countof(szThemeName), GetColorThemeKeyName( sColorTheme.m_nColorTheme ) );
 		cProfile.IOProfileData( pszSecName, LTEXT("szColorTheme"), MakeStringBufferW(szThemeName) );
 		IO_ColorSet( &cProfile, pszCustomSecName, sColorTheme.m_CustomColorInfoArr );
+		IO_ColorThemeView( cProfile, pszCustomSecName, sCustomView );	// 2026.11.21
 	}
 
 	// 画面の配色 (ライト / ダーク / OS の設定に従う)	// 2026.11.20
 	cProfile.IOProfileData( pszSecName, LTEXT("nUiColorMode"), sColorTheme.m_nUiColorMode );
 	if( sColorTheme.m_nUiColorMode < 0 || UI_COLOR_MODE_MAX <= sColorTheme.m_nUiColorMode ){
 		sColorTheme.m_nUiColorMode = UI_COLOR_MODE_LIGHT;
+	}
+}
+
+/*!
+ * CShareData_IO::IO_ColorThemeView - カラーテーマの、色以外の表示の設定の入出力
+ *
+ * TAB 表示 (szTabViewString)、矢印表示 (bTabArrow)、カーソル形状 (nCaretType) を、指定のセクションに読み書きする。
+ * 読み込み時、キーがない値は変更しない (呼び出し側で既定値を設定しておく)。カーソル形状は 0 / 1 以外を 0 にする。
+ */
+void CShareData_IO::IO_ColorThemeView(
+	CDataProfile&		cProfile,		//!< [i/o] INI ファイル入出力クラス
+	const WCHAR*		pszSecName,		//!< [in] セクション名
+	ColorThemeView&		sView			//!< [i/o] 色以外の表示の設定
+)
+{
+	cProfile.IOProfileData( pszSecName, LTEXT("szTabViewString"), MakeStringBufferW(sView.m_szTabViewString) );
+	cProfile.IOProfileData( pszSecName, LTEXT("bTabArrow"), sView.m_bTabArrow );
+	cProfile.IOProfileData( pszSecName, LTEXT("nCaretType"), sView.m_nCaretType );
+	if( cProfile.IsReadingMode() && sView.m_nCaretType != 0 && sView.m_nCaretType != 1 ){
+		sView.m_nCaretType = 0;
 	}
 }
 

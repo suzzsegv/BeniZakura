@@ -78,6 +78,7 @@ public:
 	static void IO_KeyBind( CDataProfile&, CommonSetting_KeyBind&, bool);		// 2012.11.22 aroka
 	static void IO_MainMenu( CDataProfile&, CommonSetting_MainMenu&, bool );		// 2010/5/15 Uchi
 	static void IO_ColorSet( CDataProfile* , const WCHAR* , ColorInfo* );	/* 色設定 I/O */ // Feb. 12, 2006 D.S.Koba
+	static void IO_ColorThemeView( CDataProfile&, const WCHAR*, ColorThemeView& );	// カラーテーマの色以外の表示の設定 I/O	// 2026.11.21
 };
 
 #endif /* SAKURA_CSHAREDATA_IO_AA81C249_631D_40B0_AAFF_2F163748954B9_H_ */

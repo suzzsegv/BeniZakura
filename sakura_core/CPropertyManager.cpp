@@ -28,14 +28,18 @@ BOOL CPropertyManager::OpenPropertySheet( int nPageNum )
 		// 2007.06.20 ryoji グループ化に変更があったときはグループIDをリセットする
 		BOOL bGroup = (GetDllShareData().m_Common.m_sTabBar.m_bDispTabWnd && !GetDllShareData().m_Common.m_sTabBar.m_bDispTabWndMultiWin);
 		const CommonSetting_ColorTheme sColorThemeOld = GetDllShareData().m_Common.m_sColorTheme;	// 2026.11.21
+		const int nCaretTypeOld = GetDllShareData().m_Common.m_sGeneral.GetCaretType();				// 2026.11.21
 		m_cPropCommon.ApplyData();
 		// カラーテーマをすべてのタイプ別設定に適用する (共有データへの適用は 1 回でよいため、ここで行う)	// 2026.11.18
 		CShareData::ApplyColorThemeToAllTypes( &GetDllShareData() );
-		// テーマを切り替えたときは、テーマの「色分け/表示」も適用する (その後はタイプ別設定で変更できる)	// 2026.11.21
+		// テーマを切り替えたときは、テーマの「色分け/表示」、TAB 表示・矢印表示、カーソル形状も適用する
+		// (その後はタイプ別設定・「全般」タブで変更できる)	// 2026.11.21
 		const CommonSetting_ColorTheme& sColorThemeNew = GetDllShareData().m_Common.m_sColorTheme;
-		if( IsColorThemeDispChanged( sColorThemeOld.m_nColorTheme, sColorThemeOld.m_CustomColorInfoArr,
-									 sColorThemeNew.m_nColorTheme, sColorThemeNew.m_CustomColorInfoArr ) ){
-			CShareData::ApplyColorThemeDispToAllTypes( &GetDllShareData() );
+		if( IsColorThemeApplyNeeded( sColorThemeOld.m_nColorTheme, sColorThemeOld.m_CustomColorInfoArr, &sColorThemeOld.m_sCustomView,
+									 sColorThemeNew.m_nColorTheme, sColorThemeNew.m_CustomColorInfoArr, &sColorThemeNew.m_sCustomView ) ){
+			// 同じダイアログの中で「全般」タブのカーソル形状を変更した場合は、その値を優先する
+			const bool bCaretTypeChanged = ( nCaretTypeOld != GetDllShareData().m_Common.m_sGeneral.GetCaretType() );
+			CShareData::ApplyColorThemeSwitch( &GetDllShareData(), !bCaretTypeChanged );
 		}
 		// note: 基本的にここで適用しないで、MYWM_CHANGESETTINGからたどって適用してください。
 		// 自ウィンドウには最後に通知されます。大抵は、OnChangeSetting にあります。
