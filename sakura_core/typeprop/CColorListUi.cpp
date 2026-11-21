@@ -39,6 +39,7 @@
 #include "doc/CColorTheme.h"
 #include "view/colors/CColorStrategy.h"	// g_ColorAttributeArr
 #include "uiparts/CGraphics.h"
+#include "uiparts/CDarkMode.h"
 #include "util/window.h"
 #include "sakura_rc.h"
 
@@ -229,7 +230,7 @@ void CColorListUi::DrawItem(
 	DRAWITEMSTRUCT*	pDis	//!< [in] 描画情報
 ) const
 {
-	COLORREF	cRim = (COLORREF)::GetSysColor( COLOR_3DSHADOW );
+	COLORREF	cRim = (COLORREF)CDarkMode::GetUiColor( COLOR_3DSHADOW );
 
 	if( pDis == NULL || pDis->itemData == 0 ) return;
 
@@ -242,16 +243,16 @@ void CColorListUi::DrawItem(
 	const ColorInfo* pColorInfo = (const ColorInfo*)pDis->itemData;
 
 	/* アイテム矩形塗りつぶし */
-	gr.SetBrushColor( ::GetSysColor( COLOR_WINDOW ) );
+	gr.SetBrushColor( CDarkMode::GetUiColor( COLOR_WINDOW ) );
 	gr.FillMyRect( pDis->rcItem );
 
 	/* アイテムが選択されている */
 	if( pDis->itemState & ODS_SELECTED ){
-		gr.SetBrushColor( ::GetSysColor( COLOR_HIGHLIGHT ) );
-		gr.SetTextForeColor( ::GetSysColor( COLOR_HIGHLIGHTTEXT ) );
+		gr.SetBrushColor( CDarkMode::GetUiColor( COLOR_HIGHLIGHT ) );
+		gr.SetTextForeColor( CDarkMode::GetUiColor( COLOR_HIGHLIGHTTEXT ) );
 	}else{
-		gr.SetBrushColor( ::GetSysColor( COLOR_WINDOW ) );
-		gr.SetTextForeColor( ::GetSysColor( COLOR_WINDOWTEXT ) );
+		gr.SetBrushColor( CDarkMode::GetUiColor( COLOR_WINDOW ) );
+		gr.SetTextForeColor( CDarkMode::GetUiColor( COLOR_WINDOWTEXT ) );
 	}
 
 	rc1.left+= (2 + 16);
@@ -288,7 +289,7 @@ void CColorListUi::DrawItem(
 	rc1.bottom = rc1.top + 12;
 	if( pColorInfo->m_bDisp && CanEdit( pColorInfo->m_nColorIdx, COLORLIST_SHOW_DISP ) ){	/* 色分け/表示する */
 		// 2006.04.26 ryoji テキスト色を使う（「ハイコントラスト黒」のような設定でも見えるように）
-		gr.SetPen( ::GetSysColor( COLOR_WINDOWTEXT ) );
+		gr.SetPen( CDarkMode::GetUiColor( COLOR_WINDOWTEXT ) );
 
 		for( int i = 0; i < 3; i++ ){
 			::MoveToEx( gr,	rc1.left + 2, rc1.top + 6, NULL );
@@ -335,10 +336,10 @@ void CColorListUi::DrawColorButton(
 	COLORREF		cColor		//!< [in] ボタンに表示する色
 )
 {
-	COLORREF	cBtnHiLight		= (COLORREF)::GetSysColor(COLOR_3DHILIGHT);
-	COLORREF	cBtnShadow		= (COLORREF)::GetSysColor(COLOR_3DSHADOW);
-	COLORREF	cBtnDkShadow	= (COLORREF)::GetSysColor(COLOR_3DDKSHADOW);
-	COLORREF	cBtnFace		= (COLORREF)::GetSysColor(COLOR_3DFACE);
+	COLORREF	cBtnHiLight		= (COLORREF)CDarkMode::GetUiColor(COLOR_3DHILIGHT);
+	COLORREF	cBtnShadow		= (COLORREF)CDarkMode::GetUiColor(COLOR_3DSHADOW);
+	COLORREF	cBtnDkShadow	= (COLORREF)CDarkMode::GetUiColor(COLOR_3DDKSHADOW);
+	COLORREF	cBtnFace		= (COLORREF)CDarkMode::GetUiColor(COLOR_3DFACE);
 	RECT		rc;
 	RECT		rcFocus;
 

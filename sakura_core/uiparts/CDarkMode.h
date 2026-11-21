@@ -63,7 +63,23 @@ public:
 	static INT_PTR OnCtlColor( UINT uMsg, WPARAM wParam, LPARAM lParam );	// WM_CTLCOLOR* の処理 (ブラシを返す)
 	static bool OnButtonCustomDraw( LPNMCUSTOMDRAW pnmcd, LRESULT* plResult );	// ボタンの NM_CUSTOMDRAW の処理
 
+	// ダイアログプロシージャの共通処理・プロパティシート (段階 3)	// 2026.11.21
+	static bool HandleDialogMessageBefore( HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam );	// ダイアログプロシージャの前に行う処理
+	static INT_PTR HandleDialogMessageAfter( UINT uMsg, WPARAM wParam, LPARAM lParam, INT_PTR nRet );	// ダイアログプロシージャの後に行う処理
+	static void ApplyPropertySheet( HWND hwndSheet );	// プロパティシートの枠に画面の配色を適用する
+
 private:
+	static LRESULT CALLBACK BorderSubclassProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData );
+	static void PaintBorderDark( HWND hwnd );
+	static LRESULT CALLBACK UpDownSubclassProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData );
+	static LRESULT CALLBACK BuddyEditSubclassProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData );
+	static int GetBuddyEditBorderState( HWND hwndBuddy );
+	static void PaintBuddyEditBorderDark( HWND hwnd, HWND hwndUpDown );
+	static bool IsUpDownAttachedToBuddy( HWND hwnd );
+	static void PaintUpDownDark( HWND hwnd );
+	static LRESULT CALLBACK StaticSubclassProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData );
+	static bool PaintStaticDark( HWND hwnd );
+	static LRESULT CALLBACK PropertySheetSubclassProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData );
 	static BOOL CALLBACK ApplyChildControlProc( HWND hwnd, LPARAM lParam );
 	static LRESULT CALLBACK GroupBoxSubclassProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData );
 	static void PaintGroupBoxDark( HWND hwnd );

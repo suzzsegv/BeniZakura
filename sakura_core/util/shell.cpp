@@ -8,6 +8,7 @@
 #include "util/os.h"
 #include "util/module.h"
 #include "env/CShareData.h"
+#include "uiparts/CDarkMode.h"
 #include "env/DLLSHAREDATA.h"
 
 int CALLBACK MYBrowseCallbackProc(
@@ -231,13 +232,21 @@ static LRESULT CALLBACK PropSheetWndProc( HWND hwnd, UINT uMsg, WPARAM wParam, L
 */
 static int CALLBACK PropSheetProc( HWND hwndDlg, UINT uMsg, LPARAM lParam )
 {
-	// プロパティシートの初期化時にボタン追加、プロパティシートのサブクラス化を行う
+	// ダークモードのときは、プロパティシートの枠 (タイトルバー・タブ・ボタン・背景) を暗くする	// 2026.11.21
+	// (下の SetWindowLongPtr によるサブクラス化が WM_DESTROY で元に戻すため、それより先に行う)
 	if( uMsg == PSCB_INITIALIZED ){
+		CDarkMode::ApplyPropertySheet( hwndDlg );
+	}
+	// プロパティシートの初期化時にボタン追加、プロパティシートのサブクラス化を行う
+	if( uMsg == PSCB_INITIALIZED && CShareData::getInstance()->IsPrivateSettings() ){	// 2026.11.21 個人設定フォルダの判定をここに移動
 		s_pOldPropSheetWndProc = (WNDPROC)::SetWindowLongPtr( hwndDlg, GWLP_WNDPROC, (LONG_PTR)PropSheetWndProc );
 		HINSTANCE hInstance = (HINSTANCE)::GetModuleHandle( NULL );
 		HWND hwndBtn = ::CreateWindowEx( 0, L"BUTTON", L"設定フォルダ(&/) >>", BS_PUSHBUTTON | WS_CHILD | WS_VISIBLE | WS_TABSTOP, 0, 0, 140, 20, hwndDlg, (HMENU)0x02000, hInstance, NULL );
 		::SendMessage( hwndBtn, WM_SETFONT, (WPARAM)::SendMessage( hwndDlg, WM_GETFONT, 0, 0 ), MAKELPARAM( FALSE, 0 ) );
 		::SetWindowPos( hwndBtn, ::GetDlgItem( hwndDlg, IDHELP), 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE );
+		if( CDarkMode::IsEnabled() ){	// 2026.11.21 ダークモードのボタン
+			CDarkMode::ApplyControlTheme( hwndBtn );
+		}
 	}
 	return 0;
 }
@@ -250,10 +259,9 @@ static int CALLBACK PropSheetProc( HWND hwndDlg, UINT uMsg, LPARAM lParam )
 int MyPropertySheet( LPPROPSHEETHEADER lppsph )
 {
 	// 個人設定フォルダを使用するときは「設定フォルダ」ボタンを追加する
-	if( CShareData::getInstance()->IsPrivateSettings() ){
-		lppsph->dwFlags |= PSH_USECALLBACK;
-		lppsph->pfnCallback = PropSheetProc;
-	}
+	// 2026.11.21 ダークモードの配色の適用のため、コールバックは常に設定する (ボタンの追加の判定はコールバックで行う)
+	lppsph->dwFlags |= PSH_USECALLBACK;
+	lppsph->pfnCallback = PropSheetProc;
 	return ::PropertySheet( lppsph );
 }
 

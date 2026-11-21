@@ -27,6 +27,7 @@
 #include "view/CEditView.h" // SColorStrategyInfo
 #include "view/colors/CColorStrategy.h"
 #include "util/shell.h"
+#include "uiparts/CDarkMode.h"
 #include "sakura_rc.h"
 
 
@@ -46,6 +47,7 @@ INT_PTR CALLBACK PropTypesCommonProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPA
 		pPsp = (PROPSHEETPAGE*)lParam;
 		pCPropTypes = ( CPropTypes* )(pPsp->lParam);
 		if( NULL != pCPropTypes ){
+			CDarkMode::HandleDialogMessageBefore( hwndDlg, uMsg, wParam, lParam );	// ダークモードの配色 (ページの初期化の前に適用する)	// 2026.11.21
 			return (pCPropTypes->*pDispatch)( hwndDlg, uMsg, wParam, pPsp->lParam );
 		}else{
 			return FALSE;
@@ -54,7 +56,11 @@ INT_PTR CALLBACK PropTypesCommonProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPA
 		// Modified by KEITA for WIN64 2003.9.6
 		pCPropTypes = ( CPropTypes* )::GetWindowLongPtr( hwndDlg, DWLP_USER );
 		if( NULL != pCPropTypes ){
-			return (pCPropTypes->*pDispatch)( hwndDlg, uMsg, wParam, lParam );
+			// ダークモードのボタンの描画、背景・文字の色 (ページで処理しなかった場合)	// 2026.11.21
+			if( CDarkMode::HandleDialogMessageBefore( hwndDlg, uMsg, wParam, lParam ) ){
+				return TRUE;
+			}
+			return CDarkMode::HandleDialogMessageAfter( uMsg, wParam, lParam, (pCPropTypes->*pDispatch)( hwndDlg, uMsg, wParam, lParam ) );
 		}else{
 			return FALSE;
 		}

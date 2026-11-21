@@ -347,7 +347,8 @@ void CDarkMode::ApplyChildControls(
  * ボタン: グループボックスはサブクラス化して自分で描く。それ以外はダークのテーマを設定する
  * (チェックボックス・ラジオボタンの文字は NM_CUSTOMDRAW で描く)。
  * エディット・リストボックス・コンボボックス・リストビュー・ツリービューは、ダークのテーマと色を設定する。
- * タブコントロールはサブクラス化して自分で描く。
+ * タブコントロールはサブクラス化して自分で描く。リストボックス・リストビュー・ツリービューの枠と、
+ * スタティックの無効な文字・立体の線も、サブクラス化して自分で描く。
  *
  *	@return	TRUE: 列挙を続ける
  */
@@ -374,8 +375,11 @@ BOOL CALLBACK CDarkMode::ApplyChildControlProc(
 		}
 	}else if( 0 == _wcsicmp( szClass, WC_EDIT ) ){
 		::SetWindowTheme( hwnd, ( lStyle & ES_MULTILINE ) ? L"DarkMode_Explorer" : L"DarkMode_CFD", NULL );
+	}else if( 0 == _wcsicmp( szClass, WC_STATIC ) ){
+		::SetWindowSubclass( hwnd, StaticSubclassProc, 0, 0 );	// 無効な文字・立体の線
 	}else if( 0 == _wcsicmp( szClass, WC_LISTBOX ) ){
 		::SetWindowTheme( hwnd, L"DarkMode_Explorer", NULL );
+		::SetWindowSubclass( hwnd, BorderSubclassProc, 0, 0 );	// 枠
 	}else if( 0 == _wcsicmp( szClass, WC_COMBOBOX ) ){
 		::SetWindowTheme( hwnd, L"DarkMode_CFD", NULL );
 		COMBOBOXINFO cbi = { sizeof( cbi ) };
@@ -392,6 +396,7 @@ BOOL CALLBACK CDarkMode::ApplyChildControlProc(
 			::SetWindowTheme( hwndHeader, L"DarkMode_ItemsView", NULL );
 		}
 		::SetWindowSubclass( hwnd, ListViewSubclassProc, 0, 0 );	// 見出しの文字色
+		::SetWindowSubclass( hwnd, BorderSubclassProc, 0, 0 );		// 枠
 	}else if( 0 == _wcsicmp( szClass, WC_TABCONTROL ) ){
 		::SetWindowSubclass( hwnd, TabControlSubclassProc, 0, 0 );
 	}else if( 0 == _wcsicmp( szClass, WC_TREEVIEW ) ){
@@ -399,7 +404,14 @@ BOOL CALLBACK CDarkMode::ApplyChildControlProc(
 		TreeView_SetBkColor( hwnd, GetUiColor( COLOR_WINDOW ) );
 		TreeView_SetTextColor( hwnd, GetUiColor( COLOR_WINDOWTEXT ) );
 		TreeView_SetLineColor( hwnd, GetUiColor( COLOR_GRAYTEXT ) );
-	}else if( 0 == _wcsicmp( szClass, UPDOWN_CLASS ) || 0 == _wcsicmp( szClass, WC_SCROLLBAR ) ){
+		::SetWindowSubclass( hwnd, BorderSubclassProc, 0, 0 );	// 枠
+	}else if( 0 == _wcsicmp( szClass, UPDOWN_CLASS ) ){
+		::SetWindowTheme( hwnd, L"DarkMode_Explorer", NULL );
+		::SetWindowSubclass( hwnd, UpDownSubclassProc, 0, 0 );	// エディットに付いたものは自分で描く
+		if( IsUpDownAttachedToBuddy( hwnd ) ){	// 相棒のエディットの枠も、アップダウンと同じ状態で描く
+			::SetWindowSubclass( (HWND)::SendMessage( hwnd, UDM_GETBUDDY, 0, 0 ), BuddyEditSubclassProc, 0, (DWORD_PTR)hwnd );
+		}
+	}else if( 0 == _wcsicmp( szClass, WC_SCROLLBAR ) ){
 		::SetWindowTheme( hwnd, L"DarkMode_Explorer", NULL );
 	}
 	return TRUE;
@@ -502,6 +514,125 @@ bool CDarkMode::OnButtonCustomDraw(
 	DrawCheckRadioDark( pnmcd, lStyle );
 	*plResult = CDRF_SKIPDEFAULT;
 	return true;
+}
+
+/*!
+ * CDarkMode::HandleDialogMessageBefore - ダイアログプロシージャの前に行う、ダークモードの処理
+ *
+ * WM_INITDIALOG では、ダイアログ個別の初期化の前に画面の配色を適用する (ApplyDialog。処理済みにはしない)。
+ * WM_NOTIFY では、チェックボックス・ラジオボタンの NM_CUSTOMDRAW を処理し、戻り値を DWLP_MSGRESULT に設定する。
+ * ダイアログ・プロパティシートのページの共通のダイアログプロシージャから呼ぶ。
+ *
+ *	@return	true: 処理した (ダイアログプロシージャは TRUE を返す) / false: ダイアログ個別の処理を続ける
+ */
+bool CDarkMode::HandleDialogMessageBefore(
+	HWND	hDlg,	//!< [in] ダイアログ
+	UINT	uMsg,	//!< [in] メッセージ
+	WPARAM	wParam,	//!< [in] パラメータ
+	LPARAM	lParam	//!< [in] パラメータ
+)
+{
+	switch( uMsg ){
+	case WM_INITDIALOG:
+		ApplyDialog( hDlg );
+		break;
+	case WM_NOTIFY:
+		{
+			LRESULT lResult;
+			if( OnButtonCustomDraw( (LPNMCUSTOMDRAW)lParam, &lResult ) ){
+				::SetWindowLongPtr( hDlg, DWLP_MSGRESULT, lResult );
+				return true;
+			}
+		}
+		break;
+	}
+	return false;
+}
+
+/*!
+ * CDarkMode::HandleDialogMessageAfter - ダイアログプロシージャの後に行う、ダークモードの処理
+ *
+ * ダイアログ個別の処理が WM_CTLCOLOR* を処理しなかった (0 を返した) 場合に、OnCtlColor() で処理する。
+ * それ以外は、ダイアログ個別の処理の戻り値をそのまま返す。
+ *
+ *	@return	ダイアログプロシージャの戻り値
+ */
+INT_PTR CDarkMode::HandleDialogMessageAfter(
+	UINT	uMsg,	//!< [in] メッセージ
+	WPARAM	wParam,	//!< [in] パラメータ
+	LPARAM	lParam,	//!< [in] パラメータ
+	INT_PTR	nRet	//!< [in] ダイアログ個別の処理の戻り値
+)
+{
+	if( 0 == nRet && WM_CTLCOLORMSGBOX <= uMsg && uMsg <= WM_CTLCOLORSTATIC ){
+		return OnCtlColor( uMsg, wParam, lParam );
+	}
+	return nRet;
+}
+
+/*!
+ * CDarkMode::ApplyPropertySheet - プロパティシートの枠に画面の配色を適用する
+ *
+ * ダークモードのときだけ、タイトルバー・タブ・ボタンに配色を適用し (ApplyDialog)、
+ * 背景色とボタンの描画のためにサブクラス化する (PropertySheetSubclassProc)。
+ * プロパティシートのダイアログプロシージャは Windows のものなので、ダイアログの共通処理の代わりに使う。
+ * PropertySheet() のコールバックの PSCB_INITIALIZED で呼ぶ。各ページは、ページのダイアログプロシージャで処理する。
+ */
+void CDarkMode::ApplyPropertySheet(
+	HWND	hwndSheet	//!< [in] プロパティシート
+)
+{
+	if( !s_bEnabled || NULL == hwndSheet ){
+		return;
+	}
+	ApplyDialog( hwndSheet );
+	::SetWindowSubclass( hwndSheet, PropertySheetSubclassProc, 0, 0 );
+}
+
+/*!
+ * CDarkMode::PropertySheetSubclassProc - プロパティシートのサブクラスプロシージャ
+ *
+ * ダークモードのとき、WM_CTLCOLOR* (背景・文字の色) と、チェックボックス・ラジオボタンの NM_CUSTOMDRAW を処理する。
+ *
+ *	@return	メッセージの処理結果
+ */
+LRESULT CALLBACK CDarkMode::PropertySheetSubclassProc(
+	HWND		hwnd,			//!< [in] プロパティシート
+	UINT		uMsg,			//!< [in] メッセージ
+	WPARAM		wParam,			//!< [in] パラメータ
+	LPARAM		lParam,			//!< [in] パラメータ
+	UINT_PTR	uIdSubclass,	//!< [in] サブクラスの ID
+	DWORD_PTR	dwRefData		//!< [in] 未使用
+)
+{
+	switch( uMsg ){
+	case WM_CTLCOLORMSGBOX:
+	case WM_CTLCOLOREDIT:
+	case WM_CTLCOLORLISTBOX:
+	case WM_CTLCOLORBTN:
+	case WM_CTLCOLORDLG:
+	case WM_CTLCOLORSCROLLBAR:
+	case WM_CTLCOLORSTATIC:
+		if( s_bEnabled ){
+			INT_PTR nRet = OnCtlColor( uMsg, wParam, lParam );
+			if( 0 != nRet ){
+				return nRet;
+			}
+		}
+		break;
+	case WM_NOTIFY:
+		{
+			LRESULT lResult;
+			if( OnButtonCustomDraw( (LPNMCUSTOMDRAW)lParam, &lResult ) ){
+				return lResult;
+			}
+		}
+		break;
+	case WM_NCDESTROY:
+		::RemoveWindowSubclass( hwnd, PropertySheetSubclassProc, uIdSubclass );
+		break;
+	}
+	return ::DefSubclassProc( hwnd, uMsg, wParam, lParam );
 }
 
 /*!
@@ -884,6 +1015,539 @@ void CDarkMode::PaintTabControlDark(
 		::SelectObject( hdc, hFontOld );
 	}
 	::EndPaint( hwnd, &ps );
+}
+
+/*!
+ * CDarkMode::BorderSubclassProc - 枠を暗く描くコントロールのサブクラスプロシージャ
+ *
+ * ダークモードのとき、WM_NCPAINT で標準の処理 (スクロールバーなど) の後に枠を描き直す (PaintBorderDark)。
+ * リストボックス・リストビュー・ツリービューの枠は、テーマでは明るく描かれるため。
+ *
+ *	@return	メッセージの処理結果
+ */
+LRESULT CALLBACK CDarkMode::BorderSubclassProc(
+	HWND		hwnd,			//!< [in] コントロール
+	UINT		uMsg,			//!< [in] メッセージ
+	WPARAM		wParam,			//!< [in] パラメータ
+	LPARAM		lParam,			//!< [in] パラメータ
+	UINT_PTR	uIdSubclass,	//!< [in] サブクラスの ID
+	DWORD_PTR	dwRefData		//!< [in] 未使用
+)
+{
+	switch( uMsg ){
+	case WM_NCPAINT:
+		if( s_bEnabled ){
+			LRESULT lRet = ::DefSubclassProc( hwnd, uMsg, wParam, lParam );
+			PaintBorderDark( hwnd );
+			return lRet;
+		}
+		break;
+	case WM_NCDESTROY:
+		::RemoveWindowSubclass( hwnd, BorderSubclassProc, uIdSubclass );
+		break;
+	}
+	return ::DefSubclassProc( hwnd, uMsg, wParam, lParam );
+}
+
+/*!
+ * CDarkMode::PaintBorderDark - ダークモードのとき、コントロールの枠を描き直す
+ *
+ * ウィンドウの外側からクライアント領域の左端までの幅 (枠の太さ) を求め、一番外側を暗い枠の色、
+ * その内側をウィンドウの背景色で塗る。スクロールバーの部分は塗らない。枠がないときは何もしない。
+ */
+void CDarkMode::PaintBorderDark(
+	HWND	hwnd	//!< [in] コントロール
+)
+{
+	RECT rcWindow;
+	::GetWindowRect( hwnd, &rcWindow );
+	POINT ptClient = { 0, 0 };
+	::ClientToScreen( hwnd, &ptClient );
+	int nBorder = ptClient.x - rcWindow.left;
+	if( nBorder <= 0 || ptClient.y - rcWindow.top < nBorder ){
+		return;
+	}
+	RECT rc = { 0, 0, rcWindow.right - rcWindow.left, rcWindow.bottom - rcWindow.top };
+	HDC hdc = ::GetWindowDC( hwnd );
+	for( int i = 0; i < nBorder; i++ ){
+		::FrameRect( hdc, &rc, GetUiColorBrush( 0 == i ? COLOR_3DSHADOW : COLOR_WINDOW ) );
+		::InflateRect( &rc, -1, -1 );
+	}
+	::ReleaseDC( hwnd, hdc );
+}
+
+/*!
+ * CDarkMode::UpDownSubclassProc - アップダウンのサブクラスプロシージャ
+ *
+ * ダークモードのとき、相棒のエディットに付いたアップダウンを WM_PAINT ですべて自分で描く (PaintUpDownDark)。
+ * 標準の処理は、エディットの枠の続きを自分のテーマ (DarkMode_Explorer) で描くためエディット (DarkMode_CFD) と色が合わず、
+ * また、マウスの操作や有効・無効の切り替えのときに WM_PAINT を通らずに描くことがある。そのため、状態が変わる
+ * メッセージの標準の処理の後には、描き直しを要求する。ボタンを押していないときのマウスの移動・離脱は、
+ * 表示のためだけなので標準の処理に渡さない。
+ *
+ *	@return	メッセージの処理結果
+ */
+LRESULT CALLBACK CDarkMode::UpDownSubclassProc(
+	HWND		hwnd,			//!< [in] アップダウン
+	UINT		uMsg,			//!< [in] メッセージ
+	WPARAM		wParam,			//!< [in] パラメータ
+	LPARAM		lParam,			//!< [in] パラメータ
+	UINT_PTR	uIdSubclass,	//!< [in] サブクラスの ID
+	DWORD_PTR	dwRefData		//!< [in] 未使用
+)
+{
+	// 対象の判定 (IsUpDownAttachedToBuddy) は UDM_GETBUDDY を送るので、ここで処理するメッセージのときだけ行う
+	switch( uMsg ){
+	case WM_ERASEBKGND:
+		if( s_bEnabled && IsUpDownAttachedToBuddy( hwnd ) ){
+			return 1;
+		}
+		break;
+	case WM_PAINT:
+		if( s_bEnabled && IsUpDownAttachedToBuddy( hwnd ) ){
+			PaintUpDownDark( hwnd );
+			return 0;
+		}
+		break;
+	case WM_MOUSEMOVE:
+		if( !s_bEnabled || !IsUpDownAttachedToBuddy( hwnd ) ){
+			break;
+		}
+		{
+			// マウスが離れたときに、ホットの表示を消すため
+			TRACKMOUSEEVENT tme = { sizeof( tme ) };
+			tme.dwFlags = TME_LEAVE;
+			tme.hwndTrack = hwnd;
+			::TrackMouseEvent( &tme );
+		}
+		if( ::GetCapture() != hwnd ){
+			// ボタンを押していないときのマウスの移動は表示 (ホット) のためだけなので、標準の処理に渡さない
+			// (標準の処理は WM_PAINT を通らずに描くため、矢印の位置などが自分の描画とずれる)
+			::InvalidateRect( hwnd, NULL, FALSE );
+			return 0;
+		}
+		{
+			LRESULT lRet = ::DefSubclassProc( hwnd, uMsg, wParam, lParam );
+			::InvalidateRect( hwnd, NULL, FALSE );
+			return lRet;
+		}
+	case WM_MOUSELEAVE:
+		if( s_bEnabled && IsUpDownAttachedToBuddy( hwnd ) ){
+			// 標準の処理には渡さない (上と同じ理由。マウスの監視は自分で要求したもの)
+			::InvalidateRect( hwnd, NULL, FALSE );
+			return 0;
+		}
+		break;
+	case WM_TIMER:
+		if( s_bEnabled && ::GetCapture() == hwnd && IsUpDownAttachedToBuddy( hwnd ) ){
+			// 押し続けたときの繰り返し
+			LRESULT lRet = ::DefSubclassProc( hwnd, uMsg, wParam, lParam );
+			::InvalidateRect( hwnd, NULL, FALSE );
+			return lRet;
+		}
+		break;
+	case WM_LBUTTONDOWN:
+	case WM_LBUTTONUP:
+	case WM_CAPTURECHANGED:
+	case WM_ENABLE:
+	case WM_SETFOCUS:
+	case WM_KILLFOCUS:
+		if( s_bEnabled && IsUpDownAttachedToBuddy( hwnd ) ){
+			LRESULT lRet = ::DefSubclassProc( hwnd, uMsg, wParam, lParam );
+			::InvalidateRect( hwnd, NULL, FALSE );
+			return lRet;
+		}
+		break;
+	case WM_NCDESTROY:
+		::RemoveWindowSubclass( hwnd, UpDownSubclassProc, uIdSubclass );
+		break;
+	}
+	return ::DefSubclassProc( hwnd, uMsg, wParam, lParam );
+}
+
+/*!
+ * CDarkMode::BuddyEditSubclassProc - アップダウンの相棒のエディットのサブクラスプロシージャ
+ *
+ * ダークモードのとき、エディットの枠を WM_NCPAINT で標準の描画の後に描き直す (PaintBuddyEditBorderDark)。
+ * 標準の描画はマウスが乗った (ホット) 状態を優先するなど、アップダウンが描く枠の続きと状態の決め方が異なるため、
+ * エディットの枠とアップダウンを同じ状態 (GetBuddyEditBorderState) で描く。
+ * また、エディットのフォーカス・有効・無効が変わったら、エディットの枠とアップダウンに描き直しを要求する。
+ *
+ *	@return	メッセージの処理結果
+ */
+LRESULT CALLBACK CDarkMode::BuddyEditSubclassProc(
+	HWND		hwnd,			//!< [in] エディット
+	UINT		uMsg,			//!< [in] メッセージ
+	WPARAM		wParam,			//!< [in] パラメータ
+	LPARAM		lParam,			//!< [in] パラメータ
+	UINT_PTR	uIdSubclass,	//!< [in] サブクラスの ID
+	DWORD_PTR	dwRefData		//!< [in] アップダウン
+)
+{
+	switch( uMsg ){
+	case WM_NCPAINT:
+	case WM_MOUSEMOVE:
+	case WM_NCMOUSEMOVE:
+	case WM_NCMOUSELEAVE:
+		// 標準の処理は、マウスが乗った・離れたときに WM_NCPAINT を通らずに枠を描くことがあるので、その後にも描き直す
+		if( s_bEnabled ){
+			LRESULT lRet = ::DefSubclassProc( hwnd, uMsg, wParam, lParam );
+			PaintBuddyEditBorderDark( hwnd, (HWND)dwRefData );
+			return lRet;
+		}
+		break;
+	case WM_SETFOCUS:
+	case WM_KILLFOCUS:
+	case WM_ENABLE:
+	case WM_MOUSELEAVE:
+		if( s_bEnabled ){
+			LRESULT lRet = ::DefSubclassProc( hwnd, uMsg, wParam, lParam );
+			// エディット自身の枠 (非クライアント領域) も描き直す
+			::RedrawWindow( hwnd, NULL, NULL, RDW_FRAME | RDW_INVALIDATE );
+			if( ::IsWindow( (HWND)dwRefData ) ){
+				::InvalidateRect( (HWND)dwRefData, NULL, FALSE );
+			}
+			return lRet;
+		}
+		break;
+	case WM_NCDESTROY:
+		::RemoveWindowSubclass( hwnd, BuddyEditSubclassProc, uIdSubclass );
+		break;
+	}
+	return ::DefSubclassProc( hwnd, uMsg, wParam, lParam );
+}
+
+/*!
+ * CDarkMode::GetBuddyEditBorderState - アップダウンの相棒のエディットの枠の状態を返す
+ *
+ * 無効なら無効、フォーカスがあればフォーカス、それ以外は通常とする (マウスが乗った状態は区別しない)。
+ * エディットの枠 (PaintBuddyEditBorderDark) と、アップダウンが描く枠の続き (PaintUpDownDark) で同じ状態にするために使う。
+ *
+ *	@return	エディットの枠の状態 (EPSN_*)
+ */
+int CDarkMode::GetBuddyEditBorderState(
+	HWND	hwndBuddy	//!< [in] 相棒のエディット
+)
+{
+	if( !::IsWindowEnabled( hwndBuddy ) ){
+		return EPSN_DISABLED;
+	}
+	if( ::GetFocus() == hwndBuddy ){
+		return EPSN_FOCUSED;
+	}
+	return EPSN_NORMAL;
+}
+
+/*!
+ * CDarkMode::PaintBuddyEditBorderDark - ダークモードのとき、アップダウンの相棒のエディットの枠を描き直す
+ *
+ * エディットのテーマで、GetBuddyEditBorderState() の状態の枠を、ウィンドウ全体の矩形に描く。
+ * アップダウンの側の辺は、アップダウンが枠の続きを描くので描かない (アップダウンの側へ広げた矩形に描き、
+ * その部分はエディットの背景色で塗る)。
+ * クライアント領域 (文字の部分) は描画から除く。枠がないときは何もしない。
+ */
+void CDarkMode::PaintBuddyEditBorderDark(
+	HWND	hwnd,		//!< [in] 相棒のエディット
+	HWND	hwndUpDown	//!< [in] エディットに付いたアップダウン
+)
+{
+	RECT rcWindow;
+	::GetWindowRect( hwnd, &rcWindow );
+	RECT rcClient;
+	::GetClientRect( hwnd, &rcClient );
+	::MapWindowPoints( hwnd, NULL, (LPPOINT)&rcClient, 2 );
+	if( rcClient.left <= rcWindow.left ){
+		return;
+	}
+	::OffsetRect( &rcClient, -rcWindow.left, -rcWindow.top );
+	RECT rc = { 0, 0, rcWindow.right - rcWindow.left, rcWindow.bottom - rcWindow.top };
+	if( ::IsWindow( hwndUpDown ) ){
+		const int nEdge = ::GetSystemMetrics( SM_CXEDGE );
+		if( ::GetWindowLongPtr( hwndUpDown, GWL_STYLE ) & UDS_ALIGNRIGHT ){
+			rc.right += nEdge * 2;
+		}else{
+			rc.left -= nEdge * 2;
+		}
+	}
+	HTHEME hTheme = ::OpenThemeData( hwnd, L"Edit" );
+	if( NULL == hTheme ){
+		return;
+	}
+	HDC hdc = ::GetWindowDC( hwnd );
+	::ExcludeClipRect( hdc, rcClient.left, rcClient.top, rcClient.right, rcClient.bottom );
+	if( ::IsWindow( hwndUpDown ) ){
+		// エディットとアップダウンは重なっているので、アップダウンの部分は描かない (アップダウンが描く)
+		RECT rcUpDown;
+		::GetWindowRect( hwndUpDown, &rcUpDown );
+		::OffsetRect( &rcUpDown, -rcWindow.left, -rcWindow.top );
+		::ExcludeClipRect( hdc, rcUpDown.left, rcUpDown.top, rcUpDown.right, rcUpDown.bottom );
+	}
+	::DrawThemeBackground( hTheme, hdc, EP_EDITBORDER_NOSCROLL, GetBuddyEditBorderState( hwnd ), &rc, NULL );
+	// アップダウンの側の、枠を描かなかった部分は、エディットの背景色で塗る
+	if( ::IsWindow( hwndUpDown ) ){
+		HBRUSH hbrBack = (HBRUSH)::SendMessage( ::GetParent( hwnd ),
+			::IsWindowEnabled( hwnd ) ? WM_CTLCOLOREDIT : WM_CTLCOLORSTATIC, (WPARAM)hdc, (LPARAM)hwnd );
+		if( NULL != hbrBack ){
+			RECT rcSide = { rcClient.right, rcClient.top, rcWindow.right - rcWindow.left, rcClient.bottom };
+			if( 0 == ( ::GetWindowLongPtr( hwndUpDown, GWL_STYLE ) & UDS_ALIGNRIGHT ) ){
+				::SetRect( &rcSide, 0, rcClient.top, rcClient.left, rcClient.bottom );
+			}
+			::FillRect( hdc, &rcSide, hbrBack );
+		}
+	}
+	::ReleaseDC( hwnd, hdc );
+	::CloseThemeData( hTheme );
+}
+
+/*!
+ * CDarkMode::IsUpDownAttachedToBuddy - アップダウンが相棒のエディットの横に付いているかを返す
+ *
+ * 縦向きで、UDS_ALIGNRIGHT または UDS_ALIGNLEFT の指定があり、相棒のウィンドウがあるものを対象とする。
+ *
+ *	@return	true: 相棒のエディットの横に付いている / false: 単独のアップダウン
+ */
+bool CDarkMode::IsUpDownAttachedToBuddy(
+	HWND	hwnd	//!< [in] アップダウン
+)
+{
+	LONG_PTR lStyle = ::GetWindowLongPtr( hwnd, GWL_STYLE );
+	if( ( lStyle & UDS_HORZ ) || 0 == ( lStyle & ( UDS_ALIGNRIGHT | UDS_ALIGNLEFT ) ) ){
+		return false;
+	}
+	return NULL != (HWND)::SendMessage( hwnd, UDM_GETBUDDY, 0, 0 );
+}
+
+/*!
+ * CDarkMode::PaintUpDownDark - ダークモードのとき、相棒のエディットに付いたアップダウンを描画する
+ *
+ * 作業用のビットマップに次の順に描き、まとめて写す。
+ * 1. 相棒のエディットのテーマで、エディットの状態 (通常・フォーカス・無効) の枠を、エディットの側へ広げた矩形に描く
+ *    (アップダウンの上・下・外側の辺が、エディットの枠の続きになる)。
+ * 2. エディットとの境目の 1 ドットを、エディットの背景色で塗る (エディットとアップダウンは重なっていて、エディットはこの部分を描かない)。
+ * 3. 枠の内側を上下に分け、アップダウンのテーマ (DarkMode_Explorer の Spin) で矢印のボタンを描く。
+ *    状態 (通常・ホット・押下・無効) は、有効か、マウスのキャプチャ・左ボタン・カーソルの位置から決める。
+ * また、相棒のエディットをサブクラス化して、エディットのフォーカスなどが変わったときに描き直されるようにする。
+ */
+void CDarkMode::PaintUpDownDark(
+	HWND	hwnd	//!< [in] アップダウン
+)
+{
+	PAINTSTRUCT ps;
+	HDC hdc = ::BeginPaint( hwnd, &ps );
+
+	LONG_PTR lStyle = ::GetWindowLongPtr( hwnd, GWL_STYLE );
+	bool bAlignRight = ( 0 != ( lStyle & UDS_ALIGNRIGHT ) );
+	HWND hwndBuddy = (HWND)::SendMessage( hwnd, UDM_GETBUDDY, 0, 0 );
+	::SetWindowSubclass( hwndBuddy, BuddyEditSubclassProc, 0, (DWORD_PTR)hwnd );	// 2 回目以降は参照データの更新だけ
+
+	RECT rc;
+	::GetClientRect( hwnd, &rc );
+	const int cx = rc.right - rc.left;
+	const int cy = rc.bottom - rc.top;
+	const int nEdge = ::GetSystemMetrics( SM_CXEDGE );	// 枠の幅 (エディットの枠と同じ)
+	bool bEnabled = ( FALSE != ::IsWindowEnabled( hwnd ) );
+	bool bBuddyEnabled = ( FALSE != ::IsWindowEnabled( hwndBuddy ) );
+
+	HDC hdcMem = ::CreateCompatibleDC( hdc );
+	HBITMAP hBitmap = ::CreateCompatibleBitmap( hdc, cx, cy );
+	HBITMAP hBitmapOld = (HBITMAP)::SelectObject( hdcMem, hBitmap );
+
+	// 1. エディットの枠の続き
+	HBRUSH hbrBuddy = (HBRUSH)::SendMessage( ::GetParent( hwndBuddy ),
+		bBuddyEnabled ? WM_CTLCOLOREDIT : WM_CTLCOLORSTATIC, (WPARAM)hdcMem, (LPARAM)hwndBuddy );
+	if( NULL == hbrBuddy ){
+		hbrBuddy = GetUiColorBrush( bBuddyEnabled ? COLOR_WINDOW : COLOR_3DFACE );
+	}
+	::FillRect( hdcMem, &rc, hbrBuddy );
+	HTHEME hThemeEdit = ::OpenThemeData( hwndBuddy, L"Edit" );
+	if( NULL != hThemeEdit ){
+		int nState = GetBuddyEditBorderState( hwndBuddy );	// エディットの枠 (PaintBuddyEditBorderDark) と同じ状態
+		RECT rcDraw = rc;
+		if( bAlignRight ){
+			rcDraw.left -= nEdge * 2;
+		}else{
+			rcDraw.right += nEdge * 2;
+		}
+		::DrawThemeBackground( hThemeEdit, hdcMem, EP_EDITBORDER_NOSCROLL, nState, &rcDraw, NULL );
+		::CloseThemeData( hThemeEdit );
+	}
+
+	// 2. エディットとの境目、3. 矢印のボタン
+	const int nSeam = 1;	// エディットとの境目の幅
+	RECT rcArrows = { nEdge, nEdge, cx - nEdge, cy - nEdge };
+	RECT rcSeam = rcArrows;
+	if( bAlignRight ){
+		rcSeam.left = 0;
+		rcSeam.right = nSeam;
+		rcArrows.left = nSeam;
+	}else{
+		rcSeam.left = cx - nSeam;
+		rcSeam.right = cx;
+		rcArrows.right = cx - nSeam;
+	}
+	::FillRect( hdcMem, &rcSeam, hbrBuddy );
+
+	const int nMid = ( rcArrows.top + rcArrows.bottom ) / 2;
+	RECT rcUp = rcArrows;
+	rcUp.bottom = nMid;
+	RECT rcDown = rcArrows;
+	rcDown.top = nMid;
+
+	POINT pt;
+	::GetCursorPos( &pt );
+	::ScreenToClient( hwnd, &pt );
+	bool bPressed = ( ::GetCapture() == hwnd && ( ::GetKeyState( VK_LBUTTON ) & 0x8000 ) );
+	int nStateUp = UPS_NORMAL;
+	int nStateDown = DNS_NORMAL;
+	if( !bEnabled ){
+		nStateUp = UPS_DISABLED;
+		nStateDown = DNS_DISABLED;
+	}else if( ::PtInRect( &rcUp, pt ) ){
+		nStateUp = bPressed ? UPS_PRESSED : UPS_HOT;
+	}else if( ::PtInRect( &rcDown, pt ) ){
+		nStateDown = bPressed ? DNS_PRESSED : DNS_HOT;
+	}
+	HTHEME hThemeSpin = ::OpenThemeData( hwnd, L"Spin" );
+	if( NULL != hThemeSpin ){
+		// 矢印のボタンの画像は外側の辺に暗い 1 ドットの線を持つので、その分広げて描き、矢印の領域で切り取る
+		// (線がエディットの枠と矢印のボタンの間の暗い枠に見えないようにする)
+		RECT rcUpDraw = rcUp;
+		::InflateRect( &rcUpDraw, 1, 0 );
+		rcUpDraw.top -= 1;
+		RECT rcDownDraw = rcDown;
+		::InflateRect( &rcDownDraw, 1, 0 );
+		rcDownDraw.bottom += 1;
+		int nSaved = ::SaveDC( hdcMem );
+		::IntersectClipRect( hdcMem, rcArrows.left, rcArrows.top, rcArrows.right, rcArrows.bottom );
+		::DrawThemeBackground( hThemeSpin, hdcMem, SPNP_UP, nStateUp, &rcUpDraw, NULL );
+		::DrawThemeBackground( hThemeSpin, hdcMem, SPNP_DOWN, nStateDown, &rcDownDraw, NULL );
+		::RestoreDC( hdcMem, nSaved );
+		::CloseThemeData( hThemeSpin );
+	}else{
+		::DrawFrameControl( hdcMem, &rcUp, DFC_SCROLL, DFCS_SCROLLUP | ( bEnabled ? 0 : DFCS_INACTIVE ) );
+		::DrawFrameControl( hdcMem, &rcDown, DFC_SCROLL, DFCS_SCROLLDOWN | ( bEnabled ? 0 : DFCS_INACTIVE ) );
+	}
+
+	::BitBlt( hdc, 0, 0, cx, cy, hdcMem, 0, 0, SRCCOPY );
+	::SelectObject( hdcMem, hBitmapOld );
+	::DeleteObject( hBitmap );
+	::DeleteDC( hdcMem );
+	::EndPaint( hwnd, &ps );
+}
+
+/*!
+ * CDarkMode::StaticSubclassProc - スタティックのサブクラスプロシージャ
+ *
+ * ダークモードのとき、WM_PAINT で、無効な文字と立体の線 (SS_ETCHED*) を自分で描く (PaintStaticDark)。
+ * 標準の描画では、無効な文字は浮き彫り、立体の線は明るい色で描かれるため。それ以外は標準の描画のまま。
+ *
+ *	@return	メッセージの処理結果
+ */
+LRESULT CALLBACK CDarkMode::StaticSubclassProc(
+	HWND		hwnd,			//!< [in] スタティック
+	UINT		uMsg,			//!< [in] メッセージ
+	WPARAM		wParam,			//!< [in] パラメータ
+	LPARAM		lParam,			//!< [in] パラメータ
+	UINT_PTR	uIdSubclass,	//!< [in] サブクラスの ID
+	DWORD_PTR	dwRefData		//!< [in] 未使用
+)
+{
+	switch( uMsg ){
+	case WM_PAINT:
+		if( s_bEnabled && PaintStaticDark( hwnd ) ){
+			return 0;
+		}
+		break;
+	case WM_ENABLE:
+		if( s_bEnabled ){
+			LRESULT lRet = ::DefSubclassProc( hwnd, uMsg, wParam, lParam );
+			::InvalidateRect( hwnd, NULL, TRUE );
+			return lRet;
+		}
+		break;
+	case WM_NCDESTROY:
+		::RemoveWindowSubclass( hwnd, StaticSubclassProc, uIdSubclass );
+		break;
+	}
+	return ::DefSubclassProc( hwnd, uMsg, wParam, lParam );
+}
+
+/*!
+ * CDarkMode::PaintStaticDark - ダークモードのとき、スタティックの無効な文字・立体の線を描く
+ *
+ * 立体の線 (SS_ETCHEDHORZ / SS_ETCHEDVERT / SS_ETCHEDFRAME) は、暗い枠の色の 1 ドットの線で描く。
+ * 無効な文字 (SS_LEFT などの文字のスタティック) は、親ウィンドウの WM_CTLCOLORSTATIC のブラシで背景を塗り、
+ * 灰色の文字で描く。配置・折り返し・省略・アクセスキーの指定はスタティックのスタイルに合わせる。
+ *
+ *	@return	true: 描画した / false: 対象外 (標準の描画を行う)
+ */
+bool CDarkMode::PaintStaticDark(
+	HWND	hwnd	//!< [in] スタティック
+)
+{
+	LONG_PTR lStyle = ::GetWindowLongPtr( hwnd, GWL_STYLE );
+	DWORD dwType = (DWORD)( lStyle & SS_TYPEMASK );
+	bool bEtched = ( SS_ETCHEDHORZ == dwType || SS_ETCHEDVERT == dwType || SS_ETCHEDFRAME == dwType );
+	bool bText = ( SS_LEFT == dwType || SS_CENTER == dwType || SS_RIGHT == dwType || SS_LEFTNOWORDWRAP == dwType || SS_SIMPLE == dwType );
+	if( !bEtched && !( bText && !::IsWindowEnabled( hwnd ) ) ){
+		return false;
+	}
+
+	PAINTSTRUCT ps;
+	HDC hdc = ::BeginPaint( hwnd, &ps );
+	RECT rc;
+	::GetClientRect( hwnd, &rc );
+	if( bEtched ){
+		HBRUSH hbrLine = GetUiColorBrush( COLOR_3DSHADOW );
+		RECT rcLine = rc;
+		if( SS_ETCHEDHORZ == dwType ){
+			rcLine.bottom = rcLine.top + 1;
+			::FillRect( hdc, &rcLine, hbrLine );
+		}else if( SS_ETCHEDVERT == dwType ){
+			rcLine.right = rcLine.left + 1;
+			::FillRect( hdc, &rcLine, hbrLine );
+		}else{
+			::FrameRect( hdc, &rc, hbrLine );
+		}
+	}else{
+		HFONT hFont = (HFONT)::SendMessage( hwnd, WM_GETFONT, 0, 0 );
+		HFONT hFontOld = ( NULL != hFont ) ? (HFONT)::SelectObject( hdc, hFont ) : NULL;
+		HBRUSH hbrBack = (HBRUSH)::SendMessage( ::GetParent( hwnd ), WM_CTLCOLORSTATIC, (WPARAM)hdc, (LPARAM)hwnd );
+		::FillRect( hdc, &rc, ( NULL != hbrBack ) ? hbrBack : GetUiColorBrush( COLOR_3DFACE ) );
+
+		int nLen = ::GetWindowTextLength( hwnd );
+		std::vector<WCHAR> vecText( nLen + 1 );
+		::GetWindowText( hwnd, &vecText[0], nLen + 1 );
+		UINT uFormat = DT_EXPANDTABS;
+		switch( dwType ){
+		case SS_CENTER:			uFormat |= DT_CENTER | DT_WORDBREAK;	break;
+		case SS_RIGHT:			uFormat |= DT_RIGHT | DT_WORDBREAK;		break;
+		case SS_LEFTNOWORDWRAP:
+		case SS_SIMPLE:			uFormat |= DT_LEFT | DT_SINGLELINE;		break;
+		default:				uFormat |= DT_LEFT | DT_WORDBREAK;		break;
+		}
+		if( lStyle & SS_CENTERIMAGE ){
+			uFormat = ( uFormat & ~DT_WORDBREAK ) | DT_SINGLELINE | DT_VCENTER;
+		}
+		switch( lStyle & SS_ELLIPSISMASK ){
+		case SS_ENDELLIPSIS:	uFormat |= DT_END_ELLIPSIS;		break;
+		case SS_PATHELLIPSIS:	uFormat |= DT_PATH_ELLIPSIS;	break;
+		case SS_WORDELLIPSIS:	uFormat |= DT_WORD_ELLIPSIS;	break;
+		}
+		if( lStyle & SS_NOPREFIX ){
+			uFormat |= DT_NOPREFIX;
+		}else if( ::SendMessage( hwnd, WM_QUERYUISTATE, 0, 0 ) & UISF_HIDEACCEL ){
+			uFormat |= DT_HIDEPREFIX;
+		}
+		::SetBkMode( hdc, TRANSPARENT );
+		::SetTextColor( hdc, GetUiColor( COLOR_GRAYTEXT ) );
+		::DrawText( hdc, &vecText[0], nLen, &rc, uFormat );
+		if( NULL != hFontOld ){
+			::SelectObject( hdc, hFontOld );
+		}
+	}
+	::EndPaint( hwnd, &ps );
+	return true;
 }
 
 /*!

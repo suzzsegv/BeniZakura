@@ -43,6 +43,7 @@
 #include "env/DLLSHAREDATA.h"
 #include "CEditApp.h"
 #include "util/shell.h"
+#include "uiparts/CDarkMode.h"
 #include "sakura_rc.h"
 
 int	CPropCommon::SearchIntArr( int nKey, int* pnArr, int nArrNum )
@@ -79,6 +80,7 @@ INT_PTR CPropCommon::DlgProc(
 		pPsp = (PROPSHEETPAGE*)lParam;
 		pCPropCommon = ( CPropCommon* )(pPsp->lParam);
 		if( NULL != pCPropCommon ){
+			CDarkMode::HandleDialogMessageBefore( hwndDlg, uMsg, wParam, lParam );	// ダークモードの配色 (ページの初期化の前に適用する)	// 2026.11.21
 			return (pCPropCommon->*DispatchPage)( hwndDlg, uMsg, wParam, pPsp->lParam );
 		}else{
 			return FALSE;
@@ -87,7 +89,11 @@ INT_PTR CPropCommon::DlgProc(
 		// Modified by KEITA for WIN64 2003.9.6
 		pCPropCommon = ( CPropCommon* )::GetWindowLongPtr( hwndDlg, DWLP_USER );
 		if( NULL != pCPropCommon ){
-			return (pCPropCommon->*DispatchPage)( hwndDlg, uMsg, wParam, lParam );
+			// ダークモードのボタンの描画、背景・文字の色 (ページで処理しなかった場合)	// 2026.11.21
+			if( CDarkMode::HandleDialogMessageBefore( hwndDlg, uMsg, wParam, lParam ) ){
+				return TRUE;
+			}
+			return CDarkMode::HandleDialogMessageAfter( uMsg, wParam, lParam, (pCPropCommon->*DispatchPage)( hwndDlg, uMsg, wParam, lParam ) );
 		}else{
 			return FALSE;
 		}
@@ -106,6 +112,7 @@ INT_PTR CPropCommon::DlgProc2(
 	case WM_INITDIALOG:
 		pCPropCommon = ( CPropCommon* )(lParam);
 		if( NULL != pCPropCommon ){
+			CDarkMode::HandleDialogMessageBefore( hwndDlg, uMsg, wParam, lParam );	// ダークモードの配色 (ページの初期化の前に適用する)	// 2026.11.21
 			return (pCPropCommon->*DispatchPage)( hwndDlg, uMsg, IDOK, lParam );
 		}else{
 			return FALSE;
@@ -114,7 +121,11 @@ INT_PTR CPropCommon::DlgProc2(
 		// Modified by KEITA for WIN64 2003.9.6
 		pCPropCommon = ( CPropCommon* )::GetWindowLongPtr( hwndDlg, DWLP_USER );
 		if( NULL != pCPropCommon ){
-			return (pCPropCommon->*DispatchPage)( hwndDlg, uMsg, wParam, lParam );
+			// ダークモードのボタンの描画、背景・文字の色 (ページで処理しなかった場合)	// 2026.11.21
+			if( CDarkMode::HandleDialogMessageBefore( hwndDlg, uMsg, wParam, lParam ) ){
+				return TRUE;
+			}
+			return CDarkMode::HandleDialogMessageAfter( uMsg, wParam, lParam, (pCPropCommon->*DispatchPage)( hwndDlg, uMsg, wParam, lParam ) );
 		}else{
 			return FALSE;
 		}

@@ -21,6 +21,7 @@
 #include "uiparts/CMenuDrawer.h" // 2002/2/10 aroka
 #include "uiparts/CImageListMgr.h" // 2005/8/9 aroka
 #include "util/shell.h"
+#include "uiparts/CDarkMode.h"
 #include "sakura_rc.h"
 
 
@@ -519,7 +520,7 @@ void CPropToolbar::DrawToolBarItemList( DRAWITEMSTRUCT* pDis )
 
 
 //	hBrush = ::CreateSolidBrush( ::GetSysColor( COLOR_WINDOW ) );
-	hBrush = ::GetSysColorBrush( COLOR_WINDOW );
+	hBrush = CDarkMode::GetUiColorBrush( COLOR_WINDOW );
 	::FillRect( pDis->hDC, &pDis->rcItem, hBrush );
 //	::DeleteObject( hBrush );
 
@@ -561,12 +562,12 @@ void CPropToolbar::DrawToolBarItemList( DRAWITEMSTRUCT* pDis )
 		/* アイテムが選択されている */
 		if( pDis->itemState & ODS_SELECTED ){
 //			hBrush = ::CreateSolidBrush( ::GetSysColor( COLOR_HIGHLIGHT ) );
-			hBrush = ::GetSysColorBrush( COLOR_HIGHLIGHT );
-			::SetTextColor( pDis->hDC, ::GetSysColor( COLOR_HIGHLIGHTTEXT ) );
+			hBrush = CDarkMode::GetUiColorBrush( COLOR_HIGHLIGHT );
+			::SetTextColor( pDis->hDC, CDarkMode::GetUiColor( COLOR_HIGHLIGHTTEXT ) );
 		}else{
 //			hBrush = ::CreateSolidBrush( ::GetSysColor( COLOR_WINDOW ) );
-			hBrush = ::GetSysColorBrush( COLOR_WINDOW );
-			::SetTextColor( pDis->hDC, ::GetSysColor( COLOR_WINDOWTEXT ) );
+			hBrush = CDarkMode::GetUiColorBrush( COLOR_WINDOW );
+			::SetTextColor( pDis->hDC, CDarkMode::GetUiColor( COLOR_WINDOWTEXT ) );
 		}
 		rc1.left++;
 		rc1.top++;
