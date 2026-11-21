@@ -1431,7 +1431,8 @@ LRESULT CTabWnd::OnDrawItem( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam 
 
 		// テキスト描画
 		COLORREF clrText;
-		clrText = bSelected ? cTabColor.m_colTEXT : CDarkMode::GetUiColor(COLOR_MENUTEXT);
+		// 2026.11.21 非アクティブのタブの文字は、無効なコントロールの文字と同じ灰色にする
+		clrText = bSelected ? cTabColor.m_colTEXT : CDarkMode::GetUiColor(COLOR_GRAYTEXT);
 		gr.PushTextForeColor( clrText );
 		gr.SetTextBackTransparent(true);
 		RECT rcText = rcItem;
@@ -1446,7 +1447,7 @@ LRESULT CTabWnd::OnDrawItem( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam 
 
 		// タブを閉じるボタンを描画
 		if( m_pShareData->m_Common.m_sTabBar.m_bDispTabClose ){
-			DrawTabCloseBtn( gr, &rcItem, bSelected, bSelected ? cTabColor.m_colTEXT : CDarkMode::GetUiColor(COLOR_BTNTEXT) );
+			DrawTabCloseBtn( gr, &rcItem, bSelected, bSelected ? cTabColor.m_colTEXT : CDarkMode::GetUiColor(COLOR_GRAYTEXT) );	// 2026.11.21 非アクティブのタブは文字と同じ灰色
 		}
 
 		// Vista以降ではオーナードロータブに自動で3D枠が描画されてしまうため、
