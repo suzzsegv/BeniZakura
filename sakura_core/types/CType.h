@@ -248,8 +248,10 @@ class CType{
 public:
 	virtual ~CType(){ }
 	void InitTypeConfig(int nIdx);
+	void GetInitialColorDisp( bool* pbDisp );	// 「色分け/表示」の初期値を返す	// 2026.11.21
 protected:
 	virtual void InitTypeConfigImp(STypeConfig* pType) = 0;
+	virtual void InitColorDispImp( ColorInfo* pColorInfoArr );	// タイプ固有の「色分け/表示」の初期値を設定する	// 2026.11.21
 	virtual int		AddDefaultKeywordSet(					//!< キーワードセットのデフォルト値を追加する
 						const wchar_t*	pSetName,			//!< [in] セット名
 						bool			bCaseSensitive,		//!< [in] 大文字小文字の区別．true:あり, false:無し
@@ -264,18 +266,27 @@ protected: \
 	void InitTypeConfigImp(STypeConfig* pType); \
 };
 
-GEN_CTYPE(CType_Asm)
-GEN_CTYPE(CType_Basis)
-GEN_CTYPE(CType_Cpp)
-GEN_CTYPE(CType_Ini)
-GEN_CTYPE(CType_Java)
-GEN_CTYPE(CType_Text)
+// タイプ固有の「色分け/表示」の初期値を持つタイプ	// 2026.11.21
+#define GEN_CTYPE_COLORDISP(CLASS_NAME) \
+class CLASS_NAME : public CType{ \
+protected: \
+	void InitTypeConfigImp(STypeConfig* pType); \
+	void InitColorDispImp( ColorInfo* pColorInfoArr ); \
+};
+
+GEN_CTYPE_COLORDISP(CType_Asm)
+GEN_CTYPE_COLORDISP(CType_Basis)
+GEN_CTYPE_COLORDISP(CType_Cpp)
+GEN_CTYPE_COLORDISP(CType_Ini)
+GEN_CTYPE_COLORDISP(CType_Java)
+GEN_CTYPE_COLORDISP(CType_Text)
 GEN_CTYPE(CType_Other)
 GEN_CTYPE(CType_Markdown)
 
 class CType_JavaScript : public CType {
 protected:
 	void InitTypeConfigImp(STypeConfig* pType);
+	void InitColorDispImp( ColorInfo* pColorInfoArr );	// 2026.11.21
 };
 
 

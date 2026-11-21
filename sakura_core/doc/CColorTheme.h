@@ -83,6 +83,8 @@ bool IsColorThemePreset( int nColorTheme );
 bool IsColorThemeDispItem( int nColorIdx );
 void SetPresetColorInfo( ColorInfo* pColorInfoArr, int nColorTheme );
 void ApplyColorTheme( ColorInfo* pColorInfoArr, int nColorTheme, const ColorInfo* pCustomColorInfoArr );
+void ApplyColorThemeDisp( ColorInfo* pColorInfoArr, int nColorTheme, const ColorInfo* pCustomColorInfoArr, const bool* pbTypeInitDisp );
+bool IsColorThemeDispChanged( int nOldColorTheme, const ColorInfo* pOldCustomColorInfoArr, int nNewColorTheme, const ColorInfo* pNewCustomColorInfoArr );
 void SetCustomColorThemeFromType( int* pnColorTheme, ColorInfo* pCustomColorInfoArr, const ColorInfo* pTypeColorInfoArr );
 
 #endif /* SAKURA_CCOLORTHEME_H_ */

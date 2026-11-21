@@ -301,7 +301,7 @@ bool CImpExpType::Import( const wstring& sFileName, wstring& sErrMsg )
 		wcscpy( m_Types.m_szTypeExts, L"" );
 	}
 
-	// 色はカラーテーマの色にする (ファイルの色設定は「色分け/表示」のうちタイプごとの設定だけを使う)	// 2026.11.18
+	// 色はカラーテーマの色にする (ファイルの色設定は「色分け/表示」だけを使う)	// 2026.11.18
 	ApplyColorTheme( m_Types.m_ColorInfoArr, m_pShareData->m_Common.m_sColorTheme.m_nColorTheme, m_pShareData->m_Common.m_sColorTheme.m_CustomColorInfoArr );
 
 	// 共通設定との連結部

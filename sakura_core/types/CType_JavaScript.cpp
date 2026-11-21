@@ -193,8 +193,6 @@ void CType_JavaScript::InitTypeConfigImp(STypeConfig* pType)
 	pType->m_cBlockComments[0].SetBlockCommentRule(L"/*", L"*/"); // ブロックコメントデリミタ
 	pType->m_eDefaultOutline = OUTLINE_CPP; // アウトライン解析方法
 	pType->m_eSmartIndent = SMARTINDENT_NONE; // スマートインデント種別
-	pType->m_ColorInfoArr[COLORIDX_DIGIT].m_bDisp = true; //半角数値を色分け表示
-	pType->m_ColorInfoArr[COLORIDX_BRACKET_PAIR].m_bDisp = true; //対括弧の強調
 
 	pType->m_nKeyWordSetIdx[0] = AddDefaultKeywordSet(
 		L"JavaScript Keyword 1",
@@ -263,4 +261,17 @@ void CType_JavaScript::InitTypeConfigImp(STypeConfig* pType)
 	keywordPos += auto_strlen(&pKeyword[keywordPos]) + 1;
 
 	pKeyword[keywordPos] = L'\0';
+}
+
+/*!
+ * CType_JavaScript::InitColorDispImp - JavaScript の「色分け/表示」の初期値を設定する
+ *
+ * InitTypeConfigImp から移動した (カラーテーマの切り替えで、タイプの初期値を求めるため)。
+ */
+void CType_JavaScript::InitColorDispImp(
+	ColorInfo*	pColorInfoArr	//!< [i/o] 色設定 (COLORIDX_LAST 個)
+)
+{
+	pColorInfoArr[COLORIDX_DIGIT].m_bDisp = true; //半角数値を色分け表示
+	pColorInfoArr[COLORIDX_BRACKET_PAIR].m_bDisp = true; //対括弧の強調
 }

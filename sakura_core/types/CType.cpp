@@ -34,6 +34,37 @@ void CType::InitTypeConfig(int nIdx)
 
 	//個別設定
 	InitTypeConfigImp(CTypeConfig(nIdx).GetTypeConfig());
+	InitColorDispImp(CTypeConfig(nIdx)->m_ColorInfoArr);	// 2026.11.21 「色分け/表示」の個別設定
+}
+
+/*!
+ * CType::GetInitialColorDisp - 「色分け/表示」の初期値を返す
+ *
+ * タイプ別設定の初期化 (InitTypeConfig) で設定する「色分け/表示」の値を、共有データを変更せずに求める。
+ * 既定値 (紅桜の配色) にタイプ固有の設定 (InitColorDispImp) を加えた値。カラーテーマの切り替えで使う。
+ */
+void CType::GetInitialColorDisp(
+	bool*	pbDisp		//!< [out] 「色分け/表示」の初期値 (COLORIDX_LAST 個)
+)
+{
+	ColorInfo aColorInfo[COLORIDX_LAST];
+	SetDefaultColorInfo( aColorInfo, COLOR_THEME_BENIZAKURA );	// _DefaultConfig() と同じ既定値
+	InitColorDispImp( aColorInfo );
+	for( int i = 0; i < COLORIDX_LAST; i++ ){
+		pbDisp[i] = aColorInfo[i].m_bDisp;
+	}
+}
+
+/*!
+ * CType::InitColorDispImp - タイプ固有の「色分け/表示」の初期値を設定する
+ *
+ * 既定では何もしない (既定値のまま)。タイプ固有の初期値があるタイプで再定義する。
+ * キーワードセットの登録などの副作用がある処理は書かない (GetInitialColorDisp からも呼ぶため)。
+ */
+void CType::InitColorDispImp(
+	ColorInfo*	pColorInfoArr	//!< [i/o] 色設定 (COLORIDX_LAST 個)
+)
+{
 }
 
 /*!

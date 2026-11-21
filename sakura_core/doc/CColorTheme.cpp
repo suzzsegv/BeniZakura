@@ -3,7 +3,8 @@
  *	@brief	カラーテーマ (プリセットの配色とカスタム) の定義と適用
  *
  * プリセットの配色表 (doc/CDocTypeSetting.cpp から移動) と、テーマをタイプ別設定の色設定に適用する処理。
- * テーマは全項目の文字色・背景色・太字・下線と、IsColorThemeDispItem() の項目の「色分け/表示」を決める。
+ * テーマは全項目の文字色・背景色・太字・下線を決める。「色分け/表示」はテーマも全項目の値を持ち、
+ * テーマを切り替えたときにタイプ別設定へ適用する (ApplyColorThemeDisp。その後はタイプごとに変更できる)。
  * テーマの番号は ColorTheme の値 (プリセット) または COLOR_THEME_CUSTOM。ini には名前の文字列で保存する。
  *
  * プリコンパイル済みヘッダー (StdAfx.h) は使用しない (単体テストからも単独でビルドするため)。
@@ -254,10 +255,10 @@ static ColorInfoIni ColorInfo_DEFAULT[COLOR_THEME_MAX][COLORIDX_LAST] = {
 		L"対括弧の強調表示",					TRUE,		FALSE,		TRUE,		RGB( 0xff,0xff,0xff ),	RGB( 0xf9,0x26,0x72 ),
 		L"選択範囲",							TRUE,		FALSE,		FALSE,		RGB( 0x6f,0x6d,0x5e ),	RGB( 0x6f,0x6d,0x5e ),
 		L"検索文字列",						TRUE,		TRUE,		TRUE,		RGB( 0xe6,0xdb,0x74 ),	RGB( 0x00,0x00,0x00 ),
-		L"検索文字列2",						FALSE,		FALSE,		FALSE,		RGB( 0xe6,0xdb,0x74 ),	RGB( 0x00,0x00,0x00 ),
-		L"検索文字列3",						FALSE,		FALSE,		FALSE,		RGB( 0xe6,0xdb,0x74 ),	RGB( 0x00,0x00,0x00 ),
-		L"検索文字列4",						FALSE,		FALSE,		FALSE,		RGB( 0xe6,0xdb,0x74 ),	RGB( 0x00,0x00,0x00 ),
-		L"検索文字列5",						FALSE,		FALSE,		FALSE,		RGB( 0xe6,0xdb,0x74 ),	RGB( 0x00,0x00,0x00 ),
+		L"検索文字列2",						TRUE,		FALSE,		FALSE,		RGB( 0xe6,0xdb,0x74 ),	RGB( 0x00,0x00,0x00 ),
+		L"検索文字列3",						TRUE,		FALSE,		FALSE,		RGB( 0xe6,0xdb,0x74 ),	RGB( 0x00,0x00,0x00 ),
+		L"検索文字列4",						TRUE,		FALSE,		FALSE,		RGB( 0xe6,0xdb,0x74 ),	RGB( 0x00,0x00,0x00 ),
+		L"検索文字列5",						TRUE,		FALSE,		FALSE,		RGB( 0xe6,0xdb,0x74 ),	RGB( 0x00,0x00,0x00 ),
 		L"コメント",							TRUE,		FALSE,		FALSE,		RGB( 0x75,0x71,0x5e ),	RGB( 0x28,0x28,0x28 ),
 		L"C/C++ プリプロセッサコメント",		TRUE,		FALSE,		FALSE,		RGB( 0x75,0x71,0x5e ),	RGB( 0x28,0x28,0x28 ),
 		L"シングルクォーテーション文字列",	TRUE,		TRUE,		FALSE,		RGB( 0xe6,0xdb,0x74 ),	RGB( 0x28,0x28,0x28 ),
@@ -267,12 +268,12 @@ static ColorInfoIni ColorInfo_DEFAULT[COLOR_THEME_MAX][COLORIDX_LAST] = {
 		L"強調キーワード2",					TRUE,		TRUE,		FALSE,		RGB( 0xf9,0x26,0x72 ),	RGB( 0x28,0x28,0x28 ),
 		L"強調キーワード3",					TRUE,		FALSE,		FALSE,		RGB( 0x66,0xd9,0xef ),	RGB( 0x28,0x28,0x28 ),
 		L"強調キーワード4",					TRUE,		FALSE,		FALSE,		RGB( 0xae,0x81,0xff ),	RGB( 0x28,0x28,0x28 ),
-		L"強調キーワード5",					FALSE,		FALSE,		FALSE,		RGB( 0xa6,0xe2,0x2e ),	RGB( 0x28,0x28,0x28 ),
-		L"強調キーワード6",					FALSE,		FALSE,		FALSE,		RGB( 0xfd,0x97,0x1f ),	RGB( 0x28,0x28,0x28 ),
-		L"強調キーワード7",					FALSE,		FALSE,		FALSE,		RGB( 0xff,0x80,0x00 ),	RGB( 0x28,0x28,0x28 ),
-		L"強調キーワード8",					FALSE,		FALSE,		FALSE,		RGB( 0xff,0x80,0x00 ),	RGB( 0x28,0x28,0x28 ),
-		L"強調キーワード9",					FALSE,		FALSE,		FALSE,		RGB( 0xff,0x80,0x00 ),	RGB( 0x28,0x28,0x28 ),
-		L"強調キーワード10",					FALSE,		FALSE,		FALSE,		RGB( 0xff,0x80,0x00 ),	RGB( 0x28,0x28,0x28 ),
+		L"強調キーワード5",					TRUE,		FALSE,		FALSE,		RGB( 0xa6,0xe2,0x2e ),	RGB( 0x28,0x28,0x28 ),
+		L"強調キーワード6",					TRUE,		FALSE,		FALSE,		RGB( 0xfd,0x97,0x1f ),	RGB( 0x28,0x28,0x28 ),
+		L"強調キーワード7",					TRUE,		FALSE,		FALSE,		RGB( 0xff,0x80,0x00 ),	RGB( 0x28,0x28,0x28 ),
+		L"強調キーワード8",					TRUE,		FALSE,		FALSE,		RGB( 0xff,0x80,0x00 ),	RGB( 0x28,0x28,0x28 ),
+		L"強調キーワード9",					TRUE,		FALSE,		FALSE,		RGB( 0xff,0x80,0x00 ),	RGB( 0x28,0x28,0x28 ),
+		L"強調キーワード10",					TRUE,		FALSE,		FALSE,		RGB( 0xff,0x80,0x00 ),	RGB( 0x28,0x28,0x28 ),
 		L"正規表現キーワード1",				TRUE,		FALSE,		FALSE,		RGB( 0x66,0xd9,0xef ),	RGB( 0x28,0x28,0x28 ),
 		L"正規表現キーワード2",				FALSE,		FALSE,		FALSE,		RGB( 0x66,0xd9,0xef ),	RGB( 0x28,0x28,0x28 ),
 		L"正規表現キーワード3",				FALSE,		FALSE,		FALSE,		RGB( 0x66,0xd9,0xef ),	RGB( 0x28,0x28,0x28 ),
@@ -525,12 +526,14 @@ bool IsColorThemePreset(
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
 /*!
- * IsColorThemeDispItem - 項目の「色分け/表示」をテーマが決めるかを返す
+ * IsColorThemeDispItem - 項目の「色分け/表示」を、テーマの値だけで決めるかを返す
  *
  * カーソル行の背景色、カーソル行アンダーライン、カーソル位置縦線、TAB 記号、改行記号は、
- * テーマごとに表示の有無が異なるため、テーマが決める。それ以外の項目はタイプごとの設定。
+ * テーマごとに表示の有無が異なるため、テーマを切り替えたときにテーマの値をそのまま全タイプへ適用する。
+ * それ以外の項目は、テーマの値とタイプの初期値の両方が「表示」のときに「表示」にする (ApplyColorThemeDisp)。
+ * どちらも、適用した後はタイプごとに変更できる。
  *
- *	@return	true: テーマが決める / false: タイプが決める
+ *	@return	true: テーマの値だけで決める / false: テーマの値とタイプの初期値で決める
  */
 bool IsColorThemeDispItem(
 	int		nColorIdx	//!< [in] 色の項目 (EColorIndexType)
@@ -572,8 +575,8 @@ void SetPresetColorInfo(
 /*!
  * ApplyColorTheme - テーマの配色を、タイプ別設定の色設定に適用する
  *
- * 全項目の文字色・背景色・太字・下線と、IsColorThemeDispItem() の項目の「色分け/表示」を、
- * テーマの値にする。それ以外の項目の「色分け/表示」(タイプごとの設定)、名前、インデックスは変更しない。
+ * 全項目の文字色・背景色・太字・下線を、テーマの値にする。
+ * 「色分け/表示」(タイプごとの設定)、名前、インデックスは変更しない (テーマの「色分け/表示」は ApplyColorThemeDisp で適用する)。
  * カスタムの色がない場合 (NULL)、または不明なテーマ番号の場合は、紅桜の配色を適用する。
  */
 void ApplyColorTheme(
@@ -593,10 +596,68 @@ void ApplyColorTheme(
 		dst.m_bUnderLine	= src.m_bUnderLine;
 		dst.m_colTEXT		= src.m_colTEXT;
 		dst.m_colBACK		= src.m_colBACK;
+	}
+}
+
+/*!
+ * ApplyColorThemeDisp - テーマの「色分け/表示」を、タイプ別設定の色設定に適用する
+ *
+ * 全項目の「色分け/表示」を、次の値にする。文字色・背景色・太字・下線、名前、インデックスは変更しない。
+ * - IsColorThemeDispItem() の項目 (カーソル行の背景色など 5 項目): テーマの値
+ * - それ以外の項目: テーマの値とタイプの初期値の両方が「表示」のときに「表示」
+ *   (テーマで「表示しない」にした項目は全タイプで表示しない。「表示」にした項目はタイプの初期値になる)
+ * テーマを切り替えたときに使う (ApplyColorTheme と違い、起動時やタイプ別設定の OK では使わない)。
+ * カスタムの色がない場合 (NULL)、または不明なテーマ番号の場合は、紅桜の値を適用する。
+ */
+void ApplyColorThemeDisp(
+	ColorInfo*			pColorInfoArr,			//!< [i/o] タイプ別設定の色設定 (COLORIDX_LAST 個)
+	int					nColorTheme,			//!< [in] テーマ番号
+	const ColorInfo*	pCustomColorInfoArr,	//!< [in] カスタムテーマの色 (COLORIDX_LAST 個)
+	const bool*			pbTypeInitDisp			//!< [in] タイプの「色分け/表示」の初期値 (COLORIDX_LAST 個)
+)
+{
+	const bool bCustom = ( nColorTheme == COLOR_THEME_CUSTOM && pCustomColorInfoArr != NULL );
+	if( !bCustom && !IsColorThemePreset( nColorTheme ) ){
+		nColorTheme = COLOR_THEME_BENIZAKURA;
+	}
+	for( int i = 0; i < COLORIDX_LAST; i++ ){
+		const ColorInfoBase& src = bCustom ? pCustomColorInfoArr[i] : ColorInfo_DEFAULT[nColorTheme][i].m_sColorInfoBase;
 		if( IsColorThemeDispItem( i ) ){
-			dst.m_bDisp		= src.m_bDisp;
+			pColorInfoArr[i].m_bDisp = src.m_bDisp;
+		}else{
+			pColorInfoArr[i].m_bDisp = ( src.m_bDisp && pbTypeInitDisp[i] );
 		}
 	}
+}
+
+/*!
+ * IsColorThemeDispChanged - テーマの変更で、テーマの「色分け/表示」を全タイプに適用する必要があるかを返す
+ *
+ * 変更前と変更後でテーマ番号が異なる場合、またはどちらもカスタムで、カスタムの色の
+ * 「色分け/表示」(いずれかの項目) が異なる場合に、適用が必要とする。
+ * カスタムの文字色・背景色・太字・下線だけが異なる場合は、適用しない。
+ *
+ *	@return	true: 適用する必要がある / false: 適用しない
+ */
+bool IsColorThemeDispChanged(
+	int					nOldColorTheme,				//!< [in] 変更前のテーマ番号
+	const ColorInfo*	pOldCustomColorInfoArr,		//!< [in] 変更前のカスタムテーマの色 (COLORIDX_LAST 個)
+	int					nNewColorTheme,				//!< [in] 変更後のテーマ番号
+	const ColorInfo*	pNewCustomColorInfoArr		//!< [in] 変更後のカスタムテーマの色 (COLORIDX_LAST 個)
+)
+{
+	if( nOldColorTheme != nNewColorTheme ){
+		return true;
+	}
+	if( nNewColorTheme != COLOR_THEME_CUSTOM ){
+		return false;
+	}
+	for( int i = 0; i < COLORIDX_LAST; i++ ){
+		if( pOldCustomColorInfoArr[i].m_bDisp != pNewCustomColorInfoArr[i].m_bDisp ){
+			return true;
+		}
+	}
+	return false;
 }
 
 /*!
@@ -604,6 +665,8 @@ void ApplyColorTheme(
  *
  * テーマの設定がない ini (カラーテーマの導入前の ini) の移行に使う。
  * 基本タイプの色をカスタムの色にすることで、移行前と同じ色で表示する。
+ * ただし、IsColorThemeDispItem() 以外の項目の「色分け/表示」は、基本タイプ固有の値 (引用符の文字列を色分けしないなど) が
+ * テーマの切り替えで全タイプに広がらないように、共有データの初期値 (紅桜の配色の値) にする。	// 2026.11.21
  */
 void SetCustomColorThemeFromType(
 	int*				pnColorTheme,			//!< [out] テーマ番号 (COLOR_THEME_CUSTOM にする)
@@ -613,6 +676,9 @@ void SetCustomColorThemeFromType(
 {
 	for( int i = 0; i < COLORIDX_LAST; i++ ){
 		pCustomColorInfoArr[i] = pTypeColorInfoArr[i];
+		if( !IsColorThemeDispItem( i ) ){
+			pCustomColorInfoArr[i].m_bDisp = ColorInfo_DEFAULT[COLOR_THEME_BENIZAKURA][i].m_sColorInfoBase.m_bDisp;
+		}
 	}
 	*pnColorTheme = COLOR_THEME_CUSTOM;
 }

@@ -296,7 +296,7 @@ void CPropColor::SetColorList(
  * CPropColor::UpdateControls - 選択中のテーマと色の項目に合わせて、コントロールの状態と値を設定する
  *
  * プリセット選択中は、色を変更するコントロールをすべて無効にする (エクスポートを除く)。
- * 「色分け/表示」は、テーマが決める項目だけ表示・変更できる (タイプごとの設定はタイプ別設定で変更する)。
+ * 「色分け/表示」は、全項目のテーマの値 (テーマを切り替えたときにタイプ別設定に適用する値) を表示・変更する。
  */
 void CPropColor::UpdateControls(
 	HWND	hwndDlg		//!< [in] ダイアログ
@@ -306,9 +306,8 @@ void CPropColor::UpdateControls(
 	const int nIdx = m_nCurrentColorIdx;
 	const unsigned int fAttribute = g_ColorAttributeArr[nIdx].fAttribute;
 	const ColorInfo& cColorInfo = GetDispColorInfoArr()[nIdx];
-	const bool bThemeDisp = IsColorThemeDispItem( nIdx );
 
-	const bool bDisp	= bCustom && bThemeDisp && 0 == (fAttribute & COLOR_ATTRIB_FORCE_DISP);
+	const bool bDisp	= bCustom && 0 == (fAttribute & COLOR_ATTRIB_FORCE_DISP);	// 2026.11.21 全項目
 	const bool bBold	= bCustom && 0 == (fAttribute & COLOR_ATTRIB_NO_BOLD);
 	const bool bUnder	= bCustom && 0 == (fAttribute & COLOR_ATTRIB_NO_UNDERLINE);
 	const bool bText	= bCustom && 0 == (fAttribute & COLOR_ATTRIB_NO_TEXT);
@@ -326,7 +325,7 @@ void CPropColor::UpdateControls(
 	::EnableWindow( ::GetDlgItem( hwndDlg, IDC_BUTTON_COPY_PRESET ),	bCustom ? TRUE : FALSE );
 	::EnableWindow( ::GetDlgItem( hwndDlg, IDC_BUTTON_IMPORT ),			bCustom ? TRUE : FALSE );
 
-	::CheckDlgButton( hwndDlg, IDC_CHECK_DISP,		( bThemeDisp && cColorInfo.m_bDisp ) ? BST_CHECKED : BST_UNCHECKED );
+	::CheckDlgButton( hwndDlg, IDC_CHECK_DISP,		cColorInfo.m_bDisp ? BST_CHECKED : BST_UNCHECKED );
 	::CheckDlgButton( hwndDlg, IDC_CHECK_BOLD,		cColorInfo.m_bBoldFont ? BST_CHECKED : BST_UNCHECKED );
 	::CheckDlgButton( hwndDlg, IDC_CHECK_UNDERLINE,	cColorInfo.m_bUnderLine ? BST_CHECKED : BST_UNCHECKED );
 
@@ -399,7 +398,7 @@ void CPropColor::Export(
 /*!
  * CPropColor::CanEditColor - 色設定の一覧で、値を変更してよいかを返す
  *
- * カスタム選択中だけ変更できる。「色分け/表示」は、テーマが決める項目だけ表示・変更できる。
+ * カスタム選択中だけ変更できる。「色分け/表示」は、全項目を表示する (2026.11.21 変更)。
  *
  *	@return	true: 変更してよい / false: 変更できない
  */
@@ -412,9 +411,7 @@ bool CPropColor::CanEditColor(
 	const CPropColor* pThis = (const CPropColor*)pParam;
 	switch( eEdit ){
 	case COLORLIST_SHOW_DISP:
-		return IsColorThemeDispItem( nColorIdx );
-	case COLORLIST_EDIT_DISP:
-		return pThis->IsCustomTheme() && IsColorThemeDispItem( nColorIdx );
+		return true;
 	default:
 		return pThis->IsCustomTheme();
 	}

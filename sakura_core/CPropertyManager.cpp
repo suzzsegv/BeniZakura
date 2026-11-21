@@ -27,9 +27,16 @@ BOOL CPropertyManager::OpenPropertySheet( int nPageNum )
 		// ShareData に 設定を適用・コピーする
 		// 2007.06.20 ryoji グループ化に変更があったときはグループIDをリセットする
 		BOOL bGroup = (GetDllShareData().m_Common.m_sTabBar.m_bDispTabWnd && !GetDllShareData().m_Common.m_sTabBar.m_bDispTabWndMultiWin);
+		const CommonSetting_ColorTheme sColorThemeOld = GetDllShareData().m_Common.m_sColorTheme;	// 2026.11.21
 		m_cPropCommon.ApplyData();
 		// カラーテーマをすべてのタイプ別設定に適用する (共有データへの適用は 1 回でよいため、ここで行う)	// 2026.11.18
 		CShareData::ApplyColorThemeToAllTypes( &GetDllShareData() );
+		// テーマを切り替えたときは、テーマの「色分け/表示」も適用する (その後はタイプ別設定で変更できる)	// 2026.11.21
+		const CommonSetting_ColorTheme& sColorThemeNew = GetDllShareData().m_Common.m_sColorTheme;
+		if( IsColorThemeDispChanged( sColorThemeOld.m_nColorTheme, sColorThemeOld.m_CustomColorInfoArr,
+									 sColorThemeNew.m_nColorTheme, sColorThemeNew.m_CustomColorInfoArr ) ){
+			CShareData::ApplyColorThemeDispToAllTypes( &GetDllShareData() );
+		}
 		// note: 基本的にここで適用しないで、MYWM_CHANGESETTINGからたどって適用してください。
 		// 自ウィンドウには最後に通知されます。大抵は、OnChangeSetting にあります。
 		// ここでしか適用しないと、ほかのウィンドウが変更されません。
@@ -82,7 +89,7 @@ BOOL CPropertyManager::OpenPropertySheetTypes( int nPageNum, CTypeConfig nSettin
 			nTextWrapMethodOld = CEditWnd::getInstance()->GetDocument().m_cDocType.GetDocumentAttribute().m_nTextWrapMethod;
 		}
 		m_cPropTypes.GetTypeData( types );
-		// 色はカラーテーマの色にする (タイプ別設定では「色分け/表示」のうちタイプごとの設定だけを変更する)	// 2026.11.18
+		// 色はカラーテーマの色にする (タイプ別設定では「色分け/表示」だけを変更する)	// 2026.11.18
 		ApplyColorTheme( types.m_ColorInfoArr, GetDllShareData().m_Common.m_sColorTheme.m_nColorTheme, GetDllShareData().m_Common.m_sColorTheme.m_CustomColorInfoArr );
 
 		// 2008.06.01 nasukoji	テキストの折り返し位置変更対応

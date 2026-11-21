@@ -24,8 +24,6 @@ void CType_Text::InitTypeConfigImp(STypeConfig* pType)
 	//設定
 	pType->m_nMaxLineKetas = CLayoutInt(120);					/* 折り返し桁数 */
 	pType->m_eDefaultOutline = OUTLINE_TEXT;					/* アウトライン解析方法 */
-	pType->m_ColorInfoArr[COLORIDX_SSTRING].m_bDisp = false;	//Oct. 17, 2000 JEPRO	シングルクォーテーション文字列を色分け表示しない
-	pType->m_ColorInfoArr[COLORIDX_WSTRING].m_bDisp = false;	//Sept. 4, 2000 JEPRO	ダブルクォーテーション文字列を色分け表示しない
 	pType->m_bKinsokuHead = false;								// 行頭禁則				//@@@ 2002.04.08 MIK
 	pType->m_bKinsokuTail = false;								// 行末禁則				//@@@ 2002.04.08 MIK
 	pType->m_bKinsokuRet  = false;								// 改行文字をぶら下げる	//@@@ 2002.04.13 MIK
@@ -36,6 +34,19 @@ void CType_Text::InitTypeConfigImp(STypeConfig* pType)
 
 	// 2026.11.14 C:\～～ や \\～～ などのファイルパスを URL の色で表示する正規表現キーワードの既定設定を削除
 	//            (URL をダブルクリックで開く機能を削除したため、クリッカブルにする目的がなくなった)
+}
+
+/*!
+ * CType_Text::InitColorDispImp - テキストの「色分け/表示」の初期値を設定する
+ *
+ * InitTypeConfigImp から移動した (カラーテーマの切り替えで、タイプの初期値を求めるため)。
+ */
+void CType_Text::InitColorDispImp(
+	ColorInfo*	pColorInfoArr	//!< [i/o] 色設定 (COLORIDX_LAST 個)
+)
+{
+	pColorInfoArr[COLORIDX_SSTRING].m_bDisp = false;	//Oct. 17, 2000 JEPRO	シングルクォーテーション文字列を色分け表示しない
+	pColorInfoArr[COLORIDX_WSTRING].m_bDisp = false;	//Sept. 4, 2000 JEPRO	ダブルクォーテーション文字列を色分け表示しない
 }
 
 

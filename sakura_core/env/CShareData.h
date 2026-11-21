@@ -32,6 +32,7 @@
 #define SAKURA_ENV_CSHAREDATA_H_
 
 class CShareData;
+class CType;	// 2026.11.21
 
 // 2010.04.19 Moca DLLSHAREDATA関連はDLLSHAREDATA.h等最低限必要な場所へ移動
 // CShareData.hは、自分のInterfaceしか提供しません。別にDLLSHAREDATA.hをincludeすること。
@@ -94,6 +95,7 @@ public:
 	int			GetMacroFilename( int idx, WCHAR* pszPath, int nBufLen ); // idxで指定したマクロファイル名（フルパス）を取得する	//	Jun. 14, 2003 genta 引数追加．書式変更
 	bool		BeReloadWhenExecuteMacro( int idx );	//	idxで指定したマクロは、実行するたびにファイルを読み込む設定か？
 	static void ApplyColorThemeToAllTypes( DLLSHAREDATA* pShareData );	//!< カラーテーマを、すべてのタイプ別設定に適用する	// 2026.11.18
+	static void ApplyColorThemeDispToAllTypes( DLLSHAREDATA* pShareData );	//!< カラーテーマの「色分け/表示」を、すべてのタイプ別設定に適用する	// 2026.11.21
 
 	
 
@@ -108,6 +110,7 @@ protected:
 	bool InitKeyAssign(DLLSHAREDATA*); // 2007.11.04 genta 起動中止のため値を返す
 	void InitToolButtons(DLLSHAREDATA*);
 	void InitTypeConfigs(DLLSHAREDATA*);
+	static CType* CreateDefaultType( int nIdx );	// タイプ別設定の番号に対応する、初期設定のタイプを作成する	// 2026.11.21
 	void InitPopupMenu(DLLSHAREDATA*);
 
 private:

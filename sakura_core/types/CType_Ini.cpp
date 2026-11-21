@@ -14,6 +14,17 @@ void CType_Ini::InitTypeConfigImp(STypeConfig* pType)
 	pType->m_cLineComment.CopyTo( 0, L"//", -1 );				/* 行コメントデリミタ */
 	pType->m_cLineComment.CopyTo( 1, L";", -1 );				/* 行コメントデリミタ2 */
 	pType->m_eDefaultOutline = OUTLINE_TEXT;					/* アウトライン解析方法 */
-	pType->m_ColorInfoArr[COLORIDX_SSTRING].m_bDisp = false;	//シングルクォーテーション文字列を色分け表示しない
-	pType->m_ColorInfoArr[COLORIDX_WSTRING].m_bDisp = false;	//ダブルクォーテーション文字列を色分け表示しない
+}
+
+/*!
+ * CType_Ini::InitColorDispImp - 設定ファイルの「色分け/表示」の初期値を設定する
+ *
+ * InitTypeConfigImp から移動した (カラーテーマの切り替えで、タイプの初期値を求めるため)。
+ */
+void CType_Ini::InitColorDispImp(
+	ColorInfo*	pColorInfoArr	//!< [i/o] 色設定 (COLORIDX_LAST 個)
+)
+{
+	pColorInfoArr[COLORIDX_SSTRING].m_bDisp = false;	//シングルクォーテーション文字列を色分け表示しない
+	pColorInfoArr[COLORIDX_WSTRING].m_bDisp = false;	//ダブルクォーテーション文字列を色分け表示しない
 }

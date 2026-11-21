@@ -49,7 +49,7 @@ struct {
  * CPropTypesColor::CanEditColor - 色設定の一覧で、値を変更してよいかを返す
  *
  * タイプ別設定では、色 (文字色・背景色・太字・下線) は共通設定のカラーテーマが決めるため変更できない。
- * 「色分け/表示」は、タイプごとの設定の項目だけ変更できる (テーマが決める項目は変更できない)。
+ * 「色分け/表示」は、全項目を変更できる (テーマも値を持つ項目は、テーマを切り替えたときにテーマの値で上書きされる)。
  *
  *	@return	true: 変更してよい / false: 変更できない
  */
@@ -61,9 +61,8 @@ bool CPropTypesColor::CanEditColor(
 {
 	switch( eEdit ){
 	case COLORLIST_SHOW_DISP:
+	case COLORLIST_EDIT_DISP:	// 2026.11.21 テーマも値を持つ項目も変更できるように変更
 		return true;
-	case COLORLIST_EDIT_DISP:
-		return !IsColorThemeDispItem( nColorIdx );
 	default:
 		return false;
 	}
@@ -118,7 +117,7 @@ INT_PTR CPropTypesColor::DispatchEvent(
 
 				{
 					// 各種コントロールの有効／無効を切り替える	// 2006.12.18 ryoji フラグ利用で簡素化
-					// 2026.11.18 色は共通設定のカラーテーマで変更するため、「色分け/表示」だけ (タイプごとの設定の項目のみ)
+					// 2026.11.18 色は共通設定のカラーテーマで変更するため、「色分け/表示」だけ
 					unsigned int fAttribute = g_ColorAttributeArr[nIndex].fAttribute;
 					const bool bCanEditDisp = (0 == (fAttribute & COLOR_ATTRIB_FORCE_DISP)) && CanEditColor( this, nIndex, COLORLIST_EDIT_DISP );
 					::EnableWindow( ::GetDlgItem( hwndDlg, IDC_CHECK_DISP ), bCanEditDisp ? TRUE : FALSE );

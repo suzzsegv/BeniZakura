@@ -948,36 +948,45 @@ bool CShareData::BeReloadWhenExecuteMacro( int idx )
 */
 void CShareData::InitTypeConfigs(DLLSHAREDATA* pShareData)
 {
-	CType* table[] = {
-		new CType_Basis(),	//基本
-		new CType_Text(),	//テキスト
-		new CType_Cpp(),	//C/C++
-		new CType_Java(),	//Java
-		new CType_JavaScript(), //JavaScript
-		new CType_Asm(),	//アセンブラ
-		new CType_Ini(),	//設定ファイル
-		new CType_Markdown(),	//Markdown
-	};
+	// 2026.11.21 タイプの種類の対応は CreateDefaultType() に移動 (カラーテーマの切り替えでも使うため)
 	assert( 1 <= MAX_TYPES );
-	for(int i=0;i<_countof(table) && i < MAX_TYPES;i++){
-		table[i]->InitTypeConfig(i);
-		SAFE_DELETE(table[i]);
+	for( int i = 0; i < MAX_TYPES; i++ ){
+		CType* pType = CreateDefaultType( i );
+		pType->InitTypeConfig(i);
+		SAFE_DELETE(pType);
 	}
+}
 
-	// MAX_TYPES までの初期設定
-	if( _countof(table) < MAX_TYPES ){
-		CType_Other other;
-		for( int i = _countof(table); i < MAX_TYPES; i++ ){
-			other.InitTypeConfig(i);
-		}
+/*!
+ * CShareData::CreateDefaultType - タイプ別設定の番号に対応する、初期設定のタイプを作成する
+ *
+ * 0: 基本、1: テキスト、2: C/C++、3: Java、4: JavaScript、5: アセンブラ、6: 設定ファイル、7: Markdown、
+ * それ以降は「設定N」(CType_Other)。呼び出し側で delete する。
+ *
+ *	@return	作成したタイプ
+ */
+CType* CShareData::CreateDefaultType(
+	int		nIdx	//!< [in] タイプ別設定の番号
+)
+{
+	switch( nIdx ){
+	case 0:	return new CType_Basis();		//基本
+	case 1:	return new CType_Text();		//テキスト
+	case 2:	return new CType_Cpp();			//C/C++
+	case 3:	return new CType_Java();		//Java
+	case 4:	return new CType_JavaScript();	//JavaScript
+	case 5:	return new CType_Asm();			//アセンブラ
+	case 6:	return new CType_Ini();			//設定ファイル
+	case 7:	return new CType_Markdown();	//Markdown
 	}
+	return new CType_Other();
 }
 
 /*!
  * CShareData::ApplyColorThemeToAllTypes - カラーテーマを、すべてのタイプ別設定に適用する
  *
  * 共通設定のテーマ (プリセット、またはカスタムの色) を、各タイプ別設定の色設定に適用する。
- * 各タイプの「色分け/表示」のうち、タイプごとの設定の項目は変更しない (ApplyColorTheme を参照)。
+ * 各タイプの「色分け/表示」は変更しない (ApplyColorTheme を参照)。
  */
 void CShareData::ApplyColorThemeToAllTypes(
 	DLLSHAREDATA*	pShareData	//!< [i/o] 共有データ
@@ -986,6 +995,27 @@ void CShareData::ApplyColorThemeToAllTypes(
 	const CommonSetting_ColorTheme& sColorTheme = pShareData->m_Common.m_sColorTheme;
 	for( int i = 0; i < MAX_TYPES; i++ ){
 		ApplyColorTheme( pShareData->m_Types[i].m_ColorInfoArr, sColorTheme.m_nColorTheme, sColorTheme.m_CustomColorInfoArr );
+	}
+}
+
+/*!
+ * CShareData::ApplyColorThemeDispToAllTypes - カラーテーマの「色分け/表示」を、すべてのタイプ別設定に適用する
+ *
+ * 共通設定のテーマが持つ「色分け/表示」を、各タイプ別設定の色設定に適用する。テーマを切り替えたときに使う。
+ * カーソル行の背景色などの 5 項目はテーマの値、それ以外の項目はテーマの値とタイプの初期値から決める
+ * (ApplyColorThemeDisp を参照)。タイプの初期値は、タイプ別設定の番号ごとの初期設定の値 (CreateDefaultType)。
+ */
+void CShareData::ApplyColorThemeDispToAllTypes(
+	DLLSHAREDATA*	pShareData	//!< [i/o] 共有データ
+)
+{
+	const CommonSetting_ColorTheme& sColorTheme = pShareData->m_Common.m_sColorTheme;
+	for( int i = 0; i < MAX_TYPES; i++ ){
+		bool abTypeInitDisp[COLORIDX_LAST];
+		CType* pType = CreateDefaultType( i );
+		pType->GetInitialColorDisp( abTypeInitDisp );
+		SAFE_DELETE( pType );
+		ApplyColorThemeDisp( pShareData->m_Types[i].m_ColorInfoArr, sColorTheme.m_nColorTheme, sColorTheme.m_CustomColorInfoArr, abTypeInitDisp );
 	}
 }
 
