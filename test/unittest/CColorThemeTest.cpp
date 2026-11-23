@@ -395,6 +395,29 @@ namespace BeniZakuraUnitTest
 		}
 
 		/*!
+		 * PresetAddedThemes - 追加したプリセット (Solarized Dark・Solarized Light・One Dark・Tokyo Night) の
+		 * テキストの色が、元にした色設定ファイル (colorSettings/*.col) の値であり、改行記号が非表示であること
+		 */
+		TEST_METHOD( PresetAddedThemes )
+		{
+			struct { int nTheme; COLORREF colText; COLORREF colBack; } const aExpected[] = {
+				{ COLOR_THEME_SOLARIZED_DARK,	RGB( 0x83,0x94,0x96 ),	RGB( 0x00,0x2b,0x36 ) },
+				{ COLOR_THEME_SOLARIZED_LIGHT,	RGB( 0x65,0x7b,0x83 ),	RGB( 0xfd,0xf6,0xe3 ) },
+				{ COLOR_THEME_ONE_DARK,			RGB( 0xab,0xb2,0xbf ),	RGB( 0x23,0x27,0x2e ) },
+				{ COLOR_THEME_TOKYO_NIGHT,		RGB( 0xa9,0xb1,0xd6 ),	RGB( 0x1a,0x1b,0x26 ) },
+			};
+			for( const auto& e : aExpected ){
+				ColorInfo arr[COLORIDX_LAST];
+				SetPresetColorInfo( arr, e.nTheme );
+				const std::wstring strTheme = L"theme " + std::to_wstring( e.nTheme );
+				Assert::AreEqual( (unsigned long)e.colText, (unsigned long)arr[COLORIDX_TEXT].m_colTEXT, strTheme.c_str() );
+				Assert::AreEqual( (unsigned long)e.colBack, (unsigned long)arr[COLORIDX_TEXT].m_colBACK, strTheme.c_str() );
+				Assert::IsTrue( IsColorThemePreset( e.nTheme ), strTheme.c_str() );
+				Assert::IsFalse( arr[COLORIDX_EOL].m_bDisp, strTheme.c_str() );
+			}
+		}
+
+		/*!
 		 * PresetView - プリセットの色以外の表示の設定の初期値 (TAB 表示はテーマごと、カーソル形状は紅桜のみ MS-DOS 風)
 		 */
 		TEST_METHOD( PresetView )
@@ -406,6 +429,10 @@ namespace BeniZakuraUnitTest
 				{ COLOR_THEME_HIDEMARU_BLACK,	L">       ",	true },
 				{ COLOR_THEME_MONOKAI,			L"|       ",	false },
 				{ COLOR_THEME_VS2012DARK,		L"|       ",	false },
+				{ COLOR_THEME_SOLARIZED_DARK,	L"|       ",	false },
+				{ COLOR_THEME_SOLARIZED_LIGHT,	L"|       ",	false },
+				{ COLOR_THEME_ONE_DARK,			L"|       ",	false },
+				{ COLOR_THEME_TOKYO_NIGHT,		L"|       ",	false },
 			};
 			Assert::AreEqual( (size_t)COLOR_THEME_MAX, _countof(aExpected) );
 			for( const auto& e : aExpected ){
@@ -542,19 +569,22 @@ namespace BeniZakuraUnitTest
 	{
 	public:
 		/*!
-		 * SelIndexOrder - 選択肢の表示順 (紅桜、サクラエディタ、秀丸エディタ Black、MIFES Blue、Monokai、VS2012 Dark、カスタム)
+		 * SelIndexOrder - 選択肢の表示順 (紅桜、サクラエディタ、秀丸エディタ Black、MIFES Blue、Monokai、
+		 * Solarized Dark、Solarized Light、VS2012 Dark、One Dark、Tokyo Night、カスタム)
 		 */
 		TEST_METHOD( SelIndexOrder )
 		{
 			const int expected[COLOR_THEME_SEL_COUNT] = {
 				COLOR_THEME_BENIZAKURA, COLOR_THEME_SAKURA, COLOR_THEME_HIDEMARU_BLACK, COLOR_THEME_MIFES_BLUE,
-				COLOR_THEME_MONOKAI, COLOR_THEME_VS2012DARK, COLOR_THEME_CUSTOM,
+				COLOR_THEME_MONOKAI, COLOR_THEME_SOLARIZED_DARK, COLOR_THEME_SOLARIZED_LIGHT, COLOR_THEME_VS2012DARK,
+				COLOR_THEME_ONE_DARK, COLOR_THEME_TOKYO_NIGHT, COLOR_THEME_CUSTOM,
 			};
 			for( int i = 0; i < COLOR_THEME_SEL_COUNT; i++ ){
 				Assert::AreEqual( expected[i], GetColorThemeBySelIndex( i ) );
 				Assert::AreEqual( i, GetColorThemeSelIndex( expected[i] ) );
 			}
 			Assert::AreEqual( std::wstring( L"カスタム" ), std::wstring( GetColorThemeDispName( COLOR_THEME_CUSTOM ) ) );
+			Assert::AreEqual( std::wstring( L"Solarized Light" ), std::wstring( GetColorThemeDispName( COLOR_THEME_SOLARIZED_LIGHT ) ) );
 			Assert::AreEqual( (int)COLOR_THEME_BENIZAKURA, GetColorThemeBySelIndex( COLOR_THEME_SEL_COUNT ) );
 			Assert::AreEqual( 0, GetColorThemeSelIndex( 99 ) );
 		}
@@ -570,6 +600,7 @@ namespace BeniZakuraUnitTest
 			}
 			Assert::AreEqual( std::wstring( L"Monokai" ), std::wstring( GetColorThemeKeyName( COLOR_THEME_MONOKAI ) ) );
 			Assert::AreEqual( std::wstring( L"Custom" ), std::wstring( GetColorThemeKeyName( COLOR_THEME_CUSTOM ) ) );
+			Assert::AreEqual( std::wstring( L"TokyoNight" ), std::wstring( GetColorThemeKeyName( COLOR_THEME_TOKYO_NIGHT ) ) );
 			Assert::AreEqual( (int)COLOR_THEME_VS2012DARK, GetColorThemeFromKeyName( L"vs2012dark" ) );	// 英大文字と小文字を区別しない
 			Assert::AreEqual( (int)COLOR_THEME_BENIZAKURA, GetColorThemeFromKeyName( L"Unknown" ) );
 			Assert::AreEqual( (int)COLOR_THEME_BENIZAKURA, GetColorThemeFromKeyName( NULL ) );
