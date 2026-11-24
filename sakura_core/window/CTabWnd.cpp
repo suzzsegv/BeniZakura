@@ -242,6 +242,8 @@ void CTabWnd::ApplyUpDownTheme(
  *   以降の描画から除外するため、アクティブタブが両隣のタブより手前に表示される)。
  * - アクティブタブの矩形は、TabCtrl_GetItemRect の値を上下左右に 3D の枠の幅だけ広げる。
  *   非アクティブのタブの矩形は、左右と下を 3D の枠の幅だけ縮める。
+ * - タブがあふれて Up-Down コントロール (スクロールボタン) が表示されているときは、その左端から右には
+ *   タブを描かない (ボタンより低い部分に、背後のタブが見えないようにする)。
  */
 void CTabWnd::PaintTabDark(
 	HWND	hwndTab		//!< [in] タブコントロール
@@ -252,6 +254,15 @@ void CTabWnd::PaintTabDark(
 	RECT rcClient;
 	::GetClientRect( hwndTab, &rcClient );
 	::FillRect( hdc, &rcClient, CDarkMode::GetUiColorBrush( COLOR_3DFACE ) );
+
+	// 2026.11.25 スクロールボタンの左端から右は、タブの行の高さ全体でタブを描かない (標準の描画と同じ)
+	HWND hwndUpDown = ::FindWindowEx( hwndTab, NULL, UPDOWN_CLASS, 0 );
+	if( NULL != hwndUpDown && ::IsWindowVisible( hwndUpDown ) ){
+		RECT rcUpDown;
+		::GetWindowRect( hwndUpDown, &rcUpDown );
+		::MapWindowPoints( HWND_DESKTOP, hwndTab, (POINT*)&rcUpDown, 2 );
+		::ExcludeClipRect( hdc, rcUpDown.left, rcClient.top, rcClient.right, rcClient.bottom );
+	}
 
 	HFONT hFontOld = (HFONT)::SelectObject( hdc, (HFONT)::SendMessage( hwndTab, WM_GETFONT, 0, 0 ) );
 	int nSel = TabCtrl_GetCurSel( hwndTab );
