@@ -189,10 +189,47 @@ LRESULT CTabWnd::TabWndDispatchEvent( HWND hwnd, UINT uMsg, WPARAM wParam, LPARA
 		}
 		break;
 
+	case WM_PARENTNOTIFY:
+		// 2026.11.24 タブがあふれたときにタブコントロールが作る Up-Down コントロールを、ダークモードの配色にする
+		if( WM_CREATE == LOWORD( wParam ) ){
+			ApplyUpDownTheme( (HWND)lParam );
+		}
+		break;
+
 	//default:
 	}
 
 	return 1L;	//デフォルトのディスパッチにまわす
+}
+
+/*!
+ * CTabWnd::ApplyUpDownTheme - タブコントロールの Up-Down コントロール (スクロールボタン) のテーマを設定する
+ *
+ * タブがタブバーに表示しきれなくなると、タブコントロールは子ウィンドウとして Up-Down コントロールを作る。
+ * これは自分で描画するため、ダークモードのときは "DarkMode_Explorer"、ライトのときは標準のテーマを設定する
+ * (CDarkMode::ApplyControlTheme)。hwnd が NULL の場合はタブコントロールの Up-Down コントロールを探し、
+ * Up-Down コントロール以外のウィンドウや、まだ作られていない場合は何もしない。
+ */
+void CTabWnd::ApplyUpDownTheme(
+	HWND	hwndUpDown	//!< [in] 対象のウィンドウ (NULL の場合はタブコントロールの Up-Down コントロール)
+)
+{
+	if( NULL == hwndUpDown ){
+		if( NULL == m_hwndTab ){
+			return;
+		}
+		hwndUpDown = ::FindWindowEx( m_hwndTab, NULL, UPDOWN_CLASS, 0 );
+		if( NULL == hwndUpDown ){
+			return;
+		}
+	}else{
+		WCHAR szClass[32];
+		if( 0 == ::GetClassName( hwndUpDown, szClass, _countof(szClass) ) || 0 != _wcsicmp( szClass, UPDOWN_CLASS ) ){
+			return;
+		}
+	}
+	CDarkMode::ApplyControlTheme( hwndUpDown );
+	::InvalidateRect( hwndUpDown, NULL, TRUE );
 }
 
 /*!

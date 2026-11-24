@@ -71,6 +71,7 @@ public:
 
 	LRESULT TabWndDispatchEvent( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam );
 	void PaintTabDark( HWND hwndTab );	// ダークモードのとき、タブコントロール全体を描画する	// 2026.11.20
+	void ApplyUpDownTheme( HWND hwndUpDown = NULL );	// タブコントロールの Up-Down コントロール (スクロールボタン) のテーマを設定する	// 2026.11.24
 	LRESULT TabListMenu( POINT pt, BOOL bSel = TRUE, BOOL bFull = FALSE, BOOL bOtherGroup = TRUE );	/*!< タブ一覧メニュー作成処理 */	// 2006.03.23 fon
 
 protected:
