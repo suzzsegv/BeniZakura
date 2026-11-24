@@ -237,6 +237,11 @@ void CTabWnd::ApplyUpDownTheme(
  *
  * タブコントロールの背景はテーマで明るく描かれるため、ダークモードでは背景を暗い色で塗り、
  * 各タブは通常のオーナードローと同じ処理 (親ウィンドウへの WM_DRAWITEM → OnDrawItem) で描く。
+ * 描く順序と渡す矩形は、タブコントロールの標準の描画 (ライトモード) と同じにする。
+ * - アクティブタブを最初に描き、そのあとで他のタブを左から描く (OnDrawItem は描いたタブの範囲を
+ *   以降の描画から除外するため、アクティブタブが両隣のタブより手前に表示される)。
+ * - アクティブタブの矩形は、TabCtrl_GetItemRect の値を上下左右に 3D の枠の幅だけ広げる。
+ *   非アクティブのタブの矩形は、左右と下を 3D の枠の幅だけ縮める。
  */
 void CTabWnd::PaintTabDark(
 	HWND	hwndTab		//!< [in] タブコントロール
@@ -251,9 +256,28 @@ void CTabWnd::PaintTabDark(
 	HFONT hFontOld = (HFONT)::SelectObject( hdc, (HFONT)::SendMessage( hwndTab, WM_GETFONT, 0, 0 ) );
 	int nSel = TabCtrl_GetCurSel( hwndTab );
 	int nCount = TabCtrl_GetItemCount( hwndTab );
-	for( int i = 0; i < nCount; i++ ){
+	const int cxEdge = ::GetSystemMetrics( SM_CXEDGE );
+	const int cyEdge = ::GetSystemMetrics( SM_CYEDGE );
+	bool bSelValid = ( 0 <= nSel && nSel < nCount );
+	// 2026.11.24 アクティブタブを最初に描き、そのあとで他のタブを左から描く (タブコントロールの標準の描画と同じ順序)
+	for( int n = ( bSelValid ? -1 : 0 ); n < nCount; n++ ){
+		int i = ( n < 0 ) ? nSel : n;
+		if( 0 <= n && i == nSel ){
+			continue;	// アクティブタブは最初に描いた
+		}
 		RECT rcItem, rcDummy;
-		if( !TabCtrl_GetItemRect( hwndTab, i, &rcItem ) || !::IntersectRect( &rcDummy, &rcItem, &ps.rcPaint ) ){
+		if( !TabCtrl_GetItemRect( hwndTab, i, &rcItem ) ){
+			continue;
+		}
+		// 2026.11.24 タブコントロールの標準の描画と同じ矩形にする
+		if( i == nSel ){
+			::InflateRect( &rcItem, cxEdge, cyEdge );	// アクティブタブは上下左右に広げる
+		}else{
+			rcItem.left += cxEdge;						// 非アクティブのタブは左右と下を縮める
+			rcItem.right -= cxEdge;
+			rcItem.bottom -= cyEdge;
+		}
+		if( !::IntersectRect( &rcDummy, &rcItem, &ps.rcPaint ) ){
 			continue;
 		}
 		TCITEM tcitem;
@@ -275,6 +299,67 @@ void CTabWnd::PaintTabDark(
 	}
 	::SelectObject( hdc, hFontOld );
 	::EndPaint( hwndTab, &ps );
+}
+
+/*!
+ * CTabWnd::DrawTabFrameDark - ダークモードのとき、タブの背景と縁 (左・上・右) を描画する
+ *
+ * ライトモードではテーマ (DrawThemeBackground) がタブの背景と縁を描くが、ダークモードではテーマを
+ * 使わないため、自分で描く。タブの位置と大きさはテーマで描く場合と同じにする (非アクティブのタブは
+ * 2 ドット広げて上を 2 ドット下げ、アクティブタブの隣のタブはアクティブタブと重ならないように縮める)。
+ * 縁の色は、ダイアログのタブコントロール (CDarkMode::PaintTabControlDark) と同じ COLOR_3DSHADOW。
+ * 非アクティブのタブの左の縁は、ライトモードのテーマと同じく、いちばん左のタブだけに描く
+ * (隣のタブとの境目は、左のタブの右の縁の 1 本にする)。
+ * いちばん右のタブは、ライトモードのテーマ (TABP_*RIGHTEDGE) と同じく、右の縁を 2 ドット内側に描く。
+ * 描いた範囲を prcTab に返す。呼び出し元は、テーマで描く場合と同じく、この範囲を後のタブの描画から除外する
+ * (除外しないと、広げた部分に描いた左右の縁が隣のタブの背景で上書きされる)。
+ */
+void CTabWnd::DrawTabFrameDark(
+	HDC			hdc,		//!< [in] 描画先
+	const RECT&	rcItem,		//!< [in] タブの矩形 (TabCtrl_GetItemRect の値)
+	int			nTabIndex,	//!< [in] 描画するタブの位置
+	int			nSelIndex,	//!< [in] アクティブタブの位置
+	int			nTabCount,	//!< [in] タブの数
+	RECT*		prcTab		//!< [out] 描いた範囲
+)
+{
+	RECT rcTab = rcItem;
+	if( nTabIndex != nSelIndex ){
+		::InflateRect( &rcTab, DpiScaleX(2), DpiScaleY(2) );
+		if( nTabIndex == nSelIndex - 1 ){
+			rcTab.right -= DpiScaleX(2);
+		}else if( nTabIndex == nSelIndex + 1 ){
+			rcTab.left += DpiScaleX(2);
+		}
+		rcTab.top += DpiScaleY(2);
+	}
+	if( nTabIndex == nTabCount - 1 ){
+		rcTab.right -= GetRightEdgeTabInset();	// 2026.11.24 いちばん右のタブはテーマと同じく右の縁を内側に描く
+	}
+	::FillRect( hdc, &rcTab, CDarkMode::GetUiColorBrush( COLOR_BTNFACE ) );
+
+	HBRUSH hbrFrame = CDarkMode::GetUiColorBrush( COLOR_3DSHADOW );
+	RECT rcLine;
+	::SetRect( &rcLine, rcTab.left, rcTab.top, rcTab.right, rcTab.top + 1 );		::FillRect( hdc, &rcLine, hbrFrame );	// 上
+	if( nTabIndex == nSelIndex || nTabIndex == 0 ){
+		::SetRect( &rcLine, rcTab.left, rcTab.top, rcTab.left + 1, rcTab.bottom );	::FillRect( hdc, &rcLine, hbrFrame );	// 左
+	}
+	::SetRect( &rcLine, rcTab.right - 1, rcTab.top, rcTab.right, rcTab.bottom );	::FillRect( hdc, &rcLine, hbrFrame );	// 右
+	*prcTab = rcTab;
+}
+
+/*!
+ * CTabWnd::GetRightEdgeTabInset - いちばん右のタブの右の縁が、タブの矩形の右端から内側に入る幅を返す
+ *
+ * ライトモードのテーマは、いちばん右のタブ (TABP_TABITEMRIGHTEDGE、TABP_TOPTABITEMRIGHTEDGE) の
+ * 右の縁を、矩形の右端から 2 ドット (表示倍率に合わせて拡大) 内側に描く。アクティブタブを塗る範囲と、
+ * ダークモードで描く縁の位置をこれに合わせるために使う。
+ *
+ *	@return	内側に入る幅 (ドット)
+ */
+int CTabWnd::GetRightEdgeTabInset() const
+{
+	return DpiScaleX(2);
 }
 
 /*! タブ部 WM_LBUTTONDOWN 処理 */
@@ -1378,7 +1463,10 @@ LRESULT CTabWnd::OnDrawItem( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam 
 		// 状態に従ってテキストと背景色を決める
 
 		// 背景描画
-		if( !IsVisualStyle() || CDarkMode::IsEnabled() ) {	// 2026.11.20 ダークモードではテーマを使わずに塗る
+		if( CDarkMode::IsEnabled() ) {	// 2026.11.20 ダークモードではテーマを使わずに塗る
+			// 2026.11.24 テーマの代わりにタブの縁 (左・上・右) を描く
+			DrawTabFrameDark( gr, rcItem, nTabIndex, nSelIndex, nTabCount, &rcFullItem );
+		}else if( !IsVisualStyle() ) {
 			::FillRect( gr, &rcItem, CDarkMode::GetUiColorBrush( COLOR_BTNFACE ) );
 		}else{
 			int iPartId = TABP_TABITEM;
@@ -1439,10 +1527,14 @@ LRESULT CTabWnd::OnDrawItem( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam 
 		const ColorInfo& cTabColor = CEditDoc::GetInstance(0)->m_cDocType.GetDocumentAttribute().m_ColorInfoArr[COLORIDX_RULER];
 		if( bSelected ){
 			RECT rcSelBk = lpdis->rcItem;
-			if( IsVisualStyle() ){
-				// テーマで描いたタブの枠線 (左右と上) は残す
+			if( IsVisualStyle() || CDarkMode::IsEnabled() ){
+				// テーマ (ダークモードでは DrawTabFrameDark) で描いたタブの枠線 (左右と上) は残す
 				::InflateRect( &rcSelBk, -1, 0 );
 				rcSelBk.top += 1;
+				if( nTabIndex == nTabCount - 1 ){
+					// 2026.11.24 いちばん右のタブは、テーマ (TABP_TOPTABITEMRIGHTEDGE) が右の縁を内側に描くため、縁の内側までを塗る
+					rcSelBk.right -= GetRightEdgeTabInset();
+				}
 			}
 			HBRUSH hBrush = ::CreateSolidBrush( cTabColor.m_colBACK );
 			::FillRect( gr, &rcSelBk, hBrush );
@@ -1489,7 +1581,8 @@ LRESULT CTabWnd::OnDrawItem( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam 
 
 		// Vista以降ではオーナードロータブに自動で3D枠が描画されてしまうため、
 		// 描画範囲を無効化する
-		if ( IsVisualStyle() ){
+		// 2026.11.24 ダークモードでも、描いたタブの縁が隣のタブの背景で上書きされないように除外する
+		if ( IsVisualStyle() || CDarkMode::IsEnabled() ){
 			ExcludeClipRect(hdc, rcFullItem.left, rcFullItem.top, rcFullItem.right, rcFullItem.bottom);
 		}
 	}
