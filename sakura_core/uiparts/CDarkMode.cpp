@@ -397,6 +397,9 @@ BOOL CALLBACK CDarkMode::ApplyChildControlProc(
 		}
 		::SetWindowSubclass( hwnd, ListViewSubclassProc, 0, 0 );	// 見出しの文字色
 		::SetWindowSubclass( hwnd, BorderSubclassProc, 0, 0 );		// 枠
+		// 2026.11.25 ダブルバッファで描く。テーマ (DarkMode_Explorer) は項目のない部分にも列の境目の縦線を描くが、
+		// ダブルバッファでないと、列の幅を変えたときに古い境目の縦線が残る (サクラエディタ本家 (darkmodelib) と同じ設定)
+		ListView_SetExtendedListViewStyle( hwnd, ListView_GetExtendedListViewStyle( hwnd ) | LVS_EX_DOUBLEBUFFER );
 	}else if( 0 == _wcsicmp( szClass, WC_TABCONTROL ) ){
 		::SetWindowSubclass( hwnd, TabControlSubclassProc, 0, 0 );
 	}else if( 0 == _wcsicmp( szClass, WC_TREEVIEW ) ){
