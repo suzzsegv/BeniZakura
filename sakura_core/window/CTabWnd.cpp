@@ -209,7 +209,7 @@ LRESULT CTabWnd::TabWndDispatchEvent( HWND hwnd, UINT uMsg, WPARAM wParam, LPARA
  * これは自分で描画するため、ダークモードのときは "DarkMode_Explorer"、ライトのときは標準のテーマを設定する
  * (CDarkMode::ApplyControlTheme)。hwnd が NULL の場合はタブコントロールの Up-Down コントロールを探し、
  * Up-Down コントロール以外のウィンドウや、まだ作られていない場合は何もしない。
- * また、ダークモードではスクロールボタンを自分で描くため、サブクラス化する (UpDownSubclassProc)。
+ * また、スクロールボタンを自分で描くため、サブクラス化する (UpDownSubclassProc)。
  */
 void CTabWnd::ApplyUpDownTheme(
 	HWND	hwndUpDown	//!< [in] 対象のウィンドウ (NULL の場合はタブコントロールの Up-Down コントロール)
@@ -237,13 +237,13 @@ void CTabWnd::ApplyUpDownTheme(
 /*!
  * CTabWnd::UpDownSubclassProc - タブコントロールの Up-Down コントロール (スクロールボタン) のサブクラスプロシージャ
  *
- * ダークモードのときは、スクロールボタンを WM_PAINT ですべて自分で描く (PaintUpDownDark)。
- * 標準の描画は、背景をライトの色 (COLOR_BTNFACE) で消し、また左の矢印を押した後などに右の矢印のボタンを
- * 描かないことがあるため (ライトでも同じ)、ダークモードではその部分が白く見えてしまう。
+ * ライトモード・ダークモードとも、スクロールボタンを WM_PAINT ですべて自分で描く (PaintUpDown)。
+ * 標準の描画は、左の矢印を押した後などに右の矢印のボタンを描かないことがあり、その部分は背景を消した
+ * ライトの色 (COLOR_BTNFACE) のまま残る (ダークモードでは白く見える)。
  * 標準の処理は、マウスの操作のときに WM_PAINT を通らずに描くことがあるため、状態が変わるメッセージの
  * 標準の処理の後には描き直しを要求する。ボタンを押していないときのマウスの移動・離脱は、表示のためだけなので
- * 標準の処理に渡さない (CDarkMode::UpDownSubclassProc と同じ)。ライトモードと、テーマ (Spin) が使えない場合は
- * 何もせず、標準の描画に任せる (CanPaintUpDownDark)。
+ * 標準の処理に渡さない (CDarkMode::UpDownSubclassProc と同じ)。テーマ (Spin) が使えない場合は
+ * 何もせず、標準の描画に任せる (CanPaintUpDown)。
  *
  *	@return	メッセージの処理結果
  */
@@ -256,21 +256,21 @@ LRESULT CALLBACK CTabWnd::UpDownSubclassProc(
 	DWORD_PTR	dwRefData		//!< [in] 参照データ (使わない)
 )
 {
-	const bool bDark = CanPaintUpDownDark( hwnd );
+	const bool bSelfPaint = CanPaintUpDown( hwnd );
 	switch( uMsg ){
 	case WM_ERASEBKGND:
-		if( bDark ){
+		if( bSelfPaint ){
 			return 1;	// 背景は WM_PAINT で描く
 		}
 		break;
 	case WM_PAINT:
-		if( bDark ){
-			PaintUpDownDark( hwnd );
+		if( bSelfPaint ){
+			PaintUpDown( hwnd );
 			return 0;
 		}
 		break;
 	case WM_MOUSEMOVE:
-		if( !bDark ){
+		if( !bSelfPaint ){
 			break;
 		}
 		{
@@ -290,7 +290,7 @@ LRESULT CALLBACK CTabWnd::UpDownSubclassProc(
 			return lRet;
 		}
 	case WM_MOUSELEAVE:
-		if( bDark ){
+		if( bSelfPaint ){
 			::InvalidateRect( hwnd, NULL, FALSE );
 			return 0;
 		}
@@ -300,7 +300,7 @@ LRESULT CALLBACK CTabWnd::UpDownSubclassProc(
 	case WM_LBUTTONUP:
 	case WM_CAPTURECHANGED:
 	case WM_ENABLE:
-		if( bDark ){
+		if( bSelfPaint ){
 			LRESULT lRet = ::DefSubclassProc( hwnd, uMsg, wParam, lParam );
 			::InvalidateRect( hwnd, NULL, FALSE );
 			return lRet;
@@ -314,20 +314,17 @@ LRESULT CALLBACK CTabWnd::UpDownSubclassProc(
 }
 
 /*!
- * CTabWnd::CanPaintUpDownDark - スクロールボタンを自分で描くかを返す
+ * CTabWnd::CanPaintUpDown - スクロールボタンを自分で描くかを返す
  *
- * ダークモードで、かつスクロールボタンのテーマ (Spin) が使える場合に自分で描く (PaintUpDownDark)。
+ * スクロールボタンのテーマ (Spin) が使える場合に自分で描く (PaintUpDown)。ライトモード・ダークモードとも同じ。
  * テーマが使えない場合 (ウィンドウのテーマが無効にされているなど) は、標準の描画に任せる。
  *
  *	@return	true: 自分で描く / false: 標準の描画に任せる
  */
-bool CTabWnd::CanPaintUpDownDark(
+bool CTabWnd::CanPaintUpDown(
 	HWND	hwnd	//!< [in] Up-Down コントロール
 )
 {
-	if( !CDarkMode::IsEnabled() ){
-		return false;
-	}
 	HTHEME hTheme = ::OpenThemeData( hwnd, L"Spin" );
 	if( NULL == hTheme ){
 		return false;
@@ -337,14 +334,15 @@ bool CTabWnd::CanPaintUpDownDark(
 }
 
 /*!
- * CTabWnd::PaintUpDownDark - ダークモードのとき、タブコントロールのスクロールボタンを描画する
+ * CTabWnd::PaintUpDown - タブコントロールのスクロールボタンを描画する
  *
- * 作業用のビットマップに、背景 (タブバーと同じ COLOR_3DFACE) と、左右の矢印のボタンをテーマ
- * (DarkMode_Explorer の Spin、SPNP_DOWNHORZ・SPNP_UPHORZ) で描き、まとめて写す。左右のボタンは常に両方描く。
+ * 作業用のビットマップに、背景 (タブバーと同じ COLOR_3DFACE。ダークモードでは暗い色) と、左右の矢印のボタンを
+ * スクロールボタンのテーマ (Spin、SPNP_DOWNHORZ・SPNP_UPHORZ。ライトモードは標準、ダークモードは
+ * DarkMode_Explorer) で描き、まとめて写す。左右のボタンは常に両方描く。
  * 状態 (通常・ホット・押下・無効) は、有効か、マウスのキャプチャ・左ボタン・カーソルの位置から決める。
- * テーマが使えることは、呼び出し元 (UpDownSubclassProc) が CanPaintUpDownDark で確認している。
+ * テーマが使えることは、呼び出し元 (UpDownSubclassProc) が CanPaintUpDown で確認している。
  */
-void CTabWnd::PaintUpDownDark(
+void CTabWnd::PaintUpDown(
 	HWND	hwnd	//!< [in] Up-Down コントロール
 )
 {
