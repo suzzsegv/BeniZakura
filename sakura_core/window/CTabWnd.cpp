@@ -209,6 +209,7 @@ LRESULT CTabWnd::TabWndDispatchEvent( HWND hwnd, UINT uMsg, WPARAM wParam, LPARA
  * これは自分で描画するため、ダークモードのときは "DarkMode_Explorer"、ライトのときは標準のテーマを設定する
  * (CDarkMode::ApplyControlTheme)。hwnd が NULL の場合はタブコントロールの Up-Down コントロールを探し、
  * Up-Down コントロール以外のウィンドウや、まだ作られていない場合は何もしない。
+ * また、ダークモードではスクロールボタンを自分で描くため、サブクラス化する (UpDownSubclassProc)。
  */
 void CTabWnd::ApplyUpDownTheme(
 	HWND	hwndUpDown	//!< [in] 対象のウィンドウ (NULL の場合はタブコントロールの Up-Down コントロール)
@@ -229,7 +230,176 @@ void CTabWnd::ApplyUpDownTheme(
 		}
 	}
 	CDarkMode::ApplyControlTheme( hwndUpDown );
+	::SetWindowSubclass( hwndUpDown, UpDownSubclassProc, 0, 0 );	// 2026.11.25 同じプロシージャと ID なら設定し直すだけ
 	::InvalidateRect( hwndUpDown, NULL, TRUE );
+}
+
+/*!
+ * CTabWnd::UpDownSubclassProc - タブコントロールの Up-Down コントロール (スクロールボタン) のサブクラスプロシージャ
+ *
+ * ダークモードのときは、スクロールボタンを WM_PAINT ですべて自分で描く (PaintUpDownDark)。
+ * 標準の描画は、背景をライトの色 (COLOR_BTNFACE) で消し、また左の矢印を押した後などに右の矢印のボタンを
+ * 描かないことがあるため (ライトでも同じ)、ダークモードではその部分が白く見えてしまう。
+ * 標準の処理は、マウスの操作のときに WM_PAINT を通らずに描くことがあるため、状態が変わるメッセージの
+ * 標準の処理の後には描き直しを要求する。ボタンを押していないときのマウスの移動・離脱は、表示のためだけなので
+ * 標準の処理に渡さない (CDarkMode::UpDownSubclassProc と同じ)。ライトモードと、テーマ (Spin) が使えない場合は
+ * 何もせず、標準の描画に任せる (CanPaintUpDownDark)。
+ *
+ *	@return	メッセージの処理結果
+ */
+LRESULT CALLBACK CTabWnd::UpDownSubclassProc(
+	HWND		hwnd,			//!< [in] Up-Down コントロール
+	UINT		uMsg,			//!< [in] メッセージ
+	WPARAM		wParam,			//!< [in] メッセージのパラメータ
+	LPARAM		lParam,			//!< [in] メッセージのパラメータ
+	UINT_PTR	uIdSubclass,	//!< [in] サブクラスの ID
+	DWORD_PTR	dwRefData		//!< [in] 参照データ (使わない)
+)
+{
+	const bool bDark = CanPaintUpDownDark( hwnd );
+	switch( uMsg ){
+	case WM_ERASEBKGND:
+		if( bDark ){
+			return 1;	// 背景は WM_PAINT で描く
+		}
+		break;
+	case WM_PAINT:
+		if( bDark ){
+			PaintUpDownDark( hwnd );
+			return 0;
+		}
+		break;
+	case WM_MOUSEMOVE:
+		if( !bDark ){
+			break;
+		}
+		{
+			// マウスが離れたときに、ホットの表示を消すため
+			TRACKMOUSEEVENT tme = { sizeof( tme ) };
+			tme.dwFlags = TME_LEAVE;
+			tme.hwndTrack = hwnd;
+			::TrackMouseEvent( &tme );
+		}
+		if( ::GetCapture() != hwnd ){
+			::InvalidateRect( hwnd, NULL, FALSE );
+			return 0;
+		}
+		{
+			LRESULT lRet = ::DefSubclassProc( hwnd, uMsg, wParam, lParam );
+			::InvalidateRect( hwnd, NULL, FALSE );
+			return lRet;
+		}
+	case WM_MOUSELEAVE:
+		if( bDark ){
+			::InvalidateRect( hwnd, NULL, FALSE );
+			return 0;
+		}
+		break;
+	case WM_TIMER:
+	case WM_LBUTTONDOWN:
+	case WM_LBUTTONUP:
+	case WM_CAPTURECHANGED:
+	case WM_ENABLE:
+		if( bDark ){
+			LRESULT lRet = ::DefSubclassProc( hwnd, uMsg, wParam, lParam );
+			::InvalidateRect( hwnd, NULL, FALSE );
+			return lRet;
+		}
+		break;
+	case WM_NCDESTROY:
+		::RemoveWindowSubclass( hwnd, UpDownSubclassProc, uIdSubclass );
+		break;
+	}
+	return ::DefSubclassProc( hwnd, uMsg, wParam, lParam );
+}
+
+/*!
+ * CTabWnd::CanPaintUpDownDark - スクロールボタンを自分で描くかを返す
+ *
+ * ダークモードで、かつスクロールボタンのテーマ (Spin) が使える場合に自分で描く (PaintUpDownDark)。
+ * テーマが使えない場合 (ウィンドウのテーマが無効にされているなど) は、標準の描画に任せる。
+ *
+ *	@return	true: 自分で描く / false: 標準の描画に任せる
+ */
+bool CTabWnd::CanPaintUpDownDark(
+	HWND	hwnd	//!< [in] Up-Down コントロール
+)
+{
+	if( !CDarkMode::IsEnabled() ){
+		return false;
+	}
+	HTHEME hTheme = ::OpenThemeData( hwnd, L"Spin" );
+	if( NULL == hTheme ){
+		return false;
+	}
+	::CloseThemeData( hTheme );
+	return true;
+}
+
+/*!
+ * CTabWnd::PaintUpDownDark - ダークモードのとき、タブコントロールのスクロールボタンを描画する
+ *
+ * 作業用のビットマップに、背景 (タブバーと同じ COLOR_3DFACE) と、左右の矢印のボタンをテーマ
+ * (DarkMode_Explorer の Spin、SPNP_DOWNHORZ・SPNP_UPHORZ) で描き、まとめて写す。左右のボタンは常に両方描く。
+ * 状態 (通常・ホット・押下・無効) は、有効か、マウスのキャプチャ・左ボタン・カーソルの位置から決める。
+ * テーマが使えることは、呼び出し元 (UpDownSubclassProc) が CanPaintUpDownDark で確認している。
+ */
+void CTabWnd::PaintUpDownDark(
+	HWND	hwnd	//!< [in] Up-Down コントロール
+)
+{
+	PAINTSTRUCT ps;
+	HDC hdc = ::BeginPaint( hwnd, &ps );
+
+	RECT rc;
+	::GetClientRect( hwnd, &rc );
+	const int cx = rc.right - rc.left;
+	const int cy = rc.bottom - rc.top;
+	if( cx <= 0 || cy <= 0 ){
+		::EndPaint( hwnd, &ps );
+		return;
+	}
+
+	HDC hdcMem = ::CreateCompatibleDC( hdc );
+	HBITMAP hBitmap = ::CreateCompatibleBitmap( hdc, cx, cy );
+	HBITMAP hBitmapOld = (HBITMAP)::SelectObject( hdcMem, hBitmap );
+
+	::FillRect( hdcMem, &rc, CDarkMode::GetUiColorBrush( COLOR_3DFACE ) );
+
+	// 左半分が左の矢印 (減らす)、右半分が右の矢印 (増やす)
+	RECT rcLeft = rc;
+	rcLeft.right = cx / 2;
+	RECT rcRight = rc;
+	rcRight.left = cx / 2;
+
+	POINT pt;
+	::GetCursorPos( &pt );
+	::ScreenToClient( hwnd, &pt );
+	const bool bEnabled = ( FALSE != ::IsWindowEnabled( hwnd ) );
+	const bool bPressed = ( ::GetCapture() == hwnd && ( ::GetKeyState( VK_LBUTTON ) & 0x8000 ) );
+	int nStateLeft = DNHZS_NORMAL;
+	int nStateRight = UPHZS_NORMAL;
+	if( !bEnabled ){
+		nStateLeft = DNHZS_DISABLED;
+		nStateRight = UPHZS_DISABLED;
+	}else if( ::PtInRect( &rcLeft, pt ) ){
+		nStateLeft = bPressed ? DNHZS_PRESSED : DNHZS_HOT;
+	}else if( ::PtInRect( &rcRight, pt ) ){
+		nStateRight = bPressed ? UPHZS_PRESSED : UPHZS_HOT;
+	}
+
+	HTHEME hThemeSpin = ::OpenThemeData( hwnd, L"Spin" );
+	if( NULL != hThemeSpin ){
+		::DrawThemeBackground( hThemeSpin, hdcMem, SPNP_DOWNHORZ, nStateLeft, &rcLeft, NULL );
+		::DrawThemeBackground( hThemeSpin, hdcMem, SPNP_UPHORZ, nStateRight, &rcRight, NULL );
+		::CloseThemeData( hThemeSpin );
+	}
+
+	::BitBlt( hdc, 0, 0, cx, cy, hdcMem, 0, 0, SRCCOPY );
+	::SelectObject( hdcMem, hBitmapOld );
+	::DeleteObject( hBitmap );
+	::DeleteDC( hdcMem );
+	::EndPaint( hwnd, &ps );
 }
 
 /*!

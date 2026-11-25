@@ -74,6 +74,9 @@ public:
 	void DrawTabFrameDark( HDC hdc, const RECT& rcItem, int nTabIndex, int nSelIndex, int nTabCount, RECT* prcTab );	// ダークモードのとき、タブの背景と縁を描画する	// 2026.11.24
 	int GetRightEdgeTabInset() const;	// いちばん右のタブの右の縁が、タブの矩形の右端から内側に入る幅を返す	// 2026.11.24
 	void ApplyUpDownTheme( HWND hwndUpDown = NULL );	// タブコントロールの Up-Down コントロール (スクロールボタン) のテーマを設定する	// 2026.11.24
+	static LRESULT CALLBACK UpDownSubclassProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData );	// ダークモードでスクロールボタンを自分で描く	// 2026.11.25
+	static bool CanPaintUpDownDark( HWND hwnd );	// スクロールボタンを自分で描くか (ダークモードで、テーマが使える) を返す	// 2026.11.25
+	static void PaintUpDownDark( HWND hwnd );	// ダークモードのとき、スクロールボタンを描画する	// 2026.11.25
 	LRESULT TabListMenu( POINT pt, BOOL bSel = TRUE, BOOL bFull = FALSE, BOOL bOtherGroup = TRUE );	/*!< タブ一覧メニュー作成処理 */	// 2006.03.23 fon
 
 protected:
