@@ -81,7 +81,9 @@ INT_PTR CPropTypesKeyHelp::DispatchEvent(
 		::GetWindowRect(hwndList, &rc);
 		/* リストにチェックボックスを追加 */
 		dwStyle = ListView_GetExtendedListViewStyle(hwndList);
-		dwStyle |= LVS_EX_CHECKBOXES /*| LVS_EX_FULLROWSELECT*/ | LVS_EX_GRIDLINES;
+		// 2026.11.26 格子線 (LVS_EX_GRIDLINES) はやめる。格子線はシステムカラー (COLOR_BTNFACE) で描かれ、
+		// ダークモードでは白く見えるため。列の境目の縦線は、Explorer 系のテーマ (CDarkMode::ApplyListViewTheme) が描く
+		dwStyle |= LVS_EX_CHECKBOXES /*| LVS_EX_FULLROWSELECT*/;
 		ListView_SetExtendedListViewStyle(hwndList, dwStyle);
 
 		col.mask = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM;
