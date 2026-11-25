@@ -60,6 +60,7 @@ public:
 	static void ApplyDialog( HWND hDlg );			// ダイアログのタイトルバーと子コントロールに画面の配色を適用する
 	static void ApplyChildControls( HWND hwndParent );	// 子コントロールに画面の配色を適用する
 	static void ApplyTooltip( HWND hwndTooltip );	// ツールチップに画面の配色を適用する
+	static void ApplyListViewTheme( HWND hwndList );	// リストビューのテーマとダブルバッファを、画面の配色に合わせて設定する	// 2026.11.26
 	static INT_PTR OnCtlColor( UINT uMsg, WPARAM wParam, LPARAM lParam );	// WM_CTLCOLOR* の処理 (ブラシを返す)
 	static bool OnButtonCustomDraw( LPNMCUSTOMDRAW pnmcd, LRESULT* plResult );	// ボタンの NM_CUSTOMDRAW の処理
 
@@ -81,6 +82,7 @@ private:
 	static bool PaintStaticDark( HWND hwnd );
 	static LRESULT CALLBACK PropertySheetSubclassProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData );
 	static BOOL CALLBACK ApplyChildControlProc( HWND hwnd, LPARAM lParam );
+	static BOOL CALLBACK ApplyListViewThemeProc( HWND hwnd, LPARAM lParam );	// 2026.11.26
 	static LRESULT CALLBACK GroupBoxSubclassProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData );
 	static void PaintGroupBoxDark( HWND hwnd );
 	static LRESULT CALLBACK TabControlSubclassProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData );

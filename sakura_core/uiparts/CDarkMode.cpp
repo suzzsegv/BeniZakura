@@ -387,7 +387,7 @@ BOOL CALLBACK CDarkMode::ApplyChildControlProc(
 			::SetWindowTheme( cbi.hwndList, L"DarkMode_Explorer", NULL );
 		}
 	}else if( 0 == _wcsicmp( szClass, WC_LISTVIEW ) ){
-		::SetWindowTheme( hwnd, L"DarkMode_Explorer", NULL );
+		ApplyListViewTheme( hwnd );	// テーマ (DarkMode_Explorer) とダブルバッファ
 		ListView_SetBkColor( hwnd, GetUiColor( COLOR_WINDOW ) );
 		ListView_SetTextBkColor( hwnd, GetUiColor( COLOR_WINDOW ) );
 		ListView_SetTextColor( hwnd, GetUiColor( COLOR_WINDOWTEXT ) );
@@ -397,9 +397,6 @@ BOOL CALLBACK CDarkMode::ApplyChildControlProc(
 		}
 		::SetWindowSubclass( hwnd, ListViewSubclassProc, 0, 0 );	// 見出しの文字色
 		::SetWindowSubclass( hwnd, BorderSubclassProc, 0, 0 );		// 枠
-		// 2026.11.25 ダブルバッファで描く。テーマ (DarkMode_Explorer) は項目のない部分にも列の境目の縦線を描くが、
-		// ダブルバッファでないと、列の幅を変えたときに古い境目の縦線が残る (サクラエディタ本家 (darkmodelib) と同じ設定)
-		ListView_SetExtendedListViewStyle( hwnd, ListView_GetExtendedListViewStyle( hwnd ) | LVS_EX_DOUBLEBUFFER );
 	}else if( 0 == _wcsicmp( szClass, WC_TABCONTROL ) ){
 		::SetWindowSubclass( hwnd, TabControlSubclassProc, 0, 0 );
 	}else if( 0 == _wcsicmp( szClass, WC_TREEVIEW ) ){
@@ -520,9 +517,49 @@ bool CDarkMode::OnButtonCustomDraw(
 }
 
 /*!
+ * CDarkMode::ApplyListViewTheme - リストビューのテーマとダブルバッファを、画面の配色に合わせて設定する
+ *
+ * ダークモードのときは "DarkMode_Explorer"、ライトモードのときは "Explorer" のテーマを設定し、
+ * ライト・ダークで同じ系統の表示にする。テーマは項目のない部分にも列の境目の縦線を描くが、
+ * ダブルバッファでないと列の幅を変えたときに古い境目の縦線が残るため、LVS_EX_DOUBLEBUFFER も設定する
+ * (サクラエディタ本家 (darkmodelib) と同じ設定)。
+ */
+void CDarkMode::ApplyListViewTheme(
+	HWND	hwndList	//!< [in] リストビュー
+)
+{
+	if( NULL == hwndList ){
+		return;
+	}
+	::SetWindowTheme( hwndList, s_bEnabled ? L"DarkMode_Explorer" : L"Explorer", NULL );
+	ListView_SetExtendedListViewStyle( hwndList, ListView_GetExtendedListViewStyle( hwndList ) | LVS_EX_DOUBLEBUFFER );
+}
+
+/*!
+ * CDarkMode::ApplyListViewThemeProc - 子孫のウィンドウがリストビューなら、テーマとダブルバッファを設定する (EnumChildWindows のコールバック)
+ *
+ * ライトモードのダイアログの初期化 (HandleDialogMessageBefore) で使う。
+ *
+ *	@return	TRUE: 列挙を続ける
+ */
+BOOL CALLBACK CDarkMode::ApplyListViewThemeProc(
+	HWND	hwnd,	//!< [in] 子孫のウィンドウ
+	LPARAM	lParam	//!< [in] 未使用
+)
+{
+	WCHAR szClass[64];
+	if( 0 != ::GetClassName( hwnd, szClass, _countof(szClass) ) && 0 == _wcsicmp( szClass, WC_LISTVIEW ) ){
+		ApplyListViewTheme( hwnd );
+	}
+	return TRUE;
+}
+
+/*!
  * CDarkMode::HandleDialogMessageBefore - ダイアログプロシージャの前に行う、ダークモードの処理
  *
  * WM_INITDIALOG では、ダイアログ個別の初期化の前に画面の配色を適用する (ApplyDialog。処理済みにはしない)。
+ * ライトモードのときは、ダイアログの中のリストビューにテーマとダブルバッファを設定する (ApplyListViewTheme。
+ * ダークモードでは ApplyDialog の中で設定される)。
  * WM_NOTIFY では、チェックボックス・ラジオボタンの NM_CUSTOMDRAW を処理し、戻り値を DWLP_MSGRESULT に設定する。
  * ダイアログ・プロパティシートのページの共通のダイアログプロシージャから呼ぶ。
  *
@@ -538,6 +575,9 @@ bool CDarkMode::HandleDialogMessageBefore(
 	switch( uMsg ){
 	case WM_INITDIALOG:
 		ApplyDialog( hDlg );
+		if( !s_bEnabled ){
+			::EnumChildWindows( hDlg, ApplyListViewThemeProc, 0 );	// 2026.11.26 ライトモードのリストビュー
+		}
 		break;
 	case WM_NOTIFY:
 		{
